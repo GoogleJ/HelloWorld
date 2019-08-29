@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
@@ -25,13 +24,13 @@ import com.zxjk.duoduo.ui.widget.KeyboardPopupWindow;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
+
 import butterknife.ButterKnife;
 
 public class SettingPayPwdActivity extends BaseActivity {
     PayPsdInputView payPsdInputView;
     TextView commmitBtn;
     LinearLayout rootView;
-    NestedScrollView scrollView;
     TextView m_set_payment_pwd_label;
     String newPwd;
     String newPwdTwo;
@@ -53,16 +52,10 @@ public class SettingPayPwdActivity extends BaseActivity {
         tv_title.setText(getString(R.string.set_pay_password));
         m_set_payment_pwd_label = findViewById(R.id.m_set_payment_pwd_label);
         rootView = findViewById(R.id.root_view);
-        scrollView = findViewById(R.id.sv_main);
         payPsdInputView = findViewById(R.id.m_set_payment_pwd_edit);
         commmitBtn = findViewById(R.id.m_edit_information_btn);
         m_set_payment_pwd_label.setText(R.string.input_newpaypwd);
-        findViewById(R.id.rl_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         payPsdInputView.setComparePassword(new PayPsdInputView.onPasswordListener() {
 
             @Override

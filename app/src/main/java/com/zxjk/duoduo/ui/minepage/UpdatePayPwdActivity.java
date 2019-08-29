@@ -1,6 +1,5 @@
 package com.zxjk.duoduo.ui.minepage;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
@@ -25,16 +23,14 @@ import com.zxjk.duoduo.ui.widget.KeyboardPopupWindow;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
+
 import butterknife.ButterKnife;
 
-
 public class UpdatePayPwdActivity extends BaseActivity {
-
     PayPsdInputView payPsdInputView;
 
     TextView commmitBtn;
     LinearLayout rootView;
-    NestedScrollView scrollView;
     TextView m_set_payment_pwd_label;
 
     String oldPwd = "";
@@ -60,7 +56,6 @@ public class UpdatePayPwdActivity extends BaseActivity {
         tv_title.setText(getString(R.string.set_pay_password));
         m_set_payment_pwd_label = findViewById(R.id.m_set_payment_pwd_label);
         rootView = findViewById(R.id.root_view);
-        scrollView = findViewById(R.id.sv_main);
         payPsdInputView = findViewById(R.id.m_set_payment_pwd_edit);
         commmitBtn = findViewById(R.id.m_edit_information_btn);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());

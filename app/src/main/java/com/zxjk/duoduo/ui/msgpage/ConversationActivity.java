@@ -317,7 +317,7 @@ public class ConversationActivity extends BaseActivity {
                 screenCapture.dispose();
             }
             screenCapture = RxScreenshotDetector.start(this)
-                    .compose(bindUntilEvent(ActivityEvent.STOP))
+                    .compose(bindUntilEvent(ActivityEvent.PAUSE))
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(s -> {
                         InformationNotificationMessage m = InformationNotificationMessage
@@ -666,6 +666,8 @@ public class ConversationActivity extends BaseActivity {
                                             ExpiredEnvelopesDialog dialog = new ExpiredEnvelopesDialog(ConversationActivity.this);
                                             dialog.show(RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId()),
                                                     false, redPacketMessage.getRedId());
+                                            Constant.tempMsg = message;
+                                            onResume();
                                         }
                                     }
                                     if (s.getRedPackageState().equals("0")) {
@@ -683,6 +685,15 @@ public class ConversationActivity extends BaseActivity {
                                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConversationActivity.this)))
                                                     .compose(RxSchedulers.normalTrans())
                                                     .subscribe(s2 -> {
+                                                        if (!TextUtils.isEmpty(s2.getFinish())) {
+                                                            new ExpiredEnvelopesDialog(ConversationActivity.this)
+                                                                    .show(RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId()),
+                                                                            false, redPacketMessage.getRedId());
+                                                            Constant.tempMsg = message;
+                                                            onResume();
+                                                            return;
+                                                        }
+
                                                         if (!message.getSenderUserId().equals(Constant.userId)) {
                                                             InformationNotificationMessage message1 = InformationNotificationMessage.obtain(Constant.currentUser.getNick() + "领取了"
                                                                     + s2.getSendCustomerInfo().getUsernick() + "的红包");

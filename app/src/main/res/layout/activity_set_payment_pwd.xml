@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:psd="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,48 +8,41 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/sv_main"
+    <LinearLayout
+        android:id="@+id/all_ed"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/all_ed"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/m_set_payment_pwd_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="56dp"
+            android:text="@string/please_input_paypass"
+            android:textColor="@color/m_verification_send_btn"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/m_set_payment_pwd_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="98dp"
-                android:text="@string/please_input_paypass"
-                android:textColor="@color/m_verification_send_btn"
-                android:textSize="18sp" />
+        <com.zxjk.duoduo.ui.widget.PayPsdInputView
+            android:id="@+id/m_set_payment_pwd_edit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="56dp"
+            android:inputType="number"
+            app:focusedColor="@color/colorTheme"
+            app:divideLineColor="@color/black"
+            app:psdType="weChat"
+            app:radius="6dp" />
 
-            <com.zxjk.duoduo.ui.widget.PayPsdInputView
-                android:id="@+id/m_set_payment_pwd_edit"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="90dp"
-                android:layout_marginEnd="40dp"
-                android:inputType="number"
-                psd:maxCount="6"
-                psd:psdType="weChat"
-                psd:rectAngle="4dp" />
+        <Button
+            android:id="@+id/m_edit_information_btn"
+            style="@style/BtnStyle"
+            android:text="@string/m_edit_information_btn"
+            android:visibility="gone" />
 
-            <Button
-                android:id="@+id/m_edit_information_btn"
-                style="@style/BtnStyle"
-                android:text="@string/m_edit_information_btn"
-                android:visibility="gone" />
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
+    </LinearLayout>
 
 </LinearLayout>

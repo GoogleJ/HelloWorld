@@ -47,8 +47,6 @@
             android:overScrollMode="never" />
 
         <com.zxjk.duoduo.ui.msgpage.widget.IndexView
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
             android:id="@+id/index_view"
             android:layout_width="24dp"
             android:layout_height="match_parent"

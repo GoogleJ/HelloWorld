@@ -463,7 +463,6 @@ public interface Api {
     Observable<BaseResponse<ReceiveGroupRedPackageResponse>> receiveGroupRedPackage(@Field("redPackageId") String redPackageId
             , @Field("isGame") String isGame);
 
-
     @POST("duoduo/group/getAllPlayGroup")
     @FormUrlEncoded
     Observable<BaseResponse<GetAllPlayGroupResponse>> getAllPlayGroup(@Field("customerId") String customerId);

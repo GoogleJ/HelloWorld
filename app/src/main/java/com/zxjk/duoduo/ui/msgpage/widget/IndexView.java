@@ -8,6 +8,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.zxjk.duoduo.utils.CommonUtils;
+
 public class IndexView extends View {
     private Context mContext;
     private TextView mShowTextDialog;
@@ -68,7 +70,7 @@ public class IndexView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mWidth = getMeasuredWidth();
-        mHeight = getMeasuredHeight();
+        mHeight = getMeasuredHeight() - CommonUtils.dip2px(getContext(), 64);
 
         mCellHeight = mHeight / WORDS.length;
     }
@@ -78,7 +80,7 @@ public class IndexView extends View {
         super.onDraw(canvas);
         for (int i = 0; i < WORDS.length; i++) {
             float xPos = mWidth / 2 - mPaint.measureText(WORDS[i]) / 2;
-            float yPos = mCellHeight * i + mCellHeight;
+            float yPos = mCellHeight * i + mCellHeight + CommonUtils.dip2px(getContext(), 30);
             canvas.drawText(WORDS[i], xPos, yPos, mPaint);
         }
     }
@@ -93,13 +95,12 @@ public class IndexView extends View {
         switch (action) {
             case MotionEvent.ACTION_UP:
                 setBackgroundColor(0x00000000);
-                mChoose = -1;//
+                mChoose = -1;
                 invalidate();
                 if (mShowTextDialog != null) {
                     mShowTextDialog.setVisibility(View.INVISIBLE);
                 }
                 break;
-
             default:
                 setBackgroundColor(GRAY);
                 if (oldChoose != c) {
@@ -111,12 +112,10 @@ public class IndexView extends View {
                             mShowTextDialog.setText(WORDS[c]);
                             mShowTextDialog.setVisibility(View.VISIBLE);
                         }
-
                         mChoose = c;
                         invalidate();
                     }
                 }
-
                 break;
         }
         return true;

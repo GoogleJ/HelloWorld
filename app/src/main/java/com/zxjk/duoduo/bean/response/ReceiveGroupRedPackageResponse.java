@@ -12,6 +12,15 @@ public class ReceiveGroupRedPackageResponse {
     private RedPackageInfoBean redPackageInfo;
     private SendCustomerInfoBean sendCustomerInfo;
     private List<CustomerInfoBean> customerInfo;
+    private String finish;
+
+    public String getFinish() {
+        return finish;
+    }
+
+    public void setFinish(String finish) {
+        this.finish = finish;
+    }
 
     public RedPackageInfoBean getRedPackageInfo() {
         return redPackageInfo;
