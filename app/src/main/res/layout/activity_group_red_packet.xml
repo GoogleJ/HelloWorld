@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EDEDEE"
+    android:orientation="vertical"
+    tools:context=".ui.msgpage.GroupRedPacketActivity">
+
+    <include layout="@layout/layout_title_back" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#eeeeee" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tvRed1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="shouqiRed"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/pinshouqi"
+            android:textColor="@color/textcolor1" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/divider" />
+
+        <TextView
+            android:id="@+id/tvRed2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="normalRed"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/red_packet1"
+            android:textColor="@color/textcolor3" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-4dp">
+
+        <View
+            android:id="@+id/red1Line"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="72dp"
+            android:layout_weight="1"
+            android:background="@color/colorTheme"
+            android:minWidth="56dp" />
+
+        <View
+            android:id="@+id/red2Line"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="72dp"
+            android:layout_weight="1"
+            android:background="@color/colorTheme"
+            android:minWidth="56dp"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/shape_bac_white_conor3"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tvGroupRedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/singlemoney"
+            android:textColor="@color/themecolor"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etGroupRed1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="0.00"
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:maxLength="8"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MoT"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvRedTips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/samemoney"
+        android:textColor="@color/textcolor3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/shape_bac_white_conor3"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/packagenum"
+            android:textColor="@color/themecolor"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etGroupRed2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="@string/input_number"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="8"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ge"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvGroupRedGroupnums"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="本群共22人"
+        android:textColor="@color/textcolor3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/shape_bac_white_conor3"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <EditText
+            android:id="@+id/etGroupRed3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="start"
+            android:hint="@string/m_red_envelopes_label"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <TextView
+            android:id="@+id/tvGroupRedMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:lines="1"
+            android:text="0.00"
+            android:textColor="@color/themecolor"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" MoT"
+            android:textColor="@color/textcolor2"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+
+    <Button
+        style="@style/BtnStyle"
+        android:onClick="sendRed"
+        android:text="@string/send_group_red" />
+
+</LinearLayout>

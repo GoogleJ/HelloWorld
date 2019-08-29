@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="48dp">
+
+    <include layout="@layout/layout_burn_top" />
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:textColor="@color/textcolor1"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:lineSpacingExtra="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include layout="@layout/layout_burn_foot" />
+
+</LinearLayout>

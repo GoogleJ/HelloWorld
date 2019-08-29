@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="all">
+
+    <include layout="@layout/layout_title_back" />
+
+    <ImageView
+        android:id="@+id/m_transfer_heard_icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="31dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_header" />
+
+    <TextView
+        android:id="@+id/m_transfer_nick_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="14dp"
+        android:text="@string/user_name"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/m_transfer_money_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="29dp"
+        android:text="@string/m_transfer_money_label"
+        android:textColor="@color/m_red_envelopes_unit_text"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/m_transfer_money_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="end"
+            android:hint="@string/m_red_envelopes_money_text"
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:maxLength="15"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/m_red_envelopes_unit_label"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/m_add_friend_line" />
+
+    <EditText
+        android:id="@+id/etTransferInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="@string/m_transfer_add_instructions"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:lines="1"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/m_transfer_commit_btn"
+        style="@style/BtnStyle"
+        android:text="@string/m_transfer_commit_btn" />
+
+</LinearLayout>

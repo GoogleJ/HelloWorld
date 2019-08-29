@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorE"
+    android:orientation="vertical"
+    tools:ignore="RtlCompat">
+
+    <include layout="@layout/layout_title_back" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="@string/verifying_application"
+            android:textColor="@color/color9"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white">
+
+        <EditText
+            android:id="@+id/m_verification_edit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_toStartOf="@+id/m_verification_icon"
+            android:background="@null"
+            android:hint="@string/send_verification"
+            android:textColor="@color/theme_color"
+            android:textSize="16sp" />
+
+
+        <ImageView
+            android:id="@+id/m_verification_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/icon_close" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/m_verification_send_btn"
+        style="@style/BtnStyle"
+        android:text="@string/m_verification_send_btn" />
+
+</LinearLayout>

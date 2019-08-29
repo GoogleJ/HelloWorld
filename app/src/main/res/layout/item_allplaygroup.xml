@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/text_color2" />
+
+
+    <ImageView
+        android:id="@+id/nineImg"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_below="@+id/tvType"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:srcCompat="@drawable/icon_header" />
+
+    <TextView
+        android:id="@+id/tvGroupName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/nineImg"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="3dp"
+        android:layout_toEndOf="@id/nineImg"
+        android:textColor="@color/text_color3"
+        android:textSize="16sp" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@id/nineImg"
+        android:layout_alignStart="@id/tvGroupName"
+        android:background="@color/colorE" />
+
+</RelativeLayout>

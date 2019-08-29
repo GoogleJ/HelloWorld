@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/m_friend_search_view"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title_back" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="groupChat">
+
+                <TextView
+                    android:id="@+id/tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/group_chat_name_label"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/group_chat_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter"
+                    android:layout_toEndOf="@id/tv"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:lines="1" />
+
+                <ImageView
+                    android:id="@+id/iv_enter"
+                    style="@style/ImageEnter" />
+
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line10" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/group_chat_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:overScrollMode="never"
+                android:padding="15dp" />
+
+            <TextView
+                android:id="@+id/see_more_group_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:onClick="groupAllMembers"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/see_more_group_members" />
+
+            <include layout="@layout/layout_line10" />
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="groupQR">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/group_qr"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter1"
+                    android:src="@drawable/icon_qr_code" />
+
+                <ImageView
+                    android:id="@+id/iv_enter1"
+                    style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line10" />
+
+            <RelativeLayout
+                android:id="@+id/rl_setTop"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="置顶聊天"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                android:id="@+id/rl_notNotify"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="消息免打扰"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <Switch
+                    android:id="@+id/switch2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line10" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_groupowner"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    style="@style/RLayoutStyle"
+                    android:onClick="ownerAuthority">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/authory_manage"
+                        android:textColor="@color/theme_color"
+                        android:textSize="16sp" />
+
+                    <ImageView style="@style/ImageEnter" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/layout_line" />
+
+                <RelativeLayout
+                    style="@style/RLayoutStyle"
+                    android:onClick="ownerGroupManage">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/groupmanage"
+                        android:textColor="@color/theme_color"
+                        android:textSize="16sp" />
+
+                    <ImageView style="@style/ImageEnter" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/layout_line10" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_groupmanager"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/rlManager_mute"
+                    style="@style/RLayoutStyle"
+                    android:onClick="managerMute">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/mute_manage"
+                        android:textColor="@color/theme_color"
+                        android:textSize="16sp" />
+
+                    <ImageView style="@style/ImageEnter" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/layout_line" />
+
+                <RelativeLayout
+                    android:id="@+id/rlManager_see"
+                    style="@style/RLayoutStyle"
+                    android:onClick="managerSee">
+
+                    <TextView
+                        android:id="@+id/tv3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/see_manage"
+                        android:textColor="@color/theme_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginStart="12dp"
+                        android:gravity="end"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/iv"
+                        android:layout_toEndOf="@+id/tv3"
+                        android:textColor="@color/textcolor3"
+                        android:text="@string/manageseetip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/iv"
+                        style="@style/ImageEnter" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/layout_line" />
+
+                <RelativeLayout
+                    android:id="@+id/rlManager_live_video"
+                    style="@style/RLayoutStyle"
+                    android:onClick="managerVideo">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/video_manage"
+                        android:textColor="@color/theme_color"
+                        android:textSize="16sp" />
+
+                    <ImageView style="@style/ImageEnter" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/layout_line" />
+
+                <RelativeLayout
+                    android:id="@+id/rlManager_live_audio"
+                    style="@style/RLayoutStyle"
+                    android:onClick="managerAudio">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/audio_manage"
+                        android:textColor="@color/theme_color"
+                        android:textSize="16sp" />
+
+                    <ImageView style="@style/ImageEnter" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/layout_line10" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="report">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/report"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                android:id="@+id/rl_qk"
+                style="@style/RLayoutStyle"
+                android:onClick="clearHistory">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="清空聊天记录"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="announcement">
+
+                <TextView
+                    android:id="@+id/tv_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/group_announcement"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/announcement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_toStartOf="@id/iv_enter2"
+                    android:layout_toEndOf="@+id/tv_1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:singleLine="true"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/iv_enter2"
+                    style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/rl_groupManage"
+                style="@style/RLayoutStyle"
+                android:onClick="groupManagement">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="群转让"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/dissolution_group"
+                style="@style/BtnStyle"
+                android:onClick="dissolutionGroup" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="RtlCompat,MissingConstraints">
+
+    <LinearLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/m_people_red_envelopes_title_bar">
+
+        <ImageView
+            android:id="@+id/m_people_red_envelopes_title_bar"
+            android:layout_width="10dp"
+            android:layout_height="19dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ico_back_white" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_people_hongbao_back"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
+    <TextView
+        android:id="@+id/m_people_red_envelopes_signature_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="15dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="6dp"
+        android:lines="2"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/m_red_envelopes_label"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
+    <ImageView
+        android:id="@+id/m_people_red_envelopes_header"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/icon_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/m_people_red_envelopes_signature_text" />
+
+    <TextView
+        android:id="@+id/m_people_red_envelopes_user_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@+id/m_people_red_envelopes_header"
+        app:layout_constraintStart_toStartOf="@+id/m_people_red_envelopes_header"
+        app:layout_constraintTop_toBottomOf="@+id/m_people_red_envelopes_header" />
+
+    <TextView
+        android:id="@+id/m_people_red_envelopes_money_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/m_transfer_pending_money_text"
+        android:textColor="@color/m_people_red_envelopes_title_bar"
+        android:textSize="55sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/m_people_red_envelopes_user_name_text" />
+
+    <TextView
+        android:id="@+id/m_people_red_envelopes_unit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/m_red_envelopes_unit_label"
+        android:textColor="@color/m_people_red_envelopes_title_bar"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/m_people_red_envelopes_money_text"
+        app:layout_constraintStart_toEndOf="@+id/m_people_red_envelopes_money_text"
+
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

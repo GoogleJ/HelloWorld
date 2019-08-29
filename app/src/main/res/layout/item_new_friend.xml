@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/m_add_btn_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/m_item_new_friend_icon"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/icon_header" />
+
+    <TextView
+        android:id="@+id/m_item_new_friend_user_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/m_item_new_friend_icon"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="12dp"
+        android:layout_toEndOf="@id/m_item_new_friend_icon"
+        android:textColor="@color/text_color3"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/m_item_new_friend_message_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/m_item_new_friend_icon"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="3dp"
+        android:layout_toEndOf="@id/m_item_new_friend_icon"
+        android:ellipsize="end"
+        android:maxLength="15"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/m_item_new_friend_type_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/shape_circular_bead_btn2"
+        android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp"
+        android:text="@string/add"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@id/m_item_new_friend_icon"
+        android:layout_alignStart="@id/m_item_new_friend_user_name_text"
+        android:background="@color/colorE" />
+
+</RelativeLayout>

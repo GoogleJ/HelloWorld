@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color1"
+    android:orientation="vertical"
+    tools:ignore="all">
+
+    <include layout="@layout/layout_title_back" />
+
+    <RelativeLayout style="@style/RLayoutStyle">
+
+        <TextView
+            android:id="@+id/tv_oldPassWord"
+            style="@style/textStyle"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="@string/old_password"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etChangePwdOrigin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_toEndOf="@+id/tv_oldPassWord"
+            android:background="@null"
+            android:gravity="center|end"
+            android:hint="@string/enter_old_password"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:maxLength="14"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <include layout="@layout/layout_line" />
+
+    <RelativeLayout style="@style/RLayoutStyle">
+
+        <TextView
+            android:id="@+id/tv_newPassWord"
+            style="@style/textStyle"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="@string/new_password"
+            android:textSize="16sp" />
+
+
+        <EditText
+            android:id="@+id/etChangePwdNew"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_toEndOf="@+id/tv_newPassWord"
+            android:background="@null"
+            android:gravity="center|end"
+            android:hint="@string/enter_new_password"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:maxLength="14"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <include layout="@layout/layout_line" />
+
+    <RelativeLayout style="@style/RLayoutStyle">
+
+        <TextView
+            android:id="@+id/tv_newPassWord1"
+            style="@style/textStyle"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="@string/new_password"
+            android:textSize="16sp" />
+
+
+        <EditText
+            android:id="@+id/etChangePwdConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_toEndOf="@+id/tv_newPassWord1"
+            android:background="@null"
+            android:gravity="center|end"
+            android:hint="@string/fill_in_again_to_confirm"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:maxLength="14"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="@string/forget_password_reminder"
+        android:textColor="@color/text_color2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:text="@string/enter_password_reminder"
+        android:textColor="@color/text_color2" />
+
+    <Button
+        android:id="@+id/tv_accomplish"
+        style="@style/BtnStyle"
+        android:onClick="accomplish"
+        android:text="@string/accomplish" />
+
+</LinearLayout>

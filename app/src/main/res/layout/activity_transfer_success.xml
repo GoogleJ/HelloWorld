@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.msgpage.TransferSuccessActivity">
+
+    <include layout="@layout/layout_title_back" />
+
+    <ImageView
+        android:id="@+id/m_transfer_info_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="38dp"
+        android:src="@drawable/icon_transfer_successful" />
+
+    <TextView
+        android:id="@+id/m_transfer_info_pending_payment_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:text="@string/m_successful_transfer_label"
+        android:textColor="@color/login_bg"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvTransferSuccessFriend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvTransferSuccessMoney"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        android:gravity="top|center_horizontal"
+        android:textColor="@color/themecolor"
+        android:textSize="26sp" />
+
+    <Button
+        android:layout_width="224dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/shape_circular_bead_btn"
+        android:onClick="submit"
+        android:text="@string/done1"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+
+</LinearLayout>

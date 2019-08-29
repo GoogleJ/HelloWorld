@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title_back" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_account_number"
+                style="@style/RLayoutStyle"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/account_number" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_newMessage"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/new_message" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                android:id="@+id/rl_privicy"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/privacy" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                android:id="@+id/rl_realNameAuthentication"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/real_name_authentication" />
+
+                <TextView
+                    android:id="@+id/tv_authentication"
+                    style="@style/textStyle16"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/iv_authentication"
+                    android:text="@string/not_verify_real_name" />
+
+                <ImageView
+                    android:id="@+id/iv_authentication"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/iv_enter"
+                    android:src="@drawable/ic_mine_authenticate"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_enter"
+                    style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                android:id="@+id/rl_collectionInformation"
+                style="@style/RLayoutStyle"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/collection_information" />
+
+                <TextView
+                    android:id="@+id/tv_perfection"
+                    style="@style/textStyle16"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/iv_enter1"
+                    android:text="@string/not_perfection" />
+
+                <ImageView
+                    android:id="@+id/iv_enter1"
+                    style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_helpCenter"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/help_center" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                android:id="@+id/rl_feedback"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/feedback" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
+                android:id="@+id/rl_aboutDuoDuo"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/about_duo_duo" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_languageSwitch"
+                style="@style/RLayoutStyle"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/language_switch" />
+
+                <ImageView style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

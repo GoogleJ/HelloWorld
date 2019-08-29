@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/m_item_search_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    tools:ignore="all">
+
+    <ImageView
+        android:id="@+id/m_item_search_icon"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_header" />
+
+    <TextView
+        android:id="@+id/m_item_search_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/m_item_search_icon"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="3dp"
+        android:layout_toEndOf="@+id/m_item_search_icon"
+        android:textColor="@color/text_color3"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/m_item_search_dudu_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/m_item_search_icon"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="3dp"
+        android:layout_toEndOf="@id/m_item_search_icon"
+        android:textColor="@color/text_color2"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0.1dp"
+        android:layout_below="@id/m_item_search_icon"
+        android:layout_alignStart="@id/m_item_search_dudu_id"
+        android:background="@color/colorE" />
+</RelativeLayout>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="themecolor">#4B4D5B</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="business_card_duoduo_id">#B5B5B5</color>
+    <color name="colorPrimary">#4585F5</color>
+    <color name="colorPrimaryDark">#4585F5</color>
+    <color name="colorAccent">#4585F5</color>
+    <color name="login_bg">#4B4D5B</color>
+    <color name="text_click_normal">#636466</color>
+    <color name="text_click_pressed">#1B1A1A</color>
+    <color name="login_btn_normal">#E5C175</color>
+    <color name="login_btn_pressed">#EBBA57</color>
+    <color name="contact_letter_idx_bg">#00746262</color>
+    <color name="list_item_bg_press">#F1EDED</color>
+    <color name="game_quick_create_bg_normal">#FFFFFF</color>
+    <color name="text_select_color">#8b8888</color>
+    <color name="head_bg">#111111</color>
+    <color name="main_list_divider">#C7C6C6</color>
+    <color name="contacts_letters_color">#80807c</color>
+    <color name="text_white_def">#c9ccd0</color>
+    <color name="item_bg_normal">#2D2D2D</color>
+    <color name="edt_common_hint_color">#8c8c8c</color>
+    <color name="home_tab_gray">#A5A1A1</color>
+    <color name="home_tab_dark">#413F3F</color>
+    <color name="search_def_gary">#EBEBEB</color>
+    <color name="head_ok_pressed_bg">#F7C547</color>
+    <color name="head_ok_normal_bg">#FFD464</color>
+    <color name="m_friend_search_view">#fff5f5f5</color>
+    <color name="m_add_friend_wechat_label_2">#999999</color>
+    <color name="m_add_friend_line">#DDDDDD</color>
+    <color name="personal_information">#9C9C9C</color>
+    <color name="personal_information_1">#F8F8F8</color>
+    <color name="m_personal_information_dudu_id">#999999</color>
+    <color name="m_verification_send_btn">#4B4D5B</color>
+    <color name="m_verification_send_btn_background">#E5C175</color>
+
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="result_view">#B0000000</color>
+    <color name="viewfinder_frame">#90FFFFFF</color>
+    <color name="result_point_color">#C0FFFF00</color>
+    <color name="laser_color">#0F0</color>
+    <color name="corner_color">#00FF00</color>
+    <color name="m_my_qr_code_label">#BBBBBB</color>
+    <color name="m_contact_edit_back">#EEEEEE</color>
+    <color name="m_item_contact_type_text_1">#4B4D5B</color>
+    <color name="m_item_msg_session_label">#999999</color>
+    <color name="m_item_msg_message_number">#EA2222</color>
+    <color name="m_constacts_new_friend_group_chat_label">#999999</color>
+
+    <color name="textcolor1">#333</color>
+    <color name="textcolor2">#666</color>
+    <color name="textcolor3">#999</color>
+    <color name="m_edit_information_btn">#FFE6A5</color>
+    //红包相关
+    <color name="m_red_envelopes_unit_text">#666666</color>
+    <color name="m_people_red_envelopes_title_bar">#FA9219</color>
+
+    //关于嘟嘟页面相关
+    <color name="about_version_number">#CCCCCC</color>
+    //实名认证里头的图片颜色
+    <color name="verified_image_color">#DCDCDC</color>
+    <color name="default_placeholder">#EDEDEE</color>
+    <color name="background">#ededee</color>
+    //安全键盘
+    <color name="divider">#D1D1D1</color>
+    <color name="click_bg_dark">#BFBFBF</color>
+    <color name="click_bg_dark_light">#E0E0E0</color>
+    <color name="red_eth_in">#F43532</color>
+    <color name="line">#EFEFEF</color>
+    <color name="please_enter_new_phone_number">#D8D8D8</color>
+    <color name="confirm_buy">#ffffff</color>
+    <color name="count_down">#EB1D1C</color>
+    <color name="confirm_sale_line">#eeeeee</color>
+    <color name="select_country">#00000000</color>
+    <color name="exchange_line">#dddddd</color>
+    <color name="qrcv_maskColor">#80000000</color>
+    <color name="tvChangeSign">#BCBDC7</color>
+    <color name="ivUserInfoHead">#e0e0e0</color>
+    <color name="personal_information_line">#f8f8f8</color>
+    <color name="choosesex_line">#D2D2D2</color>
+    <color name="tvMineNick">#393939</color>
+    <color name="popupWindow">#dedede</color>
+    <color name="tvCancel">#333333</color>
+    <color name="grey">#D3D3D3</color>
+    <!---->
+    <color name="pop_color1">#4B4D5B</color>
+    <color name="pop_color2">#999999</color>
+    <color name="pop_color3">#D2D2D2</color>
+    <color name="background_color">#f5f5f5</color>
+    <color name="background_color1">#EDEDEE</color>
+    <color name="background_color2">#EEEEEE</color>
+    <color name="theme_color">#4B4D5B</color>
+    <color name="text_color1">#CCCCCC</color>
+    <color name="text_color2">#999999</color>
+    <color name="text_color3">#333333</color>
+    <color name="view_color">#D8D8D8</color>
+    <color name="btn_color">#E5C175</color>
+    <color name="text_color4">#393939</color>
+    <color name="textColor3">#333333</color>
+    <color name="textColor6">#666666</color>
+    <color name="textColor9">#999999</color>
+    <color name="textColor39">#393939</color>
+    <!--颜色值EEEEEE-->
+    <color name="colorE">#EEEEEE</color>
+    <color name="colorD">#DDDDDD</color>
+    <color name="colorC">#CCCCCC</color>
+    <color name="createGameGroup1">#C4C8D1</color>
+    <color name="createGameGroup2">#CEAF81</color>
+    <color name="createGameGroup3">#363638</color>
+    <color name="createGameGroup4">#445C97</color>
+    <!--新的主题色-->
+    <color name="colorTheme">#4585F5</color>
+    <!--取消按钮文字的颜色-->
+    <color name="colorB">#BBBBBB</color>
+    <!--白色-->
+    <color name="colorWhite">#FFFFFF</color>
+    <!--颜色值333333-->
+    <color name="color3">#333333</color>
+    <!--颜色值666666-->
+    <color name="color6">#666666</color>
+    <!--颜色值999999-->
+    <color name="color9">#999999</color>
+    <!--颜色值393939-->
+    <color name="color39">#393939</color>
+    <color name="colorDuoBao">#CDCDCD</color>
+    <color name="colorDBRed">#EA5457</color>
+    <color name="colorDBGreen">#11BE11</color>
+    <color name="colorDBBlue">#44A1E7</color>
+    <color name="colorDBOrange">#FA911F</color>
+
+    <color name="msgTitle">#020818</color>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title_back" />
+
+    <RelativeLayout
+        android:id="@+id/rl_currency"
+        style="@style/RLayoutStyle"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/iv_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_hkb" />
+
+        <TextView
+            android:id="@+id/tv_currency"
+            style="@style/textStyle"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/iv_currency"
+            android:text="MoT" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title_back" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_headPortrait"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/head_portrait" />
+
+                <ImageView
+                    android:id="@+id/iv_headPortrait"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_header" />
+
+                <ImageView
+                    android:id="@+id/iv_enter"
+                    style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/background_color" />
+
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="changeNick">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/nick" />
+
+                <TextView
+                    android:id="@+id/tv_nickname"
+                    style="@style/textStyle14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter1" />
+
+                <ImageView
+                    android:id="@+id/iv_enter1"
+                    style="@style/ImageEnter" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="changeSex">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/gender" />
+
+                <TextView
+                    android:id="@+id/tvUserInfoSex"
+                    style="@style/textStyle14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter2" />
+
+                <ImageView
+                    android:id="@+id/iv_enter2"
+                    style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="chooseArea">
+
+                <TextView
+                    android:id="@+id/tv"
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/m_edit_information_area_label" />
+
+                <TextView
+                    android:id="@+id/tvArea"
+                    style="@style/textStyle14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv"
+                    android:layout_toEndOf="@id/tv"
+                    android:ellipsize="end"
+                    android:gravity="end" />
+
+                <ImageView
+                    android:id="@+id/iv"
+                    style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout style="@style/RLayoutStyle">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/m_add_my_way_duoduo_id" />
+
+                <TextView
+                    android:id="@+id/tv_DuoDuoNumber"
+                    style="@style/textStyle14"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="QRCode">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/my_qr_code" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp"
+                    android:tint="#CCCCCC"
+                    app:srcCompat="@drawable/icon_qr_code" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout style="@style/RLayoutStyle">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/name" />
+
+                <TextView
+                    android:id="@+id/tv_realName"
+                    style="@style/textStyle14"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="changeMobile">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/phone_number_label" />
+
+                <TextView
+                    android:id="@+id/tv_phoneNumber"
+                    style="@style/textStyle14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter6"
+                    android:text="" />
+
+                <ImageView
+                    android:id="@+id/iv_enter6"
+                    style="@style/ImageEnter" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="changeSign">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/sign" />
+
+                <TextView
+                    android:id="@+id/tv_personalizedSignature"
+                    style="@style/textStyle14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter7"
+                    android:text="" />
+
+                <ImageView
+                    android:id="@+id/iv_enter7"
+                    style="@style/ImageEnter" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout
+                style="@style/RLayoutStyle"
+                android:onClick="changeEmail">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/email" />
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    style="@style/textStyle14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter8"
+                    android:text="" />
+
+                <ImageView
+                    android:id="@+id/iv_enter8"
+                    style="@style/ImageEnter" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/background_color" />
+
+            <RelativeLayout
+                android:id="@+id/rl_walletAddress"
+                style="@style/RLayoutStyle">
+
+                <TextView
+                    android:id="@+id/tv_wallet"
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/wallet_address" />
+
+                <TextView
+                    android:id="@+id/tv_walletAddress"
+                    style="@style/textStyle14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toEndOf="@id/tv_wallet"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:text="" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
+

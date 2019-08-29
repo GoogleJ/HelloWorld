@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@color/white"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/ivItemDetaillist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_type0" />
+
+    <TextView
+        android:id="@+id/tvItemDetaillistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/ivItemDetaillist"
+        android:textColor="@color/themecolor" />
+
+    <TextView
+        android:id="@+id/tvItemDetaillistTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvItemDetaillistName"
+        android:layout_toEndOf="@id/ivItemDetaillist"
+        android:textColor="@color/textcolor3" />
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_mine_rightarrow" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@id/iv"
+        android:text="MoT"
+        android:textColor="@color/textcolor1" />
+
+    <TextView
+        android:id="@+id/tvItemDetaillistMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_toStartOf="@id/tv"
+        android:layout_toEndOf="@id/tvItemDetaillistTime"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:lines="1"
+        android:textColor="@color/textcolor1" />
+
+</RelativeLayout>

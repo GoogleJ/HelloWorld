@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivHead"
+            android:layout_marginStart="12dp"
+            android:scaleType="centerCrop"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:textSize="15sp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/textcolor1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/tv1"
+            android:background="@drawable/selector_mute"
+            android:button="@null"
+            android:textColor="@drawable/color_mute"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="禁言"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/tv2"
+            android:background="@drawable/selector_kickout"
+            android:textColor="@drawable/color_kickout"
+            android:button="@null"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="踢出"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+</LinearLayout>

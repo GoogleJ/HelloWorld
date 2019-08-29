@@ -1,0 +1,15 @@
+*.iml
+.gradle
+local.properties
+.idea
+.DS_Store
+captures
+.externalNativeBuild
+bin/
+gen/
+build
+app/build
+CallKit/build
+CallLib/build
+IMKit/build
+IMLib/build

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:ignore="all">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="申诉类型"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_close"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_delete_dialog" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <include layout="@layout/layout_line" />
+
+    <TextView
+        android:id="@+id/tv_appealType0"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:text="恶意买卖"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <include layout="@layout/layout_line" />
+
+    <TextView
+        android:id="@+id/tv_appealType1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:text="买家未付款"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <include layout="@layout/layout_line" />
+
+    <TextView
+        android:id="@+id/tv_appealType2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:text="卖家不释放币"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <include layout="@layout/layout_line" />
+
+    <TextView
+        android:id="@+id/tv_appealType3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:text="长时间无回应"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <include layout="@layout/layout_line" />
+
+    <TextView
+        android:id="@+id/tv_appealType4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:text="其它"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+
+</LinearLayout>

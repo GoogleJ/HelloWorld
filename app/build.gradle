@@ -1,0 +1,204 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    signingConfigs {
+        release {
+            keyAlias 'duoduo'
+            keyPassword 'duoduo'
+            storeFile file("../duoduo.jks")
+            storePassword 'duoduo'
+        }
+    }
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "com.zxjk.duoduo"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+        signingConfig signingConfigs.release
+    }
+    buildTypes {
+        release {
+            buildConfigField("boolean", "enableLog", "false")
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
+            zipAlignEnabled true
+            multiDexEnabled = true
+        }
+        debug {
+            buildConfigField("boolean", "enableLog", "true")
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable true
+            signingConfig signingConfigs.release
+            zipAlignEnabled true
+            multiDexEnabled = true
+        }
+    }
+    greendao {
+        schemaVersion 1
+        daoPackage 'com.zxjk.duoduo.bean'
+    }
+    allprojects {
+        repositories {
+            jcenter()
+            google()
+            maven { url "https://jitpack.io" }
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    buildToolsVersion '29.0.2'
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //Rxlifecycle
+    implementation 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
+    implementation 'com.trello.rxlifecycle3:rxlifecycle-android:3.0.0'
+    implementation 'com.trello.rxlifecycle3:rxlifecycle-components:3.0.0'
+    implementation 'com.trello.rxlifecycle3:rxlifecycle-android-lifecycle:3.0.0'
+
+    //permission
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+
+    //rxbinding
+    implementation 'com.jakewharton.rxbinding3:rxbinding-core:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0'
+//    implementation 'com.jakewharton.rxbinding3:rxbinding-drawerlayout:3.0.0'
+//    implementation 'com.jakewharton.rxbinding3:rxbinding-leanback:3.0.0'
+//    implementation 'com.jakewharton.rxbinding3:rxbinding-recyclerview:3.0.0'
+//    implementation 'com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:3.0.0'
+//    implementation 'com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:3.0.0'
+//    implementation 'com.jakewharton.rxbinding3:rxbinding-viewpager:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.0.0'
+
+    //RxJava2
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    //Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+
+    //OKHTTP3
+    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
+
+    //Material
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+
+    //底部navigationbar
+    implementation 'com.ashokvarma.android:bottom-navigation-bar:1.3.1'
+
+    //AliyunOSS
+    implementation 'com.aliyun.dpa:oss-android-sdk:+'
+
+    //Utils
+    implementation 'com.blankj:utilcodex:1.23.7'
+
+    //Loading
+    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+
+    //butterknife
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+
+    //融云
+    implementation project(':IMKit')
+    implementation project(':IMLib')
+    implementation project(':CallLib')
+    implementation project(':CallKit')
+    implementation project(':Sight')
+    api project(':android-push-settings')
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+    //zipfile
+    implementation 'top.zibin:Luban:1.1.8'
+
+    //安全密码
+    implementation 'coder.siy:password-textView:1.0.0'
+
+    //扫描二维码
+    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.3.6'
+
+    //通用适配器
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
+
+    //popwindow
+    implementation 'com.github.razerdp:BasePopup:2.1.9'
+
+    //群组头像
+    implementation 'com.github.Othershe:CombineBitmap:1.0.5'
+
+    //圆形imageview
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    // indicator
+    implementation 'com.github.hackware1993:MagicIndicator:1.6.0'
+
+    //微信分享
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+
+    //对话框
+    implementation 'com.github.SheHuan:NiceDialog:1.1.9'
+
+    //fast sp
+    implementation 'com.tencent:mmkv:1.0.19'
+
+    //加载长图
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
+
+    //京东地区选择
+    implementation 'org.jsoup:jsoup:1.12.1'
+
+    //圆角布局
+    implementation 'com.gcssloop.widget:rclayout:1.8.1'
+
+    //高德地图
+    implementation files('libs/AMap_Location_V4.6.0_20190423.jar')
+
+    //小米推送
+    implementation files('libs/MiPush_SDK_Client_3_6_18.jar')
+
+    //华为推送
+    implementation 'com.huawei.android.hms:base:2.6.3.306'
+    implementation 'com.huawei.android.hms:push:2.6.3.306'
+
+    //greendao
+    implementation 'org.greenrobot:greendao:3.2.2'
+
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6'
+
+    //debugtools
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
+
+}
