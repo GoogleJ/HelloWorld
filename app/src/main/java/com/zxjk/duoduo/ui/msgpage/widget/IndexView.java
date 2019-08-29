@@ -9,10 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 public class IndexView extends View {
-
     private Context mContext;
     private TextView mShowTextDialog;
-
 
     private Paint mPaint;
 
@@ -83,7 +81,6 @@ public class IndexView extends View {
             float yPos = mCellHeight * i + mCellHeight;
             canvas.drawText(WORDS[i], xPos, yPos, mPaint);
         }
-
     }
 
     @Override
@@ -92,7 +89,6 @@ public class IndexView extends View {
         final float y = event.getY();// 点击y坐标
         final int oldChoose = mChoose;
         final int c = (int) (y / getHeight() * WORDS.length);// 点击y坐标所占总高度的比例*b数组的长度就等于点击b中的个数.
-
 
         switch (action) {
             case MotionEvent.ACTION_UP:

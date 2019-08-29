@@ -19,7 +19,7 @@ import com.zxjk.duoduo.BuildConfig;
 import java.io.File;
 
 public class TakePicUtil {
-    public static File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/portraits/" + System.currentTimeMillis() + ".png");
+    public static File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/portraits/" + "temp" + ".png");
 
     public static void takePicture(Activity activity, int requestCode) {
         if (hasSdcard()) {

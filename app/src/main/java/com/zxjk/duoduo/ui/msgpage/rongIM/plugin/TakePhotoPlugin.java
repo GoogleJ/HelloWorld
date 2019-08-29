@@ -9,6 +9,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -18,9 +22,6 @@ import com.zxjk.duoduo.R;
 
 import java.io.File;
 
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import io.rong.imkit.RongExtension;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.plugin.IPluginModule;
@@ -56,8 +57,10 @@ public class TakePhotoPlugin implements IPluginModule {
                 .callback(new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
-                        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DuoDuo/images/" + System.currentTimeMillis() + ".png");
-                        file.getParentFile().mkdirs();
+                        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/images/" + "temp" + ".png");
+                        if (file.getParentFile() == null || !file.getParentFile().exists())
+                            file.getParentFile().mkdirs();
+
                         Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         imageUri = getUriForFile(activity, file);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -89,27 +92,7 @@ public class TakePhotoPlugin implements IPluginModule {
                     imageUri = Uri.fromFile(file);
                     ImageMessage obtain = ImageMessage.obtain(imageUri, imageUri, false);
                     Message message = Message.obtain(userId, conversationType, obtain);
-                    RongIM.getInstance().sendImageMessage(message, null, null, new RongIMClient.SendImageMessageCallback() {
-                        @Override
-                        public void onAttached(Message message) {
-
-                        }
-
-                        @Override
-                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-
-                        }
-
-                        @Override
-                        public void onSuccess(Message message) {
-
-                        }
-
-                        @Override
-                        public void onProgress(Message message, int i) {
-
-                        }
-                    });
+                    RongIM.getInstance().sendImageMessage(message, null, null, (RongIMClient.SendImageMessageCallback) null);
             }
         }
     }
