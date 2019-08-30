@@ -101,7 +101,7 @@ public class BalanceLeftActivity extends BaseActivity {
         });
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getBalanceHk(Constant.currentUser.getWalletAddress())
+                .getBalanceHk("")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -113,6 +113,5 @@ public class BalanceLeftActivity extends BaseActivity {
         super.onResume();
         tv_authentication.setText(CommonUtils.getAuthenticate(Constant.currentUser.getIsAuthentication()));
     }
-
 
 }
