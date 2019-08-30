@@ -253,9 +253,9 @@ public class GroupChatInformationActivity extends BaseActivity {
     public void dissolutionGroup(View view) {
         ConfirmDialog confirmDialog;
         if (Constant.userId.equals(group.getGroupInfo().getGroupOwnerId())) {
-            confirmDialog = new ConfirmDialog(this, "提示", "确定要解散群组么", v -> disBandGroup(group.getGroupInfo().getId(), Constant.userId));
+            confirmDialog = new ConfirmDialog(this, "提示", "是否确定解散该群", v -> disBandGroup(group.getGroupInfo().getId(), Constant.userId));
         } else {
-            confirmDialog = new ConfirmDialog(this, "提示", "确定要退出该群么", v -> exitGroup(group.getGroupInfo().getId(), Constant.userId));
+            confirmDialog = new ConfirmDialog(this, "提示", "是否确定退出该群", v -> exitGroup(group.getGroupInfo().getId(), Constant.userId));
         }
         confirmDialog.show();
     }

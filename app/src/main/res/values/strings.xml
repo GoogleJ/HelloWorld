@@ -46,7 +46,7 @@
     <string name="m_edit_information_title_bar">编辑个人信息</string>
     <string name="m_edit_information_area_label">地区</string>
     <string name="m_edit_information_name_edit">例如：小明</string>
-    <string name="m_edit_information_area_edit">完善你的位置信息</string>
+    <string name="m_edit_information_area_edit">完善您的位置信息</string>
     <string name="m_edit_information_name_label">昵称</string>
     <string name="m_edit_information_btn">完成</string>
     <string name="code_label">验证码已经发送，请注意查收</string>
@@ -240,8 +240,8 @@
     <string name="announcement_edit_successful">群公告修改成功</string>
     <string name="please_input_announcement">请先填写群公告</string>
     <string name="exit_group">退出群聊</string>
-    <string name="you_have_disbanded_the_group">你已解散该群</string>
-    <string name="you_have_left_the_group_chat">你已退出群聊</string>
+    <string name="you_have_disbanded_the_group">您已解散该群</string>
+    <string name="you_have_left_the_group_chat">您已退出群聊</string>
     <string name="slow">慢</string>
     <string name="fast">快</string>
     <string name="balance">余额</string>
@@ -584,7 +584,7 @@
     <string name="click_retry">点击重试</string>
     <string name="input_phone">请输入手机号</string>
     <string name="notice_creategroup">创建了一个群组</string>
-    <string name="new_friend1">你俩已经是好友了，现在开始聊天吧</string>
+    <string name="new_friend1">已是好友，现在开始聊天吧</string>
     <string name="searching">搜索中...</string>
     <string name="installalipay">未安装支付宝，请自行转账</string>
     <string name="mochat">MoChat</string>
