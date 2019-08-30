@@ -271,25 +271,11 @@ public class ShenSuActivity extends BaseActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String filePath = "";
-
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_TAKE:
-                    filePath = TakePicUtil.file.getAbsolutePath();
-                    break;
-                case REQUEST_ALBUM:
-                    filePath = TakePicUtil.getPath(this, data.getData());
-                    break;
-                default:
-            }
-        }
-
-        if (!TextUtils.isEmpty(filePath)) {
-            zipFile(Collections.singletonList(filePath), files -> {
+        if (corpFile != null) {
+            zipFile(Collections.singletonList(corpFile.getPath()), files -> {
                 File file = files.get(0);
                 OssUtils.uploadFile(file.getAbsolutePath(), url -> {
                     if (currentImg == 1) {
@@ -328,12 +314,12 @@ public class ShenSuActivity extends BaseActivity {
                 //拍照
                 holder.setOnClickListener(R.id.tv_photograph, v -> {
                     dialog.dismiss();
-                    TakePicUtil.takePicture(ShenSuActivity.this, REQUEST_TAKE);
+                    TakePicUtil.takePicture(ShenSuActivity.this);
                 });
                 //相册选择
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
-                    TakePicUtil.albumPhoto(ShenSuActivity.this, REQUEST_ALBUM);
+                    TakePicUtil.albumPhoto(ShenSuActivity.this);
                 });
                 //取消
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());

@@ -113,7 +113,7 @@ public class RecipetQRActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode != 1 || resultCode != 1) {

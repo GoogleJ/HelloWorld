@@ -807,7 +807,7 @@ public class ConversationActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000 && resultCode == 1000) {
             if (groupInfo != null) {

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -21,6 +20,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.LoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
+import com.zxjk.duoduo.utils.TakePicUtil;
 
 import java.io.File;
 import java.util.List;
@@ -34,6 +34,7 @@ import top.zibin.luban.Luban;
 @SuppressLint({"CheckResult", "Registered"})
 public class BaseActivity extends RxAppCompatActivity {
     public RxPermissions rxPermissions = new RxPermissions(this);
+    public File corpFile;
 
     public interface PermissionResult {
         void onResult(boolean granted);
@@ -122,6 +123,12 @@ public class BaseActivity extends RxAppCompatActivity {
                 .subscribe(result -> {
                     if (onFinish != null) onFinish.onFinish(result);
                 });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        corpFile = null;
+        corpFile = TakePicUtil.onActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override

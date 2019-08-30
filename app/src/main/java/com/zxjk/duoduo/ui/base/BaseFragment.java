@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jakewharton.rxbinding3.view.RxView;
@@ -15,15 +16,20 @@ import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.LoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
+import com.zxjk.duoduo.utils.TakePicUtil;
+
+import java.io.File;
+
 import io.rong.imkit.RongIM;
 
 
 @SuppressLint("CheckResult")
 public class BaseFragment extends RxFragment  {
-
     public View rootView;
 
     private RxPermissions rxPermissions;
+
+    public File corpFile;
 
     public void getPermisson(BaseActivity.PermissionResult result, String... permissions) {
         getPermisson(null, result, permissions);
@@ -68,5 +74,12 @@ public class BaseFragment extends RxFragment  {
         }
 
         ToastUtils.showShort(RxException.getMessage(throwable));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        corpFile = null;
+        corpFile = TakePicUtil.onActivityResult(getActivity(), requestCode, resultCode, data);
     }
 }

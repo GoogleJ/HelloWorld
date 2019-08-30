@@ -58,8 +58,7 @@ public class TakePhotoPlugin implements IPluginModule {
                     @Override
                     public void onGranted() {
                         file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/images/" + "temp" + ".png");
-                        if (file.getParentFile() == null || !file.getParentFile().exists())
-                            file.getParentFile().mkdirs();
+                        if (!file.exists()) file.mkdirs();
 
                         Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         imageUri = getUriForFile(activity, file);

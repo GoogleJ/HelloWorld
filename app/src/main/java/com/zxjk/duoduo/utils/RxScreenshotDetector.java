@@ -41,7 +41,7 @@ public class RxScreenshotDetector {
      * Unsubscribe to free this reference.
      * <p>
      *
-     * @return {@link Observable} that emits screenshot file path.
+     * @return {@link Observable} that emits screenshot tempFile path.
      */
     public static Observable<String> start(final AppCompatActivity activity) {
         return new RxScreenshotDetector(activity)

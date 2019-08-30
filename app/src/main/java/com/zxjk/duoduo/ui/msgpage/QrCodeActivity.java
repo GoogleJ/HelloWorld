@@ -32,8 +32,6 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 import io.reactivex.Observable;
@@ -60,7 +58,7 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         ImageView imageView = findViewById(R.id.ivBack);
         imageView.setImageResource(R.drawable.ico_back_white);
         findViewById(R.id.rlTitle).setBackgroundColor(ContextCompat.getColor(this, R.color.black));
-        getPermisson(tv_end, granted -> TakePicUtil.albumPhoto(QrCodeActivity.this, 1),
+        getPermisson(tv_end, granted -> TakePicUtil.albumPhoto(QrCodeActivity.this, false),
                 Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
@@ -186,10 +184,10 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         zxingview.startSpotAndShowRect(); // 显示扫描框，并开始识别
-        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+        if (resultCode == Activity.RESULT_OK) {
             zxingview.decodeQRCode(TakePicUtil.getPath(this, data.getData()));
         }
     }

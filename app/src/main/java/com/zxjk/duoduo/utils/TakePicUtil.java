@@ -4,43 +4,129 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.FragmentActivity;
 
 import com.zxjk.duoduo.BuildConfig;
 
 import java.io.File;
+import java.util.List;
 
 public class TakePicUtil {
+    private static final int CODE_PICTURE = 101;
+    private static final int CODE_ALBUM = 102;
+    private static final int CODE_CORP = 103;
+    private static final int CODE_PICTURE_NOCORP = 104;
+    private static final int CODE_ALBUM_NOCORP = 105;
+
     public static File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/portraits/" + "temp" + ".png");
 
-    public static void takePicture(Activity activity, int requestCode) {
+    public static void takePicture(Activity activity) {
+        takePicture(activity, true);
+    }
+
+    public static void albumPhoto(Activity activity) {
+        albumPhoto(activity, true);
+    }
+
+    public static void takePicture(Activity activity, boolean corp) {
         if (hasSdcard()) {
-            if (file.getParentFile() == null || !file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+            if (!file.exists()) {
+                file.mkdirs();
             }
 
             Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            Uri imageUri = getUriForFile(activity, file);
+            Uri imageUri = getUriForFile(activity, tempFile);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intentCamera.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
             intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            activity.startActivityForResult(intentCamera, requestCode);
+            if (corp) {
+                activity.startActivityForResult(intentCamera, CODE_PICTURE);
+            } else {
+                activity.startActivityForResult(intentCamera, CODE_PICTURE_NOCORP);
+            }
         }
     }
 
-    public static void albumPhoto(FragmentActivity activity, int requestCode) {
+    public static void albumPhoto(Activity activity, boolean corp) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
         photoPickerIntent.setType("image/*");
-        activity.startActivityForResult(photoPickerIntent, requestCode);
+        if (corp) {
+            activity.startActivityForResult(photoPickerIntent, CODE_ALBUM);
+        } else {
+            activity.startActivityForResult(photoPickerIntent, CODE_ALBUM_NOCORP);
+        }
+    }
+
+    private static boolean corp(Activity activity, File file) {
+        Uri uri = getUriForFile(activity, file);
+
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+
+        cropIntent.setDataAndType(uri, "image/*");
+        cropIntent.putExtra("crop", "true");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        cropIntent.putExtra("aspectX", 1);
+        cropIntent.putExtra("aspectY", 1);
+        cropIntent.putExtra("outputX", 200);
+        cropIntent.putExtra("outputY", 200);
+        cropIntent.putExtra("return-data", false);
+        cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+
+        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+
+        if (!isIntentAvailable(activity, cropIntent)) {
+            return false;
+        } else {
+            try {
+                activity.startActivityForResult(cropIntent, CODE_CORP);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+    public static File onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode != Activity.RESULT_OK)
+            return null;
+        if (requestCode == CODE_PICTURE || requestCode == CODE_ALBUM) {
+            String filePath = "";
+            switch (requestCode) {
+                case CODE_PICTURE:
+                    filePath = file.getAbsolutePath();
+                    break;
+                case CODE_ALBUM:
+                    filePath = getPath(activity, data.getData());
+                    break;
+            }
+            corp(activity, new File(filePath));
+            return null;
+        }
+        if (requestCode == CODE_CORP) {
+            return file;
+        }
+        return null;
+    }
+
+    private static boolean isIntentAvailable(Activity activity, Intent intent) {
+        PackageManager packageManager = activity.getPackageManager();
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 
     private static Uri getUriForFile(Context context, File file) {

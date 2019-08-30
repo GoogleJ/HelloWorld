@@ -124,22 +124,11 @@ public class AuthenticationActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String path = "";
 
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_TAKE:
-                    path = TakePicUtil.file.getAbsolutePath();
-                    break;
-                case REQUEST_ALBUM:
-                    path = TakePicUtil.getPath(this, data.getData());
-                    break;
-            }
-        }
-        if (!TextUtils.isEmpty(path)) {
-            zipFile(Collections.singletonList(path), files -> {
+        if (corpFile != null) {
+            zipFile(Collections.singletonList(corpFile.getPath()), files -> {
                 File file = files.get(0);
                 OssUtils.uploadFile(file.getAbsolutePath(), url -> {
                     if (currentPictureFlag == 1) {
@@ -269,12 +258,12 @@ public class AuthenticationActivity extends BaseActivity {
                 //拍照
                 holder.setOnClickListener(R.id.tv_photograph, v -> {
                     dialog.dismiss();
-                    TakePicUtil.takePicture(AuthenticationActivity.this, REQUEST_TAKE);
+                    TakePicUtil.takePicture(AuthenticationActivity.this);
                 });
                 //相册选择
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
-                    TakePicUtil.albumPhoto(AuthenticationActivity.this, REQUEST_ALBUM);
+                    TakePicUtil.albumPhoto(AuthenticationActivity.this);
                 });
                 //取消
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());

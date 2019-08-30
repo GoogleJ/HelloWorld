@@ -190,26 +190,12 @@ public class VerifiedActivity extends BaseActivity {
         certification(AesUtil.getInstance().encrypt(GsonUtils.toJson(bean)));
     }
 
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String filePath = "";
-
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_TAKE:
-                    filePath = TakePicUtil.file.getAbsolutePath();
-                    break;
-                case REQUEST_ALBUM:
-                    filePath = TakePicUtil.getPath(this, data.getData());
-                    break;
-            }
-        }
-
-        if (!TextUtils.isEmpty(filePath)) {
-            zipFile(Collections.singletonList(filePath), files -> {
+        if (corpFile != null) {
+            zipFile(Collections.singletonList(corpFile.getPath()), files -> {
                 File file = files.get(0);
                 OssUtils.uploadFile(file.getAbsolutePath(), url -> {
                     if (currentPictureFlag == 1) {
@@ -257,12 +243,12 @@ public class VerifiedActivity extends BaseActivity {
                 //拍照
                 holder.setOnClickListener(R.id.tv_photograph, v -> {
                     dialog.dismiss();
-                    TakePicUtil.takePicture(VerifiedActivity.this, REQUEST_TAKE);
+                    TakePicUtil.takePicture(VerifiedActivity.this);
                 });
                 //相册选择
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
-                    TakePicUtil.albumPhoto(VerifiedActivity.this, REQUEST_ALBUM);
+                    TakePicUtil.albumPhoto(VerifiedActivity.this);
                 });
                 //取消
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());

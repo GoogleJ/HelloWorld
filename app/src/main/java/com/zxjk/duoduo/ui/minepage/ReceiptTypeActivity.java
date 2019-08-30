@@ -2,7 +2,6 @@ package com.zxjk.duoduo.ui.minepage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,9 +37,6 @@ import com.zxjk.duoduo.utils.TakePicUtil;
 
 import java.io.File;
 import java.util.Collections;
-
-import static com.zxjk.duoduo.ui.EditPersonalInformationFragment.REQUEST_ALBUM;
-import static com.zxjk.duoduo.ui.EditPersonalInformationFragment.REQUEST_TAKE;
 
 /**
  * 完善信息
@@ -243,21 +239,11 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String filePath = "";
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_TAKE:
-                    filePath = TakePicUtil.file.getAbsolutePath();
-                    break;
-                case REQUEST_ALBUM:
-                    filePath = TakePicUtil.getPath(this, data.getData());
-                    break;
-            }
-        }
-        if (!TextUtils.isEmpty(filePath)) {
-            zipFile(Collections.singletonList(filePath), files -> {
+
+        if (corpFile != null) {
+            zipFile(Collections.singletonList(corpFile.getPath()), files -> {
                 File file = files.get(0);
                 OssUtils.uploadFile(file.getAbsolutePath(), url -> {
                     this.url = url;
@@ -292,12 +278,12 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 //拍照
                 holder.setOnClickListener(R.id.tv_photograph, v -> {
                     dialog.dismiss();
-                    TakePicUtil.takePicture(ReceiptTypeActivity.this, REQUEST_TAKE);
+                    TakePicUtil.takePicture(ReceiptTypeActivity.this);
                 });
                 //相册选择
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
-                    TakePicUtil.albumPhoto(ReceiptTypeActivity.this, REQUEST_ALBUM);
+                    TakePicUtil.albumPhoto(ReceiptTypeActivity.this);
                 });
                 //取消
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
