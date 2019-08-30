@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color1"
+    android:background="@color/background_color"
     android:orientation="vertical"
     tools:ignore="all">
 
     <include layout="@layout/layout_title_back" />
 
-    <RelativeLayout style="@style/RLayoutStyle">
+    <RelativeLayout style="@style/RLayoutStyle"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/tv_oldPassWord"
