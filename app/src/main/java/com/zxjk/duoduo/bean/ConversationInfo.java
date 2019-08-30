@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 public class ConversationInfo implements Serializable {
     //阅后即焚 时间
-    private int incinerationTime = -1;
+    private int messageBurnTime = -1;
 
     //截屏通知开关
     private int captureScreenEnabled = 0;
 
     public int getMessageBurnTime() {
-        return incinerationTime;
+        return messageBurnTime;
     }
 
     public void setMessageBurnTime(int messageBurnTime) {
-        this.incinerationTime = messageBurnTime;
+        this.messageBurnTime = messageBurnTime;
     }
 
     public int getCaptureScreenEnabled() {

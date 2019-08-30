@@ -109,29 +109,31 @@ public class BurnTextMessageProvider extends IContainerItemProvider.MessageProvi
             }
         }
 
-        holder.message.setMovementMethod(new LinkTextViewMovementMethod(link -> {
+//        holder.message.setMovementMethod(new LinkTextViewMovementMethod(link -> {
+//            String str = link.toLowerCase();
+//            if (str.startsWith("http") || str.startsWith("https")) {
+//                Intent intent = new Intent("io.rong.imkit.intent.action.webview");
+//                intent.setPackage(v.getContext().getPackageName());
+//                intent.putExtra("url", link);
+//                v.getContext().startActivity(intent);
+//                return true;
+//            }
+//
+//            return false;
+//        }));
+        holder.content.setOnLongClickListener(view -> {
             RongIM.ConversationBehaviorListener listener = RongContext.getInstance().getConversationBehaviorListener();
             RongIM.ConversationClickListener clickListener = RongContext.getInstance().getConversationClickListener();
+
             boolean result = false;
             if (listener != null) {
-                result = listener.onMessageLinkClick(v.getContext(), link);
+                result = listener.onMessageLongClick(v.getContext(), holder.content, data.getMessage());
             } else if (clickListener != null) {
-                result = clickListener.onMessageLinkClick(v.getContext(), link, data.getMessage());
-            }
-
-            if (listener == null && clickListener == null || !result) {
-                String str = link.toLowerCase();
-                if (str.startsWith("http") || str.startsWith("https")) {
-                    Intent intent = new Intent("io.rong.imkit.intent.action.webview");
-                    intent.setPackage(v.getContext().getPackageName());
-                    intent.putExtra("url", link);
-                    v.getContext().startActivity(intent);
-                    result = true;
-                }
+                result = clickListener.onMessageLongClick(v.getContext(), holder.content, data.getMessage());
             }
 
             return result;
-        }));
+        });
         textView.stripUnderlines();
     }
 
