@@ -28,9 +28,7 @@ import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.LoginActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.msgpage.MyQrCodeActivity;
-import com.zxjk.duoduo.ui.walletpage.BlockWalletActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,6 +42,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private TextView tvMochatID;
     private TextView tvSign;
 
+    private TextView tvMot2Reward;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,6 +54,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         tvNick = view.findViewById(R.id.tvNick);
         tvMochatID = view.findViewById(R.id.tvMochatID);
         tvSign = view.findViewById(R.id.tvSign);
+        tvMot2Reward = view.findViewById(R.id.tvMot2Reward);
 
         view.findViewById(R.id.llMineTop).setOnClickListener(this);
         view.findViewById(R.id.ivBlockWallet).setOnClickListener(this);
@@ -63,6 +64,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.llMine4).setOnClickListener(this);
         view.findViewById(R.id.llMine5).setOnClickListener(this);
         view.findViewById(R.id.llMine6).setOnClickListener(this);
+        view.findViewById(R.id.llMine7).setOnClickListener(this);
         view.findViewById(R.id.ivQR).setOnClickListener(this);
 
         return view;
@@ -143,6 +145,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                         });
                     }
                 }).setDimAmount(0.5f).setOutCancel(false).show(getChildFragmentManager());
+                break;
+            case R.id.llMine7:
+                tvMot2Reward.setVisibility(View.GONE);
+                startActivity(new Intent(getContext(), RewardMotActivity.class));
                 break;
             case R.id.ivQR:
                 startActivity(new Intent(getActivity(), MyQrCodeActivity.class));
