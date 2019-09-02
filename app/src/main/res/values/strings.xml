@@ -717,8 +717,8 @@
     <string name="earn_coins">赚积分</string>
     <string name="mission_tip1">实名验证</string>
     <string name="mission_tip2">用户实名验证审核通过能获得100Mot</string>
-    <string name="mission_tip3">邀请好友</string>
-    <string name="mission_tip4">每邀请一位好友可获得20Mot</string>
+    <string name="mission_tip3">注册</string>
+    <string name="mission_tip4">注册成功后可领取100Mot</string>
     <string name="mission_tip5">加入群聊</string>
     <string name="mission_tip6">每加入一个群可获得5Mot</string>
     <string name="mission_tip7">群活跃</string>
@@ -726,6 +726,8 @@
     <string name="mission_tip9">分享资讯</string>
     <string name="mission_tip10">分享资讯可获得10Mot，每日最多3次</string>
     <string name="Mot1">Mot</string>
+    <string name="sign_success">签到成功</string>
+    <string name="signed1">已签到</string>
     <string name="pay_money">付费金额</string>
     <string name="payrecord">付费记录</string>
     <string name="paytotal1">付费总额</string>

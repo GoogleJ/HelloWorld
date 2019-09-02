@@ -21,6 +21,7 @@ import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
+import com.zxjk.duoduo.bean.response.GetSignListResponse;
 import com.zxjk.duoduo.bean.response.GetThirdPartyPaymentOrderResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetTransferEthResponse;
@@ -560,6 +561,11 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> muteMembers(@Field("groupId") String groupId, @Field("groupMembersId") String groupMembersId, @Field("type") String type);
 
+    @POST("duoduo/customer/getSignList")
+    Observable<BaseResponse<GetSignListResponse>> getSignList();
+
+    @POST("duoduo/customer/createSign")
+    Observable<BaseResponse<String>> createSign();
     @POST("duoduo/group/getGroupPayInfo")
     @FormUrlEncoded
     Observable<BaseResponse<GetGroupPayInfoResponse>> getGroupPayInfo(@Field("groupId") String groupId);

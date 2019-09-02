@@ -4,18 +4,19 @@
     android:layout_width="40dp"
     android:background="@drawable/shape_sign_item_nor"
     android:gravity="center_horizontal"
-    android:layout_height="56dp">
+    android:layout_height="60dp">
 
     <FrameLayout
         android:id="@+id/fl"
+        android:background=""
         android:layout_margin="6dp"
-        android:layout_width="26dp"
-        android:layout_height="26dp">
+        android:layout_width="28dp"
+        android:layout_height="28dp">
 
         <TextView
             android:id="@+id/tvCoins"
             android:textColor="#FF8900"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -26,7 +27,7 @@
     <TextView
         android:id="@+id/tvTime"
         android:textColor="@color/textcolor3"
-        android:textSize="11sp"
+        android:textSize="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -5,12 +5,9 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.DeviceUtils;
 import com.zxjk.duoduo.bean.response.CreateWalletResponse;
-import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.LoginResponse;
 
-import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import io.rong.imlib.model.Message;
 
@@ -20,7 +17,7 @@ public class Constant {
     //阿里OSS上传地址
     public static final String OSS_URL = "https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/";
     public static final String BASE_URL = "https://mochart.ztoken.cn";
-//    public static final String BASE_URL = "https://192.168.0.201:8085/";
+    //    public static final String BASE_URL = "https://192.168.0.105:8085/";
 //    public static final String BASE_URL = "https://duoduoweb.zzgb.net.cn";
     public static final String APP_CODE = "fb0e95b069f74f29a2f972f9454d7d1a";
 
@@ -45,7 +42,7 @@ public class Constant {
     public static int messageCount = 0;
 
     public static CreateWalletResponse walletResponse;
-//    public static List<FriendInfoResponse> friendsList;
+    //    public static List<FriendInfoResponse> friendsList;
     public static Message tempMsg;
 
     //分享群二维码
