@@ -708,4 +708,13 @@
     <string name="showAll">展开全部>></string>
     <string name="less_min">单个红包金额不能小于0.01</string>
     <string name="moToken">MoToken</string>
+    <string name="func_status">功能状态</string>
+    <string name="pay_money">付费金额</string>
+    <string name="Mot1">Mot</string>
+    <string name="payrecord">付费记录</string>
+    <string name="paytotal1">付费总额</string>
+    <string name="person">人</string>
+    <string name="date">日期</string>
+    <string name="user">用户</string>
+    <string name="money1">金额</string>
 </resources>

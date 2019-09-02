@@ -105,7 +105,9 @@ public class OwnerGroupManageActivity extends BaseActivity {
 
     //付费进群
     public void payEnterGroup(View view) {
-        ToastUtils.showShort(R.string.developing);
+        Intent intent = new Intent(this, PayEnterGroupActivity.class);
+        intent.putExtra("groupId", group.getGroupInfo().getId());
+        startActivity(intent);
     }
 
     //禁看设置
