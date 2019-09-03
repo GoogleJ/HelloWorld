@@ -100,7 +100,9 @@ public class OwnerGroupManageActivity extends BaseActivity {
 
     //新人进群红包设置
     public void newRedPackage(View view) {
-        ToastUtils.showShort(R.string.developing);
+        Intent intent = new Intent(this, EnterGroupGetRedActivity.class);
+        intent.putExtra("groupId", group.getGroupInfo().getId());
+        startActivity(intent);
     }
 
     //付费进群

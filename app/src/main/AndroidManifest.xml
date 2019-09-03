@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.zxjk.duoduo">
-    <!-- 获取机型信息权限 -->
+
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -14,6 +14,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.msgpage.PayEnterGroupPayActivity"></activity>
         <activity android:name=".ui.msgpage.PayEnterGroupActivity" />
+        <activity android:name=".ui.msgpage.EnterGroupGetRedActivity"></activity>
         <activity
             android:name=".ui.msgpage.GroupChatActivity"
             android:launchMode="singleTop"
@@ -478,8 +479,8 @@
             android:name=".ui.HomeActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden">
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -729,39 +730,41 @@
     </application>
     <permission
         android:name="${applicationId}.permission.MIPUSH_RECEIVE"
-        android:protectionLevel="signature" />
+        android:protectionLevel="signature" /> <!-- 获取机型信息权限 -->
     <permission
         android:name="com.zxjk.duoduo.permission.PROCESS_PUSH_MSG"
-        android:protectionLevel="signatureOrSystem" /> <!-- 查看 Wi-Fi 状态 -->
-    <permission android:name="com.zxjk.duoduo.permission.PAY_HK" /> <!-- 查看网络状态 -->
+        android:protectionLevel="signatureOrSystem" />
+
+    <permission android:name="com.zxjk.duoduo.permission.PAY_HK" />
+
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 录音 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 控制振动器 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 防止设备休眠 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        tools:ignore="ProtectedPermissions" /> <!-- 查看 Wi-Fi 状态 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 查看网络状态 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 录音 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 控制振动器 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 防止设备休眠 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
-        tools:ignore="ProtectedPermissions" /> <!-- 获取联系人信息，demo中演示发送通讯录消息 -->
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 获取联系人信息，demo中演示发送通讯录消息 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 华为手机更新应用桌面角标需要的权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" /> <!-- OPPO push -->
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- 小米 push -->
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 华为 push -->
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- 华为手机更新应用桌面角标需要的权限 -->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" /> <!-- OPPO push -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 小米 push -->
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 第三方客户端调用多多支付 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 华为 push -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 第三方客户端调用多多支付 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
     <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />

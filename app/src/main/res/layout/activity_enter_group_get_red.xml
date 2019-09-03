@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_color"
+    tools:context=".ui.msgpage.EnterGroupGetRedActivity">
+
+    <include layout="@layout/layout_title_back" />
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/func_status"
+            android:textSize="15sp"
+            android:textColor="#4A494A"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Switch
+            android:id="@+id/sw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/eachpay"
+            android:textSize="15sp"
+            android:layout_width="0dp"
+            android:textColor="#4A494A"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:id="@+id/tvEach"
+            android:textColor="#9EA0A4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginEnd="8dp"
+            android:text="@string/Mot1"
+            android:layout_width="wrap_content"
+            android:textColor="@color/textcolor1"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/ic_mine_rightarrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:background="@color/white"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/allpay"
+            android:textSize="15sp"
+            android:layout_width="0dp"
+            android:textColor="#4A494A"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:id="@+id/tvAll"
+            android:textColor="#9EA0A4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginEnd="8dp"
+            android:text="@string/Mot1"
+            android:layout_width="wrap_content"
+            android:textColor="@color/textcolor1"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/ic_mine_rightarrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/hadpay"
+            android:textSize="15sp"
+            android:layout_width="0dp"
+            android:textColor="#4A494A"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:id="@+id/tvNowPay"
+            android:textColor="#9EA0A4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginEnd="8dp"
+            android:text="@string/Mot1"
+            android:layout_width="wrap_content"
+            android:textColor="@color/textcolor1"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/starttime"
+            android:textSize="15sp"
+            android:layout_width="0dp"
+            android:textColor="#4A494A"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:id="@+id/tvStartTime"
+            android:textColor="#9EA0A4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/ic_mine_rightarrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:background="@color/white"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/endtime"
+            android:textSize="15sp"
+            android:layout_width="0dp"
+            android:textColor="#4A494A"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:id="@+id/tvEndTime"
+            android:textColor="#9EA0A4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/ic_mine_rightarrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/balanceleft"
+            android:textSize="15sp"
+            android:layout_width="0dp"
+            android:textColor="#4A494A"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvBalanceLeft"
+            android:textSize="17sp"
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:textColor="#FC6660"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/Mot1"
+            android:textColor="@color/textcolor1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+</LinearLayout>
