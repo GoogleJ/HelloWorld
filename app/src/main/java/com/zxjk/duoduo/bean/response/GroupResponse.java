@@ -17,6 +17,36 @@ public class GroupResponse implements Serializable {
     private ChatInfoBean chatInfo;
     private String isAdmin;
     private PermissionBean groupPermission;
+    private GroupPayBean groupPay;
+
+    public GroupPayBean getGroupPayBean() {
+        return groupPay;
+    }
+
+    public void setGroupPayBean(GroupPayBean groupPayBean) {
+        this.groupPay = groupPayBean;
+    }
+
+    public static class GroupPayBean implements Serializable {
+        private String payFee;
+        private String isOpen;
+
+        public String getPayFee() {
+            return payFee;
+        }
+
+        public void setPayFee(String payFee) {
+            this.payFee = payFee;
+        }
+
+        public String getIsOpen() {
+            return isOpen;
+        }
+
+        public void setIsOpen(String isOpen) {
+            this.isOpen = isOpen;
+        }
+    }
 
     public PermissionBean getGroupPermission() {
         return groupPermission;

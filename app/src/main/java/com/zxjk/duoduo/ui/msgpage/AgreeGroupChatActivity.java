@@ -69,6 +69,16 @@ public class AgreeGroupChatActivity extends BaseActivity {
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .subscribe(response -> {
+                        if (response.getGroupPayBean().getIsOpen().equals("1")) {
+                            Intent intent = new Intent(this, PayEnterGroupPayActivity.class);
+                            intent.putExtra("groupId", groupId);
+                            intent.putExtra("ownerId", response.getGroupInfo().getGroupOwnerId());
+                            intent.putExtra("payMoney", response.getGroupPayBean().getPayFee());
+                            intent.putExtra("groupName", response.getGroupInfo().getGroupNikeName());
+                            startActivity(intent);
+                            finish();
+                            return;
+                        }
                         if (!TextUtils.isEmpty(response.getMaxNumber())) {
                             if (response.getCustomers().size() >= Integer.parseInt(response.getMaxNumber())) {
                                 canJoin = true;

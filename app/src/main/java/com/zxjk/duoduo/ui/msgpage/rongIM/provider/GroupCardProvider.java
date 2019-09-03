@@ -66,7 +66,7 @@ public class GroupCardProvider extends IContainerItemProvider.MessageProvider<Gr
             intent.putExtra("inviterId", groupCardMessage.getInviterId());
             intent.putExtra("groupId", groupCardMessage.getGroupId());
             intent.putExtra("groupName", groupCardMessage.getGroupName());
-            intent.putExtra("headUrls", groupCardMessage.getIcon());
+//            intent.putExtra("headUrls", groupCardMessage.getIcon());
             intent.putExtra("id", uiMessage.getMessageId());
             if (!TextUtils.isEmpty(uiMessage.getExtra())) {
                 intent.putExtra("overtime", true);

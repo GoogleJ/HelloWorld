@@ -14,6 +14,7 @@ import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceHkResponse;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
 import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
+import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
@@ -557,5 +558,17 @@ public interface Api {
     @POST("duoduo/group/muteMembers")
     @FormUrlEncoded
     Observable<BaseResponse<String>> muteMembers(@Field("groupId") String groupId, @Field("groupMembersId") String groupMembersId, @Field("type") String type);
+
+    @POST("duoduo/group/getGroupPayInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetGroupPayInfoResponse>> getGroupPayInfo(@Field("groupId") String groupId);
+
+    @POST("duoduo/group/groupPayInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> groupPayInfo(@Field("groupId") String groupId, @Field("payFee") String payFee, @Field("isOpen") String isOpen);
+
+    @POST("duoduo/group/payToGroup")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> payToGroup(@Field("groupId") String groupId, @Field("toCustomerId") String toCustomerId, @Field("payPwd") String payPwd, @Field("mot") String mot);
 
 }

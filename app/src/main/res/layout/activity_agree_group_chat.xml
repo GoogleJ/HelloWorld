@@ -7,7 +7,6 @@
 
     <include layout="@layout/layout_title_back" />
 
-
     <ImageView
         android:id="@+id/group_headers"
         android:layout_width="80dp"
