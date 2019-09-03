@@ -170,14 +170,19 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void sendFakeC2CMsg() {
-        RongIM.getInstance().getConversation(conversationType.equals("private") ? Conversation.ConversationType.PRIVATE : Conversation.ConversationType.GROUP,
+        if (!conversationType.equals("private")) {
+            return;
+        }
+        RongIM.getInstance().getConversation(Conversation.ConversationType.PRIVATE,
                 targetId, new RongIMClient.ResultCallback<Conversation>() {
                     @Override
                     public void onSuccess(Conversation conversation) {
                         if (conversation == null || conversation.getLatestMessage() == null) {
                             InformationNotificationMessage message = InformationNotificationMessage.obtain("本次会话已开启端对端加密");
-                            RongIM.getInstance().sendMessage(Message.obtain(targetId, conversationType.equals("private") ? Conversation.ConversationType.PRIVATE : Conversation.ConversationType.GROUP,
-                                    message), "", "", (IRongCallback.ISendMessageCallback) null);
+                            RongIM.getInstance().insertIncomingMessage(
+                                    Conversation.ConversationType.PRIVATE,
+                                    targetId, Constant.userId, new Message.ReceivedStatus(1), message, null
+                            );
                         }
                     }
 
@@ -352,17 +357,18 @@ public class ConversationActivity extends BaseActivity {
 
                 if (message.getObjectName().equals("RC:InfoNtf")) {
                     InformationNotificationMessage notificationMessage = (InformationNotificationMessage) message.getContent();
-                    String msg = notificationMessage.getMessage();
-                    if (msg.contains("阅后即焚")) {
+                    if (!TextUtils.isEmpty(notificationMessage.getExtra())) {
+                        String msg = notificationMessage.getMessage();
                         ConversationInfo c = GsonUtils.fromJson(notificationMessage.getExtra(), ConversationInfo.class);
-                        conversationInfo.setMessageBurnTime(c.getMessageBurnTime());
-                    } else if (msg.contains("截屏通知")) {
-                        ConversationInfo c = GsonUtils.fromJson(notificationMessage.getExtra(), ConversationInfo.class);
-                        conversationInfo.setCaptureScreenEnabled(c.getCaptureScreenEnabled());
-                        if (c.getCaptureScreenEnabled() == 0 && screenCapture != null && !screenCapture.isDisposed())
-                            screenCapture.dispose();
-                        if (c.getCaptureScreenEnabled() == 1 && screenCapture != null && screenCapture.isDisposed())
-                            initScreenCapture();
+                        if (msg.contains("阅后即焚")) {
+                            conversationInfo.setMessageBurnTime(c.getMessageBurnTime());
+                        } else if (msg.contains("截屏通知")) {
+                            conversationInfo.setCaptureScreenEnabled(c.getCaptureScreenEnabled());
+                            if (c.getCaptureScreenEnabled() == 0 && screenCapture != null && !screenCapture.isDisposed())
+                                screenCapture.dispose();
+                            if (c.getCaptureScreenEnabled() == 1 && screenCapture != null && screenCapture.isDisposed())
+                                initScreenCapture();
+                        }
                     }
                 }
                 return false;
@@ -394,21 +400,6 @@ public class ConversationActivity extends BaseActivity {
                                         }
                                     });
                         }
-                    }
-                }
-            } else if (message.getObjectName().equals("RC:InfoNtf")) {
-                InformationNotificationMessage notificationMessage = (InformationNotificationMessage) message.getContent();
-                if (!TextUtils.isEmpty(notificationMessage.getExtra())) {
-                    ConversationInfo c = GsonUtils.fromJson(notificationMessage.getExtra(), ConversationInfo.class);
-                    String msg = notificationMessage.getMessage();
-                    if (msg.contains("阅后即焚")) {
-                        conversationInfo.setMessageBurnTime(c.getMessageBurnTime());
-                    } else if (msg.contains("截屏通知")) {
-                        conversationInfo.setCaptureScreenEnabled(c.getCaptureScreenEnabled());
-                        if (c.getCaptureScreenEnabled() == 0 && screenCapture != null && !screenCapture.isDisposed())
-                            screenCapture.dispose();
-                        if (c.getCaptureScreenEnabled() == 1 && screenCapture != null && screenCapture.isDisposed())
-                            initScreenCapture();
                     }
                 }
             } else {

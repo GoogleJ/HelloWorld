@@ -32,7 +32,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
@@ -71,7 +70,8 @@ public class ChatInformationActivity extends BaseActivity {
 
         conversationInfo = (ConversationInfo) getIntent().getSerializableExtra("conversationInfo");
 
-        if (conversationInfo != null) tvBurnTime.setText(parseTime(conversationInfo.getMessageBurnTime()));
+        if (conversationInfo != null)
+            tvBurnTime.setText(parseTime(conversationInfo.getMessageBurnTime()));
 
         GlideUtil.loadCircleImg(iv_head, userInfo.getPortraitUri().toString());
 
@@ -107,27 +107,25 @@ public class ChatInformationActivity extends BaseActivity {
                         conversationInfo.setCaptureScreenEnabled(switch3.isChecked() ? 1 : 0);
                         InformationNotificationMessage message = InformationNotificationMessage.obtain(Constant.currentUser.getNick()
                                 + (switch3.isChecked() ? "开启了截屏通知" : "关闭了截屏通知"));
-                        message.setExtra(GsonUtils.toJson(conversationInfo));
-                        RongIM.getInstance().sendMessage(Message.obtain(userInfo.getUserId(), Conversation.ConversationType.PRIVATE, message), null, null, new IRongCallback.ISendMessageCallback() {
-                            @Override
-                            public void onAttached(Message message) {
-                            }
+                        RongIM.getInstance().insertIncomingMessage(
+                                Conversation.ConversationType.PRIVATE,
+                                userInfo.getUserId(), Constant.userId, new Message.ReceivedStatus(1), message, new RongIMClient.ResultCallback<Message>() {
+                                    @Override
+                                    public void onSuccess(Message message) {
+                                        e.onComplete();
+                                        if (!switch3.isChecked()) {
+                                            ToastUtils.showShort(R.string.close_capturescreen_success);
+                                            return;
+                                        }
+                                        ToastUtils.showShort(R.string.open_capturescreen_success);
+                                    }
 
-                            @Override
-                            public void onSuccess(Message message) {
-                                e.onComplete();
-                                if (!switch3.isChecked()) {
-                                    ToastUtils.showShort(R.string.close_capturescreen_success);
-                                    return;
+                                    @Override
+                                    public void onError(RongIMClient.ErrorCode errorCode) {
+                                        e.onComplete();
+                                    }
                                 }
-                                ToastUtils.showShort(R.string.open_capturescreen_success);
-                            }
-
-                            @Override
-                            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                                e.onComplete();
-                            }
-                        });
+                        );
                     }))
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ChatInformationActivity.this)))
                     .subscribe(s -> {
@@ -227,29 +225,27 @@ public class ChatInformationActivity extends BaseActivity {
                         .flatMap((Function<String, ObservableSource<String>>) s -> Observable.create(e -> {
                             conversationInfo.setMessageBurnTime(parseStr(str));
                             String tip = str.equals("关闭") ? getString(R.string.closeburn) : (getString(R.string.openburn) + (str.equals("即刻焚烧") ? "" : str) + getString(R.string.openburn1));
-                            InformationNotificationMessage message = InformationNotificationMessage.obtain(Constant.currentUser.getNick() + tip);
-                            message.setExtra(GsonUtils.toJson(conversationInfo));
-                            RongIM.getInstance().sendMessage(Message.obtain(userInfo.getUserId(), Conversation.ConversationType.PRIVATE, message), null, null, new IRongCallback.ISendMessageCallback() {
-                                @Override
-                                public void onAttached(Message message) {
-                                }
+                            InformationNotificationMessage message = InformationNotificationMessage.obtain("您" + tip);
+                            RongIM.getInstance().insertIncomingMessage(
+                                    Conversation.ConversationType.PRIVATE,
+                                    userInfo.getUserId(), Constant.userId, new Message.ReceivedStatus(1), message, new RongIMClient.ResultCallback<Message>() {
+                                        @Override
+                                        public void onSuccess(Message message) {
+                                            tvBurnTime.setText(str);
+                                            if (str.equals("关闭")) {
+                                                ToastUtils.showShort(R.string.close_burn_success);
+                                                return;
+                                            }
+                                            ToastUtils.showShort(R.string.open_burn_success);
+                                            e.onComplete();
+                                        }
 
-                                @Override
-                                public void onSuccess(Message message) {
-                                    tvBurnTime.setText(str);
-                                    if (str.equals("关闭")) {
-                                        ToastUtils.showShort(R.string.close_burn_success);
-                                        return;
+                                        @Override
+                                        public void onError(RongIMClient.ErrorCode errorCode) {
+                                            e.onComplete();
+                                        }
                                     }
-                                    ToastUtils.showShort(R.string.open_burn_success);
-                                    e.onComplete();
-                                }
-
-                                @Override
-                                public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                                    e.onComplete();
-                                }
-                            });
+                            );
                         }))
                         .subscribe(s -> {
                         }, this::handleApiError);
