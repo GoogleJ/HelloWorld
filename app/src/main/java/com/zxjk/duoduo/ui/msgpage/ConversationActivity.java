@@ -398,17 +398,18 @@ public class ConversationActivity extends BaseActivity {
                 }
             } else if (message.getObjectName().equals("RC:InfoNtf")) {
                 InformationNotificationMessage notificationMessage = (InformationNotificationMessage) message.getContent();
-                String msg = notificationMessage.getMessage();
-                if (msg.contains("阅后即焚")) {
+                if (!TextUtils.isEmpty(notificationMessage.getExtra())) {
                     ConversationInfo c = GsonUtils.fromJson(notificationMessage.getExtra(), ConversationInfo.class);
-                    conversationInfo.setMessageBurnTime(c.getMessageBurnTime());
-                } else if (msg.contains("截屏通知")) {
-                    ConversationInfo c = GsonUtils.fromJson(notificationMessage.getExtra(), ConversationInfo.class);
-                    conversationInfo.setCaptureScreenEnabled(c.getCaptureScreenEnabled());
-                    if (c.getCaptureScreenEnabled() == 0 && screenCapture != null && !screenCapture.isDisposed())
-                        screenCapture.dispose();
-                    if (c.getCaptureScreenEnabled() == 1 && screenCapture != null && screenCapture.isDisposed())
-                        initScreenCapture();
+                    String msg = notificationMessage.getMessage();
+                    if (msg.contains("阅后即焚")) {
+                        conversationInfo.setMessageBurnTime(c.getMessageBurnTime());
+                    } else if (msg.contains("截屏通知")) {
+                        conversationInfo.setCaptureScreenEnabled(c.getCaptureScreenEnabled());
+                        if (c.getCaptureScreenEnabled() == 0 && screenCapture != null && !screenCapture.isDisposed())
+                            screenCapture.dispose();
+                        if (c.getCaptureScreenEnabled() == 1 && screenCapture != null && screenCapture.isDisposed())
+                            initScreenCapture();
+                    }
                 }
             } else {
                 String extra = "";
@@ -427,16 +428,16 @@ public class ConversationActivity extends BaseActivity {
                 }
 
                 if (TextUtils.isEmpty(extra)) {
-                    //todo 这里判断存在问题，仅通过extra判断是否是阅后即焚？
                     return false;
                 }
 
                 ConversationInfo j = GsonUtils.fromJson(extra, ConversationInfo.class);
-
-                BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
-                b.setMessageId(message.getMessageId());
-                b.setBurnTime(System.currentTimeMillis() + (j.getMessageBurnTime() * 1000));
-                burnMsgDao.insert(b);
+                if (j.getMessageBurnTime() != -1) {
+                    BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
+                    b.setMessageId(message.getMessageId());
+                    b.setBurnTime(System.currentTimeMillis() + (j.getMessageBurnTime() * 1000));
+                    burnMsgDao.insert(b);
+                }
             }
             return false;
         };

@@ -108,7 +108,7 @@ public class Application extends android.app.Application {
     private void initRongPush() {
         PushConfig config = new PushConfig.Builder()
                 .enableMiPush("2882303761517995445", "5101799544445")
-                .enableHWPush(false)
+                .enableHWPush(true)
                 .build();
         RongPushClient.setPushConfig(config);
     }

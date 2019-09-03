@@ -35,15 +35,17 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
         if (content != null && !TextUtils.isEmpty(content.getMessage())) {
             viewHolder.contentTextView.setText(content.getMessage());
         }
-        if (content.getMessage().contains("焚")) {
-            viewHolder.iv_start.setVisibility(View.VISIBLE);
-            viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_burn);
-        } else if (content.getMessage().contains("截屏通知")) {
-            viewHolder.iv_start.setVisibility(View.VISIBLE);
-            viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_capture);
-        } else if (content.getMessage().contains("端对端加密")) {
-            viewHolder.iv_start.setVisibility(View.VISIBLE);
-            viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_lock);
+        if (!TextUtils.isEmpty(content.getExtra())) {
+            if (content.getMessage().contains("焚")) {
+                viewHolder.iv_start.setVisibility(View.VISIBLE);
+                viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_burn);
+            } else if (content.getMessage().contains("截屏通知")) {
+                viewHolder.iv_start.setVisibility(View.VISIBLE);
+                viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_capture);
+            } else if (content.getMessage().contains("端对端加密")) {
+                viewHolder.iv_start.setVisibility(View.VISIBLE);
+                viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_lock);
+            }
         } else {
             viewHolder.iv_start.setVisibility(View.GONE);
         }
