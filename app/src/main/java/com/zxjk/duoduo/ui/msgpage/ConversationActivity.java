@@ -476,7 +476,9 @@ public class ConversationActivity extends BaseActivity {
                     .subscribe(response -> {
                         conversationInfo.setMessageBurnTime(response.getChatInfo().getIncinerationTime());
                         conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
-                        targetUserInfo = new UserInfo(targetId, response.getCustomerForChat().getNick(),
+                        targetUserInfo = new UserInfo(targetId,
+                                TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
+                                        response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
                                 Uri.parse(response.getCustomerForChat().getHeadPortrait()));
                         RongUserInfoManager.getInstance().setUserInfo(targetUserInfo);
                         handlePrivate();

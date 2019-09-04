@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingTop="4dp"
-    android:paddingEnd="8dp">
+    android:paddingEnd="14dp"
+    android:layout_marginTop="-5dp"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="138dp"
+        android:layout_height="206dp"
         android:background="@drawable/ic_msg_popwindow_bg"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingStart="18dp"
+        android:paddingTop="6dp">
 
         <RelativeLayout
             android:id="@+id/send_group_chat"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_groupChat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
                 android:src="@drawable/ic_group_chat01" />
 
             <TextView
@@ -31,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/iv_groupChat"
                 android:text="@string/send_group_chat"
                 android:textColor="@android:color/white"
@@ -48,16 +49,16 @@
 
         <RelativeLayout
             android:id="@+id/invite_friends"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_inviteFriends"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="4dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
                 android:src="@drawable/ic_invite_friends01" />
 
             <TextView
@@ -65,7 +66,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/iv_inviteFriends"
                 android:text="@string/invite_friends"
                 android:textColor="@android:color/white"
@@ -82,16 +82,16 @@
 
         <RelativeLayout
             android:id="@+id/scan"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_scan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
                 android:src="@drawable/ic_scan01" />
 
             <TextView
@@ -99,7 +99,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/iv_scan"
                 android:text="@string/scan"
                 android:textColor="@android:color/white"
@@ -116,16 +115,16 @@
 
         <RelativeLayout
             android:id="@+id/collection_and_payment"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_collection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="4dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
                 android:src="@drawable/ic_collection01" />
 
             <TextView
@@ -133,7 +132,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/iv_collection"
                 android:text="@string/collection_and_payment"
                 android:textColor="@android:color/white"

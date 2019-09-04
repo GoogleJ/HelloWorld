@@ -6,24 +6,16 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.ImageUtil;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.adapter.ConversationListAdapter;
@@ -106,10 +98,8 @@ public class CusConversationListAdapter extends ConversationListAdapter {
                             }
                         }
 
-                        if (null == RongUserInfoManager.getInstance().getGroupInfo(r.getGroupInfo().getId())) {
-                            Group group = new Group(r.getGroupInfo().getId(), r.getGroupInfo().getGroupNikeName(), Uri.parse(s));
-                            RongUserInfoManager.getInstance().setGroupInfo(group);
-                        }
+                        Group group = new Group(r.getGroupInfo().getId(), r.getGroupInfo().getGroupNikeName(), Uri.parse(s));
+                        RongUserInfoManager.getInstance().setGroupInfo(group);
 
                         ImageUtil.loadGroupPortrait(groupHead, s);
                     }, t -> {

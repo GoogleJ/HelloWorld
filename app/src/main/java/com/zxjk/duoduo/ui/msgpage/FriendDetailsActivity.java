@@ -6,8 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,8 +35,6 @@ import com.zxjk.duoduo.ui.msgpage.widget.dialog.DeleteFriendInformationDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
-import java.util.Iterator;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,6 +44,9 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.message.CommandMessage;
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
+import razerdp.widget.QuickPopup;
 
 @SuppressLint("CheckResult")
 public class FriendDetailsActivity extends BaseActivity implements View.OnClickListener, CommonPopupWindow.ViewInterface {
@@ -72,10 +74,10 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
 
     String imageUrl;
     String sex = "0";
-    private CommonPopupWindow popupWindow;
     DeleteFriendInformationDialog dialog;
     FriendInfoResponse friendInfoResponse;
     private RelativeLayout rl_end;
+    private QuickPopup menuPop;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,18 +147,42 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         rl_end = findViewById(R.id.rl_end);
         rl_end.setVisibility(View.VISIBLE);
         rl_end.setOnClickListener(v -> {
-            if (popupWindow != null && popupWindow.isShowing()) {
-                return;
+            if (menuPop == null) {
+                menuPop = QuickPopupBuilder.with(this)
+                        .contentView(R.layout.popup_window_people_information)
+                        .config(new QuickPopupConfig()
+                                .backgroundColor(android.R.color.transparent)
+                                .gravity(Gravity.BOTTOM | Gravity.END)
+                                .withShowAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_in))
+                                .withDismissAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_out))
+                                .withClick(R.id.update_rename, child -> {
+                                    Intent intent1 = new Intent(FriendDetailsActivity.this, ModifyNotesActivity.class);
+                                    intent1.putExtra("friendId", friendInfoResponse.getId());
+                                    intent1.putExtra("name", RongUserInfoManager.getInstance().getUserInfo(friendInfoResponse.getId()).getName());
+                                    intent1.putExtra("nick", friendInfoResponse.getNick());
+                                    startActivityForResult(intent1, 1);
+                                }, true)
+                                .withClick(R.id.recommend_to_friend, child -> {
+                                    Intent intentCard = new Intent(FriendDetailsActivity.this, SelectContactForCardActivity.class);
+                                    intentCard.putExtra("userId", friendInfoResponse.getId());
+                                    startActivity(intentCard);
+                                }, true)
+                                .withClick(R.id.delete_friend, child -> NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
+                                    @Override
+                                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                                        holder.setText(R.id.tv_title, "删除联系人");
+                                        TextView textView = holder.getView(R.id.tv_content);
+                                        textView.setText(String.format(getResources().getString(R.string.m_delete_friend_label), friendInfoResponse.getNick()));
+                                        holder.setText(R.id.tv_cancel, "取消");
+                                        holder.setText(R.id.tv_notarize, "删除");
+                                        holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
+                                        holder.setOnClickListener(R.id.tv_notarize, v12 -> deleteFriend(friendInfoResponse.getId(), dialog));
+                                    }
+                                }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager()), true))
+                        .build();
             }
-            popupWindow = new CommonPopupWindow.Builder(FriendDetailsActivity.this)
-                    .setView(R.layout.popup_window_people_information)
-                    .setWidthAndHeight(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                    .setAnimationStyle(R.style.AnimDown)
-                    .setBackGroundLevel(1.0f)
-                    .setViewOnclickListener(FriendDetailsActivity.this)
-                    .setOutsideTouchable(true)
-                    .create();
-            popupWindow.showAsDropDown(rl_end);
+
+            menuPop.showPopupWindow(v);
         });
     }
 
@@ -181,35 +207,6 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 RongIM.getInstance().startPrivateChat(this, friendInfoResponse.getId(), friendInfoResponse.getNick());
-                break;
-            case R.id.update_rename:
-                popupWindow.dismiss();
-                Intent intent1 = new Intent(FriendDetailsActivity.this, ModifyNotesActivity.class);
-                intent1.putExtra("friendId", friendInfoResponse.getId());
-                intent1.putExtra("name", RongUserInfoManager.getInstance().getUserInfo(friendInfoResponse.getId()).getName());
-                intent1.putExtra("nick", friendInfoResponse.getNick());
-                startActivityForResult(intent1, 1);
-                break;
-            case R.id.recommend_to_friend:
-                popupWindow.dismiss();
-                Intent intentCard = new Intent(FriendDetailsActivity.this, SelectContactForCardActivity.class);
-                intentCard.putExtra("userId", friendInfoResponse.getId());
-                startActivity(intentCard);
-                break;
-            case R.id.delete_friend:
-                popupWindow.dismiss();
-                NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
-                    @Override
-                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        holder.setText(R.id.tv_title, "删除联系人");
-                        TextView textView = holder.getView(R.id.tv_content);
-                        textView.setText(String.format(getResources().getString(R.string.m_delete_friend_label), friendInfoResponse.getNick()));
-                        holder.setText(R.id.tv_cancel, "取消");
-                        holder.setText(R.id.tv_notarize, "删除");
-                        holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
-                        holder.setOnClickListener(R.id.tv_notarize, v12 -> deleteFriend(friendInfoResponse.getId(), dialog));
-                    }
-                }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
                 break;
         }
     }

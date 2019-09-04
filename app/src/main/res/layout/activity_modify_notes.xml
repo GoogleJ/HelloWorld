@@ -16,6 +16,7 @@
         android:layout_height="50dp"
         android:background="@android:color/white"
         android:hint="@string/remark_name"
+        android:imeOptions="actionDone"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:textColor="@color/theme_color"
