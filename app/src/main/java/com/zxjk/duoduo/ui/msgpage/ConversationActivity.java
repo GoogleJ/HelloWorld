@@ -70,6 +70,7 @@ import io.rong.imlib.model.Group;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 import io.rong.imlib.typingmessage.TypingStatus;
+import io.rong.message.CommandMessage;
 import io.rong.message.ImageMessage;
 import io.rong.message.InformationNotificationMessage;
 import io.rong.message.LocationMessage;
@@ -179,6 +180,7 @@ public class ConversationActivity extends BaseActivity {
                     public void onSuccess(Conversation conversation) {
                         if (conversation == null || conversation.getLatestMessage() == null) {
                             InformationNotificationMessage message = InformationNotificationMessage.obtain("本次会话已开启端对端加密");
+                            message.setExtra("本次会话已开启端对端加密");
                             RongIM.getInstance().insertIncomingMessage(
                                     Conversation.ConversationType.PRIVATE,
                                     targetId, Constant.userId, new Message.ReceivedStatus(1), message, null
@@ -317,7 +319,7 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void initScreenCapture() {
-        if (conversationInfo != null && conversationInfo.getCaptureScreenEnabled() != 0) {
+        if (conversationInfo != null && conversationInfo.getTargetCaptureScreenEnabled() != 0) {
             if (screenCapture != null && !screenCapture.isDisposed()) {
                 screenCapture.dispose();
             }
@@ -326,12 +328,13 @@ public class ConversationActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(s -> {
                         InformationNotificationMessage m = InformationNotificationMessage
-                                .obtain(Constant.currentUser.getNick() + getString(R.string.capture_screen));
+                                .obtain("对方截取了屏幕");
+                        m.setExtra("对方截取了屏幕");
 
                         Message message = Message.obtain(targetId, conversationType.equals("private")
                                 ? Conversation.ConversationType.PRIVATE : Conversation.ConversationType.GROUP, m);
 
-                        RongIM.getInstance().sendMessage(message, null, null, (IRongCallback.ISendMessageCallback) null);
+                        RongIMClient.getInstance().sendMessage(message, null, null, (IRongCallback.ISendMessageCallback) null);
                     }, Throwable::printStackTrace);
         }
     }
@@ -354,21 +357,11 @@ public class ConversationActivity extends BaseActivity {
             @Override
             public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
                 handleBurnAfterReadForSendersOnSent(message);
-
                 if (message.getObjectName().equals("RC:InfoNtf")) {
-                    InformationNotificationMessage notificationMessage = (InformationNotificationMessage) message.getContent();
-                    if (!TextUtils.isEmpty(notificationMessage.getExtra())) {
-                        String msg = notificationMessage.getMessage();
-                        ConversationInfo c = GsonUtils.fromJson(notificationMessage.getExtra(), ConversationInfo.class);
-                        if (msg.contains("阅后即焚")) {
-                            conversationInfo.setMessageBurnTime(c.getMessageBurnTime());
-                        } else if (msg.contains("截屏通知")) {
-                            conversationInfo.setCaptureScreenEnabled(c.getCaptureScreenEnabled());
-                            if (c.getCaptureScreenEnabled() == 0 && screenCapture != null && !screenCapture.isDisposed())
-                                screenCapture.dispose();
-                            if (c.getCaptureScreenEnabled() == 1 && screenCapture != null && screenCapture.isDisposed())
-                                initScreenCapture();
-                        }
+                    InformationNotificationMessage n = (InformationNotificationMessage) message.getContent();
+                    if (!TextUtils.isEmpty(n.getExtra())
+                            && n.getExtra().equals("对方截取了屏幕")) {
+                        RongIMClient.getInstance().deleteMessages(new int[]{message.getMessageId()}, null);
                     }
                 }
                 return false;
@@ -400,6 +393,21 @@ public class ConversationActivity extends BaseActivity {
                                         }
                                     });
                         }
+                    }
+                }
+            } else if (message.getObjectName().equals("RC:CmdMsg")) {
+                //对方开启截屏通知
+                CommandMessage commandMessage = (CommandMessage) message.getContent();
+                if (!TextUtils.isEmpty(commandMessage.getName()) && commandMessage.getName().equals("screenCapture")) {
+                    conversationInfo.setTargetCaptureScreenEnabled(Integer.parseInt(commandMessage.getData()));
+                    if (conversationInfo.getTargetCaptureScreenEnabled() == 1) {
+                        runOnUiThread(this::initScreenCapture);
+                    } else {
+                        runOnUiThread(() -> {
+                            if (screenCapture != null && !screenCapture.isDisposed()) {
+                                screenCapture.dispose();
+                            }
+                        });
                     }
                 }
             } else {
@@ -476,6 +484,7 @@ public class ConversationActivity extends BaseActivity {
                     .subscribe(response -> {
                         conversationInfo.setMessageBurnTime(response.getChatInfo().getIncinerationTime());
                         conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
+                        conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
                         targetUserInfo = new UserInfo(targetId,
                                 TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
                                         response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
@@ -776,7 +785,7 @@ public class ConversationActivity extends BaseActivity {
         intent.putExtra("conversationInfo", conversationInfo);
 
         if (conversationType.equals("private")) {
-            startActivityForResult(intent, 1000);
+            startActivityForResult(intent, 2000);
         } else {
             if (groupInfo == null) {
                 return;
@@ -804,9 +813,15 @@ public class ConversationActivity extends BaseActivity {
             if (groupInfo != null) {
                 tvTitle.setText(data.getStringExtra("title") + "(" + groupInfo.getCustomers().size() + ")");
                 groupInfo = (GroupResponse) data.getSerializableExtra("group");
-            } else {
-                tvTitle.setText(data.getStringExtra("title"));
             }
+        } else if (requestCode == 2000 && resultCode == 1000) {
+            tvTitle.setText(data.getStringExtra("title"));
+            boolean changeBurn = data.getBooleanExtra("changeBurn", false);
+            boolean changeScreenCapture = data.getBooleanExtra("changeScreenCapture", false);
+            if (changeBurn)
+                conversationInfo.setMessageBurnTime(data.getIntExtra("burn", conversationInfo.getMessageBurnTime()));
+            if (changeScreenCapture)
+                conversationInfo.setCaptureScreenEnabled(data.getIntExtra("screenCapture", conversationInfo.getCaptureScreenEnabled()));
         }
     }
 

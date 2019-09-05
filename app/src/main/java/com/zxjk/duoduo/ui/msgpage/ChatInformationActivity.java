@@ -15,7 +15,6 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.request.UpdateChatConfigRequest;
@@ -32,10 +31,12 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
+import io.rong.message.CommandMessage;
 import io.rong.message.InformationNotificationMessage;
 
 @SuppressLint("CheckResult")
@@ -50,6 +51,8 @@ public class ChatInformationActivity extends BaseActivity {
     private TextView tvBurnTime;
 
     private ConversationInfo conversationInfo;
+    private boolean changeBurn = false;
+    private boolean changeScreenCapture = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,13 +108,15 @@ public class ChatInformationActivity extends BaseActivity {
                     .compose(RxSchedulers.normalTrans())
                     .flatMap((Function<String, ObservableSource<String>>) s -> Observable.create(e -> {
                         conversationInfo.setCaptureScreenEnabled(switch3.isChecked() ? 1 : 0);
-                        InformationNotificationMessage message = InformationNotificationMessage.obtain(Constant.currentUser.getNick()
+                        InformationNotificationMessage message = InformationNotificationMessage.obtain("您"
                                 + (switch3.isChecked() ? "开启了截屏通知" : "关闭了截屏通知"));
-                        RongIM.getInstance().insertIncomingMessage(
+                        message.setExtra(message.getMessage());
+                        RongIM.getInstance().insertOutgoingMessage(
                                 Conversation.ConversationType.PRIVATE,
-                                userInfo.getUserId(), Constant.userId, new Message.ReceivedStatus(1), message, new RongIMClient.ResultCallback<Message>() {
+                                userInfo.getUserId(), Message.SentStatus.SENT, message, new RongIMClient.ResultCallback<Message>() {
                                     @Override
                                     public void onSuccess(Message message) {
+                                        changeScreenCapture = !changeScreenCapture;
                                         e.onComplete();
                                         if (!switch3.isChecked()) {
                                             ToastUtils.showShort(R.string.close_capturescreen_success);
@@ -126,6 +131,9 @@ public class ChatInformationActivity extends BaseActivity {
                                     }
                                 }
                         );
+                        CommandMessage commandMessageContent = CommandMessage.obtain("screenCapture", String.valueOf(conversationInfo.getCaptureScreenEnabled()));
+                        Message commandMessage = Message.obtain(userInfo.getUserId(), Conversation.ConversationType.PRIVATE, commandMessageContent);
+                        RongIM.getInstance().sendMessage(commandMessage, "", "", (IRongCallback.ISendMessageCallback) null);
                     }))
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ChatInformationActivity.this)))
                     .subscribe(s -> {
@@ -226,11 +234,13 @@ public class ChatInformationActivity extends BaseActivity {
                             conversationInfo.setMessageBurnTime(parseStr(str));
                             String tip = str.equals("关闭") ? getString(R.string.closeburn) : (getString(R.string.openburn) + (str.equals("即刻焚烧") ? "" : str) + getString(R.string.openburn1));
                             InformationNotificationMessage message = InformationNotificationMessage.obtain("您" + tip);
-                            RongIM.getInstance().insertIncomingMessage(
+                            message.setExtra(tip);
+                            RongIM.getInstance().insertOutgoingMessage(
                                     Conversation.ConversationType.PRIVATE,
-                                    userInfo.getUserId(), Constant.userId, new Message.ReceivedStatus(1), message, new RongIMClient.ResultCallback<Message>() {
+                                    userInfo.getUserId(), Message.SentStatus.SENT, message, new RongIMClient.ResultCallback<Message>() {
                                         @Override
                                         public void onSuccess(Message message) {
+                                            changeBurn = !changeBurn;
                                             tvBurnTime.setText(str);
                                             if (str.equals("关闭")) {
                                                 ToastUtils.showShort(R.string.close_burn_success);
@@ -267,6 +277,11 @@ public class ChatInformationActivity extends BaseActivity {
     public void finish() {
         Intent intent = new Intent();
         intent.putExtra("title", tv_name.getText().toString());
+
+        intent.putExtra("changeBurn", changeBurn);
+        intent.putExtra("changeScreenCapture", changeScreenCapture);
+        intent.putExtra("burn", conversationInfo.getMessageBurnTime());
+        intent.putExtra("screenCapture", conversationInfo.getCaptureScreenEnabled());
         setResult(1000, intent);
         super.finish();
     }

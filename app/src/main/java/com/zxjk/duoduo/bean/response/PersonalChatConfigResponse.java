@@ -71,6 +71,15 @@ public class PersonalChatConfigResponse {
 
         private int screenCapture;
         private int incinerationTime;
+        private int screenCaptureHide;
+
+        public int getScreenCaptureHide() {
+            return screenCaptureHide;
+        }
+
+        public void setScreenCaptureHide(int screenCaptureHide) {
+            this.screenCaptureHide = screenCaptureHide;
+        }
 
         public int getScreenCapture() {
             return screenCapture;

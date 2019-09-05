@@ -9,6 +9,17 @@ public class ConversationInfo implements Serializable {
     //截屏通知开关
     private int captureScreenEnabled = 0;
 
+    //对方是否开启截屏通知
+    private int targetCaptureScreenEnabled = 0;
+
+    public int getTargetCaptureScreenEnabled() {
+        return targetCaptureScreenEnabled;
+    }
+
+    public void setTargetCaptureScreenEnabled(int targetCaptureScreenEnabled) {
+        this.targetCaptureScreenEnabled = targetCaptureScreenEnabled;
+    }
+
     public int getMessageBurnTime() {
         return messageBurnTime;
     }

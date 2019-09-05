@@ -9,12 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import io.rong.imkit.RongIM;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
+import io.rong.imlib.model.Message;
 import io.rong.message.InformationNotificationMessage;
 
 @ProviderTag(
@@ -32,19 +33,27 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
 
     public void bindView(View v, int position, InformationNotificationMessage content, UIMessage message) {
         MInfoNotificationMsgItemProvider.ViewHolder viewHolder = (MInfoNotificationMsgItemProvider.ViewHolder) v.getTag();
+        v.setVisibility(View.VISIBLE);
+        viewHolder.iv_start.setVisibility(View.GONE);
         if (content != null && !TextUtils.isEmpty(content.getMessage())) {
             viewHolder.contentTextView.setText(content.getMessage());
         }
         if (!TextUtils.isEmpty(content.getExtra())) {
-            if (content.getMessage().contains("焚")) {
+            if (content.getExtra().contains("焚")) {
                 viewHolder.iv_start.setVisibility(View.VISIBLE);
                 viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_burn);
-            } else if (content.getMessage().contains("截屏通知")) {
+            } else if (content.getExtra().contains("截屏通知")) {
                 viewHolder.iv_start.setVisibility(View.VISIBLE);
                 viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_capture);
-            } else if (content.getMessage().contains("端对端加密")) {
+            } else if (content.getExtra().contains("端对端加密")) {
                 viewHolder.iv_start.setVisibility(View.VISIBLE);
                 viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_lock);
+            } else if (content.getExtra().equals("对方截取了屏幕")) {
+                viewHolder.iv_start.setVisibility(View.GONE);
+                if (message.getMessageDirection() == Message.MessageDirection.SEND) {
+                    v.setVisibility(View.GONE);
+                    RongIM.getInstance().deleteMessages(new int[]{message.getMessageId()}, null);
+                }
             }
         } else {
             viewHolder.iv_start.setVisibility(View.GONE);
@@ -56,7 +65,7 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
     }
 
     public Spannable getContentSummary(Context context, InformationNotificationMessage data) {
-        return data != null && !TextUtils.isEmpty(data.getMessage()) ? new SpannableString(data.getMessage()) : null;
+        return data != null && !TextUtils.isEmpty(data.getMessage()) ? (data.getMessage().equals("对方截取了屏幕") ? null : new SpannableString(data.getMessage())) : null;
     }
 
     public void onItemClick(View view, int position, InformationNotificationMessage content, UIMessage message) {
@@ -70,7 +79,6 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
         MInfoNotificationMsgItemProvider.ViewHolder viewHolder = new MInfoNotificationMsgItemProvider.ViewHolder();
         viewHolder.contentTextView = view.findViewById(io.rong.imkit.R.id.rc_msg);
         viewHolder.iv_start = view.findViewById(io.rong.imkit.R.id.iv_start);
-        viewHolder.content = view.findViewById(io.rong.imkit.R.id.content);
         viewHolder.contentTextView.setMovementMethod(LinkMovementMethod.getInstance());
         view.setTag(viewHolder);
         return view;
@@ -79,7 +87,6 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
     private static class ViewHolder {
         TextView contentTextView;
         ImageView iv_start;
-        LinearLayout content;
 
         private ViewHolder() {
         }
