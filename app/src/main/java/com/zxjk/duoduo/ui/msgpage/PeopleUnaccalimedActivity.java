@@ -40,8 +40,8 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTrasnferStatusBar(true);
         setContentView(R.layout.activity_people_unaccalimed);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.m_people_red_envelopes_title_bar));
 
         title = findViewById(R.id.title);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());

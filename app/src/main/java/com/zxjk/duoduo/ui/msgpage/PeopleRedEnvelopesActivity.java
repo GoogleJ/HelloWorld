@@ -34,8 +34,8 @@ public class PeopleRedEnvelopesActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTrasnferStatusBar(true);
         setContentView(R.layout.activity_people_red_envelopes);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.m_people_red_envelopes_title_bar));
 
         titleLeftImage = findViewById(R.id.m_people_red_envelopes_title_bar);
         m_people_red_envelopes_signature_text = findViewById(R.id.m_people_red_envelopes_signature_text);

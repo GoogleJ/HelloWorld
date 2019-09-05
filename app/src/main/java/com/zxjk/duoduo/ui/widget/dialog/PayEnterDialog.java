@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 
@@ -24,6 +25,7 @@ public class PayEnterDialog extends Dialog {
     private EditText et;
     private TextView tvCancel;
     private TextView tvCommit;
+    private TextView tvTitle;
 
     private OnCommitClick onCommitClick;
 
@@ -44,6 +46,7 @@ public class PayEnterDialog extends Dialog {
         et = view.findViewById(R.id.et);
         tvCancel = view.findViewById(R.id.tvCancel);
         tvCommit = view.findViewById(R.id.tvCommit);
+        tvTitle = view.findViewById(R.id.tvTitle);
 
         ivRight.setOnClickListener(v -> dismiss());
         tvCancel.setOnClickListener(v -> dismiss());
@@ -71,5 +74,20 @@ public class PayEnterDialog extends Dialog {
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(layoutParams);
+    }
+
+    public void show(String title) {
+        tvTitle.setText(title);
+        super.show();
+    }
+
+    @Override
+    public void dismiss() {
+        if (getOwnerActivity() != null) {
+            KeyboardUtils.hideSoftInput(getOwnerActivity());
+        } else {
+            KeyboardUtils.hideSoftInput(view);
+        }
+        super.dismiss();
     }
 }

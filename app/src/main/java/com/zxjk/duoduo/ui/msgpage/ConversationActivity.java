@@ -40,8 +40,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
-import com.zxjk.duoduo.ui.widget.dialog.ExpiredEnvelopesDialog;
-import com.zxjk.duoduo.ui.widget.dialog.RedEvelopesDialog;
+import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
 
@@ -500,8 +499,8 @@ public class ConversationActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .compose(bindToLifecycle())
                     .subscribe(groupInfo -> {
-                        conversationInfo.setMessageBurnTime(groupInfo.getChatInfo().getIncinerationTime());
-                        conversationInfo.setCaptureScreenEnabled(groupInfo.getChatInfo().getScreenCapture());
+                        handleNewReceiveRed(groupInfo);
+
                         Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupInfo.getGroupInfo().getId());
                         if (null == ronginfo ||
                                 !ronginfo.getName().equals(groupInfo.getGroupInfo().getGroupNikeName()) ||
@@ -509,31 +508,64 @@ public class ConversationActivity extends BaseActivity {
                             RongUserInfoManager.getInstance().setGroupInfo(new Group(groupInfo.getGroupInfo().getId(), groupInfo.getGroupInfo().getGroupNikeName(), Uri.parse(groupInfo.getGroupInfo().getHeadPortrait())));
                         }
 
-                        List<IPluginModule> pluginModules = extension.getPluginModules();
-
-                        if (groupInfo.getGroupInfo().getIsDelete().equals("1")) {
-                            //群不存在，删除plugin
-                            Iterator<IPluginModule> iterator = pluginModules.iterator();
-                            while (iterator.hasNext()) {
-                                IPluginModule next = iterator.next();
-                                iterator.remove();
-                                extension.removePlugin(next);
-                            }
-                        } else {
-                            //群组plugin
-                            Iterator<IPluginModule> iterator = pluginModules.iterator();
-                            while (iterator.hasNext()) {
-                                IPluginModule next = iterator.next();
-                                if (next instanceof TransferPlugin || next instanceof BusinessCardPlugin) {
-                                    iterator.remove();
-                                    extension.removePlugin(next);
-                                }
-                            }
-                        }
+                        handleGroupPlugin(groupInfo);
 
                         this.groupInfo = groupInfo;
                         initView();
                     }, ConversationActivity.this::handleApiError);
+        }
+    }
+
+    /**
+     * 进群领红包
+     *
+     * @param groupInfo 群组信息
+     */
+    private void handleNewReceiveRed(GroupResponse groupInfo) {
+        if (!groupInfo.getRedPacketInfo().getRedNewPersonStatus().equals("1")) return;
+
+        if ("0".equals(groupInfo.getRedPacketInfo().getIsGetNewPersonRed())) {
+            NewRedDialog newRedDialog = new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE1_NORMAL);
+            newRedDialog.setOpenListener(()
+                    -> ServiceFactory.getInstance().getBaseService(Api.class)
+                    .receiveNewPersonRedPackage(groupInfo.getGroupInfo().getId())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConversationActivity.this)))
+                    .subscribe(r -> {
+                                if (r.getResult().equals("0")) {
+                                    new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE3_RECEIVED).showReceived(r.getEveryoneAwardCount());
+                                } else {
+                                    new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE2_EXPIRED).showExpired1();
+                                }
+                            },
+                            ConversationActivity.this::handleApiError));
+            GroupResponse.CustomersBean owner = groupInfo.getCustomers().get(0);
+            newRedDialog.show(owner.getHeadPortrait(), owner.getNick(), getString(R.string.newredtip));
+        }
+    }
+
+    private void handleGroupPlugin(GroupResponse groupInfo) {
+        List<IPluginModule> pluginModules = extension.getPluginModules();
+
+        if (groupInfo.getGroupInfo().getIsDelete().equals("1")) {
+            //群不存在，删除plugin
+            Iterator<IPluginModule> iterator = pluginModules.iterator();
+            while (iterator.hasNext()) {
+                IPluginModule next = iterator.next();
+                iterator.remove();
+                extension.removePlugin(next);
+            }
+        } else {
+            //群组plugin
+            Iterator<IPluginModule> iterator = pluginModules.iterator();
+            while (iterator.hasNext()) {
+                IPluginModule next = iterator.next();
+                if (next instanceof TransferPlugin || next instanceof BusinessCardPlugin) {
+                    iterator.remove();
+                    extension.removePlugin(next);
+                }
+            }
         }
     }
 
@@ -646,9 +678,10 @@ public class ConversationActivity extends BaseActivity {
                                     }
                                     if (s.getRedPackageState().equals("1")) {
                                         //红包已过期
-                                        ExpiredEnvelopesDialog dialog = new ExpiredEnvelopesDialog(ConversationActivity.this);
-                                        dialog.show(RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId()),
-                                                true, redPacketMessage.getRedId());
+                                        Constant.tempMsg = message;
+                                        onResume();
+                                        NewRedDialog dialog = new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE2_EXPIRED);
+                                        dialog.showExpired1();
                                     }
                                     if (s.getRedPackageState().equals("3")) {
                                         Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
@@ -666,32 +699,30 @@ public class ConversationActivity extends BaseActivity {
                                             startActivity(intent1);
                                         } else {
                                             //手慢了，已被领完
-                                            ExpiredEnvelopesDialog dialog = new ExpiredEnvelopesDialog(ConversationActivity.this);
-                                            dialog.show(RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId()),
-                                                    false, redPacketMessage.getRedId());
+                                            NewRedDialog newRedDialog = new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE2_EXPIRED);
+                                            newRedDialog.showExpired2(redPacketMessage.getRedId());
                                             Constant.tempMsg = message;
                                             onResume();
                                         }
                                     }
                                     if (s.getRedPackageState().equals("0")) {
                                         //可领取
-                                        RedEvelopesDialog dialog = new RedEvelopesDialog(ConversationActivity.this);
+                                        NewRedDialog newRedDialog = new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE1_NORMAL);
                                         if (message.getConversationType().equals(Conversation.ConversationType.PRIVATE) && message.getSenderUserId().equals(Constant.userId)) {
                                             Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
                                             intent1.putExtra("isShow", false);
                                             intent1.putExtra("id", redPacketMessage.getRedId());
                                             startActivity(intent1);
                                         } else if (message.getConversationType().equals(Conversation.ConversationType.GROUP)) {
-                                            dialog.setOnOpenListener(() -> ServiceFactory.getInstance().getBaseService(Api.class)
+                                            newRedDialog.setOpenListener(() -> ServiceFactory.getInstance().getBaseService(Api.class)
                                                     .receiveGroupRedPackage(redPacketMessage.getRedId(), redPacketMessage.getIsGame())
                                                     .compose(bindToLifecycle())
                                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConversationActivity.this)))
                                                     .compose(RxSchedulers.normalTrans())
                                                     .subscribe(s2 -> {
                                                         if (!TextUtils.isEmpty(s2.getFinish())) {
-                                                            new ExpiredEnvelopesDialog(ConversationActivity.this)
-                                                                    .show(RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId()),
-                                                                            false, redPacketMessage.getRedId());
+                                                            new NewRedDialog(ConversationActivity.this,NewRedDialog.TYPE2_EXPIRED)
+                                                                    .showExpired2(redPacketMessage.getRedId());
                                                             Constant.tempMsg = message;
                                                             onResume();
                                                             return;
@@ -714,9 +745,11 @@ public class ConversationActivity extends BaseActivity {
 
                                                         startActivity(intent1);
                                                     }, ConversationActivity.this::handleApiError));
-                                            dialog.show(message, RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId()));
+
+                                            UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
+                                            newRedDialog.show(userInfo.getPortraitUri().toString(), userInfo.getName(), redPacketMessage.getRemark());
                                         } else {
-                                            dialog.setOnOpenListener(() -> ServiceFactory.getInstance().getBaseService(Api.class)
+                                            newRedDialog.setOpenListener(() -> ServiceFactory.getInstance().getBaseService(Api.class)
                                                     .receivePersonalRedPackage(redPacketMessage.getRedId())
                                                     .compose(bindToLifecycle())
                                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConversationActivity.this)))
@@ -731,7 +764,9 @@ public class ConversationActivity extends BaseActivity {
                                                         intent2.putExtra("msg", message);
                                                         startActivity(intent2);
                                                     }, ConversationActivity.this::handleApiError));
-                                            dialog.show(message, RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId()));
+
+                                            UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
+                                            newRedDialog.show(userInfo.getPortraitUri().toString(), userInfo.getName(), redPacketMessage.getRemark());
                                         }
                                     }
                                 }, t -> ToastUtils.showShort(RxException.getMessage(t)));

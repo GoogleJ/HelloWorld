@@ -55,7 +55,7 @@
     <color name="m_edit_information_btn">#FFE6A5</color>
     //红包相关
     <color name="m_red_envelopes_unit_text">#666666</color>
-    <color name="m_people_red_envelopes_title_bar">#FA9219</color>
+    <color name="m_people_red_envelopes_title_bar">#E74E42</color>
 
     //关于嘟嘟页面相关
     <color name="about_version_number">#CCCCCC</color>
@@ -64,7 +64,7 @@
     <color name="default_placeholder">#EDEDEE</color>
     <color name="background">#ededee</color>
     //安全键盘
-    <color name="divider">#D1D1D1</color>
+    <color name="divider">#E5E5E5</color>
     <color name="click_bg_dark">#BFBFBF</color>
     <color name="click_bg_dark_light">#E0E0E0</color>
     <color name="red_eth_in">#F43532</color>

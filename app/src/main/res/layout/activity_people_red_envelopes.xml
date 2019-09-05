@@ -9,8 +9,9 @@
 
     <LinearLayout
         android:id="@+id/title_bar"
+        android:paddingTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:background="@color/m_people_red_envelopes_title_bar">
 
         <ImageView
@@ -24,8 +25,9 @@
     </LinearLayout>
 
     <ImageView
+        android:layout_marginTop="-1dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="104dp"
         android:scaleType="fitXY"
         android:src="@drawable/icon_people_hongbao_back"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
@@ -35,14 +37,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="15dp"
         android:ellipsize="end"
         android:lineSpacingExtra="6dp"
         android:lines="2"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="@string/m_red_envelopes_label"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,10 +52,9 @@
 
     <ImageView
         android:id="@+id/m_people_red_envelopes_header"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/icon_header"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/m_people_red_envelopes_signature_text" />
@@ -76,9 +76,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="20dp"
-        android:text="@string/m_transfer_pending_money_text"
+        android:text="0"
         android:textColor="@color/m_people_red_envelopes_title_bar"
-        android:textSize="55sp"
+        android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +92,7 @@
         android:layout_marginBottom="10dp"
         android:text="@string/m_red_envelopes_unit_label"
         android:textColor="@color/m_people_red_envelopes_title_bar"
-        android:textSize="25sp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@+id/m_people_red_envelopes_money_text"
         app:layout_constraintStart_toEndOf="@+id/m_people_red_envelopes_money_text"
 

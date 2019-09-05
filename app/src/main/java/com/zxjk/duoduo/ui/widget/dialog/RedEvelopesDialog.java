@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -32,6 +33,15 @@ public class RedEvelopesDialog extends Dialog implements View.OnClickListener {
 
     public void setOnOpenListener(OnOpenListener onOpenListener) {
         this.onOpenListener = onOpenListener;
+    }
+
+    public void show(GroupResponse groupInfo) {
+        GlideUtil.loadCircleImg(m_transfer_envelopes_heard, groupInfo.getCustomers().get(0).getHeadPortrait());
+        m_red_envelopes_user.setText(groupInfo.getCustomers().get(0).getNick() + "的红包");
+
+        m_red_envelopes_signature_text.setText(R.string.newredtip);
+
+        show();
     }
 
     public interface OnOpenListener {

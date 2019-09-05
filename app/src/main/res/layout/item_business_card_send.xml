@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/send_red_packet_layout"
-        android:layout_width="224dp"
+        android:layout_width="212dp"
         android:layout_height="85dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/icon_business_card_user">
@@ -27,12 +27,12 @@
 
         <TextView
             android:id="@+id/business_card_user_name"
+            android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="8dp"
             android:textColor="@color/black"
-            android:textSize="17sp"
-
+            android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/business_card_header"
             app:layout_constraintTop_toTopOf="@+id/business_card_header" />
 
@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/business_card_duoduo_id"
             android:textSize="13sp"
+            android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toBottomOf="@+id/business_card_header"
             app:layout_constraintStart_toStartOf="@+id/business_card_user_name" />
 
@@ -49,23 +50,19 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="10dp"
             android:background="@color/divider"
             app:layout_constraintTop_toBottomOf="@+id/business_card_header" />
+
         <TextView
             android:text="@string/business_card_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="3dp"
             android:layout_marginStart="14dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </LinearLayout>

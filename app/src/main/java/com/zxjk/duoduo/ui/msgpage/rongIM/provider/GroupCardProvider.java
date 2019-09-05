@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +20,7 @@ import com.zxjk.duoduo.utils.ImageUtil;
 import java.util.Arrays;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
@@ -89,6 +89,6 @@ public class GroupCardProvider extends IContainerItemProvider.MessageProvider<Gr
     class ViewHolder {
         private LinearLayout sendLayout;
         private TextView content;
-        private ImageView nineImg;
+        private CircleImageView nineImg;
     }
 }

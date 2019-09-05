@@ -25,12 +25,12 @@
             android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/white"
-            android:textSize="17sp" />
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/transfer_type_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:src="@drawable/icon_transfer_logo" />
@@ -48,12 +48,12 @@
         android:id="@+id/prompt_logo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:layout_weight="1"
         android:gravity="start|bottom"
-        android:paddingBottom="5dp"
+        android:paddingBottom="4dp"
         android:text="@string/transfer_prompt_logo"
         android:textColor="@color/textcolor3"
-        android:textSize="8sp" />
+        android:textSize="9.5sp" />
 
 </LinearLayout>

@@ -731,4 +731,17 @@
     <string name="starttime">开始时间</string>
     <string name="endtime">结束时间</string>
     <string name="balanceleft">钱包余额</string>
+    <string name="newpay">新人红包设置</string>
+    <string name="setupeach">设置每人奖励数量</string>
+    <string name="setupall">设置总奖励金额</string>
+    <string name="please_setall">请先设置金额以及时间</string>
+    <string name="nobalance">余额不足</string>
+    <string name="please_set_start_time">请先设置开始时间</string>
+    <string name="all_less_each">总奖励金不能小于单人奖励金</string>
+    <string name="newredtip">领取新人进群红包</string>
+    <string name="receive_success">领取成功</string>
+    <string name="redtip3">已转入钱包余额，请查收！</string>
+    <string name="close">关闭</string>
+    <string name="each_more_all">单人奖励金不能大于总奖励金</string>
+    <string name="starttime_less_end">开始时间不能大于结束时间</string>
 </resources>

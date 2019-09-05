@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/llContent1"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:background="@drawable/new_red_dialog_bg1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivOPen"
+            android:src="@drawable/kai"
+            android:layout_marginTop="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivHead"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/tvNick"
+                android:maxLength="11"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvNote"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:text="@string/newredtip"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llContent2"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@drawable/new_red_dialog_bg2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llTop"
+            android:layout_marginTop="120dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvMoney"
+                android:layout_marginEnd="2dp"
+                android:textColor="#EA3634"
+                android:textSize="30sp"
+                android:text="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="@string/Mot"
+                android:textColor="#EA3634"
+                android:gravity="bottom"
+                android:paddingBottom="4.5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_marginTop="104dp"
+            android:textStyle="bold"
+            android:text="@string/receive_success"
+            android:textSize="19sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_marginTop="12dp"
+            android:text="@string/redtip3"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnClose"
+            android:background="@drawable/shape_bac_white_conor3"
+            android:layout_marginTop="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="168dp"
+            android:text="@string/close"
+            android:textColor="#EA3634"
+            android:textSize="16.5sp"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvShowDetail"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/white"
+            android:text="@string/m_expired_envelopes_info"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:paddingTop="20dp"
+    android:layout_height="70dp"
     android:background="@color/m_people_red_envelopes_title_bar">
 
     <RelativeLayout
@@ -72,6 +73,5 @@
         android:textColor="@color/theme_color"
         android:textSize="14sp"
         android:visibility="gone" />
-
 
 </RelativeLayout>

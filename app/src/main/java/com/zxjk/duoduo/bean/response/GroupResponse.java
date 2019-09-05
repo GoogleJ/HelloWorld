@@ -18,6 +18,23 @@ public class GroupResponse implements Serializable {
     private String isAdmin;
     private PermissionBean groupPermission;
     private GroupPayBean groupPay;
+    private RedPacketInfoBean redPacketInfo;
+
+    public GroupPayBean getGroupPay() {
+        return groupPay;
+    }
+
+    public void setGroupPay(GroupPayBean groupPay) {
+        this.groupPay = groupPay;
+    }
+
+    public RedPacketInfoBean getRedPacketInfo() {
+        return redPacketInfo;
+    }
+
+    public void setRedPacketInfo(RedPacketInfoBean redPacketInfo) {
+        this.redPacketInfo = redPacketInfo;
+    }
 
     public GroupPayBean getGroupPayBean() {
         return groupPay;
@@ -26,6 +43,34 @@ public class GroupResponse implements Serializable {
     public void setGroupPayBean(GroupPayBean groupPayBean) {
         this.groupPay = groupPayBean;
     }
+
+    public static class RedPacketInfoBean implements Serializable {
+
+        /**
+         * redNewPersonStatus : 1
+         * isGetNewPersonRed : 2
+         */
+
+        private String redNewPersonStatus;
+        private String isGetNewPersonRed;
+
+        public String getRedNewPersonStatus() {
+            return redNewPersonStatus;
+        }
+
+        public void setRedNewPersonStatus(String redNewPersonStatus) {
+            this.redNewPersonStatus = redNewPersonStatus;
+        }
+
+        public String getIsGetNewPersonRed() {
+            return isGetNewPersonRed;
+        }
+
+        public void setIsGetNewPersonRed(String isGetNewPersonRed) {
+            this.isGetNewPersonRed = isGetNewPersonRed;
+        }
+    }
+
 
     public static class GroupPayBean implements Serializable {
         private String payFee;

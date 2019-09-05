@@ -18,6 +18,7 @@ import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
+import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.duoduo.bean.response.GetThirdPartyPaymentOrderResponse;
@@ -571,4 +572,15 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> payToGroup(@Field("groupId") String groupId, @Field("toCustomerId") String toCustomerId, @Field("payPwd") String payPwd, @Field("mot") String mot);
 
+    @POST("duoduo/group/getRedNewPersonInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetRedNewPersonInfoResponse>> getRedNewPersonInfo(@Field("groupId") String groupId);
+
+    @POST("duoduo/group/upRedNewPersonInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> upRedNewPersonInfo(@Field("data") String data);
+
+    @POST("duoduo/redPackage/receiveNewPersonRedPackage")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetRedNewPersonInfoResponse>> receiveNewPersonRedPackage(@Field("groupId") String groupId);
 }
