@@ -6,6 +6,24 @@ public class GetSignListResponse {
 
     private List<PointsListBean> pointsList;
     private List<CustomerSignBean> customerSign;
+    private String count;
+    private String sumPay;
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getSumPay() {
+        return sumPay;
+    }
+
+    public void setSumPay(String sumPay) {
+        this.sumPay = sumPay;
+    }
 
     public List<PointsListBean> getPointsList() {
         return pointsList;
@@ -36,54 +54,16 @@ public class GetSignListResponse {
          * counts : 0
          */
 
-        private String id;
-        private String customerId;
-        private long createTime;
-        private String updateTime;
-        private int points;
         private String receiveStatus;
+        private String counts;
         private String pointType;
-        private String isDelete;
-        private int counts;
 
-        public String getId() {
-            return id;
+        public String getPointType() {
+            return pointType;
         }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getCustomerId() {
-            return customerId;
-        }
-
-        public void setCustomerId(String customerId) {
-            this.customerId = customerId;
-        }
-
-        public long getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(long createTime) {
-            this.createTime = createTime;
-        }
-
-        public String getUpdateTime() {
-            return updateTime;
-        }
-
-        public void setUpdateTime(String updateTime) {
-            this.updateTime = updateTime;
-        }
-
-        public int getPoints() {
-            return points;
-        }
-
-        public void setPoints(int points) {
-            this.points = points;
+        public void setPointType(String pointType) {
+            this.pointType = pointType;
         }
 
         public String getReceiveStatus() {
@@ -94,27 +74,11 @@ public class GetSignListResponse {
             this.receiveStatus = receiveStatus;
         }
 
-        public String getPointType() {
-            return pointType;
-        }
-
-        public void setPointType(String pointType) {
-            this.pointType = pointType;
-        }
-
-        public String getIsDelete() {
-            return isDelete;
-        }
-
-        public void setIsDelete(String isDelete) {
-            this.isDelete = isDelete;
-        }
-
-        public int getCounts() {
+        public String getCounts() {
             return counts;
         }
 
-        public void setCounts(int counts) {
+        public void setCounts(String counts) {
             this.counts = counts;
         }
     }
@@ -134,11 +98,11 @@ public class GetSignListResponse {
 
         private String id;
         private String customerId;
-        private long createTime;
+        private String createTime;
         private String lastModifyTime;
-        private int signCount;
-        private int totalCount;
-        private int repay;
+        private String signCount;
+        private String totalCount;
+        private String repay;
         private String isDelete;
         private String signStatus;
 
@@ -158,11 +122,11 @@ public class GetSignListResponse {
             this.customerId = customerId;
         }
 
-        public long getCreateTime() {
+        public String getCreateTime() {
             return createTime;
         }
 
-        public void setCreateTime(long createTime) {
+        public void setCreateTime(String createTime) {
             this.createTime = createTime;
         }
 
@@ -174,27 +138,27 @@ public class GetSignListResponse {
             this.lastModifyTime = lastModifyTime;
         }
 
-        public int getSignCount() {
+        public String getSignCount() {
             return signCount;
         }
 
-        public void setSignCount(int signCount) {
+        public void setSignCount(String signCount) {
             this.signCount = signCount;
         }
 
-        public int getTotalCount() {
+        public String getTotalCount() {
             return totalCount;
         }
 
-        public void setTotalCount(int totalCount) {
+        public void setTotalCount(String totalCount) {
             this.totalCount = totalCount;
         }
 
-        public int getRepay() {
+        public String getRepay() {
             return repay;
         }
 
-        public void setRepay(int repay) {
+        public void setRepay(String repay) {
             this.repay = repay;
         }
 

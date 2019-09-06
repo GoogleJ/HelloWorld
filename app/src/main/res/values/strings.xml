@@ -711,7 +711,7 @@
     <string name="rewardmot">奖励Mot</string>
     <string name="rewardTotal">累计奖励：</string>
     <string name="sign2getReward">签到领取奖励</string>
-    <string name="signed">今天已签到，明天再来吧</string>
+    <string name="signed">已签到</string>
     <string name="signtip1">累计签到</string>
     <string name="day">天</string>
     <string name="earn_coins">赚积分</string>
@@ -720,7 +720,7 @@
     <string name="mission_tip3">注册</string>
     <string name="mission_tip4">注册成功后可领取100Mot</string>
     <string name="mission_tip5">加入群聊</string>
-    <string name="mission_tip6">每加入一个群可获得5Mot</string>
+    <string name="mission_tip6">通过名片、扫码加入群聊可获得5Mot</string>
     <string name="mission_tip7">群活跃</string>
     <string name="mission_tip8">每日群里活跃20分钟可获得20Mot</string>
     <string name="mission_tip9">分享资讯</string>

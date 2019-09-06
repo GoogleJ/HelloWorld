@@ -565,7 +565,12 @@ public interface Api {
     Observable<BaseResponse<GetSignListResponse>> getSignList();
 
     @POST("duoduo/customer/createSign")
-    Observable<BaseResponse<String>> createSign();
+    Observable<BaseResponse<GetSignListResponse>> createSign();
+
+    @POST("duoduo/customer/receivePoint")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> receivePoint(@Field("type") String type);
+
     @POST("duoduo/group/getGroupPayInfo")
     @FormUrlEncoded
     Observable<BaseResponse<GetGroupPayInfoResponse>> getGroupPayInfo(@Field("groupId") String groupId);

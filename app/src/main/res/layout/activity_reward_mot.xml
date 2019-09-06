@@ -5,42 +5,200 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <View
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/gradient_sign1"
         android:layout_width="match_parent"
-        android:background="#FF614B"
-        android:layout_height="20dp" />
+        android:layout_height="wrap_content" >
 
-    <RelativeLayout
-        android:background="#FF614B"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
         <RelativeLayout
-            android:id="@+id/rlBack"
-            android:clickable="true"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp">
 
-            <ImageView
+            <RelativeLayout
+                android:id="@+id/rlBack"
+                android:clickable="true"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:layout_width="50dp"
+                android:layout_height="50dp">
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ico_back_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:text="@string/rewardmot"
+                android:textSize="18sp"
+                android:textColor="@color/white"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ico_back_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </RelativeLayout>
 
-        <TextView
-            android:text="@string/rewardmot"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <FrameLayout
+            android:clipChildren="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_margin="12dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="108dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_corner_fef6de"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textColor="#FF612A"
+                    android:text="@string/rewardTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvTotalReward"
+                        android:textColor="#FF612A"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        android:text="0"
+                        android:letterSpacing="0.05"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginBottom="3dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="6dp"
+                        android:textColor="#FF612A"
+                        android:textSize="16.5sp"
+                        android:text="@string/Mot1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="120dp">
+
+                <ImageView
+                    android:background="@drawable/sign_topbg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:background="@drawable/sign_bg"
+                    android:onClick="sign"
+                    android:layout_marginTop="8dp"
+                    android:paddingBottom="4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ivSigned"
+                        android:src="@drawable/ic_sign_checked"
+                        android:layout_marginEnd="6dp"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvSignText"
+                        android:text="@string/sign2getReward"
+                        android:textColor="#FF612A"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="-48dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="vertical"
+        android:background="@drawable/shape_sign"
+        android:layout_width="match_parent"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:text="@string/signtip1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvSignDays"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:textColor="#FF2D23"
+                android:textSize="15sp"
+                android:text="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:text="@string/day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSign"
+            android:overScrollMode="never"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
 
     <ScrollView
+       android:paddingTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
@@ -51,158 +209,11 @@
             android:orientation="vertical"
             android:clipChildren="false">
 
-            <FrameLayout
-                android:clipChildren="false"
-                android:background="#FF614B"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:gravity="center"
-                    android:layout_margin="12dp"
-                    android:paddingTop="24dp"
-                    android:paddingBottom="108dp"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/shape_corner_fef6de"
-                    android:orientation="vertical"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:textColor="#FF612A"
-                        android:text="@string/rewardTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:layout_marginTop="4dp"
-                        android:layout_width="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/tvTotalReward"
-                            android:textColor="#FF612A"
-                            android:textSize="32sp"
-                            android:textStyle="bold"
-                            android:text="0"
-                            android:letterSpacing="0.05"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_marginBottom="3dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginStart="6dp"
-                            android:textColor="#FF612A"
-                            android:textSize="16.5sp"
-                            android:text="@string/Mot1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <FrameLayout
-                    android:layout_gravity="bottom"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp">
-
-                    <ImageView
-                        android:background="@drawable/sign_topbg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <LinearLayout
-                        android:background="@drawable/sign_bg"
-                        android:onClick="sign"
-                        android:layout_marginTop="8dp"
-                        android:paddingBottom="4dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_width="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/ivSigned"
-                            android:src="@drawable/ic_sign_checked"
-                            android:layout_marginEnd="6dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:id="@+id/tvSignText"
-                            android:text="@string/sign2getReward"
-                            android:textColor="#FF612A"
-                            android:textSize="16sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                </FrameLayout>
-
-            </FrameLayout>
-
-            <LinearLayout
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginTop="-48dp"
-                android:orientation="vertical"
-                android:background="@drawable/shape_sign"
-                android:layout_width="match_parent"
-                android:paddingTop="16dp"
-                android:paddingBottom="24dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:text="@string/signtip1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/tvSignDays"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:textColor="#FF2D23"
-                        android:textSize="15sp"
-                        android:text="0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:text="@string/day"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerSign"
-                    android:overScrollMode="never"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-            </LinearLayout>
-
             <LinearLayout
                 android:padding="12dp"
-                android:layout_margin="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/shape_sign"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
@@ -253,7 +264,7 @@
                         android:background="@drawable/shape_sign_mission1"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="去完成"
+                        android:text="未完成"
                         android:textColor="#FF612A"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
@@ -292,10 +303,10 @@
 
                     <TextView
                         android:id="@+id/tvMission2"
-                        android:background="@drawable/shape_sign_mission2"
+                        android:background="@drawable/shape_sign_mission3"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="领取"
+                        android:text="不可领"
                         android:textColor="@color/white"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
@@ -338,7 +349,7 @@
                         android:background="@drawable/shape_sign_mission1"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="去完成"
+                        android:text="0/5"
                         android:textColor="#FF612A"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
@@ -381,7 +392,7 @@
                         android:background="@drawable/shape_sign_mission1"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="去完成"
+                        android:text="未完成"
                         android:textColor="#FF612A"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
@@ -424,7 +435,7 @@
                         android:background="@drawable/shape_sign_mission1"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="去完成"
+                        android:text="0/3"
                         android:textColor="#FF612A"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"

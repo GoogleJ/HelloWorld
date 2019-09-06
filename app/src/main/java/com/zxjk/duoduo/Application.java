@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.schedulers.Schedulers;
-import io.rong.callkit.RongCallKit;
 import io.rong.imkit.DefaultExtensionModule;
 import io.rong.imkit.IExtensionModule;
 import io.rong.imkit.RongExtensionManager;
@@ -54,6 +53,8 @@ import io.rong.message.SightMessage;
 import io.rong.push.RongPushClient;
 import io.rong.push.pushconfig.PushConfig;
 
+import static io.rong.imlib.RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED;
+import static io.rong.imlib.RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED;
 import static io.rong.imlib.RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT;
 
 public class Application extends android.app.Application {
@@ -92,6 +93,12 @@ public class Application extends android.app.Application {
 
     private void registerConnectionStatusListener() {
         RongIMClient.setConnectionStatusListener(connectionStatus -> {
+            if (connectionStatus == CONNECTED) {
+//                MMKVUtils.getInstance().enCode("");
+            }
+            if (connectionStatus == DISCONNECTED) {
+
+            }
             if (connectionStatus == KICKED_OFFLINE_BY_OTHER_CLIENT) {
                 ToastUtils.showShort(R.string.duplicated_login);
                 RongIM.getInstance().logout();
