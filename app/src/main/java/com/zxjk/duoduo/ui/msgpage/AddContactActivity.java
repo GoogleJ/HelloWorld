@@ -15,7 +15,6 @@ import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.WeChatShareUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,11 +71,11 @@ public class AddContactActivity extends BaseActivity {
                     protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
                         holder.setOnClickListener(R.id.rl_weChat, v -> {
                             dialog.dismiss();
-                            WeChatShareUtil.shareImg(AddContactActivity.this, 0);
+//                            WeChatShareUtil.shareImg(AddContactActivity.this, 0);
                         });
                         holder.setOnClickListener(R.id.rl_circleFriends, v -> {
                             dialog.dismiss();
-                            WeChatShareUtil.shareImg(AddContactActivity.this, 1);
+//                            WeChatShareUtil.shareImg(AddContactActivity.this, 1);
                         });
                     }
                 }).setShowBottom(true)

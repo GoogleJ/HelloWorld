@@ -9,9 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.Utils;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle3.components.support.RxFragment;
+import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.LoginActivity;
@@ -24,7 +26,7 @@ import io.rong.imkit.RongIM;
 
 
 @SuppressLint("CheckResult")
-public class BaseFragment extends RxFragment  {
+public class BaseFragment extends RxFragment {
     public View rootView;
 
     private RxPermissions rxPermissions;
@@ -61,6 +63,7 @@ public class BaseFragment extends RxFragment  {
     }
 
     public void handleApiError(Throwable throwable) {
+        MobclickAgent.reportError(Utils.getApp(), throwable);
         if (throwable.getCause() instanceof RxException.DuplicateLoginExcepiton ||
                 throwable instanceof RxException.DuplicateLoginExcepiton) {
             // 重复登录，挤掉线
@@ -81,5 +84,17 @@ public class BaseFragment extends RxFragment  {
         super.onActivityResult(requestCode, resultCode, data);
         corpFile = null;
         corpFile = TakePicUtil.onActivityResult(getActivity(), requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(getClass().getSimpleName());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(getClass().getSimpleName());
     }
 }

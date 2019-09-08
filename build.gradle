@@ -4,8 +4,11 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenCentral()
         maven { url "https://jitpack.io" }
+        maven { url 'http://developer.huawei.com/repo/' }
+        maven { url "http://lib.gcssloop.com:8081/repository/gcssloop-central/" }
+        maven { url "http://dl.bintray.com/piasy/maven" }
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
@@ -21,6 +24,7 @@ allprojects {
         maven { url 'http://developer.huawei.com/repo/' }
         maven { url "http://lib.gcssloop.com:8081/repository/gcssloop-central/" }
         maven { url "http://dl.bintray.com/piasy/maven" }
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
 }
 

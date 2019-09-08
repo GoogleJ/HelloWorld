@@ -15,6 +15,8 @@ import com.blankj.utilcode.util.Utils;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.UMShareAPI;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxException;
@@ -92,6 +94,7 @@ public class BaseActivity extends RxAppCompatActivity {
     }
 
     public void handleApiError(Throwable throwable) {
+        MobclickAgent.reportError(Utils.getApp(), throwable);
         if (throwable.getCause() instanceof RxException.DuplicateLoginExcepiton ||
                 throwable instanceof RxException.DuplicateLoginExcepiton) {
             // 重复登录，挤掉线
@@ -127,6 +130,7 @@ public class BaseActivity extends RxAppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         corpFile = null;
         corpFile = TakePicUtil.onActivityResult(this, requestCode, resultCode, data);
     }

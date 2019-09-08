@@ -17,8 +17,10 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.mmkv.MMKV;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 import com.zxjk.duoduo.bean.ConversationTimeBean;
 import com.zxjk.duoduo.bean.DaoSession;
 import com.zxjk.duoduo.bean.response.GroupResponse;
@@ -45,7 +47,6 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.provider.RedPacketProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SystemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.TransferProvider;
 import com.zxjk.duoduo.utils.MMKVUtils;
-import com.zxjk.duoduo.utils.WeChatShareUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +82,6 @@ public class Application extends android.app.Application {
         //init MMKV
         MMKV.initialize(this);
 
-        //微信分享
-        regToWx();
-
         //工具类初始化
         Utils.init(this);
 
@@ -101,6 +99,19 @@ public class Application extends android.app.Application {
 
         //监听act lifecycle
         actLifecycle();
+
+        //Umeng
+        initUmeng();
+    }
+
+    private void initUmeng() {
+        UMConfigure.init(this, "5d749f223fc1958bf7000854", "Fir", UMConfigure.DEVICE_TYPE_PHONE, null);
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        UMConfigure.setProcessEvent(true);
+
+        PlatformConfig.setWeixin("wx95412ba899539c33", "4e676a73b46f12e8251560a612bba1b3");
+        PlatformConfig.setQQZone("101784998", "b370d5b099d93b3dc9bc91286ca83e9b");
+//        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
     }
 
     private void actLifecycle() {
@@ -239,11 +250,6 @@ public class Application extends android.app.Application {
                     callback.onGetGroupMembersResult(strings);
                 }, t -> {
                 }));
-    }
-
-    private void regToWx() {
-        WeChatShareUtil.wxShare = WXAPIFactory.createWXAPI(this, WX_SHARE_ID, true);
-        WeChatShareUtil.wxShare.registerApp(WX_SHARE_ID);
     }
 
     //初始化阿里云OSS上传服务

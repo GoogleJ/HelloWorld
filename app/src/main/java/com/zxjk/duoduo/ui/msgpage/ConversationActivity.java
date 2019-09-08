@@ -18,6 +18,7 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.trello.rxlifecycle3.android.ActivityEvent;
+import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
@@ -46,8 +47,10 @@ import com.zxjk.duoduo.utils.RxScreenshotDetector;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -229,14 +232,18 @@ public class ConversationActivity extends BaseActivity {
      * @param message 发送的消息，在content中加入信息
      */
     private void handleBurnAfterReadForSendersOnSent(Message message) {
-        if (conversationInfo == null || conversationInfo.getMessageBurnTime() == -1) return;
-        if (message.getObjectName().equals("RC:TxtMsg") || message.getObjectName().equals("RC:ImgMsg")
+        Map<String, Object> map = new HashMap<>();
+        if (conversationInfo == null || conversationInfo.getMessageBurnTime() == -1) {
+            map.put("MsgType", "NormalMsg");
+        } else if (message.getObjectName().equals("RC:TxtMsg") || message.getObjectName().equals("RC:ImgMsg")
                 || message.getObjectName().equals("RC:VcMsg")) {
             BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
             b.setMessageId(message.getMessageId());
             b.setBurnTime(System.currentTimeMillis() + (conversationInfo.getMessageBurnTime() * 1000));
             burnMsgDao.insert(b);
+            map.put("MsgType", "BurnMsg");
         }
+        MobclickAgent.onEventObject(Utils.getApp(), "msg_normalOrBurn", map);
     }
 
     /**
