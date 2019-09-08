@@ -1,12 +1,18 @@
 package com.zxjk.duoduo;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -65,6 +71,8 @@ public class Application extends android.app.Application {
 
     public static DaoSession daoSession;
 
+    private long conversationOpenTime;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -89,16 +97,60 @@ public class Application extends android.app.Application {
 
         //监听融云连接状态变化
         registerConnectionStatusListener();
+
+        //监听act lifecycle
+        actLifecycle();
+    }
+
+    private void actLifecycle() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+                if (activity.getClass().getSimpleName().equals("ConversationActivity")) {
+                    conversationOpenTime = System.currentTimeMillis();
+                }
+            }
+
+            @Override
+            public void onActivityStarted(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(@NonNull Activity activity) {
+                if (activity.getClass().getSimpleName().equals("ConversationActivity")) {
+                    long conversationTime = MMKVUtils.getInstance().decodeLong("conversationTime");
+
+                    if (!TimeUtils.isToday(conversationTime)) conversationTime = 0;
+
+                    MMKVUtils.getInstance().enCode("conversationTime", conversationTime + System.currentTimeMillis() - conversationOpenTime);
+                }
+            }
+        });
     }
 
     private void registerConnectionStatusListener() {
         RongIMClient.setConnectionStatusListener(connectionStatus -> {
-            if (connectionStatus == CONNECTED) {
-//                MMKVUtils.getInstance().enCode("");
-            }
-            if (connectionStatus == DISCONNECTED) {
-
-            }
             if (connectionStatus == KICKED_OFFLINE_BY_OTHER_CLIENT) {
                 ToastUtils.showShort(R.string.duplicated_login);
                 RongIM.getInstance().logout();
