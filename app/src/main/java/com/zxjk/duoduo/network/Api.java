@@ -37,6 +37,7 @@ import com.zxjk.duoduo.bean.response.PersonalChatConfigResponse;
 import com.zxjk.duoduo.bean.response.PersonalRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.ReceiveGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReceivePersonalRedPackageResponse;
+import com.zxjk.duoduo.bean.response.ReceivePointResponse;
 import com.zxjk.duoduo.bean.response.RedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
 import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
@@ -569,7 +570,11 @@ public interface Api {
 
     @POST("duoduo/customer/receivePoint")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> receivePoint(@Field("type") String type);
+    Observable<BaseResponse<ReceivePointResponse>> receivePoint(@Field("type") String type);
+
+    @POST("duoduo/customer/savePointInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> savePointInfo(@Field("type") String type);
 
     @POST("duoduo/group/getGroupPayInfo")
     @FormUrlEncoded

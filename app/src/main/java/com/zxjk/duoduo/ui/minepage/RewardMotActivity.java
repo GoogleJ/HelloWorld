@@ -129,6 +129,7 @@ public class RewardMotActivity extends BaseActivity implements View.OnClickListe
                     tvSignDays.setText(r.getCount());
                     tvTotalReward.setText(r.getSumPay());
                     adapter.setNewData(r.getCustomerSign());
+                    refreshMissionUI();
                 }, this::handleApiError);
     }
 
@@ -182,20 +183,21 @@ public class RewardMotActivity extends BaseActivity implements View.OnClickListe
                 type = "4";
                 break;
         }
+
         api.receivePoint(type)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
-                    tvTotalReward.setText(s);
+                    tvTotalReward.setText(s.getMoney());
+                    signListResponse.setPointsList(s.getPointsList());
                     refreshMissionUI();
                 }, this::handleApiError);
     }
 
     private void refreshMissionUI() {
-        if (signListResponse == null) {
-            return;
-        }
+        if (signListResponse == null) return;
+
         for (int i = 0; i < signListResponse.getPointsList().size(); i++) {
             GetSignListResponse.PointsListBean b = signListResponse.getPointsList().get(i);
 
@@ -219,12 +221,12 @@ public class RewardMotActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    //0未领取 1已领取 2已领取完
     private void setUI(TextView tv, GetSignListResponse.PointsListBean b) {
         if (b.getReceiveStatus().equals("0")) {
             tv.setTextColor(Color.parseColor("#ffffff"));
             tv.setText("领取");
             tv.setBackgroundResource(R.drawable.shape_sign_mission2);
-            return;
         }
         if (b.getReceiveStatus().equals("1")) {
             tv.setTextColor(Color.parseColor("#FF612A"));
@@ -233,11 +235,12 @@ public class RewardMotActivity extends BaseActivity implements View.OnClickListe
                 tv.setText(b.getCounts() + "/" + 5);
             } else if (b.getPointType().equals("4")) {
                 tv.setText(b.getCounts() + "/" + 3);
-            } else {
-                tv.setText("待完成");
             }
-            return;
         }
-        tv.setTextColor(Color.parseColor("#ffffff"));
+        if (b.getReceiveStatus().equals("2")) {
+            tv.setText("已领取");
+            tv.setTextColor(Color.parseColor("#ffffff"));
+            tv.setBackgroundResource(R.drawable.shape_sign_mission3);
+        }
     }
 }

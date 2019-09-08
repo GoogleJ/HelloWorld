@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,11 +13,13 @@ import androidx.annotation.Nullable;
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.mmkv.MMKV;
+import com.zxjk.duoduo.bean.ConversationTimeBean;
 import com.zxjk.duoduo.bean.DaoSession;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
@@ -59,8 +62,6 @@ import io.rong.message.SightMessage;
 import io.rong.push.RongPushClient;
 import io.rong.push.pushconfig.PushConfig;
 
-import static io.rong.imlib.RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED;
-import static io.rong.imlib.RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED;
 import static io.rong.imlib.RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT;
 
 public class Application extends android.app.Application {
@@ -136,14 +137,41 @@ public class Application extends android.app.Application {
 
             }
 
+            @SuppressLint("CheckResult")
             @Override
             public void onActivityDestroyed(@NonNull Activity activity) {
                 if (activity.getClass().getSimpleName().equals("ConversationActivity")) {
-                    long conversationTime = MMKVUtils.getInstance().decodeLong("conversationTime");
+                    ConversationTimeBean b = new ConversationTimeBean();
+                    b.setDayTimeMills(System.currentTimeMillis());
 
-                    if (!TimeUtils.isToday(conversationTime)) conversationTime = 0;
+                    String json = MMKVUtils.getInstance().decodeString("conversationTimeBean");
+                    if (!TextUtils.isEmpty(json)) {
+                        b = GsonUtils.fromJson(json, ConversationTimeBean.class);
+                        if (b.isHasComplete()) return;
+                    }
 
-                    MMKVUtils.getInstance().enCode("conversationTime", conversationTime + System.currentTimeMillis() - conversationOpenTime);
+                    long conversationTime = b.getTotalMills();
+                    if (!TimeUtils.isToday(b.getDayTimeMills())) {
+                        b.setHasComplete(false);
+                        b.setDayTimeMills(System.currentTimeMillis());
+                        conversationTime = 0;
+                    }
+
+                    long l = conversationTime + System.currentTimeMillis() - conversationOpenTime;
+
+                    ConversationTimeBean finalB = b;
+                    if ((l >= 1200000)) {
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .savePointInfo("3")
+                                .subscribe(s -> {
+                                    finalB.setHasComplete(true);
+                                    MMKVUtils.getInstance().enCode("conversationTimeBean", GsonUtils.toJson(finalB));
+                                }, t -> {
+                                });
+                    } else {
+                        finalB.setTotalMills(l);
+                        MMKVUtils.getInstance().enCode("conversationTimeBean", GsonUtils.toJson(finalB));
+                    }
                 }
             }
         });

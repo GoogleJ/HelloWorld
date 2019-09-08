@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -17,13 +18,17 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.ProgressView;
+import com.zxjk.duoduo.utils.ShareUtil;
 
 public class WebActivity extends BaseActivity {
 
@@ -58,11 +63,22 @@ public class WebActivity extends BaseActivity {
         finish();
     }
 
+    @SuppressLint("CheckResult")
     private void initView() {
         fl_webview = findViewById(R.id.fl_webview);
         pb_webview = findViewById(R.id.pb_webview);
         tv_title = findViewById(R.id.tv_title);
         tv_title.setText(title);
+        ImageView imageView = findViewById(R.id.iv_end);
+        imageView.setImageResource(R.drawable.ic_share_action_right);
+        imageView.setOnClickListener(v -> {
+            ShareUtil.shareLink();
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .savePointInfo("4")
+                    .subscribe(s -> {
+                    }, t -> {
+                    });
+        });
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
 
