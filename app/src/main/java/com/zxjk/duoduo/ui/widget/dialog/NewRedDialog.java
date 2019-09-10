@@ -80,8 +80,7 @@ public class NewRedDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(view);
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
+        setCancelable(true);
         Window window = this.getWindow();
         window.setGravity(Gravity.CENTER);
         WindowManager.LayoutParams layoutParams = window.getAttributes();

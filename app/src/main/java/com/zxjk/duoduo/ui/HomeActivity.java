@@ -153,7 +153,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                     }
                                 });
                             } else if (commandMessage.getName().equals("agreeFriend")) {
-                                //同意添加好友 刷新通讯录
+                                contactFragment.onResume();
                             }
                         }
                         return false;

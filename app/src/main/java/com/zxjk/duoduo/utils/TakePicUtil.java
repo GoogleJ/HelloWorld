@@ -29,7 +29,7 @@ public class TakePicUtil {
     private static final int CODE_PICTURE_NOCORP = 104;
     private static final int CODE_ALBUM_NOCORP = 105;
 
-    public static File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/portraits/" + "temp" + ".png");
+    public static File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/portraits/" + "temp" + ".png");
 
     public static void takePicture(Activity activity) {
         takePicture(activity, true);
@@ -41,12 +41,12 @@ public class TakePicUtil {
 
     public static void takePicture(Activity activity, boolean corp) {
         if (hasSdcard()) {
-            if (!file.exists()) {
-                file.mkdirs();
+            if (output.getParentFile() != null && !output.getParentFile().exists()) {
+                output.getParentFile().mkdirs();
             }
 
             Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            Uri imageUri = getUriForFile(activity, tempFile);
+            Uri imageUri = getUriForFile(activity, output);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intentCamera.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
@@ -60,6 +60,9 @@ public class TakePicUtil {
     }
 
     public static void albumPhoto(Activity activity, boolean corp) {
+        if (output.getParentFile() != null && !output.getParentFile().exists()) {
+            output.getParentFile().mkdirs();
+        }
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
         photoPickerIntent.setType("image/*");
         if (corp) {
@@ -85,8 +88,7 @@ public class TakePicUtil {
         cropIntent.putExtra("outputY", 200);
         cropIntent.putExtra("return-data", false);
         cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-
-        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(output));
 
         if (!isIntentAvailable(activity, cropIntent)) {
             return false;
@@ -108,7 +110,7 @@ public class TakePicUtil {
             String filePath = "";
             switch (requestCode) {
                 case CODE_PICTURE:
-                    filePath = file.getAbsolutePath();
+                    filePath = output.getAbsolutePath();
                     break;
                 case CODE_ALBUM:
                     filePath = getPath(activity, data.getData());
@@ -118,7 +120,7 @@ public class TakePicUtil {
             return null;
         }
         if (requestCode == CODE_CORP) {
-            return file;
+            return output;
         }
         return null;
     }
@@ -187,7 +189,7 @@ public class TakePicUtil {
             return pathHead + getDataColumn(context, uri, null, null);
         }
         // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+        else if ("output".equalsIgnoreCase(uri.getScheme())) {
             return pathHead + uri.getPath();
         }
         return null;

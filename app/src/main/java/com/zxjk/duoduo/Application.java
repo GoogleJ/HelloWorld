@@ -111,7 +111,6 @@ public class Application extends android.app.Application {
 
         PlatformConfig.setWeixin("wx95412ba899539c33", "4e676a73b46f12e8251560a612bba1b3");
         PlatformConfig.setQQZone("101784998", "b370d5b099d93b3dc9bc91286ca83e9b");
-//        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
     }
 
     private void actLifecycle() {

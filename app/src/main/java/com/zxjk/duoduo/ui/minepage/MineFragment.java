@@ -85,7 +85,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             tvSign.setText(getString(R.string.sign1) + Constant.currentUser.getSignature());
         }
         String isAuthentication = Constant.currentUser.getIsAuthentication();
-        if (isAuthentication.equals("0")) {
+        if (!TextUtils.isEmpty(isAuthentication) && isAuthentication.equals("0")) {
             ivMineAuthSign.setVisibility(View.VISIBLE);
         } else {
             ivMineAuthSign.setVisibility(View.INVISIBLE);

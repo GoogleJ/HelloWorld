@@ -69,16 +69,6 @@ public class WebActivity extends BaseActivity {
         pb_webview = findViewById(R.id.pb_webview);
         tv_title = findViewById(R.id.tv_title);
         tv_title.setText(title);
-        ImageView imageView = findViewById(R.id.iv_end);
-        imageView.setImageResource(R.drawable.ic_share_action_right);
-        imageView.setOnClickListener(v -> {
-            ShareUtil.shareLink();
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .savePointInfo("4")
-                    .subscribe(s -> {
-                    }, t -> {
-                    });
-        });
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
 

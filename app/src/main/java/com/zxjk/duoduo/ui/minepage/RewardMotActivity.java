@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -108,7 +108,7 @@ public class RewardMotActivity extends BaseActivity implements View.OnClickListe
         };
 
         recyclerSign.setAdapter(adapter);
-        recyclerSign.setLayoutManager(new GridLayoutManager(this, 7));
+        recyclerSign.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         recyclerSign.addItemDecoration(new RecyclerItemAverageDecoration(0, 24, 7));
 
         ServiceFactory.getInstance().getBaseService(Api.class)

@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_bac_cancel"
+        android:background="@drawable/shape_circular_bead2"
         android:padding="6dp">
 
         <com.zxjk.duoduo.ui.widget.MaxWidthRecyclerView
@@ -39,7 +39,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:minWidth="64dp"
-            android:paddingStart="4dp"
+            android:paddingStart="6dp"
             android:textSize="15sp" />
 
     </LinearLayout>
@@ -59,8 +59,7 @@
             android:id="@+id/indexCreateGroup"
             android:layout_width="24dp"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="4dp" />
+            android:layout_alignParentEnd="true"/>
 
         <TextView
             android:id="@+id/tv_hit_letter"

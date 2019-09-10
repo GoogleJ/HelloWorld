@@ -7,6 +7,7 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.google.gson.Gson;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.network.Api;
@@ -57,7 +58,9 @@ public class RegisterBlockWalletService extends Service {
 
                     stopSelf();
                 }, t -> Observable.timer(20, TimeUnit.SECONDS)
-                        .subscribe(aLong -> startService(intent)));
+                        .subscribe(l -> {
+                            if (AppUtils.isAppForeground()) startService(intent);
+                        }));
 
         return super.onStartCommand(intent, flags, startId);
     }

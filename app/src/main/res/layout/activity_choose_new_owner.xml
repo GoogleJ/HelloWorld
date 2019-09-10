@@ -24,10 +24,9 @@
             android:paddingBottom="20dp" />
 
         <com.zxjk.duoduo.ui.msgpage.widget.IndexView
-            android:layout_width="13dp"
+            android:layout_width="24dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
-
 
 </LinearLayout>

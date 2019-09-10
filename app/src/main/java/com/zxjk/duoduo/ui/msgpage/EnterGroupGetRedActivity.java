@@ -24,6 +24,7 @@ import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.DateTimePicker;
@@ -141,7 +142,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         PayEnterDialog payEnterDialog = new PayEnterDialog(this);
         payEnterDialog.setOnCommitClick(str -> {
             payEnterDialog.dismiss();
-            if (Float.parseFloat(str) > Float.parseFloat(tvAll.getText().toString())) {
+            if (Float.parseFloat(tvAll.getText().toString()) != 0 && Float.parseFloat(str) > Float.parseFloat(tvAll.getText().toString())) {
                 ToastUtils.showShort(R.string.each_more_all);
                 return;
             }
@@ -242,7 +243,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     }
 
     @SuppressLint("CheckResult")
-    public void setupEnd(View view) {
+    public void setupEnd(View view) throws ParseException {
         if (tvStartTime.getText().equals("请设置")) {
             ToastUtils.showShort(R.string.please_set_start_time);
             return;
@@ -271,8 +272,13 @@ public class EnterGroupGetRedActivity extends BaseActivity {
             tvEndTime.setText(year + "-" + month + "-" + day);
         });
         String[] start = tvStartTime.getText().toString().split("-");
-        datePicker.setRangeStart(Integer.parseInt(start[0]), Integer.parseInt(start[1]), Integer.parseInt(start[2]));
-        datePicker.setRangeEnd(Integer.parseInt(start[0]) + 3, Integer.parseInt(start[1]), 1);
+        long time = df.parse(start[0] + "-" + start[1] + "-" + start[2]).getTime();
+        time += 86400000;
+        String format = df.format(new Date(time));
+        String[] split = format.split("-");
+
+        datePicker.setRangeStart(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+        datePicker.setRangeEnd(Integer.parseInt(split[0]) + 3, Integer.parseInt(split[1]), 1);
         initPicker(datePicker);
         datePicker.show();
     }
@@ -294,4 +300,5 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(this, 24));
         foot.setLayoutParams(layoutParams);
     }
+
 }

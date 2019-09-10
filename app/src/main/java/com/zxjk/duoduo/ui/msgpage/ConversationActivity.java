@@ -136,26 +136,26 @@ public class ConversationActivity extends BaseActivity {
         extension = findViewById(io.rong.imkit.R.id.rc_extension);
 
         //系统消息UI调整
-        if (conversationType.equals("system")) {
-            tvTitle = findViewById(R.id.tv_title);
-            targetId = getIntent().getData().getQueryParameter("targetId");
-            switch (targetId) {
-                case "147":
-                    tvTitle.setText("支付凭证");
-                    break;
-                case "349":
-                    tvTitle.setText("对局结果");
-                    break;
-                case "355":
-                    tvTitle.setText("多多官方");
-                    break;
-                default:
-                    tvTitle.setText("系统消息");
-                    break;
-            }
-            extension.removeAllViews();
-            return;
-        }
+//        if (conversationType.equals("system")) {
+//            tvTitle = findViewById(R.id.tv_title);
+//            targetId = getIntent().getData().getQueryParameter("targetId");
+//            switch (targetId) {
+//                case "147":
+//                    tvTitle.setText("支付凭证");
+//                    break;
+//                case "349":
+//                    tvTitle.setText("对局结果");
+//                    break;
+//                case "355":
+//                    tvTitle.setText("多多官方");
+//                    break;
+//                default:
+//                    tvTitle.setText("系统消息");
+//                    break;
+//            }
+//            extension.removeAllViews();
+//            return;
+//        }
 
         onReceiveMessage();
 
@@ -416,7 +416,7 @@ public class ConversationActivity extends BaseActivity {
                         });
                     }
                 }
-            } else {
+            } else if (message.getSenderUserId().equals(targetId)) {
                 String extra = "";
                 switch (message.getObjectName()) {
                     case "RC:TxtMsg":
@@ -728,7 +728,7 @@ public class ConversationActivity extends BaseActivity {
                                                     .compose(RxSchedulers.normalTrans())
                                                     .subscribe(s2 -> {
                                                         if (!TextUtils.isEmpty(s2.getFinish())) {
-                                                            new NewRedDialog(ConversationActivity.this,NewRedDialog.TYPE2_EXPIRED)
+                                                            new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE2_EXPIRED)
                                                                     .showExpired2(redPacketMessage.getRedId());
                                                             Constant.tempMsg = message;
                                                             onResume();

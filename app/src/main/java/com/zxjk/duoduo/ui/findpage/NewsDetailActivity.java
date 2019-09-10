@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.findpage;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -17,14 +18,21 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.ProgressView;
+import com.zxjk.duoduo.utils.ShareUtil;
 
 public class NewsDetailActivity extends BaseActivity {
 
@@ -47,8 +55,6 @@ public class NewsDetailActivity extends BaseActivity {
 
         ServiceFactory.getInstance().getBaseService(Api.class);
 
-        String id = getIntent().getStringExtra("id");
-
         currentUrl = getIntent().getStringExtra("url");
         title = getIntent().getStringExtra("title");
 
@@ -63,12 +69,34 @@ public class NewsDetailActivity extends BaseActivity {
         finish();
     }
 
+    @SuppressLint("CheckResult")
     private void initView() {
         fl_webview = findViewById(R.id.fl_webview);
         pb_webview = findViewById(R.id.pb_webview);
         tv_title = findViewById(R.id.tv_title);
         tv_title.setText(title);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+
+        findViewById(R.id.rl_end).setVisibility(View.VISIBLE);
+        ImageView imageView = findViewById(R.id.iv_end);
+        imageView.setImageResource(R.drawable.ic_share_action_right);
+        imageView.setOnClickListener(v -> {
+            UMWeb link = new UMWeb(currentUrl);
+            link.setTitle("MoChat新闻");
+            link.setDescription(title);
+            link.setThumb(new UMImage(NewsDetailActivity.this, R.drawable.sharethumb));
+            ShareUtil.shareLink(NewsDetailActivity.this, link, new ShareUtil.ShareListener() {
+                @Override
+                public void onResult(SHARE_MEDIA share_media) {
+                    ServiceFactory.getInstance().getBaseService(Api.class)
+                            .savePointInfo("4")
+                            .compose(RxSchedulers.ioObserver())
+                            .subscribe(s -> {
+                            }, t -> {
+                            });
+                }
+            });
+        });
     }
 
     private ValueAnimator pbAnim;

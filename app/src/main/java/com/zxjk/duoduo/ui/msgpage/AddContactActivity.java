@@ -9,12 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.shehuan.nicedialog.BaseNiceDialog;
-import com.shehuan.nicedialog.NiceDialog;
-import com.shehuan.nicedialog.ViewConvertListener;
-import com.shehuan.nicedialog.ViewHolder;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.utils.ShareUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,21 +65,9 @@ public class AddContactActivity extends BaseActivity {
                 break;
             //微信好友
             case R.id.rl_weChatFriend:
-                NiceDialog.init().setLayoutId(R.layout.layout_general_dialog7).setConvertListener(new ViewConvertListener() {
-                    @Override
-                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        holder.setOnClickListener(R.id.rl_weChat, v -> {
-                            dialog.dismiss();
-//                            WeChatShareUtil.shareImg(AddContactActivity.this, 0);
-                        });
-                        holder.setOnClickListener(R.id.rl_circleFriends, v -> {
-                            dialog.dismiss();
-//                            WeChatShareUtil.shareImg(AddContactActivity.this, 1);
-                        });
-                    }
-                }).setShowBottom(true)
-                        .setDimAmount(0.5f)
-                        .show(getSupportFragmentManager());
+                UMImage image = new UMImage(this, R.drawable.shareimg_wechat);
+                ShareUtil.shareImg(AddContactActivity.this, image, new ShareUtil.ShareListener(),
+                        SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE);
                 break;
         }
     }

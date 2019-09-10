@@ -165,8 +165,11 @@ public class ContactFragment extends BaseFragment {
 
     private void initFoot() {
         footview = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.layout_contract_foot, null);
+        footview.setId(R.id.tv);
         if (mAdapter.getFooterLayoutCount() == 0) {
             mAdapter.addFooterView(footview);
+        } else {
+            footview = mAdapter.getFooterLayout().findViewById(R.id.tv);
         }
         footview.setText("共 " + list.size() + " 位联系人");
     }

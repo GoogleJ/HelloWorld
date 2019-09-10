@@ -84,7 +84,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
     private final int EVENT_DELETEMANAGER = 5; //删除管理员
 
     //temp
-    List<GroupResponse.CustomersBean> c = new ArrayList<>();
+    private List<GroupResponse.CustomersBean> c = new ArrayList<>();
 
     private TextView tv_commit;
 
