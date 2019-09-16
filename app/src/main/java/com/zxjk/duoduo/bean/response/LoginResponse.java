@@ -72,6 +72,19 @@ public class LoginResponse implements Parcelable {
     private String latitude;
     private String distance;
     private String openPhone;
+    private String inviteCode;
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
+    public static Creator<LoginResponse> getCREATOR() {
+        return CREATOR;
+    }
 
     public String getId() {
         return id;

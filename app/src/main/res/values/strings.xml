@@ -766,4 +766,15 @@
     <string name="welcome">欢迎来到MoChat</string>
     <string name="login_verify">验证码登录</string>
     <string name="next">下一步</string>
+    <string name="invite_friends1">邀请好友</string>
+    <string name="invite_tips">邀请好友注册成功，即可奖励30MOT</string>
+    <string name="yourinvitecode">您的邀请码</string>
+    <string name="invite_tips1">邀请好友数</string>
+    <string name="invite_tips2">获得奖励</string>
+    <string name="invite_now">马上邀请</string>
+    <string name="shareto">分享到</string>
+    <string name="zone">朋友圈</string>
+    <string name="qq">qq</string>
+    <string name="qzone">qq空间</string>
+    <string name="invite_tips3">填写邀请码奖励10MoT</string>
 </resources>

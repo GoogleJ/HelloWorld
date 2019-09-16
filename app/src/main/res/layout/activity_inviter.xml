@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    android:background="#3E7EEA"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_inviter"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:clipChildren="false">
+
+        <ImageView
+            android:src="@drawable/bg_inviter3"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:textSize="17sp"
+            android:text="@string/invite_tips"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/bg_inviter1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <FrameLayout
+            android:clipChildren="false"
+            android:layout_marginTop="-24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:background="@drawable/shape_bac_white_conor"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/yourinvitecode"
+                        android:textColor="@color/textcolor1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvInviteCode"
+                        android:letterSpacing="0.6"
+                        android:textSize="25sp"
+                        android:textColor="@color/colorTheme"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvReward1"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/textcolor3"
+                        android:text="@string/invite_tips3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_marginTop="-2dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_myqr_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_marginTop="-2dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/shape_bac_white_conor1"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ivQR"
+                        android:layout_marginTop="18dp"
+                        android:src="#e5e5e5"
+                        android:layout_width="160dp"
+                        android:layout_height="160dp" />
+
+                    <LinearLayout
+                        android:layout_margin="24dp"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tvInviteCount"
+                                android:textSize="15.5sp"
+                                android:layout_marginBottom="6dp"
+                                android:lines="1"
+                                android:textStyle="bold"
+                                android:ellipsize="end"
+                                android:text="0"
+                                android:textColor="@color/colorTheme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:text="@string/invite_tips1"
+                                android:textColor="@color/textcolor1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:background="#D3D3D3"
+                            android:layout_width="0.5dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="6dp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tvReward"
+                                android:textSize="15.5sp"
+                                android:layout_marginBottom="6dp"
+                                android:lines="1"
+                                android:text="0Mot"
+                                android:ellipsize="end"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorTheme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:text="@string/invite_tips2"
+                                android:textColor="@color/textcolor1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/bg_inviter2"
+                android:layout_marginTop="-88dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </FrameLayout>
+
+        <Button
+            android:onClick="invite"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorTheme"
+            android:text="@string/invite_now"
+            android:textSize="16sp"
+            android:background="@drawable/shape_bac_white_conor3"
+            android:layout_height="45dp" />
+
+    </LinearLayout>
+
+</ScrollView>

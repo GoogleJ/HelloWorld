@@ -66,6 +66,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.llMine6).setOnClickListener(this);
         view.findViewById(R.id.llMine7).setOnClickListener(this);
         view.findViewById(R.id.ivQR).setOnClickListener(this);
+        view.findViewById(R.id.llMineInvite).setOnClickListener(this);
 
         return view;
     }
@@ -107,6 +108,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.llMine2:
                 startActivity(new Intent(getActivity(), CooperateActivity.class));
+                break;
+            case R.id.llMineInvite:
+                startActivity(new Intent(getActivity(), InviterActivity.class));
                 break;
             case R.id.llMine3:
                 ((HomeActivity) getActivity()).getVersion(true);

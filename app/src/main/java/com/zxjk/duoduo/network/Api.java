@@ -16,6 +16,7 @@ import com.zxjk.duoduo.bean.response.GetCarouselMap;
 import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
+import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
 import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
@@ -599,6 +600,9 @@ public interface Api {
     @POST("duoduo/redPackage/receiveNewPersonRedPackage")
     @FormUrlEncoded
     Observable<BaseResponse<GetRedNewPersonInfoResponse>> receiveNewPersonRedPackage(@Field("groupId") String groupId);
+
+    @POST("duoduo/customer/getInviteInfo")
+    Observable<BaseResponse<GetInviteInfoResponse>> getInviteInfo();
 
     @POST("duoduo/customer/appUserRegisterAndLogin")
     @FormUrlEncoded
