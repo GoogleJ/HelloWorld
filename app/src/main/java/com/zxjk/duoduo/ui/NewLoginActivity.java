@@ -11,13 +11,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
+import androidx.annotation.NonNull;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Fade;
+import androidx.transition.Slide;
+import androidx.transition.Transition;
+import androidx.transition.TransitionListenerAdapter;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
+
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
@@ -44,23 +57,26 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
+import static androidx.transition.TransitionSet.ORDERING_SEQUENTIAL;
+
 public class NewLoginActivity extends BaseActivity {
 
     private MSGReceiver receiver;
 
+    private LinearLayout llRoot;
     private ImageView ivBack;
     private TextView tvChangeLanguage;
-    private TextView tvTips1;
-    private TextView tvTips2;
-
+    private ViewFlipper vf;
+    private TextView tvTips;
     private PayPsdInputView ppivVerify;
-
     private LinearLayout llPhone;
     private LinearLayout llContrary;
     private TextView tvContrary;
     private EditText etPhone;
-
     private Button btnConfirm;
+
+    private TransitionSet anim;
+    private boolean isAniming;
 
     /**
      * 0：输入手机号
@@ -83,6 +99,8 @@ public class NewLoginActivity extends BaseActivity {
             }
         }, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS);
 
+        initAnim();
+
         initView();
 
         initData();
@@ -91,88 +109,164 @@ public class NewLoginActivity extends BaseActivity {
     private void changeState() {
         state = ((state == 0) ? 1 : 0);
 
+        TransitionManager.beginDelayedTransition(llRoot, anim);
+
         if (state == 0) {
-            tvTips1.setText(R.string.welcome);
-            tvTips2.setVisibility(View.INVISIBLE);
+            vf.showNext();
+            tvTips.setVisibility(View.GONE);
             ivBack.setVisibility(View.INVISIBLE);
+            tvChangeLanguage.setVisibility(View.VISIBLE);
             ppivVerify.setVisibility(View.GONE);
             llPhone.setVisibility(View.VISIBLE);
-            tvChangeLanguage.setVisibility(View.VISIBLE);
             btnConfirm.setText(R.string.next);
             return;
         }
 
-        tvTips1.setText(R.string.login_verify);
-        tvTips2.setVisibility(View.VISIBLE);
+        vf.showPrevious();
+        tvTips.setVisibility(View.VISIBLE);
         ivBack.setVisibility(View.VISIBLE);
+        tvChangeLanguage.setVisibility(View.INVISIBLE);
         ppivVerify.setVisibility(View.VISIBLE);
         llPhone.setVisibility(View.GONE);
-        tvChangeLanguage.setVisibility(View.INVISIBLE);
         btnConfirm.setText(R.string.login);
+    }
+
+    private void initAnim() {
+        Fade fadeIn = new Fade(Fade.IN);
+        fadeIn.excludeTarget(R.id.llPhone, true);
+        fadeIn.excludeTarget(R.id.ppivVerify, true);
+        Fade fadeOut = new Fade(Fade.OUT);
+        fadeOut.excludeTarget(R.id.llPhone, true);
+        fadeOut.excludeTarget(R.id.ppivVerify, true);
+
+        Slide slideIn = new Slide(Gravity.END);
+        slideIn.excludeTarget(R.id.llPhone, true);
+        slideIn.excludeTarget(R.id.tvTips, true);
+        slideIn.excludeTarget(R.id.ivBack, true);
+        slideIn.excludeTarget(R.id.tvChangeLanguage, true);
+
+        Slide slideOut = new Slide(Gravity.START);
+        slideOut.excludeTarget(R.id.ppivVerify, true);
+        slideOut.excludeTarget(R.id.tvTips, true);
+        slideOut.excludeTarget(R.id.ivBack, true);
+        slideOut.excludeTarget(R.id.tvChangeLanguage, true);
+
+        TransitionSet set = new TransitionSet();
+        set.addTransition(fadeIn);
+        set.addTransition(fadeOut);
+        set.addTransition(slideIn);
+        set.addTransition(slideOut);
+
+        anim = new TransitionSet();
+        anim.setDuration(600);
+        anim.setOrdering(ORDERING_SEQUENTIAL);
+        anim.setInterpolator(new OvershootInterpolator());
+        anim.addTransition(new ChangeBounds());
+        anim.addTransition(set);
+
+        anim.excludeTarget(R.id.vf, true);
+        anim.addListener(new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionStart(@NonNull Transition transition) {
+                isAniming = true;
+            }
+
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                isAniming = false;
+                KeyboardUtils.hideSoftInput(NewLoginActivity.this);
+            }
+        });
     }
 
     @SuppressLint("CheckResult")
     private void initData() {
-        tvChangeLanguage.setOnClickListener(v -> startActivity(new Intent(this, ChangeLanguageActivity.class)));
+        tvChangeLanguage.setOnClickListener(v -> ToastUtils.showShort(R.string.developing));
 
         llContrary.setOnClickListener(v -> startActivityForResult(new Intent(this, CountrySelectActivity.class), 200));
 
         ivBack.setOnClickListener(v -> changeState());
 
         btnConfirm.setOnClickListener(v -> {
+            if (isAniming) return;
+
             if (state == 0) {
-                phone = etPhone.getText().toString().trim();
-                if (TextUtils.isEmpty(phone) || !RegexUtils.isMobileExact(phone)) {
-                    ToastUtils.showShort(R.string.edit_mobile_tip);
-                    return;
-                }
-
-                ServiceFactory.getInstance().getBaseService(Api.class)
-                        .getCode(tvContrary.getText().toString().substring(1) + "-" + phone, "0")
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .compose(RxSchedulers.normalTrans())
-                        .subscribe(s -> {
-                            String head = phone.substring(0, 3);
-                            String tail = phone.substring(phone.length() - 4);
-                            tvTips2.setText("验证码已发送至" + tvContrary.getText().toString() + " " + head + "****" + tail);
-                            changeState();
-                        }, this::handleApiError);
+                getCode();
                 return;
             }
 
-            if (TextUtils.isEmpty(ppivVerify.getPasswordString()) || ppivVerify.getPasswordString().length() != 6) {
-                ToastUtils.showShort(R.string.please_enter_verification_code);
-                return;
+            doLogin();
+        });
+
+        ppivVerify.setComparePassword(new PayPsdInputView.onPasswordListener() {
+            @Override
+            public void onDifference(String oldPsd, String newPsd) {
             }
 
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString())
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .compose(RxSchedulers.normalTrans())
-                    .subscribe(l -> {
-                        startService(new Intent(this, RegisterBlockWalletService.class));
+            @Override
+            public void onEqual(String psd) {
+            }
 
-                        Constant.token = l.getToken();
-                        Constant.userId = l.getId();
-                        Constant.currentUser = l;
-                        Constant.authentication = l.getIsAuthentication();
-
-                        if (l.getIsFirstLogin().equals(Constant.FLAG_FIRSTLOGIN)) {
-                            startActivity(new Intent(NewLoginActivity.this, EditPersonalInformationFragment.class));
-                        } else {
-                            connect(l.getRongToken());
-                        }
-                    }, this::handleApiError);
+            @Override
+            public void inputFinished(String inputPsd) {
+                doLogin();
+            }
         });
     }
 
+    @SuppressLint("CheckResult")
+    private void getCode() {
+        phone = etPhone.getText().toString().trim();
+        if (TextUtils.isEmpty(phone) || !RegexUtils.isMobileExact(phone)) {
+            ToastUtils.showShort(R.string.edit_mobile_tip);
+            return;
+        }
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getCode(tvContrary.getText().toString().substring(1) + "-" + phone, "0")
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(s -> {
+                    String head = phone.substring(0, 3);
+                    String tail = phone.substring(phone.length() - 4);
+                    tvTips.setText("验证码已发送至" + tvContrary.getText().toString() + " " + head + "****" + tail);
+                    changeState();
+                }, this::handleApiError);
+    }
+
+    @SuppressLint("CheckResult")
+    private void doLogin() {
+        if (TextUtils.isEmpty(ppivVerify.getPasswordString()) || ppivVerify.getPasswordString().length() != 6) {
+            ToastUtils.showShort(R.string.please_enter_verification_code);
+            return;
+        }
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString())
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(l -> {
+                    startService(new Intent(this, RegisterBlockWalletService.class));
+
+                    Constant.token = l.getToken();
+                    Constant.userId = l.getId();
+                    Constant.currentUser = l;
+                    Constant.authentication = l.getIsAuthentication();
+
+                    if (l.getIsFirstLogin().equals(Constant.FLAG_FIRSTLOGIN)) {
+                        startActivity(new Intent(NewLoginActivity.this, EditPersonalInformationFragment.class));
+                    } else {
+                        connect(l.getRongToken());
+                    }
+                }, this::handleApiError);
+    }
+
     private void initView() {
+        llRoot = findViewById(R.id.llRoot);
         ivBack = findViewById(R.id.ivBack);
         tvChangeLanguage = findViewById(R.id.tvChangeLanguage);
-        tvTips1 = findViewById(R.id.tvTips1);
-        tvTips2 = findViewById(R.id.tvTips2);
+        tvTips = findViewById(R.id.tvTips);
+        vf = findViewById(R.id.vf);
 
         ppivVerify = findViewById(R.id.ppivVerify);
 

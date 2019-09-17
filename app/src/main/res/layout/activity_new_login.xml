@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/llRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,23 +44,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tvTips1"
-        android:layout_marginStart="24dp"
-        android:text="@string/welcome"
-        android:textColor="@color/black"
-        android:textSize="27sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ViewFlipper
+        android:id="@+id/vf"
+        android:inAnimation="@anim/anim_login_tips_in"
+        android:outAnimation="@anim/anim_login_tips_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginStart="24dp"
+            android:text="@string/welcome"
+            android:textColor="@color/black"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginStart="24dp"
+            android:text="@string/login_verify"
+            android:textColor="@color/black"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </ViewFlipper>
 
     <TextView
-        android:id="@+id/tvTips2"
-        android:layout_marginTop="8dp"
-        android:textSize="12sp"
+        android:id="@+id/tvTips"
+        android:layout_marginTop="12dp"
+        android:textSize="13sp"
         android:textColor="#8E949B"
-        android:visibility="invisible"
-        android:text="验证码已发送至 +86 176****0042"
+        android:visibility="gone"
         android:layout_marginStart="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -71,7 +88,8 @@
         android:layout_marginEnd="80dp"
         android:layout_marginStart="24dp"
         app:maxCount="6"
-        app:bottomLineColor="#3296F8"
+        app:focusedColor="#3296F8"
+        app:bottomLineColor="#D2D2D2"
         app:psdType="bottomLine"
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -79,7 +97,7 @@
 
     <LinearLayout
         android:id="@+id/llPhone"
-        android:layout_marginEnd="160dp"
+        android:layout_marginEnd="136dp"
         android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
         android:orientation="vertical"

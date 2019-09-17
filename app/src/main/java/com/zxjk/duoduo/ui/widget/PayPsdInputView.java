@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.utils.CommonUtils;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
@@ -102,6 +103,10 @@ public class PayPsdInputView extends AppCompatEditText {
      * 底部线的画笔
      */
     private Paint bottomLinePaint;
+    /**
+     * 文字的画笔
+     */
+    private Paint textPaint;
 
     /**
      * 需要对比的密码  一般为上次输入的
@@ -126,7 +131,6 @@ public class PayPsdInputView extends AppCompatEditText {
         this.setBackgroundColor(Color.TRANSPARENT);
         this.setCursorVisible(false);
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxCount)});
-
     }
 
     private void getAtt(AttributeSet attrs) {
@@ -152,12 +156,16 @@ public class PayPsdInputView extends AppCompatEditText {
 
         circlePaint = getPaint(5, Paint.Style.FILL, circleColor);
 
-        bottomLinePaint = getPaint(2, Paint.Style.FILL, bottomLineColor);
+        bottomLinePaint = getPaint(3, Paint.Style.FILL, bottomLineColor);
 
         borderPaint = getPaint(3, Paint.Style.STROKE, borderColor);
 
         divideLinePaint = getPaint(divideLineWidth, Paint.Style.FILL, borderColor);
 
+        textPaint = new Paint(ANTI_ALIAS_FLAG);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setColor(Color.parseColor("#4585F5"));
+        textPaint.setTextSize(CommonUtils.sp2px(getContext(), 16));
     }
 
     /**
@@ -173,7 +181,6 @@ public class PayPsdInputView extends AppCompatEditText {
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(style);
         paint.setColor(color);
-        paint.setAntiAlias(true);
 
         return paint;
     }
@@ -204,13 +211,31 @@ public class PayPsdInputView extends AppCompatEditText {
             case psdType_weChat:
                 drawWeChatBorder(canvas);
                 drawItemFocused(canvas, position);
+                drawPsdCircle(canvas);
                 break;
             case psdType_bottomLine:
                 drawBottomBorder(canvas);
+                drawText(canvas);
                 break;
         }
+    }
 
-        drawPsdCircle(canvas);
+    /**
+     * 画文字
+     *
+     * @param canvas
+     */
+    private void drawText(Canvas canvas) {
+        RectF f = new RectF();
+        String[] split = getText().toString().split("");
+        for (int i = 0; i < textLength; i++) {
+            f.set(i * divideLineWStartX, 0, (i + 1) * divideLineWStartX, height);
+
+            Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+            float distance = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom;
+            float baseline = f.centerY() + distance;
+            canvas.drawText(split[i + 1], f.centerX(), baseline, textPaint);
+        }
     }
 
     /**
@@ -249,10 +274,16 @@ public class PayPsdInputView extends AppCompatEditText {
     private void drawBottomBorder(Canvas canvas) {
 
         for (int i = 0; i < maxCount; i++) {
+            if (i < textLength || i == 0) {
+                bottomLinePaint.setColor(focusedColor);
+            } else {
+                bottomLinePaint.setColor(bottomLineColor);
+            }
+
             cX = startX + i * 2 * startX;
-            canvas.drawLine(cX - bottomLineLength / 2,
+            canvas.drawLine(cX - bottomLineLength / 2f,
                     height,
-                    cX + bottomLineLength / 2,
+                    cX + bottomLineLength / 2f,
                     height, bottomLinePaint);
         }
     }
