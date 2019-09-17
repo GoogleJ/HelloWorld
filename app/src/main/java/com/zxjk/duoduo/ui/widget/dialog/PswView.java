@@ -40,11 +40,12 @@ public class PswView extends View {
 
     public PswView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray tArray = context.obtainStyledAttributes(attrs, R.styleable.PwdTextView);//获取配置属性
-        mPsw_size = tArray.getDimensionPixelSize(R.styleable.PwdTextView_psw_size, 20);
-        mPsw_color = tArray.getColor(R.styleable.PwdTextView_psw_color, Color.BLACK);
-        mPsw_count = tArray.getInt(R.styleable.PwdTextView_psw_count, 6);
-        mBorder_color = tArray.getColor(R.styleable.PwdTextView_border_color, Color.parseColor("#9b9b9b"));
+        TypedArray tArray = context.obtainStyledAttributes(attrs, R.styleable.PswView);//获取配置属性
+        mPsw_size = tArray.getDimensionPixelSize(R.styleable.PswView_psw_size, 20);
+        mPsw_color = tArray.getColor(R.styleable.PswView_psw_color, Color.BLACK);
+        mPsw_count = tArray.getInt(R.styleable.PswView_psw_count, 6);
+        mBorder_color = tArray.getColor(R.styleable.PswView_border_color, Color.parseColor("#9b9b9b"));
+        tArray.recycle();
         init(context);
     }
 

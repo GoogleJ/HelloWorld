@@ -16,7 +16,7 @@ import com.trello.rxlifecycle3.components.support.RxFragment;
 import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.network.rx.RxException;
-import com.zxjk.duoduo.ui.LoginActivity;
+import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.TakePicUtil;
 
@@ -71,7 +71,7 @@ public class BaseFragment extends RxFragment {
             Constant.clear();
             MMKVUtils.getInstance().enCode("isLogin", false);
 
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            Intent intent = new Intent(getActivity(), NewLoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }

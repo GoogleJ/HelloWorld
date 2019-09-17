@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.zxjk.duoduo">
-
+    <!-- 获取机型信息权限 -->
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.NewLoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.minepage.RewardMotActivity"
             android:launchMode="singleTop"
@@ -81,34 +86,6 @@
             android:name=".ui.msgpage.MessageLocationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".export.ExportLoginActivty"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".export.ExportPaySuccessActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".export.ExportConfirmOrderActivty"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".export.ExportLauncherActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:permission="com.zxjk.duoduo.permission.PAY_HK"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="duoduoyoushe"
-                    android:scheme="zxjk" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".ui.minepage.AddWaysActivity"
             android:launchMode="singleTop"
@@ -397,10 +374,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.LoginActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.msgpage.SearchActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -423,15 +396,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.ForgetRegisterActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.SetUpPaymentPwdActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.RegisterActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -613,19 +578,64 @@
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
         </activity> <!-- 音视频配置结束 -->
         <!-- 融云push receiver，不定义无法收到通知 -->
+        <activity
+            android:name="com.umeng.socialize.media.WBShareCallBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" /> <!-- 小米 Push配置开始 < -->
+        <activity
+            android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="101784998" />
+            </intent-filter>
+        </activity> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="cf78026d76c3b2dcd0a8384061970712" />
+
         <meta-data
             android:name="com.vivo.push.api_key"
-            android:value="您的 vivo 推送平台生成 AppKey" /> <!-- 小米 Push配置开始 < -->
+            android:value="您的 vivo 推送平台生成 AppKey" />
         <meta-data
             android:name="com.vivo.push.app_id"
-            android:value="100744837" />
+            android:value="100744837" /> <!-- 小米push 配置结束 -->
+        <!-- OPPO push配置开始 -->
         <meta-data
             android:name="com.huawei.hms.client.appid"
-            android:value="100887731" />
-
+            android:value="100887731" /> <!-- OPPO push配置结束 -->
+        <!-- VIVO push 配置开始 -->
         <provider
             android:name=".DuoDuoFileProvider"
             android:authorities="com.zxjk.duoduo.FileProvider"
@@ -634,12 +644,12 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
-        </provider> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
+        </provider>
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"
             android:authorities="com.zxjk.duoduo.hms.update.provider"
             android:exported="false"
-            android:grantUriPermissions="true" /> <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
+            android:grantUriPermissions="true" />
         <provider
             android:name="com.huawei.updatesdk.fileprovider.UpdateSdkFileProvider"
             android:authorities="com.zxjk.duoduo.updateSdk.fileProvider"
@@ -663,16 +673,15 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </receiver> <!-- 小米push 配置结束 -->
-        <!-- OPPO push配置开始 -->
+        </receiver> <!-- VIVO push 配置结束 -->
+        <!-- 华为 push 配置开始 -->
         <receiver
             android:name="com.xiaomi.push.service.receivers.PingReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.xiaomi.push.PING_TIMER" />
             </intent-filter>
-        </receiver> <!-- OPPO push配置结束 -->
-        <!-- VIVO push 配置开始 -->
+        </receiver> <!-- BridgeActivity定义了HMS-SDK中一些跳转所需要的透明页面 -->
         <receiver
             android:name="io.rong.push.platform.mi.MiMessageReceiver"
             android:exported="true">
@@ -706,13 +715,13 @@
         </receiver>
 
         <service android:name=".service.RegisterBlockWalletService" />
-        <service android:name=".service.SendTransactionService" /> <!-- VIVO push 配置结束 -->
-        <!-- 华为 push 配置开始 -->
-        <service android:name=".service.SendHkbOrHkExchangeService" /> <!-- BridgeActivity定义了HMS-SDK中一些跳转所需要的透明页面 -->
+        <service android:name=".service.SendTransactionService" />
+        <service android:name=".service.SendHkbOrHkExchangeService" /> <!-- 第三方相关 :接收Push消息（注册、Push消息、Push连接状态）广播 -->
         <service android:name="com.amap.api.location.APSService" />
         <service
             android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true" />
+
         <service
             android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
             android:enabled="true"
@@ -731,100 +740,56 @@
             <intent-filter>
                 <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
-        </service> <!-- 第三方相关 :接收Push消息（注册、Push消息、Push连接状态）广播 -->
+        </service>
         <service
             android:name="com.vivo.push.sdk.service.CommandClientService"
             android:exported="true" />
         <service
             android:name="com.huawei.updatesdk.service.deamon.download.DownloadService"
             android:exported="false" />
+    </application>
 
-        <activity
-            android:name="com.umeng.socialize.media.WBShareCallBackActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:exported="false"></activity>
-        <activity
-            android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
-        <activity
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:launchMode="singleTask"
-            android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="101784998" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-    </application> <!-- 获取机型信息权限 -->
     <permission
         android:name="${applicationId}.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
     <permission
         android:name="com.zxjk.duoduo.permission.PROCESS_PUSH_MSG"
-        android:protectionLevel="signatureOrSystem" />
-
-    <permission android:name="com.zxjk.duoduo.permission.PAY_HK" /> <!-- 查看 Wi-Fi 状态 -->
+        android:protectionLevel="signatureOrSystem" /> <!-- 查看 Wi-Fi 状态 -->
+    <permission android:name="com.zxjk.duoduo.permission.PAY_HK" /> <!-- 查看网络状态 -->
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
-        tools:ignore="ProtectedPermissions" /> <!-- 查看网络状态 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 录音 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 控制振动器 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 防止设备休眠 -->
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 录音 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 控制振动器 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 防止设备休眠 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取联系人信息，demo中演示发送通讯录消息 -->
+        tools:ignore="ProtectedPermissions" /> <!-- 获取联系人信息，demo中演示发送通讯录消息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 华为手机更新应用桌面角标需要的权限 -->
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" /> <!-- 华为手机更新应用桌面角标需要的权限 -->
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- OPPO push -->
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" /> <!-- 小米 push -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" /> <!-- 华为 push -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 第三方客户端调用多多支付 -->
+        tools:ignore="ProtectedPermissions" /> <!-- OPPO push -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- 小米 push -->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 华为 push -->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 第三方客户端调用多多支付 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
     <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
     <uses-permission android:name="${applicationId}.permission.MIPUSH_RECEIVE" />
-
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="com.zxjk.duoduo.permission.PROCESS_PUSH_MSG" />
 
 </manifest>

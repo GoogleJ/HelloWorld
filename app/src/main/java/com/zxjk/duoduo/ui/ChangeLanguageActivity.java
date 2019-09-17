@@ -40,7 +40,7 @@ public class ChangeLanguageActivity extends BaseActivity implements View.OnClick
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, NewLoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             return true;

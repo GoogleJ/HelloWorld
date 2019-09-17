@@ -37,7 +37,7 @@
     </declare-styleable>
 
 
-    <declare-styleable name="PwdTextView">
+    <declare-styleable name="PswView">
         <attr name="psw_size" format="dimension" />
         <attr name="psw_color" format="color" />
         <attr name="psw_count" format="integer" />

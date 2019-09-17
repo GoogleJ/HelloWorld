@@ -20,7 +20,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxException;
-import com.zxjk.duoduo.ui.LoginActivity;
+import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.TakePicUtil;
 
@@ -84,8 +84,7 @@ public class BaseActivity extends RxAppCompatActivity {
                     });
             return;
         }
-        rxPermissions.request(permissions)
-                .compose(rxPermissions.ensureEachCombined(permissions))
+        rxPermissions.requestEachCombined(permissions)
                 .subscribe(granted -> {
                     if (!granted.granted) ToastUtils.showShort("请开启相关权限");
 
@@ -108,7 +107,7 @@ public class BaseActivity extends RxAppCompatActivity {
         Constant.clear();
         MMKVUtils.getInstance().enCode("isLogin", false);
 
-        Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
+        Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

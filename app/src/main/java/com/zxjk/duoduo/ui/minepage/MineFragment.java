@@ -25,7 +25,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
-import com.zxjk.duoduo.ui.LoginActivity;
+import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.msgpage.MyQrCodeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -138,7 +138,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                                         MMKVUtils.getInstance().enCode("isLogin", false);
                                         Constant.clear();
                                         ToastUtils.showShort(R.string.login_out);
-                                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                        Intent intent = new Intent(getActivity(), NewLoginActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                     }, MineFragment.this::handleApiError);

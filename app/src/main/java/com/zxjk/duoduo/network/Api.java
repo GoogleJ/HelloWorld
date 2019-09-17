@@ -599,4 +599,8 @@ public interface Api {
     @POST("duoduo/redPackage/receiveNewPersonRedPackage")
     @FormUrlEncoded
     Observable<BaseResponse<GetRedNewPersonInfoResponse>> receiveNewPersonRedPackage(@Field("groupId") String groupId);
+
+    @POST("duoduo/customer/appUserRegisterAndLogin")
+    @FormUrlEncoded
+    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile, @Field("securityCode") String securityCode);
 }

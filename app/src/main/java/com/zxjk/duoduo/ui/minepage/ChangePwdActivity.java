@@ -14,7 +14,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.LoginActivity;
+import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
@@ -55,7 +55,7 @@ public class ChangePwdActivity extends BaseActivity {
                     MMKVUtils.getInstance().enCode("isLogin", false);
                     Constant.clear();
                     ToastUtils.showShort(R.string.login_out);
-                    Intent intent = new Intent(ChangePwdActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(ChangePwdActivity.this, NewLoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }, this::handleApiError);

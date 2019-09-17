@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_newlogin"
+    android:orientation="vertical"
+    tools:context=".ui.NewLoginActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:visibility="invisible"
+            android:padding="16dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ico_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvChangeLanguage"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="16dp"
+            android:text="@string/change_language"
+            android:textColor="#738399"
+            android:gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/ic_newlogin"
+        android:layout_marginBottom="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvTips1"
+        android:layout_marginStart="24dp"
+        android:text="@string/welcome"
+        android:textColor="@color/black"
+        android:textSize="27sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvTips2"
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        android:textColor="#8E949B"
+        android:visibility="invisible"
+        android:text="验证码已发送至 +86 176****0042"
+        android:layout_marginStart="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zxjk.duoduo.ui.widget.PayPsdInputView
+        android:id="@+id/ppivVerify"
+        android:imeOptions="actionDone"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginStart="24dp"
+        app:maxCount="6"
+        app:bottomLineColor="#3296F8"
+        app:psdType="bottomLine"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <LinearLayout
+        android:id="@+id/llPhone"
+        android:layout_marginEnd="160dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/llContrary"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvContrary"
+                    android:textSize="15sp"
+                    android:text="+86"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_marginStart="6dp"
+                    android:src="@drawable/ic_downarrow_newlogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:textSize="16.5sp"
+                android:paddingStart="8dp"
+                android:maxLength="11"
+                android:paddingBottom="4dp"
+                android:textColorHint="#ACB4C2"
+                android:hint="@string/input_phone"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="12dp"
+            android:background="#B8C0C1"
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:background="@drawable/shape_theme"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_width="144dp"
+        android:text="@string/next"
+        android:textColor="@color/white"
+        android:layout_height="48dp" />
+
+</LinearLayout>

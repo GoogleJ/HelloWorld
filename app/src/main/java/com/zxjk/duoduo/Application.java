@@ -26,7 +26,7 @@ import com.zxjk.duoduo.bean.DaoSession;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.ui.LoginActivity;
+import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.BasePluginExtensionModule;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
@@ -195,7 +195,7 @@ public class Application extends android.app.Application {
                 Constant.clear();
                 MMKVUtils.getInstance().enCode("isLogin", false);
 
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), NewLoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }

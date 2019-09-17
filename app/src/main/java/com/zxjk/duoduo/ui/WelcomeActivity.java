@@ -14,8 +14,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.LoginResponse;
-import com.zxjk.duoduo.export.ExportConfirmOrderActivty;
-import com.zxjk.duoduo.export.ExportLoginActivty;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -38,7 +36,7 @@ public class WelcomeActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(aLong -> {
-                        startActivity(new Intent(this, LoginActivity.class));
+                        startActivity(new Intent(this, NewLoginActivity.class));
                         finish();
                     });
         }
@@ -60,30 +58,6 @@ public class WelcomeActivity extends BaseActivity {
             }
         }
 
-        if (getIntent().getBooleanExtra("export", false)) {
-            long date2 = TimeUtils.getNowMills();
-            long date1 = MMKVUtils.getInstance().decodeLong("date1");
-            if (MMKVUtils.getInstance().decodeBool("isLogin") &&
-                    ((date2 - date1) / (24 * 60 * 60 * 1000) < 7)) {
-                Constant.currentUser =
-                        MMKVUtils.getInstance().decodeParcelable("login");
-                Constant.token = Constant.currentUser.getToken();
-                Constant.userId = Constant.currentUser.getId();
-                getIntent().setClass(this, ExportConfirmOrderActivty.class);
-            } else {
-                getIntent().setClass(this, ExportLoginActivty.class);
-            }
-
-            Observable.timer(2000, TimeUnit.MILLISECONDS)
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver())
-                    .subscribe(l -> {
-                        startActivity(getIntent());
-                        finish();
-                    });
-            return;
-        }
-
         checkUserState();
     }
 
@@ -103,7 +77,7 @@ public class WelcomeActivity extends BaseActivity {
                     MMKVUtils.getInstance().enCode("isLogin", false);
                     Constant.clear();
                     ToastUtils.showShort(getString(R.string.login_again));
-                    Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
@@ -122,7 +96,7 @@ public class WelcomeActivity extends BaseActivity {
                     MMKVUtils.getInstance().enCode("isLogin", false);
                     Constant.clear();
                     ToastUtils.showShort(getString(R.string.login_again));
-                    Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
@@ -131,7 +105,7 @@ public class WelcomeActivity extends BaseActivity {
         } else {
             ToastUtils.showShort(getString(R.string.login_again));
             MMKVUtils.getInstance().enCode("isLogin", false);
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, NewLoginActivity.class));
             finish();
         }
     }

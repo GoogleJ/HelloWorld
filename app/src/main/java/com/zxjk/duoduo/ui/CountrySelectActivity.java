@@ -30,7 +30,6 @@ public class CountrySelectActivity extends BaseActivity {
 
     RecyclerView lv_list;
     ArrayList<CountryEntity> allCountryCodeList;
-    private static final String EXTRA_DATA = "data";
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
@@ -56,7 +55,7 @@ public class CountrySelectActivity extends BaseActivity {
         SelectContryAdapter selectContryAdapter = new SelectContryAdapter();
         selectContryAdapter.setOnClickListener(entity -> {
             Intent intent = new Intent();
-            intent.putExtra(EXTRA_DATA, entity);
+            intent.putExtra("country", entity);
             setResult(Activity.RESULT_OK, intent);
             finish();
         });
