@@ -25,7 +25,6 @@ public class PermissionInfoBean implements Parcelable {
     private String createTime;
     private String updateTime;
     private String openBanned;
-    private String openForbidden;
     private String nick;
     private String headPortrait;
     private String openAudio;
@@ -112,14 +111,6 @@ public class PermissionInfoBean implements Parcelable {
         this.openBanned = openBanned;
     }
 
-    public String getOpenForbidden() {
-        return openForbidden;
-    }
-
-    public void setOpenForbidden(String openForbidden) {
-        this.openForbidden = openForbidden;
-    }
-
     public String getNick() {
         return nick;
     }
@@ -150,7 +141,6 @@ public class PermissionInfoBean implements Parcelable {
         dest.writeString(this.createTime);
         dest.writeString(this.updateTime);
         dest.writeString(this.openBanned);
-        dest.writeString(this.openForbidden);
         dest.writeString(this.nick);
         dest.writeString(this.headPortrait);
         dest.writeString(this.openAudio);
@@ -170,7 +160,6 @@ public class PermissionInfoBean implements Parcelable {
         this.createTime = in.readString();
         this.updateTime = in.readString();
         this.openBanned = in.readString();
-        this.openForbidden = in.readString();
         this.nick = in.readString();
         this.headPortrait = in.readString();
         this.openAudio = in.readString();

@@ -418,16 +418,6 @@ public class GroupChatInformationActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    //管理员禁看管理
-    public void managerSee(View view) {
-        GroupResponse.PermissionBean permission = group.getGroupPermission();
-        if (permission.getOpenForbidden().equals("0")) {
-            ToastUtils.showShort(R.string.nopermisson);
-            return;
-        }
-        ToastUtils.showShort(R.string.developing);
-    }
-
     //管理员视频直播
     public void managerVideo(View view) {
         GroupResponse.PermissionBean permission = group.getGroupPermission();

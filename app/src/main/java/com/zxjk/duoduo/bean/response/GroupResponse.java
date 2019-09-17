@@ -165,7 +165,6 @@ public class GroupResponse implements Serializable {
         private String createTime;
         private String updateTime;
         private String openBanned;
-        private String openForbidden;
         private String nick;
         private String headPortrait;
         private String openAudio;
@@ -225,14 +224,6 @@ public class GroupResponse implements Serializable {
 
         public void setOpenBanned(String openBanned) {
             this.openBanned = openBanned;
-        }
-
-        public String getOpenForbidden() {
-            return openForbidden;
-        }
-
-        public void setOpenForbidden(String openForbidden) {
-            this.openForbidden = openForbidden;
         }
 
         public String getNick() {

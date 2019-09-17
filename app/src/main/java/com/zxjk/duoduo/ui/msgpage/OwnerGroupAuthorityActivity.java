@@ -43,7 +43,6 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
     private Switch sw1;
     private Switch sw2;
     private Switch sw3;
-    private Switch sw4;
 
     private GroupResponse group;
 
@@ -69,7 +68,6 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
         sw1 = findViewById(R.id.sw1);
         sw2 = findViewById(R.id.sw2);
         sw3 = findViewById(R.id.sw3);
-        sw4 = findViewById(R.id.sw4);
     }
 
     private void initData() {
@@ -93,10 +91,6 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
         sw3.setOnClickListener(v -> {
             if (currentCheckedB != null)
                 currentCheckedB.setOpenBanned(sw3.isChecked() ? "1" : "0");
-        });
-        sw4.setOnClickListener(v -> {
-            if (currentCheckedB != null)
-                currentCheckedB.setOpenForbidden(sw4.isChecked() ? "1" : "0");
         });
     }
 
@@ -182,7 +176,6 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
                         sw1.setChecked(!b.getOpenAudio().equals("0"));
                         sw2.setChecked(!b.getOpenVideo().equals("0"));
                         sw3.setChecked(!b.getOpenBanned().equals("0"));
-                        sw4.setChecked(!b.getOpenForbidden().equals("0"));
                     });
                 }
             }

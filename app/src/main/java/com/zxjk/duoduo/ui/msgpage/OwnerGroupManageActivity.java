@@ -112,11 +112,6 @@ public class OwnerGroupManageActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    //禁看设置
-    public void watchSetting(View view) {
-        ToastUtils.showShort(R.string.developing);
-    }
-
     @Override
     public void finish() {
         Intent intent = new Intent();

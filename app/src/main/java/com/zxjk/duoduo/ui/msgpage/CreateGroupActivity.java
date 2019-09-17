@@ -497,7 +497,6 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                         PermissionInfoBean bean = new PermissionInfoBean();
                         bean.setGroupId(group.getGroupInfo().getId());
                         bean.setCustomerId(b.getId());
-                        bean.setOpenForbidden("0");
                         bean.setOpenVideo("0");
                         bean.setOpenAudio("0");
                         bean.setOpenBanned("0");
