@@ -135,6 +135,30 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.Vi
                     ivItemDetaillist.setImageResource(R.drawable.ic_type7_12_13);
                     tvItemDetaillistName.setText("交易所手续费收取");
                     break;
+                case 14:
+                    ivItemDetaillist.setImageResource(R.drawable.ic_type11);
+                    tvItemDetaillistName.setText("签到");
+                    break;
+                case 15:
+                    ivItemDetaillist.setImageResource(R.drawable.ic_type11);
+                    tvItemDetaillistName.setText("实名认证");
+                    break;
+                case 16:
+                    ivItemDetaillist.setImageResource(R.drawable.ic_type11);
+                    tvItemDetaillistName.setText("注册奖励");
+                    break;
+                case 17:
+                    ivItemDetaillist.setImageResource(R.drawable.ic_type11);
+                    tvItemDetaillistName.setText("活动奖励");
+                    break;
+                case 18:
+                    ivItemDetaillist.setImageResource(R.drawable.ic_type11);
+                    tvItemDetaillistName.setText("活动奖励");
+                    break;
+                case 19:
+                    ivItemDetaillist.setImageResource(R.drawable.ic_type11);
+                    tvItemDetaillistName.setText("活动奖励");
+                    break;
                 default:
                     ivItemDetaillist.setImageResource(R.drawable.ic_detail_item_type5);
                     tvItemDetaillistName.setText("其他");
