@@ -33,14 +33,14 @@ public class ImagePagerIndicator extends View implements IPagerIndicator {
     private void init(Context context) {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.indicator_msg);
-        mYOffset = UIUtil.dip2px(context, -2);
+        mYOffset = UIUtil.dip2px(context, 0.5);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawBitmap(bitmap, currentXCenter - bitmap.getWidth() / 2, getHeight() - mYOffset - bitmap.getHeight(), mPaint);
+        canvas.drawBitmap(bitmap, currentXCenter - bitmap.getWidth() / 2f, getHeight() - mYOffset - bitmap.getHeight(), mPaint);
     }
 
     @Override

@@ -11,8 +11,8 @@
 
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/indicator"
-            android:layout_width="128dp"
-            android:layout_height="40dp"
+            android:layout_width="144dp"
+            android:layout_height="45dp"
             android:layout_marginStart="16dp" />
 
         <ImageView

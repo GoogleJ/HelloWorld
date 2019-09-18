@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class RedPackageRecordFragment extends BaseFragment {
 
         rootView = inflater.inflate(R.layout.redpackagerecord, container, false);
         swipeRefreshLayout = rootView.findViewById(R.id.refresh);
+        swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         redPackageRecoderAdapter = new RedPackageRecoderAdapter(data);

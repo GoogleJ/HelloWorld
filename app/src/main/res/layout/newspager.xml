@@ -60,12 +60,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <net.lucode.hackware.magicindicator.MagicIndicator
-                    android:id="@+id/indicatorDetail"
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_height="34dp">
+
+                    <net.lucode.hackware.magicindicator.MagicIndicator
+                        android:id="@+id/indicatorDetail"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp" />
+
+                    <ImageView
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_newspager_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -92,12 +107,27 @@
         android:background="@color/white"
         android:visibility="invisible">
 
-        <net.lucode.hackware.magicindicator.MagicIndicator
-            android:id="@+id/indicatorTop"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="34dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            android:layout_height="34dp">
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/indicatorTop"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp" />
+
+            <ImageView
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_newspager_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

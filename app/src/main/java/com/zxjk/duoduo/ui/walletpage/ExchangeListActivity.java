@@ -2,24 +2,28 @@ package com.zxjk.duoduo.ui.walletpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioGroup;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
-import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
+import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
 import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.walletpage.adapter.ExchangeListAdapter;
 import com.zxjk.duoduo.utils.CommonUtils;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -171,6 +175,7 @@ public class ExchangeListActivity extends BaseActivity {
 
         rgExchangeTop = findViewById(R.id.rgExchangeTop);
         refreshLayout = findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
         recyclerExchangeMyOrder = findViewById(R.id.recyclerExchangeMyOrder);
         recyclerExchangeMyOrder.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerExchangeMyOrder.setAdapter(mAdapter);

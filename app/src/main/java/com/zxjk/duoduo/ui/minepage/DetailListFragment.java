@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.minepage;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,7 @@ public class DetailListFragment extends BaseFragment {
         tvRedListTips1 = rootView.findViewById(R.id.tvRedListTips1);
         tvRedListMoney = rootView.findViewById(R.id.tvRedListMoney);
         refresh = rootView.findViewById(R.id.refresh);
+        refresh.setColorSchemeColors(Color.parseColor("#4585F5"));
         recycler = rootView.findViewById(R.id.recycler);
         adapter = new DetailListAdapter();
         adapter.setData(new ArrayList<>());

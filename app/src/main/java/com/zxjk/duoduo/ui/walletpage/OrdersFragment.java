@@ -2,6 +2,7 @@ package com.zxjk.duoduo.ui.walletpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.walletpage.adapter.BlockOrderAdapter;
@@ -45,6 +46,7 @@ public class OrdersFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = new SwipeRefreshLayout(getContext());
+        ((SwipeRefreshLayout) rootView).setColorSchemeColors(Color.parseColor("#4585F5"));
         recyclerView = new RecyclerView(getContext());
         recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         ((SwipeRefreshLayout) rootView).addView(recyclerView);

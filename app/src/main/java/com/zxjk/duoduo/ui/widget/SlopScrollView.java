@@ -2,17 +2,11 @@ package com.zxjk.duoduo.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.ViewConfigurationCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class SlopScrollView extends NestedScrollView {
     private int scrollSlop;

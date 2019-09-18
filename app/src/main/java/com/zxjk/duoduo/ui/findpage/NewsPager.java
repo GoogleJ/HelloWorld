@@ -3,8 +3,10 @@ package com.zxjk.duoduo.ui.findpage;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,8 +73,7 @@ public class NewsPager extends BaseFragment {
     private FrameLayout flIndicatorDetail;
     private FrameLayout flIndicatorTop;
     private TextView tvBanner;
-    //    private int[] detailTitles = {R.string.boutique, R.string.news, R.string.quick_news};
-    private int[] detailTitles = {R.string.boutique, R.string.quick_news};
+    private int[] detailTitles = {R.string.boutique, R.string.quick_news, R.string.mochat_social, R.string.video};
     private boolean hasInitHeight;
 
     private int currentBannerIndex;
@@ -237,21 +238,22 @@ public class NewsPager extends BaseFragment {
     private void initPager() {
         detailPagerAdapter = new DetailPagerAdapter();
         pagerDetail.setAdapter(detailPagerAdapter);
+        pagerDetail.setOffscreenPageLimit(detailTitles.length);
     }
 
     private void initIndicator() {
         CommonNavigator navigator1 = new CommonNavigator(getContext());
-        navigator1.setAdjustMode(true);
+//        navigator1.setAdjustMode(true);
         navigator1.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
-                return 2;
+                return detailTitles.length;
             }
 
             @Override
             public IPagerTitleView getTitleView(Context context, int index) {
                 SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
-                pagerTitleView.setTextSize(15);
+                pagerTitleView.setTextSize(15.5f);
                 pagerTitleView.setNormalColor(ContextCompat.getColor(getContext(), R.color.msgTitle));
                 pagerTitleView.setSelectedColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
                 pagerTitleView.setText(detailTitles[index]);
@@ -269,7 +271,7 @@ public class NewsPager extends BaseFragment {
         });
 
         CommonNavigator navigator2 = new CommonNavigator(getContext());
-        navigator2.setAdjustMode(true);
+//        navigator2.setAdjustMode(true);
         navigator2.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -279,7 +281,7 @@ public class NewsPager extends BaseFragment {
             @Override
             public IPagerTitleView getTitleView(Context context, int index) {
                 SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
-                pagerTitleView.setTextSize(15);
+                pagerTitleView.setTextSize(15.5f);
                 pagerTitleView.setNormalColor(ContextCompat.getColor(getContext(), R.color.msgTitle));
                 pagerTitleView.setSelectedColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
                 pagerTitleView.setText(detailTitles[index]);
@@ -366,6 +368,13 @@ public class NewsPager extends BaseFragment {
                 adapter = adapters.get(position);
             }
 
+            TextView emptyView = new TextView(getContext());
+            emptyView.setGravity(Gravity.CENTER);
+            emptyView.setText("暂无数据源，敬请期待");
+            emptyView.setTextSize(15);
+            emptyView.setTextColor(ContextCompat.getColor(getContext(), R.color.textcolor2));
+            adapter.setEmptyView(emptyView);
+
             recycler.setAdapter(adapter);
             adapter.setEnableLoadMore(true);
             adapter.isFirstOnly(true);
@@ -376,44 +385,48 @@ public class NewsPager extends BaseFragment {
             adapter.setOnLoadMoreListener(() -> loadmore(position, finalType), recycler);
 
             container.addView(swipeRefreshLayout);
+            swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
 
-            swipeRefreshLayout.setOnRefreshListener(() -> api.blockChainNews(finalType, "0", String.valueOf(COUNT_PER_PAGE))
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver())
-                    .compose(RxSchedulers.normalTrans())
-                    .subscribe(list -> {
-                        if (swipeRefreshLayout.isRefreshing()) {
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                        adapter.replaceData(list);
-                        if (list.size() != COUNT_PER_PAGE) {
-                            adapter.loadMoreEnd(false);
-                        }
-                    }, t -> {
-                        if (swipeRefreshLayout.isRefreshing()) {
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                        adapter.loadMoreFail();
-                    }));
-
-            api.blockChainNews(type, "0", String.valueOf(COUNT_PER_PAGE))
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver())
-                    .compose(RxSchedulers.normalTrans())
-                    .subscribe(list -> {
-                        if (swipeRefreshLayout.isRefreshing()) {
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                        adapter.setNewData(list);
-                        if (list.size() != COUNT_PER_PAGE) {
-                            adapter.loadMoreEnd(false);
-                        }
-                    }, t -> {
-                        if (swipeRefreshLayout.isRefreshing()) {
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                        adapter.loadMoreFail();
-                    });
+            swipeRefreshLayout.setEnabled(false);
+            if (position == 0 || position == 1) {
+                swipeRefreshLayout.setEnabled(true);
+                api.blockChainNews(type, "0", String.valueOf(COUNT_PER_PAGE))
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.ioObserver())
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribe(list -> {
+                            if (swipeRefreshLayout.isRefreshing()) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            adapter.setNewData(list);
+                            if (list.size() != COUNT_PER_PAGE) {
+                                adapter.loadMoreEnd(false);
+                            }
+                        }, t -> {
+                            if (swipeRefreshLayout.isRefreshing()) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            adapter.loadMoreFail();
+                        });
+                swipeRefreshLayout.setOnRefreshListener(() -> api.blockChainNews(finalType, "0", String.valueOf(COUNT_PER_PAGE))
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.ioObserver())
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribe(list -> {
+                            if (swipeRefreshLayout.isRefreshing()) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            adapter.replaceData(list);
+                            if (list.size() != COUNT_PER_PAGE) {
+                                adapter.loadMoreEnd(false);
+                            }
+                        }, t -> {
+                            if (swipeRefreshLayout.isRefreshing()) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            adapter.loadMoreFail();
+                        }));
+            }
 
             return swipeRefreshLayout;
         }

@@ -781,4 +781,6 @@
     <string name="picture_forbidden">本会话禁止发送图片</string>
     <string name="cant_sendPic">禁止发图片</string>
     <string name="cant_sendUrl">禁止发链接</string>
+    <string name="mochat_social">MO客社区</string>
+    <string name="video">视频</string>
 </resources>
