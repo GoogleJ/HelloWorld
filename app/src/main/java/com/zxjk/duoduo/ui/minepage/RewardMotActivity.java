@@ -35,6 +35,12 @@ public class RewardMotActivity extends BaseActivity implements View.OnClickListe
     private TextView tvMission3;
     private TextView tvMission4;
     private TextView tvMission5;
+    private TextView tvTips1;
+    private TextView tvTips2;
+    private TextView tvTips3;
+    private TextView tvTips4;
+    private TextView tvTips5;
+
     private RecyclerView recyclerSign;
 
     private Api api;
@@ -67,6 +73,11 @@ public class RewardMotActivity extends BaseActivity implements View.OnClickListe
         tvMission3 = findViewById(R.id.tvMission3);
         tvMission4 = findViewById(R.id.tvMission4);
         tvMission5 = findViewById(R.id.tvMission5);
+        tvTips1 = findViewById(R.id.tvTips1);
+        tvTips2 = findViewById(R.id.tvTips2);
+        tvTips3 = findViewById(R.id.tvTips3);
+        tvTips4 = findViewById(R.id.tvTips4);
+        tvTips5 = findViewById(R.id.tvTips5);
 
         tvMission1.setOnClickListener(this);
         tvMission2.setOnClickListener(this);
@@ -201,28 +212,29 @@ public class RewardMotActivity extends BaseActivity implements View.OnClickListe
         for (int i = 0; i < signListResponse.getPointsList().size(); i++) {
             GetSignListResponse.PointsListBean b = signListResponse.getPointsList().get(i);
 
-            switch (b.getPointType()) {
-                case "0":
-                    setUI(tvMission1, b);
+            switch (i) {
+                case 0:
+                    setUI(tvMission1,tvTips1, b);
                     break;
-                case "1":
-                    setUI(tvMission2, b);
+                case 1:
+                    setUI(tvMission2,tvTips2, b);
                     break;
-                case "2":
-                    setUI(tvMission3, b);
+                case 2:
+                    setUI(tvMission3,tvTips3, b);
                     break;
-                case "3":
-                    setUI(tvMission4, b);
+                case 3:
+                    setUI(tvMission4,tvTips4, b);
                     break;
-                case "4":
-                    setUI(tvMission5, b);
+                case 4:
+                    setUI(tvMission5,tvTips5, b);
                     break;
             }
         }
     }
 
     //0未领取 1已领取 2已领取完
-    private void setUI(TextView tv, GetSignListResponse.PointsListBean b) {
+    private void setUI(TextView tv, TextView tips, GetSignListResponse.PointsListBean b) {
+        tips.setText(b.getActivityDesc());
         if (b.getReceiveStatus().equals("0")) {
             tv.setTextColor(Color.parseColor("#ffffff"));
             tv.setText("领取");

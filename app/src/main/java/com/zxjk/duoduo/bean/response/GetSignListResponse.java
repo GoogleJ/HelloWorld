@@ -44,27 +44,27 @@ public class GetSignListResponse {
     public static class PointsListBean {
         /**
          * id : 1
-         * customerId : 5
-         * createTime : 1567353600000
-         * updateTime : 1560249868733
-         * points : 100
-         * receiveStatus : 0
-         * pointType : 0
-         * isDelete : 0
+         * customerId :
+         * createTime :
+         * updateTime :
+         * points : 0.0
+         * receiveStatus :
+         * pointType :
+         * isDelete :
          * counts : 0
+         * receivePoints : 0.0
+         * activity : 实名验证
+         * activityDesc : 用户实名验证审核通过能获得100MoT
+         * rewardAmount : 100.0
+         * number : 0
          */
 
         private String receiveStatus;
-        private String counts;
         private String pointType;
-
-        public String getPointType() {
-            return pointType;
-        }
-
-        public void setPointType(String pointType) {
-            this.pointType = pointType;
-        }
+        private int counts;
+        private String activity;
+        private String activityDesc;
+        private int number;
 
         public String getReceiveStatus() {
             return receiveStatus;
@@ -74,12 +74,44 @@ public class GetSignListResponse {
             this.receiveStatus = receiveStatus;
         }
 
-        public String getCounts() {
+        public String getPointType() {
+            return pointType;
+        }
+
+        public void setPointType(String pointType) {
+            this.pointType = pointType;
+        }
+
+        public int getCounts() {
             return counts;
         }
 
-        public void setCounts(String counts) {
+        public void setCounts(int counts) {
             this.counts = counts;
+        }
+
+        public String getActivity() {
+            return activity;
+        }
+
+        public void setActivity(String activity) {
+            this.activity = activity;
+        }
+
+        public String getActivityDesc() {
+            return activityDesc;
+        }
+
+        public void setActivityDesc(String activityDesc) {
+            this.activityDesc = activityDesc;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public void setNumber(int number) {
+            this.number = number;
         }
     }
 

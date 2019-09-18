@@ -250,6 +250,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/tvTips1"
                         android:text="@string/mission_tip2"
                         android:layout_marginTop="8dp"
                         android:layout_below="@id/tv1"
@@ -293,6 +294,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/tvTips2"
                         android:text="@string/mission_tip4"
                         android:layout_marginTop="8dp"
                         android:layout_below="@id/tv2"
@@ -336,6 +338,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/tvTips3"
                         android:text="@string/mission_tip6"
                         android:layout_marginTop="8dp"
                         android:layout_below="@id/tv3"
@@ -379,6 +382,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/tvTips4"
                         android:text="@string/mission_tip8"
                         android:layout_marginTop="8dp"
                         android:layout_below="@id/tv4"
@@ -422,6 +426,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/tvTips5"
                         android:text="@string/mission_tip10"
                         android:layout_marginTop="8dp"
                         android:layout_below="@id/tv5"
