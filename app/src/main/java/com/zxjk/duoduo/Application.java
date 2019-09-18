@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,10 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.dongtu.sdk.model.DTImage;
+import com.dongtu.store.DongtuStore;
+import com.dongtu.store.visible.messaging.DTStoreSendMessageListener;
+import com.dongtu.store.visible.messaging.DTStoreSticker;
 import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -30,6 +35,7 @@ import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.BasePluginExtensionModule;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.EmoticonMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
@@ -40,6 +46,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnTextMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnVoiceMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BusinessCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.DuoDuoMessageProvider;
+import com.zxjk.duoduo.ui.msgpage.rongIM.provider.EmoticonMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GameResultMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GroupCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.MInfoNotificationMsgItemProvider;
@@ -58,6 +65,7 @@ import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.widget.provider.SightMessageItemProvider;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.SightMessage;
 import io.rong.push.RongPushClient;
@@ -69,8 +77,6 @@ public class Application extends android.app.Application {
 
     public static OSS oss;
 
-    private static final String WX_SHARE_ID = "wx95412ba899539c33";
-
     public static DaoSession daoSession;
 
     private long conversationOpenTime;
@@ -78,6 +84,8 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initDongTu();
 
         //init MMKV
         MMKV.initialize(this);
@@ -102,6 +110,10 @@ public class Application extends android.app.Application {
 
         //Umeng
         initUmeng();
+    }
+
+    private void initDongTu() {
+        DongtuStore.initConfig(this, "23033cc37f4145b4b23c728d1b939b5e", "abb38d2534b94657927256b6dce1056c");
     }
 
     private void initUmeng() {
@@ -221,6 +233,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageType(SightMessage.class);
         RongIM.registerMessageType(GameResultMessage.class);
         RongIM.registerMessageType(DuoDuoMessage.class);
+        RongIM.registerMessageType(EmoticonMessage.class);
         RongIM.registerMessageTemplate(new MInfoNotificationMsgItemProvider());
         RongIM.registerMessageTemplate(new SightMessageItemProvider());
         RongIM.registerMessageTemplate(new BurnVoiceMessageProvider());
@@ -233,6 +246,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new DuoDuoMessageProvider());
         RongIM.registerMessageTemplate(new BurnTextMessageProvider());
         RongIM.registerMessageTemplate(new BurnImageMessageItemProvider());
+        RongIM.registerMessageTemplate(new EmoticonMessageProvider());
         RongIM.getInstance().setMessageAttachedUserInfo(true);
         RongIM.getInstance().enableNewComingMessageIcon(true);//显示新消息提醒
         RongIM.getInstance().enableUnreadMessageIcon(true);//显示未读消息数目

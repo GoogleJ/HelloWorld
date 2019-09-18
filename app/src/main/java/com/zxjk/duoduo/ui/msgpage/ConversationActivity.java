@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,12 @@ import androidx.fragment.app.Fragment;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.dongtu.sdk.model.DTImage;
+import com.dongtu.store.DongtuStore;
+import com.dongtu.store.visible.messaging.DTStoreSendMessageListener;
+import com.dongtu.store.visible.messaging.DTStoreSticker;
+import com.dongtu.store.widget.DTStoreEditView;
+import com.dongtu.store.widget.DTStoreKeyboard;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Application;
@@ -36,6 +43,7 @@ import com.zxjk.duoduo.ui.EnlargeImageActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.CusConversationFragment;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.EmoticonMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
@@ -43,6 +51,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.IExtensionClickAdapter;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
 
 import java.util.ArrayList;
@@ -58,6 +67,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import io.rong.imkit.DectedRl;
 import io.rong.imkit.RongExtension;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.plugin.IPluginModule;
@@ -120,6 +130,19 @@ public class ConversationActivity extends BaseActivity {
      */
     private Disposable screenCapture;
 
+    /**
+     * 表情包控件
+     */
+    private DTStoreKeyboard dtStoreKeyboard;
+    /**
+     * 表情包控件
+     */
+    private DTStoreEditView dtStoreEditView;
+    /**
+     * 表情包控件
+     */
+    private DectedRl rl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,6 +193,64 @@ public class ConversationActivity extends BaseActivity {
         handleBurnAfterReadForReceivers();
 
         sendFakeC2CMsg();
+
+        initDongTu();
+    }
+
+    private void initDongTu() {
+        dtStoreKeyboard = findViewById(R.id.dtStoreKeyboard);
+        dtStoreEditView = findViewById(R.id.rc_edit_text);
+        DongtuStore.setKeyboard(dtStoreKeyboard);
+        DongtuStore.setEditText(dtStoreEditView);
+
+        fragment.setClickAdapter(new IExtensionClickAdapter() {
+            @Override
+            public void onSendToggleClick(View view, String s) {
+                super.onSendToggleClick(view, s);
+            }
+
+            @Override
+            public void onPluginClicked(IPluginModule iPluginModule, int i) {
+                super.onPluginClicked(iPluginModule, i);
+            }
+        });
+
+        extension.setEmoticonTabBarEnable(false);
+        ImageView mEmoticonToggle = findViewById(R.id.rc_emoticon_toggle);
+        mEmoticonToggle.performClick();
+        rl = findViewById(R.id.rlRongEmoticon);
+        rl.setVisibilityChange(visiable -> {
+            if (visiable) dtStoreKeyboard.setVisibility(View.VISIBLE);
+            else dtStoreKeyboard.setVisibility(View.GONE);
+        });
+        extension.collapseExtension();
+
+        DongtuStore.setSendMessageListener(new DTStoreSendMessageListener() {
+            @Override
+            public void onSendSticker(DTStoreSticker dtStoreSticker) {
+                EmoticonMessage emoticonMessage = new EmoticonMessage();
+                emoticonMessage.setIsAnimated("0");
+                emoticonMessage.setIcon(dtStoreSticker.code);
+                Message message = Message.obtain(targetId, conversationType.equals("private") ? Conversation.ConversationType.PRIVATE : Conversation.ConversationType.GROUP
+                        , emoticonMessage);
+                RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+            }
+
+            @Override
+            public void onSendDTImage(DTImage dtImage) {
+                EmoticonMessage emoticonMessage = new EmoticonMessage();
+                emoticonMessage.setIsAnimated("1");
+                emoticonMessage.setIcon(dtImage.getImage());
+                emoticonMessage.setIconText(dtImage.getText());
+                emoticonMessage.setIconId(dtImage.getId());
+                emoticonMessage.setWidth(String.valueOf(dtImage.getWidth()));
+                emoticonMessage.setHeight(String.valueOf(dtImage.getHeight()));
+
+                Message message = Message.obtain(targetId, conversationType.equals("private") ? Conversation.ConversationType.PRIVATE : Conversation.ConversationType.GROUP
+                        , emoticonMessage);
+                RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+            }
+        });
     }
 
     private void sendFakeC2CMsg() {
@@ -223,6 +304,9 @@ public class ConversationActivity extends BaseActivity {
         } else if (message.getContent() instanceof VoiceMessage) {
             VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
             voiceMessage.setExtra(s);
+        } else if (message.getContent() instanceof EmoticonMessage) {
+            EmoticonMessage emoticonMessage = (EmoticonMessage) message.getContent();
+            emoticonMessage.setExtra(s);
         }
     }
 
@@ -236,7 +320,7 @@ public class ConversationActivity extends BaseActivity {
         if (conversationInfo == null || conversationInfo.getMessageBurnTime() == -1) {
             map.put("MsgType", "NormalMsg");
         } else if (message.getObjectName().equals("RC:TxtMsg") || message.getObjectName().equals("RC:ImgMsg")
-                || message.getObjectName().equals("RC:VcMsg")) {
+                || message.getObjectName().equals("RC:VcMsg") || message.getObjectName().equals("app:emoticon")) {
             BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
             b.setMessageId(message.getMessageId());
             b.setBurnTime(System.currentTimeMillis() + (conversationInfo.getMessageBurnTime() * 1000));
@@ -304,6 +388,11 @@ public class ConversationActivity extends BaseActivity {
                             case "RC:VcMsg":
                                 VoiceMessage voiceMessage = (VoiceMessage) m.getContent();
                                 extra = voiceMessage.getExtra();
+                                break;
+                            case "app:emoticon":
+                                EmoticonMessage emoticonMessage = (EmoticonMessage) m.getContent();
+                                extra = emoticonMessage.getExtra();
+                                break;
                         }
 
                         if (TextUtils.isEmpty(extra)) {

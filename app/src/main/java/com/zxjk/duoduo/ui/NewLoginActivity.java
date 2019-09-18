@@ -35,6 +35,7 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.dongtu.store.DongtuStore;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.CountryEntity;
@@ -292,6 +293,7 @@ public class NewLoginActivity extends BaseActivity {
 
             @Override
             public void onSuccess(String userid) {
+                DongtuStore.setUserInfo(userid, Constant.currentUser.getNick(), null, "", "", Constant.currentUser.getMobile(), null);
                 MMKVUtils.getInstance().enCode("isLogin", true);
                 MMKVUtils.getInstance().enCode("date1", TimeUtils.getNowMills());
                 MMKVUtils.getInstance().enCode("login", Constant.currentUser);

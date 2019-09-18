@@ -37,6 +37,7 @@ dependencies {
     api 'com.googlecode.mp4parser:isoparser:1.1.21'
     api 'com.android.support:exifinterface:26.0.0'
     api project (':IMLib')
+    api project(':DongtuStoreSDK')
 }
 
 repositories {

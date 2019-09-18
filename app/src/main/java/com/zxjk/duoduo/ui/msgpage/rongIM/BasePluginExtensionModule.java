@@ -11,6 +11,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TakePhotoPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
 import java.util.List;
 import io.rong.imkit.DefaultExtensionModule;
+import io.rong.imkit.emoticon.IEmoticonTab;
 import io.rong.imkit.plugin.IPluginModule;
 import io.rong.imlib.model.Conversation;
 
@@ -38,4 +39,8 @@ public class BasePluginExtensionModule extends DefaultExtensionModule {
         return list;
     }
 
+    @Override
+    public List<IEmoticonTab> getEmoticonTabs() {
+        return null;
+    }
 }
