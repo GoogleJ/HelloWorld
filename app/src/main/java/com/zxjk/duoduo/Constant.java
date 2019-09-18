@@ -48,6 +48,8 @@ public class Constant {
     //分享群二维码
     public static Bitmap shareGroupQR;
 
+    public static final String regUrl = "(([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[\\-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9\\.\\-]+|(?:www\\.|[\\-;:&=\\+\\$,\\w]+@)[A-Za-z0-9\\.\\-]+)((?:\\/[\\+~%\\/\\.\\w\\-_]*)?\\??(?:[\\-\\+=&;%@\\.\\w_]*)#?(?:[\\.\\!\\/\\\\\\w]*))?";
+
     public static void clear() {
         Constant.token = "";
         Constant.userId = "";

@@ -339,6 +339,24 @@ public class GroupResponse implements Serializable {
         private String groupOwnerName;
         private String isBanned;
         private String banFriend;
+        private String banSendPicture;
+        private String banSendLink;
+
+        public String getBanSendPicture() {
+            return banSendPicture;
+        }
+
+        public void setBanSendPicture(String banSendPicture) {
+            this.banSendPicture = banSendPicture;
+        }
+
+        public String getBanSendLink() {
+            return banSendLink;
+        }
+
+        public void setBanSendLink(String banSendLink) {
+            this.banSendLink = banSendLink;
+        }
 
         public String getIsBanned() {
             return isBanned;

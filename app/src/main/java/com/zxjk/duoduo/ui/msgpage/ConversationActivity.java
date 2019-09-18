@@ -16,6 +16,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.dongtu.sdk.model.DTImage;
@@ -33,6 +34,7 @@ import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
+import com.zxjk.duoduo.bean.SendUrlAndsendImgBean;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.db.OpenHelper;
 import com.zxjk.duoduo.network.Api;
@@ -195,6 +197,20 @@ public class ConversationActivity extends BaseActivity {
         sendFakeC2CMsg();
 
         initDongTu();
+
+        initPictureForbidden();
+    }
+
+    private void initPictureForbidden() {
+        fragment.setClickAdapter(new IExtensionClickAdapter() {
+            @Override
+            public void onSendToggleClick(View view, String s) {
+            }
+
+            @Override
+            public void onPluginClicked(IPluginModule iPluginModule, int i) {
+            }
+        });
     }
 
     private void initDongTu() {
@@ -202,18 +218,6 @@ public class ConversationActivity extends BaseActivity {
         dtStoreEditView = findViewById(R.id.rc_edit_text);
         DongtuStore.setKeyboard(dtStoreKeyboard);
         DongtuStore.setEditText(dtStoreEditView);
-
-        fragment.setClickAdapter(new IExtensionClickAdapter() {
-            @Override
-            public void onSendToggleClick(View view, String s) {
-                super.onSendToggleClick(view, s);
-            }
-
-            @Override
-            public void onPluginClicked(IPluginModule iPluginModule, int i) {
-                super.onPluginClicked(iPluginModule, i);
-            }
-        });
 
         extension.setEmoticonTabBarEnable(false);
         ImageView mEmoticonToggle = findViewById(R.id.rc_emoticon_toggle);
@@ -446,7 +450,7 @@ public class ConversationActivity extends BaseActivity {
             @Override
             public Message onSend(Message message) {
                 handleBurnAfterReadForSendersOnSend(message);
-                return message;
+                return handleMsgForbiden(message);
             }
 
             @Override
@@ -464,6 +468,25 @@ public class ConversationActivity extends BaseActivity {
         };
 
         RongIM.getInstance().setSendMessageListener(onSendMessageListener);
+    }
+
+    private Message handleMsgForbiden(Message message) {
+        if (!conversationType.equals("group")) {
+            return message;
+        }
+        if (message.getContent() instanceof TextMessage &&
+                groupInfo.getGroupInfo().getBanSendLink().equals("1")) {
+            TextMessage textMessage = (TextMessage) message.getContent();
+            if (RegexUtils.isMatch(Constant.regUrl, textMessage.getContent())) {
+                ToastUtils.showShort(R.string.url_forbidden);
+                return null;
+            }
+        } else if (message.getContent() instanceof ImageMessage &&
+                groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
+            ToastUtils.showShort(R.string.picture_forbidden);
+            return null;
+        }
+        return message;
     }
 
     private void onReceiveMessage() {
@@ -493,16 +516,25 @@ public class ConversationActivity extends BaseActivity {
             } else if (message.getObjectName().equals("RC:CmdMsg")) {
                 //对方开启截屏通知
                 CommandMessage commandMessage = (CommandMessage) message.getContent();
-                if (!TextUtils.isEmpty(commandMessage.getName()) && commandMessage.getName().equals("screenCapture")) {
-                    conversationInfo.setTargetCaptureScreenEnabled(Integer.parseInt(commandMessage.getData()));
-                    if (conversationInfo.getTargetCaptureScreenEnabled() == 1) {
-                        runOnUiThread(this::initScreenCapture);
-                    } else {
-                        runOnUiThread(() -> {
-                            if (screenCapture != null && !screenCapture.isDisposed()) {
-                                screenCapture.dispose();
+                if (!TextUtils.isEmpty(commandMessage.getName())) {
+                    switch (commandMessage.getName()) {
+                        case "screenCapture":
+                            conversationInfo.setTargetCaptureScreenEnabled(Integer.parseInt(commandMessage.getData()));
+                            if (conversationInfo.getTargetCaptureScreenEnabled() == 1) {
+                                runOnUiThread(this::initScreenCapture);
+                            } else {
+                                runOnUiThread(() -> {
+                                    if (screenCapture != null && !screenCapture.isDisposed()) {
+                                        screenCapture.dispose();
+                                    }
+                                });
                             }
-                        });
+                            break;
+                        case "sendUrlAndsendImg":
+                            SendUrlAndsendImgBean sendUrlAndsendImgBean = GsonUtils.fromJson(commandMessage.getData(), SendUrlAndsendImgBean.class);
+                            groupInfo.getGroupInfo().setBanSendLink(sendUrlAndsendImgBean.getSendUrl());
+                            groupInfo.getGroupInfo().setBanSendPicture(sendUrlAndsendImgBean.getSendImg());
+                            break;
                     }
                 }
             } else if (message.getSenderUserId().equals(targetId)) {

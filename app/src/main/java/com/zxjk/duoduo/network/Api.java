@@ -551,9 +551,9 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> muteGroups(@Field("groupId") String groupId, @Field("type") String type);
 
-    @POST("duoduo/group/banFriend")
+    @POST("duoduo/group/groupOperation")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> banFriend(@Field("groupId") String groupId, @Field("type") String type);
+    Observable<BaseResponse<String>> groupOperation(@Field("groupId") String groupId, @Field("type") String type, @Field("source") String source);
 
     @POST("duoduo/group/kickOutORRemove")
     @FormUrlEncoded

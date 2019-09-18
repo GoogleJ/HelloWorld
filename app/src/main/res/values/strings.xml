@@ -777,4 +777,8 @@
     <string name="qq">qq</string>
     <string name="qzone">qq空间</string>
     <string name="invite_tips3">填写邀请码奖励10MoT</string>
+    <string name="url_forbidden">本会话禁止发送链接</string>
+    <string name="picture_forbidden">本会话禁止发送图片</string>
+    <string name="cant_sendPic">禁止发图片</string>
+    <string name="cant_sendUrl">禁止发链接</string>
 </resources>

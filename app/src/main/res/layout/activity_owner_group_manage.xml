@@ -214,4 +214,60 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp" />
 
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:textSize="16sp"
+            android:text="@string/cant_sendPic"
+            android:textColor="@color/textcolor1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <Switch
+            android:id="@+id/switchSendPic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:textSize="16sp"
+            android:text="@string/cant_sendUrl"
+            android:textColor="@color/textcolor1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <Switch
+            android:id="@+id/switchSendUrl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:background="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+
 </LinearLayout>
