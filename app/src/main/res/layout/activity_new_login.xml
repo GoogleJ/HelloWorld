@@ -37,10 +37,12 @@
     </RelativeLayout>
 
     <ImageView
+        android:id="@+id/ivIcon"
         android:layout_marginTop="32dp"
         android:layout_marginStart="24dp"
         android:src="@drawable/ic_newlogin"
         android:layout_marginBottom="32dp"
+        android:transitionName="appicon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

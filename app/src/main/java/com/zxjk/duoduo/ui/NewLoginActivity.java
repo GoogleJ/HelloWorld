@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.transition.ChangeBounds;
 import androidx.transition.Fade;
 import androidx.transition.Slide;
@@ -66,6 +67,7 @@ public class NewLoginActivity extends BaseActivity {
 
     private MSGReceiver receiver;
 
+    private ImageView ivIcon;
     private LinearLayout llRoot;
     private ImageView ivBack;
     private TextView tvChangeLanguage;
@@ -193,6 +195,7 @@ public class NewLoginActivity extends BaseActivity {
         ivBack.setOnClickListener(v -> changeState());
 
         btnConfirm.setOnClickListener(v -> {
+
             if (isAniming) return;
 
             if (state == 0) {
@@ -274,6 +277,7 @@ public class NewLoginActivity extends BaseActivity {
     }
 
     private void initView() {
+        ivIcon = findViewById(R.id.ivIcon);
         llRoot = findViewById(R.id.llRoot);
         ivBack = findViewById(R.id.ivBack);
         tvChangeLanguage = findViewById(R.id.tvChangeLanguage);
@@ -314,7 +318,17 @@ public class NewLoginActivity extends BaseActivity {
                 CommonUtils.destoryDialog();
                 UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
                 RongIM.getInstance().setCurrentUserInfo(userInfo);
-                startActivity(new Intent(NewLoginActivity.this, HomeActivity.class));
+
+                if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
+                    MMKVUtils.getInstance().enCode("appFirstLogin", true);
+                    Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
+                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
+                            , ivIcon, "appicon");
+                    startActivity(intent, activityOptionsCompat.toBundle());
+                } else {
+                    startActivity(new Intent(NewLoginActivity.this, HomeActivity.class));
+                }
+
                 finish();
             }
 
