@@ -235,9 +235,10 @@ public class ConversationActivity extends BaseActivity {
                 EmoticonMessage emoticonMessage = new EmoticonMessage();
                 emoticonMessage.setIsAnimated("0");
                 emoticonMessage.setIcon(dtStoreSticker.code);
+                emoticonMessage.setIconText(dtStoreSticker.text);
                 Message message = Message.obtain(targetId, conversationType.equals("private") ? Conversation.ConversationType.PRIVATE : Conversation.ConversationType.GROUP
                         , emoticonMessage);
-                RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                RongIM.getInstance().sendMessage(message, "[" + dtStoreSticker.text + "]", "", (IRongCallback.ISendMessageCallback) null);
             }
 
             @Override
@@ -252,7 +253,7 @@ public class ConversationActivity extends BaseActivity {
 
                 Message message = Message.obtain(targetId, conversationType.equals("private") ? Conversation.ConversationType.PRIVATE : Conversation.ConversationType.GROUP
                         , emoticonMessage);
-                RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                RongIM.getInstance().sendMessage(message, "[" + dtImage.getText() + "]", "", (IRongCallback.ISendMessageCallback) null);
             }
         });
     }

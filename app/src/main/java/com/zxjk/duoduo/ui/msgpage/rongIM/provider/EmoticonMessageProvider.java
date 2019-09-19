@@ -80,9 +80,8 @@ public class EmoticonMessageProvider extends IContainerItemProvider.MessageProvi
 
     @Override
     public Spannable getContentSummary(EmoticonMessage emoticonMessage) {
-        return new SpannableString("[表情]");
+        return new SpannableString("[" + emoticonMessage.getIconText() + "]");
     }
-
 
     @Override
     public void onItemClick(View view, int i, EmoticonMessage emoticonMessage, UIMessage uiMessage) {

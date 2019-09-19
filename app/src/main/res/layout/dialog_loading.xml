@@ -11,14 +11,12 @@
     android:paddingRight="45dp"
     android:paddingBottom="12dp">
 
-    <ImageView
-        android:id="@+id/iv"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/loading" />
+        android:layout_marginBottom="24dp" />
 
     <TextView
         android:id="@+id/tv_dialog_content"

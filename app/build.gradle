@@ -85,12 +85,6 @@ dependencies {
     //rxbinding
     implementation 'com.jakewharton.rxbinding3:rxbinding-core:3.0.0'
     implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0'
-//    implementation 'com.jakewharton.rxbinding3:rxbinding-drawerlayout:3.0.0'
-//    implementation 'com.jakewharton.rxbinding3:rxbinding-leanback:3.0.0'
-//    implementation 'com.jakewharton.rxbinding3:rxbinding-recyclerview:3.0.0'
-//    implementation 'com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:3.0.0'
-//    implementation 'com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:3.0.0'
-//    implementation 'com.jakewharton.rxbinding3:rxbinding-viewpager:3.0.0'
     implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.0.0'
 
     //RxJava2
@@ -193,6 +187,9 @@ dependencies {
 
     //滚轮选择
     implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6'
+
+    //lottie
+    implementation 'com.airbnb.android:lottie:3.0.7'
 
     //Umeng
     implementation 'com.umeng.umsdk:analytics:8.0.0'

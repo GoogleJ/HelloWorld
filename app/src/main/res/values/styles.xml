@@ -29,13 +29,10 @@
     </style>
 
     <style name="AppTheme.Theme_Splash">
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:background">@drawable/splash</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="colorSwitchThumbNormal">@color/colorTheme</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <style name="dialogstyle" parent="AppTheme">
@@ -177,6 +174,7 @@
         <item name="android:windowEnterAnimation">@anim/push_bottom_in1</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out1</item>
     </style>
+
     <style name="DTStoreMessageViewSent">
         <item name="android:textColor">#ff000000</item>
     </style>

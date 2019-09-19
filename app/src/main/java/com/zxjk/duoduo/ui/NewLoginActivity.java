@@ -53,7 +53,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
@@ -86,6 +88,8 @@ public class NewLoginActivity extends BaseActivity {
     private int state = 0;
 
     private String phone;
+
+    private boolean hasSendVerify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,11 +196,15 @@ public class NewLoginActivity extends BaseActivity {
             if (isAniming) return;
 
             if (state == 0) {
-                getCode();
-                return;
+                if (hasSendVerify) {
+                    changeState();
+                } else {
+                    getCode();
+                }
+            } else {
+                doLogin();
             }
 
-            doLogin();
         });
 
         ppivVerify.setComparePassword(new PayPsdInputView.onPasswordListener() {
@@ -225,14 +233,17 @@ public class NewLoginActivity extends BaseActivity {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getCode(tvContrary.getText().toString().substring(1) + "-" + phone, "0")
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(s -> {
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .flatMap((Function<String, ObservableSource<?>>) s -> {
+                    hasSendVerify = true;
                     String head = phone.substring(0, 3);
                     String tail = phone.substring(phone.length() - 4);
                     tvTips.setText("验证码已发送至" + tvContrary.getText().toString() + " " + head + "****" + tail);
                     changeState();
-                }, this::handleApiError);
+                    return Observable.timer(60, TimeUnit.SECONDS, AndroidSchedulers.mainThread());
+                })
+                .subscribe(s -> hasSendVerify = false, this::handleApiError);
     }
 
     @SuppressLint("CheckResult")
