@@ -548,7 +548,7 @@
     <string name="not_perfect">收款信息未完善</string>
     <string name="login_again">登录已过期，请重新登录</string>
     <string name="select_contact">选择联系人</string>
-    <string name="developing">暂未开放</string>
+    <string name="developing">暂未开放,敬请期待</string>
     <string name="hkb">MoT</string>
     <string name="create_game_group_success">创建成功</string>
     <string name="group_max_number">群成员已达上限,无法继续邀请</string>
@@ -783,4 +783,8 @@
     <string name="cant_sendUrl">禁止发链接</string>
     <string name="mochat_social">MO客社区</string>
     <string name="video">视频</string>
+    <string name="memberlimit">人数上限</string>
+    <string name="slowmode">慢速模式</string>
+    <string name="msgfilter">消息过滤</string>
+    <string name="grouppublic">群公开</string>
 </resources>

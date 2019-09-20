@@ -2,7 +2,6 @@
 <FrameLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/flContent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <View
@@ -19,12 +18,12 @@
         <ImageView
             android:id="@+id/ivIcon"
             android:layout_marginTop="160dp"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="64dp"
             android:src="@drawable/ic_newlogin"
             android:layout_gravity="center"
             android:transitionName="appicon"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
+            android:layout_width="96dp"
+            android:layout_height="96dp" />
 
         <LinearLayout
             android:id="@+id/llIcon"
@@ -32,56 +31,28 @@
             android:paddingEnd="16dp"
             android:visibility="gone"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center_horizontal"
             android:layout_height="match_parent">
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lavMochat1"
-                app:lottie_rawRes="@raw/mochat1"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                app:lottie_enableMergePathsForKitKatAndAbove="true"
+            <TextView
+                android:id="@+id/tvTips1"
+                android:text="Mochat"
+                android:alpha="0"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:gravity="center"
                 android:layout_height="wrap_content" />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lavMochat2"
-                app:lottie_rawRes="@raw/mochat2"
-                app:lottie_enableMergePathsForKitKatAndAbove="true"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lavMochat3"
-                app:lottie_rawRes="@raw/mochat3"
-                app:lottie_enableMergePathsForKitKatAndAbove="true"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lavMochat4"
-                app:lottie_rawRes="@raw/mochat4"
-                app:lottie_enableMergePathsForKitKatAndAbove="true"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lavMochat5"
-                app:lottie_rawRes="@raw/mochat5"
-                app:lottie_enableMergePathsForKitKatAndAbove="true"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lavMochat6"
-                app:lottie_rawRes="@raw/mochat6"
-                app:lottie_enableMergePathsForKitKatAndAbove="true"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <TextView
+                android:id="@+id/tvTips2"
+                android:layout_marginTop="40dp"
+                android:text="为币圈社交而生"
+                android:alpha="0"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

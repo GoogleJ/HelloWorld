@@ -14,260 +14,416 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp" />
 
-    <TextView
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:textColor="#9EA0A4"
-        android:layout_marginTop="10dp"
-        android:text="@string/mute"
-        android:background="@color/white"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:overScrollMode="never"
+        android:layout_height="wrap_content" >
 
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginBottom="24dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content" >
 
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
+            <TextView
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:textColor="#9EA0A4"
+                android:layout_marginTop="10dp"
+                android:text="@string/mute"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
 
-        <TextView
-            android:textSize="16sp"
-            android:text="@string/mute_all"
-            android:textColor="@color/textcolor1"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
 
-        <Switch
-            android:id="@+id/switchMuteAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-    </LinearLayout>
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/mute_all"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
 
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+                <Switch
+                    android:id="@+id/switchMuteAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:onClick="muteManage"
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
+            </LinearLayout>
 
-        <TextView
-            android:textSize="16sp"
-            android:text="@string/mute_manage"
-            android:textColor="@color/textcolor1"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
 
-        <ImageView
-            android:src="@drawable/ic_mine_rightarrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:onClick="muteManage"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-    </LinearLayout>
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/mute_manage"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
 
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+                <ImageView
+                    android:src="@drawable/ic_mine_rightarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <TextView
-        android:paddingStart="16dp"
-        android:textColor="#9EA0A4"
-        android:layout_marginTop="10dp"
-        android:text="@string/new_enter_group"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
+            </LinearLayout>
 
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
 
-    <LinearLayout
-        android:onClick="newRedPackage"
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
+            <TextView
+                android:paddingStart="16dp"
+                android:textColor="#9EA0A4"
+                android:layout_marginTop="10dp"
+                android:text="@string/new_enter_group"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
 
-        <TextView
-            android:textSize="16sp"
-            android:text="@string/new_redpackage_manage"
-            android:textColor="@color/textcolor1"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
 
-        <TextView
-            android:layout_marginEnd="10dp"
-            android:textColor="#9EA0A4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:onClick="newRedPackage"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-        <ImageView
-            android:src="@drawable/ic_mine_rightarrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/new_redpackage_manage"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
 
-    </LinearLayout>
+                <TextView
+                    android:layout_marginEnd="10dp"
+                    android:textColor="#9EA0A4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+                <ImageView
+                    android:src="@drawable/ic_mine_rightarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:onClick="payEnterGroup"
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
+            </LinearLayout>
 
-        <TextView
-            android:textSize="16sp"
-            android:text="@string/pay_enter_group"
-            android:textColor="@color/textcolor1"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
 
-        <TextView
-            android:layout_marginEnd="10dp"
-            android:textColor="#9EA0A4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:onClick="payEnterGroup"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-        <ImageView
-            android:src="@drawable/ic_mine_rightarrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/pay_enter_group"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
 
-    </LinearLayout>
+                <TextView
+                    android:layout_marginEnd="10dp"
+                    android:textColor="#9EA0A4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <View
-        android:layout_width="match_parent"
-        android:background="#e5e5e5"
-        android:layout_height="0.5dp" />
+                <ImageView
+                    android:src="@drawable/ic_mine_rightarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <TextView
-        android:paddingStart="16dp"
-        android:textColor="#9EA0A4"
-        android:layout_marginTop="10dp"
-        android:text="@string/daily_manage"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
+            </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:background="#e5e5e5"
-        android:layout_height="0.5dp" />
+            <View
+                android:layout_width="match_parent"
+                android:background="#e5e5e5"
+                android:layout_height="0.5dp" />
 
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
+            <TextView
+                android:paddingStart="16dp"
+                android:textColor="#9EA0A4"
+                android:layout_marginTop="10dp"
+                android:text="@string/daily_manage"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
 
-        <TextView
-            android:textSize="16sp"
-            android:text="@string/cant_addfriend"
-            android:textColor="@color/textcolor1"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            <View
+                android:layout_width="match_parent"
+                android:background="#e5e5e5"
+                android:layout_height="0.5dp" />
 
-        <Switch
-            android:id="@+id/switchAddFriend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-    </LinearLayout>
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/cant_addfriend"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
 
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+                <Switch
+                    android:id="@+id/switchAddFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
+            </LinearLayout>
 
-        <TextView
-            android:textSize="16sp"
-            android:text="@string/cant_sendPic"
-            android:textColor="@color/textcolor1"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
 
-        <Switch
-            android:id="@+id/switchSendPic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-    </LinearLayout>
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/cant_sendPic"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
 
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+                <Switch
+                    android:id="@+id/switchSendPic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
+            </LinearLayout>
 
-        <TextView
-            android:textSize="16sp"
-            android:text="@string/cant_sendUrl"
-            android:textColor="@color/textcolor1"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
 
-        <Switch
-            android:id="@+id/switchSendUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-    </LinearLayout>
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/cant_sendUrl"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
 
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+                <Switch
+                    android:id="@+id/switchSendUrl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <LinearLayout
+                android:onClick="func1"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/memberlimit"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textSize="13sp"
+                    android:text="当前限制500人"
+                    android:textColor="@color/textcolor3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_mine_rightarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <LinearLayout
+                android:onClick="func2"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/slowmode"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textSize="13sp"
+                    android:text="发言间隔:1S"
+                    android:textColor="@color/textcolor3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_mine_rightarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <LinearLayout
+                android:onClick="func3"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/msgfilter"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_mine_rightarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <TextView
+                    android:textSize="16sp"
+                    android:text="@string/grouppublic"
+                    android:textColor="@color/textcolor1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textSize="13sp"
+                    android:text="私密"
+                    android:textColor="@color/textcolor3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Switch
+                    android:enabled="false"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_mine_rightarrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:background="#e5e5e5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

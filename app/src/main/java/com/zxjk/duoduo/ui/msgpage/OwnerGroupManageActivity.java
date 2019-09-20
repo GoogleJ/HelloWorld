@@ -9,6 +9,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.SendUrlAndsendImgBean;
 import com.zxjk.duoduo.bean.response.GroupResponse;
@@ -73,37 +74,49 @@ public class OwnerGroupManageActivity extends BaseActivity {
 
         switchSendUrl.setChecked(!group.getGroupInfo().getBanSendLink().equals("0"));
 
-        switchSendPic.setOnClickListener(view -> api.groupOperation(group.getGroupInfo().getId(), switchSendPic.isChecked() ? "1" : "0", "1")
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(s -> {
-                    group.getGroupInfo().setBanSendPicture(switchSendPic.isChecked() ? "1" : "0");
-                    SendUrlAndsendImgBean bean = new SendUrlAndsendImgBean(group);
-                    CommandMessage commandMessage = CommandMessage.obtain("sendUrlAndsendImg", GsonUtils.toJson(bean));
-                    Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP,
-                            commandMessage);
-                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-                }, t -> {
-                    switchSendPic.setChecked(!switchSendPic.isChecked());
-                    handleApiError(t);
-                }));
+        switchSendPic.setOnClickListener(v -> {
+            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止发图片确认", "是否确定开启禁止发送图片功能");
+            dialog.setOnCommitListener(() -> switchSendPic.setChecked(!switchSendPic.isChecked()));
+            dialog.setOnCancelListener(() -> api.groupOperation(group.getGroupInfo().getId(), switchSendPic.isChecked() ? "1" : "0", "1")
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(s -> {
+                        group.getGroupInfo().setBanSendPicture(switchSendPic.isChecked() ? "1" : "0");
+                        SendUrlAndsendImgBean bean = new SendUrlAndsendImgBean(group);
+                        CommandMessage commandMessage = CommandMessage.obtain("sendUrlAndsendImg", GsonUtils.toJson(bean));
+                        Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP,
+                                commandMessage);
+                        RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                    }, t -> {
+                        switchSendPic.setChecked(!switchSendPic.isChecked());
+                        handleApiError(t);
+                    }));
+            dialog.setOnCloseListener(() -> switchSendPic.setChecked(!switchSendPic.isChecked()));
+            dialog.show();
+        });
 
-        switchSendUrl.setOnClickListener(view -> api.groupOperation(group.getGroupInfo().getId(), switchSendUrl.isChecked() ? "1" : "0", "2")
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(s -> {
-                    group.getGroupInfo().setBanSendLink(switchSendUrl.isChecked() ? "1" : "0");
-                    SendUrlAndsendImgBean bean = new SendUrlAndsendImgBean(group);
-                    CommandMessage commandMessage = CommandMessage.obtain("sendUrlAndsendImg", GsonUtils.toJson(bean));
-                    Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP,
-                            commandMessage);
-                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-                }, t -> {
-                    switchSendUrl.setChecked(!switchSendUrl.isChecked());
-                    handleApiError(t);
-                }));
+        switchSendUrl.setOnClickListener(v -> {
+            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止发链接确认", "是否确定开启禁止发送链接功能");
+            dialog.setOnCommitListener(() -> switchSendUrl.setChecked(!switchSendUrl.isChecked()));
+            dialog.setOnCancelListener(() -> api.groupOperation(group.getGroupInfo().getId(), switchSendUrl.isChecked() ? "1" : "0", "2")
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(s -> {
+                        group.getGroupInfo().setBanSendLink(switchSendUrl.isChecked() ? "1" : "0");
+                        SendUrlAndsendImgBean bean = new SendUrlAndsendImgBean(group);
+                        CommandMessage commandMessage = CommandMessage.obtain("sendUrlAndsendImg", GsonUtils.toJson(bean));
+                        Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP,
+                                commandMessage);
+                        RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                    }, t -> {
+                        switchSendUrl.setChecked(!switchSendUrl.isChecked());
+                        handleApiError(t);
+                    }));
+            dialog.setOnCloseListener(() -> switchSendUrl.setChecked(!switchSendUrl.isChecked()));
+            dialog.show();
+        });
 
         switchAddFriend.setOnClickListener(v -> {
             MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止互加好友确认", "是否确定开启成员不能互加好友");
@@ -159,6 +172,18 @@ public class OwnerGroupManageActivity extends BaseActivity {
         Intent intent = new Intent(this, PayEnterGroupActivity.class);
         intent.putExtra("groupId", group.getGroupInfo().getId());
         startActivity(intent);
+    }
+
+    public void func1(View view) {
+        ToastUtils.showShort(R.string.developing);
+    }
+
+    public void func2(View view) {
+        ToastUtils.showShort(R.string.developing);
+    }
+
+    public void func3(View view) {
+        ToastUtils.showShort(R.string.developing);
     }
 
     @Override

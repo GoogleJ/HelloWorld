@@ -55,6 +55,7 @@ public class WalletActivity extends BaseActivity {
     }
 
     public void blockWallet(View view) {
-        startActivity(new Intent(this, BlockWalletActivity.class));
+//        startActivity(new Intent(this, BlockWalletActivity.class));
+        startActivity(new Intent(this, NewBlockWalletActivity.class));
     }
 }

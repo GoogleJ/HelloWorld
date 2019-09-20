@@ -45,16 +45,7 @@ public class CommonUtils {
 
     public static Dialog initDialog(Context context, String loadText) {
         destoryDialog();
-        dialog = new Dialog(context) {
-            @Override
-            public void onWindowFocusChanged(boolean hasFocus) {
-                super.onWindowFocusChanged(hasFocus);
-                if (hasFocus && dialog != null) {
-                    ImageView iv = dialog.findViewById(R.id.iv);
-                    Glide.with(context).asGif().load(R.drawable.loading).into(iv);
-                }
-            }
-        };
+        dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_loading);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(false);

@@ -46,9 +46,9 @@ import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.msgpage.AgreeGroupChatActivity;
 import com.zxjk.duoduo.ui.minepage.scanuri.Action1;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
+import com.zxjk.duoduo.ui.msgpage.AgreeGroupChatActivity;
 import com.zxjk.duoduo.ui.msgpage.GroupQRActivity;
 import com.zxjk.duoduo.ui.msgpage.TransferActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -318,7 +318,7 @@ public class EnlargeImageActivity extends BaseActivity {
 
                         //保存图片
                         getPermisson(holder.getView(R.id.tv_photograph), g -> {
-                            if (g){
+                            if (g) {
                                 dialog.dismiss();
                                 if (currentBitmap == null) {
                                     return;

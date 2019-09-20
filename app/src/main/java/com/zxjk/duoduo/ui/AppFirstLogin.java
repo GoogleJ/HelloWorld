@@ -13,16 +13,17 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewPropertyAnimator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.vectordrawable.graphics.drawable.ArgbEvaluator;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.zxjk.duoduo.R;
 
@@ -37,12 +38,8 @@ public class AppFirstLogin extends AppCompatActivity {
     private View viewContent;
     private ImageView ivIcon;
     private LinearLayout llIcon;
-    private LottieAnimationView lavMochat1;
-    private LottieAnimationView lavMochat2;
-    private LottieAnimationView lavMochat3;
-    private LottieAnimationView lavMochat4;
-    private LottieAnimationView lavMochat5;
-    private LottieAnimationView lavMochat6;
+    private TextView tvTips1;
+    private TextView tvTips2;
 
     private ChangeBounds mediumAnim;
 
@@ -71,26 +68,8 @@ public class AppFirstLogin extends AppCompatActivity {
         viewContent = findViewById(R.id.viewContent);
         ivIcon = findViewById(R.id.ivIcon);
         llIcon = findViewById(R.id.llIcon);
-
-        lavMochat1 = findViewById(R.id.lavMochat1);
-        lavMochat2 = findViewById(R.id.lavMochat2);
-        lavMochat3 = findViewById(R.id.lavMochat3);
-        lavMochat4 = findViewById(R.id.lavMochat4);
-        lavMochat5 = findViewById(R.id.lavMochat5);
-        lavMochat6 = findViewById(R.id.lavMochat6);
-
-        lavMochat6.addAnimatorListener(new AnimatorListenerAdapter() {
-            @SuppressLint("CheckResult")
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                Observable.timer(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                        .subscribe(a -> {
-                            finish();
-                            startActivity(new Intent(AppFirstLogin.this, HomeActivity.class));
-                        });
-            }
-        });
+        tvTips1 = findViewById(R.id.tvTips1);
+        tvTips2 = findViewById(R.id.tvTips2);
     }
 
     private Transition initTransition() {
@@ -116,22 +95,30 @@ public class AppFirstLogin extends AppCompatActivity {
                 TransitionManager.beginDelayedTransition(flContent, mediumAnim);
                 llIcon.setVisibility(View.VISIBLE);
 
-                Observable.interval(1000, 400, TimeUnit.MILLISECONDS)
-                        .take(6)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(a -> {
-                            if (a == 0) lavMochat1.playAnimation();
+                ViewPropertyAnimator animate1 = tvTips1.animate();
+                ViewPropertyAnimator animate2 = tvTips2.animate();
 
-                            if (a == 1) lavMochat2.playAnimation();
+                animate1.alpha(1f);
+                animate2.alpha(1f);
 
-                            if (a == 2) lavMochat3.playAnimation();
+                animate1.setDuration(1000);
+                animate2.setDuration(2000);
+                animate2.setStartDelay(1000);
 
-                            if (a == 3) lavMochat4.playAnimation();
+                animate1.start();
+                animate2.start();
 
-                            if (a == 4) lavMochat5.playAnimation();
-
-                            if (a == 5) lavMochat6.playAnimation();
-                        });
+                animate2.setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        Observable.timer(600, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                                .subscribe(a -> {
+                                    startActivity(new Intent(AppFirstLogin.this, HomeActivity.class));
+                                    finish();
+                                });
+                    }
+                });
             }
 
             @Override
