@@ -317,21 +317,20 @@ public class EnlargeImageActivity extends BaseActivity {
                         });
 
                         //保存图片
-                        getPermisson(holder.getView(R.id.tv_photograph), g -> {
-                            if (g) {
-                                dialog.dismiss();
-                                if (currentBitmap == null) {
+                        holder.setOnClickListener(R.id.tv_photograph, v1 -> getPermisson(g -> {
+                            //保存到手机
+                            dialog.dismiss();
+                            if (currentBitmap == null) {
+                                return;
+                            }
+                            SaveImageUtil.get().savePic(currentBitmap, success -> {
+                                if (success) {
+                                    ToastUtils.showShort(R.string.savesucceed);
                                     return;
                                 }
-                                SaveImageUtil.get().savePic(currentBitmap, success -> {
-                                    if (success) {
-                                        ToastUtils.showShort(R.string.savesucceed);
-                                        return;
-                                    }
-                                    ToastUtils.showShort(R.string.savefailed);
-                                });
-                            }
-                        }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+                                ToastUtils.showShort(R.string.savefailed);
+                            });
+                        }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE));
 
                         //取消
                         holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());

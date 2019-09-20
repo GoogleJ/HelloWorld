@@ -37,7 +37,7 @@
 
             <TextView
                 android:id="@+id/tvTips1"
-                android:text="Mochat"
+                android:text="MoChat"
                 android:alpha="0"
                 android:textSize="22sp"
                 android:textColor="@color/white"

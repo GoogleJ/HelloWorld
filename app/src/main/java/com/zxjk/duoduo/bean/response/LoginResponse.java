@@ -74,18 +74,6 @@ public class LoginResponse implements Parcelable {
     private String openPhone;
     private String inviteCode;
 
-    public String getInviteCode() {
-        return inviteCode;
-    }
-
-    public void setInviteCode(String inviteCode) {
-        this.inviteCode = inviteCode;
-    }
-
-    public static Creator<LoginResponse> getCREATOR() {
-        return CREATOR;
-    }
-
     public String getId() {
         return id;
     }
@@ -342,6 +330,18 @@ public class LoginResponse implements Parcelable {
         this.openPhone = openPhone;
     }
 
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
+    public static Creator<LoginResponse> getCREATOR() {
+        return CREATOR;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -381,13 +381,14 @@ public class LoginResponse implements Parcelable {
         dest.writeString(this.latitude);
         dest.writeString(this.distance);
         dest.writeString(this.openPhone);
+        dest.writeString(this.inviteCode);
     }
 
     public LoginResponse() {
     }
 
-    public LoginResponse(String userid) {
-        this.id = userid;
+    public LoginResponse(String id) {
+        this.id = id;
     }
 
     protected LoginResponse(Parcel in) {
@@ -423,6 +424,7 @@ public class LoginResponse implements Parcelable {
         this.latitude = in.readString();
         this.distance = in.readString();
         this.openPhone = in.readString();
+        this.inviteCode = in.readString();
     }
 
     public static final Creator<LoginResponse> CREATOR = new Creator<LoginResponse>() {

@@ -41,7 +41,6 @@ public class CountrySelectActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setLightStatusBar(false);
 
         setContentView(R.layout.activity_country_select);
         ButterKnife.bind(this);

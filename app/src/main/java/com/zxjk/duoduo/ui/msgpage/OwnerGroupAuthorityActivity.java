@@ -83,14 +83,20 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
         sw1.setOnClickListener(v -> {
             if (currentCheckedB != null)
                 currentCheckedB.setOpenAudio(sw1.isChecked() ? "1" : "0");
+            else
+                ToastUtils.showShort(R.string.selectPerson);
         });
         sw2.setOnClickListener(v -> {
             if (currentCheckedB != null)
                 currentCheckedB.setOpenVideo(sw2.isChecked() ? "1" : "0");
+            else
+                ToastUtils.showShort(R.string.selectPerson);
         });
         sw3.setOnClickListener(v -> {
             if (currentCheckedB != null)
                 currentCheckedB.setOpenBanned(sw3.isChecked() ? "1" : "0");
+            else
+                ToastUtils.showShort(R.string.selectPerson);
         });
     }
 

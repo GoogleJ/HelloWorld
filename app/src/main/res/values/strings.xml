@@ -787,4 +787,5 @@
     <string name="slowmode">慢速模式</string>
     <string name="msgfilter">消息过滤</string>
     <string name="grouppublic">群公开</string>
+    <string name="selectPerson">请先选择要操作的管理员</string>
 </resources>

@@ -46,13 +46,12 @@ public class InviterActivity extends BaseActivity {
 
     private Bitmap bitmap;
 
-    private String inviteWeb;
-    private String description;
+    private String inviteWeb = "http://mochat-register.ztoken.cn/?id=" + Constant.userId;
+    private String description = "加入摩客社区";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_inviter);
 
         initView();
@@ -60,6 +59,8 @@ public class InviterActivity extends BaseActivity {
     }
 
     private void initView() {
+        TextView tvtitle = findViewById(R.id.tv_title);
+        tvtitle.setText(R.string.invite_friends1);
         tvInviteCode = findViewById(R.id.tvInviteCode);
         tvInviteCount = findViewById(R.id.tvInviteCount);
         tvReward = findViewById(R.id.tvReward);
@@ -69,11 +70,12 @@ public class InviterActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void bindData() {
+        findViewById(R.id.rl_back).setOnClickListener(view -> finish());
+
         tvInviteCode.setText(Constant.currentUser.getInviteCode());
 
         Observable.create((ObservableOnSubscribe<Bitmap>) e -> {
-            bitmap = QRCodeEncoder.syncEncodeQRCode(inviteWeb + Constant.currentUser.getInviteCode(),
-                    UIUtil.dip2px(this, 160), Color.BLACK);
+            bitmap = QRCodeEncoder.syncEncodeQRCode(inviteWeb, UIUtil.dip2px(this, 160), Color.BLACK);
             e.onNext(bitmap);
         })
                 .compose(RxSchedulers.ioObserver())
@@ -87,7 +89,7 @@ public class InviterActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
                     tvInviteCount.setText(r.getInviterCount());
-                    tvReward.setText(r.getMot() + "Mot");
+                    tvReward.setText(r.getMot() + "MoT");
                     tvReward1.setText("填写邀请码奖励" + r.getAward() + "MoT");
                 }, this::handleApiError);
     }

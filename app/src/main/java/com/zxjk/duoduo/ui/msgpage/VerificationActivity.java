@@ -59,24 +59,10 @@ public class VerificationActivity extends BaseActivity {
                 .subscribe(listBaseResponse -> {
                     CommandMessage commandMessage = CommandMessage.obtain("addFriend", "");
                     Message message = Message.obtain(friendId, Conversation.ConversationType.PRIVATE, commandMessage);
-                    RongIM.getInstance().sendMessage(message, "", "", new IRongCallback.ISendMessageCallback() {
-                        @Override
-                        public void onAttached(Message message) {
-
-                        }
-
-                        @Override
-                        public void onSuccess(Message message) {
-                            KeyboardUtils.hideSoftInput(VerificationActivity.this);
-                            ToastUtils.showShort(getString(R.string.has_bean_sent));
-                            finish();
-                        }
-
-                        @Override
-                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                            ToastUtils.showShort(R.string.function_fail);
-                        }
-                    });
+                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                    KeyboardUtils.hideSoftInput(VerificationActivity.this);
+                    ToastUtils.showShort(getString(R.string.has_bean_sent));
+                    finish();
                 }, this::handleApiError);
     }
 
