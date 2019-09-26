@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +17,7 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.dongtu.sdk.model.DTImage;
 import com.dongtu.store.DongtuStore;
-import com.dongtu.store.visible.messaging.DTStoreSendMessageListener;
-import com.dongtu.store.visible.messaging.DTStoreSticker;
 import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -65,7 +61,6 @@ import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.widget.provider.SightMessageItemProvider;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.SightMessage;
 import io.rong.push.RongPushClient;
@@ -120,6 +115,7 @@ public class Application extends android.app.Application {
         UMConfigure.init(this, "5d749f223fc1958bf7000854", "Fir", UMConfigure.DEVICE_TYPE_PHONE, null);
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         UMConfigure.setProcessEvent(true);
+        MobclickAgent.setCatchUncaughtExceptions(!BuildConfig.enableLog);
 
         PlatformConfig.setWeixin("wx95412ba899539c33", "4e676a73b46f12e8251560a612bba1b3");
         PlatformConfig.setQQZone("101784998", "b370d5b099d93b3dc9bc91286ca83e9b");
