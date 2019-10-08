@@ -227,14 +227,18 @@ public class PayPsdInputView extends AppCompatEditText {
      */
     private void drawText(Canvas canvas) {
         RectF f = new RectF();
-        String[] split = getText().toString().split("");
+        String[] split = getText().toString().trim().split("");
         for (int i = 0; i < textLength; i++) {
             f.set(i * divideLineWStartX, 0, (i + 1) * divideLineWStartX, height);
 
             Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
             float distance = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom;
             float baseline = f.centerY() + distance;
-            canvas.drawText(split[i + 1], f.centerX(), baseline, textPaint);
+            if (split.length != textLength) {
+                canvas.drawText(split[i + 1], f.centerX(), baseline, textPaint);
+            } else {
+                canvas.drawText(split[i], f.centerX(), baseline, textPaint);
+            }
         }
     }
 
