@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.bean;
+package com.zxjk.duoduo.db;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;

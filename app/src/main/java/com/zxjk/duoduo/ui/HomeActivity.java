@@ -33,12 +33,13 @@ import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.trello.rxlifecycle3.android.ActivityEvent;
+import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.DuoDuoFileProvider;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBean;
+import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
@@ -222,6 +223,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 })
                 .flatMap((Function<Long, ObservableSource<Boolean>>) a -> Observable.create(e -> {
                     if (!dao.getDatabase().inTransaction()) dao.getDatabase().beginTransaction();
+                    dao.detachAll();
                     List<BurnAfterReadMessageLocalBean> msgs = dao.queryBuilder()
                             .where(BurnAfterReadMessageLocalBeanDao.Properties.BurnTime.le(System.currentTimeMillis())).list();
 
@@ -245,7 +247,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                         @Override
                         public void onError(RongIMClient.ErrorCode errorCode) {
                             e.onNext(Boolean.FALSE);
-                            ToastUtils.showLong("融云出错:" + errorCode.getMessage() + errorCode.getValue());
+                            MobclickAgent.reportError(Utils.getApp(), "融云出错(阅后即焚HomeActIntervel):" + errorCode.getMessage() + errorCode.getValue());
                         }
                     });
                 }))

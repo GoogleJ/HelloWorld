@@ -30,13 +30,15 @@ import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.SendUrlAndsendImgBean;
+import com.zxjk.duoduo.bean.SlowModeLocalBeanDao;
 import com.zxjk.duoduo.bean.response.GroupResponse;
+import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
+import com.zxjk.duoduo.db.SlowModeLocalBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxException;
@@ -126,6 +128,7 @@ public class ConversationActivity extends BaseActivity {
      * db
      */
     private BurnAfterReadMessageLocalBeanDao burnMsgDao;
+    private SlowModeLocalBeanDao slowModeLocalBeanDao;
 
     /**
      * 截屏disposable
@@ -223,8 +226,8 @@ public class ConversationActivity extends BaseActivity {
         ImageView mEmoticonToggle = findViewById(R.id.rc_emoticon_toggle);
         mEmoticonToggle.performClick();
         rl = findViewById(R.id.rlRongEmoticon);
-        rl.setVisibilityChange(visiable -> {
-            if (visiable) dtStoreKeyboard.setVisibility(View.VISIBLE);
+        rl.setVisibilityChange(v -> {
+            if (v) dtStoreKeyboard.setVisibility(View.VISIBLE);
             else dtStoreKeyboard.setVisibility(View.GONE);
         });
         extension.collapseExtension();
@@ -290,6 +293,7 @@ public class ConversationActivity extends BaseActivity {
         }
 
         burnMsgDao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
+        slowModeLocalBeanDao = Application.daoSession.getSlowModeLocalBeanDao();
     }
 
     /**
@@ -451,6 +455,39 @@ public class ConversationActivity extends BaseActivity {
             @Override
             public Message onSend(Message message) {
                 handleBurnAfterReadForSendersOnSend(message);
+
+                if (conversationType.equals("group") && groupInfo != null
+                        && !groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId)) {
+                    if (!TextUtils.isEmpty(groupInfo.getGroupInfo().getSlowMode())) {
+                        if (groupInfo.getGroupInfo().getSlowMode().equals("0")) {
+                            return handleMsgForbiden(message);
+                        }
+                        slowModeLocalBeanDao.detachAll();
+                        List<SlowModeLocalBean> localSlowList =
+                                slowModeLocalBeanDao.queryBuilder()
+                                        .where(SlowModeLocalBeanDao.Properties.GroupId.eq(targetId)).build().list();
+                        if (localSlowList != null && localSlowList.size() != 0) {
+                            SlowModeLocalBean slowModeLocalBean = localSlowList.get(0);
+                            long passTime = (System.currentTimeMillis() - slowModeLocalBean.getLastMsgSentTime()) / 1000;
+                            if (passTime < Integer.parseInt(groupInfo.getGroupInfo().getSlowMode())) {
+                                String timeLeftStr = parstTimeLeftForSlowMode(
+                                        Integer.parseInt(groupInfo.getGroupInfo().getSlowMode()) - passTime);
+                                String toastTips = "群主开启了慢速模式，距下次发言时间:" + timeLeftStr;
+                                ToastUtils.showShort(toastTips);
+                                return null;
+                            } else {
+                                slowModeLocalBean.setLastMsgSentTime(System.currentTimeMillis());
+                                slowModeLocalBeanDao.update(slowModeLocalBean);
+                            }
+                        } else {
+                            SlowModeLocalBean slowModeLocalBean = new SlowModeLocalBean();
+                            slowModeLocalBean.setGroupId(targetId);
+                            slowModeLocalBean.setLastMsgSentTime(System.currentTimeMillis());
+                            slowModeLocalBeanDao.insert(slowModeLocalBean);
+                        }
+                    }
+                }
+
                 return handleMsgForbiden(message);
             }
 
@@ -469,6 +506,17 @@ public class ConversationActivity extends BaseActivity {
         };
 
         RongIM.getInstance().setSendMessageListener(onSendMessageListener);
+    }
+
+    private String parstTimeLeftForSlowMode(long timeLeft) {
+        if (timeLeft < 60) {
+            return timeLeft + "秒";
+        }
+        if (timeLeft < 3600) {
+            return timeLeft / 60 + "分钟";
+        }
+
+        return timeLeft / 60 / 60 + "小时";
     }
 
     private Message handleMsgForbiden(Message message) {
@@ -538,6 +586,14 @@ public class ConversationActivity extends BaseActivity {
                             break;
                     }
                 }
+            } else if (message.getObjectName().equals("RC:InfoNtf")) {
+                //小灰条
+                InformationNotificationMessage notificationMessage = (InformationNotificationMessage) message.getContent();
+                if (!TextUtils.isEmpty(notificationMessage.getExtra())) {
+                    if (notificationMessage.getExtra().contains("慢速模式")) {
+                        handleReceiveSlowMode(notificationMessage);
+                    }
+                }
             } else if (message.getSenderUserId().equals(targetId)) {
                 String extra = "";
                 switch (message.getObjectName()) {
@@ -559,21 +615,57 @@ public class ConversationActivity extends BaseActivity {
                         break;
                 }
 
-                if (TextUtils.isEmpty(extra)) {
-                    return false;
-                }
+                if (TextUtils.isEmpty(extra)) return false;
 
-                ConversationInfo j = GsonUtils.fromJson(extra, ConversationInfo.class);
-                if (j.getMessageBurnTime() != -1) {
-                    BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
-                    b.setMessageId(message.getMessageId());
-                    b.setBurnTime(System.currentTimeMillis() + (j.getMessageBurnTime() * 1000));
-                    burnMsgDao.insert(b);
+                try {
+                    ConversationInfo j = GsonUtils.fromJson(extra, ConversationInfo.class);
+                    if (j.getMessageBurnTime() != -1) {
+                        BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
+                        b.setMessageId(message.getMessageId());
+                        b.setBurnTime(System.currentTimeMillis() + (j.getMessageBurnTime() * 1000));
+                        burnMsgDao.insert(b);
+                    }
+                } catch (Exception e) {
                 }
             }
             return false;
         };
         RongIM.setOnReceiveMessageListener(onReceiveMessageListener);
+    }
+
+    //群主开启慢速模式
+    private void handleReceiveSlowMode(InformationNotificationMessage message) {
+        if (message.getExtra().contains("关闭")) {
+            groupInfo.getGroupInfo().setSlowMode("0");
+        } else {
+            String slowModeTimeStr = message.getExtra().substring(15);
+            switch (slowModeTimeStr) {
+                case "30秒":
+                    groupInfo.getGroupInfo().setSlowMode("30");
+                    break;
+                case "1分钟":
+                    groupInfo.getGroupInfo().setSlowMode("60");
+                    break;
+                case "5分钟":
+                    groupInfo.getGroupInfo().setSlowMode("300");
+                    break;
+                case "10分钟":
+                    groupInfo.getGroupInfo().setSlowMode("600");
+                    break;
+                case "1小时":
+                    groupInfo.getGroupInfo().setSlowMode("3600");
+                    break;
+            }
+        }
+
+        slowModeLocalBeanDao.detachAll();
+        List<SlowModeLocalBean> localSlowList =
+                slowModeLocalBeanDao.queryBuilder()
+                        .where(SlowModeLocalBeanDao.Properties.GroupId.eq(targetId)).build().list();
+
+        if (localSlowList != null && localSlowList.size() != 0) {
+            slowModeLocalBeanDao.delete(localSlowList.get(0));
+        }
     }
 
     private void registerOnTitleChange() {

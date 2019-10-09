@@ -17,6 +17,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.widget.dialog.BurnMsgDialog;
 import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 
@@ -25,6 +26,7 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.message.CommandMessage;
+import io.rong.message.InformationNotificationMessage;
 
 public class OwnerGroupManageActivity extends BaseActivity {
 
@@ -38,6 +40,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
     private Switch switchSendUrl;
     private Switch switchGroupPublic;
     private TextView tvGroupTips1;
+    private TextView tvGroupTips2;
 
     private GroupResponse group;
 
@@ -63,6 +66,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
         switchSendUrl = findViewById(R.id.switchSendUrl);
         switchGroupPublic = findViewById(R.id.switchGroupPublic);
         tvGroupTips1 = findViewById(R.id.tvGroupTips1);
+        tvGroupTips2 = findViewById(R.id.tvGroupTips2);
     }
 
     @SuppressLint("CheckResult")
@@ -80,6 +84,29 @@ public class OwnerGroupManageActivity extends BaseActivity {
 
         switchGroupPublic.setChecked(!group.getGroupInfo().getIsPublic().equals("0"));
         tvGroupTips1.setText(switchGroupPublic.isChecked() ? "公开" : "私密");
+
+        String tips = "";
+        switch (group.getGroupInfo().getSlowMode()) {
+            case "0":
+                tips = "关闭";
+                break;
+            case "30":
+                tips = "发言间隔:30秒";
+                break;
+            case "60":
+                tips = "发言间隔:1分钟";
+                break;
+            case "300":
+                tips = "发言间隔:5分钟";
+                break;
+            case "600":
+                tips = "发言间隔:10分钟";
+                break;
+            case "3600":
+                tips = "发言间隔:1小时";
+                break;
+        }
+        tvGroupTips2.setText(tips);
 
         switchSendPic.setOnClickListener(v -> {
             MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止发图片确认", "是否确定操作禁止发送图片功能");
@@ -204,12 +231,78 @@ public class OwnerGroupManageActivity extends BaseActivity {
         ToastUtils.showShort(R.string.developing);
     }
 
+    /**
+     * 慢速模式
+     *
+     * @param view
+     */
+    @SuppressLint("CheckResult")
     public void func2(View view) {
-        ToastUtils.showShort(R.string.developing);
+        BurnMsgDialog burnMsgDialog = new BurnMsgDialog(this);
+        burnMsgDialog.setOnCommitListener(str -> ServiceFactory.getInstance().getBaseService(Api.class)
+                .groupOperation(group.getGroupInfo().getId(), str, "4")
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(s -> {
+                    String text = "";
+                    String tips = "";
+                    switch (str) {
+                        case "0":
+                            tips = "关闭";
+                            text = "群主关闭了慢速模式";
+                            break;
+                        case "30":
+                            text = "群主开启了慢速模式,发言间隔:30秒";
+                            tips = "发言间隔:30秒";
+                            break;
+                        case "60":
+                            text = "群主开启了慢速模式,发言间隔:1分钟";
+                            tips = "发言间隔:1分钟";
+                            break;
+                        case "300":
+                            text = "群主开启了慢速模式,发言间隔:5分钟";
+                            tips = "发言间隔:5分钟";
+                            break;
+                        case "600":
+                            text = "群主开启了慢速模式,发言间隔:10分钟";
+                            tips = "发言间隔:10分钟";
+                            break;
+                        case "3600":
+                            text = "群主开启了慢速模式,发言间隔:1小时";
+                            tips = "发言间隔:1小时";
+                            break;
+                    }
+                    tvGroupTips2.setText(tips);
+                    InformationNotificationMessage messageContent = InformationNotificationMessage.obtain(text);
+                    messageContent.setExtra(messageContent.getMessage());
+                    Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, messageContent);
+                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                    group.getGroupInfo().setSlowMode(str);
+                }, this::handleApiError));
+        burnMsgDialog.showSlowMode(parseTime(tvGroupTips2.getText().toString()));
     }
 
     public void func3(View view) {
         ToastUtils.showShort(R.string.developing);
+    }
+
+    private int parseTime(String time) {
+        switch (time) {
+            case "发言间隔:30秒":
+                return 1;
+            case "发言间隔:1分钟":
+                return 2;
+            case "发言间隔:5分钟":
+                return 3;
+            case "发言间隔:10分钟":
+                return 4;
+            case "发言间隔:1小时":
+                return 5;
+            default:
+                return 0;
+        }
+
     }
 
     @Override

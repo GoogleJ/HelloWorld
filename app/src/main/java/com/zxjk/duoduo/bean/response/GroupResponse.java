@@ -342,6 +342,15 @@ public class GroupResponse implements Serializable {
         private String banSendPicture;
         private String banSendLink;
         private String isPublic;
+        private String slowMode;
+
+        public String getSlowMode() {
+            return slowMode;
+        }
+
+        public void setSlowMode(String slowMode) {
+            this.slowMode = slowMode;
+        }
 
         public String getIsPublic() {
             return isPublic;

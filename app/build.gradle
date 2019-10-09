@@ -45,7 +45,7 @@ android {
         }
     }
     greendao {
-        schemaVersion 1
+        schemaVersion 2
         daoPackage 'com.zxjk.duoduo.bean'
     }
     allprojects {
@@ -184,6 +184,7 @@ dependencies {
 
     //greendao
     implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
 
     //滚轮选择
     implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6'

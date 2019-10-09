@@ -289,25 +289,15 @@ public class ChatInformationActivity extends BaseActivity {
     private String parseTime(int second) {
         if (conversationInfo == null) return null;
 
-        if (second == 0) {
-            return "即刻焚烧";
-        }
+        if (second == 0) return "即刻焚烧";
 
-        if (second == 10) {
-            return "10秒";
-        }
+        if (second == 10) return "10秒";
 
-        if (second == 300) {
-            return "5分钟";
-        }
+        if (second == 300) return "5分钟";
 
-        if (second == 3600) {
-            return "1小时";
-        }
+        if (second == 3600) return "1小时";
 
-        if (second == 86400) {
-            return "24小时";
-        }
+        if (second == 86400) return "24小时";
 
         return "关闭";
     }
