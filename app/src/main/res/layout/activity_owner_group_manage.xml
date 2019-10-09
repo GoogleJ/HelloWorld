@@ -402,6 +402,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/tvGroupTips1"
                     android:textSize="13sp"
                     android:text="私密"
                     android:textColor="@color/textcolor3"
@@ -409,7 +410,7 @@
                     android:layout_height="wrap_content" />
 
                 <Switch
-                    android:enabled="false"
+                    android:id="@+id/switchGroupPublic"
                     android:layout_marginStart="8dp"
                     android:src="@drawable/ic_mine_rightarrow"
                     android:layout_width="wrap_content"

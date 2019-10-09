@@ -341,6 +341,15 @@ public class GroupResponse implements Serializable {
         private String banFriend;
         private String banSendPicture;
         private String banSendLink;
+        private String isPublic;
+
+        public String getIsPublic() {
+            return isPublic;
+        }
+
+        public void setIsPublic(String isPublic) {
+            this.isPublic = isPublic;
+        }
 
         public String getBanSendPicture() {
             return banSendPicture;
