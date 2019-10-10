@@ -657,15 +657,6 @@ public class ConversationActivity extends BaseActivity {
                     break;
             }
         }
-
-        slowModeLocalBeanDao.detachAll();
-        List<SlowModeLocalBean> localSlowList =
-                slowModeLocalBeanDao.queryBuilder()
-                        .where(SlowModeLocalBeanDao.Properties.GroupId.eq(targetId)).build().list();
-
-        if (localSlowList != null && localSlowList.size() != 0) {
-            slowModeLocalBeanDao.delete(localSlowList.get(0));
-        }
     }
 
     private void registerOnTitleChange() {

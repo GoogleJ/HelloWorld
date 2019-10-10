@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zxjk.duoduo.R;
+
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
@@ -54,6 +56,9 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
                     v.setVisibility(View.GONE);
                     RongIM.getInstance().deleteMessages(new int[]{message.getMessageId()}, null);
                 }
+            } else if (content.getExtra().contains("慢速模式")) {
+                viewHolder.iv_start.setVisibility(View.VISIBLE);
+                viewHolder.iv_start.setImageResource(R.drawable.ic_msg_notifation_slowmode);
             }
         } else {
             viewHolder.iv_start.setVisibility(View.GONE);
