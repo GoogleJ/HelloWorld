@@ -86,7 +86,7 @@ public class EmoticonMessage extends MessageContent {
             }
 
             if (jsonObj.has("extra")) {
-                setIsAnimated(jsonObj.optString("extra"));
+                setExtra(jsonObj.optString("extra"));
             }
 
         } catch (JSONException e) {

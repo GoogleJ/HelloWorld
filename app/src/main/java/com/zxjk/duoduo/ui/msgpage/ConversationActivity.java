@@ -552,6 +552,11 @@ public class ConversationActivity extends BaseActivity {
                     case "RC:VcMsg":
                         VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
                         extra = voiceMessage.getExtra();
+                        break;
+                    case "app:emoticon":
+                        EmoticonMessage emoticonMessage = (EmoticonMessage) message.getContent();
+                        extra = emoticonMessage.getExtra();
+                        break;
                 }
 
                 if (TextUtils.isEmpty(extra)) {
