@@ -26,6 +26,7 @@ import com.zxjk.duoduo.bean.response.GetSignListResponse;
 import com.zxjk.duoduo.bean.response.GetThirdPartyPaymentOrderResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetTransferEthResponse;
+import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
 import com.zxjk.duoduo.bean.response.GetVicinityResponse;
 import com.zxjk.duoduo.bean.response.GroupChatResponse;
 import com.zxjk.duoduo.bean.response.GroupManagementInfoBean;
@@ -607,4 +608,15 @@ public interface Api {
     @POST("duoduo/customer/appUserRegisterAndLogin")
     @FormUrlEncoded
     Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile, @Field("securityCode") String securityCode);
+
+    @POST("duoduo/group/getUpgradeGroups")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetUpgradeGroupsResponnse>> getUpgradeGroups(@Field("groupId") String groupId);
+
+    @POST("duoduo/group/payToUpgradeGroup")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> payToUpgradeGroup(@Field("groupId") String groupId,
+                                               @Field("payPwd") String payPwd,
+                                               @Field("groupTag") String groupTag,
+                                               @Field("mot") String mot);
 }

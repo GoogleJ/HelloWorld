@@ -788,4 +788,12 @@
     <string name="msgfilter">消息过滤</string>
     <string name="grouppublic">群公开</string>
     <string name="selectPerson">请先选择要操作的管理员</string>
+    <string name="update_group_limit">升级群人数</string>
+    <string name="update_group_limit_tips1">此群是</string>
+    <string name="update_group_limit_tips2">人群</string>
+    <string name="rule">规则</string>
+    <string name="update_group_limit_tips3">1. 群主和管理员可通过付费对群人数进行升级。\n2. 群人数升级后、转让群、人数上限保留。</string>
+    <string name="update1">升级</string>
+    <string name="update2">已升级</string>
+    <string name="update_success1">升级成功</string>
 </resources>

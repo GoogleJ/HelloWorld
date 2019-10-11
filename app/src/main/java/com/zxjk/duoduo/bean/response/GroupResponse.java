@@ -343,6 +343,15 @@ public class GroupResponse implements Serializable {
         private String banSendLink;
         private String isPublic;
         private String slowMode;
+        private String limitNumber;
+
+        public String getLimitNumber() {
+            return limitNumber;
+        }
+
+        public void setLimitNumber(String limitNumber) {
+            this.limitNumber = limitNumber;
+        }
 
         public String getSlowMode() {
             return slowMode;

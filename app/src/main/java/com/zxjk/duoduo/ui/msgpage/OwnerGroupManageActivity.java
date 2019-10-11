@@ -8,6 +8,8 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
@@ -41,6 +43,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
     private Switch switchGroupPublic;
     private TextView tvGroupTips1;
     private TextView tvGroupTips2;
+    private TextView tvGroupTips3;
 
     private GroupResponse group;
 
@@ -67,6 +70,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
         switchGroupPublic = findViewById(R.id.switchGroupPublic);
         tvGroupTips1 = findViewById(R.id.tvGroupTips1);
         tvGroupTips2 = findViewById(R.id.tvGroupTips2);
+        tvGroupTips3 = findViewById(R.id.tvGroupTips3);
     }
 
     @SuppressLint("CheckResult")
@@ -107,6 +111,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
                 break;
         }
         tvGroupTips2.setText(tips);
+        tvGroupTips3.setText("当前限制" + group.getGroupInfo().getLimitNumber() + "人");
 
         switchSendPic.setOnClickListener(v -> {
             MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止发图片确认", "是否确定操作禁止发送图片功能");
@@ -228,7 +233,9 @@ public class OwnerGroupManageActivity extends BaseActivity {
     }
 
     public void func1(View view) {
-        ToastUtils.showShort(R.string.developing);
+        Intent intent = new Intent(this, UpdateGroupLimitActivity.class);
+        intent.putExtra("group", group);
+        startActivityForResult(intent, 1);
     }
 
     /**
@@ -302,7 +309,15 @@ public class OwnerGroupManageActivity extends BaseActivity {
             default:
                 return 0;
         }
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 1 && data != null) {
+            group = (GroupResponse) data.getSerializableExtra("group");
+            tvGroupTips3.setText("当前限制" + group.getGroupInfo().getLimitNumber() + "人");
+        }
     }
 
     @Override
