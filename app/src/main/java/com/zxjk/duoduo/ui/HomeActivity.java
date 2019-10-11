@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -39,11 +40,11 @@ import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.DuoDuoFileProvider;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
+import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -189,6 +190,18 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initMessageLongClickAction();
 
         initGreenDaoSession();
+
+        RongIM.getInstance().clearConversations(new RongIMClient.ResultCallback() {
+            @Override
+            public void onSuccess(Object o) {
+
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        }, Conversation.ConversationType.GROUP, Conversation.ConversationType.PRIVATE);
     }
 
     @SuppressLint("CheckResult")

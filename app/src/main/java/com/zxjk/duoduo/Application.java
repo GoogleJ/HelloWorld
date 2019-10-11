@@ -17,7 +17,6 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.dongtu.store.DongtuStore;
 import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -31,7 +30,6 @@ import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.BasePluginExtensionModule;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.EmoticonMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
@@ -42,7 +40,6 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnTextMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnVoiceMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BusinessCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.DuoDuoMessageProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.EmoticonMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GameResultMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GroupCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.MInfoNotificationMsgItemProvider;
@@ -80,8 +77,6 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        initDongTu();
-
         //init MMKV
         MMKV.initialize(this);
 
@@ -105,10 +100,6 @@ public class Application extends android.app.Application {
 
         //Umeng
         initUmeng();
-    }
-
-    private void initDongTu() {
-        DongtuStore.initConfig(this, "23033cc37f4145b4b23c728d1b939b5e", "abb38d2534b94657927256b6dce1056c");
     }
 
     private void initUmeng() {
@@ -229,7 +220,6 @@ public class Application extends android.app.Application {
         RongIM.registerMessageType(SightMessage.class);
         RongIM.registerMessageType(GameResultMessage.class);
         RongIM.registerMessageType(DuoDuoMessage.class);
-        RongIM.registerMessageType(EmoticonMessage.class);
         RongIM.registerMessageTemplate(new MInfoNotificationMsgItemProvider());
         RongIM.registerMessageTemplate(new SightMessageItemProvider());
         RongIM.registerMessageTemplate(new BurnVoiceMessageProvider());
@@ -242,7 +232,6 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new DuoDuoMessageProvider());
         RongIM.registerMessageTemplate(new BurnTextMessageProvider());
         RongIM.registerMessageTemplate(new BurnImageMessageItemProvider());
-        RongIM.registerMessageTemplate(new EmoticonMessageProvider());
         RongIM.getInstance().setMessageAttachedUserInfo(true);
         RongIM.getInstance().enableNewComingMessageIcon(true);//显示新消息提醒
         RongIM.getInstance().enableUnreadMessageIcon(true);//显示未读消息数目

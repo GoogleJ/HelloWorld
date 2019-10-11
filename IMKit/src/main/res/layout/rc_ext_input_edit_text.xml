@@ -5,7 +5,7 @@
     android:layout_centerVertical="true"
     android:orientation="horizontal">
 
-    <com.dongtu.store.widget.DTStoreEditView
+    <EditText
         android:id="@+id/rc_edit_text"
         android:layout_width="0dp"
         android:layout_height="34dp"
@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:background="@drawable/shape_rc_etbac"
         android:maxLines="4"
-        android:paddingLeft="12dp"
+        android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textColor="@android:color/black"
         android:textSize="16sp" />

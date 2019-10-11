@@ -12,7 +12,6 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.dongtu.store.DongtuStore;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.LoginResponse;
@@ -91,7 +90,6 @@ public class WelcomeActivity extends BaseActivity {
 
                 @Override
                 public void onSuccess(String userid) {
-                    DongtuStore.setUserInfo(userid, login.getNick(), null, "", "", login.getMobile(), null);
                     UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
                     RongIM.getInstance().setCurrentUserInfo(userInfo);
                     startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
