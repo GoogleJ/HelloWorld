@@ -19,6 +19,7 @@ import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
 import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
+import com.zxjk.duoduo.bean.response.GetPublicGroupResponse;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
@@ -616,7 +617,11 @@ public interface Api {
     @POST("duoduo/group/payToUpgradeGroup")
     @FormUrlEncoded
     Observable<BaseResponse<String>> payToUpgradeGroup(@Field("groupId") String groupId,
-                                               @Field("payPwd") String payPwd,
-                                               @Field("groupTag") String groupTag,
-                                               @Field("mot") String mot);
+                                                       @Field("payPwd") String payPwd,
+                                                       @Field("groupTag") String groupTag,
+                                                       @Field("mot") String mot);
+
+    @POST("duoduo/group/getPublicGroupList")
+    @FormUrlEncoded
+    Observable<BaseResponse<List<GetPublicGroupResponse>>> getPublicGroupList(@Field("groupName") String groupName);
 }

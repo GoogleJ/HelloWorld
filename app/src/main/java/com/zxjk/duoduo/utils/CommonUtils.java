@@ -7,12 +7,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
 
-import com.bumptech.glide.Glide;
 import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle;
 import com.trello.rxlifecycle3.LifecycleProvider;
 import com.zxjk.duoduo.Constant;
@@ -80,6 +78,11 @@ public class CommonUtils {
         return (int) (spValue * fontScale + 0.5f);
     }
 
+    public static int px2dp(Context context, float px) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (px / scale + 0.5f);
+    }
+
     public static int getSex(String sex) {
         if (TextUtils.isEmpty(sex)) {
             return R.string.male;
@@ -139,19 +142,19 @@ public class CommonUtils {
 
     public static void resolveFriendList(BaseActivity activity, String friendId, String groupId, boolean finish) {
 //        if (Constant.friendsList == null) {
-            LifecycleProvider<Lifecycle.Event> provider = AndroidLifecycle.createLifecycleProvider(activity);
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getFriendListById()
-                    .compose(provider.bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(activity)))
-                    .compose(RxSchedulers.normalTrans())
-                    .subscribe(friendInfoResponses -> {
+        LifecycleProvider<Lifecycle.Event> provider = AndroidLifecycle.createLifecycleProvider(activity);
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getFriendListById()
+                .compose(provider.bindToLifecycle())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(activity)))
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(friendInfoResponses -> {
 //                        Constant.friendsList = friendInfoResponses;
-                        for (FriendInfoResponse f : friendInfoResponses) {
-                            RongUserInfoManager.getInstance().setUserInfo(new UserInfo(f.getId(), TextUtils.isEmpty(f.getRemark()) ? f.getNick() : f.getRemark(), Uri.parse(f.getHeadPortrait())));
-                        }
-                        handleFriendList(friendInfoResponses,activity, friendId, groupId, finish);
-                    }, activity::handleApiError);
+                    for (FriendInfoResponse f : friendInfoResponses) {
+                        RongUserInfoManager.getInstance().setUserInfo(new UserInfo(f.getId(), TextUtils.isEmpty(f.getRemark()) ? f.getNick() : f.getRemark(), Uri.parse(f.getHeadPortrait())));
+                    }
+                    handleFriendList(friendInfoResponses, activity, friendId, groupId, finish);
+                }, activity::handleApiError);
 //        } else {
 //            handleFriendList(activity, friendId, groupId, finish);
 //        }

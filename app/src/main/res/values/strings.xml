@@ -796,4 +796,8 @@
     <string name="update1">升级</string>
     <string name="update2">已升级</string>
     <string name="update_success1">升级成功</string>
+    <string name="inpu_search_group">请输入社群关键字</string>
+    <string name="emptylist">什么也没找到</string>
+    <string name="join">加入</string>
+    <string name="joined">已加入</string>
 </resources>

@@ -10,22 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.walletpage.RecipetQRActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.MsgTitleView;
-import com.zxjk.duoduo.utils.CommonUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -33,20 +30,16 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeAnchor;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgePagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeRule;
 
 import io.rong.imlib.model.Conversation;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
 
-import static net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator.MODE_WRAP_CONTENT;
-
 public class MsgFragment extends BaseFragment implements View.OnClickListener {
 
+    private ImageView ivMenu;
+    private int currentPosition;
     private ViewPager pagerMsg;
     private MagicIndicator indicator;
     private int[] mTitleDataList = new int[]{R.string.chat, R.string.de_actionbar_sub_group};
@@ -68,7 +61,8 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void initView() {
-        rootView.findViewById(R.id.ivMenu).setOnClickListener(this);
+        ivMenu = rootView.findViewById(R.id.ivMenu);
+        ivMenu.setOnClickListener(this);
 
         initPager();
 
@@ -89,6 +83,18 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public int getCount() {
                 return 2;
+            }
+        });
+        pagerMsg.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                currentPosition = position;
+                if (position == 0) {
+                    ivMenu.setImageResource(R.drawable.ic_msg_new);
+                } else {
+                    ivMenu.setImageResource(R.drawable.ic_msg_search);
+                }
             }
         });
     }
@@ -146,34 +152,34 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ivMenu:
-                if (menuPop == null) {
-                    menuPop = QuickPopupBuilder.with(getContext())
-                            .contentView(R.layout.pop_msg_top)
-                            .config(new QuickPopupConfig()
-                                    .backgroundColor(android.R.color.transparent)
-                                    .gravity(Gravity.BOTTOM | Gravity.END)
-                                    .withShowAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.push_scale_in))
-                                    .withDismissAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.push_scale_out))
-                                    .withClick(R.id.send_group_chat, child -> {
-                                        Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
-                                        intent.putExtra("eventType", 1);
-                                        startActivity(intent);
-                                    }, true)
-                                    .withClick(R.id.invite_friends, child -> startActivity(new Intent(getActivity(), AddContactActivity.class)), true)
-                                    .withClick(R.id.collection_and_payment, child -> startActivity(new Intent(getActivity(), RecipetQRActivity.class)), true))
-                            .build();
+        if (currentPosition == 0) {
+            if (menuPop == null) {
+                menuPop = QuickPopupBuilder.with(getContext())
+                        .contentView(R.layout.pop_msg_top)
+                        .config(new QuickPopupConfig()
+                                .backgroundColor(android.R.color.transparent)
+                                .gravity(Gravity.BOTTOM | Gravity.END)
+                                .withShowAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.push_scale_in))
+                                .withDismissAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.push_scale_out))
+                                .withClick(R.id.send_group_chat, child -> {
+                                    Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
+                                    intent.putExtra("eventType", 1);
+                                    startActivity(intent);
+                                }, true)
+                                .withClick(R.id.invite_friends, child -> startActivity(new Intent(getActivity(), AddContactActivity.class)), true)
+                                .withClick(R.id.collection_and_payment, child -> startActivity(new Intent(getActivity(), RecipetQRActivity.class)), true))
+                        .build();
 
-                    getPermisson(menuPop.findViewById(R.id.scan), granted -> {
-                        menuPop.dismiss();
-                        if (granted) startActivity(new Intent(getActivity(), QrCodeActivity.class));
-                    }, Manifest.permission.CAMERA);
-                }
+                getPermisson(menuPop.findViewById(R.id.scan), granted -> {
+                    menuPop.dismiss();
+                    if (granted) startActivity(new Intent(getActivity(), QrCodeActivity.class));
+                }, Manifest.permission.CAMERA);
+            }
 
-                menuPop.showPopupWindow(v);
-                break;
-            default:
+            menuPop.showPopupWindow(v);
+        } else {
+            startActivity(new Intent(getContext(), SearchGroupActivity.class));
+            getActivity().overridePendingTransition(0, 0);
         }
     }
 }

@@ -55,8 +55,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.msgpage.UpdateGroupLimitActivity"></activity>
-        <activity android:name=".ui.minepage.NewBlockWalletActivity" />
+        <activity
+            android:name=".ui.msgpage.SearchGroupActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateVisible" />
+        <activity
+            android:name=".ui.msgpage.UpdateGroupLimitActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.NewBlockWalletActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".ui.AppFirstLogin" />
         <activity
             android:name=".ui.minepage.InviterActivity"
