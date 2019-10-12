@@ -502,29 +502,10 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                                 tvUpdate.setClickable(true);
                                                 tvUpdate.setText(R.string.dianjianzhuang);
                                                 tvUpdate.setOnClickListener(v1 -> {
-                                                    if (appVersionName.equals("1.1.0")) {
-                                                        RongIM.getInstance().clearConversations(new RongIMClient.ResultCallback() {
-                                                            @Override
-                                                            public void onSuccess(Object o) {
-                                                                File file = new File(Utils.getApp().getCacheDir(), data.getVersion() + ".apk");// 设置路径
-                                                                Intent intent = installIntent(file.getPath());
-                                                                if (intent != null) {
-                                                                    startActivity(intent);
-                                                                }
-                                                            }
-
-                                                            @Override
-                                                            public void onError(RongIMClient.ErrorCode errorCode) {
-                                                                tvUpdate.setText(R.string.dianjichongshi);
-                                                                ToastUtils.showShort(R.string.update_failure);
-                                                            }
-                                                        }, Conversation.ConversationType.GROUP, Conversation.ConversationType.PRIVATE);
-                                                    } else {
-                                                        File file = new File(Utils.getApp().getCacheDir(), data.getVersion() + ".apk");// 设置路径
-                                                        Intent intent = installIntent(file.getPath());
-                                                        if (intent != null) {
-                                                            startActivity(intent);
-                                                        }
+                                                    File file = new File(Utils.getApp().getCacheDir(), data.getVersion() + ".apk");// 设置路径
+                                                    Intent intent = installIntent(file.getPath());
+                                                    if (intent != null) {
+                                                        startActivity(intent);
                                                     }
                                                 });
                                                 tvUpdate.performClick();

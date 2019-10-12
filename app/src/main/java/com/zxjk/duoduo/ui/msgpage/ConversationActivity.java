@@ -61,6 +61,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongExtension;
@@ -381,7 +382,8 @@ public class ConversationActivity extends BaseActivity {
                 handleBurnAfterReadForSendersOnSend(message);
 
                 if (conversationType.equals("group") && groupInfo != null
-                        && !groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId)) {
+                        && !groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId)
+                        && groupInfo.getIsAdmin().equals("0")) {
                     if (!TextUtils.isEmpty(groupInfo.getGroupInfo().getSlowMode())) {
                         if (groupInfo.getGroupInfo().getSlowMode().equals("0")) {
                             return handleMsgForbiden(message);
@@ -533,10 +535,6 @@ public class ConversationActivity extends BaseActivity {
                         VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
                         extra = voiceMessage.getExtra();
                         break;
-                    case "app:emoticon":
-                        EmoticonMessage emoticonMessage = (EmoticonMessage) message.getContent();
-                        extra = emoticonMessage.getExtra();
-                        break;
                 }
 
                 if (TextUtils.isEmpty(extra)) return false;
@@ -653,7 +651,10 @@ public class ConversationActivity extends BaseActivity {
 
                         this.groupInfo = groupInfo;
                         initView();
-                    }, ConversationActivity.this::handleApiError);
+                    }, t -> {
+                        extension.removeAllViews();
+                        handleApiError(t);
+                    });
         }
     }
 

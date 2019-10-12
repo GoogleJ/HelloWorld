@@ -38,9 +38,4 @@ public class BasePluginExtensionModule extends DefaultExtensionModule {
 
         return list;
     }
-
-    @Override
-    public List<IEmoticonTab> getEmoticonTabs() {
-        return null;
-    }
 }

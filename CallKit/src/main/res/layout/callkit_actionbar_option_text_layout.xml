@@ -4,7 +4,7 @@
     android:id="@+id/rl_actionbar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="#08C1BC">
+    android:background="@color/colorTheme">
 
     <RelativeLayout
         android:id="@+id/rl_back"
@@ -19,7 +19,6 @@
             android:src="@drawable/ico_back" />
 
     </RelativeLayout>
-
 
     <LinearLayout
         android:id="@+id/ll_custom_nav_title"
@@ -74,4 +73,5 @@
         android:paddingBottom="@dimen/callkit_dimen_size_12"
         android:src="@drawable/callkit_selector_icon_search"
         android:visibility="gone" />
+
 </RelativeLayout>

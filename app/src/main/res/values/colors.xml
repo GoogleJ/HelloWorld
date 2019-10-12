@@ -49,9 +49,9 @@
     <color name="m_item_msg_message_number">#EA2222</color>
     <color name="m_constacts_new_friend_group_chat_label">#999999</color>
 
-    <color name="textcolor1">#333</color>
-    <color name="textcolor2">#666</color>
-    <color name="textcolor3">#999</color>
+    <color name="textcolor1">#333333</color>
+    <color name="textcolor2">#666666</color>
+    <color name="textcolor3">#999999</color>
     <color name="m_edit_information_btn">#FFE6A5</color>
     //红包相关
     <color name="m_red_envelopes_unit_text">#666666</color>

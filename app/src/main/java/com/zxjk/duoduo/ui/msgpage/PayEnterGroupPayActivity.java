@@ -66,22 +66,20 @@ public class PayEnterGroupPayActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void initData() {
         groupId = getIntent().getStringExtra("groupId");
+        ownerId = getIntent().getStringExtra("ownerId");
+        payMoney = getIntent().getStringExtra("payMoney");
         groupName = getIntent().getStringExtra("groupName");
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getGroupByGroupId(groupId)
+                .getCustomerInfoById(ownerId)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
-                    payMoney = r.getGroupPayBean().getPayFee();
-                    ownerId = r.getGroupInfo().getGroupOwnerId();
-                    groupName = r.getGroupInfo().getGroupNikeName();
-
-                    GlideUtil.loadCircleImg(ivHead, r.getGroupInfo().getGroupHeadPortrait().split(",")[0]);
+                    GlideUtil.loadCircleImg(ivHead, r.getHeadPortrait());
                     tvGroupName.setText(groupName);
                     tvMoney.setText(payMoney);
-                    tvGroupOnwerName.setText("群主 " + r.getGroupInfo().getGroupOwnerName() + " 发起");
+                    tvGroupOnwerName.setText("群主 " + r.getNick() + " 发起");
                 }, this::handleApiError);
     }
 

@@ -53,7 +53,6 @@ public class AgreeGroupChatActivity extends BaseActivity {
         String inviterId = getIntent().getStringExtra("inviterId");
         String groupId = getIntent().getStringExtra("groupId");
         groupName = getIntent().getStringExtra("groupName");
-        String headUrls = getIntent().getStringExtra("headUrls");
 
         boolean overtime = getIntent().getBooleanExtra("overtime", false);
         if (overtime) {
@@ -62,59 +61,47 @@ public class AgreeGroupChatActivity extends BaseActivity {
             joinGroupBtn.setText(R.string.hasjoined);
         }
 
-        if (TextUtils.isEmpty(headUrls)) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getGroupByGroupIdForQr(groupId, "qr")
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(response -> {
-                        if (response.getGroupPayBean().getIsOpen().equals("1")) {
-                            Intent intent = new Intent(this, PayEnterGroupPayActivity.class);
-                            intent.putExtra("groupId", groupId);
-                            intent.putExtra("ownerId", response.getGroupInfo().getGroupOwnerId());
-                            intent.putExtra("payMoney", response.getGroupPayBean().getPayFee());
-                            intent.putExtra("groupName", response.getGroupInfo().getGroupNikeName());
-                            startActivity(intent);
-                            finish();
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getGroupByGroupIdForQr(groupId, "invite")
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(response -> {
+                    if (response.getGroupPayBean().getIsOpen().equals("1")) {
+                        Intent intent = new Intent(this, PayEnterGroupPayActivity.class);
+                        intent.putExtra("groupId", groupId);
+                        intent.putExtra("ownerId", response.getGroupInfo().getGroupOwnerId());
+                        intent.putExtra("payMoney", response.getGroupPayBean().getPayFee());
+                        intent.putExtra("groupName", response.getGroupInfo().getGroupNikeName());
+                        startActivity(intent);
+                        finish();
+                        return;
+                    }
+                    if (!TextUtils.isEmpty(response.getMaxNumber())) {
+                        if (response.getCustomers().size() >= Integer.parseInt(response.getMaxNumber())) {
+                            canJoin = true;
+                        }
+                    }
+                    String s = "";
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < response.getCustomers().size(); i++) {
+                        stringBuilder.append(response.getCustomers().get(i).getHeadPortrait() + ",");
+                        if (i == response.getCustomers().size() - 1 || i == 8) {
+                            s = stringBuilder.substring(0, stringBuilder.length() - 1);
+                            break;
+                        }
+                    }
+
+                    ImageUtil.loadGroupPortrait(groupHeader, s, 80, 2);
+                    tvGroupName.setText(groupName + "(" + response.getCustomers().size() + "人)");
+                    joinGroupBtn.setOnClickListener(v -> {
+                        if (canJoin) {
+                            ToastUtils.showShort(getString(R.string.group_max_number));
                             return;
                         }
-                        if (!TextUtils.isEmpty(response.getMaxNumber())) {
-                            if (response.getCustomers().size() >= Integer.parseInt(response.getMaxNumber())) {
-                                canJoin = true;
-                            }
-                        }
-                        String s = "";
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 0; i < response.getCustomers().size(); i++) {
-                            stringBuilder.append(response.getCustomers().get(i).getHeadPortrait() + ",");
-                            if (i == response.getCustomers().size() - 1 || i == 8) {
-                                s = stringBuilder.substring(0, stringBuilder.length() - 1);
-                                break;
-                            }
-                        }
-
-                        ImageUtil.loadGroupPortrait(groupHeader, s, 80, 2);
-                        tvGroupName.setText(groupName + "(" + response.getCustomers().size() + "人)");
-                        joinGroupBtn.setOnClickListener(v -> {
-                            if (canJoin) {
-                                ToastUtils.showShort(getString(R.string.group_max_number));
-                                return;
-                            }
-                            enterGroup(groupId, inviterId, Constant.userId);
-                        });
-                    }, this::handleApiError);
-        } else {
-            ImageUtil.loadGroupPortrait(groupHeader, headUrls, 80, 2);
-            tvGroupName.setText(groupName + "(" + headUrls.split(",").length + "人)");
-            joinGroupBtn.setOnClickListener(v -> {
-                if (canJoin) {
-                    ToastUtils.showShort(getString(R.string.group_max_number));
-                    return;
-                }
-                enterGroup(groupId, inviterId, Constant.userId);
-            });
-        }
+                        enterGroup(groupId, inviterId, Constant.userId);
+                    });
+                }, this::handleApiError);
     }
 
     @SuppressLint("CheckResult")

@@ -87,7 +87,7 @@ public class NewFriendActivity extends BaseActivity {
                 case R.id.m_add_btn_layout:
                     if (!isTrue) {
                         Intent intent = new Intent(NewFriendActivity.this, FriendDetailsActivity.class);
-                        intent.putExtra("friendResponse", mAdapter.getData().get(position));
+                        intent.putExtra("friendId", mAdapter.getData().get(position).getId());
                         startActivity(intent);
                     }
                     break;

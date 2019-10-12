@@ -27,7 +27,6 @@ import com.zxjk.duoduo.bean.response.GetPublicGroupResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
@@ -105,9 +104,9 @@ public class SearchGroupActivity extends BaseActivity {
                     btnJoin.setBackground(ContextCompat.getDrawable(SearchGroupActivity.this, R.drawable.shape_theme2));
                     btnJoin.setOnClickListener(v -> {
                         if (item.getIsOpen().equals("1")) {
-                            Intent intent = new Intent(SearchGroupActivity.this, PayEnterGroupPayActivity.class);
+                            Intent intent = new Intent(v.getContext(), AgreeGroupChatActivity.class);
                             intent.putExtra("groupId", item.getId());
-                            startActivity(intent);
+                            v.getContext().startActivity(intent);
                             finish();
                         } else {
                             ServiceFactory.getInstance().getBaseService(Api.class)

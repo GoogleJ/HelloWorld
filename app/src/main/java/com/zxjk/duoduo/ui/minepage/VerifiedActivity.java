@@ -2,7 +2,6 @@ package com.zxjk.duoduo.ui.minepage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -36,6 +35,7 @@ import com.zxjk.duoduo.utils.TakePicUtil;
 
 import java.io.File;
 import java.util.Collections;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -201,19 +201,19 @@ public class VerifiedActivity extends BaseActivity {
                     if (currentPictureFlag == 1) {
                         url1 = url;
                         ivFrontPhotoEdit.setVisibility(View.VISIBLE);
-                        GlideUtil.loadCircleImg(ivFrontPhoto, url);
+                        GlideUtil.loadCornerImg(ivFrontPhoto, url, 5);
                         return;
                     }
                     if (currentPictureFlag == 2) {
                         url2 = url;
                         ivReversePhotoEdit.setVisibility(View.VISIBLE);
-                        GlideUtil.loadCircleImg(ivReversePhoto, url);
+                        GlideUtil.loadCornerImg(ivReversePhoto, url, 5);
                         return;
                     }
                     if (currentPictureFlag == 3) {
                         url3 = url;
                         ivHeldPhotoEdit.setVisibility(View.VISIBLE);
-                        GlideUtil.loadCircleImg(ivHeldPhoto, url);
+                        GlideUtil.loadCornerImg(ivHeldPhoto, url, 5);
                     }
                 });
             });
