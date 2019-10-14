@@ -61,14 +61,16 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongExtension;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.RongMessageItemLongClickActionManager;
+import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.plugin.IPluginModule;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.adapter.MessageListAdapter;
+import io.rong.imkit.widget.provider.MessageItemLongClickAction;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.MessageTag;
 import io.rong.imlib.RongCommonDefine;
@@ -650,11 +652,52 @@ public class ConversationActivity extends BaseActivity {
                         handleGroupPlugin(groupInfo);
 
                         this.groupInfo = groupInfo;
+
+                        handleGroupOwnerInit();
+
                         initView();
                     }, t -> {
                         extension.removeAllViews();
                         handleApiError(t);
+                        RongIM.getInstance().removeConversation(Conversation.ConversationType.GROUP, targetId, null);
+                        finish();
                     });
+        }
+    }
+
+    /**
+     * 处理群主初始化逻辑
+     */
+    private void handleGroupOwnerInit() {
+        boolean isOwner = groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId);
+        boolean hasForceRecall = false;
+
+        List<MessageItemLongClickAction> actionList = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions();
+        Iterator<MessageItemLongClickAction> iterator = actionList.iterator();
+        while (iterator.hasNext()) {
+            MessageItemLongClickAction next = iterator.next();
+            if (next.getTitle(this).equals("强制撤回")) {
+                hasForceRecall = true;
+                if (!isOwner) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+
+        if (isOwner && !hasForceRecall) {
+            MessageItemLongClickAction forceRecallAction = new MessageItemLongClickAction.Builder()
+                    .title("强制撤回")
+                    .showFilter(uiMessage -> false)
+                    .actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {
+                        @Override
+                        public boolean onMessageItemLongClick(Context context, UIMessage uiMessage) {
+
+                            return true;
+                        }
+                    })
+                    .build();
+            RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction);
         }
     }
 
