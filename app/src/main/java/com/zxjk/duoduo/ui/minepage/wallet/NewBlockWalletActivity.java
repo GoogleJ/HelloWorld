@@ -1,13 +1,18 @@
-package com.zxjk.duoduo.ui.minepage;
+package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.os.Bundle;
 import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.WalletChainInfoBean;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 
+import java.util.ArrayList;
+
 public class NewBlockWalletActivity extends BaseActivity {
+
+    private ArrayList<WalletChainInfoBean> list = new ArrayList<>(0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +20,7 @@ public class NewBlockWalletActivity extends BaseActivity {
         setContentView(R.layout.activity_new_block_wallet);
         setTrasnferStatusBar(true);
 
-        ToastUtils.showShort(R.string.developing);
+        list = getIntent().getParcelableArrayListExtra("list");
     }
 
     public void back(View view) {

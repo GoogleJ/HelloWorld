@@ -15,7 +15,7 @@ import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.minepage.BalanceLeftActivity;
+import com.zxjk.duoduo.ui.minepage.wallet.BalanceLeftActivity;
 import com.zxjk.duoduo.ui.minepage.DetailListActivity;
 import com.zxjk.duoduo.ui.minepage.scanuri.Action1;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;

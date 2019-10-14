@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.minepage;
+package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,6 +18,9 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.DetailListActivity;
+import com.zxjk.duoduo.ui.minepage.PaySettingActivity;
+import com.zxjk.duoduo.ui.minepage.VerifiedActivity;
 import com.zxjk.duoduo.ui.msgpage.AuthenticationActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 

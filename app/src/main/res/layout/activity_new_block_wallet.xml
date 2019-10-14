@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/background_color"
-    tools:context=".ui.minepage.NewBlockWalletActivity">
+    tools:context=".ui.minepage.wallet.NewBlockWalletActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

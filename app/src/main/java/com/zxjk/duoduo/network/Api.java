@@ -7,8 +7,10 @@ import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
 import com.zxjk.duoduo.bean.response.CreateWalletResponse;
+import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.DetailListResposne;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
+import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.bean.response.GetAllPlayGroupResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceHkResponse;
@@ -49,6 +51,7 @@ import com.zxjk.duoduo.bean.response.SignHkbOrHkExchangeResponse;
 import com.zxjk.duoduo.bean.response.SignTransactionResponse;
 import com.zxjk.duoduo.bean.response.ThirdPartyPaymentResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
+import com.zxjk.duoduo.bean.response.WalletChainInfoBean;
 
 import java.util.List;
 
@@ -628,4 +631,15 @@ public interface Api {
     @POST("duoduo/rongcloud/recallGroupMessage")
     @FormUrlEncoded
     Observable<BaseResponse<String>> recallGroupMessage(@Field("uId") String uId);
+
+    @POST("duoduo/wallet/getWalletChainInfos")
+    Observable<BaseResponse<List<WalletChainInfoBean>>> getWalletChainInfos();
+
+    @POST("duoduo/currency/currencyInfosByCustomerId")
+    @FormUrlEncoded
+    Observable<BaseResponse<List<CurrencyInfosByCustomerBean>>> currencyInfosByCustomerId(@Field("coinType") String coinType);
+
+    @POST("duoduo/wallet/generateMnemonic")
+    @FormUrlEncoded
+    Observable<BaseResponse<GenerateMnemonicResponse>> generateMnemonic(@Field("symbol") String symbol, @Field("pwd") String pwd);
 }

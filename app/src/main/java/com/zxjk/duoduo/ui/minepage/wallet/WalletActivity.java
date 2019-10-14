@@ -1,8 +1,9 @@
-package com.zxjk.duoduo.ui.minepage;
+package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,9 +13,10 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.walletpage.BlockWalletActivity;
 import com.zxjk.duoduo.ui.walletpage.ExchangeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
+
+import java.util.ArrayList;
 
 public class WalletActivity extends BaseActivity {
 
@@ -54,8 +56,22 @@ public class WalletActivity extends BaseActivity {
         startActivity(new Intent(this, BalanceLeftActivity.class));
     }
 
+    @SuppressLint("CheckResult")
     public void blockWallet(View view) {
-//        startActivity(new Intent(this, BlockWalletActivity.class));
-        startActivity(new Intent(this, NewBlockWalletActivity.class));
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getWalletChainInfos()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(list -> {
+                    if (list.size() == 0) {
+                        startActivity(new Intent(this, BlockWalletEmptyActivity.class));
+                    } else {
+                        Intent intent = new Intent(this, NewBlockWalletActivity.class);
+                        intent.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) list);
+                        startActivity(intent);
+                    }
+                }, this::handleApiError);
+
     }
 }

@@ -154,7 +154,7 @@ dependencies {
     //圆形imageview
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
-    // indicator
+    //indicator
     implementation 'com.github.hackware1993:MagicIndicator:1.6.0'
 
     //对话框
