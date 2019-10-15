@@ -63,15 +63,14 @@ public class WalletActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(list -> {
-                    if (list.size() == 0) {
+                .subscribe(response -> {
+                    if (response.getSymbolList().size() == 0) {
                         startActivity(new Intent(this, BlockWalletEmptyActivity.class));
                     } else {
                         Intent intent = new Intent(this, NewBlockWalletActivity.class);
-                        intent.putParcelableArrayListExtra("list", (ArrayList<? extends Parcelable>) list);
+                        intent.putExtra("response", response);
                         startActivity(intent);
                     }
                 }, this::handleApiError);
-
     }
 }

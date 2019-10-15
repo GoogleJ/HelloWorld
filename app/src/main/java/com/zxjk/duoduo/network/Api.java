@@ -51,7 +51,7 @@ import com.zxjk.duoduo.bean.response.SignHkbOrHkExchangeResponse;
 import com.zxjk.duoduo.bean.response.SignTransactionResponse;
 import com.zxjk.duoduo.bean.response.ThirdPartyPaymentResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
-import com.zxjk.duoduo.bean.response.WalletChainInfoBean;
+import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
 
 import java.util.List;
 
@@ -633,7 +633,7 @@ public interface Api {
     Observable<BaseResponse<String>> recallGroupMessage(@Field("uId") String uId);
 
     @POST("duoduo/wallet/getWalletChainInfos")
-    Observable<BaseResponse<List<WalletChainInfoBean>>> getWalletChainInfos();
+    Observable<BaseResponse<WalletChainInfosResponse>> getWalletChainInfos();
 
     @POST("duoduo/currency/currencyInfosByCustomerId")
     @FormUrlEncoded

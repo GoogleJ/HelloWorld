@@ -823,4 +823,5 @@
     <string name="backup_words_tips3">请选择对应单词的序号</string>
     <string name="backup_words_tips4">助记词输入顺序有误，请重试！</string>
     <string name="backup_words_tips5">备份成功</string>
+    <string name="totalmoney1">总资产</string>
 </resources>

@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/background_color"
+    android:orientation="vertical"
     tools:context=".ui.minepage.wallet.NewBlockWalletActivity">
 
     <FrameLayout
@@ -13,113 +12,127 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/ic_blockwallet_bg"
-            android:scaleType="fitXY"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_blockwallet_bg" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:layout_marginTop="26dp"
+                android:orientation="horizontal">
 
                 <FrameLayout
-                    android:foreground="?selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:onClick="back"
                     android:layout_width="50dp"
-                    android:layout_height="50dp">
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:onClick="back">
 
                     <ImageView
-                        android:src="@drawable/ico_back_white"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ico_back_white" />
 
                 </FrameLayout>
 
                 <TextView
-                    android:text="@string/blockWallet"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
                     android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_height="match_parent" />
+                    android:text="@string/blockWallet"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
                 <FrameLayout
-                    android:foreground="?selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:onClick="list"
                     android:layout_width="50dp"
-                    android:layout_height="50dp">
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:onClick="list">
 
                     <ImageView
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_blockwallet_list"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_blockwallet_list" />
 
                 </FrameLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="总资产"
-                    android:drawablePadding="6dp"
-                    android:gravity="center"
-                    android:drawableEnd="@drawable/ic_blockwallet_show"
-                    android:textColor="@color/white"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_marginTop="4dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/totalmoney1"
+                        android:textColor="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/ivShowOrHide"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_blockwallet_hide" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:textSize="15sp"
-                        android:text="¥"
+                        android:id="@+id/tvSign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="2.5dp"
                         android:gravity="bottom"
+                        android:text="¥"
                         android:textColor="@color/white"
-                        android:layout_marginBottom="3dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        android:textSize="16sp" />
 
                     <TextView
-                        android:layout_marginStart="6dp"
-                        android:text="475,939.00"
-                        android:textSize="25sp"
-                        android:textColor="@color/white"
+                        android:id="@+id/tvNewBlockWalletSum"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="26sp" />
 
                 </LinearLayout>
 
                 <ImageView
-                    android:onClick="add"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="56dp"
-                    android:src="@drawable/ic_blockwallet_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_marginEnd="48dp"
+                    android:onClick="add"
+                    android:src="@drawable/ic_blockwallet_add" />
 
             </LinearLayout>
 
@@ -127,298 +140,10 @@
 
     </FrameLayout>
 
-    <ScrollView
-        android:overScrollMode="never"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.cardview.widget.CardView
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                app:cardCornerRadius="8dp"
-                app:contentPadding="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:src="@drawable/ic_blockwallet_icon1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_marginStart="16dp"
-                        android:text="BTC"
-                        android:textStyle="bold"
-                        android:textSize="17sp"
-                        android:textColor="#2C4879"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp"
-                        android:gravity="end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            android:text="2.47596080"
-                            android:textStyle="bold"
-                            android:textSize="17sp"
-                            android:textColor="#2C4879"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:text="≈¥8.242.00"
-                            android:textColor="#9EA0A4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                app:cardCornerRadius="8dp"
-                app:contentPadding="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:src="@drawable/ic_blockwallet_icon2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_marginStart="16dp"
-                        android:text="ETH"
-                        android:textStyle="bold"
-                        android:textSize="17sp"
-                        android:textColor="#2C4879"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp"
-                        android:gravity="end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            android:text="2.47596080"
-                            android:textStyle="bold"
-                            android:textSize="17sp"
-                            android:textColor="#2C4879"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:text="≈¥8.242.00"
-                            android:textColor="#9EA0A4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                app:cardCornerRadius="8dp"
-                app:contentPadding="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:src="@drawable/ic_blockwallet_icon3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_marginStart="16dp"
-                        android:text="USDT"
-                        android:textStyle="bold"
-                        android:textSize="17sp"
-                        android:textColor="#2C4879"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp"
-                        android:gravity="end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            android:text="2.47596080"
-                            android:textStyle="bold"
-                            android:textSize="17sp"
-                            android:textColor="#2C4879"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:text="≈¥8.242.00"
-                            android:textColor="#9EA0A4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                app:cardCornerRadius="8dp"
-                app:contentPadding="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:src="@drawable/ic_blockwallet_icon4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_marginStart="16dp"
-                        android:text="EOS"
-                        android:textStyle="bold"
-                        android:textSize="17sp"
-                        android:textColor="#2C4879"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp"
-                        android:gravity="end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            android:text="2.47596080"
-                            android:textStyle="bold"
-                            android:textSize="17sp"
-                            android:textColor="#2C4879"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:text="≈¥8.242.00"
-                            android:textColor="#9EA0A4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_marginBottom="40dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                app:cardCornerRadius="8dp"
-                app:contentPadding="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:src="@drawable/ic_blockwallet_icon5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_marginStart="16dp"
-                        android:text="BTM"
-                        android:textStyle="bold"
-                        android:textSize="17sp"
-                        android:textColor="#2C4879"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp"
-                        android:gravity="end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            android:text="2.47596080"
-                            android:textStyle="bold"
-                            android:textSize="17sp"
-                            android:textColor="#2C4879"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:text="≈¥8.242.00"
-                            android:textColor="#9EA0A4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
 
 </LinearLayout>
