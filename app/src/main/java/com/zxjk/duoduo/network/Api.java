@@ -625,11 +625,7 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<List<GetPublicGroupResponse>>> getPublicGroupList(@Field("groupName") String groupName);
 
-    @POST("http://api-cn.ronghub.com/message/recall.json")
+    @POST("duoduo/rongcloud/recallGroupMessage")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> forceRecall(@Field("fromUserId") String fromUserId,
-                                                 @Field("conversationType") String conversationType,
-                                                 @Field("targetId") String targetId,
-                                                 @Field("messageUID") String messageUID,
-                                                 @Field("sentTime") String sentTime);
+    Observable<BaseResponse<String>> recallGroupMessage(@Field("uId") String uId);
 }

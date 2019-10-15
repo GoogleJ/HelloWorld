@@ -66,7 +66,6 @@ import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongExtension;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
-import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.plugin.IPluginModule;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.adapter.MessageListAdapter;
@@ -670,31 +669,30 @@ public class ConversationActivity extends BaseActivity {
      */
     private void handleGroupOwnerInit() {
         boolean isOwner = groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId);
-        boolean hasForceRecall = false;
 
         List<MessageItemLongClickAction> actionList = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions();
         Iterator<MessageItemLongClickAction> iterator = actionList.iterator();
         while (iterator.hasNext()) {
             MessageItemLongClickAction next = iterator.next();
             if (next.getTitle(this).equals("强制撤回")) {
-                hasForceRecall = true;
-                if (!isOwner) {
-                    iterator.remove();
-                    break;
-                }
+                iterator.remove();
+                break;
             }
         }
 
-        if (isOwner && !hasForceRecall) {
+        if (isOwner) {
             MessageItemLongClickAction forceRecallAction = new MessageItemLongClickAction.Builder()
                     .title("强制撤回")
-                    .showFilter(uiMessage -> false)
-                    .actionListener(new MessageItemLongClickAction.MessageItemLongClickListener() {
-                        @Override
-                        public boolean onMessageItemLongClick(Context context, UIMessage uiMessage) {
-
-                            return true;
-                        }
+                    .showFilter(uiMessage -> true)
+                    .actionListener((context, uiMessage) -> {
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .recallGroupMessage(uiMessage.getMessage().getUId())
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConversationActivity.this)))
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(s -> {
+                                }, ConversationActivity.this::handleApiError);
+                        return true;
                     })
                     .build();
             RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction);
