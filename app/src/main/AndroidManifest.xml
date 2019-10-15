@@ -55,9 +55,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.minepage.wallet.CreateingWalletActivity"></activity>
-        <activity android:name=".ui.minepage.wallet.CreateWalletActivity" />
-        <activity android:name=".ui.minepage.wallet.BlockWalletEmptyActivity" />
+        <activity
+            android:name=".ui.minepage.wallet.BackupWordsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.CreateWalletSuccessActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.CreateingWalletActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.CreateWalletActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.BlockWalletEmptyActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.msgpage.SearchGroupActivity"
             android:launchMode="singleTop"

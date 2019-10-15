@@ -131,4 +131,5 @@
     <color name="colorDBOrange">#FA911F</color>
 
     <color name="msgTitle">#020818</color>
+    <color name="backupwordUnable">#83B0FF</color>
 </resources>

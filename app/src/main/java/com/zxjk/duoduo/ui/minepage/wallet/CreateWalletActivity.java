@@ -63,7 +63,7 @@ public class CreateWalletActivity extends BaseActivity {
                     .show(pwd -> {
                         Intent intent = new Intent(CreateWalletActivity.this, CreateingWalletActivity.class);
                         intent.putExtra("pwd", pwd);
-                        intent.putExtra("symbol", item.getCoinType());
+                        intent.putExtra("symbol", item.getCoin());
                         startActivity(intent);
                     });
         });

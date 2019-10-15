@@ -3,6 +3,8 @@ package com.zxjk.duoduo.ui.minepage.wallet;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.zxjk.duoduo.R;
@@ -14,17 +16,13 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.CreateWLoadingView;
 import com.zxjk.duoduo.utils.MD5Utils;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
-
 public class CreateingWalletActivity extends BaseActivity {
 
     private CreateWLoadingView clv;
 
     private TextView tvTips;
+
+    private Button btnComplete;
 
     private GenerateMnemonicResponse response;
 
@@ -40,6 +38,7 @@ public class CreateingWalletActivity extends BaseActivity {
         TextView title = findViewById(R.id.tv_title);
         tvTips = findViewById(R.id.tvTips);
         clv = findViewById(R.id.clv);
+        btnComplete = findViewById(R.id.btnComplete);
 
         title.setText(R.string.createwallet);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
@@ -50,19 +49,23 @@ public class CreateingWalletActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver())
                 .doOnSubscribe(disposable -> clv.startAnim())
-                .flatMap((Function<GenerateMnemonicResponse, ObservableSource<?>>) response -> {
-                    this.response = response;
+                .doOnTerminate(() -> clv.finish())
+                .subscribe(response -> {
                     tvTips.setText(R.string.createwallet_tips3);
-                    return Observable.timer(1, TimeUnit.SECONDS);
-                })
-                .subscribe(s -> {
-//                    Intent intent = new Intent(this, CreateWalletSuccessActivity.class);
-//                    intent.putExtra("response", response);
-//                    startActivity(intent);
-                    clv.finish();
+                    btnComplete.setVisibility(View.VISIBLE);
+                    this.response = response;
                 }, t -> {
                     tvTips.setText(R.string.createwallet_tips4);
                     handleApiError(t);
                 });
+    }
+
+    public void accomplish(View view) {
+        Intent intent = new Intent(this, WalletActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        intent = new Intent(this, CreateWalletSuccessActivity.class);
+        intent.putExtra("response", response);
+        startActivity(intent);
     }
 }

@@ -809,4 +809,18 @@
     <string name="createwallet_tips2">ETH钱包正在创建中...</string>
     <string name="createwallet_tips3">创建完成</string>
     <string name="createwallet_tips4">创建失败，请稍后重试</string>
+    <string name="createwallet_success_tips1">请备份钱包</string>
+    <string name="createwallet_success_tips2">区块链钱包不同于传统网站账户,它是基于密码学的去中心化账户系统。\n您必须保管好钱包的私钥和交易密码,任何意外将会导致资产账户丢失</string>
+    <string name="createwallet_success_tips3">备份助记词</string>
+    <string name="createwallet_success_tips4">丢失钱包或忘记密码时,可帮助恢复钱包。</string>
+    <string name="createwallet_success_tips5">备份Keystore和私钥文件</string>
+    <string name="createwallet_success_tips6">官方钱包格式,密码保护的私钥文件。</string>
+    <string name="backup">立即备份</string>
+    <string name="backup_wallet">备份钱包</string>
+    <string name="backup_words">备份助记词</string>
+    <string name="backup_words_tips1">请准确抄写并安全备份助记词!</string>
+    <string name="backup_words_tips2">还有未校验的助记词,请核对</string>
+    <string name="backup_words_tips3">请选择对应单词的序号</string>
+    <string name="backup_words_tips4">助记词输入顺序有误，请重试！</string>
+    <string name="backup_words_tips5">备份成功</string>
 </resources>

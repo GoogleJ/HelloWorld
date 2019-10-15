@@ -13,8 +13,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -25,20 +23,19 @@ import com.zxjk.duoduo.utils.CommonUtils;
 public class CreateWLoadingView extends View {
     private Paint paint;
 
-    //当前进度，最大值为1
+    //progress 0 - 1f
     private float progress = 0f;
 
-    //view绘制区
     private Rect rect;
     private RectF rectf;
 
-    //弧线路径
+    //progress
     private Path path;
     private PathMeasure pathMeasure;
-    //当前path首尾两点坐标
+
+    //endCircle location
     private float[] pathPoints;
 
-    //尾部小圆半径
     private float endCircleRadius;
 
     private ValueAnimator startAnim;
@@ -59,6 +56,8 @@ public class CreateWLoadingView extends View {
         pathPoints = new float[2];
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStrokeWidth(endCircleRadius / 2f);
+        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
     }
 
     @Override
@@ -67,26 +66,27 @@ public class CreateWLoadingView extends View {
 
         if (rect.isEmpty()) {
             getDrawingRect(rect);
-
-            paint.setColor(Color.parseColor("#000000"));
-            canvas.drawCircle(rect.right / 2f, rect.right / 2f, rect.right / 2f, paint);
-
             rect.top += endCircleRadius + (endCircleRadius / 2f);
             rect.left += endCircleRadius + (endCircleRadius / 2f);
             rect.bottom -= endCircleRadius + (endCircleRadius / 2f);
             rect.right -= endCircleRadius + (endCircleRadius / 2f);
             rectf.set(rect);
-
-            paint.setStrokeWidth(endCircleRadius / 2f);
-            paint.setColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
         }
 
+        //background
+        paint.setColor(Color.parseColor("#F3F4F6"));
+        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, Math.max(rectf.width() / 2f, rectf.height() / 2f), paint);
+        paint.setColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
+
+        //progress
         path.reset();
         path.moveTo(rectf.right / 2f, rectf.top);
-        path.arcTo(rectf, 270, 360f * progress);
+        //"-1" for progress equals 1f
+        path.arcTo(rectf, 270, 360f * progress - 1);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawPath(path, paint);
 
+        //endCircle
         pathMeasure.setPath(path, false);
         pathMeasure.getPosTan(pathMeasure.getLength(), pathPoints, null);
         paint.setStyle(Paint.Style.FILL);
@@ -118,8 +118,8 @@ public class CreateWLoadingView extends View {
 
     public void finish() {
         ValueAnimator endAnim = ValueAnimator.ofFloat(progress, 1f);
-        endAnim.setDuration(300);
-        endAnim.addUpdateListener(va -> setProgress(va.getAnimatedFraction()));
+        endAnim.setDuration(1500);
+        endAnim.addUpdateListener(va -> setProgress((Float) va.getAnimatedValue()));
 
         if (startAnim != null && startAnim.isRunning()) {
             startAnim.end();
