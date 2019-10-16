@@ -21,6 +21,7 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.MD5Utils;
 
 public class CreateWalletActivity extends BaseActivity {
     private RecyclerView recycler;
@@ -59,13 +60,21 @@ public class CreateWalletActivity extends BaseActivity {
                 ToastUtils.showShort(R.string.createwallet_coinunable);
                 return;
             }
-            new NewPayBoard(CreateWalletActivity.this)
-                    .show(pwd -> {
+            if (item.getIsAlready().equals("1")) {
+                return;
+            }
+            new NewPayBoard(CreateWalletActivity.this).show(pwd -> ServiceFactory.getInstance().getBaseService(Api.class)
+                    .checkWalletPwd(MD5Utils.getMD5(pwd))
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(s -> {
                         Intent intent = new Intent(CreateWalletActivity.this, CreateingWalletActivity.class);
                         intent.putExtra("pwd", pwd);
                         intent.putExtra("symbol", item.getCoin());
                         startActivity(intent);
-                    });
+                        finish();
+                    }, this::handleApiError));
         });
 
         ServiceFactory.getInstance().getBaseService(Api.class)

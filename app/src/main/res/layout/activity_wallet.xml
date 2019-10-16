@@ -51,17 +51,6 @@
                         android:text="@string/blockWallet"
                         android:textColor="@color/white" />
 
-                    <TextView
-                        android:id="@+id/tvMoney1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:ellipsize="middle"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:text="0.00"
-                        android:textColor="@color/white" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -81,18 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/motLeft"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/tvMoney2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:ellipsize="middle"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:text="0.00"
+                        android:text="@string/motWallet"
                         android:textColor="@color/white" />
 
                 </LinearLayout>

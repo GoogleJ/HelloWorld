@@ -19,6 +19,7 @@ import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
+import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
 import com.zxjk.duoduo.bean.response.GetPublicGroupResponse;
@@ -642,4 +643,15 @@ public interface Api {
     @POST("duoduo/wallet/generateMnemonic")
     @FormUrlEncoded
     Observable<BaseResponse<GenerateMnemonicResponse>> generateMnemonic(@Field("symbol") String symbol, @Field("pwd") String pwd);
+
+    @POST("duoduo/wallet/getMainSymbolByCustomerId")
+    Observable<BaseResponse<List<GetMainSymbolByCustomerIdBean>>> getMainSymbolByCustomerId();
+
+    @POST("duoduo/wallet/checkWalletPwd")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> checkWalletPwd(@Field("pwd") String pwd);
+
+    @POST("duoduo/wallet/getBalanceByAddress")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> getBalanceByAddress(@Field("symbol") String symbol, @Field("walletAddress") String walletAddress);
 }

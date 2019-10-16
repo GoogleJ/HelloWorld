@@ -824,4 +824,13 @@
     <string name="backup_words_tips4">助记词输入顺序有误，请重试！</string>
     <string name="backup_words_tips5">备份成功</string>
     <string name="totalmoney1">总资产</string>
+    <string name="wallet_manage">钱包管理</string>
+    <string name="wallet_created">创建的钱包</string>
+    <string name="wallet_imported">导入的钱包</string>
+    <string name="wallet_manage_detail_tips1">修改钱包名称</string>
+    <string name="wallet_manage_detail_tips2">导出助记词</string>
+    <string name="wallet_manage_detail_tips3">导出keystore</string>
+    <string name="wallet_manage_detail_tips4">导出私钥</string>
+    <string name="wallet_delete">删除钱包</string>
+    <string name="motWallet">MoT钱包</string>
 </resources>

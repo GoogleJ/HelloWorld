@@ -23,14 +23,15 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="26dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
                 android:orientation="horizontal">
 
                 <FrameLayout
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:clickable="true"
                     android:foreground="?selectableItemBackgroundBorderless"
                     android:onClick="back">
@@ -53,11 +54,11 @@
                     android:textSize="18sp" />
 
                 <FrameLayout
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:clickable="true"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:onClick="list">
+                    android:onClick="manage">
 
                     <ImageView
                         android:layout_width="wrap_content"

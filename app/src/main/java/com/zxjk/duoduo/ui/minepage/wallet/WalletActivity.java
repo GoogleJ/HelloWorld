@@ -3,7 +3,6 @@ package com.zxjk.duoduo.ui.minepage.wallet;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,12 +15,7 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.walletpage.ExchangeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 
-import java.util.ArrayList;
-
 public class WalletActivity extends BaseActivity {
-
-    private TextView tvMoney1;
-    private TextView tvMoney2;
 
     @SuppressLint("CheckResult")
     @Override
@@ -31,21 +25,8 @@ public class WalletActivity extends BaseActivity {
 
         TextView textView = findViewById(R.id.tv_title);
         textView.setText(R.string.blockWallet);
-        tvMoney1 = findViewById(R.id.tvMoney1);
-        tvMoney2 = findViewById(R.id.tvMoney2);
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getBalanceHk(Constant.currentUser.getWalletAddress())
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(c -> {
-                    tvMoney1.setText(c.getBalanceMoToken());
-                    tvMoney2.setText(c.getBalanceMot());
-                }, this::handleApiError);
-
     }
 
     public void exchange(View view) {

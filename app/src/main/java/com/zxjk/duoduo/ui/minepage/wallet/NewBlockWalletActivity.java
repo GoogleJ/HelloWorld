@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -110,8 +111,8 @@ public class NewBlockWalletActivity extends BaseActivity {
         finish();
     }
 
-    public void list(View view) {
-        ToastUtils.showShort(R.string.developing);
+    public void manage(View view) {
+        startActivity(new Intent(this, BlockWalletManageActivity.class));
     }
 
     public void add(View view) {

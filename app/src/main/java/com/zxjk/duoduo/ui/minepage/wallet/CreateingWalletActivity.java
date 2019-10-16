@@ -14,7 +14,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.CreateWLoadingView;
-import com.zxjk.duoduo.utils.MD5Utils;
+import com.zxjk.duoduo.utils.AesUtil;
 
 public class CreateingWalletActivity extends BaseActivity {
 
@@ -44,7 +44,7 @@ public class CreateingWalletActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .generateMnemonic(symbol, MD5Utils.getMD5(pwd))
+                .generateMnemonic(symbol, AesUtil.getInstance().encrypt(pwd))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver())

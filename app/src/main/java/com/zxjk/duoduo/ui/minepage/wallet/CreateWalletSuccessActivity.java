@@ -26,7 +26,9 @@ public class CreateWalletSuccessActivity extends BaseActivity {
     }
 
     public void backup(View view) {
-        startActivity(new Intent(this, NewBlockWalletActivity.class));
+        Intent intent1 = new Intent(this, NewBlockWalletActivity.class);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent1);
         Intent intent = new Intent(this, BackupWordsActivity.class);
         intent.putExtra("words", response.getWalletMnemonic());
         startActivity(intent);
