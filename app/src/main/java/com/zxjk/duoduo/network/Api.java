@@ -654,4 +654,22 @@ public interface Api {
     @POST("duoduo/wallet/getBalanceByAddress")
     @FormUrlEncoded
     Observable<BaseResponse<String>> getBalanceByAddress(@Field("symbol") String symbol, @Field("walletAddress") String walletAddress);
+
+    @POST("duoduo/wallet/updateWalletChainName")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> updateWalletChainName(@Field("walletName") String walletName, @Field("walletAddress") String walletAddress);
+
+    @POST("duoduo/wallet/exportWalletInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> exportWalletInfo(@Field("walletAddress") String walletAddress, @Field("pwd") String pwd, @Field("type") String type);
+
+    @POST("duoduo/wallet/deleteWallet")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> deleteWalletByKey(@Field("walletAddress") String walletAddress, @Field("importMethod") String importMethod, @Field("symbol") String symbol
+            , @Field("pwd") String pwd);
+
+    @POST("duoduo/wallet/deleteWallet")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> deleteWalletByWords(@Field("walletAddress") String walletAddress, @Field("importMethod") String importMethod, @Field("symbol") String symbol
+            , @Field("walletMnemonic") String walletMnemonic);
 }

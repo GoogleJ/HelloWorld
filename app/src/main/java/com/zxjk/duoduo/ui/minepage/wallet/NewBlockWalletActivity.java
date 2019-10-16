@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,8 @@ import com.zxjk.duoduo.utils.GlideUtil;
 
 @SuppressLint("CheckResult")
 public class NewBlockWalletActivity extends BaseActivity {
+    private final int REQUEST_MANAGE = 1;
+
     private WalletChainInfosResponse response;
 
     private boolean isShow = true;
@@ -112,10 +115,18 @@ public class NewBlockWalletActivity extends BaseActivity {
     }
 
     public void manage(View view) {
-        startActivity(new Intent(this, BlockWalletManageActivity.class));
+        startActivityForResult(new Intent(this, BlockWalletManageActivity.class), 1);
     }
 
     public void add(View view) {
         ToastUtils.showShort(R.string.developing);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_MANAGE) {
+            // TODO: 2019/10/16 判断list是否有变化
+        }
     }
 }

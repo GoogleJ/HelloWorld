@@ -55,6 +55,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.minepage.wallet.DeleteBlockWalletActivity"></activity>
+        <activity android:name=".ui.minepage.wallet.BackupKeystoreActivity" />
+        <activity android:name=".ui.minepage.wallet.ChangeWalletNameActivity" />
         <activity
             android:name=".ui.minepage.wallet.BlockWalletManageDetailActivity"
             android:launchMode="singleTop"

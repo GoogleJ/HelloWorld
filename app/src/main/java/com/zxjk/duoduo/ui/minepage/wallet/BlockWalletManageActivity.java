@@ -29,6 +29,8 @@ import io.reactivex.functions.Function;
 
 @SuppressLint("CheckResult")
 public class BlockWalletManageActivity extends BaseActivity {
+    public static final int RESULT_DELETE = 1;
+    public static final int RESULT_RENAME = 2;
 
     private RecyclerView recycler;
     private BaseSectionQuickAdapter<GetMainSymbolByCustomerIdBeanSection, BaseViewHolder> adapter;
@@ -82,7 +84,7 @@ public class BlockWalletManageActivity extends BaseActivity {
             GetMainSymbolByCustomerIdBeanSection b = (GetMainSymbolByCustomerIdBeanSection) adapter.getData().get(position);
             Intent intent = new Intent(this, BlockWalletManageDetailActivity.class);
             intent.putExtra("data", b.t);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         });
         recycler.setAdapter(adapter);
     }
