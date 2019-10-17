@@ -672,4 +672,16 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> deleteWalletByWords(@Field("walletAddress") String walletAddress, @Field("importMethod") String importMethod, @Field("symbol") String symbol
             , @Field("walletMnemonic") String walletMnemonic);
+
+    @POST("duoduo/wallet/importPrivateKey")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> importPrivateKey(@Field("privateKey") String privateKey, @Field("pwd") String pwd);
+
+    @POST("duoduo/wallet/importByMnemonic")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> importByMnemonic(@Field("mnemonicListStr") String mnemonicListStr, @Field("pwd") String pwd);
+
+    @POST("duoduo/wallet/importKeyStore")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> importKeyStore(@Field("keystore") String keystore, @Field("pwd") String pwd);
 }

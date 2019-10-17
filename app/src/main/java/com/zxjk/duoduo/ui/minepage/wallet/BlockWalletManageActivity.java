@@ -91,11 +91,10 @@ public class BlockWalletManageActivity extends BaseActivity {
 
     public void createWallet(View view) {
         startActivity(new Intent(this, CreateWalletActivity.class));
-        finish();
     }
 
     public void importWallet(View view) {
-
+        startActivity(new Intent(this, ImportWalletActivity.class));
     }
 
     private ArrayList<GetMainSymbolByCustomerIdBeanSection> parseData(List<GetMainSymbolByCustomerIdBean> originList) {

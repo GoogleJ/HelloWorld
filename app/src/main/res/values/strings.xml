@@ -860,4 +860,17 @@
     <string name="delete_wallet">移除钱包</string>
     <string name="wrong_wordscount">助记词输入有误，请核对</string>
     <string name="delete_wallet_success">钱包删除成功</string>
+    <string name="block_words">助记词</string>
+    <string name="block_key">私钥</string>
+    <string name="block_keystore">keystore</string>
+    <string name="importwallet_tips1">keystore密码</string>
+    <string name="importwallet_tips2">keystore密码是您在生成keystore文件前，自定义设置的密码，该密码和私钥一起加密生成了keystore文件。</string>
+    <string name="importwallet_tips3">什么是keystore密码？</string>
+    <string name="secretTips">我已阅读并同意</string>
+    <string name="secretTips1">隐私及服务条款</string>
+    <string name="importwallet_tips4">请输入您备份的助记词恢复钱包</string>
+    <string name="input_key">请输入私钥</string>
+    <string name="importwallet_tips5">直接复制粘贴官方钱包的keystore内容至文本框,或通过生成keystore内容的二维码,扫码录入</string>
+    <string name="importwallet_tips6">keystore文本内容</string>
+    <string name="importwallet_success">导入成功</string>
 </resources>

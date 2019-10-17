@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.minepage.wallet.ImportWalletActivity">
+
+    <include layout="@layout/layout_title_back" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvWords"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="words"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/block_words"
+            android:textColor="@color/colorTheme"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tvKey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="key"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/block_key"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tvKeystore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="keystore"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/block_keystore"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="0dp"
+            android:layout_height="1.5dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginEnd="26dp"
+            android:layout_weight="1"
+            android:background="@color/colorTheme"
+            android:minWidth="56dp" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="0dp"
+            android:layout_height="1.5dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginEnd="26dp"
+            android:layout_weight="1"
+            android:background="@color/colorTheme"
+            android:minWidth="56dp"
+            android:visibility="invisible" />
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="0dp"
+            android:layout_height="1.5dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginEnd="26dp"
+            android:layout_weight="1"
+            android:background="@color/colorTheme"
+            android:minWidth="56dp"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#EEEEEE" />
+
+    <TextView
+        android:id="@+id/tvImportTips1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="16dp"
+        android:lineSpacingExtra="3dp"
+        android:text="@string/delete_wallet_tips"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/etInput"
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/shape_delete_wallet"
+        android:gravity="top"
+        android:hint="@string/input_words"
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="#CACACA"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/llKeystoreTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/importwallet_tips1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="28dp"
+            android:background="#dddddd" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/importwallet_tips3"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/importwallet_tips2"
+            android:textColor="#85878C"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btnImport"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="12dp"
+        android:background="@drawable/shape_f7f8fa_5"
+        android:enabled="false"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:onClick="importWallet"
+        android:text="@string/importwallet"
+        android:textColor="#CACACA"
+        android:textSize="17sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/selector_document_selection"
+            android:button="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/secretTips"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:onClick="agreement"
+            android:text="@string/secretTips1"
+            android:textColor="@color/colorTheme"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
