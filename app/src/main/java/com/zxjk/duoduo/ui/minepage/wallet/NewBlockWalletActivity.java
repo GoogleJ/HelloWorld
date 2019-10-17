@@ -2,6 +2,7 @@ package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.WalletChainInfoLevel0;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -22,6 +25,9 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("CheckResult")
 public class NewBlockWalletActivity extends BaseActivity {
@@ -37,13 +43,15 @@ public class NewBlockWalletActivity extends BaseActivity {
     private TextView tvSign;
 
     private RecyclerView recycler;
-    private BaseQuickAdapter<WalletChainInfosResponse.SymbolListBean, BaseViewHolder> adapter;
+    private BaseMultiItemQuickAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_block_wallet);
         setTrasnferStatusBar(true);
+
+        response = getIntent().getParcelableExtra("response");
 
         initView();
 
@@ -77,8 +85,6 @@ public class NewBlockWalletActivity extends BaseActivity {
     }
 
     private void initData() {
-        response = getIntent().getParcelableExtra("response");
-
         if (response == null) {
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getWalletChainInfos()
@@ -87,27 +93,110 @@ public class NewBlockWalletActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .subscribe(response -> {
                         this.response = response;
-                        adapter.setNewData(response.getSymbolList());
+                        tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
+                        adapter.setNewData(parseData(response.getSymbolList()));
                     }, this::handleApiError);
         } else {
-            adapter.setNewData(response.getSymbolList());
+            tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
+            adapter.setNewData(parseData(response.getSymbolList()));
         }
     }
 
     private void initRecycler() {
         recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BaseQuickAdapter<WalletChainInfosResponse.SymbolListBean, BaseViewHolder>(R.layout.item_new_blockwallet) {
+        adapter = new BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(null) {
+            {
+                addItemType(1, R.layout.item_new_blockwallet1);
+                addItemType(2, R.layout.item_new_blockwallet2);
+            }
+
             @Override
-            protected void convert(BaseViewHolder helper, WalletChainInfosResponse.SymbolListBean item) {
-                ImageView ivlogo = helper.getView(R.id.ivLogo);
-                GlideUtil.loadNormalImg(ivlogo, item.getLogo());
-                helper.setText(R.id.tvCoin, item.getSymbol())
-                        .setText(R.id.tvMoney1, isShow ? (item.getSumBalance() + "") : hideStr)
-                        .setText(R.id.tvMoney2, isShow ? ("≈¥" + item.getSumBalanceToCny()) : hideStr);
+            protected void convert(BaseViewHolder helper, MultiItemEntity item) {
+                int type = helper.getItemViewType();
+                switch (type) {
+                    case 1:
+                        WalletChainInfoLevel0 level0Bean = (WalletChainInfoLevel0) item;
+                        ImageView ivArrow = helper.getView(R.id.ivArrow);
+                        if (level0Bean.getSubItems().size() != 0) {
+                            ivArrow.setVisibility(View.VISIBLE);
+                        } else {
+                            ivArrow.setVisibility(View.INVISIBLE);
+                        }
+                        ImageView ivlogo = helper.getView(R.id.ivLogo);
+                        GlideUtil.loadNormalImg(ivlogo, level0Bean.getBean().getLogo());
+                        helper.setText(R.id.tvCoin, level0Bean.getBean().getSymbol())
+                                .setText(R.id.tvMoney1, isShow ? (level0Bean.getBean().getSumBalance() + "") : hideStr)
+                                .setText(R.id.tvMoney2, isShow ? ("≈¥" + level0Bean.getBean().getSumBalanceToCny()) : hideStr);
+
+                        if (level0Bean.isExpanded()) {
+                            helper.itemView.setBackgroundResource(R.drawable.shape_white_top8);
+                        } else {
+                            helper.itemView.setBackgroundResource(R.drawable.shape_white_8);
+                        }
+
+                        helper.itemView.setOnClickListener(v -> {
+                            if (level0Bean.getSubItems() == null || level0Bean.getSubItems().size() == 0) {
+                                // TODO: 2019/10/17 跳转交易详情页
+                                return;
+                            }
+                            if (level0Bean.isExpanded()) {
+                                collapse(helper.getAdapterPosition());
+                            } else {
+                                expand(helper.getAdapterPosition());
+                            }
+                        });
+                        break;
+                    case 2:
+                        WalletChainInfosResponse.SymbolListBean.SymbolInfosBean bean = (WalletChainInfosResponse.SymbolListBean.SymbolInfosBean) item;
+                        helper.setText(R.id.tvCoin, (bean.getImportMethod().equals("3") ? "创建的" : "导入的") + bean.getSymbol() + "钱包地址")
+                                .setText(R.id.tvMoney1, isShow ? (bean.getBalance() + "") : hideStr)
+                                .setText(R.id.tvMoney2, isShow ? ("≈¥" + bean.getBalanceToCNY()) : hideStr)
+                                .setText(R.id.tvAddress, isShow ? bean.getWalletAddress() : hideStr);
+                        if (positions.contains(helper.getAdapterPosition())) {
+                            helper.itemView.setBackgroundResource(R.drawable.shape_white_bottom8);
+                        } else {
+                            helper.itemView.setBackgroundColor(Color.WHITE);
+                        }
+                        helper.itemView.setOnClickListener(v -> {
+                            // TODO: 2019/10/17 跳转交易详情页
+                        });
+                        break;
+                }
             }
         };
+
         recycler.setAdapter(adapter);
+    }
+
+    private ArrayList<Integer> positions = new ArrayList<>();
+
+    private ArrayList<MultiItemEntity> parseData(List<WalletChainInfosResponse.SymbolListBean> origin) {
+        ArrayList<MultiItemEntity> result = new ArrayList<>();
+        positions.clear();
+
+        int position = -1;
+        boolean flag;
+        for (int i = 0; i < origin.size(); i++) {
+            flag = false;
+            position += 1;
+
+            WalletChainInfosResponse.SymbolListBean bean = origin.get(i);
+            WalletChainInfoLevel0 level0 = new WalletChainInfoLevel0(bean);
+
+            for (int j = 0; j < bean.getSymbolInfos().size(); j++) {
+                flag = true;
+                level0.addSubItem(bean.getSymbolInfos().get(j));
+                position += 1;
+            }
+
+            if (flag) {
+                positions.add(position);
+            }
+            result.add(level0);
+        }
+
+        return result;
     }
 
     public void back(View view) {
@@ -115,7 +204,7 @@ public class NewBlockWalletActivity extends BaseActivity {
     }
 
     public void manage(View view) {
-        startActivityForResult(new Intent(this, BlockWalletManageActivity.class), 1);
+        startActivityForResult(new Intent(this, BlockWalletManageActivity.class), REQUEST_MANAGE);
     }
 
     public void add(View view) {
@@ -126,7 +215,10 @@ public class NewBlockWalletActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_MANAGE) {
-            // TODO: 2019/10/16 判断list是否有变化
+            if (resultCode == 1) {
+                response = null;
+                initData();
+            }
         }
     }
 }

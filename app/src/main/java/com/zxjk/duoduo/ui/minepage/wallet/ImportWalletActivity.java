@@ -10,9 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -22,6 +25,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
+import com.zxjk.duoduo.ui.msgpage.QrCodeActivity;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -29,6 +33,8 @@ import com.zxjk.duoduo.utils.MD5Utils;
 
 public class ImportWalletActivity extends BaseActivity {
 
+    private RelativeLayout rlend;
+    private ImageView ivRight;
     private TextView tvWords;
     private TextView tvKey;
     private TextView tvKeystore;
@@ -62,7 +68,14 @@ public class ImportWalletActivity extends BaseActivity {
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.importwallet);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        findViewById(R.id.rl_end).setOnClickListener(v -> {
+            Intent intent = new Intent(this, QrCodeActivity.class);
+            intent.putExtra("actionType", QrCodeActivity.ACTION_IMPORT_WALLET);
+            startActivityForResult(intent, 1);
+        });
 
+        rlend = findViewById(R.id.rl_end);
+        ivRight = findViewById(R.id.iv_end);
         tvWords = findViewById(R.id.tvWords);
         tvKey = findViewById(R.id.tvKey);
         tvKeystore = findViewById(R.id.tvKeystore);
@@ -74,6 +87,8 @@ public class ImportWalletActivity extends BaseActivity {
         llKeystoreTips = findViewById(R.id.llKeystoreTips);
         cb = findViewById(R.id.cb);
         btnImport = findViewById(R.id.btnImport);
+
+        ivRight.setImageResource(R.drawable.ic_import_wallet_scan);
 
         etInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -115,6 +130,7 @@ public class ImportWalletActivity extends BaseActivity {
     public void words(View view) {
         importType = 1;
         etInput.setText("");
+        rlend.setVisibility(View.INVISIBLE);
         tvWords.setTextColor(colorTheme);
         tvKey.setTextColor(colorBlack);
         tvKeystore.setTextColor(colorBlack);
@@ -129,6 +145,7 @@ public class ImportWalletActivity extends BaseActivity {
     public void key(View view) {
         importType = 2;
         etInput.setText("");
+        rlend.setVisibility(View.INVISIBLE);
         tvWords.setTextColor(colorBlack);
         tvKey.setTextColor(colorTheme);
         tvKeystore.setTextColor(colorBlack);
@@ -143,6 +160,7 @@ public class ImportWalletActivity extends BaseActivity {
     public void keystore(View view) {
         importType = 3;
         etInput.setText("");
+        rlend.setVisibility(View.VISIBLE);
         tvWords.setTextColor(colorBlack);
         tvKey.setTextColor(colorBlack);
         tvKeystore.setTextColor(colorTheme);
@@ -156,39 +174,39 @@ public class ImportWalletActivity extends BaseActivity {
 
     public void importWallet(View view) {
         Api api = ServiceFactory.getInstance().getBaseService(Api.class);
-        final String[] str = {etInput.getText().toString()};
+        String str = etInput.getText().toString();
         new NewPayBoard(this).show(pwd -> {
             switch (importType) {
                 case 1:
-                    api.importByMnemonic(AesUtil.getInstance().encrypt(str[0]), MD5Utils.getMD5(pwd))
+                    api.importByMnemonic(AesUtil.getInstance().encrypt(str), MD5Utils.getMD5(pwd))
                             .compose(bindToLifecycle())
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
                             .compose(RxSchedulers.normalTrans())
                             .subscribe(s -> {
                                 ToastUtils.showShort(R.string.importwallet_success);
+                                this.setResult(1);
                                 finish();
                             }, this::handleApiError);
                     break;
                 case 2:
-                    if (!str[0].startsWith("0x")) {
-                        str[0] = "0x" + str[0];
-                    }
-                    api.importPrivateKey(AesUtil.getInstance().encrypt(str[0]), MD5Utils.getMD5(pwd))
+                    api.importPrivateKey(AesUtil.getInstance().encrypt(str), MD5Utils.getMD5(pwd))
                             .compose(bindToLifecycle())
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
                             .compose(RxSchedulers.normalTrans())
                             .subscribe(s -> {
                                 ToastUtils.showShort(R.string.importwallet_success);
+                                this.setResult(1);
                                 finish();
                             }, this::handleApiError);
                     break;
                 case 3:
-                    api.importKeyStore(AesUtil.getInstance().encrypt(str[0]), AesUtil.getInstance().encrypt(pwd))
+                    api.importKeyStore(AesUtil.getInstance().encrypt(str), AesUtil.getInstance().encrypt(pwd))
                             .compose(bindToLifecycle())
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
                             .compose(RxSchedulers.normalTrans())
                             .subscribe(s -> {
                                 ToastUtils.showShort(R.string.importwallet_success);
+                                this.setResult(1);
                                 finish();
                             }, this::handleApiError);
                     break;
@@ -200,5 +218,14 @@ public class ImportWalletActivity extends BaseActivity {
         Intent intent = new Intent(this, OnlineServiceActivity.class);
         intent.putExtra("url", "https://wq0725.github.io/duoduo.statement.io/");
         startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 1 && data != null) {
+            etInput.setText("");
+            etInput.setText(data.getStringExtra("result"));
+        }
     }
 }

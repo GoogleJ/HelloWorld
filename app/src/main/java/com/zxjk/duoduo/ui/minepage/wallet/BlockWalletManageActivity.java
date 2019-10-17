@@ -5,16 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseSectionQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
-import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBeanSection;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -29,11 +30,12 @@ import io.reactivex.functions.Function;
 
 @SuppressLint("CheckResult")
 public class BlockWalletManageActivity extends BaseActivity {
-    public static final int RESULT_DELETE = 1;
-    public static final int RESULT_RENAME = 2;
+    public static final int REQUEST_IMPORT = 2;
+    public static final int REQUEST_DETAIL = 3;
 
+    private boolean dataChanged;
     private RecyclerView recycler;
-    private BaseSectionQuickAdapter<GetMainSymbolByCustomerIdBeanSection, BaseViewHolder> adapter;
+    private BaseQuickAdapter<GetMainSymbolByCustomerIdBean, BaseViewHolder> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,21 @@ public class BlockWalletManageActivity extends BaseActivity {
                 .getMainSymbolByCustomerId()
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
-                .map((Function<List<GetMainSymbolByCustomerIdBean>,
-                        List<GetMainSymbolByCustomerIdBeanSection>>) this::parseData)
+                .map((Function<List<GetMainSymbolByCustomerIdBean>, List<GetMainSymbolByCustomerIdBean>>) list -> {
+                    ArrayList<GetMainSymbolByCustomerIdBean> list1 = new ArrayList<>();
+                    ArrayList<GetMainSymbolByCustomerIdBean> list2 = new ArrayList<>();
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getImportMethod().equals("3")) {
+                            list1.add(list.get(i));
+                        } else {
+                            list2.add(list.get(i));
+                        }
+                    }
+                    ArrayList<GetMainSymbolByCustomerIdBean> resultList = new ArrayList<>(list.size());
+                    resultList.addAll(list1);
+                    resultList.addAll(list2);
+                    return resultList;
+                })
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(resultList -> adapter.setNewData(resultList), this::handleApiError);
     }
@@ -63,28 +78,47 @@ public class BlockWalletManageActivity extends BaseActivity {
     private void initRecycler() {
         recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BaseSectionQuickAdapter<GetMainSymbolByCustomerIdBeanSection, BaseViewHolder>(R.layout.item_wallet_manage, R.layout.item_wallet_manage_head, null) {
+        adapter = new BaseQuickAdapter<GetMainSymbolByCustomerIdBean, BaseViewHolder>(R.layout.item_wallet_manage, null) {
             @Override
-            protected void convert(BaseViewHolder helper, GetMainSymbolByCustomerIdBeanSection item) {
-                ImageView ivLogo = helper.getView(R.id.ivLogo);
-                GlideUtil.loadNormalImg(ivLogo, item.t.getLogo());
-                helper.setText(R.id.tvCoin, item.t.getWalletName())
-                        .setText(R.id.tvAddress, item.t.getWalletAddress());
-                helper.addOnClickListener(R.id.rlContent);
-            }
+            protected void convert(BaseViewHolder helper, GetMainSymbolByCustomerIdBean item) {
+                List<GetMainSymbolByCustomerIdBean> data = getData();
 
-            @Override
-            protected void convertHead(BaseViewHolder helper, GetMainSymbolByCustomerIdBeanSection item) {
-                helper.setText(R.id.tvHead, item.header);
-                helper.setImageResource(R.id.ivHead, item.header.equals(getString(R.string.wallet_created)) ?
+                ImageView ivLogo = helper.getView(R.id.ivLogo);
+                GlideUtil.loadNormalImg(ivLogo, item.getLogo());
+                helper.setText(R.id.tvCoin, item.getWalletName())
+                        .setText(R.id.tvAddress, item.getWalletAddress());
+                helper.addOnClickListener(R.id.rlContent);
+
+                LinearLayout llHead = helper.getView(R.id.llHead);
+                if (helper.getAdapterPosition() == 0) {
+                    llHead.setVisibility(View.VISIBLE);
+                } else if (judgeEquals(item, data.get(helper.getAdapterPosition() - 1))) {
+                    llHead.setVisibility(View.GONE);
+                } else {
+                    llHead.setVisibility(View.VISIBLE);
+                }
+
+                helper.setText(R.id.tvHead, item.getImportMethod().equals("3") ? R.string.wallet_created : R.string.wallet_imported);
+                helper.setImageResource(R.id.ivHead, item.getImportMethod().equals("3") ?
                         R.drawable.ic_item_walletmanage_create : R.drawable.ic_item_walletmanage_import);
+
+                View line = helper.getView(R.id.line);
+                if (helper.getAdapterPosition() + 1 != data.size()) {
+                    if (judgeEquals(item, data.get(helper.getAdapterPosition() + 1))) {
+                        line.setVisibility(View.VISIBLE);
+                    } else {
+                        line.setVisibility(View.GONE);
+                    }
+                } else {
+                    line.setVisibility(View.GONE);
+                }
             }
         };
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
-            GetMainSymbolByCustomerIdBeanSection b = (GetMainSymbolByCustomerIdBeanSection) adapter.getData().get(position);
+            GetMainSymbolByCustomerIdBean b = (GetMainSymbolByCustomerIdBean) adapter.getData().get(position);
             Intent intent = new Intent(this, BlockWalletManageDetailActivity.class);
-            intent.putExtra("data", b.t);
-            startActivityForResult(intent, 1);
+            intent.putExtra("data", b);
+            startActivityForResult(intent, REQUEST_DETAIL);
         });
         recycler.setAdapter(adapter);
     }
@@ -94,29 +128,47 @@ public class BlockWalletManageActivity extends BaseActivity {
     }
 
     public void importWallet(View view) {
-        startActivity(new Intent(this, ImportWalletActivity.class));
+        startActivityForResult(new Intent(this, ImportWalletActivity.class), REQUEST_IMPORT);
     }
 
-    private ArrayList<GetMainSymbolByCustomerIdBeanSection> parseData(List<GetMainSymbolByCustomerIdBean> originList) {
-        ArrayList<GetMainSymbolByCustomerIdBeanSection> resultList = new ArrayList<>(originList.size());
-        ArrayList<GetMainSymbolByCustomerIdBeanSection> listCreated = new ArrayList<>(originList.size());
-        ArrayList<GetMainSymbolByCustomerIdBeanSection> listImported = new ArrayList<>(originList.size());
-        for (int i = 0; i < originList.size(); i++) {
-            GetMainSymbolByCustomerIdBean bean = originList.get(i);
-            if (bean.getImportMethod().equals("3")) {
-                listCreated.add(new GetMainSymbolByCustomerIdBeanSection(bean));
-            } else {
-                listImported.add(new GetMainSymbolByCustomerIdBeanSection(bean));
-            }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_IMPORT:
+                if (resultCode == 1) {
+                    dataChanged = true;
+                    initData();
+                }
+                break;
+            case REQUEST_DETAIL:
+                if (resultCode == 1) {
+                    //changename
+                    initData();
+                }
+                if (resultCode == 2) {
+                    //delete
+                    dataChanged = true;
+                    initData();
+                }
+                break;
         }
-        if (listCreated.size() != 0) {
-            resultList.add(new GetMainSymbolByCustomerIdBeanSection(true, getString(R.string.wallet_created)));
-            resultList.addAll(listCreated);
+    }
+
+    private boolean judgeEquals(GetMainSymbolByCustomerIdBean b1, GetMainSymbolByCustomerIdBean b2) {
+        if ((!b1.getImportMethod().equals("3") && !b2.getImportMethod().equals("3")) ||
+                (b1.getImportMethod().equals("3") && b2.getImportMethod().equals("3"))) {
+            return true;
         }
-        if (listImported.size() != 0) {
-            resultList.add(new GetMainSymbolByCustomerIdBeanSection(true, getString(R.string.wallet_imported)));
-            resultList.addAll(listImported);
+        return false;
+    }
+
+    @Override
+    public void finish() {
+        if (dataChanged) {
+            setResult(1);
         }
-        return resultList;
+        super.finish();
     }
 }

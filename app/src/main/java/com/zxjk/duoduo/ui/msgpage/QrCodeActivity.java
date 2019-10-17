@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @SuppressLint("CheckResult")
 public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate {
+    public static final String ACTION_IMPORT_WALLET = "import_wallet";
+    private String actionType;
 
     private ZXingView zxingview;
     private TextView tv_end;
@@ -68,6 +71,8 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_qr_code);
 
+        actionType = getIntent().getStringExtra("actionType");
+
         initUI();
     }
 
@@ -75,6 +80,16 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     public void onScanQRCodeSuccess(String result) {
         Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         rt.play();
+
+        if (!TextUtils.isEmpty(actionType)) {
+            if (actionType.equals(ACTION_IMPORT_WALLET)) {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("result", result);
+                setResult(1, resultIntent);
+                finish();
+                return;
+            }
+        }
 
         String regexUrl = "^https?:/{2}\\w.+$";
         if (RegexUtils.isMatch(regexUrl, result)) {

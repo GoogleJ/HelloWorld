@@ -3,6 +3,8 @@ package com.zxjk.duoduo.bean.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +90,7 @@ public class WalletChainInfosResponse implements Parcelable {
             this.symbolInfos = symbolInfos;
         }
 
-        public static class SymbolInfosBean implements Parcelable {
+        public static class SymbolInfosBean implements Parcelable, MultiItemEntity {
 
             /**
              * symbol : ETH
@@ -204,6 +206,11 @@ public class WalletChainInfosResponse implements Parcelable {
                     return new SymbolInfosBean[size];
                 }
             };
+
+            @Override
+            public int getItemType() {
+                return 2;
+            }
         }
 
         @Override

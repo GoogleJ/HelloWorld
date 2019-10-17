@@ -37,6 +37,7 @@ public class BlockWalletManageDetailActivity extends BaseActivity {
     private final int DELETE_WALLET = 2;
 
     private GetMainSymbolByCustomerIdBean data;
+    private boolean nameChanged;
 
     private ImageView ivLogo;
     private TextView tvMoney;
@@ -177,7 +178,7 @@ public class BlockWalletManageDetailActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(s -> {
-                            // TODO: 2019/10/16 删除钱包后，setresult finish 父页面更新list
+                            setResult(2);
                             finish();
                         }, this::handleApiError);
             }
@@ -189,13 +190,22 @@ public class BlockWalletManageDetailActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CHANGE_NAME && resultCode == 1) {
+            nameChanged = true;
             this.data.setWalletName(data.getStringExtra("name"));
             title.setText(this.data.getWalletName());
         }
 
         if (requestCode == DELETE_WALLET && resultCode == 1) {
-            // TODO: 2019/10/16  2019/10/16 删除钱包后，setresult finish 父页面更新list
+            setResult(2);
             finish();
         }
+    }
+
+    @Override
+    public void finish() {
+        if (nameChanged) {
+            setResult(1);
+        }
+        super.finish();
     }
 }
