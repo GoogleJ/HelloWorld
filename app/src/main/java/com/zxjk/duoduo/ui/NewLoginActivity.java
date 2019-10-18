@@ -42,7 +42,6 @@ import com.zxjk.duoduo.bean.CountryEntity;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.service.RegisterBlockWalletService;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -260,8 +259,6 @@ public class NewLoginActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(l -> {
-                    startService(new Intent(this, RegisterBlockWalletService.class));
-
                     Constant.token = l.getToken();
                     Constant.userId = l.getId();
                     Constant.currentUser = l;

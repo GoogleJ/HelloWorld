@@ -8,11 +8,14 @@
 
     <include layout="@layout/layout_title_back" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/personal_information_1" />
 
     <RelativeLayout
         android:id="@+id/rl_currency"
         style="@style/RLayoutStyle">
-
 
         <TextView
             style="@style/textStyle"
@@ -20,31 +23,15 @@
             android:layout_marginStart="15dp"
             android:text="@string/currentCoin" />
 
-        <ImageView
-            android:id="@+id/iv_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@+id/tv_currency"
-            android:src="@drawable/ic_hkb" />
-
-
         <TextView
             android:id="@+id/tv_currency"
             style="@style/textStyle"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:layout_toStartOf="@id/iv_enter"
-            android:text="MoT" />
-
-
-        <ImageView
-            android:id="@+id/iv_enter"
-            style="@style/ImageEnter" />
+            android:textColor="@color/textcolor3" />
 
     </RelativeLayout>
-
 
     <View
         android:layout_width="match_parent"
@@ -79,6 +66,7 @@
                 android:background="@null"
                 android:ellipsize="end"
                 android:hint="@string/input_wallet_address"
+                android:imeOptions="actionDone"
                 android:lines="2"
                 android:singleLine="true"
                 android:textSize="16sp" />
@@ -91,7 +79,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="15dp"
                 android:onClick="addressList"
-                android:src="@drawable/ic_block_zhuanchu_address" />
+                android:src="@drawable/ic_block_zhuanchu_address"
+                android:tint="@color/colorTheme"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
@@ -103,9 +93,7 @@
             android:layout_marginBottom="10dp"
             android:background="@color/pop_color3" />
 
-
     </LinearLayout>
-
 
     <include layout="@layout/layout_line10" />
 
@@ -227,9 +215,24 @@
 
     </LinearLayout>
 
-    <Button
-        style="@style/BtnStyle"
-        android:onClick="submit"
-        android:text="@string/commit" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/personal_information_1">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/shape_theme"
+            android:onClick="submit"
+            android:text="@string/commit"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </FrameLayout>
 
 </LinearLayout>

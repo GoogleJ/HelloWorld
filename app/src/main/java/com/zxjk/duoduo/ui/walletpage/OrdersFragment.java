@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -104,6 +105,12 @@ public class OrdersFragment extends BaseFragment {
         adapter.setLoadMoreView(new NewsLoadMoreView());
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(this::initData, recyclerView);
+        View inflate = LayoutInflater.from(getContext()).inflate(R.layout.empty_publicgroup, null, false);
+        TextView tv = inflate.findViewById(R.id.tv);
+        ImageView iv = inflate.findViewById(R.id.iv);
+        tv.setText(R.string.emptylist1);
+        iv.setImageResource(R.drawable.ic_empty_orders);
+        adapter.setEmptyView(inflate);
 
         recyclerView.setAdapter(adapter);
 

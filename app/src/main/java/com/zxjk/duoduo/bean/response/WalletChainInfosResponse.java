@@ -49,7 +49,44 @@ public class WalletChainInfosResponse implements Parcelable {
         private String logo;
         private double sumBalanceToCny;
         private String walletAddress;
+        private String coinType;
+        private String parentSymbol;
+        private int tokenDecimal;
+        private String contractAddress;
+
+        public String getContractAddress() {
+            return contractAddress;
+        }
+
+        public void setContractAddress(String contractAddress) {
+            this.contractAddress = contractAddress;
+        }
+
+        public int getTokenDecimal() {
+            return tokenDecimal;
+        }
+
+        public void setTokenDecimal(int tokenDecimal) {
+            this.tokenDecimal = tokenDecimal;
+        }
+
         private List<SymbolInfosBean> symbolInfos;
+
+        public String getCoinType() {
+            return coinType;
+        }
+
+        public void setCoinType(String coinType) {
+            this.coinType = coinType;
+        }
+
+        public String getParentSymbol() {
+            return parentSymbol;
+        }
+
+        public void setParentSymbol(String parentSymbol) {
+            this.parentSymbol = parentSymbol;
+        }
 
         public String getWalletAddress() {
             return walletAddress;
@@ -118,6 +155,33 @@ public class WalletChainInfosResponse implements Parcelable {
             private String logo;
             private String walletAddress;
             private String balanceToCNY;
+            private String coinType;
+            private String parentSymbol;
+            private int tokenDecimal;
+
+            public int getTokenDecimal() {
+                return tokenDecimal;
+            }
+
+            public void setTokenDecimal(int tokenDecimal) {
+                this.tokenDecimal = tokenDecimal;
+            }
+
+            public String getCoinType() {
+                return coinType;
+            }
+
+            public void setCoinType(String coinType) {
+                this.coinType = coinType;
+            }
+
+            public String getParentSymbol() {
+                return parentSymbol;
+            }
+
+            public void setParentSymbol(String parentSymbol) {
+                this.parentSymbol = parentSymbol;
+            }
 
             public String getSymbol() {
                 return symbol;
@@ -175,6 +239,14 @@ public class WalletChainInfosResponse implements Parcelable {
                 this.balanceToCNY = balanceToCNY;
             }
 
+            public SymbolInfosBean() {
+            }
+
+            @Override
+            public int getItemType() {
+                return 2;
+            }
+
             @Override
             public int describeContents() {
                 return 0;
@@ -189,9 +261,9 @@ public class WalletChainInfosResponse implements Parcelable {
                 dest.writeString(this.logo);
                 dest.writeString(this.walletAddress);
                 dest.writeString(this.balanceToCNY);
-            }
-
-            public SymbolInfosBean() {
+                dest.writeString(this.coinType);
+                dest.writeString(this.parentSymbol);
+                dest.writeInt(this.tokenDecimal);
             }
 
             protected SymbolInfosBean(Parcel in) {
@@ -202,6 +274,9 @@ public class WalletChainInfosResponse implements Parcelable {
                 this.logo = in.readString();
                 this.walletAddress = in.readString();
                 this.balanceToCNY = in.readString();
+                this.coinType = in.readString();
+                this.parentSymbol = in.readString();
+                this.tokenDecimal = in.readInt();
             }
 
             public static final Creator<SymbolInfosBean> CREATOR = new Creator<SymbolInfosBean>() {
@@ -215,11 +290,6 @@ public class WalletChainInfosResponse implements Parcelable {
                     return new SymbolInfosBean[size];
                 }
             };
-
-            @Override
-            public int getItemType() {
-                return 2;
-            }
         }
 
         public SymbolListBean() {
@@ -237,6 +307,10 @@ public class WalletChainInfosResponse implements Parcelable {
             dest.writeString(this.logo);
             dest.writeDouble(this.sumBalanceToCny);
             dest.writeString(this.walletAddress);
+            dest.writeString(this.coinType);
+            dest.writeString(this.parentSymbol);
+            dest.writeInt(this.tokenDecimal);
+            dest.writeString(this.contractAddress);
             dest.writeTypedList(this.symbolInfos);
         }
 
@@ -246,6 +320,10 @@ public class WalletChainInfosResponse implements Parcelable {
             this.logo = in.readString();
             this.sumBalanceToCny = in.readDouble();
             this.walletAddress = in.readString();
+            this.coinType = in.readString();
+            this.parentSymbol = in.readString();
+            this.tokenDecimal = in.readInt();
+            this.contractAddress = in.readString();
             this.symbolInfos = in.createTypedArrayList(SymbolInfosBean.CREATOR);
         }
 

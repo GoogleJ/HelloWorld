@@ -137,13 +137,16 @@ public class NewBlockWalletActivity extends BaseActivity {
 
                         helper.itemView.setOnClickListener(v -> {
                             if (level0Bean.getSubItems() == null || level0Bean.getSubItems().size() == 0) {
-                                // TODO: 2019/10/17 跳转交易详情页
                                 Intent intent = new Intent(NewBlockWalletActivity.this, WalletTradeActivity.class);
                                 intent.putExtra("symbol", ((WalletChainInfoLevel0) item).getBean().getSymbol());
                                 intent.putExtra("address", ((WalletChainInfoLevel0) item).getBean().getWalletAddress());
                                 intent.putExtra("money", ((WalletChainInfoLevel0) item).getBean().getSumBalanceToCny());
                                 intent.putExtra("sum", ((WalletChainInfoLevel0) item).getBean().getSumBalance());
                                 intent.putExtra("logo", ((WalletChainInfoLevel0) item).getBean().getLogo());
+                                intent.putExtra("coinType", ((WalletChainInfoLevel0) item).getBean().getCoinType());
+                                intent.putExtra("parentSymbol", ((WalletChainInfoLevel0) item).getBean().getParentSymbol());
+                                intent.putExtra("tokenDecimal", ((WalletChainInfoLevel0) item).getBean().getTokenDecimal());
+                                intent.putExtra("contractAddress", ((WalletChainInfoLevel0) item).getBean().getContractAddress());
                                 startActivity(intent);
                                 return;
                             }
@@ -166,13 +169,16 @@ public class NewBlockWalletActivity extends BaseActivity {
                             helper.itemView.setBackgroundColor(Color.WHITE);
                         }
                         helper.itemView.setOnClickListener(v -> {
-                            // TODO: 2019/10/17 跳转交易详情页
                             Intent intent = new Intent(NewBlockWalletActivity.this, WalletTradeActivity.class);
                             intent.putExtra("symbol", bean.getSymbol());
                             intent.putExtra("address", bean.getWalletAddress());
                             intent.putExtra("money", bean.getBalanceToCNY());
                             intent.putExtra("sum", bean.getBalance());
                             intent.putExtra("logo", bean.getLogo());
+                            intent.putExtra("coinType", bean.getCoinType());
+                            intent.putExtra("parentSymbol", bean.getParentSymbol());
+                            intent.putExtra("tokenDecimal", bean.getTokenDecimal());
+                            intent.putExtra("contractAddress", bean.getContractAddress());
                             startActivity(intent);
                         });
                         break;

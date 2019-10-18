@@ -249,34 +249,4 @@ public class ShareGroupQRActivity extends BaseActivity {
         }
     }
 
-    private List<Conversation> search(String str) {
-        List<Conversation> filterList = new ArrayList<>();// 过滤后的list
-        if (str.matches("^([0-9]|[/+]).*")) {// 正则表达式 匹配以数字或者加号开头的字符串(包括了带空格及-分割的号码)
-            String simpleStr = str.replaceAll("\\-|\\s", "");
-            for (Conversation contact : data) {
-                if (contact.getConversationTitle() != null) {
-                    if (contact.getConversationTitle().contains(simpleStr) || contact.getConversationTitle().contains(str)) {
-                        if (!filterList.contains(contact)) {
-                            filterList.add(contact);
-                        }
-                    }
-                }
-            }
-        } else {
-            for (Conversation contact : data) {
-                if (contact.getConversationTitle() != null) {
-                    //姓名全匹配,姓名首字母简拼匹配,姓名全字母匹配
-                    boolean isNameContains = contact.getConversationTitle().toLowerCase(Locale.CHINESE)
-                            .contains(str.toLowerCase(Locale.CHINESE));
-                    if (isNameContains) {
-                        if (!filterList.contains(contact)) {
-                            filterList.add(contact);
-                        }
-                    }
-                }
-            }
-        }
-        return filterList;
-    }
-
 }

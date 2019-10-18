@@ -1,7 +1,6 @@
 package com.zxjk.duoduo.ui.walletpage;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,16 +19,16 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.service.SendHkbOrHkExchangeService;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.widget.dialog.SafeInputDialog;
+import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
 import com.zxjk.duoduo.utils.MoneyValueFilter;
+
 import java.text.DecimalFormat;
 
 
-public class HuaZhuanActivity extends BaseActivity implements SafeInputDialog.OnFinishListener {
+public class HuaZhuanActivity extends BaseActivity  {
 
     private String type = "3"; //币种类型，2：HK->HKB，3：HKB->HK
 
@@ -56,8 +55,6 @@ public class HuaZhuanActivity extends BaseActivity implements SafeInputDialog.On
 
     private String gasPrice = ""; //矿工费用 type为3时需要传
 
-    private SafeInputDialog dialog;
-
     DecimalFormat DecimalFormat = new DecimalFormat("#0.00");
 
     @Override
@@ -67,8 +64,6 @@ public class HuaZhuanActivity extends BaseActivity implements SafeInputDialog.On
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.huazhuan));
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-        dialog = new SafeInputDialog(this);
-        dialog.setOnFinishListener(this);
 
         tvHuaZhuan1 = findViewById(R.id.tvHuaZhuan1);
         tvHuaZhuan2 = findViewById(R.id.tvHuaZhuan2);
@@ -225,31 +220,17 @@ public class HuaZhuanActivity extends BaseActivity implements SafeInputDialog.On
             }
         }
 
-        dialog.show(etHuaZhuanCount.getText().toString() + (type.equals("3") ? "MoToken" : "MoT"));
+        new NewPayBoard(this).show(result -> ServiceFactory.getInstance().getBaseService(Api.class)
+                .signHkbOrHkExchange(MD5Utils.getMD5(result), type, Constant.walletResponse.getWalletAddress(),
+                        gasPrice, number, Constant.walletResponse.getWalletKeystore(), Constant.currentUser.getDuoduoId())
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(s -> ToastUtils.showShort(R.string.huazhuansuccess), this::handleApiError));
     }
 
     public void cancel(View view) {
         finish();
     }
 
-
-    @SuppressLint("CheckResult")
-    @Override
-    public void onFinish(String psd) {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .signHkbOrHkExchange(MD5Utils.getMD5(psd), type, Constant.walletResponse.getWalletAddress(),
-                        gasPrice, number, Constant.walletResponse.getWalletKeystore(), Constant.currentUser.getDuoduoId())
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(s -> {
-                    Intent intent = new Intent(this, SendHkbOrHkExchangeService.class);
-                    intent.putExtra("arg1", type);
-                    intent.putExtra("arg2", number);
-                    intent.putExtra("arg3", s.getTransactionHash());
-                    intent.putExtra("arg4", s.getRawTransaction());
-                    startService(intent);
-                    ToastUtils.showShort(R.string.huazhuansuccess);
-                }, this::handleApiError);
-    }
 }

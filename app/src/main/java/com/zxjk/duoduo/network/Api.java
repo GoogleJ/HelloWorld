@@ -339,29 +339,14 @@ public interface Api {
             @Field("customerId") String customerId
     );
 
-    @POST("duoduo/wallet/createWallet")
-    @FormUrlEncoded
-    Observable<BaseResponse<CreateWalletResponse>> createWallet(@Field("customerDuoDuoId") String customerDuoDuoId);
-
     @POST("duoduo/wallet/getTransferEth")
     @FormUrlEncoded
     Observable<BaseResponse<GetTransferEthResponse>> getTransferEth(@Field("address") String address, @Field("page") String page, @Field("offset") String offset);
 
-    @POST("duoduo/wallet/signTransaction")
+    @POST("duoduo/wallet/ethTransaction")
     @FormUrlEncoded
     Observable<BaseResponse<SignTransactionResponse>>
-    signTransaction(@Field("payPwd") String payPwd,
-                    @Field("type") String type,
-                    @Field("fromaddress") String fromaddress,
-                    @Field("toaddress") String toaddress,
-                    @Field("gasPrice") String gasPrice,
-                    @Field("number") String number,
-                    @Field("keyStore") String keyStore,
-                    @Field("duoduoId") String duoduoId);
-
-    @POST("duoduo/wallet/sendTransaction")
-    @FormUrlEncoded
-    Observable<BaseResponse<String>> sendTransaction(@Field("transactionHash") String arg1, @Field("rawTransaction") String arg2);
+    signTransaction(@Field("blockChainSerial") String blockChainSerial, @Field("password") String password);
 
     @POST("duoduo/wallet/signHkbOrHkExchange")
     @FormUrlEncoded
@@ -369,45 +354,11 @@ public interface Api {
                                                                               @Field("gasPrice") String gasPrice, @Field("number") String number,
                                                                               @Field("keyStore") String keyStore, @Field("duoduoId") String duoduoId);
 
-    @POST("duoduo/wallet/sendHkbOrHkExchange")
-    @FormUrlEncoded
-    Observable<BaseResponse<String>> sendHkbOrHkExchange(@Field("type") String type, @Field("number") String number,
-                                                         @Field("transactionHash") String transactionHash, @Field("rawTransaction") String rawTransaction);
 
     @POST("duoduo/redPackage/sendSingleRedPackage")
     @FormUrlEncoded
     Observable<BaseResponse<RedPackageResponse>> sendSingleRedPackage(
             @Field("data") String data
-    );
-
-    @POST("duoduo/wallet/getTransferAll")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferAllResponse>> getTransferAll(
-            @Field("address") String address, @Field("page") String page, @Field("offset") String offset
-    );
-
-    @POST("duoduo/wallet/getTransfer")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferAllResponse>> getTransfer(
-            @Field("address") String address, @Field("page") String page, @Field("offset") String offset
-    );
-
-    @POST("duoduo/wallet/getTransferOut")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferAllResponse>> getTransferOut(
-            @Field("address") String address, @Field("page") String page, @Field("offset") String offset
-    );
-
-    @POST("duoduo/wallet/getTransferIn")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferAllResponse>> getTransferIn(
-            @Field("address") String address, @Field("page") String page, @Field("offset") String offset
-    );
-
-    @POST("duoduo/wallet/getSerialsFail")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferAllResponse>> getSerialsFail(
-            @Field("address") String address, @Field("page") String page, @Field("offset") String offset
     );
 
     @POST("duoduo/customer/getCustomerInfoById")

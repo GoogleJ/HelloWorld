@@ -874,4 +874,7 @@
     <string name="importwallet_tips6">keystore文本内容</string>
     <string name="importwallet_success">导入成功</string>
     <string name="status">状态</string>
+    <string name="emptylist1">暂无记录</string>
+    <string name="wronginput1">转出数量不能大于余额</string>
+    <string name="zhuanchusuccess1">已发起交易</string>
 </resources>

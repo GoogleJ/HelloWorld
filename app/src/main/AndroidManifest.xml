@@ -55,7 +55,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.minepage.wallet.WalletTradeActivity"></activity>
+        <activity android:name=".ui.minepage.wallet.NewBlockOrderDetailActivity"></activity>
+        <activity android:name=".ui.minepage.wallet.BlockWalletPaymentQRActivity" />
+        <activity android:name=".ui.minepage.wallet.WalletTradeActivity" />
         <activity android:name=".ui.minepage.wallet.ImportWalletActivity" />
         <activity android:name=".ui.minepage.wallet.DeleteBlockWalletActivity" />
         <activity android:name=".ui.minepage.wallet.BackupKeystoreActivity" />
@@ -302,10 +304,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.walletpage.BlockWalletOrdersActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ChooseCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -814,12 +812,9 @@
                 <!-- 可选，查看push通道是否连接，不查看则不需要 -->
                 <action android:name="com.huawei.intent.action.PUSH_STATE" />
             </intent-filter>
-        </receiver>
-
-        <service android:name=".service.RegisterBlockWalletService" />
-        <service android:name=".service.SendTransactionService" /> <!-- VIVO push 配置结束 -->
+        </receiver> <!-- VIVO push 配置结束 -->
         <!-- 华为 push 配置开始 -->
-        <service android:name=".service.SendHkbOrHkExchangeService" /> <!-- BridgeActivity定义了HMS-SDK中一些跳转所需要的透明页面 -->
+        <!-- BridgeActivity定义了HMS-SDK中一些跳转所需要的透明页面 -->
         <service android:name="com.amap.api.location.APSService" />
         <service
             android:name="com.xiaomi.push.service.XMPushService"

@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.walletpage.OrdersFragment;
+import com.zxjk.duoduo.ui.walletpage.ZhuanChuActivity;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -36,6 +38,10 @@ public class WalletTradeActivity extends BaseActivity {
     private String symbol;
     private String sum;
     private String logo;
+    private String coinType;
+    private String parentSymbol;
+    private String tokenDecimal;
+    private String contractAddress;
 
     private ImageView ivLogo;
     private TextView tvBalance;
@@ -54,6 +60,10 @@ public class WalletTradeActivity extends BaseActivity {
         symbol = getIntent().getStringExtra("symbol");
         sum = getIntent().getStringExtra("sum");
         logo = getIntent().getStringExtra("logo");
+        coinType = getIntent().getStringExtra("coinType");
+        parentSymbol = getIntent().getStringExtra("parentSymbol");
+        tokenDecimal = getIntent().getStringExtra("tokenDecimal");
+        contractAddress = getIntent().getStringExtra("contractAddress");
 
         TextView title = findViewById(R.id.tv_title);
         title.setText(symbol);
@@ -135,10 +145,22 @@ public class WalletTradeActivity extends BaseActivity {
     }
 
     public void tradeOut(View view) {
-
+        Intent intent = new Intent(this, ZhuanChuActivity.class);
+        intent.putExtra("symbol", symbol);
+        intent.putExtra("address", walletAddress);
+        intent.putExtra("balance", tvBalance.getText().toString().trim());
+        intent.putExtra("coinType",coinType);
+        intent.putExtra("parentSymbol", parentSymbol);
+        intent.putExtra("tokenDecimal", tokenDecimal);
+        intent.putExtra("contractAddress", contractAddress);
+        startActivity(intent);
     }
 
     public void tradeIn(View view) {
-
+        Intent intent = new Intent(this, BlockWalletPaymentQRActivity.class);
+        intent.putExtra("symbol", symbol);
+        intent.putExtra("address", walletAddress);
+        intent.putExtra("logo", logo);
+        startActivity(intent);
     }
 }
