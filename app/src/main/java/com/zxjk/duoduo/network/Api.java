@@ -684,4 +684,20 @@ public interface Api {
     @POST("duoduo/wallet/importKeyStore")
     @FormUrlEncoded
     Observable<BaseResponse<String>> importKeyStore(@Field("keystore") String keystore, @Field("pwd") String pwd);
+
+    @POST("duoduo/wallet/getTransferAll")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetTransferAllResponse>> getTransferAll(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
+
+    @POST("duoduo/wallet/getTransferOut")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetTransferAllResponse>> getTransferOut(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
+
+    @POST("duoduo/wallet/getTransferIn")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetTransferAllResponse>> getTransferIn(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
+
+    @POST("duoduo/wallet/getTransfer")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetTransferAllResponse>> getTransfer(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
 }

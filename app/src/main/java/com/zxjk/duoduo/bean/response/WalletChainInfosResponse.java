@@ -48,7 +48,16 @@ public class WalletChainInfosResponse implements Parcelable {
         private double sumBalance;
         private String logo;
         private double sumBalanceToCny;
+        private String walletAddress;
         private List<SymbolInfosBean> symbolInfos;
+
+        public String getWalletAddress() {
+            return walletAddress;
+        }
+
+        public void setWalletAddress(String walletAddress) {
+            this.walletAddress = walletAddress;
+        }
 
         public String getSymbol() {
             return symbol;
@@ -213,6 +222,9 @@ public class WalletChainInfosResponse implements Parcelable {
             }
         }
 
+        public SymbolListBean() {
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -224,10 +236,8 @@ public class WalletChainInfosResponse implements Parcelable {
             dest.writeDouble(this.sumBalance);
             dest.writeString(this.logo);
             dest.writeDouble(this.sumBalanceToCny);
-            dest.writeList(this.symbolInfos);
-        }
-
-        public SymbolListBean() {
+            dest.writeString(this.walletAddress);
+            dest.writeTypedList(this.symbolInfos);
         }
 
         protected SymbolListBean(Parcel in) {
@@ -235,8 +245,8 @@ public class WalletChainInfosResponse implements Parcelable {
             this.sumBalance = in.readDouble();
             this.logo = in.readString();
             this.sumBalanceToCny = in.readDouble();
-            this.symbolInfos = new ArrayList<SymbolInfosBean>();
-            in.readList(this.symbolInfos, SymbolInfosBean.class.getClassLoader());
+            this.walletAddress = in.readString();
+            this.symbolInfos = in.createTypedArrayList(SymbolInfosBean.CREATOR);
         }
 
         public static final Creator<SymbolListBean> CREATOR = new Creator<SymbolListBean>() {

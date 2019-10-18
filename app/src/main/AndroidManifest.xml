@@ -55,7 +55,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.minepage.wallet.ImportWalletActivity"></activity>
+        <activity android:name=".ui.minepage.wallet.WalletTradeActivity"></activity>
+        <activity android:name=".ui.minepage.wallet.ImportWalletActivity" />
         <activity android:name=".ui.minepage.wallet.DeleteBlockWalletActivity" />
         <activity android:name=".ui.minepage.wallet.BackupKeystoreActivity" />
         <activity android:name=".ui.minepage.wallet.ChangeWalletNameActivity" />

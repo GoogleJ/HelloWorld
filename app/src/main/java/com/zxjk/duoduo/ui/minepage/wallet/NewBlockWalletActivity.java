@@ -138,6 +138,13 @@ public class NewBlockWalletActivity extends BaseActivity {
                         helper.itemView.setOnClickListener(v -> {
                             if (level0Bean.getSubItems() == null || level0Bean.getSubItems().size() == 0) {
                                 // TODO: 2019/10/17 跳转交易详情页
+                                Intent intent = new Intent(NewBlockWalletActivity.this, WalletTradeActivity.class);
+                                intent.putExtra("symbol", ((WalletChainInfoLevel0) item).getBean().getSymbol());
+                                intent.putExtra("address", ((WalletChainInfoLevel0) item).getBean().getWalletAddress());
+                                intent.putExtra("money", ((WalletChainInfoLevel0) item).getBean().getSumBalanceToCny());
+                                intent.putExtra("sum", ((WalletChainInfoLevel0) item).getBean().getSumBalance());
+                                intent.putExtra("logo", ((WalletChainInfoLevel0) item).getBean().getLogo());
+                                startActivity(intent);
                                 return;
                             }
                             if (level0Bean.isExpanded()) {
@@ -160,6 +167,13 @@ public class NewBlockWalletActivity extends BaseActivity {
                         }
                         helper.itemView.setOnClickListener(v -> {
                             // TODO: 2019/10/17 跳转交易详情页
+                            Intent intent = new Intent(NewBlockWalletActivity.this, WalletTradeActivity.class);
+                            intent.putExtra("symbol", bean.getSymbol());
+                            intent.putExtra("address", bean.getWalletAddress());
+                            intent.putExtra("money", bean.getBalanceToCNY());
+                            intent.putExtra("sum", bean.getBalance());
+                            intent.putExtra("logo", bean.getLogo());
+                            startActivity(intent);
                         });
                         break;
                 }

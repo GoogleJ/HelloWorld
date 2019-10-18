@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.blankj.utilcode.util.ToastUtils;
-import com.zxjk.duoduo.Constant;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
@@ -23,28 +24,34 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
-import com.zxjk.duoduo.ui.walletpage.adapter.BlockOrderAdapter;
+import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 import io.reactivex.Observable;
 
 public class OrdersFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private boolean hasInitData;
-    private boolean hasNextPage = true;
 
     public String type;
+    public String address;
+    public String symbol;
+
+    private BaseQuickAdapter adapter;
 
     private int page = 1;
-    private int offset = 15;
-    private BlockOrderAdapter blockOrderAdapter;
-    private List<GetTransferAllResponse.ListBean> data = new ArrayList<>();
+    private int offset = 10;
+
+    private int color1;
+    private int color2;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        color1 = Color.parseColor("#40B65E");
+        color2 = Color.parseColor("#FC6660");
+
         rootView = new SwipeRefreshLayout(getContext());
         ((SwipeRefreshLayout) rootView).setColorSchemeColors(Color.parseColor("#4585F5"));
         recyclerView = new RecyclerView(getContext());
@@ -58,51 +65,51 @@ public class OrdersFragment extends BaseFragment {
             initData();
         });
 
-        blockOrderAdapter = new BlockOrderAdapter();
-        blockOrderAdapter.setData(data);
-        blockOrderAdapter.setOnClickListener(data -> {
-            Intent intent = new Intent(getActivity(), BlockOrderDetailActivity.class);
-            intent.putExtra("data", data);
-            intent.putExtra("type", data.getSerialType());
-            startActivity(intent);
-        });
-        recyclerView.setAdapter(blockOrderAdapter);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        adapter = new BaseQuickAdapter<GetTransferAllResponse.ListBean, BaseViewHolder>(R.layout.item_blockorder) {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (!recyclerView.canScrollVertically(1)) {
-                    if (!hasNextPage && hasInitData) {
-                        ToastUtils.showShort(R.string.nomore);
-                        return;
-                    }
-                    page += 1;
-                    ((SwipeRefreshLayout) rootView).setRefreshing(true);
-                    initData();
+            protected void convert(BaseViewHolder helper, GetTransferAllResponse.ListBean bean) {
+                helper.itemView.setOnClickListener(v -> {
+                    Intent intent = new Intent(getActivity(), BlockOrderDetailActivity.class);
+                    intent.putExtra("data", bean);
+                    intent.putExtra("type", bean.getSerialType());
+                    startActivity(intent);
+                });
+
+                TextView tvTime = helper.getView(R.id.tvTime);
+                TextView tvCount = helper.getView(R.id.tvCount);
+                TextView tvStatus = helper.getView(R.id.tvStatus);
+
+                tvTime.setText(new SimpleDateFormat("yyyy.MM.dd HH:mm").format(Long.parseLong(bean.getCreateTime())));
+                tvStatus.setText((bean.getTxreceiptStatus().equals("0")) ? R.string.failed : (bean.getTxreceiptStatus().equals("1") ? R.string.success : R.string.procssing));
+
+                if ("2".equals(bean.getSerialType()) || "3".equals(bean.getSerialType())) {
+                    tvCount.setTextColor(color1);
+                    tvCount.setText("+" + bean.getBalance());
+                } else if ("1".equals(bean.getSerialType()) && "0".equals(bean.getInOrOut())) {
+                    tvCount.setTextColor(color1);
+                    tvCount.setText("+" + bean.getBalance());
+                } else if ("1".equals(bean.getSerialType()) && "1".equals(bean.getInOrOut())) {
+                    tvCount.setTextColor(color2);
+                    tvCount.setText("-" + bean.getBalance());
+                } else if ("0".equals(bean.getSerialType()) && "0".equals(bean.getInOrOut())) {
+                    tvCount.setTextColor(color1);
+                    tvCount.setText("+" + bean.getBalance());
+                } else {
+                    tvCount.setTextColor(color2);
+                    tvCount.setText("-" + bean.getBalance());
                 }
             }
-        });
+        };
 
+        adapter.setLoadMoreView(new NewsLoadMoreView());
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(this::initData, recyclerView);
+
+        recyclerView.setAdapter(adapter);
+
+        ((SwipeRefreshLayout) rootView).setRefreshing(true);
+        initData();
         return rootView;
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if ((null != rootView) && getUserVisibleHint() && !hasInitData) {
-            ((SwipeRefreshLayout) rootView).setRefreshing(true);
-            initData();
-        }
-    }
-
-    @Override
-    public void onStart() {
-        if (getUserVisibleHint() && !hasInitData) {
-            ((SwipeRefreshLayout) rootView).setRefreshing(true);
-            initData();
-        }
-        super.onStart();
     }
 
     @SuppressLint("CheckResult")
@@ -112,47 +119,48 @@ public class OrdersFragment extends BaseFragment {
 
         switch (type) {
             case "1":
-                upstream = service.getTransferAll(Constant.walletResponse.getWalletAddress(), String.valueOf(page), String.valueOf(offset));
+                upstream = service.getTransferAll(address, String.valueOf(page), String.valueOf(offset), symbol);
                 break;
             case "2":
-                upstream = service.getTransfer(Constant.walletResponse.getWalletAddress(), String.valueOf(page), String.valueOf(offset));
+                upstream = service.getTransferOut(address, String.valueOf(page), String.valueOf(offset), symbol);
                 break;
             case "3":
-                upstream = service.getTransferOut(Constant.walletResponse.getWalletAddress(), String.valueOf(page), String.valueOf(offset));
+                upstream = service.getTransferIn(address, String.valueOf(page), String.valueOf(offset), symbol);
                 break;
             case "4":
-                upstream = service.getTransferIn(Constant.walletResponse.getWalletAddress(), String.valueOf(page), String.valueOf(offset));
-                break;
-            case "5":
-                upstream = service.getSerialsFail(Constant.walletResponse.getWalletAddress(), String.valueOf(page), String.valueOf(offset));
+                upstream = service.getTransfer(address, String.valueOf(page), String.valueOf(offset), symbol);
                 break;
             default:
-                upstream = service.getTransferAll(Constant.walletResponse.getWalletAddress(), String.valueOf(page), String.valueOf(offset));
+                upstream = service.getTransferAll(address, String.valueOf(page), String.valueOf(offset), symbol);
         }
 
         upstream.compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
+                .doOnTerminate(() -> ((SwipeRefreshLayout) rootView).setRefreshing(false))
                 .subscribe(response -> {
-                    hasNextPage = response.isHasNextPage();
-                    ((SwipeRefreshLayout) rootView).setRefreshing(false);
-                    if (!hasNextPage && hasInitData && page != 1) {
-                        ToastUtils.showShort(R.string.nomore);
-                        return;
-                    }
-                    if (page == 1) {
-                        data.clear();
-                    } else {
-                        page += 1;
-                    }
-                    data.addAll(response.getList());
-                    blockOrderAdapter.notifyDataSetChanged();
                     if (!hasInitData) {
                         hasInitData = true;
+                        adapter.setNewData(response.getList());
+                        adapter.disableLoadMoreIfNotFullPage();
+                    } else {
+                        if (response.isHasNextPage()) {
+                            page += 1;
+                            adapter.loadMoreComplete();
+                        } else {
+                            adapter.loadMoreEnd(false);
+                        }
+
+                        if (response.isHasNextPage() && page == 2 || page == 1) {
+                            adapter.setNewData(response.getList());
+                            adapter.disableLoadMoreIfNotFullPage();
+                        } else {
+                            adapter.addData(response.getList());
+                        }
                     }
                 }, t -> {
+                    adapter.loadMoreFail();
                     handleApiError(t);
-                    ((SwipeRefreshLayout) rootView).setRefreshing(false);
                 });
     }
 }
