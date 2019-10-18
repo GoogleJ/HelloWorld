@@ -1,5 +1,6 @@
 package com.zxjk.duoduo.ui.minepage.wallet;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class ImportWalletActivity extends BaseActivity {
     private View line3;
     private TextView tvImportTips1;
     private EditText etInput;
+    private EditText etKeystorePwd;
     private LinearLayout llKeystoreTips;
     private CheckBox cb;
     private Button btnImport;
@@ -84,6 +86,7 @@ public class ImportWalletActivity extends BaseActivity {
         line3 = findViewById(R.id.line3);
         tvImportTips1 = findViewById(R.id.tvImportTips1);
         etInput = findViewById(R.id.etInput);
+        etKeystorePwd = findViewById(R.id.etKeystorePwd);
         llKeystoreTips = findViewById(R.id.llKeystoreTips);
         cb = findViewById(R.id.cb);
         btnImport = findViewById(R.id.btnImport);
@@ -101,14 +104,45 @@ public class ImportWalletActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s.toString().trim()) && cb.isChecked() && btnImport.getCurrentTextColor() == colorCACACA) {
-                    btnImport.setEnabled(true);
-                    btnImport.setBackgroundResource(R.drawable.shape_theme);
-                    btnImport.setTextColor(colorWhite);
-                } else if ((TextUtils.isEmpty(s.toString().trim()) || !cb.isChecked()) && btnImport.getCurrentTextColor() == colorWhite) {
-                    btnImport.setEnabled(false);
-                    btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
-                    btnImport.setTextColor(colorCACACA);
+                if (!TextUtils.isEmpty(s) && cb.isChecked() && btnImport.getCurrentTextColor() == colorCACACA) {
+                    if (importType != 3 || !TextUtils.isEmpty(etKeystorePwd.getText().toString().trim())) {
+                        btnImport.setEnabled(true);
+                        btnImport.setBackgroundResource(R.drawable.shape_theme);
+                        btnImport.setTextColor(colorWhite);
+                    }
+                } else if ((TextUtils.isEmpty(s) || !cb.isChecked() && btnImport.getCurrentTextColor() == colorWhite)) {
+                    if (importType != 3 || !TextUtils.isEmpty(etKeystorePwd.getText().toString().trim())) {
+                        btnImport.setEnabled(false);
+                        btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
+                        btnImport.setTextColor(colorCACACA);
+                    }
+                }
+            }
+        });
+
+        etKeystorePwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s) && cb.isChecked() && btnImport.getCurrentTextColor() == colorCACACA) {
+                    if (importType != 3 || !TextUtils.isEmpty(etInput.getText().toString().trim())) {
+                        btnImport.setEnabled(true);
+                        btnImport.setBackgroundResource(R.drawable.shape_theme);
+                        btnImport.setTextColor(colorWhite);
+                    }
+                } else if ((TextUtils.isEmpty(s) || !cb.isChecked() && btnImport.getCurrentTextColor() == colorWhite)) {
+                    if (importType != 3 || !TextUtils.isEmpty(etInput.getText().toString().trim())) {
+                        btnImport.setEnabled(false);
+                        btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
+                        btnImport.setTextColor(colorCACACA);
+                    }
                 }
             }
         });
@@ -116,13 +150,17 @@ public class ImportWalletActivity extends BaseActivity {
         cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
             String s = etInput.getText().toString().trim();
             if (!TextUtils.isEmpty(s) && isChecked && btnImport.getCurrentTextColor() == colorCACACA) {
-                btnImport.setEnabled(true);
-                btnImport.setBackgroundResource(R.drawable.shape_theme);
-                btnImport.setTextColor(colorWhite);
+                if (importType != 3 || !TextUtils.isEmpty(etKeystorePwd.getText().toString().trim())) {
+                    btnImport.setEnabled(true);
+                    btnImport.setBackgroundResource(R.drawable.shape_theme);
+                    btnImport.setTextColor(colorWhite);
+                }
             } else if ((TextUtils.isEmpty(s) || !isChecked && btnImport.getCurrentTextColor() == colorWhite)) {
-                btnImport.setEnabled(false);
-                btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
-                btnImport.setTextColor(colorCACACA);
+                if (importType != 3 || !TextUtils.isEmpty(etKeystorePwd.getText().toString().trim())) {
+                    btnImport.setEnabled(false);
+                    btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
+                    btnImport.setTextColor(colorCACACA);
+                }
             }
         });
     }
@@ -130,6 +168,7 @@ public class ImportWalletActivity extends BaseActivity {
     public void words(View view) {
         importType = 1;
         etInput.setText("");
+        etKeystorePwd.setText("");
         rlend.setVisibility(View.INVISIBLE);
         tvWords.setTextColor(colorTheme);
         tvKey.setTextColor(colorBlack);
@@ -145,6 +184,7 @@ public class ImportWalletActivity extends BaseActivity {
     public void key(View view) {
         importType = 2;
         etInput.setText("");
+        etKeystorePwd.setText("");
         rlend.setVisibility(View.INVISIBLE);
         tvWords.setTextColor(colorBlack);
         tvKey.setTextColor(colorTheme);
@@ -160,6 +200,7 @@ public class ImportWalletActivity extends BaseActivity {
     public void keystore(View view) {
         importType = 3;
         etInput.setText("");
+        etKeystorePwd.setText("");
         rlend.setVisibility(View.VISIBLE);
         tvWords.setTextColor(colorBlack);
         tvKey.setTextColor(colorBlack);
@@ -172,9 +213,23 @@ public class ImportWalletActivity extends BaseActivity {
         etInput.setHint(R.string.importwallet_tips6);
     }
 
+    private Api api = ServiceFactory.getInstance().getBaseService(Api.class);
+
+    @SuppressLint("CheckResult")
     public void importWallet(View view) {
-        Api api = ServiceFactory.getInstance().getBaseService(Api.class);
         String str = etInput.getText().toString();
+        if (importType == 3) {
+            api.importKeyStore(AesUtil.getInstance().encrypt(str), AesUtil.getInstance().encrypt(etKeystorePwd.getText().toString().trim()))
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
+                    .compose(RxSchedulers.normalTrans())
+                    .subscribe(s -> {
+                        ToastUtils.showShort(R.string.importwallet_success);
+                        this.setResult(1);
+                        finish();
+                    }, this::handleApiError);
+            return;
+        }
         new NewPayBoard(this).show(pwd -> {
             switch (importType) {
                 case 1:
@@ -190,17 +245,6 @@ public class ImportWalletActivity extends BaseActivity {
                     break;
                 case 2:
                     api.importPrivateKey(AesUtil.getInstance().encrypt(str), MD5Utils.getMD5(pwd))
-                            .compose(bindToLifecycle())
-                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
-                            .compose(RxSchedulers.normalTrans())
-                            .subscribe(s -> {
-                                ToastUtils.showShort(R.string.importwallet_success);
-                                this.setResult(1);
-                                finish();
-                            }, this::handleApiError);
-                    break;
-                case 3:
-                    api.importKeyStore(AesUtil.getInstance().encrypt(str), AesUtil.getInstance().encrypt(pwd))
                             .compose(bindToLifecycle())
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
                             .compose(RxSchedulers.normalTrans())
