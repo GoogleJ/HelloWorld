@@ -8,33 +8,30 @@ import android.widget.TextView;
 
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
-import com.zxjk.duoduo.bean.response.GetTransferEthResponse;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.CommonUtils;
+
+import java.text.SimpleDateFormat;
 
 public class BlockOrderDetailActivity extends BaseActivity {
-    private TextView tv_title;
-    private ImageView ivBlockOrdersDetailTitle;
-    private TextView tvBlockOrdersDetailTips;
-    private TextView tvBlockOrdersDetailMoney;
-    private TextView tvItemSecond;
-    private TextView tvBlockOrdersDetailCount;
-    private TextView tvBlockOrdersDetailKuanggong;
-    private TextView tvBlockOrdersDetailTime;
-    private TextView tvBlockOrdersDetailAddress1;
-    private TextView tvBlockOrdersDetailAddress2;
-    private TextView tvBlockOrdersDetailLast1;
-    private TextView tvBlockOrdersDetailLast2;
-    private TextView tvBlockOrdeerDetailBlock;
-    private LinearLayout llBlockOrdeerDetailBlock;
-    private TextView tvBlockOrdersDetailCurrency;
-    private TextView tvItemFirst;
-    private ImageView ivItemArrow;
-    private LinearLayout collectionAddress;
+
+    private ImageView ivType;
+    private TextView tvType;
+    private TextView tvStatus;
+    private TextView tvMoney;
+    private TextView tvPayAddress;
+    private TextView tvReceiptAddress;
+    private TextView tvKuangGongPrice;
+    private TextView tvTradeOrder;
+    private TextView tvBlock;
+    private TextView tvTime;
+    private LinearLayout llItemTop;
+    private LinearLayout llHuaZhuan;
+    private TextView tvHuaZhuanType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTrasnferStatusBar(true);
         setContentView(R.layout.activity_block_order_detail);
         initView();
 
@@ -44,28 +41,51 @@ public class BlockOrderDetailActivity extends BaseActivity {
     private void initData() {
         GetTransferAllResponse.ListBean data = (GetTransferAllResponse.ListBean) getIntent().getSerializableExtra("data");
 
+        if (data.getSerialType().equals("1")) {
+            llItemTop.setVisibility(View.GONE);
+            llHuaZhuan.setVisibility(View.VISIBLE);
+            tvType.setText(R.string.huazhuan);
+            ivType.setImageResource(R.drawable.ic_blockwallet_detail_type_trans);
+            if (data.getInOrOut().equals("1")) {
+                tvHuaZhuanType.setText(R.string.block2balance);
+            } else if (data.getInOrOut().equals("0")) {
+                tvHuaZhuanType.setText(R.string.balance2block);
+            }
+        } else if (data.getSerialType().equals("0")) {
+            if (data.getInOrOut().equals("0")) {
+                tvType.setText(R.string.zhuanru);
+                ivType.setImageResource(R.drawable.ic_blockwallet_detail_type_in);
+            } else {
+                tvType.setText(R.string.zhuanchu);
+                ivType.setImageResource(R.drawable.ic_blockwallet_detail_type_out);
+            }
+            tvPayAddress.setText(data.getFromAddress());
+            tvReceiptAddress.setText(data.getToAddress());
+        }
 
+        tvTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(data.getCreateTime())));
+        tvBlock.setText(data.getBlockNumber());
+        tvTradeOrder.setText(data.getTransactionHash());
+        tvKuangGongPrice.setText(data.getGasUsed());
+        tvMoney.setText(data.getBalance() + "  " + data.getTokenSymbol());
+        tvStatus.setText(data.getTxreceiptStatus().equals("0") ? R.string.failed : (data.getTxreceiptStatus().equals("1") ?
+                R.string.success : R.string.procssing));
     }
 
     private void initView() {
-        ivBlockOrdersDetailTitle = findViewById(R.id.ivBlockOrdersDetailTitle);
-        tvBlockOrdersDetailTips = findViewById(R.id.tvBlockOrdersDetailTips);
-        tvBlockOrdersDetailMoney = findViewById(R.id.tvBlockOrdersDetailMoney);
-        tvItemSecond = findViewById(R.id.tvItemSecond);
-        tvBlockOrdersDetailCount = findViewById(R.id.tvBlockOrdersDetailCount);
-        tvBlockOrdersDetailKuanggong = findViewById(R.id.tvBlockOrdersDetailKuanggong);
-        tvBlockOrdersDetailTime = findViewById(R.id.tvBlockOrdersDetailTime);
-        tvBlockOrdersDetailAddress1 = findViewById(R.id.tvBlockOrdersDetailAddress1);
-        tvBlockOrdersDetailAddress2 = findViewById(R.id.tvBlockOrdersDetailAddress2);
-        tvBlockOrdersDetailLast1 = findViewById(R.id.tvBlockOrdersDetailLast1);
-        tvBlockOrdersDetailLast2 = findViewById(R.id.tvBlockOrdersDetailLast2);
-        tvBlockOrdeerDetailBlock = findViewById(R.id.tvBlockOrdeerDetailBlock);
-        llBlockOrdeerDetailBlock = findViewById(R.id.llBlockOrdeerDetailBlock);
-        tvBlockOrdersDetailCurrency = findViewById(R.id.tvBlockOrdersDetailCurrency);
-        tvItemFirst = findViewById(R.id.tvItemFirst);
-        ivItemArrow = findViewById(R.id.ivItemArrow);
-        collectionAddress = findViewById(R.id.collectionAddress);
-        tv_title = findViewById(R.id.tv_title);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        ivType = findViewById(R.id.ivType);
+        tvType = findViewById(R.id.tvType);
+        tvStatus = findViewById(R.id.tvStatus);
+        tvMoney = findViewById(R.id.tvMoney);
+        tvPayAddress = findViewById(R.id.tvPayAddress);
+        tvReceiptAddress = findViewById(R.id.tvReceiptAddress);
+        tvKuangGongPrice = findViewById(R.id.tvKuangGongPrice);
+        tvTradeOrder = findViewById(R.id.tvTradeOrder);
+        tvBlock = findViewById(R.id.tvBlock);
+        tvTime = findViewById(R.id.tvTime);
+        llItemTop = findViewById(R.id.llItemTop);
+        llHuaZhuan = findViewById(R.id.llHuaZhuan);
+        tvHuaZhuanType = findViewById(R.id.tvHuaZhuanType);
     }
 }

@@ -877,4 +877,8 @@
     <string name="emptylist1">暂无记录</string>
     <string name="wronginput1">转出数量不能大于余额</string>
     <string name="zhuanchusuccess1">已发起交易</string>
+    <string name="tradeDetail">交易详情</string>
+    <string name="pay_address">付款地址</string>
+    <string name="block2balance">数字钱包→余额钱包</string>
+    <string name="balance2block">余额钱包→数字钱包</string>
 </resources>
