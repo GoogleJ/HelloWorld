@@ -47,7 +47,7 @@ public class WalletChainInfosResponse implements Parcelable {
         private String symbol;
         private double sumBalance;
         private String logo;
-        private double sumBalanceToCny;
+        private String sumBalanceToCny;
         private String walletAddress;
         private String coinType;
         private String parentSymbol;
@@ -120,11 +120,11 @@ public class WalletChainInfosResponse implements Parcelable {
             this.logo = logo;
         }
 
-        public double getSumBalanceToCny() {
+        public String getSumBalanceToCny() {
             return sumBalanceToCny;
         }
 
-        public void setSumBalanceToCny(double sumBalanceToCny) {
+        public void setSumBalanceToCny(String sumBalanceToCny) {
             this.sumBalanceToCny = sumBalanceToCny;
         }
 
@@ -305,7 +305,7 @@ public class WalletChainInfosResponse implements Parcelable {
             dest.writeString(this.symbol);
             dest.writeDouble(this.sumBalance);
             dest.writeString(this.logo);
-            dest.writeDouble(this.sumBalanceToCny);
+            dest.writeString(this.sumBalanceToCny);
             dest.writeString(this.walletAddress);
             dest.writeString(this.coinType);
             dest.writeString(this.parentSymbol);
@@ -318,7 +318,7 @@ public class WalletChainInfosResponse implements Parcelable {
             this.symbol = in.readString();
             this.sumBalance = in.readDouble();
             this.logo = in.readString();
-            this.sumBalanceToCny = in.readDouble();
+            this.sumBalanceToCny = in.readString();
             this.walletAddress = in.readString();
             this.coinType = in.readString();
             this.parentSymbol = in.readString();

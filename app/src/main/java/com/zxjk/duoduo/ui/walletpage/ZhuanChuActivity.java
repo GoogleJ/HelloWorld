@@ -72,11 +72,12 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         if (parentSymbol.equals("ETH")) {
             //ETH
             if (coinType.equals("0")) {
-                gasMax = 0.003f;
+                gasMin = (float) (5 * 6000 * 10E-9);
+                gasMax = 0.006f - gasMin;
             } else {
-                gasMax = 0.006f;
+                gasMin = (float) (5 * 9000 * 10E-9);
+                gasMax = 0.009f - gasMin;
             }
-            gasMin = gasMax * 5f;
         } else {
 
         }
@@ -92,6 +93,7 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         tvGwei = findViewById(R.id.tvGwei);
         seekZhuanchu.setMax(1000);
         seekZhuanchu.setOnSeekBarChangeListener(this);
+        seekZhuanchu.setProgress(1);
         seekZhuanchu.setProgress(0);
         initData();
     }
@@ -161,8 +163,8 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         new NewPayBoard(this).show(result -> {
             if (parentSymbol.equals("ETH")) {
                 SignTransactionRequest request = new SignTransactionRequest();
-                request.setBalance(balance);
-                request.setGasPrice(gasPrice);
+                request.setBalance(count);
+                request.setGasPrice(tvGwei.getText().toString().split(" ")[0]);
                 request.setFromAddress(formAddress);
                 request.setToAddress(walletAddress);
                 request.setContractAddress(contractAddress);
@@ -191,8 +193,8 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        tvKuanggongPrice.setText("≈" + new DecimalFormat("#0.0000").format((progress / 1000f * gasMax)) + " ether");
-        tvGwei.setText(new DecimalFormat("#0.00").format((progress / 1000f * 95) + 5) + " gwei");
+        tvKuanggongPrice.setText("≈" + new DecimalFormat("#0.0000").format((progress / 1000f * gasMax) + gasMin) + " ether");
+        tvGwei.setText(new DecimalFormat("#0.00").format((progress / 1000f * 95) + 5.00) + " gwei");
     }
 
     @Override

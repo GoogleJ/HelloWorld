@@ -127,7 +127,8 @@ public class NewBlockWalletActivity extends BaseActivity {
                         GlideUtil.loadNormalImg(ivlogo, level0Bean.getBean().getLogo());
                         helper.setText(R.id.tvCoin, level0Bean.getBean().getSymbol())
                                 .setText(R.id.tvMoney1, isShow ? (level0Bean.getBean().getSumBalance() + "") : hideStr)
-                                .setText(R.id.tvMoney2, isShow ? ("≈¥" + level0Bean.getBean().getSumBalanceToCny()) : hideStr);
+                                .setText(R.id.tvMoney2, isShow ? (level0Bean.getBean().getSumBalanceToCny().equals("-") ?
+                                        "-" : ("≈¥" + level0Bean.getBean().getSumBalanceToCny())) : hideStr);
 
                         if (level0Bean.isExpanded()) {
                             helper.itemView.setBackgroundResource(R.drawable.shape_white_top8);
