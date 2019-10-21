@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -43,6 +44,7 @@ public class BlockWalletManageDetailActivity extends BaseActivity {
     private TextView tvMoney;
     private TextView tvAddress;
     private TextView title;
+    private LinearLayout llWords;
 
     @SuppressLint("CheckResult")
     @Override
@@ -71,6 +73,11 @@ public class BlockWalletManageDetailActivity extends BaseActivity {
                     handleApiError(t);
                     finish();
                 });
+
+        llWords = findViewById(R.id.llWords);
+        if (!data.getImportMethod().equals("3")) {
+            llWords.setVisibility(View.GONE);
+        }
     }
 
     //修改钱包名称
