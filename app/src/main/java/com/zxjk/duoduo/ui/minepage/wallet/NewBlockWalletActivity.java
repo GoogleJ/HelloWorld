@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
@@ -32,6 +31,7 @@ import java.util.List;
 @SuppressLint("CheckResult")
 public class NewBlockWalletActivity extends BaseActivity {
     private final int REQUEST_MANAGE = 1;
+    private final int REQUEST_ADD = 2;
 
     private WalletChainInfosResponse response;
 
@@ -228,13 +228,18 @@ public class NewBlockWalletActivity extends BaseActivity {
     }
 
     public void add(View view) {
-        ToastUtils.showShort(R.string.developing);
+        startActivityForResult(new Intent(this, AddBlockShowItemActivity.class), REQUEST_ADD);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_MANAGE) {
+            if (resultCode == 1) {
+                response = null;
+                initData();
+            }
+        } else if (requestCode == REQUEST_ADD) {
             if (resultCode == 1) {
                 response = null;
                 initData();

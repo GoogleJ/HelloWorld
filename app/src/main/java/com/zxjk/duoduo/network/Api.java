@@ -4,14 +4,13 @@ import com.zxjk.duoduo.bean.AuditCertificationBean;
 import com.zxjk.duoduo.bean.CardBackBean;
 import com.zxjk.duoduo.bean.CardFaceBean;
 import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
+import com.zxjk.duoduo.bean.response.AssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
-import com.zxjk.duoduo.bean.response.CreateWalletResponse;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.DetailListResposne;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
-import com.zxjk.duoduo.bean.response.GetAllPlayGroupResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceHkResponse;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
@@ -27,9 +26,7 @@ import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.duoduo.bean.response.GetSignListResponse;
-import com.zxjk.duoduo.bean.response.GetThirdPartyPaymentOrderResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
-import com.zxjk.duoduo.bean.response.GetTransferEthResponse;
 import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
 import com.zxjk.duoduo.bean.response.GetVicinityResponse;
 import com.zxjk.duoduo.bean.response.GroupChatResponse;
@@ -50,7 +47,6 @@ import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.SignHkbOrHkExchangeResponse;
 import com.zxjk.duoduo.bean.response.SignTransactionResponse;
-import com.zxjk.duoduo.bean.response.ThirdPartyPaymentResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
 
@@ -74,27 +70,12 @@ public interface Api {
             @Field("pwd") String pwd
     );
 
-    @POST("duoduo/customer/appUserRegister")
-    @FormUrlEncoded
-    Observable<BaseResponse<LoginResponse>> register(
-            @Field("mobile") String phone,
-            @Field("securityCode") String code,
-            @Field("pwd") String pwd
-    );
 
     @POST("duoduo/getCode")
     @FormUrlEncoded
     Observable<BaseResponse<String>> getCode(
             @Field("mobile") String phone,
             @Field("type") String type
-    );
-
-    @FormUrlEncoded
-    @POST("duoduo/customer/forgetPwd")
-    Observable<BaseResponse<String>> forgetPwd(
-            @Field("mobile") String phone,
-            @Field("pwd") String pwd,
-            @Field("securityCode") String code
     );
 
     @POST("duoduo/customer/updateCustomerInfo")
@@ -257,10 +238,6 @@ public interface Api {
     @POST("duoduo/exchange/getOverOrder")
     Observable<BaseResponse<List<GetOverOrderResponse>>> getOverOrder();
 
-    @POST("duoduo/wallet/getWallet")
-    @FormUrlEncoded
-    Observable<BaseResponse<CreateWalletResponse>> getWallet(@Field("customerDuoDuoId") String customerDuoDuoId);
-
     @POST("duoduo/customer/fandPayPwd")
     @FormUrlEncoded
     Observable<BaseResponse<String>> fandPayPwd(
@@ -338,10 +315,6 @@ public interface Api {
             @Field("groupId") String groupId,
             @Field("customerId") String customerId
     );
-
-    @POST("duoduo/wallet/getTransferEth")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferEthResponse>> getTransferEth(@Field("address") String address, @Field("page") String page, @Field("offset") String offset);
 
     @POST("duoduo/wallet/ethTransaction")
     @FormUrlEncoded
@@ -425,10 +398,6 @@ public interface Api {
     Observable<BaseResponse<ReceiveGroupRedPackageResponse>> receiveGroupRedPackage(@Field("redPackageId") String redPackageId
             , @Field("isGame") String isGame);
 
-    @POST("duoduo/group/getAllPlayGroup")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetAllPlayGroupResponse>> getAllPlayGroup(@Field("customerId") String customerId);
-
     @POST("duoduo/customer/getAppVersion")
     Observable<BaseResponse<GetAppVersionResponse>> getAppVersion();
 
@@ -452,14 +421,6 @@ public interface Api {
     @POST("duoduo/customer/operateRealName")
     @FormUrlEncoded
     Observable<BaseResponse<String>> operateRealName(@Field("isShowRealname") String isShowRealname);
-
-    @POST("duoduo/customer/getThirdPartyPaymentOrder")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetThirdPartyPaymentOrderResponse>> getThirdPartyPaymentOrder(@Field("orderId") String orderId);
-
-    @POST("duoduo/customer/thirdPartyPayment")
-    @FormUrlEncoded
-    Observable<BaseResponse<ThirdPartyPaymentResponse>> thirdPartyPayment(@Field("data") String data, @Field("payPwd") String payPwd);
 
     @POST("duoduo/friend/getFriendsByMobiles")
     @FormUrlEncoded
@@ -651,4 +612,12 @@ public interface Api {
     @POST("duoduo/wallet/getTransfer")
     @FormUrlEncoded
     Observable<BaseResponse<GetTransferAllResponse>> getTransfer(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
+
+    @POST("duoduo/wallet/assetManage")
+    Observable<BaseResponse<List<AssetManageBean>>> assetManage();
+
+    @POST("duoduo/wallet/operateAssets")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> operateAssets(@Field("walletChainInfo") String walletChainInfo);
+
 }
