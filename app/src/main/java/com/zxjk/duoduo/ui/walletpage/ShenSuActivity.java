@@ -2,7 +2,6 @@ package com.zxjk.duoduo.ui.walletpage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -33,7 +32,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.walletpage.model.ShenSuRequest;
+import com.zxjk.duoduo.bean.request.ShenSuRequest;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.OssUtils;
 import com.zxjk.duoduo.utils.TakePicUtil;

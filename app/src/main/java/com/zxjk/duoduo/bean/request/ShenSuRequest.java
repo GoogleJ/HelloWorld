@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage.model;
+package com.zxjk.duoduo.bean.request;
 
 public class ShenSuRequest {
 

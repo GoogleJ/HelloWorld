@@ -2,7 +2,6 @@ package com.zxjk.duoduo.ui.minepage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;

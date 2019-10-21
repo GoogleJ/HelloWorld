@@ -157,11 +157,8 @@ public class BlockWalletManageActivity extends BaseActivity {
     }
 
     private boolean judgeEquals(GetMainSymbolByCustomerIdBean b1, GetMainSymbolByCustomerIdBean b2) {
-        if ((!b1.getImportMethod().equals("3") && !b2.getImportMethod().equals("3")) ||
-                (b1.getImportMethod().equals("3") && b2.getImportMethod().equals("3"))) {
-            return true;
-        }
-        return false;
+        return (!b1.getImportMethod().equals("3") && !b2.getImportMethod().equals("3")) ||
+                (b1.getImportMethod().equals("3") && b2.getImportMethod().equals("3"));
     }
 
     @Override

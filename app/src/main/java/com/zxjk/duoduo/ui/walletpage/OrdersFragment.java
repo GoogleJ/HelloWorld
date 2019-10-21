@@ -72,7 +72,6 @@ public class OrdersFragment extends BaseFragment {
                 helper.itemView.setOnClickListener(v -> {
                     Intent intent = new Intent(getActivity(), BlockOrderDetailActivity.class);
                     intent.putExtra("data", bean);
-                    intent.putExtra("type", bean.getSerialType());
                     startActivity(intent);
                 });
 

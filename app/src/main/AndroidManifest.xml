@@ -55,13 +55,36 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.minepage.wallet.NewBlockOrderDetailActivity"></activity>
-        <activity android:name=".ui.minepage.wallet.BlockWalletPaymentQRActivity" />
-        <activity android:name=".ui.minepage.wallet.WalletTradeActivity" />
-        <activity android:name=".ui.minepage.wallet.ImportWalletActivity" />
-        <activity android:name=".ui.minepage.wallet.DeleteBlockWalletActivity" />
-        <activity android:name=".ui.minepage.wallet.BackupKeystoreActivity" />
-        <activity android:name=".ui.minepage.wallet.ChangeWalletNameActivity" />
+        <activity
+            android:name=".ui.minepage.wallet.BlockWalletPaymentQRActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.WalletTradeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.ImportWalletActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.DeleteBlockWalletActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.BackupKeystoreActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.ChangeWalletNameActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.minepage.wallet.BlockWalletManageDetailActivity"
             android:launchMode="singleTop"
@@ -311,10 +334,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.walletpage.BlockETHOrders"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.walletpage.HuaZhuanActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
@@ -331,10 +350,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.walletpage.BlockWalletActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.walletpage.WaitForJudgeActivity"
             android:launchMode="singleTop"
