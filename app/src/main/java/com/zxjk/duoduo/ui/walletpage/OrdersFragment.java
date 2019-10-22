@@ -145,19 +145,19 @@ public class OrdersFragment extends BaseFragment {
                 .compose(RxSchedulers.normalTrans())
                 .doOnTerminate(() -> ((SwipeRefreshLayout) rootView).setRefreshing(false))
                 .subscribe(response -> {
+                    page += 1;
                     if (!hasInitData) {
                         hasInitData = true;
                         adapter.setNewData(response.getList());
                         adapter.disableLoadMoreIfNotFullPage();
                     } else {
                         if (response.isHasNextPage()) {
-                            page += 1;
                             adapter.loadMoreComplete();
                         } else {
                             adapter.loadMoreEnd(false);
                         }
 
-                        if (response.isHasNextPage() && page == 2 || page == 1) {
+                        if (page == 2) {
                             adapter.setNewData(response.getList());
                             adapter.disableLoadMoreIfNotFullPage();
                         } else {

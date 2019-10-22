@@ -25,6 +25,7 @@ import com.zxjk.duoduo.bean.response.GetPublicGroupResponse;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
+import com.zxjk.duoduo.bean.response.GetSerialBean;
 import com.zxjk.duoduo.bean.response.GetSignListResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
@@ -622,5 +623,10 @@ public interface Api {
 
     @POST("duoduo/wallet/isExistWalletInfo")
     Observable<BaseResponse<String>> isExistWalletInfo();
+
+    @POST("duoduo/walletBalance/getSerial")
+    @FormUrlEncoded
+    Observable<BaseResponse<List<GetSerialBean>>> getSerial(@Field("pageSizeStr") String pageSizeStr,
+                                                            @Field("pageNoStr") String pageNoStr);
 
 }
