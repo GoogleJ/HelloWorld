@@ -28,6 +28,9 @@ import com.zxjk.duoduo.utils.GlideUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 @SuppressLint("CheckResult")
 public class NewBlockWalletActivity extends BaseActivity {
     private final int REQUEST_MANAGE = 1;
@@ -91,11 +94,14 @@ public class NewBlockWalletActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(response -> {
-                        this.response = response;
+                    .doOnNext(response -> {
+                        NewBlockWalletActivity.this.response = response;
                         tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
-                        adapter.setNewData(parseData(response.getSymbolList()));
-                    }, this::handleApiError);
+                    })
+                    .observeOn(Schedulers.io())
+                    .map(response -> parseData(response.getSymbolList()))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(adapter::setNewData, this::handleApiError);
         } else {
             tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
             adapter.setNewData(parseData(response.getSymbolList()));
@@ -162,9 +168,9 @@ public class NewBlockWalletActivity extends BaseActivity {
                         WalletChainInfosResponse.SymbolListBean.SymbolInfosBean bean = (WalletChainInfosResponse.SymbolListBean.SymbolInfosBean) item;
                         helper.setText(R.id.tvCoin, (bean.getImportMethod().equals("3") ? "创建的" : "导入的") + bean.getSymbol() + "钱包地址")
                                 .setText(R.id.tvMoney1, isShow ? (bean.getBalance() + "") : hideStr)
-                                .setText(R.id.tvMoney2, isShow ? ("≈¥" + bean.getBalanceToCNY()) : hideStr)
+                                .setText(R.id.tvMoney2, isShow ? (bean.getBalanceToCNY().equals("-") ? "-" : "≈¥" + bean.getBalanceToCNY()) : hideStr)
                                 .setText(R.id.tvAddress, isShow ? bean.getWalletAddress() : hideStr);
-                        if (positions.contains(helper.getAdapterPosition())) {
+                        if (bean.isLast()) {
                             helper.itemView.setBackgroundResource(R.drawable.shape_white_bottom8);
                         } else {
                             helper.itemView.setBackgroundColor(Color.WHITE);
@@ -190,30 +196,21 @@ public class NewBlockWalletActivity extends BaseActivity {
         recycler.setAdapter(adapter);
     }
 
-    private ArrayList<Integer> positions = new ArrayList<>();
-
     private ArrayList<MultiItemEntity> parseData(List<WalletChainInfosResponse.SymbolListBean> origin) {
         ArrayList<MultiItemEntity> result = new ArrayList<>();
-        positions.clear();
 
-        int position = -1;
-        boolean flag;
         for (int i = 0; i < origin.size(); i++) {
-            flag = false;
-            position += 1;
 
             WalletChainInfosResponse.SymbolListBean bean = origin.get(i);
             WalletChainInfoLevel0 level0 = new WalletChainInfoLevel0(bean);
 
             for (int j = 0; j < bean.getSymbolInfos().size(); j++) {
-                flag = true;
+                if (j == bean.getSymbolInfos().size() - 1) {
+                    bean.getSymbolInfos().get(j).setLast(true);
+                }
                 level0.addSubItem(bean.getSymbolInfos().get(j));
-                position += 1;
             }
 
-            if (flag) {
-                positions.add(position);
-            }
             result.add(level0);
         }
 

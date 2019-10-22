@@ -158,6 +158,15 @@ public class WalletChainInfosResponse implements Parcelable {
             private String coinType;
             private String parentSymbol;
             private int tokenDecimal;
+            private boolean isLast;
+
+            public boolean isLast() {
+                return isLast;
+            }
+
+            public void setLast(boolean last) {
+                isLast = last;
+            }
 
             public int getTokenDecimal() {
                 return tokenDecimal;
@@ -264,6 +273,7 @@ public class WalletChainInfosResponse implements Parcelable {
                 dest.writeString(this.coinType);
                 dest.writeString(this.parentSymbol);
                 dest.writeInt(this.tokenDecimal);
+                dest.writeByte(this.isLast ? (byte) 1 : (byte) 0);
             }
 
             protected SymbolInfosBean(Parcel in) {
@@ -277,6 +287,7 @@ public class WalletChainInfosResponse implements Parcelable {
                 this.coinType = in.readString();
                 this.parentSymbol = in.readString();
                 this.tokenDecimal = in.readInt();
+                this.isLast = in.readByte() != 0;
             }
 
             public static final Creator<SymbolInfosBean> CREATOR = new Creator<SymbolInfosBean>() {

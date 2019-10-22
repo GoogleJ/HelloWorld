@@ -76,7 +76,7 @@ public class WalletTradeActivity extends BaseActivity {
         indicator = findViewById(R.id.indicator);
         pager = findViewById(R.id.pager);
 
-        tvBalanceToCny.setText("≈¥" + money);
+        tvBalanceToCny.setText(money.equals("-") ? "-" : ("≈¥" + money));
         tvBalance.setText(sum);
         GlideUtil.loadNormalImg(ivLogo, logo);
         tvHead1.setText(tvHead1.getText() + "(" + symbol + ")");
@@ -149,7 +149,7 @@ public class WalletTradeActivity extends BaseActivity {
         intent.putExtra("symbol", symbol);
         intent.putExtra("address", walletAddress);
         intent.putExtra("balance", tvBalance.getText().toString().trim());
-        intent.putExtra("coinType",coinType);
+        intent.putExtra("coinType", coinType);
         intent.putExtra("parentSymbol", parentSymbol);
         intent.putExtra("tokenDecimal", tokenDecimal);
         intent.putExtra("contractAddress", contractAddress);
