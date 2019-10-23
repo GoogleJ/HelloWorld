@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -40,16 +39,15 @@ public class WalletActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     public void blockWallet(View view) {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getWalletChainInfos()
+                .isExistWalletInfo()
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(response -> {
-                    if (response.getSymbolList().size() == 0) {
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(s -> {
+                    if (s.equals("0")) {
                         startActivity(new Intent(this, BlockWalletEmptyActivity.class));
                     } else {
                         Intent intent = new Intent(this, NewBlockWalletActivity.class);
-                        intent.putExtra("response", response);
                         startActivity(intent);
                     }
                 }, this::handleApiError);

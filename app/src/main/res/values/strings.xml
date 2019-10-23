@@ -845,8 +845,8 @@
     <string name="backup_keystore_tips3">请复制黏贴keystore文件到安全离线的地方保存。切勿保存至邮箱记事本、记事本、网盘、聊天工具等地方,非常危险。</string>
     <string name="backup_keystore_tips4">请勿使用网络传输</string>
     <string name="backup_keystore_tips5">请勿通过网络工具传输keystore文件，一旦被黑客获取将造成不可挽回的资产损失。建议离线设备通过扫描二维码方式传输。</string>
-    <string name="backup_keystore_tips6">密码保险箱保存</string>
-    <string name="backup_keystore_tips7">如需在线保存，则建议使用安全等级高的1Password等密码保管软件保存keystore。</string>
+    <string name="backup_keystore_tips6">密码管理工具保存</string>
+    <string name="backup_keystore_tips7">建议使用密码管理工具管理。</string>
     <string name="copy_keystore">复制keystore</string>
     <string name="backup_keystore_tips8">仅供直接扫描</string>
     <string name="backup_keystore_tips9">二维码禁止保存、截图、以及拍照。仅供用户在安全环境下直接 扫描来方便倒入钱包。</string>
@@ -882,4 +882,6 @@
     <string name="block2balance">数字钱包→余额钱包</string>
     <string name="balance2block">余额钱包→数字钱包</string>
     <string name="add_new_blockitem">添加新资产</string>
+    <string name="createwallet_tips5">选择您想导入的钱包币种</string>
+    <string name="emptylist2">暂无钱包</string>
 </resources>

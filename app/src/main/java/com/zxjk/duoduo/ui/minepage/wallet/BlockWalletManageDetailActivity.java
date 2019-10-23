@@ -75,7 +75,7 @@ public class BlockWalletManageDetailActivity extends BaseActivity {
                 });
 
         llWords = findViewById(R.id.llWords);
-        if (!data.getImportMethod().equals("3") || !data.getImportMethod().equals("0")) {
+        if (!data.getImportMethod().equals("3") && !data.getImportMethod().equals("0")) {
             llWords.setVisibility(View.GONE);
         }
     }

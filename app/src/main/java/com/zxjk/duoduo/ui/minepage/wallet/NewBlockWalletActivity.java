@@ -54,8 +54,6 @@ public class NewBlockWalletActivity extends BaseActivity {
         setContentView(R.layout.activity_new_block_wallet);
         setTrasnferStatusBar(true);
 
-        response = getIntent().getParcelableExtra("response");
-
         initView();
 
         initRecycler();
@@ -88,24 +86,22 @@ public class NewBlockWalletActivity extends BaseActivity {
     }
 
     private void initData() {
-        if (response == null) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getWalletChainInfos()
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .doOnNext(response -> {
-                        NewBlockWalletActivity.this.response = response;
-                        tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
-                    })
-                    .observeOn(Schedulers.io())
-                    .map(response -> parseData(response.getSymbolList()))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(adapter::setNewData, this::handleApiError);
-        } else {
-            tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
-            adapter.setNewData(parseData(response.getSymbolList()));
-        }
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getWalletChainInfos()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .doOnNext(response -> {
+                    NewBlockWalletActivity.this.response = response;
+                    tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
+                })
+                .observeOn(Schedulers.io())
+                .map(response -> parseData(response.getSymbolList()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(adapter::setNewData, t -> {
+                    handleApiError(t);
+                    finish();
+                });
     }
 
     private void initRecycler() {

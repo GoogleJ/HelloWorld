@@ -587,15 +587,15 @@ public interface Api {
 
     @POST("duoduo/wallet/importPrivateKey")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> importPrivateKey(@Field("privateKey") String privateKey, @Field("pwd") String pwd);
+    Observable<BaseResponse<String>> importPrivateKey(@Field("symbol") String symbol, @Field("privateKey") String privateKey, @Field("pwd") String pwd);
 
     @POST("duoduo/wallet/importByMnemonic")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> importByMnemonic(@Field("mnemonicListStr") String mnemonicListStr, @Field("pwd") String pwd);
+    Observable<BaseResponse<String>> importByMnemonic(@Field("symbol") String symbol, @Field("mnemonicListStr") String mnemonicListStr, @Field("pwd") String pwd);
 
     @POST("duoduo/wallet/importKeyStore")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> importKeyStore(@Field("keystore") String keystore, @Field("pwd") String pwd);
+    Observable<BaseResponse<String>> importKeyStore(@Field("symbol") String symbol, @Field("keystore") String keystore, @Field("pwd") String pwd);
 
     @POST("duoduo/wallet/getTransferAll")
     @FormUrlEncoded
@@ -619,5 +619,8 @@ public interface Api {
     @POST("duoduo/wallet/operateAssets")
     @FormUrlEncoded
     Observable<BaseResponse<String>> operateAssets(@Field("walletChainInfo") String walletChainInfo);
+
+    @POST("duoduo/wallet/isExistWalletInfo")
+    Observable<BaseResponse<String>> isExistWalletInfo();
 
 }

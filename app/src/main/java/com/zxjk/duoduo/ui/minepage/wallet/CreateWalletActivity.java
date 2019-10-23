@@ -24,8 +24,11 @@ import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
 
 public class CreateWalletActivity extends BaseActivity {
+    private TextView tvTips;
     private RecyclerView recycler;
     private BaseQuickAdapter adapter;
+
+    private boolean isImport;
 
     @SuppressLint("CheckResult")
     @Override
@@ -33,8 +36,17 @@ public class CreateWalletActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_wallet);
 
+        isImport = getIntent().getBooleanExtra("isImport", false);
+
         TextView title = findViewById(R.id.tv_title);
-        title.setText(R.string.createwallet);
+        tvTips = findViewById(R.id.tvTips);
+        if (isImport) {
+            title.setText(R.string.importwallet);
+            tvTips.setText(R.string.createwallet_tips5);
+        } else {
+            title.setText(R.string.createwallet);
+            tvTips.setText(R.string.createwallet_tips1);
+        }
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         recycler = findViewById(R.id.recycler);
@@ -44,10 +56,13 @@ public class CreateWalletActivity extends BaseActivity {
                 helper.setText(R.id.tvCoin, item.getCoin());
                 GlideUtil.loadCircleImg(helper.getView(R.id.ivIcon), item.getLogo());
                 View view = helper.getView(R.id.ivCreated);
-                if (item.getIsAlready().equals("1")) {
-                    view.setVisibility(View.VISIBLE);
-                } else {
-                    view.setVisibility(View.INVISIBLE);
+
+                if (!isImport) {
+                    if (item.getIsAlready().equals("1")) {
+                        view.setVisibility(View.VISIBLE);
+                    } else {
+                        view.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         };
@@ -56,25 +71,32 @@ public class CreateWalletActivity extends BaseActivity {
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
             CurrencyInfosByCustomerBean item = (CurrencyInfosByCustomerBean) adapter.getData().get(position);
-            if (item.getIsDelete().equals("1")) {
-                ToastUtils.showShort(R.string.createwallet_coinunable);
-                return;
+            if (!isImport) {
+                if (item.getIsDelete().equals("1")) {
+                    ToastUtils.showShort(R.string.createwallet_coinunable);
+                    return;
+                }
+                if (item.getIsAlready().equals("1")) {
+                    return;
+                }
+                new NewPayBoard(CreateWalletActivity.this).show(pwd -> ServiceFactory.getInstance().getBaseService(Api.class)
+                        .checkWalletPwd(MD5Utils.getMD5(pwd))
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .subscribe(s -> {
+                            Intent intent = new Intent(CreateWalletActivity.this, CreateingWalletActivity.class);
+                            intent.putExtra("pwd", pwd);
+                            intent.putExtra("symbol", item.getCoin());
+                            startActivity(intent);
+                            finish();
+                        }, this::handleApiError));
+            } else {
+                Intent intent = new Intent(this, ImportWalletActivity.class);
+                intent.putExtra("symbol", item.getCoin());
+                startActivity(intent);
+                finish();
             }
-            if (item.getIsAlready().equals("1")) {
-                return;
-            }
-            new NewPayBoard(CreateWalletActivity.this).show(pwd -> ServiceFactory.getInstance().getBaseService(Api.class)
-                    .checkWalletPwd(MD5Utils.getMD5(pwd))
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(s -> {
-                        Intent intent = new Intent(CreateWalletActivity.this, CreateingWalletActivity.class);
-                        intent.putExtra("pwd", pwd);
-                        intent.putExtra("symbol", item.getCoin());
-                        startActivity(intent);
-                        finish();
-                    }, this::handleApiError));
         });
 
         ServiceFactory.getInstance().getBaseService(Api.class)

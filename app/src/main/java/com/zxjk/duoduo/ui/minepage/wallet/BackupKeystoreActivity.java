@@ -149,7 +149,7 @@ public class BackupKeystoreActivity extends BaseActivity {
 
         if (bitmapQr == null) {
             Observable.create((ObservableOnSubscribe<Bitmap>) e -> {
-                bitmapQr = QRCodeEncoder.syncEncodeQRCode(keystore, UIUtil.dip2px(this, 224), Color.BLACK, Color.parseColor("#f1f1f1"), null);
+                bitmapQr = QRCodeEncoder.syncEncodeQRCode(keystore, UIUtil.dip2px(this, 216), Color.BLACK, Color.parseColor("#f1f1f1"), null);
                 e.onNext(bitmapQr);
             })
                     .compose(RxSchedulers.ioObserver())

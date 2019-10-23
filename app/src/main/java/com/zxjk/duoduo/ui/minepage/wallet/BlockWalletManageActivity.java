@@ -1,19 +1,25 @@
 package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.network.Api;
@@ -30,12 +36,13 @@ import io.reactivex.functions.Function;
 
 @SuppressLint("CheckResult")
 public class BlockWalletManageActivity extends BaseActivity {
-    public static final int REQUEST_IMPORT = 2;
     public static final int REQUEST_DETAIL = 3;
 
     private boolean dataChanged;
     private RecyclerView recycler;
     private BaseQuickAdapter<GetMainSymbolByCustomerIdBean, BaseViewHolder> adapter;
+
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,16 @@ public class BlockWalletManageActivity extends BaseActivity {
         initRecycler();
 
         initData();
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                dataChanged = true;
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter(Constant.ACTION_BROADCAST1);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     private void initData() {
@@ -120,6 +137,12 @@ public class BlockWalletManageActivity extends BaseActivity {
             intent.putExtra("data", b);
             startActivityForResult(intent, REQUEST_DETAIL);
         });
+        View inflate = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
+        TextView tv = inflate.findViewById(R.id.tv);
+        ImageView iv = inflate.findViewById(R.id.iv);
+        tv.setText(R.string.emptylist2);
+        iv.setImageResource(R.drawable.ic_empty_orders);
+        adapter.setEmptyView(inflate);
         recycler.setAdapter(adapter);
     }
 
@@ -128,7 +151,9 @@ public class BlockWalletManageActivity extends BaseActivity {
     }
 
     public void importWallet(View view) {
-        startActivityForResult(new Intent(this, ImportWalletActivity.class), REQUEST_IMPORT);
+        Intent intent = new Intent(this, CreateWalletActivity.class);
+        intent.putExtra("isImport", true);
+        startActivity(intent);
     }
 
     @Override
@@ -136,12 +161,6 @@ public class BlockWalletManageActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case REQUEST_IMPORT:
-                if (resultCode == 1) {
-                    dataChanged = true;
-                    initData();
-                }
-                break;
             case REQUEST_DETAIL:
                 if (resultCode == 1) {
                     //changename
@@ -156,6 +175,14 @@ public class BlockWalletManageActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onRestart() {
+        if (dataChanged) {
+            initData();
+        }
+        super.onRestart();
+    }
+
     private boolean judgeEquals(GetMainSymbolByCustomerIdBean b1, GetMainSymbolByCustomerIdBean b2) {
         return (!b1.getImportMethod().equals("3") && !b2.getImportMethod().equals("3")) ||
                 (b1.getImportMethod().equals("3") && b2.getImportMethod().equals("3"));
@@ -167,5 +194,13 @@ public class BlockWalletManageActivity extends BaseActivity {
             setResult(1);
         }
         super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (broadcastReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        }
+        super.onDestroy();
     }
 }

@@ -18,8 +18,10 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -31,6 +33,8 @@ import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
+
+import io.reactivex.functions.Consumer;
 
 public class ImportWalletActivity extends BaseActivity {
 
@@ -57,10 +61,14 @@ public class ImportWalletActivity extends BaseActivity {
     //1:words 2:key 3:keystore
     private int importType = 1;
 
+    private String symbol;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_wallet);
+
+        symbol = getIntent().getStringExtra("symbol");
 
         colorTheme = ContextCompat.getColor(this, R.color.colorTheme);
         colorBlack = ContextCompat.getColor(this, R.color.black);
@@ -111,11 +119,9 @@ public class ImportWalletActivity extends BaseActivity {
                         btnImport.setTextColor(colorWhite);
                     }
                 } else if ((TextUtils.isEmpty(s) || !cb.isChecked() && btnImport.getCurrentTextColor() == colorWhite)) {
-                    if (importType != 3 || !TextUtils.isEmpty(etKeystorePwd.getText().toString().trim())) {
-                        btnImport.setEnabled(false);
-                        btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
-                        btnImport.setTextColor(colorCACACA);
-                    }
+                    btnImport.setEnabled(false);
+                    btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
+                    btnImport.setTextColor(colorCACACA);
                 }
             }
         });
@@ -137,12 +143,10 @@ public class ImportWalletActivity extends BaseActivity {
                         btnImport.setBackgroundResource(R.drawable.shape_theme);
                         btnImport.setTextColor(colorWhite);
                     }
-                } else if ((TextUtils.isEmpty(s) || !cb.isChecked() && btnImport.getCurrentTextColor() == colorWhite)) {
-                    if (importType != 3 || !TextUtils.isEmpty(etInput.getText().toString().trim())) {
-                        btnImport.setEnabled(false);
-                        btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
-                        btnImport.setTextColor(colorCACACA);
-                    }
+                } else if ((TextUtils.isEmpty(s) || !cb.isChecked()) && btnImport.getCurrentTextColor() == colorWhite) {
+                    btnImport.setEnabled(false);
+                    btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
+                    btnImport.setTextColor(colorCACACA);
                 }
             }
         });
@@ -155,7 +159,7 @@ public class ImportWalletActivity extends BaseActivity {
                     btnImport.setBackgroundResource(R.drawable.shape_theme);
                     btnImport.setTextColor(colorWhite);
                 }
-            } else if ((TextUtils.isEmpty(s) || !isChecked && btnImport.getCurrentTextColor() == colorWhite)) {
+            } else if ((TextUtils.isEmpty(s) || !isChecked) && btnImport.getCurrentTextColor() == colorWhite) {
                 if (importType != 3 || !TextUtils.isEmpty(etKeystorePwd.getText().toString().trim())) {
                     btnImport.setEnabled(false);
                     btnImport.setBackgroundResource(R.drawable.shape_f7f8fa_5);
@@ -167,6 +171,7 @@ public class ImportWalletActivity extends BaseActivity {
 
     public void words(View view) {
         importType = 1;
+        cb.setChecked(false);
         etInput.setText("");
         etKeystorePwd.setText("");
         rlend.setVisibility(View.INVISIBLE);
@@ -183,6 +188,7 @@ public class ImportWalletActivity extends BaseActivity {
 
     public void key(View view) {
         importType = 2;
+        cb.setChecked(false);
         etInput.setText("");
         etKeystorePwd.setText("");
         rlend.setVisibility(View.INVISIBLE);
@@ -199,6 +205,7 @@ public class ImportWalletActivity extends BaseActivity {
 
     public void keystore(View view) {
         importType = 3;
+        cb.setChecked(false);
         etInput.setText("");
         etKeystorePwd.setText("");
         rlend.setVisibility(View.VISIBLE);
@@ -218,41 +225,34 @@ public class ImportWalletActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     public void importWallet(View view) {
         String str = etInput.getText().toString();
+        Consumer<String> resultConsumer = s -> {
+            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Constant.ACTION_BROADCAST1));
+            ToastUtils.showShort(R.string.importwallet_success);
+            finish();
+        };
         if (importType == 3) {
-            api.importKeyStore(AesUtil.getInstance().encrypt(str), AesUtil.getInstance().encrypt(etKeystorePwd.getText().toString().trim()))
+            api.importKeyStore(symbol, AesUtil.getInstance().encrypt(str), AesUtil.getInstance().encrypt(etKeystorePwd.getText().toString().trim()))
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
                     .compose(RxSchedulers.normalTrans())
-                    .subscribe(s -> {
-                        ToastUtils.showShort(R.string.importwallet_success);
-                        this.setResult(1);
-                        finish();
-                    }, this::handleApiError);
+                    .subscribe(resultConsumer, this::handleApiError);
             return;
         }
         new NewPayBoard(this).show(pwd -> {
             switch (importType) {
                 case 1:
-                    api.importByMnemonic(AesUtil.getInstance().encrypt(str), MD5Utils.getMD5(pwd))
+                    api.importByMnemonic(symbol, AesUtil.getInstance().encrypt(str), MD5Utils.getMD5(pwd))
                             .compose(bindToLifecycle())
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
                             .compose(RxSchedulers.normalTrans())
-                            .subscribe(s -> {
-                                ToastUtils.showShort(R.string.importwallet_success);
-                                this.setResult(1);
-                                finish();
-                            }, this::handleApiError);
+                            .subscribe(resultConsumer, this::handleApiError);
                     break;
                 case 2:
-                    api.importPrivateKey(AesUtil.getInstance().encrypt(str), MD5Utils.getMD5(pwd))
+                    api.importPrivateKey(symbol, AesUtil.getInstance().encrypt(str), MD5Utils.getMD5(pwd))
                             .compose(bindToLifecycle())
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ImportWalletActivity.this)))
                             .compose(RxSchedulers.normalTrans())
-                            .subscribe(s -> {
-                                ToastUtils.showShort(R.string.importwallet_success);
-                                this.setResult(1);
-                                finish();
-                            }, this::handleApiError);
+                            .subscribe(resultConsumer, this::handleApiError);
                     break;
             }
         });

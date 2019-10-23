@@ -1,14 +1,23 @@
 package com.zxjk.duoduo.ui.minepage.wallet;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 
 public class BlockWalletEmptyActivity extends BaseActivity {
+    private BroadcastReceiver broadcastReceiver;
+    private boolean hasCreated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +27,16 @@ public class BlockWalletEmptyActivity extends BaseActivity {
         TextView tvtitle = findViewById(R.id.tv_title);
         tvtitle.setText(R.string.blockWallet);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                hasCreated = true;
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter(Constant.ACTION_BROADCAST1);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     /**
@@ -27,7 +46,6 @@ public class BlockWalletEmptyActivity extends BaseActivity {
      */
     public void createW(View view) {
         startActivity(new Intent(this, CreateWalletActivity.class));
-        finish();
     }
 
     /**
@@ -36,6 +54,26 @@ public class BlockWalletEmptyActivity extends BaseActivity {
      * @param view
      */
     public void importW(View view) {
+        Intent intent = new Intent(this, CreateWalletActivity.class);
+        intent.putExtra("isImport", true);
+        startActivity(intent);
+    }
 
+    @Override
+    protected void onDestroy() {
+        if (broadcastReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onRestart() {
+        if (hasCreated) {
+            Intent intent = new Intent(this, NewBlockWalletActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        super.onRestart();
     }
 }

@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.network.Api;
@@ -15,6 +17,8 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.CreateWLoadingView;
 import com.zxjk.duoduo.utils.AesUtil;
+
+import static com.zxjk.duoduo.Constant.ACTION_BROADCAST1;
 
 public class CreateingWalletActivity extends BaseActivity {
 
@@ -41,7 +45,7 @@ public class CreateingWalletActivity extends BaseActivity {
         btnComplete = findViewById(R.id.btnComplete);
 
         title.setText(R.string.createwallet);
-        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        findViewById(R.id.rl_back).setVisibility(View.INVISIBLE);
 
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .generateMnemonic(symbol, AesUtil.getInstance().encrypt(pwd))
@@ -53,19 +57,22 @@ public class CreateingWalletActivity extends BaseActivity {
                 .subscribe(response -> {
                     tvTips.setText(R.string.createwallet_tips3);
                     btnComplete.setVisibility(View.VISIBLE);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ACTION_BROADCAST1));
                     this.response = response;
                 }, t -> {
-                    tvTips.setText(R.string.createwallet_tips4);
+                    finish();
                     handleApiError(t);
                 });
     }
 
     public void accomplish(View view) {
-        Intent intent = new Intent(this, WalletActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        intent = new Intent(this, CreateWalletSuccessActivity.class);
+        Intent intent = new Intent(this, CreateWalletSuccessActivity.class);
         intent.putExtra("response", response);
         startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }
