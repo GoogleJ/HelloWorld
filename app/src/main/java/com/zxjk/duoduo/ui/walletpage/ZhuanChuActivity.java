@@ -85,7 +85,7 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         moneyValueFilter = new MoneyValueFilter();
         seekZhuanchu = findViewById(R.id.seekZhuanchu);
         etCount = findViewById(R.id.etCount);
-        moneyValueFilter.setDigits(2);
+        moneyValueFilter.setDigits(5);
         etCount.setFilters(new InputFilter[]{moneyValueFilter});
         etWalletAddress = findViewById(R.id.etWalletAddress);
         tv_currency = findViewById(R.id.tv_currency);

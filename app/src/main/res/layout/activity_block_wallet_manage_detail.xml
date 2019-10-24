@@ -32,8 +32,8 @@
             android:ellipsize="end"
             android:gravity="center"
             android:lines="1"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textColor="#2C4879"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tvAddress"

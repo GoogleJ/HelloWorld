@@ -11,11 +11,13 @@ import java.util.List;
 public class WalletChainInfosResponse implements Parcelable {
 
     /**
-     * balanceTotal : 3391.15
-     * symbolList : [{"symbol":"ETH","sumBalance":2.599327944,"logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","symbolInfos":[{"symbol":"ETH","balance":"0","importMethod":"1","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0xcba4c84f375d564a6d1c991683e3361fb83f1c1b","balanceToCNY":"0.00"},{"symbol":"ETH","balance":"0","importMethod":"0","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0x26014d4b627b40e180c4f28bfce323679bfa7115","balanceToCNY":"0.00"},{"symbol":"ETH","balance":"2.599327944","importMethod":"2","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0x424b9f1b44878fcac66ff1ee900721d946176a85","balanceToCNY":"3391.15"},{"symbol":"ETH","balance":"0","importMethod":"3","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0x1f8e3f1b94b08fc6e9335749ff0928487f19bbd9","balanceToCNY":"0.00"},{"symbol":"ETH","balance":"0","importMethod":"3","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0x429ce3e4d5f7a6adff81c28f2db87ab680da1e5b","balanceToCNY":"0.00"}],"sumBalanceToCny":3391.15}]
+     * balanceTotal : 0.00
+     * isExist : 1
+     * symbolList : [{"symbol":"ETH","sumBalance":"0.00","sumBalanceToCny":"0.00","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","symbolInfos":[{"customerId":"","symbol":"ETH","walletAddress":"0xfb0226b560cf4cff7231d8b1a21381ae77a0c4cb","walletMnemonic":"","walletPrivateKey":"","walletKeystore":"","createTime":"","updateTime":"","isDelete":"","walletName":"","importMethod":"3","balance":"0.00","balanceToCNY":"0.00","contractAddress":"","coinType":"0","decimals":18,"tokenDecimal":0,"logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","parentSymbol":"ETH"}],"walletAddress":"0xfb0226b560cf4cff7231d8b1a21381ae77a0c4cb","coinType":"0","parentSymbol":"ETH","tokenDecimal":18,"contractAddress":""}]
      */
 
     private String balanceTotal;
+    private int isExist;
     private List<SymbolListBean> symbolList;
 
     public String getBalanceTotal() {
@@ -24,6 +26,14 @@ public class WalletChainInfosResponse implements Parcelable {
 
     public void setBalanceTotal(String balanceTotal) {
         this.balanceTotal = balanceTotal;
+    }
+
+    public int getIsExist() {
+        return isExist;
+    }
+
+    public void setIsExist(int isExist) {
+        this.isExist = isExist;
     }
 
     public List<SymbolListBean> getSymbolList() {
@@ -35,42 +45,69 @@ public class WalletChainInfosResponse implements Parcelable {
     }
 
     public static class SymbolListBean implements Parcelable {
-
         /**
          * symbol : ETH
-         * sumBalance : 2.599327944
+         * sumBalance : 0.00
+         * sumBalanceToCny : 0.00
          * logo : http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D
-         * symbolInfos : [{"symbol":"ETH","balance":"0","importMethod":"1","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0xcba4c84f375d564a6d1c991683e3361fb83f1c1b","balanceToCNY":"0.00"},{"symbol":"ETH","balance":"0","importMethod":"0","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0x26014d4b627b40e180c4f28bfce323679bfa7115","balanceToCNY":"0.00"},{"symbol":"ETH","balance":"2.599327944","importMethod":"2","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0x424b9f1b44878fcac66ff1ee900721d946176a85","balanceToCNY":"3391.15"},{"symbol":"ETH","balance":"0","importMethod":"3","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0x1f8e3f1b94b08fc6e9335749ff0928487f19bbd9","balanceToCNY":"0.00"},{"symbol":"ETH","balance":"0","importMethod":"3","contractAddress":"","logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","walletAddress":"0x429ce3e4d5f7a6adff81c28f2db87ab680da1e5b","balanceToCNY":"0.00"}]
-         * sumBalanceToCny : 3391.15
+         * symbolInfos : [{"customerId":"","symbol":"ETH","walletAddress":"0xfb0226b560cf4cff7231d8b1a21381ae77a0c4cb","walletMnemonic":"","walletPrivateKey":"","walletKeystore":"","createTime":"","updateTime":"","isDelete":"","walletName":"","importMethod":"3","balance":"0.00","balanceToCNY":"0.00","contractAddress":"","coinType":"0","decimals":18,"tokenDecimal":0,"logo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D","parentSymbol":"ETH"}]
+         * walletAddress : 0xfb0226b560cf4cff7231d8b1a21381ae77a0c4cb
+         * coinType : 0
+         * parentSymbol : ETH
+         * tokenDecimal : 18
+         * contractAddress :
          */
 
         private String symbol;
-        private double sumBalance;
-        private String logo;
+        private String sumBalance;
         private String sumBalanceToCny;
+        private String logo;
         private String walletAddress;
         private String coinType;
         private String parentSymbol;
         private int tokenDecimal;
         private String contractAddress;
-
-        public String getContractAddress() {
-            return contractAddress;
-        }
-
-        public void setContractAddress(String contractAddress) {
-            this.contractAddress = contractAddress;
-        }
-
-        public int getTokenDecimal() {
-            return tokenDecimal;
-        }
-
-        public void setTokenDecimal(int tokenDecimal) {
-            this.tokenDecimal = tokenDecimal;
-        }
-
         private List<SymbolInfosBean> symbolInfos;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
+
+        public String getSumBalance() {
+            return sumBalance;
+        }
+
+        public void setSumBalance(String sumBalance) {
+            this.sumBalance = sumBalance;
+        }
+
+        public String getSumBalanceToCny() {
+            return sumBalanceToCny;
+        }
+
+        public void setSumBalanceToCny(String sumBalanceToCny) {
+            this.sumBalanceToCny = sumBalanceToCny;
+        }
+
+        public String getLogo() {
+            return logo;
+        }
+
+        public void setLogo(String logo) {
+            this.logo = logo;
+        }
+
+        public String getWalletAddress() {
+            return walletAddress;
+        }
+
+        public void setWalletAddress(String walletAddress) {
+            this.walletAddress = walletAddress;
+        }
 
         public String getCoinType() {
             return coinType;
@@ -88,44 +125,20 @@ public class WalletChainInfosResponse implements Parcelable {
             this.parentSymbol = parentSymbol;
         }
 
-        public String getWalletAddress() {
-            return walletAddress;
+        public int getTokenDecimal() {
+            return tokenDecimal;
         }
 
-        public void setWalletAddress(String walletAddress) {
-            this.walletAddress = walletAddress;
+        public void setTokenDecimal(int tokenDecimal) {
+            this.tokenDecimal = tokenDecimal;
         }
 
-        public String getSymbol() {
-            return symbol;
+        public String getContractAddress() {
+            return contractAddress;
         }
 
-        public void setSymbol(String symbol) {
-            this.symbol = symbol;
-        }
-
-        public double getSumBalance() {
-            return sumBalance;
-        }
-
-        public void setSumBalance(double sumBalance) {
-            this.sumBalance = sumBalance;
-        }
-
-        public String getLogo() {
-            return logo;
-        }
-
-        public void setLogo(String logo) {
-            this.logo = logo;
-        }
-
-        public String getSumBalanceToCny() {
-            return sumBalanceToCny;
-        }
-
-        public void setSumBalanceToCny(String sumBalanceToCny) {
-            this.sumBalanceToCny = sumBalanceToCny;
+        public void setContractAddress(String contractAddress) {
+            this.contractAddress = contractAddress;
         }
 
         public List<SymbolInfosBean> getSymbolInfos() {
@@ -137,27 +150,47 @@ public class WalletChainInfosResponse implements Parcelable {
         }
 
         public static class SymbolInfosBean implements Parcelable, MultiItemEntity {
-
             /**
+             * customerId :
              * symbol : ETH
-             * balance : 0
-             * importMethod : 1
-             * contractAddress :
-             * logo : http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D
-             * walletAddress : 0xcba4c84f375d564a6d1c991683e3361fb83f1c1b
+             * walletAddress : 0xfb0226b560cf4cff7231d8b1a21381ae77a0c4cb
+             * walletMnemonic :
+             * walletPrivateKey :
+             * walletKeystore :
+             * createTime :
+             * updateTime :
+             * isDelete :
+             * walletName :
+             * importMethod : 3
+             * balance : 0.00
              * balanceToCNY : 0.00
+             * contractAddress :
+             * coinType : 0
+             * decimals : 18
+             * tokenDecimal : 0
+             * logo : http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571042699243.png?Expires=1886402690&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=a619rkpjn7POYrmLP1vZ3KpOm5k%3D
+             * parentSymbol : ETH
              */
 
+            private String customerId;
             private String symbol;
-            private String balance;
-            private String importMethod;
-            private String contractAddress;
-            private String logo;
             private String walletAddress;
+            private String walletMnemonic;
+            private String walletPrivateKey;
+            private String walletKeystore;
+            private String createTime;
+            private String updateTime;
+            private String isDelete;
+            private String walletName;
+            private String importMethod;
+            private String balance;
             private String balanceToCNY;
+            private String contractAddress;
             private String coinType;
-            private String parentSymbol;
+            private int decimals;
             private int tokenDecimal;
+            private String logo;
+            private String parentSymbol;
             private boolean isLast;
 
             public boolean isLast() {
@@ -168,28 +201,12 @@ public class WalletChainInfosResponse implements Parcelable {
                 isLast = last;
             }
 
-            public int getTokenDecimal() {
-                return tokenDecimal;
+            public String getCustomerId() {
+                return customerId;
             }
 
-            public void setTokenDecimal(int tokenDecimal) {
-                this.tokenDecimal = tokenDecimal;
-            }
-
-            public String getCoinType() {
-                return coinType;
-            }
-
-            public void setCoinType(String coinType) {
-                this.coinType = coinType;
-            }
-
-            public String getParentSymbol() {
-                return parentSymbol;
-            }
-
-            public void setParentSymbol(String parentSymbol) {
-                this.parentSymbol = parentSymbol;
+            public void setCustomerId(String customerId) {
+                this.customerId = customerId;
             }
 
             public String getSymbol() {
@@ -200,12 +217,68 @@ public class WalletChainInfosResponse implements Parcelable {
                 this.symbol = symbol;
             }
 
-            public String getBalance() {
-                return balance;
+            public String getWalletAddress() {
+                return walletAddress;
             }
 
-            public void setBalance(String balance) {
-                this.balance = balance;
+            public void setWalletAddress(String walletAddress) {
+                this.walletAddress = walletAddress;
+            }
+
+            public String getWalletMnemonic() {
+                return walletMnemonic;
+            }
+
+            public void setWalletMnemonic(String walletMnemonic) {
+                this.walletMnemonic = walletMnemonic;
+            }
+
+            public String getWalletPrivateKey() {
+                return walletPrivateKey;
+            }
+
+            public void setWalletPrivateKey(String walletPrivateKey) {
+                this.walletPrivateKey = walletPrivateKey;
+            }
+
+            public String getWalletKeystore() {
+                return walletKeystore;
+            }
+
+            public void setWalletKeystore(String walletKeystore) {
+                this.walletKeystore = walletKeystore;
+            }
+
+            public String getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(String createTime) {
+                this.createTime = createTime;
+            }
+
+            public String getUpdateTime() {
+                return updateTime;
+            }
+
+            public void setUpdateTime(String updateTime) {
+                this.updateTime = updateTime;
+            }
+
+            public String getIsDelete() {
+                return isDelete;
+            }
+
+            public void setIsDelete(String isDelete) {
+                this.isDelete = isDelete;
+            }
+
+            public String getWalletName() {
+                return walletName;
+            }
+
+            public void setWalletName(String walletName) {
+                this.walletName = walletName;
             }
 
             public String getImportMethod() {
@@ -216,28 +289,12 @@ public class WalletChainInfosResponse implements Parcelable {
                 this.importMethod = importMethod;
             }
 
-            public String getContractAddress() {
-                return contractAddress;
+            public String getBalance() {
+                return balance;
             }
 
-            public void setContractAddress(String contractAddress) {
-                this.contractAddress = contractAddress;
-            }
-
-            public String getLogo() {
-                return logo;
-            }
-
-            public void setLogo(String logo) {
-                this.logo = logo;
-            }
-
-            public String getWalletAddress() {
-                return walletAddress;
-            }
-
-            public void setWalletAddress(String walletAddress) {
-                this.walletAddress = walletAddress;
+            public void setBalance(String balance) {
+                this.balance = balance;
             }
 
             public String getBalanceToCNY() {
@@ -248,12 +305,55 @@ public class WalletChainInfosResponse implements Parcelable {
                 this.balanceToCNY = balanceToCNY;
             }
 
-            public SymbolInfosBean() {
+            public String getContractAddress() {
+                return contractAddress;
             }
 
-            @Override
-            public int getItemType() {
-                return 2;
+            public void setContractAddress(String contractAddress) {
+                this.contractAddress = contractAddress;
+            }
+
+            public String getCoinType() {
+                return coinType;
+            }
+
+            public void setCoinType(String coinType) {
+                this.coinType = coinType;
+            }
+
+            public int getDecimals() {
+                return decimals;
+            }
+
+            public void setDecimals(int decimals) {
+                this.decimals = decimals;
+            }
+
+            public int getTokenDecimal() {
+                return tokenDecimal;
+            }
+
+            public void setTokenDecimal(int tokenDecimal) {
+                this.tokenDecimal = tokenDecimal;
+            }
+
+            public String getLogo() {
+                return logo;
+            }
+
+            public void setLogo(String logo) {
+                this.logo = logo;
+            }
+
+            public String getParentSymbol() {
+                return parentSymbol;
+            }
+
+            public void setParentSymbol(String parentSymbol) {
+                this.parentSymbol = parentSymbol;
+            }
+
+            public SymbolInfosBean() {
             }
 
             @Override
@@ -263,30 +363,48 @@ public class WalletChainInfosResponse implements Parcelable {
 
             @Override
             public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.customerId);
                 dest.writeString(this.symbol);
-                dest.writeString(this.balance);
-                dest.writeString(this.importMethod);
-                dest.writeString(this.contractAddress);
-                dest.writeString(this.logo);
                 dest.writeString(this.walletAddress);
+                dest.writeString(this.walletMnemonic);
+                dest.writeString(this.walletPrivateKey);
+                dest.writeString(this.walletKeystore);
+                dest.writeString(this.createTime);
+                dest.writeString(this.updateTime);
+                dest.writeString(this.isDelete);
+                dest.writeString(this.walletName);
+                dest.writeString(this.importMethod);
+                dest.writeString(this.balance);
                 dest.writeString(this.balanceToCNY);
+                dest.writeString(this.contractAddress);
                 dest.writeString(this.coinType);
-                dest.writeString(this.parentSymbol);
+                dest.writeInt(this.decimals);
                 dest.writeInt(this.tokenDecimal);
+                dest.writeString(this.logo);
+                dest.writeString(this.parentSymbol);
                 dest.writeByte(this.isLast ? (byte) 1 : (byte) 0);
             }
 
             protected SymbolInfosBean(Parcel in) {
+                this.customerId = in.readString();
                 this.symbol = in.readString();
-                this.balance = in.readString();
-                this.importMethod = in.readString();
-                this.contractAddress = in.readString();
-                this.logo = in.readString();
                 this.walletAddress = in.readString();
+                this.walletMnemonic = in.readString();
+                this.walletPrivateKey = in.readString();
+                this.walletKeystore = in.readString();
+                this.createTime = in.readString();
+                this.updateTime = in.readString();
+                this.isDelete = in.readString();
+                this.walletName = in.readString();
+                this.importMethod = in.readString();
+                this.balance = in.readString();
                 this.balanceToCNY = in.readString();
+                this.contractAddress = in.readString();
                 this.coinType = in.readString();
-                this.parentSymbol = in.readString();
+                this.decimals = in.readInt();
                 this.tokenDecimal = in.readInt();
+                this.logo = in.readString();
+                this.parentSymbol = in.readString();
                 this.isLast = in.readByte() != 0;
             }
 
@@ -301,9 +419,11 @@ public class WalletChainInfosResponse implements Parcelable {
                     return new SymbolInfosBean[size];
                 }
             };
-        }
 
-        public SymbolListBean() {
+            @Override
+            public int getItemType() {
+                return 2;
+            }
         }
 
         @Override
@@ -314,28 +434,32 @@ public class WalletChainInfosResponse implements Parcelable {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(this.symbol);
-            dest.writeDouble(this.sumBalance);
-            dest.writeString(this.logo);
+            dest.writeString(this.sumBalance);
             dest.writeString(this.sumBalanceToCny);
+            dest.writeString(this.logo);
             dest.writeString(this.walletAddress);
             dest.writeString(this.coinType);
             dest.writeString(this.parentSymbol);
             dest.writeInt(this.tokenDecimal);
             dest.writeString(this.contractAddress);
-            dest.writeTypedList(this.symbolInfos);
+            dest.writeList(this.symbolInfos);
+        }
+
+        public SymbolListBean() {
         }
 
         protected SymbolListBean(Parcel in) {
             this.symbol = in.readString();
-            this.sumBalance = in.readDouble();
-            this.logo = in.readString();
+            this.sumBalance = in.readString();
             this.sumBalanceToCny = in.readString();
+            this.logo = in.readString();
             this.walletAddress = in.readString();
             this.coinType = in.readString();
             this.parentSymbol = in.readString();
             this.tokenDecimal = in.readInt();
             this.contractAddress = in.readString();
-            this.symbolInfos = in.createTypedArrayList(SymbolInfosBean.CREATOR);
+            this.symbolInfos = new ArrayList<SymbolInfosBean>();
+            in.readList(this.symbolInfos, SymbolInfosBean.class.getClassLoader());
         }
 
         public static final Creator<SymbolListBean> CREATOR = new Creator<SymbolListBean>() {
@@ -359,6 +483,7 @@ public class WalletChainInfosResponse implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.balanceTotal);
+        dest.writeInt(this.isExist);
         dest.writeList(this.symbolList);
     }
 
@@ -367,6 +492,7 @@ public class WalletChainInfosResponse implements Parcelable {
 
     protected WalletChainInfosResponse(Parcel in) {
         this.balanceTotal = in.readString();
+        this.isExist = in.readInt();
         this.symbolList = new ArrayList<SymbolListBean>();
         in.readList(this.symbolList, SymbolListBean.class.getClassLoader());
     }

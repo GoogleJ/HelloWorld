@@ -142,8 +142,12 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
                     if (firstLogin) {
-                        connect(Constant.currentUser.getRongToken());
                         ToastUtils.showShort(R.string.setsuccess);
+                        MMKVUtils.getInstance().enCode("isLogin", true);
+                        Intent intent = new Intent(SetUpPaymentPwdActivity.this, HomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
                     } else {
                         ToastUtils.showShort(R.string.successfully_modified);
                         finish();
@@ -174,37 +178,6 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
             popupWindow.releaseResources();
         }
         super.onDestroy();
-    }
-
-    private void connect(String token) {
-        RongIM.connect(token, new RongIMClient.ConnectCallback() {
-
-            @Override
-            public void onTokenIncorrect() {
-                ToastUtils.showShort(R.string.connect_failed);
-            }
-
-            @Override
-            public void onSuccess(String userid) {
-                MMKVUtils.getInstance().enCode("isLogin", true);
-                MMKVUtils.getInstance().enCode("date1", TimeUtils.getNowMills());
-                MMKVUtils.getInstance().enCode("login", Constant.currentUser);
-                MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
-                MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
-
-                UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
-                RongIM.getInstance().setCurrentUserInfo(userInfo);
-                finish();
-                Intent intent = new Intent(SetUpPaymentPwdActivity.this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                ToastUtils.showShort(R.string.connect_failed);
-            }
-        });
     }
 
     @OnClick(R.id.rl_back)

@@ -152,7 +152,7 @@ public class BlockWalletManageDetailActivity extends BaseActivity {
                                     }, true)
                                     .blurBackground(true)
                                     .withShowAnimation(showAnim)
-                                    .withDismissAnimation(hideAnim).dismissOnOutSideTouch(false))
+                                    .withDismissAnimation(hideAnim).dismissOnOutSideTouch(true))
                             .show();
                     TextView tvKey = popup.getContentView().findViewById(R.id.tvKey);
                     tvKey.setText(key);

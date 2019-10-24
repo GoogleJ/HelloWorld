@@ -192,10 +192,7 @@ public class EditPersonalInformationFragment extends BaseActivity {
                     Constant.currentUser.setHeadPortrait(update.getHeadPortrait());
                     Constant.currentUser.setNick(update.getNick());
                     Constant.currentUser.setAddress(update.getAddress());
-                    Intent intent = new Intent(EditPersonalInformationFragment.this, SetUpPaymentPwdActivity.class);
-                    intent.putExtra("firstLogin", true);
-                    startActivity(intent);
-                    finish();
+
                 }, this::handleApiError);
     }
 

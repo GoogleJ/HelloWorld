@@ -24,6 +24,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.MMKVUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class NewBlockWalletActivity extends BaseActivity {
 
     private WalletChainInfosResponse response;
 
-    private boolean isShow = true;
+    private boolean isShow;
     private String hideStr = "****  ****";
 
     private ImageView ivShowOrHide;
@@ -60,7 +61,6 @@ public class NewBlockWalletActivity extends BaseActivity {
 
         initData();
 
-        showOrHideMoney();
     }
 
     private void initView() {
@@ -73,6 +73,7 @@ public class NewBlockWalletActivity extends BaseActivity {
 
     private void showOrHideMoney() {
         isShow = !isShow;
+        MMKVUtils.getInstance().enCode("bahaviour1_showWalletBalance", isShow);
         adapter.notifyDataSetChanged();
         if (isShow) {
             ivShowOrHide.setImageResource(R.drawable.ic_blockwallet_hide);
@@ -94,6 +95,9 @@ public class NewBlockWalletActivity extends BaseActivity {
                 .doOnNext(response -> {
                     NewBlockWalletActivity.this.response = response;
                     tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
+                    isShow = MMKVUtils.getInstance().decodeBool("bahaviour1_showWalletBalance");
+                    isShow = !isShow;
+                    showOrHideMoney();
                 })
                 .observeOn(Schedulers.io())
                 .map(response -> parseData(response.getSymbolList()))
@@ -128,7 +132,7 @@ public class NewBlockWalletActivity extends BaseActivity {
                         ImageView ivlogo = helper.getView(R.id.ivLogo);
                         GlideUtil.loadNormalImg(ivlogo, level0Bean.getBean().getLogo());
                         helper.setText(R.id.tvCoin, level0Bean.getBean().getSymbol())
-                                .setText(R.id.tvMoney1, isShow ? (level0Bean.getBean().getSumBalance() + "") : hideStr)
+                                .setText(R.id.tvMoney1, isShow ? level0Bean.getBean().getSumBalance() : hideStr)
                                 .setText(R.id.tvMoney2, isShow ? (level0Bean.getBean().getSumBalanceToCny().equals("-") ?
                                         "-" : ("≈¥" + level0Bean.getBean().getSumBalanceToCny())) : hideStr);
 
@@ -163,7 +167,7 @@ public class NewBlockWalletActivity extends BaseActivity {
                     case 2:
                         WalletChainInfosResponse.SymbolListBean.SymbolInfosBean bean = (WalletChainInfosResponse.SymbolListBean.SymbolInfosBean) item;
                         helper.setText(R.id.tvCoin, (bean.getImportMethod().equals("3") ? "创建的" : "导入的") + bean.getSymbol() + "钱包地址")
-                                .setText(R.id.tvMoney1, isShow ? (bean.getBalance() + "") : hideStr)
+                                .setText(R.id.tvMoney1, isShow ? bean.getBalance() : hideStr)
                                 .setText(R.id.tvMoney2, isShow ? (bean.getBalanceToCNY().equals("-") ? "-" : "≈¥" + bean.getBalanceToCNY()) : hideStr)
                                 .setText(R.id.tvAddress, isShow ? bean.getWalletAddress() : hideStr);
                         if (bean.isLast()) {

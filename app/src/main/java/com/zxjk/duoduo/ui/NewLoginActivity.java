@@ -264,11 +264,8 @@ public class NewLoginActivity extends BaseActivity {
                     Constant.currentUser = l;
                     Constant.authentication = l.getIsAuthentication();
 
-                    if (l.getIsFirstLogin().equals(Constant.FLAG_FIRSTLOGIN)) {
-                        startActivity(new Intent(NewLoginActivity.this, EditPersonalInformationFragment.class));
-                    } else {
-                        connect(l.getRongToken());
-                    }
+                    connect(l.getRongToken(), l.getIsFirstLogin().equals(Constant.FLAG_FIRSTLOGIN));
+
                 }, this::handleApiError);
     }
 
@@ -291,7 +288,7 @@ public class NewLoginActivity extends BaseActivity {
     }
 
     @SuppressLint("CheckResult")
-    private void connect(String token) {
+    private void connect(String token, boolean equals) {
         Observable.timer(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
                 .subscribe(c -> CommonUtils.initDialog(this).show());
@@ -304,15 +301,33 @@ public class NewLoginActivity extends BaseActivity {
 
             @Override
             public void onSuccess(String userid) {
-                MMKVUtils.getInstance().enCode("isLogin", true);
+                CommonUtils.destoryDialog();
+
                 MMKVUtils.getInstance().enCode("date1", TimeUtils.getNowMills());
                 MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                 MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
                 MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
-
-                CommonUtils.destoryDialog();
                 UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
                 RongIM.getInstance().setCurrentUserInfo(userInfo);
+
+                if (equals) {
+                    if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
+                        MMKVUtils.getInstance().enCode("appFirstLogin", true);
+                        Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
+                        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
+                                , ivIcon, "appicon");
+                        intent.putExtra("setupPayPass", true);
+                        startActivity(intent, activityOptionsCompat.toBundle());
+                    } else {
+                        Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
+                        intent.putExtra("firstLogin", true);
+                        startActivity(intent);
+                        finish();
+                    }
+                    return;
+                }
+
+                MMKVUtils.getInstance().enCode("isLogin", true);
 
                 if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
                     MMKVUtils.getInstance().enCode("appFirstLogin", true);
@@ -322,9 +337,9 @@ public class NewLoginActivity extends BaseActivity {
                     startActivity(intent, activityOptionsCompat.toBundle());
                 } else {
                     startActivity(new Intent(NewLoginActivity.this, HomeActivity.class));
+                    finish();
                 }
 
-                finish();
             }
 
             @Override

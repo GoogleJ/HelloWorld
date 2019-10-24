@@ -46,6 +46,7 @@ public class AppFirstLogin extends AppCompatActivity {
     private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
     private int START_COLOR;
     private int END_COLOR;
+    private boolean setupPayPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,8 @@ public class AppFirstLogin extends AppCompatActivity {
 
         START_COLOR = ContextCompat.getColor(this, R.color.white);
         END_COLOR = ContextCompat.getColor(this, R.color.colorTheme);
+
+        setupPayPass = getIntent().getBooleanExtra("setupPayPass", false);
 
         initView();
 
@@ -114,8 +117,15 @@ public class AppFirstLogin extends AppCompatActivity {
                         super.onAnimationEnd(animation);
                         Observable.timer(600, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                                 .subscribe(a -> {
-                                    startActivity(new Intent(AppFirstLogin.this, HomeActivity.class));
-                                    finish();
+                                    if (setupPayPass) {
+                                        Intent intent = new Intent(AppFirstLogin.this, SetUpPaymentPwdActivity.class);
+                                        intent.putExtra("firstLogin", true);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        startActivity(new Intent(AppFirstLogin.this, HomeActivity.class));
+                                        finish();
+                                    }
                                 });
                     }
                 });

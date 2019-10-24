@@ -31,4 +31,8 @@ public class CreateWalletSuccessActivity extends BaseActivity {
         startActivity(intent);
         finish();
     }
+
+    public void backupLater(View view) {
+        finish();
+    }
 }
