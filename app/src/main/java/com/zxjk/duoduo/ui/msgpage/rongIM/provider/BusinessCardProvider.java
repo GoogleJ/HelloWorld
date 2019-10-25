@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
@@ -27,7 +26,7 @@ public class BusinessCardProvider extends IContainerItemProvider.MessageProvider
         TextView userName;
         TextView duoduoId;
         ImageView heardImage;
-        ConstraintLayout sendLayout;
+        LinearLayout sendLayout;
     }
 
     Context context;
@@ -40,7 +39,6 @@ public class BusinessCardProvider extends IContainerItemProvider.MessageProvider
         ViewHolder holder = (ViewHolder) view.getTag();
 
         if (uiMessage.getMessageDirection() == Message.MessageDirection.SEND) {
-            //消息方向，自己发送的
             holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_user);
         } else {
             holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_friend);
@@ -64,10 +62,10 @@ public class BusinessCardProvider extends IContainerItemProvider.MessageProvider
     public View newView(Context context, ViewGroup viewGroup) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_business_card_send, viewGroup, false);
         ViewHolder holder = new ViewHolder();
-        holder.userName = (TextView) view.findViewById(R.id.business_card_user_name);
-        holder.duoduoId = (TextView) view.findViewById(R.id.business_card_duoduo_id);
-        holder.heardImage = (ImageView) view.findViewById(R.id.business_card_header);
-        holder.sendLayout = (ConstraintLayout) view.findViewById(R.id.send_red_packet_layout);
+        holder.userName = view.findViewById(R.id.business_card_user_name);
+        holder.duoduoId = view.findViewById(R.id.business_card_duoduo_id);
+        holder.heardImage = view.findViewById(R.id.business_card_header);
+        holder.sendLayout = view.findViewById(R.id.transfer_send_layout);
         view.setTag(holder);
         return view;
     }

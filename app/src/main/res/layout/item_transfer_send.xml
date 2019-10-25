@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/send_red_packet_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/icon_red_packet_user"
     android:gravity="center_vertical"
-    android:orientation="vertical"
-    tools:ignore="MissingConstraints">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingStart="10dp"
+        android:paddingEnd="12dp">
 
         <TextView
             android:id="@+id/remark"
@@ -24,8 +22,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:lines="1"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/transfer_type_icon"
@@ -41,19 +38,22 @@
         android:id="@+id/transfer_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="12dp"
+        android:ellipsize="end"
+        android:lines="1"
         android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/prompt_logo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
         android:layout_weight="1"
         android:gravity="start|bottom"
         android:paddingBottom="4dp"
         android:text="@string/transfer_prompt_logo"
         android:textColor="@color/textcolor3"
-        android:textSize="9.5sp" />
+        android:textSize="9sp" />
 
 </LinearLayout>
