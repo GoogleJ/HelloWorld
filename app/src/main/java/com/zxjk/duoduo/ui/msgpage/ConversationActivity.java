@@ -680,10 +680,11 @@ public class ConversationActivity extends BaseActivity {
             }
         }
 
-        if (isOwner) {
+        if (isOwner || groupInfo.getGroupPermission() != null && groupInfo.getGroupPermission().getForceRecall().equals("1")) {
             MessageItemLongClickAction forceRecallAction = new MessageItemLongClickAction.Builder()
                     .title("强制撤回")
-                    .showFilter(uiMessage -> true)
+                    .showFilter(uiMessage -> !uiMessage.getSenderUserId().equals(Constant.userId) ||
+                            !uiMessage.getSenderUserId().equals(groupInfo.getGroupInfo().getGroupOwnerId()))
                     .actionListener((context, uiMessage) -> {
                         ServiceFactory.getInstance().getBaseService(Api.class)
                                 .recallGroupMessage(uiMessage.getMessage().getUId())

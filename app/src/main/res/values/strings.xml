@@ -885,4 +885,5 @@
     <string name="createwallet_tips5">选择您想导入的钱包币种</string>
     <string name="emptylist2">暂无钱包</string>
     <string name="backup_later">稍后备份</string>
+    <string name="force_recall">强制撤回</string>
 </resources>

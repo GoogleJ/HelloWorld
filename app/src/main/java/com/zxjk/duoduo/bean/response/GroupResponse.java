@@ -169,6 +169,15 @@ public class GroupResponse implements Serializable {
         private String headPortrait;
         private String openAudio;
         private String openVideo;
+        private String forceRecall;
+
+        public String getForceRecall() {
+            return forceRecall;
+        }
+
+        public void setForceRecall(String forceRecall) {
+            this.forceRecall = forceRecall;
+        }
 
         public String getId() {
             return id;

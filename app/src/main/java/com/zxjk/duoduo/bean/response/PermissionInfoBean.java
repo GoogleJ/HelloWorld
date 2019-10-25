@@ -29,7 +29,20 @@ public class PermissionInfoBean implements Parcelable {
     private String headPortrait;
     private String openAudio;
     private String openVideo;
+    private String forceRecall;
     private boolean checked;
+
+    public String getForceRecall() {
+        return forceRecall;
+    }
+
+    public void setForceRecall(String forceRecall) {
+        this.forceRecall = forceRecall;
+    }
+
+    public static Creator<PermissionInfoBean> getCREATOR() {
+        return CREATOR;
+    }
 
     public String getOpenAudio() {
         return openAudio;
