@@ -28,6 +28,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.blankj.utilcode.util.VibrateUtils;
+import com.mp4parser.streaming.extensions.NameTrackExtension;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
@@ -114,9 +115,9 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     @SuppressLint("CheckResult")
     @Override
     protected void onResume() {
-        startBurnMsgInterval(0);
-
         cleanBadge();
+
+        startBurnMsgInterval(0);
 
         Observable.timer(1, TimeUnit.SECONDS)
                 .subscribe(aLong -> {
@@ -190,7 +191,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initMessageLongClickAction();
 
         initGreenDaoSession();
-
     }
 
     @SuppressLint("CheckResult")
@@ -214,27 +214,17 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     @SuppressLint("CheckResult")
     private void startBurnMsgInterval(int second) {
         Observable
-                .timer(second, TimeUnit.SECONDS, Schedulers.single())
-                .observeOn(Schedulers.single())
-                .compose(second == 0 ? bindToLifecycle() : bindUntilEvent(ActivityEvent.PAUSE))
-                .doOnComplete(() -> {
-                    if (dao.getDatabase().inTransaction()) dao.getDatabase().endTransaction();
-                })
-                .doOnDispose(() -> {
-                    if (dao.getDatabase().inTransaction()) dao.getDatabase().endTransaction();
-                })
-                .flatMap((Function<Long, ObservableSource<Boolean>>) a -> Observable.create(e -> {
-                    if (!dao.getDatabase().inTransaction()) dao.getDatabase().beginTransaction();
+                .timer(second, TimeUnit.SECONDS, Schedulers.io())
+                .compose(bindToLifecycle())
+                .flatMap((Function<Long, ObservableSource<List<BurnAfterReadMessageLocalBean>>>) a -> Observable.create(e -> {
                     dao.detachAll();
                     List<BurnAfterReadMessageLocalBean> msgs = dao.queryBuilder()
                             .where(BurnAfterReadMessageLocalBeanDao.Properties.BurnTime.le(System.currentTimeMillis())).list();
 
                     if (msgs.size() == 0) {
-                        e.onNext(Boolean.FALSE);
+                        e.onNext(new ArrayList<>());
                         return;
                     }
-
-                    dao.deleteInTx(msgs);
 
                     int[] ids = new int[msgs.size()];
                     for (int i = 0; i < msgs.size(); i++) {
@@ -243,23 +233,20 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     RongIM.getInstance().deleteMessages(ids, new RongIMClient.ResultCallback<Boolean>() {
                         @Override
                         public void onSuccess(Boolean b) {
-                            e.onNext(b);
+                            e.onNext(msgs);
                         }
 
                         @Override
                         public void onError(RongIMClient.ErrorCode errorCode) {
-                            e.onNext(Boolean.FALSE);
+                            e.onNext(new ArrayList<>());
                             MobclickAgent.reportError(Utils.getApp(), "融云出错(阅后即焚HomeActIntervel):" + errorCode.getMessage() + errorCode.getValue());
                         }
                     });
                 }))
-                .subscribe(b -> {
-                    if (b && dao.getDatabase().inTransaction())
-                        dao.getDatabase().setTransactionSuccessful();
-
-                    if (dao.getDatabase().inTransaction())
-                        dao.getDatabase().endTransaction();
-
+                .subscribe(list -> {
+                    if (list.size() != 0) {
+                        dao.deleteInTx(list);
+                    }
                     startBurnMsgInterval(5);
                 });
     }

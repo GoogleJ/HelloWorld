@@ -51,8 +51,6 @@ public class ChatInformationActivity extends BaseActivity {
     private TextView tvBurnTime;
 
     private ConversationInfo conversationInfo;
-    private boolean changeBurn = false;
-    private boolean changeScreenCapture = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,7 +114,6 @@ public class ChatInformationActivity extends BaseActivity {
                                 userInfo.getUserId(), Message.SentStatus.SENT, message, new RongIMClient.ResultCallback<Message>() {
                                     @Override
                                     public void onSuccess(Message message) {
-                                        changeScreenCapture = !changeScreenCapture;
                                         e.onComplete();
                                         if (!switch3.isChecked()) {
                                             ToastUtils.showShort(R.string.close_capturescreen_success);
@@ -240,7 +237,6 @@ public class ChatInformationActivity extends BaseActivity {
                                     userInfo.getUserId(), Message.SentStatus.SENT, message, new RongIMClient.ResultCallback<Message>() {
                                         @Override
                                         public void onSuccess(Message message) {
-                                            changeBurn = !changeBurn;
                                             tvBurnTime.setText(str);
                                             if (str.equals("关闭")) {
                                                 ToastUtils.showShort(R.string.close_burn_success);
@@ -277,9 +273,6 @@ public class ChatInformationActivity extends BaseActivity {
     public void finish() {
         Intent intent = new Intent();
         intent.putExtra("title", tv_name.getText().toString());
-
-        intent.putExtra("changeBurn", changeBurn);
-        intent.putExtra("changeScreenCapture", changeScreenCapture);
         intent.putExtra("burn", conversationInfo.getMessageBurnTime());
         intent.putExtra("screenCapture", conversationInfo.getCaptureScreenEnabled());
         setResult(1000, intent);

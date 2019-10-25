@@ -1034,12 +1034,8 @@ public class ConversationActivity extends BaseActivity {
             }
         } else if (requestCode == 2000 && resultCode == 1000) {
             tvTitle.setText(data.getStringExtra("title"));
-            boolean changeBurn = data.getBooleanExtra("changeBurn", false);
-            boolean changeScreenCapture = data.getBooleanExtra("changeScreenCapture", false);
-            if (changeBurn)
-                conversationInfo.setMessageBurnTime(data.getIntExtra("burn", conversationInfo.getMessageBurnTime()));
-            if (changeScreenCapture)
-                conversationInfo.setCaptureScreenEnabled(data.getIntExtra("screenCapture", conversationInfo.getCaptureScreenEnabled()));
+            conversationInfo.setMessageBurnTime(data.getIntExtra("burn", conversationInfo.getMessageBurnTime()));
+            conversationInfo.setCaptureScreenEnabled(data.getIntExtra("screenCapture", conversationInfo.getCaptureScreenEnabled()));
         }
     }
 
