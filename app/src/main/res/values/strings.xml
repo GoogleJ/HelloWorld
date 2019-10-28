@@ -887,4 +887,6 @@
     <string name="backup_later">稍后备份</string>
     <string name="force_recall">强制撤回</string>
     <string name="tradeOrders">交易记录</string>
+    <string name="balanceleft1">余额钱包</string>
+    <string name="balance2cny">总资产折合</string>
 </resources>

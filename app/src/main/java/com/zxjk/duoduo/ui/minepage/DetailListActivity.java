@@ -97,10 +97,10 @@ public class DetailListActivity extends BaseActivity {
 
         adapter.setLoadMoreView(new NewsLoadMoreView());
         adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(this::initData, recycler);
+        adapter.setOnLoadMoreListener(() -> initData(false), recycler);
         swipeRefresh.setOnRefreshListener(() -> {
             page = 0;
-            initData();
+            initData(true);
         });
         swipeRefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorTheme));
 
@@ -113,18 +113,22 @@ public class DetailListActivity extends BaseActivity {
 
         recycler.setAdapter(adapter);
 
-        initData();
+        initData(true);
     }
 
     @SuppressLint("CheckResult")
-    private void initData() {
+    private void initData(boolean isRefresh) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getSerial(pageSizeStr, String.valueOf(page))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver())
-                .doOnSubscribe(disposable -> swipeRefresh.setRefreshing(true))
-                .doOnTerminate(() -> swipeRefresh.setRefreshing(false))
+                .doOnSubscribe(disposable -> {
+                    if (isRefresh) swipeRefresh.setRefreshing(true);
+                })
+                .doOnTerminate(() -> {
+                    if (isRefresh) swipeRefresh.setRefreshing(false);
+                })
                 .subscribe(list -> {
                     page += 1;
                     if (firstInitData) {

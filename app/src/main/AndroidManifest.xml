@@ -55,7 +55,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.minepage.wallet.AddBlockShowItemActivity"></activity>
+        <activity
+            android:name=".ui.minepage.wallet.AddBlockShowItemActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.minepage.wallet.BlockWalletPaymentQRActivity"
             android:launchMode="singleTop"

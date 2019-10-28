@@ -13,6 +13,7 @@ import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceHkResponse;
+import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
 import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
@@ -628,5 +629,8 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<List<GetSerialBean>>> getSerial(@Field("pageSizeStr") String pageSizeStr,
                                                             @Field("pageNoStr") String pageNoStr);
+
+    @POST("duoduo/walletBalance/getBalanceInfo")
+    Observable<BaseResponse<GetBalanceInfoResponse>> getBalanceInfo();
 
 }

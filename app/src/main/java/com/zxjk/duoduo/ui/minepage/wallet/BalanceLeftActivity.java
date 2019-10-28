@@ -3,118 +3,123 @@ package com.zxjk.duoduo.ui.minepage.wallet;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
-import com.shehuan.nicedialog.BaseNiceDialog;
-import com.shehuan.nicedialog.NiceDialog;
-import com.shehuan.nicedialog.ViewConvertListener;
-import com.shehuan.nicedialog.ViewHolder;
-import com.zxjk.duoduo.Constant;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.DetailListActivity;
-import com.zxjk.duoduo.ui.minepage.PaySettingActivity;
-import com.zxjk.duoduo.ui.minepage.VerifiedActivity;
-import com.zxjk.duoduo.ui.msgpage.AuthenticationActivity;
+import com.zxjk.duoduo.ui.walletpage.HuaZhuanActivity;
+import com.zxjk.duoduo.ui.walletpage.RecipetQRActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.MMKVUtils;
 
 @SuppressLint("CheckResult")
 public class BalanceLeftActivity extends BaseActivity {
 
-    private TextView tv_authentication; //是否认证tv
-    private TextView tv_balance; //余额
-    private String otherIdCardType = "";
+    private TextView tvBalance;
+    private TextView tvBalance2CNY;
+    private ImageView ivShowOrHide;
+    private RecyclerView recycler;
+    private BaseQuickAdapter<GetBalanceInfoResponse.BalanceListBean, BaseViewHolder> adapter;
+    private boolean isShow;
+
+    private String hideStr1 = "***********";
+    private String hideStr2 = "********";
+
+    private GetBalanceInfoResponse response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTrasnferStatusBar(true);
         setContentView(R.layout.activity_balance_left);
 
-        TextView tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(getString(R.string.balance));
-        tv_balance = findViewById(R.id.tv_balance);
-        tv_authentication = findViewById(R.id.tv_authentication);
+        tvBalance = findViewById(R.id.tvBalance);
+        tvBalance2CNY = findViewById(R.id.tvBalance2CNY);
+        ivShowOrHide = findViewById(R.id.ivShowOrHide);
+        recycler = findViewById(R.id.recycler);
 
-        //返回
-        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-        //账单明细
-        findViewById(R.id.rl_billingDetails).setOnClickListener(v ->
-                startActivity(new Intent(BalanceLeftActivity.this, DetailListActivity.class)));
-        //支付设置
-        findViewById(R.id.rl_PaymentSettings).setOnClickListener(v ->
-                startActivity(new Intent(BalanceLeftActivity.this, PaySettingActivity.class)));
-        //实名认证
-        findViewById(R.id.rl_realNameAuthentication).setOnClickListener(v -> {
-            if (Constant.currentUser.getIsAuthentication().equals("2")) {
-                ToastUtils.showShort(R.string.verifying_pleasewait);
-            } else if (Constant.currentUser.getIsAuthentication().equals("0")) {
-                ToastUtils.showShort(R.string.authen_true);
-            } else {
-                NiceDialog.init().setLayoutId(R.layout.layout_general_dialog11).setConvertListener(new ViewConvertListener() {
-                    @Override
-                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        otherIdCardType = "";
-                        ImageView iv_idCard = holder.getView(R.id.iv_idCard);
-                        ImageView iv_passport = holder.getView(R.id.iv_passport);
-                        ImageView iv_other = holder.getView(R.id.iv_other);
-                        holder.setOnClickListener(R.id.ll_idCard, v1 -> {
-                            iv_idCard.setImageResource(R.drawable.ic_radio_select);
-                            iv_passport.setImageResource(R.drawable.ic_radio_unselect);
-                            iv_other.setImageResource(R.drawable.ic_radio_unselect);
-                            otherIdCardType = "1";
+        adapter = new BaseQuickAdapter<GetBalanceInfoResponse.BalanceListBean, BaseViewHolder>(R.layout.item_balancelist) {
+            @Override
+            protected void convert(BaseViewHolder helper, GetBalanceInfoResponse.BalanceListBean item) {
+                ImageView ivIcon = helper.getView(R.id.ivIcon);
+                GlideUtil.loadNormalImg(ivIcon, item.getLogo());
 
-                        });
-                        holder.setOnClickListener(R.id.ll_passport, v12 -> {
-                            iv_idCard.setImageResource(R.drawable.ic_radio_unselect);
-                            iv_passport.setImageResource(R.drawable.ic_radio_select);
-                            iv_other.setImageResource(R.drawable.ic_radio_unselect);
-                            otherIdCardType = "2";
-                        });
-                        holder.setOnClickListener(R.id.ll_other, v13 -> {
-                            iv_idCard.setImageResource(R.drawable.ic_radio_unselect);
-                            iv_passport.setImageResource(R.drawable.ic_radio_unselect);
-                            iv_other.setImageResource(R.drawable.ic_radio_select);
-                            otherIdCardType = "3";
-                        });
-                        holder.setOnClickListener(R.id.tv_confirm, v14 -> {
-                            if (!TextUtils.isEmpty(otherIdCardType)) {
-                                dialog.dismiss();
-                                if (otherIdCardType.equals("1")) {
-                                    Intent intent = new Intent(BalanceLeftActivity.this, AuthenticationActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Intent intent = new Intent(BalanceLeftActivity.this, VerifiedActivity.class);
-                                    intent.putExtra("otherIdCardType", otherIdCardType);
-                                    startActivity(intent);
-                                }
-                            } else {
-                                ToastUtils.showShort("请选择证件类型");
-                            }
-                        });
-
-                    }
-                }).setDimAmount(0.5f).setOutCancel(true).show(getSupportFragmentManager());
+                helper.setText(R.id.tvCoin, item.getCurrencyName())
+                        .setText(R.id.tvMoney1, isShow ? item.getBalance() : hideStr2)
+                        .setText(R.id.tvMoney2, isShow ? ("≈" + item.getBalance() + "CNY") : hideStr2);
             }
-        });
+        };
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setAdapter(adapter);
+        isShow = !MMKVUtils.getInstance().decodeBool("bahaviour2_showWalletBalance");
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getBalanceHk("")
+                .getBalanceInfo()
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(b -> tv_balance.setText(b.getBalanceMot()), this::handleApiError);
+                .subscribe(response -> {
+                    this.response = response;
+                    tvBalance.setText(response.getTotalToBtc());
+                    tvBalance2CNY.setText("≈" + response.getTotalToCny() + "CNY");
+                    adapter.setNewData(response.getBalanceList());
+                    showOrHide(null);
+                }, throwable -> {
+                    handleApiError(throwable);
+                    finish();
+                });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        tv_authentication.setText(CommonUtils.getAuthenticate(Constant.currentUser.getIsAuthentication()));
+    public void showOrHide(View view) {
+        isShow = !isShow;
+        MMKVUtils.getInstance().enCode("bahaviour2_showWalletBalance", isShow);
+        if (isShow) {
+            ivShowOrHide.setImageResource(R.drawable.ic_blockwallet_hide);
+
+            SpannableString string = new SpannableString(response.getTotalToBtc() + " BTC");
+            string.setSpan(new RelativeSizeSpan(0.56f), string.length() - 3, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            tvBalance.setText(string);
+            tvBalance2CNY.setText("≈" + response.getTotalToCny() + "CNY");
+            adapter.notifyDataSetChanged();
+        } else {
+            ivShowOrHide.setImageResource(R.drawable.ic_blockwallet_show);
+            tvBalance.setText(hideStr1);
+            tvBalance2CNY.setText(hideStr2);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void back(View view) {
+        finish();
+    }
+
+    public void orderList(View view) {
+        startActivity(new Intent(this, DetailListActivity.class));
+    }
+
+    public void huazhuan(View view) {
+        startActivity(new Intent(this, HuaZhuanActivity.class));
+    }
+
+    public void shoukuan(View view) {
+        startActivity(new Intent(this, RecipetQRActivity.class));
     }
 
 }
