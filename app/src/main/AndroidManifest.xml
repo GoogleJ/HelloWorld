@@ -55,6 +55,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.minepage.wallet.ChooseCoinActivity"></activity>
         <activity
             android:name=".ui.minepage.wallet.AddBlockShowItemActivity"
             android:launchMode="singleTop"

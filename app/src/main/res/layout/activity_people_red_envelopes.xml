@@ -90,7 +90,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="11dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/m_red_envelopes_unit_label"
         android:textColor="@color/m_people_red_envelopes_title_bar"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@+id/m_people_red_envelopes_money_text"

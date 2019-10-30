@@ -114,6 +114,15 @@ public class GetGroupRedPackageInfoResponse {
         private String createTime;
         private int customerId;
         private String headPortrait;
+        private String symbol;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
         public String getNick() {
             return nick;

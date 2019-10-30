@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
@@ -115,7 +116,8 @@ public class BalanceLeftActivity extends BaseActivity {
     }
 
     public void huazhuan(View view) {
-        startActivity(new Intent(this, HuaZhuanActivity.class));
+        ToastUtils.showShort(R.string.developing);
+//        startActivity(new Intent(this, HuaZhuanActivity.class));
     }
 
     public void shoukuan(View view) {

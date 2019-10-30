@@ -889,4 +889,9 @@
     <string name="tradeOrders">交易记录</string>
     <string name="balanceleft1">余额钱包</string>
     <string name="balance2cny">总资产折合</string>
+    <string name="unChoose">暂未选择</string>
+    <string name="bless">祝福</string>
+    <string name="red_packet_tips">未领取的红包超过24小时退回</string>
+    <string name="select_cointype">请选择币种</string>
+    <string name="count1">个数</string>
 </resources>

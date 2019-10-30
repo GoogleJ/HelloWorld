@@ -119,7 +119,7 @@ public class DetailListActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void initData(boolean isRefresh) {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getSerial(pageSizeStr, String.valueOf(page))
+                .getSerial(pageSizeStr, String.valueOf(page), "android")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver())

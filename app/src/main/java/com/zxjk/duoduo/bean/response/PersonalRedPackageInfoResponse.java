@@ -110,6 +110,15 @@ public class PersonalRedPackageInfoResponse {
         private String money;
         private String message;
         private String status;
+        private String symbol;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
         public String getIsOverdue() {
             return isOverdue;

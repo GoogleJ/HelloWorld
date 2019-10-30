@@ -9,20 +9,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.RedPackageAdapter;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+
 import java.util.ArrayList;
 
 public class PeopleUnaccalimedActivity extends BaseActivity {
@@ -101,11 +101,7 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                     }
                                     int number = response.getRedPackageInfo().getNumber();
                                     tips.setText(number + "个红包，共" + response.getRedPackageInfo().getMoney() + "MoT");
-                                    if (isGame.equals("0")) {
-
-                                    } else {
-                                        adapter.setData(response.getCustomerInfo());
-                                    }
+                                    adapter.setData(response.getCustomerInfo());
                                 }, this::handleApiError);
                     } else {
                         //个人红包
@@ -116,13 +112,13 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                 .subscribe(response -> {
                                     String money = response.getRedPachageInfo().getMoney();
-                                    tv_redEnvelope.setText(money + " MoT");
+                                    tv_redEnvelope.setText(money + " " + response.getRedPachageInfo().getSymbol());
                                     if (response.getRedPachageInfo().getStatus().equals("0")) {
                                         //未领取
-                                        tips.setText("红包金额" + money + "MoT,等待对方领取");
+                                        tips.setText("红包金额" + money + response.getRedPachageInfo().getSymbol() + ",等待对方领取");
                                     } else {
                                         //已领取
-                                        tips.setText("红包金额" + money + "MoT,已被领取");
+                                        tips.setText("红包金额" + money + response.getRedPachageInfo().getSymbol() + ",已被领取");
                                     }
                                     GetGroupRedPackageInfoResponse.CustomerInfoBean bean = new GetGroupRedPackageInfoResponse.CustomerInfoBean();
                                     if (response.getRedPachageInfo().getStatus().equals("1")) {
@@ -130,6 +126,7 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                         bean.setNick(response.getReceiveInfo().getUsernick());
                                         bean.setMoney(response.getRedPachageInfo().getMoney());
                                         bean.setCreateTime(response.getReceiveInfo().getTime());
+                                        bean.setSymbol(response.getRedPachageInfo().getSymbol());
                                         ArrayList<GetGroupRedPackageInfoResponse.CustomerInfoBean> objects = new ArrayList<>(1);
                                         objects.add(bean);
                                         adapter.setData(objects);

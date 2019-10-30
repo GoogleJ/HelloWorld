@@ -946,6 +946,7 @@ public class ConversationActivity extends BaseActivity {
 
                                                         Intent intent2 = new Intent(ConversationActivity.this, PeopleRedEnvelopesActivity.class);
                                                         intent2.putExtra("msg", message);
+                                                        intent2.putExtra("symbol", s1.getSymbol());
                                                         startActivity(intent2);
                                                     }, ConversationActivity.this::handleApiError));
 

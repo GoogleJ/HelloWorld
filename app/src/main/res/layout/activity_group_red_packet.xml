@@ -3,238 +3,256 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EDEDEE"
+    android:background="#f5f5f5"
     android:orientation="vertical"
     tools:context=".ui.msgpage.GroupRedPacketActivity">
 
-    <include layout="@layout/layout_title_back" />
-
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#eeeeee" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_red_top"
+        android:paddingTop="24dp"
+        android:paddingBottom="128dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:onClick="back">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ico_back_white" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/red_packet"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:onClick="redList">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_exchange_list"
+                    android:tint="@color/white" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="-80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="56dp"
+        android:background="@drawable/shape_white_16"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:onClick="chooseCoin"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cointype"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/ivCoinIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+
+            <TextView
+                android:id="@+id/tvCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:text="@string/unChoose"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mine_rightarrow" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/money1"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/etMoney"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="end"
+                android:hint="@string/input_money"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLength="15"
+                android:textColor="#9EA0A4"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/count1"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/etCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="end"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:lines="1"
+                android:textColor="#9EA0A4"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ge"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bless"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/etBless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="end"
+                android:hint="@string/m_red_envelopes_label"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:textColor="#9EA0A4"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/m_red_envelopes_commit_btn"
+            style="@style/BtnStyle"
+            android:layout_marginBottom="16dp"
+            android:onClick="sendRed"
+            android:text="@string/m_red_envelopes_commit_btn" />
 
         <TextView
-            android:id="@+id/tvRed1"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginBottom="80dp"
             android:gravity="center"
-            android:onClick="shouqiRed"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:text="@string/pinshouqi"
-            android:textColor="@color/textcolor1" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/divider" />
-
-        <TextView
-            android:id="@+id/tvRed2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="normalRed"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:text="@string/red_packet1"
-            android:textColor="@color/textcolor3" />
+            android:text="@string/red_packet_tips"
+            android:textColor="#9EA0A4"
+            android:textSize="13sp" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-4dp">
-
-        <View
-            android:id="@+id/red1Line"
-            android:layout_width="0dp"
-            android:layout_height="3dp"
-            android:layout_marginStart="72dp"
-            android:layout_marginEnd="72dp"
-            android:layout_weight="1"
-            android:background="@color/colorTheme"
-            android:minWidth="56dp" />
-
-        <View
-            android:id="@+id/red2Line"
-            android:layout_width="0dp"
-            android:layout_height="3dp"
-            android:layout_marginStart="72dp"
-            android:layout_marginEnd="72dp"
-            android:layout_weight="1"
-            android:background="@color/colorTheme"
-            android:minWidth="56dp"
-            android:visibility="invisible" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/shape_bac_white_conor3"
-        android:gravity="center_vertical"
-        android:padding="12dp">
-
-        <TextView
-            android:id="@+id/tvGroupRedLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/singlemoney"
-            android:textColor="@color/themecolor"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/etGroupRed1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="end"
-            android:hint="0.00"
-            android:imeOptions="actionNext"
-            android:inputType="numberDecimal"
-            android:maxLength="8"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MoT"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvRedTips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/samemoney"
-        android:textColor="@color/textcolor3" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/shape_bac_white_conor3"
-        android:gravity="center_vertical"
-        android:padding="12dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/packagenum"
-            android:textColor="@color/themecolor"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/etGroupRed2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="end"
-            android:hint="@string/input_number"
-            android:imeOptions="actionNext"
-            android:inputType="number"
-            android:maxLength="8"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ge"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvGroupRedGroupnums"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:text="本群共22人"
-        android:textColor="@color/textcolor3" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/shape_bac_white_conor3"
-        android:gravity="center_vertical"
-        android:padding="12dp">
-
-        <EditText
-            android:id="@+id/etGroupRed3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="start"
-            android:hint="@string/m_red_envelopes_label"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
-
-        <TextView
-            android:id="@+id/tvGroupRedMoney"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="end"
-            android:lines="1"
-            android:text="0.00"
-            android:textColor="@color/themecolor"
-            android:textSize="28sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" MoT"
-            android:textColor="@color/textcolor2"
-            android:textSize="25sp" />
-
-    </LinearLayout>
-
-    <Button
-        style="@style/BtnStyle"
-        android:onClick="sendRed"
-        android:text="@string/send_group_red" />
 
 </LinearLayout>

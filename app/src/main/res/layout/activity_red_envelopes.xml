@@ -1,102 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:ignore="RtlCompat,MissingConstraints">
+    android:background="#f5f5f5"
+    android:orientation="vertical">
 
-    <include layout="@layout/layout_title_back" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="12dp"
-        android:background="@color/white"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:id="@+id/m_red_envelopes_single_amount_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-            android:text="@string/m_red_envelopes_single_amount_label"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/m_red_envelopes_money_edit"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:gravity="end|center_vertical"
-            android:hint="0.00"
-            android:imeOptions="actionNext"
-            android:inputType="numberDecimal"
-            android:maxLength="11"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/m_red_envelopes_unit_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="12dp"
-            android:text="@string/m_red_envelopes_unit_label"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/m_red_envelopes_label"
-        style="?attr/checkedTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:hint="@string/m_red_envelopes_label"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:textColor="@color/black" />
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center">
+        android:background="@drawable/bg_red_top"
+        android:paddingTop="24dp"
+        android:paddingBottom="128dp">
 
-        <TextView
-            android:id="@+id/m_red_envelopes_money_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:onClick="back">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ico_back_white" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/red_packet"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:onClick="redList">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_exchange_list"
+                    android:tint="@color/white" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="-80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="56dp"
+        android:background="@drawable/shape_white_16"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:maxLength="15"
-            android:text="@string/m_red_envelopes_money_text"
-            android:textColor="@color/black"
-            android:textSize="32sp" />
+            android:gravity="center_vertical"
+            android:onClick="chooseCoin"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cointype"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/ivCoinIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+
+            <TextView
+                android:id="@+id/tvCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:text="@string/unChoose"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mine_rightarrow" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/money1"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/etMoney"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="end"
+                android:hint="@string/input_money"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLength="15"
+                android:textColor="#9EA0A4"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bless"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/etBless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="end"
+                android:hint="@string/m_red_envelopes_label"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:textColor="#9EA0A4"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#eeeeee" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/m_red_envelopes_commit_btn"
+            style="@style/BtnStyle"
+            android:layout_marginBottom="16dp"
+            android:onClick="sendRed"
+            android:text="@string/m_red_envelopes_commit_btn" />
 
         <TextView
-            android:id="@+id/m_red_envelopes_unit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:paddingBottom="3.5dp"
-            android:text="@string/m_red_envelopes_unit_label"
-            android:textColor="@color/m_red_envelopes_unit_text"
-            android:textSize="19sp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp"
+            android:gravity="center"
+            android:text="@string/red_packet_tips"
+            android:textColor="#9EA0A4"
+            android:textSize="13sp" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/m_red_envelopes_commit_btn"
-        style="@style/BtnStyle"
-        android:text="@string/m_red_envelopes_commit_btn" />
 
 </LinearLayout>

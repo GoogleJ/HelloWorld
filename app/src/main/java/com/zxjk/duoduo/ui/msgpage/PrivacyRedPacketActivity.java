@@ -4,12 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -20,16 +19,25 @@ import com.google.gson.Gson;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.SendRedSingleRequest;
+import com.zxjk.duoduo.bean.response.GetPaymentListBean;
+import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.wallet.ChooseCoinActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
 import com.zxjk.duoduo.utils.MoneyValueFilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
@@ -38,112 +46,139 @@ import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 
 public class PrivacyRedPacketActivity extends BaseActivity {
-    TextView sendMessageBtn;
-    EditText m_red_envelopes_money_edit;
-    EditText m_red_envelopes_label;
-    TextView m_red_envelopes_money_text;
 
-    String money;
-    UserInfo userInfo;
+    private String money;
+    private UserInfo userInfo;
 
-    public PrivacyRedPacketActivity() {
-    }
+    private ImageView ivCoinIcon;
+    private TextView tvCoin;
+    private EditText etMoney;
+    private EditText etBless;
+
+    private GetPaymentListBean result;
+    private ArrayList<GetPaymentListBean> list = new ArrayList<>();
 
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_envelopes);
+        setTrasnferStatusBar(true);
 
-        TextView tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(getString(R.string.send_red));
-        TextView tv_end = findViewById(R.id.tv_end);
-        tv_end.setVisibility(View.VISIBLE);
-        tv_end.setText(getString(R.string.m_red_envelopes_title_right_text));
-        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-        tv_end.setOnClickListener(v ->
-                startActivity(new Intent(PrivacyRedPacketActivity.this, RedPackageListActivity.class)));
-
-        m_red_envelopes_money_edit = findViewById(R.id.m_red_envelopes_money_edit);
-        m_red_envelopes_label = findViewById(R.id.m_red_envelopes_label);
-        m_red_envelopes_money_text = findViewById(R.id.m_red_envelopes_money_text);
-        sendMessageBtn = findViewById(R.id.m_red_envelopes_commit_btn);
+        Api api = ServiceFactory.getInstance().getBaseService(Api.class);
 
         userInfo = getIntent().getParcelableExtra("user");
         if (null == userInfo) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getCustomerInfoById(getIntent().getStringExtra("userId"))
+            api.getCustomerInfoById(getIntent().getStringExtra("userId"))
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .flatMap((Function<LoginResponse, Observable<List<GetPaymentListBean>>>) r -> {
+                        userInfo = new UserInfo(r.getId(), r.getNick(), Uri.parse(r.getHeadPortrait()));
+                        return api.getPaymentList().compose(RxSchedulers.normalTrans());
+                    })
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(list::addAll, t -> {
+                        finish();
+                        handleApiError(t);
+                    });
+        } else {
+            api.getPaymentList()
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(loginResponse -> userInfo = new UserInfo(loginResponse.getId(), loginResponse.getNick(), Uri.parse(loginResponse.getHeadPortrait())), this::handleApiError);
+                    .subscribe(list::addAll, t -> {
+                        handleApiError(t);
+                        finish();
+                    });
         }
 
-        sendMessageBtn.setOnClickListener(v -> {
-            money = m_red_envelopes_money_edit.getText().toString().trim();
-            if (((TextUtils.isEmpty(money) || Double.parseDouble(money) == 0))) {
-                ToastUtils.showShort(R.string.input_redmoney);
-                return;
+        ivCoinIcon = findViewById(R.id.ivCoinIcon);
+        tvCoin = findViewById(R.id.tvCoin);
+        etMoney = findViewById(R.id.etMoney);
+        etBless = findViewById(R.id.etBless);
+
+        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter()});
+    }
+
+    @SuppressLint("CheckResult")
+    public void sendRed(View view) {
+        money = etMoney.getText().toString().trim();
+        if (result == null) {
+            ToastUtils.showShort(R.string.select_cointype);
+            return;
+        }
+        if (((TextUtils.isEmpty(money) || Double.parseDouble(money) == 0))) {
+            ToastUtils.showShort(R.string.input_redmoney);
+            return;
+        }
+
+        KeyboardUtils.hideSoftInput(this);
+        new NewPayBoard(this).show(psw -> {
+            SendRedSingleRequest redSingleRequest = new SendRedSingleRequest();
+            String msgRemark;
+            if (TextUtils.isEmpty(etBless.getText().toString().trim())) {
+                msgRemark = getString(R.string.m_red_envelopes_label);
+            } else {
+                msgRemark = etBless.getText().toString().trim();
             }
+            redSingleRequest.setMessage(msgRemark);
+            redSingleRequest.setMoney(Double.parseDouble(money));
+            redSingleRequest.setReceiveCustomerId(userInfo.getUserId());
+            redSingleRequest.setPayPwd(MD5Utils.getMD5(psw));
+            redSingleRequest.setSymbol(result.getSymbol());
 
-            KeyboardUtils.hideSoftInput(this);
-            new NewPayBoard(this).show(psw -> {
-                SendRedSingleRequest redSingleRequest = new SendRedSingleRequest();
-                String msgRemark;
-                if (TextUtils.isEmpty(m_red_envelopes_label.getText().toString().trim())) {
-                    msgRemark = getString(R.string.m_red_envelopes_label);
-                } else {
-                    msgRemark = m_red_envelopes_label.getText().toString().trim();
-                }
-                redSingleRequest.setMessage(msgRemark);
-                redSingleRequest.setMoney(Double.parseDouble(money));
-                redSingleRequest.setReceiveCustomerId(userInfo.getUserId());
-                redSingleRequest.setPayPwd(MD5Utils.getMD5(psw));
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .sendSingleRedPackage(new Gson().toJson(redSingleRequest))
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(PrivacyRedPacketActivity.this)))
+                    .compose(RxSchedulers.normalTrans())
+                    .subscribe(redPackageResponse -> {
+                        RedPacketMessage message = new RedPacketMessage();
+                        message.setFromCustomer(Constant.currentUser.getId());
+                        message.setRemark(msgRemark);
+                        message.setRedId(redPackageResponse.getId());
+                        message.setIsGame("1");
+                        Message message1 = Message.obtain(userInfo.getUserId(), Conversation.ConversationType.PRIVATE, message);
+                        RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
+                            @Override
+                            public void onAttached(Message message) {
+                            }
 
-                ServiceFactory.getInstance().getBaseService(Api.class)
-                        .sendSingleRedPackage(new Gson().toJson(redSingleRequest))
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(PrivacyRedPacketActivity.this)))
-                        .compose(RxSchedulers.normalTrans())
-                        .subscribe(redPackageResponse -> {
-                            RedPacketMessage message = new RedPacketMessage();
-                            message.setFromCustomer(Constant.currentUser.getId());
-                            message.setRemark(msgRemark);
-                            message.setRedId(redPackageResponse.getId());
-                            message.setIsGame("1");
-                            Message message1 = Message.obtain(userInfo.getUserId(), Conversation.ConversationType.PRIVATE, message);
-                            RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
-                                @Override
-                                public void onAttached(Message message) {
-                                }
+                            @Override
+                            public void onSuccess(Message message) {
+                                finish();
+                            }
 
-                                @Override
-                                public void onSuccess(Message message) {
-                                    finish();
-                                }
-
-                                @Override
-                                public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                                }
-                            });
-                        }, this::handleApiError);
-            });
+                            @Override
+                            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                            }
+                        });
+                    }, this::handleApiError);
         });
+    }
 
-        m_red_envelopes_money_edit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+    public void chooseCoin(View view) {
+        Intent intent = new Intent(this, ChooseCoinActivity.class);
+        intent.putExtra("data", list);
+        startActivityForResult(intent, 1);
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+    public void back(View view) {
+        finish();
+    }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                m_red_envelopes_money_text.setText(s);
-            }
-        });
-        m_red_envelopes_money_edit.setFilters(new InputFilter[]{new MoneyValueFilter()});
+    public void redList(View view) {
+        startActivity(new Intent(this, RedPackageListActivity.class));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) return;
+        if (requestCode == 1 && resultCode == 1) {
+            result = data.getParcelableExtra("result");
+            GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+            tvCoin.setText(result.getSymbol());
+        }
     }
 }

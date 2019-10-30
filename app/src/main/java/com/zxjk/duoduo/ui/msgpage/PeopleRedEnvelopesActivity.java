@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
@@ -29,6 +28,7 @@ public class PeopleRedEnvelopesActivity extends BaseActivity {
     TextView m_people_red_envelopes_user_name_text;
     TextView m_people_red_envelopes_money_text;
     TextView m_people_red_envelopes_signature_text;
+    TextView m_people_red_envelopes_unit_text;
 
     @SuppressLint("CheckResult")
     @Override
@@ -42,9 +42,12 @@ public class PeopleRedEnvelopesActivity extends BaseActivity {
         m_people_red_envelopes_header = findViewById(R.id.m_people_red_envelopes_header);
         m_people_red_envelopes_user_name_text = findViewById(R.id.m_people_red_envelopes_user_name_text);
         m_people_red_envelopes_money_text = findViewById(R.id.m_people_red_envelopes_money_text);
+        m_people_red_envelopes_unit_text = findViewById(R.id.m_people_red_envelopes_unit_text);
         titleLeftImage.setOnClickListener(v -> finish());
 
         Message message = getIntent().getParcelableExtra("msg");
+        String symbol = getIntent().getStringExtra("symbol");
+        m_people_red_envelopes_unit_text.setText(symbol);
         RedPacketMessage redPacketMessage = (RedPacketMessage) message.getContent();
         UserInfo sender = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
         m_people_red_envelopes_user_name_text.setText(sender.getName() + "的红包");

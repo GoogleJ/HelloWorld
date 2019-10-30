@@ -22,6 +22,7 @@ import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
+import com.zxjk.duoduo.bean.response.GetPaymentListBean;
 import com.zxjk.duoduo.bean.response.GetPublicGroupResponse;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
@@ -48,7 +49,6 @@ import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
 import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.SignHkbOrHkExchangeResponse;
-import com.zxjk.duoduo.bean.response.SignTransactionResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
 
@@ -628,9 +628,12 @@ public interface Api {
     @POST("duoduo/walletBalance/getSerial")
     @FormUrlEncoded
     Observable<BaseResponse<List<GetSerialBean>>> getSerial(@Field("pageSizeStr") String pageSizeStr,
-                                                            @Field("pageNoStr") String pageNoStr);
+                                                            @Field("pageNoStr") String pageNoStr, @Field("platform") String platform);
 
     @POST("duoduo/walletBalance/getBalanceInfo")
     Observable<BaseResponse<GetBalanceInfoResponse>> getBalanceInfo();
+
+    @POST("duoduo/walletBalance/getPaymentList")
+    Observable<BaseResponse<List<GetPaymentListBean>>> getPaymentList();
 
 }

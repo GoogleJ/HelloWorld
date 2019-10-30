@@ -44,6 +44,7 @@ public class RedPackageAdapter extends RecyclerView.Adapter<RedPackageAdapter.Vi
         private TextView tvNick;
         private TextView tvTime;
         private TextView tvMoney;
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,8 +58,8 @@ public class RedPackageAdapter extends RecyclerView.Adapter<RedPackageAdapter.Vi
         void bindData(GetGroupRedPackageInfoResponse.CustomerInfoBean bean) {
             GlideUtil.loadCircleImg(ivHead, bean.getHeadPortrait());
             tvNick.setText(bean.getNick());
-            tvTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(bean.getCreateTime())));
-            tvMoney.setText(bean.getMoney() + "MoT");
+            tvTime.setText(sd.format(Long.parseLong(bean.getCreateTime())));
+            tvMoney.setText(bean.getMoney() + bean.getSymbol());
         }
     }
 }
