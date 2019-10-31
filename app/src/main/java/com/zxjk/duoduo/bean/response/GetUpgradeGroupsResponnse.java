@@ -68,6 +68,15 @@ public class GetUpgradeGroupsResponnse {
         private String fee;
         private String isHot;
         private String isUpgrade;
+        private String symbol;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
         public String getGroupTag() {
             return groupTag;

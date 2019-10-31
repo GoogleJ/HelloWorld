@@ -53,7 +53,7 @@ public class UpdateGroupLimitActivity extends BaseActivity {
                 R.layout.item_updategrouplimit) {
             @Override
             protected void convert(BaseViewHolder helper, GetUpgradeGroupsResponnse.GroupLevelsInfoListBean item) {
-                helper.setText(R.id.tvtips, item.getFee() + "MoT永久升级")
+                helper.setText(R.id.tvtips, item.getFee() + item.getSymbol() + "永久升级")
                         .setText(R.id.tvNum, item.getLimitNumber())
                         .setText(R.id.btnUpdate, item.getIsUpgrade().equals("1") ? "已升级" : "升级");
                 helper.setBackgroundRes(R.id.btnUpdate, item.getIsUpgrade().equals("1") ? R.drawable.shape_unable
@@ -62,12 +62,6 @@ public class UpdateGroupLimitActivity extends BaseActivity {
                 ViewGroup.LayoutParams layoutParams = ll.getLayoutParams();
                 layoutParams.height = (int) itemHeight;
                 ll.setLayoutParams(layoutParams);
-
-//                if (item.getIsHot().equals("1")) {
-//                    ll.setBackgroundResource(R.drawable.bg_update_grouplimit_hot);
-//                } else {
-//                    ll.setBackgroundColor(ContextCompat.getColor(UpdateGroupLimitActivity.this, R.color.white));
-//                }
 
                 Button btnUpdate = helper.getView(R.id.btnUpdate);
                 if (!item.getIsUpgrade().equals("1")) {
