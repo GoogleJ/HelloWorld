@@ -706,7 +706,7 @@
     <string name="no_qunzu">暂无群组</string>
     <string name="quick_news">快讯</string>
     <string name="showAll">展开全部>></string>
-    <string name="less_min">单个红包金额不能小于0.01</string>
+    <string name="less_min">红包金额不能小于0.01</string>
     <string name="moToken">MoToken</string>
     <string name="rewardmot">奖励Mot</string>
     <string name="rewardTotal">累计奖励：</string>
@@ -892,6 +892,8 @@
     <string name="unChoose">暂未选择</string>
     <string name="bless">祝福</string>
     <string name="red_packet_tips">未领取的红包超过24小时退回</string>
+    <string name="trans_packet_tips">超过24小时未领取会退回到您的账户</string>
     <string name="select_cointype">请选择币种</string>
     <string name="count1">个数</string>
+    <string name="choose2input">选填</string>
 </resources>

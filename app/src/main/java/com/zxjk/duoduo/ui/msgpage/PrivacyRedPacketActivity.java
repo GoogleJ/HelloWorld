@@ -121,6 +121,10 @@ public class PrivacyRedPacketActivity extends BaseActivity {
             ToastUtils.showShort(R.string.input_redmoney);
             return;
         }
+        if (Double.parseDouble(money) < 0.01) {
+            ToastUtils.showShort(R.string.less_min);
+            return;
+        }
 
         KeyboardUtils.hideSoftInput(this);
         new NewPayBoard(this).show(psw -> {

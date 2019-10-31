@@ -31,6 +31,7 @@ public class TransferMessage extends MessageContent {
     private String name;
     private String extra;
     private String fromCustomer;
+    private String symbol;
 
     public TransferMessage() {
     }
@@ -46,6 +47,7 @@ public class TransferMessage extends MessageContent {
             jsonObj.put("name", getName());
             jsonObj.put("extra", getExtra());
             jsonObj.put("fromCustomer", getFromCustomerId());
+            jsonObj.put("symbol", getSymbol());
         } catch (JSONException e) {
             Log.e("JSONException", e.getMessage());
         }
@@ -99,6 +101,10 @@ public class TransferMessage extends MessageContent {
                 setFromCustomerId(jsonObj.optString("fromCustomer"));
             }
 
+            if (jsonObj.has("symbol")) {
+                setSymbol(jsonObj.optString("symbol"));
+            }
+
         } catch (JSONException e) {
             Log.d("JSONException", e.getMessage());
         }
@@ -118,6 +124,7 @@ public class TransferMessage extends MessageContent {
         ParcelUtils.writeToParcel(dest, name);
         ParcelUtils.writeToParcel(dest, extra);
         ParcelUtils.writeToParcel(dest, fromCustomer);
+        ParcelUtils.writeToParcel(dest, symbol);
     }
 
     //给消息赋值。
@@ -130,6 +137,7 @@ public class TransferMessage extends MessageContent {
         setName(ParcelUtils.readFromParcel(in));
         setExtra(ParcelUtils.readFromParcel(in));
         setFromCustomerId(ParcelUtils.readFromParcel(in));
+        setSymbol(ParcelUtils.readFromParcel(in));
     }
 
     /**
@@ -204,4 +212,11 @@ public class TransferMessage extends MessageContent {
         this.fromCustomer = fromCustomerId;
     }
 
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
 }

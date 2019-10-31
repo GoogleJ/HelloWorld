@@ -25,7 +25,7 @@ public class TransferSuccessActivity extends BaseActivity {
         TextView tvTransferSuccessFriend = findViewById(R.id.tvTransferSuccessFriend);
         TextView tvTransferSuccessMoney = findViewById(R.id.tvTransferSuccessMoney);
         tvTransferSuccessFriend.setText("待好友" + getIntent().getStringExtra("name") + "确认收款");
-        tvTransferSuccessMoney.setText(getIntent().getStringExtra("betMoney") + "MoT");
+        tvTransferSuccessMoney.setText(getIntent().getStringExtra("betMoney") + getIntent().getStringExtra("symbol"));
     }
 
     public void submit(View view) {

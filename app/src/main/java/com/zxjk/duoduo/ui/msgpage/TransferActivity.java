@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,26 +14,28 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BaseResponse;
-import com.zxjk.duoduo.bean.response.TransferResponse;
+import com.zxjk.duoduo.bean.response.GetPaymentListBean;
+import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.wallet.ChooseCoinActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
-import com.zxjk.duoduo.utils.MoneyValueFilter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import io.reactivex.ObservableSource;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
@@ -44,136 +46,192 @@ import io.rong.imlib.model.UserInfo;
 
 public class TransferActivity extends BaseActivity {
 
-    TextView commitBtn;
-    TextView m_transfer_nick_name;
-    EditText etTransferInfo;
-    EditText m_transfer_money_text;
-    ImageView m_transfer_heard_icon;
+    private GetPaymentListBean result;
+    private ArrayList<GetPaymentListBean> list = new ArrayList<>();
+    private UserInfo targetUser;
+//    private boolean fromScan;
 
-    UserInfo targetUser;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
+    private CircleImageView ivHead;
+    private TextView tvName;
+    private ImageView ivCoinIcon;
+    private TextView tvCoin;
+    private EditText etMoney;
+    private EditText etNote;
 
-    @SuppressLint({"CheckResult", "SetTextI18n"})
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer);
-        ButterKnife.bind(this);
-        tvTitle.setText(getString(R.string.m_transfer_title_bar));
-        etTransferInfo = findViewById(R.id.etTransferInfo);
-        m_transfer_money_text = findViewById(R.id.m_transfer_money_text);
-        m_transfer_heard_icon = findViewById(R.id.m_transfer_heard_icon);
-        m_transfer_nick_name = findViewById(R.id.m_transfer_nick_name);
-        commitBtn = findViewById(R.id.m_transfer_commit_btn);
+        setTrasnferStatusBar(true);
 
-        m_transfer_money_text.setFilters(new InputFilter[]{new MoneyValueFilter()});
+        ivHead = findViewById(R.id.ivHead);
+        tvName = findViewById(R.id.tvName);
+        ivCoinIcon = findViewById(R.id.ivCoinIcon);
+        tvCoin = findViewById(R.id.tvCoin);
+        etMoney = findViewById(R.id.etMoney);
+        etNote = findViewById(R.id.etNote);
 
-        boolean fromScan = getIntent().getBooleanExtra("fromScan", false);
-        if (fromScan) {
-            if (TextUtils.isEmpty(getIntent().getStringExtra("betMoney"))) {
-                m_transfer_money_text.setHint("0.00");
-                m_transfer_money_text.setEnabled(true);
-                m_transfer_money_text.setSelection(m_transfer_money_text.getText().length());
-            } else {
-                m_transfer_money_text.setText(getIntent().getStringExtra("betMoney"));
-                m_transfer_money_text.setEnabled(false);
-            }
-        }
-        commitBtn.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(m_transfer_money_text.getText().toString().trim())) {
-                ToastUtils.showShort(R.string.inputzhuanzhangmoney);
-                return;
-            }
-            if (Double.valueOf(m_transfer_money_text.getText().toString().trim()) == 0) {
-                ToastUtils.showShort(R.string.inputzhuanzhangmoney1);
-                return;
-            }
-            KeyboardUtils.hideSoftInput(this);
-            new NewPayBoard(this).show(psw -> {
-                String zhuanzhangInfo = etTransferInfo.getText().toString().trim();
-                String remarks = TextUtils.isEmpty(zhuanzhangInfo) ? ("转账给" + targetUser.getName()) : zhuanzhangInfo;
-                String payPsd = MD5Utils.getMD5(psw);
-                String hk = m_transfer_money_text.getText().toString().trim();
-                String toId = targetUser.getUserId();
-
-                if (fromScan) {
-                    String money = getIntent().getStringExtra("betMoney");
-                    if (TextUtils.isEmpty(money)) {
-                        money = hk;
-                    }
-                    ServiceFactory.getInstance().getBaseService(Api.class)
-                            .transfer(getIntent().getStringExtra("userId"), money
-                                    , MD5Utils.getMD5(psw), remarks)
-                            .compose(bindToLifecycle())
-                            .flatMap((Function<BaseResponse<TransferResponse>, ObservableSource<BaseResponse<TransferResponse>>>) response -> ServiceFactory.getInstance().getBaseService(Api.class)
-                                    .collect(response.data.getId()))
-                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(TransferActivity.this)))
-                            .compose(RxSchedulers.normalTrans())
-                            .subscribe(response -> {
-                                ToastUtils.showShort(R.string.zhuanchusuccess);
-                                Intent intent = new Intent(this, HomeActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            }, this::handleApiError);
-                    return;
-                }
-
-                ServiceFactory.getInstance().getBaseService(Api.class)
-                        .transfer(toId, hk, payPsd, remarks)
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(TransferActivity.this)))
-                        .compose(RxSchedulers.normalTrans())
-                        .subscribe(s -> {
-                            TransferMessage message = new TransferMessage();
-                            message.setRemark(remarks);
-                            message.setMoney(hk);
-                            message.setTransferId(s.getId());
-                            message.setName(targetUser.getName());
-                            message.setFromCustomerId(Constant.userId);
-                            Message message1 = Message.obtain(targetUser.getUserId(), Conversation.ConversationType.PRIVATE, message);
-                            RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
-                                @Override
-                                public void onAttached(Message message) {
-                                }
-
-                                @Override
-                                public void onSuccess(Message message) {
-                                    Intent intent = new Intent(TransferActivity.this, TransferSuccessActivity.class);
-                                    intent.putExtra("betMoney", hk);
-                                    intent.putExtra("name", targetUser.getName());
-                                    startActivity(intent);
-                                    finish();
-                                }
-
-                                @Override
-                                public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                                }
-                            });
-                        }, this::handleApiError);
-            });
-        });
+//        fromScan = getIntent().getBooleanExtra("fromScan", false);
+//        if (fromScan) {
+//            if (TextUtils.isEmpty(getIntent().getStringExtra("betMoney"))) {
+//                etMoney.setHint("0.00");
+//                etMoney.setEnabled(true);
+//                etMoney.setSelection(m_transfer_money_text.getText().length());
+//            } else {
+//                etMoney.setText(getIntent().getStringExtra("betMoney"));
+//                etMoney.setEnabled(false);
+//            }
+//        }
 
         targetUser = getIntent().getParcelableExtra("user");
+        Api api = ServiceFactory.getInstance().getBaseService(Api.class);
         if (null == targetUser) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getCustomerInfoById(getIntent().getStringExtra("userId"))
+            api.getCustomerInfoById(getIntent().getStringExtra("userId"))
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .compose(RxSchedulers.normalTrans())
-                    .subscribe(response -> {
-                        targetUser = new UserInfo(response.getId(), response.getNick(), Uri.parse(response.getHeadPortrait()));
-                        GlideUtil.loadCircleImg(m_transfer_heard_icon, response.getHeadPortrait());
-                        m_transfer_nick_name.setText(response.getNick());
-                    }, this::handleApiError);
+                    .flatMap((Function<LoginResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) userInfo -> {
+                        runOnUiThread(() -> {
+                            targetUser = new UserInfo(userInfo.getId(), userInfo.getNick(), Uri.parse(userInfo.getHeadPortrait()));
+                            Glide.with(TransferActivity.this).load(targetUser.getPortraitUri().toString()).into(ivHead);
+                            tvName.setText("转账给" + targetUser.getName());
+                        });
+                        return api.getPaymentList();
+                    })
+                    .compose(RxSchedulers.normalTrans())
+                    .subscribe(l -> {
+                        list.addAll(l);
+                        result = list.get(0);
+                        GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+                        tvCoin.setText(result.getSymbol());
+                    }, t -> {
+                        handleApiError(t);
+                        finish();
+                    });
         } else {
-            GlideUtil.loadCircleImg(m_transfer_heard_icon, targetUser.getPortraitUri().toString());
-            m_transfer_nick_name.setText(targetUser.getName());
+            api.getPaymentList()
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .compose(bindToLifecycle())
+                    .subscribe(l -> {
+                        list.addAll(l);
+                        result = list.get(0);
+                        GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+                        tvCoin.setText(result.getSymbol());
+                    }, t -> {
+                        handleApiError(t);
+                        finish();
+                    });
+
+            Glide.with(this).load(targetUser.getPortraitUri().toString()).into(ivHead);
+            tvName.setText("转账给" + targetUser.getName());
         }
     }
 
-    @OnClick(R.id.rl_back)
-    public void onClick() {
+    @SuppressLint("CheckResult")
+    public void transfer(View view) {
+        if (result == null) {
+            ToastUtils.showShort(R.string.select_cointype);
+            return;
+        }
+        if (TextUtils.isEmpty(etMoney.getText().toString().trim())) {
+            ToastUtils.showShort(R.string.inputzhuanzhangmoney);
+            return;
+        }
+        if (Double.valueOf(etMoney.getText().toString().trim()) == 0) {
+            ToastUtils.showShort(R.string.inputzhuanzhangmoney1);
+            return;
+        }
+        KeyboardUtils.hideSoftInput(this);
+        new NewPayBoard(this).show(psw -> {
+            String zhuanzhangInfo = etNote.getText().toString().trim();
+            String remarks = TextUtils.isEmpty(zhuanzhangInfo) ? ("转账给" + targetUser.getName()) : zhuanzhangInfo;
+            String payPsd = MD5Utils.getMD5(psw);
+            String money = etMoney.getText().toString().trim();
+            String toId = targetUser.getUserId();
+
+//            if (fromScan) {
+//                String money = getIntent().getStringExtra("betMoney");
+//                if (TextUtils.isEmpty(money)) {
+//                    money = money;
+//                }
+//                ServiceFactory.getInstance().getBaseService(Api.class)
+//                        .transfer(getIntent().getStringExtra("userId"), money
+//                                , MD5Utils.getMD5(psw), remarks)
+//                        .compose(bindToLifecycle())
+//                        .flatMap((Function<BaseResponse<TransferResponse>, ObservableSource<BaseResponse<TransferResponse>>>) response -> ServiceFactory.getInstance().getBaseService(Api.class)
+//                                .collect(response.data.getId()))
+//                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(TransferActivity.this)))
+//                        .compose(RxSchedulers.normalTrans())
+//                        .subscribe(response -> {
+//                            ToastUtils.showShort(R.string.zhuanchusuccess);
+//                            Intent intent = new Intent(this, HomeActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                            startActivity(intent);
+//                        }, this::handleApiError);
+//                return;
+//            }
+
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .transfer(toId, money, payPsd, remarks, result.getSymbol())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(TransferActivity.this)))
+                    .compose(RxSchedulers.normalTrans())
+                    .subscribe(s -> {
+                        TransferMessage message = new TransferMessage();
+                        message.setRemark(remarks);
+                        message.setMoney(money);
+                        message.setSymbol(result.getSymbol());
+                        message.setTransferId(s.getId());
+                        message.setName(targetUser.getName());
+                        message.setFromCustomerId(Constant.userId);
+                        Message message1 = Message.obtain(targetUser.getUserId(), Conversation.ConversationType.PRIVATE, message);
+                        RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
+                            @Override
+                            public void onAttached(Message message) {
+                            }
+
+                            @Override
+                            public void onSuccess(Message message) {
+                                Intent intent = new Intent(TransferActivity.this, TransferSuccessActivity.class);
+                                intent.putExtra("betMoney", money);
+                                intent.putExtra("name", targetUser.getName());
+                                intent.putExtra("symbol", result.getSymbol());
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                            }
+                        });
+                    }, this::handleApiError);
+        });
+    }
+
+    public void chooseCoin(View view) {
+//        if (fromScan) {
+//            return;
+//        }
+        Intent intent = new Intent(this, ChooseCoinActivity.class);
+        intent.putExtra("data", list);
+        startActivityForResult(intent, 1);
+    }
+
+    public void back(View view) {
         finish();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) return;
+        if (requestCode == 1 && resultCode == 1) {
+            result = data.getParcelableExtra("result");
+            GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+            tvCoin.setText(result.getSymbol());
+        }
+    }
+
 }

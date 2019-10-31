@@ -343,7 +343,7 @@ public interface Api {
     @POST("duoduo/customer/transfer")
     @FormUrlEncoded
     Observable<BaseResponse<TransferResponse>> transfer(@Field("toCustomerId") String toCustomerId,
-                                                        @Field("hk") String hk, @Field("payPwd") String payPwd, @Field("remarks") String remarks);
+                                                        @Field("hk") String hk, @Field("payPwd") String payPwd, @Field("remarks") String remarks, @Field("symbol") String symbol);
 
     @POST("duoduo/customer/collect")
     @FormUrlEncoded

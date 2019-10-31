@@ -38,6 +38,7 @@ public class TransferInfoActivity extends BaseActivity {
     TextView m_transfer_info_pending_payment_text;
     TextView tvZhuanZhangTime;
     TextView tvShouKuanTime;
+    TextView m_transfer_info_unit_label;
     ImageView m_transfer_info_icon;
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -61,7 +62,9 @@ public class TransferInfoActivity extends BaseActivity {
         m_transfer_info_pending_payment_text = findViewById(R.id.m_transfer_info_pending_payment_text);
         tvZhuanZhangTime = findViewById(R.id.tvZhuanZhangTime);
         tvShouKuanTime = findViewById(R.id.tvShouKuanTime);
+        m_transfer_info_unit_label = findViewById(R.id.m_transfer_info_unit_label);
         m_transfer_info_icon = findViewById(R.id.m_transfer_info_icon);
+        m_transfer_info_unit_label.setText(transferMessage.getSymbol());
 
         m_transfer_info_money_text.setText(transferMessage.getMoney());
 
@@ -88,7 +91,6 @@ public class TransferInfoActivity extends BaseActivity {
 
                         @Override
                         public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-
                         }
                     });
                 }, this::handleApiError));

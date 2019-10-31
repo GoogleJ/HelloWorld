@@ -130,6 +130,7 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                         bean.setSymbol(response.getRedPachageInfo().getSymbol());
                                         ArrayList<GetGroupRedPackageInfoResponse.CustomerInfoBean> objects = new ArrayList<>(1);
                                         objects.add(bean);
+                                        adapter.setSymbol(response.getRedPachageInfo().getSymbol());
                                         adapter.setData(objects);
                                     }
                                 }, this::handleApiError);

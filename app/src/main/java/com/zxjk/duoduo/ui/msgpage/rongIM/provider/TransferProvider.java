@@ -60,7 +60,7 @@ public class TransferProvider extends IContainerItemProvider.MessageProvider<Tra
             holder.sendLayout.setAlpha(1f);
             holder.remark.setText(TextUtils.isEmpty(transferMessage.getRemark()) ? "转账给" + transferMessage.getName() : transferMessage.getRemark());
         }
-        holder.transferMoney.setText(transferMessage.getMoney() + "MoT");
+        holder.transferMoney.setText(transferMessage.getMoney() + transferMessage.getSymbol());
     }
 
     @Override
@@ -77,10 +77,10 @@ public class TransferProvider extends IContainerItemProvider.MessageProvider<Tra
     public View newView(Context context, ViewGroup viewGroup) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_transfer_send, null);
         ViewHolder holder = new ViewHolder();
-        holder.remark = (TextView) view.findViewById(R.id.remark);
-        holder.transferMoney = (TextView) view.findViewById(R.id.transfer_money);
-        holder.transferIconType = (ImageView) view.findViewById(R.id.transfer_type_icon);
-        holder.sendLayout = (LinearLayout) view.findViewById(R.id.send_red_packet_layout);
+        holder.remark =  view.findViewById(R.id.remark);
+        holder.transferMoney =  view.findViewById(R.id.transfer_money);
+        holder.transferIconType =  view.findViewById(R.id.transfer_type_icon);
+        holder.sendLayout =  view.findViewById(R.id.send_red_packet_layout);
         view.setTag(holder);
         return view;
     }
