@@ -3,33 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background_color"
+    android:orientation="vertical"
     tools:context=".ui.msgpage.EnterGroupGetRedActivity">
 
     <include layout="@layout/layout_title_back" />
 
     <View
-        android:background="#e5e5e5"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        android:layout_height="0.5dp"
+        android:background="#e5e5e5" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="12dp"
         android:background="@color/white"
-        android:padding="16dp"
-        android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:padding="16dp">
 
         <TextView
-            android:text="@string/func_status"
-            android:textSize="15sp"
-            android:textColor="#4A494A"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/func_status"
+            android:textColor="#4A494A"
+            android:textSize="15sp" />
 
         <Switch
             android:id="@+id/sw"
@@ -39,250 +39,213 @@
     </LinearLayout>
 
     <View
-        android:background="#e5e5e5"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        android:layout_height="0.5dp"
+        android:background="#e5e5e5" />
 
     <LinearLayout
-        android:onClick="setupEach"
-        android:layout_marginTop="12dp"
-        android:background="@color/white"
-        android:padding="16dp"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:onClick="chooseCoin"
         android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content">
+        android:padding="16dp">
 
         <TextView
-            android:text="@string/eachpay"
-            android:textSize="15sp"
             android:layout_width="0dp"
-            android:textColor="#4A494A"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:text="@string/cointype"
+            android:textColor="#4A494A"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/ivCoinIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <TextView
+            android:id="@+id/tvCoin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:text="@string/unChoose"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mine_rightarrow" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#e5e5e5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:onClick="setupEach"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/eachpay"
+            android:textColor="#4A494A"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvEach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="0"
-            android:textColor="#9EA0A4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#9EA0A4" />
 
         <TextView
+            android:id="@+id/tvUnit1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/Mot1"
-            android:layout_width="wrap_content"
-            android:textColor="@color/textcolor1"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/textcolor1" />
 
         <ImageView
-            android:src="@drawable/ic_mine_rightarrow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mine_rightarrow" />
 
     </LinearLayout>
 
     <View
-        android:background="#e5e5e5"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        android:layout_height="0.5dp"
+        android:background="#e5e5e5" />
 
     <LinearLayout
-        android:onClick="setupAll"
-        android:background="@color/white"
-        android:padding="16dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content">
+        android:background="@color/white"
+        android:onClick="setupAll"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <TextView
-            android:text="@string/allpay"
-            android:textSize="15sp"
             android:layout_width="0dp"
-            android:textColor="#4A494A"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:text="@string/allpay"
+            android:textColor="#4A494A"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="0"
-            android:textColor="#9EA0A4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#9EA0A4" />
 
         <TextView
+            android:id="@+id/tvUnit2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/Mot1"
-            android:layout_width="wrap_content"
-            android:textColor="@color/textcolor1"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/textcolor1" />
 
         <ImageView
-            android:src="@drawable/ic_mine_rightarrow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mine_rightarrow" />
 
     </LinearLayout>
 
     <View
-        android:background="#e5e5e5"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        android:layout_height="0.5dp"
+        android:background="#e5e5e5" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginTop="12dp"
         android:background="@color/white"
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="@string/hadpay"
-            android:textSize="15sp"
-            android:layout_width="0dp"
-            android:textColor="#4A494A"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tvNowPay"
-            android:layout_marginEnd="8dp"
-            android:text="0"
-            android:textColor="#9EA0A4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_marginEnd="8dp"
-            android:text="@string/Mot1"
-            android:layout_width="wrap_content"
-            android:textColor="@color/textcolor1"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
-
-    <LinearLayout
         android:onClick="setupStart"
-        android:layout_marginTop="12dp"
-        android:background="@color/white"
-        android:padding="16dp"
-        android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content">
+        android:padding="16dp">
 
         <TextView
-            android:text="@string/starttime"
-            android:textSize="15sp"
             android:layout_width="0dp"
-            android:textColor="#4A494A"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:text="@string/starttime"
+            android:textColor="#4A494A"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="请设置"
-            android:textColor="#9EA0A4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#9EA0A4" />
 
         <ImageView
-            android:src="@drawable/ic_mine_rightarrow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mine_rightarrow" />
 
     </LinearLayout>
 
     <View
-        android:background="#e5e5e5"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        android:layout_height="0.5dp"
+        android:background="#e5e5e5" />
 
     <LinearLayout
-        android:onClick="setupEnd"
-        android:background="@color/white"
-        android:padding="16dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content">
+        android:background="@color/white"
+        android:onClick="setupEnd"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <TextView
-            android:text="@string/endtime"
-            android:textSize="15sp"
             android:layout_width="0dp"
-            android:textColor="#4A494A"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:text="@string/endtime"
+            android:textColor="#4A494A"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="请设置"
-            android:textColor="#9EA0A4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="#9EA0A4" />
 
         <ImageView
-            android:src="@drawable/ic_mine_rightarrow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mine_rightarrow" />
 
     </LinearLayout>
-
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
-
-    <LinearLayout
-        android:layout_marginTop="12dp"
-        android:background="@color/white"
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="@string/balanceleft"
-            android:textSize="15sp"
-            android:layout_width="0dp"
-            android:textColor="#4A494A"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tvBalanceLeft"
-            android:textSize="17sp"
-            android:layout_marginEnd="8dp"
-            android:text="0"
-            android:textColor="#FC6660"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="@string/Mot1"
-            android:textColor="@color/textcolor1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <View
-        android:background="#e5e5e5"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
 
 </LinearLayout>

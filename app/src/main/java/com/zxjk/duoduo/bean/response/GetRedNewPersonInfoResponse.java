@@ -24,6 +24,24 @@ public class GetRedNewPersonInfoResponse {
     private String groupOwnerId;
     private String groupId;
     private String result = "0";
+    private String symbol;
+    private String logo;
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
 
     public String getResult() {
         return result;

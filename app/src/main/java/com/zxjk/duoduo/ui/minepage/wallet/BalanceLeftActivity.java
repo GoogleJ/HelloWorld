@@ -63,7 +63,7 @@ public class BalanceLeftActivity extends BaseActivity {
 
                 helper.setText(R.id.tvCoin, item.getCurrencyName())
                         .setText(R.id.tvMoney1, isShow ? item.getBalance() : hideStr2)
-                        .setText(R.id.tvMoney2, isShow ? ("≈" + item.getBalance() + "CNY") : hideStr2);
+                        .setText(R.id.tvMoney2, isShow ? ("≈" + item.getPriceToCny() + "CNY") : hideStr2);
             }
         };
         recycler.setLayoutManager(new LinearLayoutManager(this));

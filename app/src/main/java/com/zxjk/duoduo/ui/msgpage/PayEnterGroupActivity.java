@@ -181,6 +181,10 @@ public class PayEnterGroupActivity extends BaseActivity {
         PayEnterDialog payEnterDialog = new PayEnterDialog(this);
         payEnterDialog.setOnCommitClick(str -> {
             payEnterDialog.dismiss();
+            if (Float.parseFloat(str) == 0) {
+                ToastUtils.showShort(R.string.input_money1);
+                return;
+            }
             tvMoney.setText(str);
         });
         payEnterDialog.show();

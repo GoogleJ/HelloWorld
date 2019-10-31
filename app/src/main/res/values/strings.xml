@@ -737,7 +737,7 @@
     <string name="money1">金额</string>
     <string name="setmoneyfirst">请先设置付费金额</string>
     <string name="open_payenter_success">付费进群已开启</string>
-    <string name="input_zhengshu">请输入整数金额</string>
+    <string name="input_zhengshu">请输入金额</string>
     <string name="close_payenter_success">付费进群已关闭</string>
     <string name="pay_enter_group_tip1">本群设置了付费进群，支付后即可入群</string>
     <string name="paying">支付中</string>

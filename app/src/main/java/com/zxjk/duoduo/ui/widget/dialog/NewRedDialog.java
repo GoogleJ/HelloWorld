@@ -39,6 +39,7 @@ public class NewRedDialog extends Dialog {
     private TextView tvMoney;
     private TextView tv1;
     private TextView tv2;
+    private TextView tvUnit;
     private Button btnClose;
 
     private TextView tvShowDetail;
@@ -101,6 +102,7 @@ public class NewRedDialog extends Dialog {
         tvMoney = view.findViewById(R.id.tvMoney);
         tv1 = view.findViewById(R.id.tv1);
         tv2 = view.findViewById(R.id.tv2);
+        tvUnit = view.findViewById(R.id.tvUnit);
         btnClose = view.findViewById(R.id.btnClose);
 
         tvShowDetail = view.findViewById(R.id.tvShowDetail);
@@ -153,19 +155,16 @@ public class NewRedDialog extends Dialog {
         show();
     }
 
-    public void show(String money, String note1, String note2, String closeText) {
+    public void show(String money, String note1, String note2, String unit) {
         tvMoney.setText(money);
         tv1.setText(note1);
         tv2.setText(note2);
+        tvUnit.setText(unit);
         show();
     }
 
     public void showExpired1() {
         show("", "来晚了！", "非常抱歉，当前红包已过期", "");
-    }
-
-    public void showExpired3() {
-        show("", "来晚了！", "非常抱歉，当前红包已领取完", "");
     }
 
     public void showExpired2(String redId) {
@@ -180,7 +179,7 @@ public class NewRedDialog extends Dialog {
         show("", "来晚了！", "非常抱歉，当前红包已领取完", "");
     }
 
-    public void showReceived(String money) {
-        show(money, "领取成功", "已转入钱包余额，请查收！", "");
+    public void showReceived(String money, String symbol) {
+        show(money, "领取成功", "已转入钱包余额，请查收！", symbol);
     }
 }

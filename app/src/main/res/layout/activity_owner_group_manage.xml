@@ -3,58 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#F5F5F5"
+    android:orientation="vertical"
     tools:context=".ui.msgpage.OwnerGroupManageActivity">
 
     <include layout="@layout/layout_title_back" />
 
     <View
-        android:background="#e5e5e5"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp" />
+        android:layout_height="0.5dp"
+        android:background="#e5e5e5" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:overScrollMode="never"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:orientation="vertical"
-            android:layout_height="wrap_content" >
+            android:orientation="vertical">
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
-                android:textColor="#9EA0A4"
-                android:layout_marginTop="10dp"
                 android:text="@string/mute"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:textColor="#9EA0A4" />
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/mute_all"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <Switch
                     android:id="@+id/switchMuteAll"
@@ -64,154 +64,154 @@
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:onClick="muteManage"
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="muteManage"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/mute_manage"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <ImageView
-                    android:src="@drawable/ic_mine_rightarrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mine_rightarrow" />
 
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <TextView
-                android:paddingStart="16dp"
-                android:textColor="#9EA0A4"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/new_enter_group"
                 android:background="@color/white"
                 android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:paddingStart="16dp"
+                android:text="@string/new_enter_group"
+                android:textColor="#9EA0A4" />
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:onClick="newRedPackage"
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="newRedPackage"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/new_redpackage_manage"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:layout_marginEnd="10dp"
-                    android:textColor="#9EA0A4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="#9EA0A4" />
 
                 <ImageView
-                    android:src="@drawable/ic_mine_rightarrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mine_rightarrow" />
 
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:onClick="payEnterGroup"
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="payEnterGroup"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/pay_enter_group"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:layout_marginEnd="10dp"
-                    android:textColor="#9EA0A4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="#9EA0A4" />
 
                 <ImageView
-                    android:src="@drawable/ic_mine_rightarrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mine_rightarrow" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:background="#e5e5e5"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <TextView
-                android:paddingStart="16dp"
-                android:textColor="#9EA0A4"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/daily_manage"
                 android:background="@color/white"
                 android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:paddingStart="16dp"
+                android:text="@string/daily_manage"
+                android:textColor="#9EA0A4" />
 
             <View
                 android:layout_width="match_parent"
-                android:background="#e5e5e5"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/cant_addfriend"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <Switch
                     android:id="@+id/switchAddFriend"
@@ -221,25 +221,25 @@
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/cant_sendPic"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <Switch
                     android:id="@+id/switchSendPic"
@@ -249,25 +249,25 @@
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/cant_sendUrl"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <Switch
                     android:id="@+id/switchSendUrl"
@@ -277,152 +277,152 @@
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:onClick="func1"
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="func1"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/memberlimit"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvGroupTips3"
-                    android:textSize="13sp"
-                    android:textColor="@color/textcolor3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textcolor3"
+                    android:textSize="13sp" />
 
                 <ImageView
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_mine_rightarrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_mine_rightarrow" />
 
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:onClick="func2"
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="func2"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/slowmode"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvGroupTips2"
-                    android:text="发言间隔:1秒"
-                    android:textSize="13sp"
-                    android:textColor="@color/textcolor3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="发言间隔:1秒"
+                    android:textColor="@color/textcolor3"
+                    android:textSize="13sp" />
 
                 <ImageView
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_mine_rightarrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_mine_rightarrow" />
 
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:onClick="func3"
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="func3"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/msgfilter"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <ImageView
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_mine_rightarrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_mine_rightarrow" />
 
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
             <LinearLayout
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
-                    android:textSize="16sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/grouppublic"
                     android:textColor="@color/textcolor1"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvGroupTips1"
-                    android:textSize="13sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="私密"
                     android:textColor="@color/textcolor3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textSize="13sp" />
 
                 <Switch
                     android:id="@+id/switchGroupPublic"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_mine_rightarrow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_mine_rightarrow" />
 
             </LinearLayout>
 
             <View
-                android:background="#e5e5e5"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
 
         </LinearLayout>
 

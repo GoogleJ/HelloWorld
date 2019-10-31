@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.widget.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.utils.MoneyValueFilter;
 
 public class PayEnterDialog extends Dialog {
     private View view;
@@ -47,6 +49,8 @@ public class PayEnterDialog extends Dialog {
         tvCancel = view.findViewById(R.id.tvCancel);
         tvCommit = view.findViewById(R.id.tvCommit);
         tvTitle = view.findViewById(R.id.tvTitle);
+
+        et.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4)});
 
         ivRight.setOnClickListener(v -> dismiss());
         tvCancel.setOnClickListener(v -> dismiss());

@@ -9,7 +9,7 @@ public class GetGroupPayInfoResponse {
      * sumPayFee : 40
      * isOpen : 1
      * payFeeNumbers : 2
-     * groupPayList : [{"createTime":"1567420374592","nick":"嗯哼","payMot":"20"},{"createTime":"15674203745923","nick":"hgahaha","payMot":"20"}]
+     * groupPayList : [{"createTime":"1567420374592","nick":"嗯哼","amount":"20"},{"createTime":"15674203745923","nick":"hgahaha","amount":"20"}]
      */
 
     private String payFee;
@@ -80,12 +80,12 @@ public class GetGroupPayInfoResponse {
         /**
          * createTime : 1567420374592
          * nick : 嗯哼
-         * payMot : 20
+         * amount : 20
          */
 
         private String createTime;
         private String nick;
-        private String payMot;
+        private String amount;
         private String symbol;
 
         public String getSymbol() {
@@ -113,11 +113,11 @@ public class GetGroupPayInfoResponse {
         }
 
         public String getPayMot() {
-            return payMot;
+            return amount;
         }
 
         public void setPayMot(String payMot) {
-            this.payMot = payMot;
+            this.amount = payMot;
         }
     }
 }
