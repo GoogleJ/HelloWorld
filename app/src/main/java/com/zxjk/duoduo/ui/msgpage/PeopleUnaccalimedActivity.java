@@ -96,11 +96,12 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                 .subscribe(response -> {
                                     for (int i = 0; i < response.getCustomerInfo().size(); i++) {
                                         if (String.valueOf(response.getCustomerInfo().get(i).getCustomerId()).equals(Constant.currentUser.getId())) {
-                                            tv_redEnvelope.setText(response.getCustomerInfo().get(i).getMoney() + " MoT");
+                                            tv_redEnvelope.setText(response.getCustomerInfo().get(i).getMoney() + " " + response.getRedPackageInfo().getSymbol());
                                         }
                                     }
                                     int number = response.getRedPackageInfo().getNumber();
-                                    tips.setText(number + "个红包，共" + response.getRedPackageInfo().getMoney() + "MoT");
+                                    tips.setText(number + "个红包，共" + response.getRedPackageInfo().getMoney() + response.getRedPackageInfo().getSymbol());
+                                    adapter.setSymbol(response.getRedPackageInfo().getSymbol());
                                     adapter.setData(response.getCustomerInfo());
                                 }, this::handleApiError);
                     } else {

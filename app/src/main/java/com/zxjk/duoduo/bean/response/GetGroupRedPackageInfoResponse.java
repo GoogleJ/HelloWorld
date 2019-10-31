@@ -48,6 +48,15 @@ public class GetGroupRedPackageInfoResponse {
         private int number;
         private String receiveCount;
         private String money;
+        private String symbol;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
         public int getNumber() {
             return number;

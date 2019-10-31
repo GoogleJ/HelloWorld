@@ -77,7 +77,12 @@ public class PrivacyRedPacketActivity extends BaseActivity {
                         return api.getPaymentList().compose(RxSchedulers.normalTrans());
                     })
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(list::addAll, t -> {
+                    .subscribe(l -> {
+                        list.addAll(l);
+                        result = list.get(0);
+                        GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+                        tvCoin.setText(result.getSymbol());
+                    }, t -> {
                         finish();
                         handleApiError(t);
                     });
@@ -86,7 +91,12 @@ public class PrivacyRedPacketActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(list::addAll, t -> {
+                    .subscribe(l -> {
+                        list.addAll(l);
+                        result = list.get(0);
+                        GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+                        tvCoin.setText(result.getSymbol());
+                    }, t -> {
                         handleApiError(t);
                         finish();
                     });
@@ -132,11 +142,11 @@ public class PrivacyRedPacketActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(PrivacyRedPacketActivity.this)))
                     .compose(RxSchedulers.normalTrans())
-                    .subscribe(redPackageResponse -> {
+                    .subscribe(red -> {
                         RedPacketMessage message = new RedPacketMessage();
                         message.setFromCustomer(Constant.currentUser.getId());
                         message.setRemark(msgRemark);
-                        message.setRedId(redPackageResponse.getId());
+                        message.setRedId(red.getId());
                         message.setIsGame("1");
                         Message message1 = Message.obtain(userInfo.getUserId(), Conversation.ConversationType.PRIVATE, message);
                         RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {

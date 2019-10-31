@@ -17,6 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RedPackageAdapter extends RecyclerView.Adapter<RedPackageAdapter.ViewHolder> {
 
     private List<GetGroupRedPackageInfoResponse.CustomerInfoBean> data;
+    private String symbol;
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
 
     public void setData(List<GetGroupRedPackageInfoResponse.CustomerInfoBean> data) {
         this.data = data;
@@ -59,7 +64,7 @@ public class RedPackageAdapter extends RecyclerView.Adapter<RedPackageAdapter.Vi
             GlideUtil.loadCircleImg(ivHead, bean.getHeadPortrait());
             tvNick.setText(bean.getNick());
             tvTime.setText(sd.format(Long.parseLong(bean.getCreateTime())));
-            tvMoney.setText(bean.getMoney() + bean.getSymbol());
+            tvMoney.setText(bean.getMoney() + symbol);
         }
     }
 }

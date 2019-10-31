@@ -416,7 +416,7 @@
     <string name="tradeCancel">已取消</string>
     <string name="guadan">挂单中</string>
     <string name="wait_for_others_to_pay">对方支付中</string>
-    <string name="pinshouqi">拼手气红包</string>
+    <string name="pinshouqi">手气红包</string>
     <string name="red_packet1">普通红包</string>
     <string name="singlemoney">单个金额</string>
     <string name="samemoney">抢到的金额一样</string>
