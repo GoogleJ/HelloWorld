@@ -21,6 +21,7 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
 
+import io.reactivex.functions.Action;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.model.Conversation;
@@ -33,6 +34,7 @@ public class PayEnterGroupPayActivity extends BaseActivity {
     private String ownerId;
     private String payMoney;
     private String groupName;
+    private String symbol;
 
     private TextView tvTitle;
     private TextView tvGroupName;
@@ -40,6 +42,7 @@ public class PayEnterGroupPayActivity extends BaseActivity {
     private ImageView ivHead;
     private TextView tvGroupOnwerName;
     private TextView tvPay;
+    private TextView tvUnit;
     private SpinKitView spinkit;
 
     @Override
@@ -58,6 +61,7 @@ public class PayEnterGroupPayActivity extends BaseActivity {
         ivHead = findViewById(R.id.ivHead);
         tvGroupOnwerName = findViewById(R.id.tvGroupOnwerName);
         tvPay = findViewById(R.id.tvPay);
+        tvUnit = findViewById(R.id.tvUnit);
         spinkit = findViewById(R.id.spinkit);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         tvTitle.setText(R.string.pay_enter_group);
@@ -69,6 +73,8 @@ public class PayEnterGroupPayActivity extends BaseActivity {
         ownerId = getIntent().getStringExtra("ownerId");
         payMoney = getIntent().getStringExtra("payMoney");
         groupName = getIntent().getStringExtra("groupName");
+        symbol = getIntent().getStringExtra("symbol");
+        tvUnit.setText(symbol);
 
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getCustomerInfoById(ownerId)
@@ -85,15 +91,18 @@ public class PayEnterGroupPayActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void pay(View view) {
+        if (spinkit.getVisibility() == View.VISIBLE) return;
+
         new NewPayBoard(this).show(r -> {
             tvPay.setText(R.string.paying);
             spinkit.setVisibility(View.VISIBLE);
 
             ServiceFactory.getInstance().getBaseService(Api.class)
-                    .payToGroup(groupId, ownerId, MD5Utils.getMD5(r), payMoney)
+                    .payToGroup(groupId, ownerId, MD5Utils.getMD5(r), payMoney, symbol)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver())
+                    .doOnTerminate(() -> spinkit.setVisibility(View.GONE))
                     .subscribe(s -> {
                         //发送进群灰条
                         InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
@@ -105,9 +114,8 @@ public class PayEnterGroupPayActivity extends BaseActivity {
                         startActivity(intent);
                         RongIM.getInstance().startGroupChat(PayEnterGroupPayActivity.this, groupId, groupName);
                     }, t -> {
-                        ToastUtils.showShort(t.getMessage());
+                        handleApiError(t);
                         tvPay.setText(R.string.pay_fail);
-                        spinkit.setVisibility(View.GONE);
                     });
         });
     }

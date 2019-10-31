@@ -52,9 +52,9 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@id/tvUnit"
             android:paddingBottom="5dp"
             android:gravity="bottom"
-            android:text="@string/Mot1"
             android:textSize="16sp"
             android:textColor="@color/textcolor1"
             android:layout_width="wrap_content"
@@ -65,8 +65,8 @@
     <ImageView
         android:id="@+id/ivHead"
         android:layout_gravity="center_horizontal"
-        android:layout_width="56dp"
-        android:layout_height="56dp" />
+        android:layout_width="72dp"
+        android:layout_height="72dp" />
 
     <TextView
         android:id="@+id/tvGroupOnwerName"

@@ -66,34 +66,35 @@ public class AgreeGroupChatActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(response -> {
-                    if (response.getGroupPayBean().getIsOpen().equals("1")) {
+                .subscribe(r -> {
+                    if (r.getGroupPayBean().getIsOpen().equals("1")) {
                         Intent intent = new Intent(this, PayEnterGroupPayActivity.class);
                         intent.putExtra("groupId", groupId);
-                        intent.putExtra("ownerId", response.getGroupInfo().getGroupOwnerId());
-                        intent.putExtra("payMoney", response.getGroupPayBean().getPayFee());
-                        intent.putExtra("groupName", response.getGroupInfo().getGroupNikeName());
+                        intent.putExtra("ownerId", r.getGroupInfo().getGroupOwnerId());
+                        intent.putExtra("payMoney", r.getGroupPayBean().getPayFee());
+                        intent.putExtra("groupName", r.getGroupInfo().getGroupNikeName());
+                        intent.putExtra("symbol", r.getGroupPayBean().getSymbol());
                         startActivity(intent);
                         finish();
                         return;
                     }
-                    if (!TextUtils.isEmpty(response.getMaxNumber())) {
-                        if (response.getCustomers().size() >= Integer.parseInt(response.getMaxNumber())) {
+                    if (!TextUtils.isEmpty(r.getMaxNumber())) {
+                        if (r.getCustomers().size() >= Integer.parseInt(r.getMaxNumber())) {
                             canJoin = true;
                         }
                     }
                     String s = "";
                     StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < response.getCustomers().size(); i++) {
-                        stringBuilder.append(response.getCustomers().get(i).getHeadPortrait() + ",");
-                        if (i == response.getCustomers().size() - 1 || i == 8) {
+                    for (int i = 0; i < r.getCustomers().size(); i++) {
+                        stringBuilder.append(r.getCustomers().get(i).getHeadPortrait() + ",");
+                        if (i == r.getCustomers().size() - 1 || i == 8) {
                             s = stringBuilder.substring(0, stringBuilder.length() - 1);
                             break;
                         }
                     }
 
                     ImageUtil.loadGroupPortrait(groupHeader, s, 80, 2);
-                    tvGroupName.setText(groupName + "(" + response.getCustomers().size() + "人)");
+                    tvGroupName.setText(groupName + "(" + r.getCustomers().size() + "人)");
                     joinGroupBtn.setOnClickListener(v -> {
                         if (canJoin) {
                             ToastUtils.showShort(getString(R.string.group_max_number));

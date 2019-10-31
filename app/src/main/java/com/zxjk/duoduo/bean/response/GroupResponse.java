@@ -75,6 +75,15 @@ public class GroupResponse implements Serializable {
     public static class GroupPayBean implements Serializable {
         private String payFee;
         private String isOpen;
+        private String symbol;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
         public String getPayFee() {
             return payFee;

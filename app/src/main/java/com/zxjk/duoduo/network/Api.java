@@ -503,11 +503,13 @@ public interface Api {
 
     @POST("duoduo/group/groupPayInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> groupPayInfo(@Field("groupId") String groupId, @Field("payFee") String payFee, @Field("isOpen") String isOpen);
+    Observable<BaseResponse<String>> groupPayInfo(@Field("groupId") String groupId, @Field("payFee") String payFee, @Field("isOpen") String isOpen
+            , @Field("symbol") String symbol);
 
     @POST("duoduo/group/payToGroup")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> payToGroup(@Field("groupId") String groupId, @Field("toCustomerId") String toCustomerId, @Field("payPwd") String payPwd, @Field("mot") String mot);
+    Observable<BaseResponse<String>> payToGroup(@Field("groupId") String groupId, @Field("toCustomerId") String toCustomerId, @Field("payPwd") String payPwd, @Field("mot") String mot,
+                                                @Field("symbol") String symbol);
 
     @POST("duoduo/group/getRedNewPersonInfo")
     @FormUrlEncoded

@@ -15,8 +15,26 @@ public class GetGroupPayInfoResponse {
     private String payFee;
     private String sumPayFee;
     private String isOpen;
+    private String symbol;
+    private String logo;
     private String payFeeNumbers;
     private List<GroupPayListBean> groupPayList;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
     public String getPayFee() {
         return payFee;
@@ -68,6 +86,15 @@ public class GetGroupPayInfoResponse {
         private String createTime;
         private String nick;
         private String payMot;
+        private String symbol;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
         public String getCreateTime() {
             return createTime;

@@ -96,17 +96,17 @@ public class GroupRedPacketActivity extends BaseActivity {
     public void top1(View view) {
         redType = "1";
         tvtop1.setTextColor(color2);
-        ivtop1.setImageResource(R.drawable.bg_groupred_top1);
+        ivtop1.setImageResource(R.drawable.bg_groupred_top2);
         tvtop2.setTextColor(color1);
-        ivtop2.setImageResource(R.drawable.bg_groupred_top2);
+        ivtop2.setImageResource(R.drawable.bg_groupred_top1);
     }
 
     public void top2(View view) {
         redType = "2";
         tvtop2.setTextColor(color2);
-        ivtop2.setImageResource(R.drawable.bg_groupred_top1);
+        ivtop2.setImageResource(R.drawable.bg_groupred_top2);
         tvtop1.setTextColor(color1);
-        ivtop1.setImageResource(R.drawable.bg_groupred_top2);
+        ivtop1.setImageResource(R.drawable.bg_groupred_top1);
     }
 
     private void getGroupInfo(String groupId) {

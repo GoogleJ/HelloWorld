@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:text="@string/Mot1"
+                android:id="@+id/tvUnit"
                 android:textColor="@color/textcolor1"
                 android:layout_width="wrap_content"
                 android:paddingBottom="2dp"

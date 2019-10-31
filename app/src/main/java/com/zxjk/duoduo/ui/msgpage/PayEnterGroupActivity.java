@@ -1,12 +1,16 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,18 +19,28 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
+import com.zxjk.duoduo.bean.response.GetPaymentListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.wallet.ChooseCoinActivity;
 import com.zxjk.duoduo.ui.widget.dialog.PayEnterDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 
 public class PayEnterGroupActivity extends BaseActivity {
+    private GetPaymentListBean result;
+    private ArrayList<GetPaymentListBean> list = new ArrayList<>();
 
     private SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
@@ -36,10 +50,13 @@ public class PayEnterGroupActivity extends BaseActivity {
     private TextView tvTitle;
     private Switch switchOpen;
     private TextView tvMoney;
-    private TextView tvTotalMoney;
     private TextView tvCount;
     private RecyclerView recycler;
     private BaseQuickAdapter<GetGroupPayInfoResponse.GroupPayListBean, BaseViewHolder> adapter;
+
+    private ImageView ivCoinIcon;
+    private TextView tvCoin;
+    private TextView tvUnit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +71,11 @@ public class PayEnterGroupActivity extends BaseActivity {
         tvTitle = findViewById(R.id.tv_title);
         switchOpen = findViewById(R.id.switchOpen);
         tvMoney = findViewById(R.id.tvMoney);
-        tvTotalMoney = findViewById(R.id.tvTotalMoney);
         tvCount = findViewById(R.id.tvCount);
         recycler = findViewById(R.id.recycler);
+        ivCoinIcon = findViewById(R.id.ivCoinIcon);
+        tvCoin = findViewById(R.id.tvCoin);
+        tvUnit = findViewById(R.id.tvUnit);
     }
 
     @SuppressLint("CheckResult")
@@ -67,15 +86,19 @@ public class PayEnterGroupActivity extends BaseActivity {
 
         initRecycler();
 
+        Api api = ServiceFactory.getInstance().getBaseService(Api.class);
         switchOpen.setOnClickListener(v -> {
             if (tvMoney.getText().toString().equals("0") && switchOpen.isChecked()) {
                 ToastUtils.showShort(R.string.setmoneyfirst);
                 switchOpen.setChecked(false);
                 return;
             }
+            if (result == null) {
+                ToastUtils.showShort(R.string.select_cointype);
+                return;
+            }
 
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .groupPayInfo(groupId, tvMoney.getText().toString(), switchOpen.isChecked() ? "1" : "0")
+            api.groupPayInfo(groupId, tvMoney.getText().toString(), switchOpen.isChecked() ? "1" : "0", result.getSymbol())
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(PayEnterGroupActivity.this)))
                     .compose(RxSchedulers.normalTrans())
@@ -92,20 +115,39 @@ public class PayEnterGroupActivity extends BaseActivity {
                             });
         });
 
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getGroupPayInfo(groupId)
+        api.getGroupPayInfo(groupId)
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(r -> {
-                    switchOpen.setChecked(r.getIsOpen().equals("1"));
+                .flatMap((Function<GetGroupPayInfoResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) r -> {
+                    runOnUiThread(() -> {
+                        if (!TextUtils.isEmpty(r.getSymbol())) {
+                            result = new GetPaymentListBean();
+                            result.setLogo(r.getLogo());
+                            result.setSymbol(r.getSymbol());
+                        }
+                        switchOpen.setChecked(r.getIsOpen().equals("1"));
 
-                    tvMoney.setText(r.getPayFee());
-                    tvTotalMoney.setText(r.getSumPayFee());
-                    tvCount.setText(r.getPayFeeNumbers());
+                        tvMoney.setText(r.getPayFee());
+                        tvCount.setText(r.getPayFeeNumbers());
 
-                    adapter.setNewData(r.getGroupPayList());
-                }, this::handleApiError);
+                        adapter.setNewData(r.getGroupPayList());
+                    });
+                    return api.getPaymentList();
+                })
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(l -> {
+                    list.addAll(l);
+                    if (result == null) {
+                        result = list.get(0);
+                    }
+                    GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+                    tvCoin.setText(result.getSymbol());
+                    tvUnit.setText(result.getSymbol());
+                }, t -> {
+                    handleApiError(t);
+                    finish();
+                });
     }
 
     private void initRecycler() {
@@ -116,7 +158,8 @@ public class PayEnterGroupActivity extends BaseActivity {
                 helper.setText(R.id.tvNick, item.getNick())
                         .setText(R.id.tvMoney, item.getPayMot())
                         .setText(R.id.tvTime1, sdf1.format(Long.parseLong(time)))
-                        .setText(R.id.tvTime2, sdf2.format(Long.parseLong(time)));
+                        .setText(R.id.tvTime2, sdf2.format(Long.parseLong(time)))
+                        .setText(R.id.tvUnit, item.getSymbol());
             }
         };
         TextView emptyView = new TextView(this);
@@ -141,5 +184,27 @@ public class PayEnterGroupActivity extends BaseActivity {
             tvMoney.setText(str);
         });
         payEnterDialog.show();
+    }
+
+    public void chooseCoin(View view) {
+        if (switchOpen.isChecked()) {
+            ToastUtils.showShort(R.string.close_payenter_first);
+            return;
+        }
+        Intent intent = new Intent(this, ChooseCoinActivity.class);
+        intent.putExtra("data", list);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) return;
+        if (requestCode == 1 && resultCode == 1) {
+            result = data.getParcelableExtra("result");
+            GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+            tvCoin.setText(result.getSymbol());
+            tvUnit.setText(result.getSymbol());
+        }
     }
 }
