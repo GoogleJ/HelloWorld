@@ -59,7 +59,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
         view.findViewById(R.id.llMineTop).setOnClickListener(this);
         view.findViewById(R.id.ivBlockWallet).setOnClickListener(this);
-        view.findViewById(R.id.llMine1).setOnClickListener(this);
         view.findViewById(R.id.llMine2).setOnClickListener(this);
         view.findViewById(R.id.llMine3).setOnClickListener(this);
         view.findViewById(R.id.llMine4).setOnClickListener(this);
@@ -103,9 +102,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.ivBlockWallet:
                 startActivity(new Intent(getActivity(), WalletActivity.class));
-                break;
-            case R.id.llMine1:
-                ToastUtils.showShort(R.string.developing);
                 break;
             case R.id.llMine2:
                 startActivity(new Intent(getActivity(), CooperateActivity.class));

@@ -708,7 +708,7 @@
     <string name="showAll">展开全部>></string>
     <string name="less_min">红包金额不能小于0.01</string>
     <string name="moToken">MoToken</string>
-    <string name="rewardmot">奖励Mot</string>
+    <string name="rewardmot">活动奖励</string>
     <string name="rewardTotal">累计奖励：</string>
     <string name="sign2getReward">签到领取奖励</string>
     <string name="signed">已签到</string>
