@@ -20,9 +20,11 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
 import com.zxjk.duoduo.bean.response.LoginResponse;
+import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.wallet.ChooseCoinActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
@@ -36,6 +38,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
@@ -49,7 +52,9 @@ public class TransferActivity extends BaseActivity {
     private GetPaymentListBean result;
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();
     private UserInfo targetUser;
-//    private boolean fromScan;
+    private boolean fromScan;
+    private String symbolFromScan;
+    private String logoFromScan;
 
     private CircleImageView ivHead;
     private TextView tvName;
@@ -72,24 +77,27 @@ public class TransferActivity extends BaseActivity {
         etMoney = findViewById(R.id.etMoney);
         etNote = findViewById(R.id.etNote);
 
-//        fromScan = getIntent().getBooleanExtra("fromScan", false);
-//        if (fromScan) {
-//            if (TextUtils.isEmpty(getIntent().getStringExtra("betMoney"))) {
-//                etMoney.setHint("0.00");
-//                etMoney.setEnabled(true);
-//                etMoney.setSelection(m_transfer_money_text.getText().length());
-//            } else {
-//                etMoney.setText(getIntent().getStringExtra("betMoney"));
-//                etMoney.setEnabled(false);
-//            }
-//        }
+        fromScan = getIntent().getBooleanExtra("fromScan", false);
+        if (fromScan) {
+            symbolFromScan = getIntent().getStringExtra("symbol");
+            logoFromScan = getIntent().getStringExtra("logo");
+            GlideUtil.loadCircleImg(ivCoinIcon, logoFromScan);
+            tvCoin.setText(symbolFromScan);
+            if (TextUtils.isEmpty(getIntent().getStringExtra("betMoney"))) {
+                etMoney.setHint("0.00");
+                etMoney.setEnabled(true);
+                etMoney.setSelection(etMoney.getText().length());
+            } else {
+                etMoney.setText(getIntent().getStringExtra("betMoney"));
+                etMoney.setEnabled(false);
+            }
+        }
 
         targetUser = getIntent().getParcelableExtra("user");
         Api api = ServiceFactory.getInstance().getBaseService(Api.class);
         if (null == targetUser) {
             api.getCustomerInfoById(getIntent().getStringExtra("userId"))
                     .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .compose(RxSchedulers.normalTrans())
                     .flatMap((Function<LoginResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) userInfo -> {
                         runOnUiThread(() -> {
@@ -99,8 +107,12 @@ public class TransferActivity extends BaseActivity {
                         });
                         return api.getPaymentList();
                     })
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .compose(RxSchedulers.normalTrans())
                     .subscribe(l -> {
+                        if (fromScan) {
+                            return;
+                        }
                         list.addAll(l);
                         result = list.get(0);
                         GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
@@ -110,19 +122,21 @@ public class TransferActivity extends BaseActivity {
                         finish();
                     });
         } else {
-            api.getPaymentList()
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .compose(bindToLifecycle())
-                    .subscribe(l -> {
-                        list.addAll(l);
-                        result = list.get(0);
-                        GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
-                        tvCoin.setText(result.getSymbol());
-                    }, t -> {
-                        handleApiError(t);
-                        finish();
-                    });
+            if (!fromScan) {
+                api.getPaymentList()
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(bindToLifecycle())
+                        .subscribe(l -> {
+                            list.addAll(l);
+                            result = list.get(0);
+                            GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+                            tvCoin.setText(result.getSymbol());
+                        }, t -> {
+                            handleApiError(t);
+                            finish();
+                        });
+            }
 
             Glide.with(this).load(targetUser.getPortraitUri().toString()).into(ivHead);
             tvName.setText("转账给" + targetUser.getName());
@@ -131,7 +145,7 @@ public class TransferActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void transfer(View view) {
-        if (result == null) {
+        if (result == null && !fromScan) {
             ToastUtils.showShort(R.string.select_cointype);
             return;
         }
@@ -151,27 +165,27 @@ public class TransferActivity extends BaseActivity {
             String money = etMoney.getText().toString().trim();
             String toId = targetUser.getUserId();
 
-//            if (fromScan) {
-//                String money = getIntent().getStringExtra("betMoney");
-//                if (TextUtils.isEmpty(money)) {
-//                    money = money;
-//                }
-//                ServiceFactory.getInstance().getBaseService(Api.class)
-//                        .transfer(getIntent().getStringExtra("userId"), money
-//                                , MD5Utils.getMD5(psw), remarks)
-//                        .compose(bindToLifecycle())
-//                        .flatMap((Function<BaseResponse<TransferResponse>, ObservableSource<BaseResponse<TransferResponse>>>) response -> ServiceFactory.getInstance().getBaseService(Api.class)
-//                                .collect(response.data.getId()))
-//                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(TransferActivity.this)))
-//                        .compose(RxSchedulers.normalTrans())
-//                        .subscribe(response -> {
-//                            ToastUtils.showShort(R.string.zhuanchusuccess);
-//                            Intent intent = new Intent(this, HomeActivity.class);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                            startActivity(intent);
-//                        }, this::handleApiError);
-//                return;
-//            }
+            if (fromScan) {
+                String scanMoney = getIntent().getStringExtra("betMoney");
+                if (TextUtils.isEmpty(scanMoney)) {
+                    scanMoney = money;
+                }
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .transfer(getIntent().getStringExtra("userId"), scanMoney
+                                , MD5Utils.getMD5(psw), remarks, symbolFromScan)
+                        .compose(bindToLifecycle())
+                        .flatMap((Function<BaseResponse<TransferResponse>, ObservableSource<BaseResponse<TransferResponse>>>) response -> ServiceFactory.getInstance().getBaseService(Api.class)
+                                .collect(response.data.getId()))
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(TransferActivity.this)))
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribe(response -> {
+                            ToastUtils.showShort(R.string.zhuanchusuccess);
+                            Intent intent = new Intent(this, HomeActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }, this::handleApiError);
+                return;
+            }
 
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .transfer(toId, money, payPsd, remarks, result.getSymbol())
@@ -211,9 +225,9 @@ public class TransferActivity extends BaseActivity {
     }
 
     public void chooseCoin(View view) {
-//        if (fromScan) {
-//            return;
-//        }
+        if (fromScan) {
+            return;
+        }
         Intent intent = new Intent(this, ChooseCoinActivity.class);
         intent.putExtra("data", list);
         startActivityForResult(intent, 1);

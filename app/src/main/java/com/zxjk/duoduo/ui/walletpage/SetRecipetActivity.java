@@ -15,6 +15,7 @@ import com.zxjk.duoduo.utils.MoneyValueFilter;
 
 public class SetRecipetActivity extends BaseActivity {
     private EditText etMoney;
+    private TextView tvUnit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +25,12 @@ public class SetRecipetActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         TextView textView = findViewById(R.id.tv_title);
+        tvUnit = findViewById(R.id.tvUnit);
         textView.setText(R.string.setmoney);
+        tvUnit.setText(getIntent().getStringExtra("symbol"));
 
         etMoney = findViewById(R.id.etMoney);
-
-        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter()});
+        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5)});
     }
 
     public void commit(View view) {
@@ -37,7 +39,7 @@ public class SetRecipetActivity extends BaseActivity {
             ToastUtils.showShort(getString(R.string.please_set_money));
             return;
         }
-        int i = Integer.parseInt(trim);
+        double i = Double.parseDouble(trim);
         if (i == 0) {
             ToastUtils.showShort(getString(R.string.please_set_money1));
             return;
