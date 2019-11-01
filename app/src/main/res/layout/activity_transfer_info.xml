@@ -54,7 +54,6 @@
             android:layout_height="match_parent"
             android:gravity="bottom"
             android:paddingBottom="4dp"
-            android:text="@string/m_red_envelopes_unit_label"
             android:textColor="@color/m_red_envelopes_unit_text"
             android:textSize="18sp" />
 

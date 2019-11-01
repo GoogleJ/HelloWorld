@@ -47,7 +47,7 @@ public class InviterActivity extends BaseActivity {
     private Bitmap bitmap;
 
     private String inviteWeb = "http://mochat-register.ztoken.cn/?id=" + Constant.userId;
-    private String description = "加入摩客社区";
+    private String description = "加入海浪社区";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +89,8 @@ public class InviterActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
                     tvInviteCount.setText(r.getInviterCount());
-                    tvReward.setText(r.getMot() + "MoT");
-                    tvReward1.setText("填写邀请码奖励" + r.getAward() + "MoT");
+                    tvReward.setText(r.getMot() + "USDT");
+                    tvReward1.setText("填写邀请码奖励" + r.getAward() + "USDT");
                 }, this::handleApiError);
     }
 
@@ -118,7 +118,7 @@ public class InviterActivity extends BaseActivity {
 
     private void shareTo(int plantform) {
         UMWeb link = new UMWeb(inviteWeb);
-        link.setTitle("摩客社区");
+        link.setTitle("海浪社区");
         link.setDescription(description);
         link.setThumb(new UMImage(this, R.drawable.sharethumb));
         SHARE_MEDIA platform = SHARE_MEDIA.QQ;

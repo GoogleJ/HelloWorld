@@ -29,7 +29,7 @@ public class TakePicUtil {
     private static final int CODE_PICTURE_NOCORP = 104;
     private static final int CODE_ALBUM_NOCORP = 105;
 
-    public static File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/portraits/" + "temp" + ".png");
+    public static File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Hilamg/portraits/" + "temp" + ".png");
 
     public static void takePicture(Activity activity) {
         takePicture(activity, true);

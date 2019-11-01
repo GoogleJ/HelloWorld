@@ -28,10 +28,6 @@ public class WalletActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
 
-    public void exchange(View view) {
-        startActivity(new Intent(this, ExchangeActivity.class));
-    }
-
     public void balanceLeft(View view) {
         startActivity(new Intent(this, BalanceLeftActivity.class));
     }

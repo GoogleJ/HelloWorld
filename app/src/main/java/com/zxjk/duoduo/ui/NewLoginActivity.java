@@ -384,7 +384,7 @@ public class NewLoginActivity extends BaseActivity {
                 byte[] pdusMsg = (byte[]) pdus;
                 SmsMessage sms = SmsMessage.createFromPdu(pdusMsg);
                 String content = sms.getMessageBody();//短信内容
-                if (content.contains("MoChat")) ppivVerify.setText(parseSms(content));
+                if (content.contains("Hilamg")) ppivVerify.setText(parseSms(content));
             }
         }
     }

@@ -69,8 +69,6 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     TextView tvEmail;
     @BindView(R.id.tv_signature)
     TextView tvSignature;
-    @BindView(R.id.tv_walletAddress)
-    TextView tvWalletAddress;
 
     String imageUrl;
     String sex = "0";
@@ -125,7 +123,6 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         tvPhoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7));
         tvEmail.setText(TextUtils.isEmpty(friendInfoResponse.getEmail()) ? "暂无" : friendInfoResponse.getEmail());
         tvSignature.setText(TextUtils.isEmpty(friendInfoResponse.getSignature()) ? "暂无" : friendInfoResponse.getSignature());
-        tvWalletAddress.setText(TextUtils.isEmpty(friendInfoResponse.getWalletAddress()) ? "暂无" : friendInfoResponse.getWalletAddress());
         if (sex.equals(friendInfoResponse.getSex())) {
             ivGender.setImageDrawable(getDrawable(R.drawable.icon_gender_man));
         } else {
@@ -186,7 +183,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         });
     }
 
-    @OnClick({R.id.tv_sendMessage, R.id.iv_duplication, R.id.iv_headPortrait})
+    @OnClick({R.id.tv_sendMessage, R.id.iv_headPortrait})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -196,11 +193,6 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                 startActivity(intent5,
                         ActivityOptionsCompat.makeSceneTransitionAnimation(this,
                                 ivHeadPortrait, "12").toBundle());
-                break;
-            case R.id.iv_duplication:
-                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setText(tvWalletAddress.getText().toString());
-                ToastUtils.showShort(getString(R.string.duplicated_to_clipboard));
                 break;
             case R.id.tv_sendMessage:
                 Intent intent = new Intent(this, HomeActivity.class);

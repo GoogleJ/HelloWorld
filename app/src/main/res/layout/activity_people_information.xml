@@ -175,46 +175,6 @@
 
             </RelativeLayout>
 
-<!--            <include layout="@layout/layout_line" />-->
-
-            <RelativeLayout style="@style/RLayoutStyle"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tv_wallet_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="12dp"
-                    android:text="@string/m_people_information_wallet_address_label"
-                    android:textColor="@color/theme_color"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_walletAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_toStartOf="@+id/iv_duplication"
-                    android:layout_toEndOf="@+id/tv_wallet_address"
-                    android:ellipsize="middle"
-                    android:singleLine="true"
-                    android:textColor="@color/color9"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:id="@+id/iv_duplication"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="16dp"
-                    android:src="@drawable/ic_copy_gray" />
-
-            </RelativeLayout>
-
             <Button
                 android:id="@+id/tv_sendMessage"
                 style="@style/BtnStyle"

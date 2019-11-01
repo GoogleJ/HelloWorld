@@ -57,7 +57,7 @@ public class TakePhotoPlugin implements IPluginModule {
                 .callback(new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
-                        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/portraits/" + "takeplugin" + ".png");
+                        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Hilamg/portraits/" + "takeplugin" + ".png");
                         if (file.getParentFile() != null && !file.getParentFile().exists()) {
                             file.getParentFile().mkdirs();
                         }

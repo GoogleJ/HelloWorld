@@ -32,7 +32,7 @@ public class SaveImageUtil {
 
     public static SaveImageUtil get() {
         if (pictureFile == null) {
-            pictureFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MoChat/images/");
+            pictureFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Hilamg/images/");
             if (!pictureFile.exists()) {
                 pictureFile.mkdirs();
             }

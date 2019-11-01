@@ -308,30 +308,6 @@
                 android:layout_marginStart="15dp"
                 android:background="@color/background_color" />
 
-            <RelativeLayout
-                android:id="@+id/rl_walletAddress"
-                style="@style/RLayoutStyle">
-
-                <TextView
-                    android:id="@+id/tv_wallet"
-                    style="@style/textStyle"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/wallet_address" />
-
-                <TextView
-                    android:id="@+id/tv_walletAddress"
-                    style="@style/textStyle14"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toEndOf="@id/tv_wallet"
-                    android:ellipsize="middle"
-                    android:singleLine="true"
-                    android:text="" />
-
-            </RelativeLayout>
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

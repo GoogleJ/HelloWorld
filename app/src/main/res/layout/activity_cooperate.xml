@@ -169,7 +169,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="接入第三方项目链接，共享MoChat流量"
+                                android:text="接入第三方项目链接，共享Hilamg流量"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -200,7 +200,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="Mochat资讯 发布，.其他媒体渠道代发文章"
+                                android:text="Hilamg资讯 发布，.其他媒体渠道代发文章"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -240,7 +240,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="开发者快速接入MoChat数字支付"
+                                android:text="开发者快速接入Hilamg数字支付"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -271,7 +271,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="为第三方系统提供Mochat一键登录"
+                                android:text="为第三方系统提供Hilamg一键登录"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -302,7 +302,7 @@
                 android:drawableStart="@drawable/ic_mail_cooperate"
                 android:drawablePadding="4dp"
                 android:gravity="center"
-                android:text="商务合作 bd@MoChat.sg"
+                android:text="商务合作 bd@Hilamg.sg"
                 android:textColor="@color/textcolor1"
                 android:textSize="15sp" />
 

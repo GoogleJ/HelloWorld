@@ -82,7 +82,7 @@ public class NewsDetailActivity extends BaseActivity {
         imageView.setImageResource(R.drawable.ic_share_action_right);
         imageView.setOnClickListener(v -> {
             UMWeb link = new UMWeb(currentUrl);
-            link.setTitle("MoChat新闻");
+            link.setTitle("Hilamg新闻");
             link.setDescription(title);
             link.setThumb(new UMImage(NewsDetailActivity.this, R.drawable.sharethumb));
             ShareUtil.shareLink(NewsDetailActivity.this, link, new ShareUtil.ShareListener() {

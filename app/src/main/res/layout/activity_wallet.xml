@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/motWallet"
+                        android:text="@string/balanceWallet"
                         android:textColor="@color/white" />
 
                 </LinearLayout>
@@ -107,23 +107,7 @@
                     android:drawableTop="@drawable/ic_wallet_func1"
                     android:drawablePadding="6dp"
                     android:gravity="center"
-                    android:onClick="exchange"
                     android:text="@string/moexchange"
-                    android:textColor="@color/black" />
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="#EFEFEF" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_wallet_func2"
-                    android:drawablePadding="6dp"
-                    android:gravity="center"
-                    android:text="@string/moplatform"
                     android:textColor="@color/black" />
 
                 <View
@@ -139,6 +123,21 @@
                     android:drawablePadding="6dp"
                     android:gravity="center"
                     android:text="@string/moshopping"
+                    android:textColor="@color/black" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="#EFEFEF" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_wallet_func5"
+                    android:drawablePadding="6dp"
+                    android:gravity="center"
+                    android:text="@string/mocoin"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -173,22 +172,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_wallet_func5"
-                    android:drawablePadding="6dp"
-                    android:gravity="center"
-                    android:text="@string/mocoin"
-                    android:textColor="@color/black" />
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:background="#EFEFEF" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:drawablePadding="6dp"
                     android:gravity="center"
                     android:textColor="@color/black" />

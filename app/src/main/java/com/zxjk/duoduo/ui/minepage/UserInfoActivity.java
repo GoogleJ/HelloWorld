@@ -48,8 +48,6 @@ import io.rong.imlib.model.UserInfo;
 
 @SuppressLint("CheckResult")
 public class UserInfoActivity extends BaseActivity {
-    private static final int REQUEST_TAKE = 1;
-    private static final int REQUEST_ALBUM = 2;
 
     private TextView tvUserInfoSex;
     private TextView tv_DuoDuoNumber;
@@ -57,7 +55,6 @@ public class UserInfoActivity extends BaseActivity {
     private TextView tv_phoneNumber;
     private TextView tv_personalizedSignature;
     private TextView tv_email;
-    private TextView tv_walletAddress;
     private ImageView iv_headPortrait;
     private TextView tv_nickname;
     private TextView tvArea;
@@ -142,7 +139,6 @@ public class UserInfoActivity extends BaseActivity {
         tv_phoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7, 11));
         tv_personalizedSignature.setText(TextUtils.isEmpty(Constant.currentUser.getSignature()) ? "暂无" : Constant.currentUser.getSignature());
         tv_email.setText(TextUtils.isEmpty(Constant.currentUser.getEmail()) ? "暂无" : Constant.currentUser.getEmail());
-        tv_walletAddress.setText(Constant.currentUser.getWalletAddress());
         tvArea.setText(Constant.currentUser.getAddress());
     }
 
@@ -194,7 +190,6 @@ public class UserInfoActivity extends BaseActivity {
         tv_phoneNumber = findViewById(R.id.tv_phoneNumber);
         tv_personalizedSignature = findViewById(R.id.tv_personalizedSignature);
         tv_email = findViewById(R.id.tv_email);
-        tv_walletAddress = findViewById(R.id.tv_walletAddress);
         tvArea = findViewById(R.id.tvArea);
 
         getPermisson(rl_headPortrait, result -> {
