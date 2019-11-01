@@ -42,7 +42,7 @@ public class RecipetQRActivity extends BaseActivity {
     private static final int QR_SIZE = 192;
 
     private ImageView ivRecipetImg;
-    private CircleImageView ivHead;
+    private ImageView ivHead;
     private TextView tvMoney, tv_setMoney;
     private BaseUri uri;
     private String uri2Code;
@@ -72,7 +72,7 @@ public class RecipetQRActivity extends BaseActivity {
                 .subscribe(list -> {
                     this.list.addAll(list);
                     result = list.get(0);
-                    Glide.with(this).load(result.getLogo()).into(ivHead);
+                    GlideUtil.loadCircleImg(ivHead, result.getLogo());
                     initUri();
                     createBitmap();
                     tvMoney.setText(result.getSymbol() + ">");

@@ -48,7 +48,7 @@
             <TextView
                 android:id="@+id/tvTips2"
                 android:layout_marginTop="40dp"
-                android:text="为币圈社交而生"
+                android:text="安全沟通，值得信赖"
                 android:alpha="0"
                 android:textSize="22sp"
                 android:textColor="@color/white"

@@ -336,7 +336,9 @@ public class ConversationActivity extends BaseActivity {
                         }
 
                         ConversationInfo j = GsonUtils.fromJson(extra, ConversationInfo.class);
-
+                        if (j.getMessageBurnTime() == -1) {
+                            continue;
+                        }
                         BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
                         b.setMessageId(m.getMessageId());
                         b.setBurnTime(currentTime + (j.getMessageBurnTime() * 1000));

@@ -37,8 +37,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@id/iv_enter"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/icon_header" />
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/iv_enter"

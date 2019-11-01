@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_wallet_qr"
@@ -9,110 +8,93 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="16dp"
-        android:clipChildren="false">
+        android:background="@drawable/shape_white_16"
+        android:clipChildren="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
+        <ImageView
+            android:id="@+id/ivHead"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-44dp" />
+
+        <TextView
+            android:id="@+id/tvMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:onClick="chooseCoin"
+            android:text=">"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <FrameLayout
+            android:layout_width="224dp"
+            android:layout_height="224dp"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/frame_qr" />
+
+            <ImageView
+                android:id="@+id/ivRecipetImg"
+                android:layout_width="192dp"
+                android:layout_height="192dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY" />
+
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipChildren="false"
-            app:cardCornerRadius="14dp"
-            app:cardElevation="4dp">
+            android:layout_margin="24dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_setMoney"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:clipChildren="false"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="setMoney"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/setmoney"
+                android:textColor="@color/colorTheme"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/tvMoney"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="68dp"
-                    android:onClick="chooseCoin"
-                    android:text=">"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/divider" />
 
-                <FrameLayout
-                    android:layout_width="224dp"
-                    android:layout_height="224dp"
-                    android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="jump2Detail"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/recipetorders"
+                android:textColor="@color/colorTheme"
+                android:textSize="15sp" />
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/frame_qr" />
+        </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/ivRecipetImg"
-                        android:layout_width="192dp"
-                        android:layout_height="192dp"
-                        android:layout_gravity="center"
-                        android:scaleType="fitXY" />
-
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="24dp">
-
-                    <TextView
-                        android:id="@+id/tv_setMoney"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:onClick="setMoney"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/setmoney"
-                        android:textColor="@color/colorTheme" />
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@color/divider" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:onClick="jump2Detail"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="@string/recipetorders"
-                        android:textColor="@color/colorTheme" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivHead"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-48dp"
-            android:elevation="4dp"
-            app:civ_border_color="@color/white"
-            app:civ_border_width="1dp" />
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

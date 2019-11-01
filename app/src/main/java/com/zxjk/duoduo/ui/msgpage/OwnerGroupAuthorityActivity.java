@@ -187,6 +187,18 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
                         currentCheckedP = position;
                         notifyItemChanged(currentCheckedP);
 
+                        if (!sw1.isEnabled()) {
+                            sw1.setEnabled(true);
+                        }
+                        if (!sw2.isEnabled()) {
+                            sw2.setEnabled(true);
+                        }
+                        if (!sw3.isEnabled()) {
+                            sw3.setEnabled(true);
+                        }
+                        if (!sw4.isEnabled()) {
+                            sw4.setEnabled(true);
+                        }
                         sw1.setChecked(!b.getOpenAudio().equals("0"));
                         sw2.setChecked(!b.getOpenVideo().equals("0"));
                         sw3.setChecked(!b.getOpenBanned().equals("0"));
@@ -266,6 +278,11 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
                 }
             }
             if (adapterData.size() == 2) {
+                sw1.setChecked(false);
+                sw2.setChecked(false);
+                sw3.setChecked(false);
+                sw4.setChecked(false);
+
                 adapter.setNewData(new ArrayList<>(0));
             } else {
                 adapter.setNewData(adapterData);

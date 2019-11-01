@@ -19,6 +19,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.DetailListActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.RedPackageAdapter;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
@@ -47,7 +48,7 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         tv_end = findViewById(R.id.tv_end);
         tv_end.setOnClickListener(v ->
-                startActivity(new Intent(PeopleUnaccalimedActivity.this, RedPackageListActivity.class)));
+                startActivity(new Intent(PeopleUnaccalimedActivity.this, DetailListActivity.class)));
         head = findViewById(R.id.head);
         name = findViewById(R.id.name);
         tips = findViewById(R.id.tips);

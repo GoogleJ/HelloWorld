@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -103,6 +104,8 @@ public class ContactFragment extends BaseFragment {
         });
         if (mAdapter.getData().size() == 0) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_app_null_type, null);
+            ImageView iv = view.findViewById(R.id.app_type);
+            iv.setImageResource(R.drawable.ic_emptyview_nofriend);
             mAdapter.setEmptyView(view);
         }
     }

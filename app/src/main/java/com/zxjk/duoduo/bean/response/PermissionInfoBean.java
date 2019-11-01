@@ -17,56 +17,19 @@ public class PermissionInfoBean implements Parcelable {
      * nick : 丁
      * headPortrait : https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/6497DE17-9B15-4B14-B829-7066A96FFC63.jpg
      */
-
     private String id;
     private String groupId;
     private String customerId;
     private String isDelete;
     private String createTime;
     private String updateTime;
-    private String openBanned;
+    private String openBanned = "0";
     private String nick;
     private String headPortrait;
-    private String openAudio;
-    private String openVideo;
-    private String forceRecall;
+    private String openAudio = "0";
+    private String openVideo = "0";
+    private String forceRecall = "0";
     private boolean checked;
-
-    public String getForceRecall() {
-        return forceRecall;
-    }
-
-    public void setForceRecall(String forceRecall) {
-        this.forceRecall = forceRecall;
-    }
-
-    public static Creator<PermissionInfoBean> getCREATOR() {
-        return CREATOR;
-    }
-
-    public String getOpenAudio() {
-        return openAudio;
-    }
-
-    public void setOpenAudio(String openAudio) {
-        this.openAudio = openAudio;
-    }
-
-    public String getOpenVideo() {
-        return openVideo;
-    }
-
-    public void setOpenVideo(String openVideo) {
-        this.openVideo = openVideo;
-    }
-
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
 
     public String getId() {
         return id;
@@ -140,6 +103,38 @@ public class PermissionInfoBean implements Parcelable {
         this.headPortrait = headPortrait;
     }
 
+    public String getOpenAudio() {
+        return openAudio;
+    }
+
+    public void setOpenAudio(String openAudio) {
+        this.openAudio = openAudio;
+    }
+
+    public String getOpenVideo() {
+        return openVideo;
+    }
+
+    public void setOpenVideo(String openVideo) {
+        this.openVideo = openVideo;
+    }
+
+    public String getForceRecall() {
+        return forceRecall;
+    }
+
+    public void setForceRecall(String forceRecall) {
+        this.forceRecall = forceRecall;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -158,11 +153,11 @@ public class PermissionInfoBean implements Parcelable {
         dest.writeString(this.headPortrait);
         dest.writeString(this.openAudio);
         dest.writeString(this.openVideo);
+        dest.writeString(this.forceRecall);
         dest.writeByte(this.checked ? (byte) 1 : (byte) 0);
     }
 
     public PermissionInfoBean() {
-
     }
 
     protected PermissionInfoBean(Parcel in) {
@@ -177,6 +172,7 @@ public class PermissionInfoBean implements Parcelable {
         this.headPortrait = in.readString();
         this.openAudio = in.readString();
         this.openVideo = in.readString();
+        this.forceRecall = in.readString();
         this.checked = in.readByte() != 0;
     }
 

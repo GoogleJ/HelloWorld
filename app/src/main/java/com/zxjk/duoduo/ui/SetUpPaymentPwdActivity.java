@@ -68,6 +68,9 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
     }
 
     private void initUI() {
+        if (firstLogin) {
+            findViewById(R.id.rl_back).setVisibility(View.INVISIBLE);
+        }
         m_set_payment_pwd_label = findViewById(R.id.m_set_payment_pwd_label);
         rootView = findViewById(R.id.root_view);
         payPsdInputView = findViewById(R.id.m_set_payment_pwd_edit);
@@ -182,6 +185,16 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
 
     @OnClick(R.id.rl_back)
     public void onViewClicked() {
-        finish();
+        if (!firstLogin) {
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (firstLogin) {
+            return;
+        }
+        super.onBackPressed();
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -32,6 +33,7 @@ import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
+import com.zxjk.duoduo.utils.MoneyValueFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +78,8 @@ public class TransferActivity extends BaseActivity {
         tvCoin = findViewById(R.id.tvCoin);
         etMoney = findViewById(R.id.etMoney);
         etNote = findViewById(R.id.etNote);
+
+        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5)});
 
         fromScan = getIntent().getBooleanExtra("fromScan", false);
         if (fromScan) {

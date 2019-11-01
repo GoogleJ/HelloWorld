@@ -29,7 +29,7 @@ public class TakePicUtil {
     private static final int CODE_PICTURE_NOCORP = 104;
     private static final int CODE_ALBUM_NOCORP = 105;
 
-    public static File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Hilamg/portraits/" + "temp" + ".png");
+    public static File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Hilamg/portraits/" + "temp.png");
 
     public static void takePicture(Activity activity) {
         takePicture(activity, true);
@@ -73,6 +73,9 @@ public class TakePicUtil {
     }
 
     private static boolean corp(Activity activity, File file) {
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
         Uri uri = getUriForFile(activity, file);
 
         Intent cropIntent = new Intent("com.android.camera.action.CROP");
@@ -81,11 +84,12 @@ public class TakePicUtil {
         cropIntent.putExtra("crop", "true");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
         cropIntent.putExtra("aspectX", 1);
         cropIntent.putExtra("aspectY", 1);
-        cropIntent.putExtra("outputX", 200);
-        cropIntent.putExtra("outputY", 200);
+        cropIntent.putExtra("outputX", 400);
+        cropIntent.putExtra("outputY", 400);
         cropIntent.putExtra("return-data", false);
         cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(output));

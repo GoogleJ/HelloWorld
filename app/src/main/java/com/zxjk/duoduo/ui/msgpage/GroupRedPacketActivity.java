@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -25,12 +26,14 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.DetailListActivity;
 import com.zxjk.duoduo.ui.minepage.wallet.ChooseCoinActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
+import com.zxjk.duoduo.utils.MoneyValueFilter;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -85,6 +88,8 @@ public class GroupRedPacketActivity extends BaseActivity {
         tvtop2 = findViewById(R.id.tvtop2);
         ivtop1 = findViewById(R.id.ivtop1);
         ivtop2 = findViewById(R.id.ivtop2);
+
+        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(2)});
 
         nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(2);
@@ -160,11 +165,6 @@ public class GroupRedPacketActivity extends BaseActivity {
             return;
         }
 
-        if (Double.parseDouble(price) / Double.parseDouble(num) < 0.01) {
-            ToastUtils.showShort(R.string.less_min);
-            return;
-        }
-
         KeyboardUtils.hideSoftInput(this);
         new NewPayBoard(this).show(pwd -> {
             String message = etBless.getText().toString().trim();
@@ -226,7 +226,7 @@ public class GroupRedPacketActivity extends BaseActivity {
     }
 
     public void redList(View view) {
-        startActivity(new Intent(this, RedPackageListActivity.class));
+        startActivity(new Intent(this, DetailListActivity.class));
     }
 
     @Override

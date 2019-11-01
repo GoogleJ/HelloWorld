@@ -11,7 +11,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -133,7 +135,12 @@ public class SearchGroupActivity extends BaseActivity {
             }
         };
 
-        adapter.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, llTop, false));
+        View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, llTop, false);
+        ImageView iv = emptyView.findViewById(R.id.iv);
+        TextView tv = emptyView.findViewById(R.id.tv);
+        iv.setImageResource(R.drawable.ic_empty_nosearch);
+        tv.setText(R.string.no_search);
+        adapter.setEmptyView(emptyView);
 
         etSearch.requestFocus();
     }
