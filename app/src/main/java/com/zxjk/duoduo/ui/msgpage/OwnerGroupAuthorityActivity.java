@@ -278,11 +278,10 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
                 }
             }
             if (adapterData.size() == 2) {
-                sw1.setChecked(false);
-                sw2.setChecked(false);
-                sw3.setChecked(false);
-                sw4.setChecked(false);
-
+                sw1.setEnabled(false);
+                sw2.setEnabled(false);
+                sw3.setEnabled(false);
+                sw4.setEnabled(false);
                 adapter.setNewData(new ArrayList<>(0));
             } else {
                 adapter.setNewData(adapterData);
