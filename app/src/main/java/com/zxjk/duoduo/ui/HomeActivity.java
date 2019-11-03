@@ -13,22 +13,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.blankj.utilcode.util.VibrateUtils;
-import com.mp4parser.streaming.extensions.NameTrackExtension;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
@@ -119,49 +117,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         startBurnMsgInterval(0);
 
-        Observable.timer(1, TimeUnit.SECONDS)
-                .subscribe(aLong -> {
-                    if (ActivityUtils.getTopActivity() != this) {
-                        return;
-                    }
-                    RongIM.setOnReceiveMessageListener((message, i) -> {
-                        //update badge
-                        if (!AppUtils.isAppForeground()) {
-                            BadgeNumberManager.from(this).setBadgeNumber(++Constant.messageCount);
-                        }
-                        //handle command(delete add newfriend)
-                        if (message.getObjectName().equals("RC:CmdMsg")) {
-                            CommandMessage commandMessage = (CommandMessage) message.getContent();
-                            if (commandMessage.getName().equals("deleteFriend")) {
-                                RongIM.getInstance().clearMessages(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
-                                RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
-                                contactFragment.onResume();
-                            } else if (commandMessage.getName().equals("addFriend")) {
-                                runOnUiThread(() -> {
-                                    long newFriendCount = MMKVUtils.getInstance().decodeLong("newFriendCount");
-                                    newFriendCount += 1;
-                                    MMKVUtils.getInstance().enCode("newFriendCount", newFriendCount);
-                                    if (newFriendCount == 0) {
-                                        badgeItem2.hide();
-                                    } else {
-                                        badgeItem2.show(true);
-                                        if (newFriendCount >= 100) {
-                                            badgeItem2.setText("99+");
-                                        } else {
-                                            badgeItem2.setText(String.valueOf(newFriendCount));
-                                        }
-                                    }
-                                    if (contactFragment.getDotNewFriend() != null) {
-                                        contactFragment.getDotNewFriend().setVisibility(View.VISIBLE);
-                                    }
-                                });
-                            } else if (commandMessage.getName().equals("agreeFriend")) {
-                                contactFragment.onResume();
-                            }
-                        }
-                        return false;
-                    });
-                });
         super.onResume();
     }
 
@@ -171,6 +126,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
+
+        registerRongMsgReceiver();
 
         getRuntimePermission();
 
@@ -191,6 +148,51 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initMessageLongClickAction();
 
         initGreenDaoSession();
+    }
+
+    private void registerRongMsgReceiver() {
+        RongIM.setOnReceiveMessageListener((message, i) -> {
+            Intent intent = new Intent(Constant.ACTION_BROADCAST2);
+            intent.putExtra("msg", message);
+            intent.putExtra("count", i);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+            //update badge
+            if (!AppUtils.isAppForeground()) {
+                BadgeNumberManager.from(this).setBadgeNumber(++Constant.messageCount);
+            }
+            //handle command(delete add newfriend)
+            if (message.getObjectName().equals("RC:CmdMsg")) {
+                CommandMessage commandMessage = (CommandMessage) message.getContent();
+                if (commandMessage.getName().equals("deleteFriend")) {
+                    RongIM.getInstance().clearMessages(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
+                    RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
+                    contactFragment.onResume();
+                } else if (commandMessage.getName().equals("addFriend")) {
+                    runOnUiThread(() -> {
+                        long newFriendCount = MMKVUtils.getInstance().decodeLong("newFriendCount");
+                        newFriendCount += 1;
+                        MMKVUtils.getInstance().enCode("newFriendCount", newFriendCount);
+                        if (newFriendCount == 0) {
+                            badgeItem2.hide();
+                        } else {
+                            badgeItem2.show(true);
+                            if (newFriendCount >= 100) {
+                                badgeItem2.setText("99+");
+                            } else {
+                                badgeItem2.setText(String.valueOf(newFriendCount));
+                            }
+                        }
+                        if (contactFragment.getDotNewFriend() != null) {
+                            contactFragment.getDotNewFriend().setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else if (commandMessage.getName().equals("agreeFriend")) {
+                    contactFragment.onResume();
+                }
+            }
+            return false;
+        });
     }
 
     @SuppressLint("CheckResult")

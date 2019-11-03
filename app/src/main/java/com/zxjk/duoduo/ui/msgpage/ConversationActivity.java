@@ -1,8 +1,10 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.RegexUtils;
@@ -107,8 +110,8 @@ public class ConversationActivity extends BaseActivity {
     /**
      * 融云监听
      */
+    private BroadcastReceiver rongMsgReceiver;
     private RongIM.OnSendMessageListener onSendMessageListener;
-    private RongIMClient.OnReceiveMessageListener onReceiveMessageListener;
     private RongIMClient.TypingStatusListener typingStatusListener;
     private RongIM.ConversationClickListener conversationClickListener;
 
@@ -165,7 +168,7 @@ public class ConversationActivity extends BaseActivity {
 //            return;
 //        }
 
-        onReceiveMessage();
+        registerMsgReceiver();
 
         registerSendMessageListener();
 
@@ -467,95 +470,97 @@ public class ConversationActivity extends BaseActivity {
         return message;
     }
 
-    private void onReceiveMessage() {
-        onReceiveMessageListener = (message, i) -> {
-            if (message.getObjectName().equals("app:transfer")) {
-                //收到一条转账消息(已领取)
-                for (int j = 0; j < messageAdapter.getCount(); j++) {
-                    if (messageAdapter.getItem(j).getObjectName().equals("app:transfer")) {
-                        TransferMessage t = (TransferMessage) messageAdapter.getItem(j).getContent();
-                        if (t.getTransferId().equals(((TransferMessage) message.getContent()).getTransferId())) {
-                            int finalJ = j;
-                            RongIM.getInstance().setMessageExtra(messageAdapter.getItem(j).getMessageId()
-                                    , "1", new RongIMClient.ResultCallback<Boolean>() {
-                                        @Override
-                                        public void onSuccess(Boolean aBoolean) {
-                                            messageAdapter.getItem(finalJ).setExtra("1");
-                                            messageAdapter.notifyDataSetInvalidated();
-                                        }
+    private void registerMsgReceiver() {
+        rongMsgReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Message message = intent.getParcelableExtra("msg");
+                if (message == null) return;
 
-                                        @Override
-                                        public void onError(RongIMClient.ErrorCode errorCode) {
-                                        }
-                                    });
+                if (message.getObjectName().equals("app:transfer")) {
+                    //收到一条转账消息(已领取)
+                    for (int j = 0; j < messageAdapter.getCount(); j++) {
+                        if (messageAdapter.getItem(j).getObjectName().equals("app:transfer")) {
+                            TransferMessage t = (TransferMessage) messageAdapter.getItem(j).getContent();
+                            if (t.getTransferId().equals(((TransferMessage) message.getContent()).getTransferId())) {
+                                int finalJ = j;
+                                RongIM.getInstance().setMessageExtra(messageAdapter.getItem(j).getMessageId()
+                                        , "1", new RongIMClient.ResultCallback<Boolean>() {
+                                            @Override
+                                            public void onSuccess(Boolean aBoolean) {
+                                                messageAdapter.getItem(finalJ).setExtra("1");
+                                                messageAdapter.notifyDataSetInvalidated();
+                                            }
+
+                                            @Override
+                                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                            }
+                                        });
+                            }
                         }
                     }
-                }
-            } else if (message.getObjectName().equals("RC:CmdMsg")) {
-                //对方开启截屏通知
-                CommandMessage commandMessage = (CommandMessage) message.getContent();
-                if (!TextUtils.isEmpty(commandMessage.getName())) {
-                    switch (commandMessage.getName()) {
-                        case "screenCapture":
-                            conversationInfo.setTargetCaptureScreenEnabled(Integer.parseInt(commandMessage.getData()));
-                            if (conversationInfo.getTargetCaptureScreenEnabled() == 1) {
-                                runOnUiThread(this::initScreenCapture);
-                            } else {
-                                runOnUiThread(() -> {
-                                    if (screenCapture != null && !screenCapture.isDisposed()) {
-                                        screenCapture.dispose();
-                                    }
-                                });
-                            }
+                } else if (message.getObjectName().equals("RC:CmdMsg")) {
+                    //对方开启截屏通知
+                    CommandMessage commandMessage = (CommandMessage) message.getContent();
+                    if (!TextUtils.isEmpty(commandMessage.getName())) {
+                        switch (commandMessage.getName()) {
+                            case "screenCapture":
+                                conversationInfo.setTargetCaptureScreenEnabled(Integer.parseInt(commandMessage.getData()));
+                                if (conversationInfo.getTargetCaptureScreenEnabled() == 1) {
+                                    initScreenCapture();
+                                } else if (screenCapture != null && !screenCapture.isDisposed()) {
+                                    screenCapture.dispose();
+                                }
+                                break;
+                            case "sendUrlAndsendImg":
+                                SendUrlAndsendImgBean sendUrlAndsendImgBean = GsonUtils.fromJson(commandMessage.getData(), SendUrlAndsendImgBean.class);
+                                groupInfo.getGroupInfo().setBanSendLink(sendUrlAndsendImgBean.getSendUrl());
+                                groupInfo.getGroupInfo().setBanSendPicture(sendUrlAndsendImgBean.getSendImg());
+                                break;
+                        }
+                    }
+                } else if (message.getObjectName().equals("RC:InfoNtf")) {
+                    //小灰条
+                    InformationNotificationMessage notificationMessage = (InformationNotificationMessage) message.getContent();
+                    if (!TextUtils.isEmpty(notificationMessage.getExtra())) {
+                        if (notificationMessage.getExtra().contains("慢速模式")) {
+                            handleReceiveSlowMode(notificationMessage);
+                        }
+                    }
+                } else if (message.getSenderUserId().equals(targetId)) {
+                    String extra = "";
+                    switch (message.getObjectName()) {
+                        case "RC:TxtMsg":
+                            TextMessage textMessage = (TextMessage) message.getContent();
+                            extra = textMessage.getExtra();
                             break;
-                        case "sendUrlAndsendImg":
-                            SendUrlAndsendImgBean sendUrlAndsendImgBean = GsonUtils.fromJson(commandMessage.getData(), SendUrlAndsendImgBean.class);
-                            groupInfo.getGroupInfo().setBanSendLink(sendUrlAndsendImgBean.getSendUrl());
-                            groupInfo.getGroupInfo().setBanSendPicture(sendUrlAndsendImgBean.getSendImg());
+                        case "RC:ImgMsg":
+                            ImageMessage imageMessage = (ImageMessage) message.getContent();
+                            extra = imageMessage.getExtra();
+                            break;
+                        case "RC:VcMsg":
+                            VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
+                            extra = voiceMessage.getExtra();
                             break;
                     }
-                }
-            } else if (message.getObjectName().equals("RC:InfoNtf")) {
-                //小灰条
-                InformationNotificationMessage notificationMessage = (InformationNotificationMessage) message.getContent();
-                if (!TextUtils.isEmpty(notificationMessage.getExtra())) {
-                    if (notificationMessage.getExtra().contains("慢速模式")) {
-                        handleReceiveSlowMode(notificationMessage);
-                    }
-                }
-            } else if (message.getSenderUserId().equals(targetId)) {
-                String extra = "";
-                switch (message.getObjectName()) {
-                    case "RC:TxtMsg":
-                        TextMessage textMessage = (TextMessage) message.getContent();
-                        extra = textMessage.getExtra();
-                        break;
-                    case "RC:ImgMsg":
-                        ImageMessage imageMessage = (ImageMessage) message.getContent();
-                        extra = imageMessage.getExtra();
-                        break;
-                    case "RC:VcMsg":
-                        VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
-                        extra = voiceMessage.getExtra();
-                        break;
-                }
 
-                if (TextUtils.isEmpty(extra)) return false;
+                    if (TextUtils.isEmpty(extra)) return;
 
-                try {
-                    ConversationInfo j = GsonUtils.fromJson(extra, ConversationInfo.class);
-                    if (j.getMessageBurnTime() != -1) {
-                        BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
-                        b.setMessageId(message.getMessageId());
-                        b.setBurnTime(System.currentTimeMillis() + (j.getMessageBurnTime() * 1000));
-                        burnMsgDao.insert(b);
+                    try {
+                        ConversationInfo j = GsonUtils.fromJson(extra, ConversationInfo.class);
+                        if (j.getMessageBurnTime() != -1) {
+                            BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
+                            b.setMessageId(message.getMessageId());
+                            b.setBurnTime(System.currentTimeMillis() + (j.getMessageBurnTime() * 1000));
+                            burnMsgDao.insert(b);
+                        }
+                    } catch (Exception e) {
                     }
-                } catch (Exception e) {
                 }
             }
-            return false;
         };
-        RongIM.setOnReceiveMessageListener(onReceiveMessageListener);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(rongMsgReceiver, new IntentFilter(Constant.ACTION_BROADCAST2));
     }
 
     //群主开启慢速模式
@@ -1045,15 +1050,12 @@ public class ConversationActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if (onReceiveMessageListener == null) {
-            super.onDestroy();
-            return;
+        if (rongMsgReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(rongMsgReceiver);
         }
-        onReceiveMessageListener = null;
         onSendMessageListener = null;
         typingStatusListener = null;
         conversationClickListener = null;
-        RongIM.setOnReceiveMessageListener(null);
         RongIMClient.setTypingStatusListener(null);
         RongIM.getInstance().setSendMessageListener(null);
         RongIM.setConversationClickListener(null);
