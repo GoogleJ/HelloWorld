@@ -110,8 +110,8 @@ public class ContactFragment extends BaseFragment {
         }
     }
 
+    private View headView;
     private void initHead(boolean isEmpty) {
-        View headView;
         LinearLayout ll_contract_top1;
         LinearLayout ll_contract_top2;
         LinearLayout ll_contract_top3;
@@ -120,8 +120,8 @@ public class ContactFragment extends BaseFragment {
             headView = layout_contract_head;
         } else {
             layout_contract_head.setVisibility(View.GONE);
-            headView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_contract_head, null);
             if (mAdapter.getHeaderLayoutCount() == 0) {
+                headView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_contract_head, null);
                 mAdapter.addHeaderView(headView);
             }
         }
