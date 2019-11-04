@@ -2,13 +2,17 @@ package com.zxjk.duoduo.ui.minepage;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.DetailListResposne;
+import com.zxjk.duoduo.bean.response.GetSerialBean;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.DataUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +22,8 @@ public class DetailInfoActivity extends BaseActivity {
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.ivType)
+    ImageView ivType;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -31,20 +37,19 @@ public class DetailInfoActivity extends BaseActivity {
         TextView tvTradeType = findViewById(R.id.tvTradeType);
         TextView tvTradeTime = findViewById(R.id.tvTradeTime);
         TextView tvTradeNumber = findViewById(R.id.tvTradeNumber);
-        TextView tvTradeNote = findViewById(R.id.tvTradeNote);
 
-        DetailListResposne data = (DetailListResposne) getIntent().getSerializableExtra("data");
-        tvMoney.setText(DataUtils.getTwoDecimals(data.getMot()) + " MoT");
-        tvTradeType.setText(getIntent().getStringExtra("type"));
+        GetSerialBean data = getIntent().getParcelableExtra("data");
+
+        GlideUtil.loadNormalImg(ivType, data.getLogo());
+
+        SpannableString string = new SpannableString((data.getSerialType().equals("1") ? "-" : "+") + data.getAmount() + " " + data.getSymbol());
+        string.setSpan(new RelativeSizeSpan(0.56f), string.length() - data.getSymbol().length(), string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvMoney.setText(string);
+
+        tvTradeType.setText(data.getSerialTitle());
         tvTradeTime.setText(DataUtils.timeStamp2Date(Long.parseLong(data.getCreateTime()), "yyyy-MM-dd HH:mm:ss"));
         tvTradeNumber.setText(data.getSerialNumber());
-        if (!TextUtils.isEmpty(getIntent().getStringExtra("remarks"))) {
-            tvTradeNote.setText(getIntent().getStringExtra("remarks"));
-        } else {
-            tvTradeNote.setText(getIntent().getStringExtra("type"));
-        }
     }
-
 
     @OnClick(R.id.rl_back)
     public void onClick() {

@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.minepage;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -110,6 +111,11 @@ public class DetailListActivity extends BaseActivity {
         tv.setText(R.string.emptylist1);
         iv.setImageResource(R.drawable.ic_empty_orders);
         adapter.setEmptyView(inflate);
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(DetailListActivity.this, DetailInfoActivity.class);
+            intent.putExtra("data", DetailListActivity.this.adapter.getData().get(position));
+            startActivity(intent);
+        });
 
         recycler.setAdapter(adapter);
 

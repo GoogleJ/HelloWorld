@@ -1,6 +1,9 @@
 package com.zxjk.duoduo.bean.response;
 
-public class GetSerialBean {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class GetSerialBean implements Parcelable {
     /**
      * id : 19024
      * amount : 6.80
@@ -19,8 +22,17 @@ public class GetSerialBean {
     private String createTime;
     private String source;
     private String serialTitle;
+    private String serialNumber;
     private String month;
     private String logo;
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
 
     public String getLogo() {
         return logo;
@@ -93,4 +105,51 @@ public class GetSerialBean {
     public void setMonth(String month) {
         this.month = month;
     }
+
+    public GetSerialBean() {
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.amount);
+        dest.writeString(this.serialType);
+        dest.writeString(this.symbol);
+        dest.writeString(this.createTime);
+        dest.writeString(this.source);
+        dest.writeString(this.serialTitle);
+        dest.writeString(this.serialNumber);
+        dest.writeString(this.month);
+        dest.writeString(this.logo);
+    }
+
+    protected GetSerialBean(Parcel in) {
+        this.id = in.readString();
+        this.amount = in.readString();
+        this.serialType = in.readString();
+        this.symbol = in.readString();
+        this.createTime = in.readString();
+        this.source = in.readString();
+        this.serialTitle = in.readString();
+        this.serialNumber = in.readString();
+        this.month = in.readString();
+        this.logo = in.readString();
+    }
+
+    public static final Creator<GetSerialBean> CREATOR = new Creator<GetSerialBean>() {
+        @Override
+        public GetSerialBean createFromParcel(Parcel source) {
+            return new GetSerialBean(source);
+        }
+
+        @Override
+        public GetSerialBean[] newArray(int size) {
+            return new GetSerialBean[size];
+        }
+    };
 }
