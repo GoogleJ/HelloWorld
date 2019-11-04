@@ -43,6 +43,7 @@ import com.zxjk.duoduo.ui.EnlargeImageActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.CusConversationFragment;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.CusEmoteTabMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
@@ -249,6 +250,9 @@ public class ConversationActivity extends BaseActivity {
         } else if (message.getContent() instanceof VoiceMessage) {
             VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
             voiceMessage.setExtra(s);
+        } else if (message.getContent() instanceof CusEmoteTabMessage) {
+            CusEmoteTabMessage cusEmoteTabMessage = (CusEmoteTabMessage) message.getContent();
+            cusEmoteTabMessage.setExtra(s);
         }
     }
 
@@ -262,7 +266,7 @@ public class ConversationActivity extends BaseActivity {
         if (conversationInfo == null || conversationInfo.getMessageBurnTime() == -1) {
             map.put("MsgType", "NormalMsg");
         } else if (message.getObjectName().equals("RC:TxtMsg") || message.getObjectName().equals("RC:ImgMsg")
-                || message.getObjectName().equals("RC:VcMsg")) {
+                || message.getObjectName().equals("RC:VcMsg") || message.getObjectName().equals("MCusEmoteTabMsg")) {
             BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
             b.setMessageId(message.getMessageId());
             b.setBurnTime(System.currentTimeMillis() + (conversationInfo.getMessageBurnTime() * 1000));
@@ -330,6 +334,10 @@ public class ConversationActivity extends BaseActivity {
                             case "RC:VcMsg":
                                 VoiceMessage voiceMessage = (VoiceMessage) m.getContent();
                                 extra = voiceMessage.getExtra();
+                                break;
+                            case "MCusEmoteTabMsg":
+                                CusEmoteTabMessage cusEmoteTabMessage = (CusEmoteTabMessage) m.getContent();
+                                extra = cusEmoteTabMessage.getExtra();
                                 break;
                         }
 
