@@ -5,8 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.http.SslError;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -21,14 +23,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.ProgressView;
-import com.zxjk.duoduo.utils.ShareUtil;
 
 public class WebActivity extends BaseActivity {
 
@@ -43,6 +45,7 @@ public class WebActivity extends BaseActivity {
     private TextView tv_title;
 
     private String title;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class WebActivity extends BaseActivity {
 
         currentUrl = getIntent().getStringExtra("url");
         title = getIntent().getStringExtra("title");
+        type = getIntent().getStringExtra("type");
 
         initView();
 
@@ -69,7 +73,20 @@ public class WebActivity extends BaseActivity {
         pb_webview = findViewById(R.id.pb_webview);
         tv_title = findViewById(R.id.tv_title);
         tv_title.setText(title);
-        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+
+        if (!TextUtils.isEmpty(type) && type.equals("mall")) {
+            findViewById(R.id.rl_back).setVisibility(View.INVISIBLE);
+            findViewById(R.id.rl_end).setVisibility(View.VISIBLE);
+            ImageView iv_end = findViewById(R.id.iv_end);
+
+            Drawable up = ContextCompat.getDrawable(this, R.drawable.ic_delete_dialog);
+            Drawable drawableUp = DrawableCompat.wrap(up);
+            DrawableCompat.setTint(drawableUp, ContextCompat.getColor(this, R.color.black));
+            iv_end.setImageDrawable(drawableUp);
+            findViewById(R.id.rl_end).setOnClickListener(v -> finish());
+        } else {
+            findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        }
     }
 
     private ValueAnimator pbAnim;
@@ -159,13 +176,17 @@ public class WebActivity extends BaseActivity {
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                ToastUtils.showShort(R.string.loadurl_fail);
+                if (TextUtils.isEmpty(type) || !type.equals("mall")) {
+                    ToastUtils.showShort(R.string.loadurl_fail);
+                }
                 super.onReceivedError(view, request, error);
             }
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                ToastUtils.showShort(R.string.loadurl_fail);
+                if (TextUtils.isEmpty(type) || !type.equals("mall")) {
+                    ToastUtils.showShort(R.string.loadurl_fail);
+                }
                 super.onReceivedSslError(view, handler, error);
             }
         });
@@ -183,5 +204,16 @@ public class WebActivity extends BaseActivity {
             mWebView = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mWebView != null) {
+            if (mWebView.canGoBack()) {
+                mWebView.goBack();
+            } else {
+                super.onBackPressed();
+            }
+        }
     }
 }
