@@ -468,7 +468,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
                                 holder.setText(R.id.tv, data.getUpdateContent());
                                 ((TextView) holder.getView(R.id.tv)).setMovementMethod(new ScrollingMovementMethod());
-                                holder.getView(R.id.ivClose).setVisibility(data.getIsEnforcement().equals("0") ? View.VISIBLE : View.GONE);
                                 TextView tvUpdate = holder.getView(R.id.tvUpdate);
                                 tvUpdate.setOnClickListener(v -> {
                                     //后台下载APK并更新
@@ -515,7 +514,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                         }
                                     });
                                 });
-                                holder.setOnClickListener(R.id.ivClose, v -> dialog.dismiss());
                             }
                         }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
                     } else if (showTip) {
