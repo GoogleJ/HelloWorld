@@ -787,4 +787,5 @@
     <string name="select_cointype">请选择币种</string>
     <string name="count1">个数</string>
     <string name="choose2input">选填</string>
+    <string name="retry">重试</string>
 </resources>

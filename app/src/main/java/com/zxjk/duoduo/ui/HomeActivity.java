@@ -133,7 +133,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         createChannel();
 
-        getVersion(false);
+//        getVersion(false);
 
         initFriendList();
 

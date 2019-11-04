@@ -9,14 +9,19 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.SightPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TakePhotoPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
+
 import java.util.List;
+
 import io.rong.imkit.DefaultExtensionModule;
+import io.rong.imkit.RongExtension;
+import io.rong.imkit.emoticon.IEmojiItemClickListener;
 import io.rong.imkit.emoticon.IEmoticonTab;
 import io.rong.imkit.plugin.IPluginModule;
 import io.rong.imlib.model.Conversation;
 
 public class BasePluginExtensionModule extends DefaultExtensionModule {
-
+    private String targetId;
+    private Conversation.ConversationType conversationType;
 
     @Override
     public List<IPluginModule> getPluginModules(Conversation.ConversationType conversationType) {
@@ -37,5 +42,22 @@ public class BasePluginExtensionModule extends DefaultExtensionModule {
         }
 
         return list;
+    }
+
+    @Override
+    public List<IEmoticonTab> getEmoticonTabs() {
+        List<IEmoticonTab> tabs = super.getEmoticonTabs();
+
+        CusEmoteTab cusEmoteTab = new CusEmoteTab(targetId,conversationType);
+
+        tabs.add(cusEmoteTab);
+        return tabs;
+    }
+
+    @Override
+    public void onAttachedToExtension(RongExtension extension) {
+        super.onAttachedToExtension(extension);
+        targetId = extension.getTargetId();
+        conversationType = extension.getConversationType();
     }
 }
