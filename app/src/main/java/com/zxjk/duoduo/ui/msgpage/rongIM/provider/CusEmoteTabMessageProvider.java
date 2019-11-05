@@ -72,8 +72,8 @@ public class CusEmoteTabMessageProvider extends IContainerItemProvider.MessagePr
 
         loadEmote(v, content, holder);
 
-        v.setOnClickListener(v1 -> {
-            if (holder.llLoading.getVisibility() != View.VISIBLE) {
+        holder.llLoading.setOnClickListener(v1 -> {
+            if (holder.ivLoad.getVisibility() != View.VISIBLE) {
                 loadEmote(v, content, holder);
             }
         });
