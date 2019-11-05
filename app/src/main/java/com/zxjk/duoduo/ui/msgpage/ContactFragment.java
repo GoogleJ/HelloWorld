@@ -211,6 +211,9 @@ public class ContactFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (mAdapter == null) {
+            return;
+        }
         getFriendListInfoById();
     }
 }
