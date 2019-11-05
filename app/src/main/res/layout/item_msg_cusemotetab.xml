@@ -9,15 +9,15 @@
 
     <LinearLayout
         android:id="@+id/llLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical">
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/ivLoad"
-            style="@style/SpinKitView.Circle"
+            style="@style/SpinKitView.Small.Circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:SpinKit_Color="@color/white" />
@@ -38,7 +38,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="center"
-        android:scaleType="center" />
+        android:scaleType="centerInside" />
 
     <ImageView
         android:id="@+id/ivFireLeft"

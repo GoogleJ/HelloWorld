@@ -10,13 +10,14 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="10dp"
+        android:textColor="#000000"
         android:id="@android:id/text1"
         style="@style/RCTheme.Message.TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="web|email|phone"
         android:gravity="center_vertical|left"
-        android:textColorLink="#2C4879"
+        android:textColorLink="#1a8cff"
         app:RCMaxWidth="223dp" />
 
     <ImageView

@@ -125,27 +125,22 @@ public class Application extends android.app.Application {
 
             @Override
             public void onActivityStarted(@NonNull Activity activity) {
-
             }
 
             @Override
             public void onActivityResumed(@NonNull Activity activity) {
-
             }
 
             @Override
             public void onActivityPaused(@NonNull Activity activity) {
-
             }
 
             @Override
             public void onActivityStopped(@NonNull Activity activity) {
-
             }
 
             @Override
             public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
-
             }
 
             @SuppressLint("CheckResult")

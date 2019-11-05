@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -34,7 +33,6 @@ import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
-import io.rong.message.ImageMessage;
 
 @ProviderTag(
         messageContent = CusEmoteTabMessage.class,
@@ -82,10 +80,14 @@ public class CusEmoteTabMessageProvider extends IContainerItemProvider.MessagePr
     }
 
     private void loadEmote(View v, CusEmoteTabMessage content, ViewHolder holder) {
+        holder.llLoading.setVisibility(View.VISIBLE);
+        holder.tvTips.setText(R.string.loading);
+        holder.ivLoad.setVisibility(View.VISIBLE);
+
         if (!TextUtils.isEmpty(content.getId())) {
             if (!TextUtils.isEmpty(content.getIsGif()) && content.getIsGif().equals("1")) {
                 Glide.with(v.getContext()).asGif()
-                        .load(tabIds[Integer.parseInt(content.getId())])
+                        .load(tabIds[Integer.parseInt(content.getId()) - 1])
                         .listener(new RequestListener<GifDrawable>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
@@ -101,7 +103,7 @@ public class CusEmoteTabMessageProvider extends IContainerItemProvider.MessagePr
                         }).into(holder.ivContent);
             } else {
                 Glide.with(v.getContext()).asBitmap()
-                        .load(tabIds[Integer.parseInt(content.getId())])
+                        .load(tabIds[Integer.parseInt(content.getId()) - 1])
                         .listener(new RequestListener<Bitmap>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
@@ -156,6 +158,7 @@ public class CusEmoteTabMessageProvider extends IContainerItemProvider.MessagePr
     private void onError(ViewHolder holder) {
         holder.ivContent.setVisibility(View.GONE);
         holder.llLoading.setVisibility(View.VISIBLE);
+        holder.ivLoad.setVisibility(View.GONE);
         holder.tvTips.setText(R.string.retry);
         holder.flContent.setBackgroundColor(Color.parseColor("#e5e5e5"));
     }
@@ -174,7 +177,6 @@ public class CusEmoteTabMessageProvider extends IContainerItemProvider.MessagePr
 
     @Override
     public void onItemClick(View view, int i, CusEmoteTabMessage cusEmoteTabMessage, UIMessage uiMessage) {
-
     }
 
     @Override

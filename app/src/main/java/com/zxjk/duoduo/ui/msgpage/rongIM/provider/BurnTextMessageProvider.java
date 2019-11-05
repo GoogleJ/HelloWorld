@@ -78,7 +78,6 @@ public class BurnTextMessageProvider extends IContainerItemProvider.MessageProvi
         }
         BurnTextMessageProvider.ViewHolder holder = (BurnTextMessageProvider.ViewHolder) v.getTag();
         if (data.getMessageDirection() == Message.MessageDirection.SEND) {
-            holder.message.setTextColor(Color.parseColor("#FFFFFF"));
             holder.content.setBackgroundResource(io.rong.imkit.R.drawable.shape_rc_bubble_right);
             if (conversationInfo != null && conversationInfo.getMessageBurnTime() != -1) {
                 holder.ivFireRight.setVisibility(View.VISIBLE);
@@ -88,7 +87,6 @@ public class BurnTextMessageProvider extends IContainerItemProvider.MessageProvi
                 holder.ivFireLeft.setVisibility(View.INVISIBLE);
             }
         } else {
-            holder.message.setTextColor(Color.parseColor("#333333"));
             holder.content.setBackgroundResource(io.rong.imkit.R.drawable.shape_rc_bubble_left);
             if (conversationInfo != null && conversationInfo.getMessageBurnTime() != -1) {
                 holder.ivFireRight.setVisibility(View.INVISIBLE);

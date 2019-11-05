@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -179,7 +178,7 @@ public class CusEmoteTab implements IEmoticonTab {
                 int index = position1 + selected * mEmojiCountPerPage;
 
                 CusEmoteTabMessage msgContent = new CusEmoteTabMessage();
-                msgContent.setId(String.valueOf(index));
+                msgContent.setId(String.valueOf(index + 1));
                 if (index == 0 || index == 1 || index == 3 || index == 4 || index == 6 || index == 7 || index == 8 || index == 10) {
                     msgContent.setIsGif("1");
                 } else {

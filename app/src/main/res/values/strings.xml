@@ -679,7 +679,6 @@
     <string name="cant_sendUrl">禁止发链接</string>
     <string name="mochat_social">海浪社区</string>
     <string name="video">视频</string>
-    <string name="memberlimit">人数上限</string>
     <string name="slowmode">慢速模式</string>
     <string name="msgfilter">消息过滤</string>
     <string name="grouppublic">群公开</string>
@@ -788,4 +787,10 @@
     <string name="count1">个数</string>
     <string name="choose2input">选填</string>
     <string name="retry">重试</string>
+    <string name="group_member_manage">群成员管理</string>
+    <string name="groupmanage_tips1">群主设置加群金额,成员支付后即可入群</string>
+    <string name="m_group_add_my_way">加群方式</string>
+    <string name="groupmanage_tips2">开启后,只有群主和管理员可以发言</string>
+    <string name="groupmanage_tips3">限制群成员发消息间隔时间</string>
+    <string name="groupmanage_tips4">根据群名称或群号搜索到此群</string>
 </resources>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.msgpage.OwnerGroupManageActivity">
 
@@ -22,29 +22,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#f5f5f5" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:paddingStart="16dp"
-                android:text="@string/mute"
-                android:textColor="#9EA0A4" />
+                android:text="@string/new_enter_group"
+                android:textColor="@color/textColor9" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="#e5e5e5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
+                android:onClick="newRedPackage"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
@@ -52,9 +56,162 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/mute_all"
+                    android:drawableStart="@drawable/ic_groupmanage1"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/new_redpackage_manage"
                     android:textColor="@color/textcolor1"
                     android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mine_rightarrow" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="#e5e5e5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:onClick="payEnterGroup"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_groupmanage2"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/pay_enter_group"
+                        android:textColor="@color/textcolor1"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/groupmanage_tips1"
+                        android:textColor="@color/textColor9"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mine_rightarrow" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="#e5e5e5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:onClick="addWays"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_groupmanage3"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/m_group_add_my_way"
+                    android:textColor="@color/textcolor1"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mine_rightarrow" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#e5e5e5" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#f5f5f5" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:text="@string/group_member_manage"
+                android:textColor="@color/textColor9" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="#e5e5e5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_groupmanage4"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/mute_all"
+                        android:textColor="@color/textcolor1"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/groupmanage_tips2"
+                        android:textColor="@color/textColor9"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <Switch
                     android:id="@+id/switchMuteAll"
@@ -66,12 +223,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="#e5e5e5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:onClick="muteManage"
                 android:paddingStart="16dp"
@@ -81,6 +239,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_groupmanage5"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
                     android:text="@string/mute_manage"
                     android:textColor="@color/textcolor1"
                     android:textSize="16sp" />
@@ -95,112 +256,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="#e5e5e5" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingStart="16dp"
-                android:text="@string/new_enter_group"
-                android:textColor="#9EA0A4" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="#e5e5e5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:onClick="newRedPackage"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/new_redpackage_manage"
-                    android:textColor="@color/textcolor1"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:textColor="#9EA0A4" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_mine_rightarrow" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#e5e5e5" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:onClick="payEnterGroup"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/pay_enter_group"
-                    android:textColor="@color/textcolor1"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:textColor="#9EA0A4" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_mine_rightarrow" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#e5e5e5" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingStart="16dp"
-                android:text="@string/daily_manage"
-                android:textColor="#9EA0A4" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#e5e5e5" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
@@ -209,6 +271,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_groupmanage6"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
                     android:text="@string/cant_addfriend"
                     android:textColor="@color/textcolor1"
                     android:textSize="16sp" />
@@ -223,12 +288,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="#e5e5e5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
@@ -237,6 +303,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_groupmanage7"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
                     android:text="@string/cant_sendPic"
                     android:textColor="@color/textcolor1"
                     android:textSize="16sp" />
@@ -251,12 +320,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="#e5e5e5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
@@ -265,6 +335,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_groupmanage9"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
                     android:text="@string/cant_sendUrl"
                     android:textColor="@color/textcolor1"
                     android:textSize="16sp" />
@@ -281,10 +354,29 @@
                 android:layout_height="0.5dp"
                 android:background="#e5e5e5" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#f5f5f5" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:text="@string/daily_manage"
+                android:textColor="@color/textColor9" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="#e5e5e5" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="56dp"
                 android:gravity="center_vertical"
                 android:onClick="func1"
                 android:paddingStart="16dp"
@@ -294,7 +386,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/memberlimit"
+                    android:drawableStart="@drawable/ic_groupmanage10"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/update_group_limit"
                     android:textColor="@color/textcolor1"
                     android:textSize="16sp" />
 
@@ -316,24 +411,43 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="#e5e5e5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="64dp"
                 android:gravity="center_vertical"
                 android:onClick="func2"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/slowmode"
-                    android:textColor="@color/textcolor1"
-                    android:textSize="16sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_groupmanage11"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/slowmode"
+                        android:textColor="@color/textcolor1"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/groupmanage_tips3"
+                        android:textColor="@color/textColor9"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvGroupTips2"
@@ -354,61 +468,42 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="#e5e5e5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:onClick="func3"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/msgfilter"
-                    android:textColor="@color/textcolor1"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_mine_rightarrow" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#e5e5e5" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="64dp"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/grouppublic"
-                    android:textColor="@color/textcolor1"
-                    android:textSize="16sp" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvGroupTips1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="私密"
-                    android:textColor="@color/textcolor3"
-                    android:textSize="13sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_groupmanage13"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/grouppublic"
+                        android:textColor="@color/textcolor1"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/groupmanage_tips4"
+                        android:textColor="@color/textColor9"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <Switch
                     android:id="@+id/switchGroupPublic"
@@ -422,6 +517,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="#e5e5e5" />
 
         </LinearLayout>

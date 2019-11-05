@@ -41,7 +41,6 @@ public class OwnerGroupManageActivity extends BaseActivity {
     private Switch switchSendPic;
     private Switch switchSendUrl;
     private Switch switchGroupPublic;
-    private TextView tvGroupTips1;
     private TextView tvGroupTips2;
     private TextView tvGroupTips3;
 
@@ -68,7 +67,6 @@ public class OwnerGroupManageActivity extends BaseActivity {
         switchSendPic = findViewById(R.id.switchSendPic);
         switchSendUrl = findViewById(R.id.switchSendUrl);
         switchGroupPublic = findViewById(R.id.switchGroupPublic);
-        tvGroupTips1 = findViewById(R.id.tvGroupTips1);
         tvGroupTips2 = findViewById(R.id.tvGroupTips2);
         tvGroupTips3 = findViewById(R.id.tvGroupTips3);
     }
@@ -87,7 +85,6 @@ public class OwnerGroupManageActivity extends BaseActivity {
         switchSendUrl.setChecked(!group.getGroupInfo().getBanSendLink().equals("0"));
 
         switchGroupPublic.setChecked(!group.getGroupInfo().getIsPublic().equals("0"));
-        tvGroupTips1.setText(switchGroupPublic.isChecked() ? "公开" : "私密");
 
         String tips = "";
         switch (group.getGroupInfo().getSlowMode()) {
@@ -194,14 +191,11 @@ public class OwnerGroupManageActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(s -> {
-                        tvGroupTips1.setText(switchGroupPublic.isChecked() ? "公开" : "私密");
-                        group.getGroupInfo().setIsPublic(switchGroupPublic.isChecked() ? "1" : "0");
-                    }, t -> {
-                        tvGroupTips1.setText(switchGroupPublic.isChecked() ? "公开" : "私密");
-                        switchGroupPublic.setChecked(!switchGroupPublic.isChecked());
-                        handleApiError(t);
-                    }));
+                    .subscribe(s -> group.getGroupInfo().setIsPublic(switchGroupPublic.isChecked() ? "1" : "0"),
+                            t -> {
+                                switchGroupPublic.setChecked(!switchGroupPublic.isChecked());
+                                handleApiError(t);
+                            }));
             dialog.setOnCloseListener(() -> switchGroupPublic.setChecked(!switchGroupPublic.isChecked()));
             dialog.show();
         });
@@ -236,6 +230,11 @@ public class OwnerGroupManageActivity extends BaseActivity {
         Intent intent = new Intent(this, UpdateGroupLimitActivity.class);
         intent.putExtra("group", group);
         startActivityForResult(intent, 1);
+    }
+
+    //加群方式
+    public void addWays(View view) {
+        ToastUtils.showShort(R.string.developing);
     }
 
     /**
@@ -288,10 +287,6 @@ public class OwnerGroupManageActivity extends BaseActivity {
                     group.getGroupInfo().setSlowMode(str);
                 }, this::handleApiError));
         burnMsgDialog.showSlowMode(parseTime(tvGroupTips2.getText().toString()));
-    }
-
-    public void func3(View view) {
-        ToastUtils.showShort(R.string.developing);
     }
 
     private int parseTime(String time) {
