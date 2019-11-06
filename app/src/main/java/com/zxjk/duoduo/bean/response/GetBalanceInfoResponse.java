@@ -1,5 +1,8 @@
 package com.zxjk.duoduo.bean.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 public class GetBalanceInfoResponse {
@@ -38,7 +41,7 @@ public class GetBalanceInfoResponse {
         this.balanceList = balanceList;
     }
 
-    public static class BalanceListBean {
+    public static class BalanceListBean implements Parcelable {
         /**
          * currencyName : ETH
          * coin :
@@ -52,6 +55,7 @@ public class GetBalanceInfoResponse {
          * balance : 0
          */
 
+
         private String currencyName;
         private String coin;
         private String coinType;
@@ -62,6 +66,46 @@ public class GetBalanceInfoResponse {
         private String isDelete;
         private String priceToCny;
         private String balance;
+        private String decimals;
+        private String balanceAddress;
+        private String rate;
+        private String parentSymbol;
+
+        public String getParentSymbol() {
+            return parentSymbol;
+        }
+
+        public void setParentSymbol(String parentSymbol) {
+            this.parentSymbol = parentSymbol;
+        }
+
+        public String getDecimals() {
+            return decimals;
+        }
+
+        public void setDecimals(String decimals) {
+            this.decimals = decimals;
+        }
+
+        public String getBalanceAddress() {
+            return balanceAddress;
+        }
+
+        public void setBalanceAddress(String balanceAddress) {
+            this.balanceAddress = balanceAddress;
+        }
+
+        public String getRate() {
+            return rate;
+        }
+
+        public void setRate(String rate) {
+            this.rate = rate;
+        }
+
+        public static Creator<BalanceListBean> getCREATOR() {
+            return CREATOR;
+        }
 
         public String getCurrencyName() {
             return currencyName;
@@ -142,5 +186,60 @@ public class GetBalanceInfoResponse {
         public void setBalance(String balance) {
             this.balance = balance;
         }
+
+        public BalanceListBean() {
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.currencyName);
+            dest.writeString(this.coin);
+            dest.writeString(this.coinType);
+            dest.writeString(this.contractAddress);
+            dest.writeString(this.logo);
+            dest.writeString(this.symbolId);
+            dest.writeString(this.isAlready);
+            dest.writeString(this.isDelete);
+            dest.writeString(this.priceToCny);
+            dest.writeString(this.balance);
+            dest.writeString(this.decimals);
+            dest.writeString(this.balanceAddress);
+            dest.writeString(this.rate);
+            dest.writeString(this.parentSymbol);
+        }
+
+        protected BalanceListBean(Parcel in) {
+            this.currencyName = in.readString();
+            this.coin = in.readString();
+            this.coinType = in.readString();
+            this.contractAddress = in.readString();
+            this.logo = in.readString();
+            this.symbolId = in.readString();
+            this.isAlready = in.readString();
+            this.isDelete = in.readString();
+            this.priceToCny = in.readString();
+            this.balance = in.readString();
+            this.decimals = in.readString();
+            this.balanceAddress = in.readString();
+            this.rate = in.readString();
+            this.parentSymbol = in.readString();
+        }
+
+        public static final Creator<BalanceListBean> CREATOR = new Creator<BalanceListBean>() {
+            @Override
+            public BalanceListBean createFromParcel(Parcel source) {
+                return new BalanceListBean(source);
+            }
+
+            @Override
+            public BalanceListBean[] newArray(int size) {
+                return new BalanceListBean[size];
+            }
+        };
     }
 }

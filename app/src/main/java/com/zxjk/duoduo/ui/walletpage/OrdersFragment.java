@@ -165,7 +165,9 @@ public class OrdersFragment extends BaseFragment {
                         }
                     }
                 }, t -> {
-                    adapter.loadMoreFail();
+                    if (page != 1) {
+                        adapter.loadMoreFail();
+                    }
                     handleApiError(t);
                 });
     }

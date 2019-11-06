@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.minepage.wallet;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
@@ -23,9 +23,6 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.DetailListActivity;
-import com.zxjk.duoduo.ui.msgpage.QrCodeActivity;
-import com.zxjk.duoduo.ui.walletpage.HuaZhuanActivity;
-import com.zxjk.duoduo.ui.walletpage.RecipetQRActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -67,6 +64,11 @@ public class BalanceLeftActivity extends BaseActivity {
                         .setText(R.id.tvMoney2, isShow ? ("≈" + item.getPriceToCny() + "CNY") : hideStr2);
             }
         };
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(BalanceLeftActivity.this, BalanceDetailActivity.class);
+            intent.putExtra("data", (Parcelable) adapter.getData().get(position));
+            startActivity(intent);
+        });
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
         isShow = !MMKVUtils.getInstance().decodeBool("bahaviour2_showWalletBalance");

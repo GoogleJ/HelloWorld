@@ -29,6 +29,7 @@ import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.duoduo.bean.response.GetSerialBean;
 import com.zxjk.duoduo.bean.response.GetSignListResponse;
+import com.zxjk.duoduo.bean.response.GetSymbolSerialResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
 import com.zxjk.duoduo.bean.response.GetVicinityResponse;
@@ -637,5 +638,10 @@ public interface Api {
 
     @POST("duoduo/walletBalance/getPaymentList")
     Observable<BaseResponse<List<GetPaymentListBean>>> getPaymentList();
+
+    @POST("duoduo/walletBalance/getSymbolSerial")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetSymbolSerialResponse>> getSymbolSerial(@Field("pageSizeStr") String pageSizeStr,
+                                                                      @Field("pageNoStr") String pageNoStr, @Field("symbol") String symbol, @Field("parentSymbol") String parentSymbol);
 
 }
