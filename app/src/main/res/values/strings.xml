@@ -796,4 +796,5 @@
     <string name="tibi">提币</string>
     <string name="chongbi">充币</string>
     <string name="emptylist3">您的钱包记录是空的呦！</string>
+    <string name="copy_address">复制地址</string>
 </resources>

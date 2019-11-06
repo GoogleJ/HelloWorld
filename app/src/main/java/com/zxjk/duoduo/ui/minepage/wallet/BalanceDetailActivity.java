@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -198,7 +199,9 @@ public class BalanceDetailActivity extends BaseActivity {
     }
 
     public void upCoin(View view) {
-
+        Intent intent = new Intent(this, UpCoinActivity.class);
+        intent.putExtra("data", data);
+        startActivity(intent);
     }
 
     public void copyAddress(View view) {
