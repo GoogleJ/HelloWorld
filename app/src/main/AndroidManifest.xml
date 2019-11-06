@@ -55,9 +55,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.minepage.wallet.UpCoinActivity"></activity>
-        <activity android:name=".ui.minepage.wallet.BalanceDetailActivity" />
-        <activity android:name=".ui.minepage.wallet.ChooseCoinActivity" />
+        <activity
+            android:name=".ui.minepage.wallet.DownCoinActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".ui.minepage.wallet.UpCoinActivity" />
+        <activity
+            android:name=".ui.minepage.wallet.BalanceDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.minepage.wallet.ChooseCoinActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.minepage.wallet.AddBlockShowItemActivity"
             android:launchMode="singleTop"

@@ -195,7 +195,9 @@ public class BalanceDetailActivity extends BaseActivity {
     }
 
     public void downCoin(View view) {
-
+        Intent intent = new Intent(this, DownCoinActivity.class);
+        intent.putExtra("data", data);
+        startActivity(intent);
     }
 
     public void upCoin(View view) {

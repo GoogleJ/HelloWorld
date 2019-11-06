@@ -797,4 +797,14 @@
     <string name="chongbi">充币</string>
     <string name="emptylist3">您的钱包记录是空的呦！</string>
     <string name="copy_address">复制地址</string>
+    <string name="from">从</string>
+    <string name="to">到</string>
+    <string name="tips_downcoin" >输入或长按粘贴地址</string>
+    <string name="tips_downcoin1">请仔细核对区块链钱包地址，否则将资产造成损失并不可找回。\n请务必确认手机处于安全状态，防止信息被篡改或泄漏。</string>
+    <string name="balance_not_enough">余额不足</string>
+    <string name="input_up_count">请输入充币数量</string>
+    <string name="input_down_count">请输入提币数量</string>
+    <string name="up_count_less_zero">充币数量不能小于0</string>
+    <string name="down_count_less_zero">提币数量不能小于0</string>
+    <string name="down_coin_success">提币成功</string>
 </resources>

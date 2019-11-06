@@ -321,8 +321,7 @@ public interface Api {
 
     @POST("duoduo/wallet/ethTransaction")
     @FormUrlEncoded
-    Observable<BaseResponse<String>>
-    signTransaction(@Field("blockChainSerial") String blockChainSerial, @Field("password") String password);
+    Observable<BaseResponse<String>> signTransaction(@Field("blockChainSerial") String blockChainSerial, @Field("password") String password);
 
     @POST("duoduo/wallet/signHkbOrHkExchange")
     @FormUrlEncoded
