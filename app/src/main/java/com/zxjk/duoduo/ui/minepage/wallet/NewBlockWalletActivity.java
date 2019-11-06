@@ -124,10 +124,10 @@ public class NewBlockWalletActivity extends BaseActivity {
                     case 1:
                         WalletChainInfoLevel0 level0Bean = (WalletChainInfoLevel0) item;
                         ImageView ivArrow = helper.getView(R.id.ivArrow);
-                        if (level0Bean.getSubItems().size() != 0) {
-                            ivArrow.setVisibility(View.VISIBLE);
-                        } else {
+                        if (level0Bean.getSubItems() == null || level0Bean.getSubItems().size() == 0) {
                             ivArrow.setVisibility(View.INVISIBLE);
+                        } else {
+                            ivArrow.setVisibility(View.VISIBLE);
                         }
                         ImageView ivlogo = helper.getView(R.id.ivLogo);
                         GlideUtil.loadNormalImg(ivlogo, level0Bean.getBean().getLogo());
@@ -204,6 +204,12 @@ public class NewBlockWalletActivity extends BaseActivity {
             WalletChainInfosResponse.SymbolListBean bean = origin.get(i);
             WalletChainInfoLevel0 level0 = new WalletChainInfoLevel0(bean);
 
+            result.add(level0);
+
+            if (bean.getSymbolInfos().size() == 1) {
+                continue;
+            }
+
             for (int j = 0; j < bean.getSymbolInfos().size(); j++) {
                 if (j == bean.getSymbolInfos().size() - 1) {
                     bean.getSymbolInfos().get(j).setLast(true);
@@ -211,7 +217,6 @@ public class NewBlockWalletActivity extends BaseActivity {
                 level0.addSubItem(bean.getSymbolInfos().get(j));
             }
 
-            result.add(level0);
         }
 
         return result;
