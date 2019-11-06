@@ -28,51 +28,6 @@
         android:textSize="16sp" />
 
     <RelativeLayout
-        android:visibility="gone"
-        android:id="@+id/rl_weChatFriend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/iv_weChatFriend"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="6dp"
-            android:src="@drawable/ic_wechat1" />
-
-        <TextView
-            android:id="@+id/tv_weChatFriend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/iv_weChatFriend"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/iv_weChatFriend"
-            android:text="@string/wechat_friend"
-            android:textColor="@color/textColor3"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/iv_weChatFriend"
-            android:layout_marginBottom="3dp"
-            android:layout_toEndOf="@id/iv_weChatFriend"
-            android:text="@string/add_wechat_friend"
-            android:textColor="@color/color9"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0.1dp"
-            android:layout_below="@id/iv_weChatFriend"
-            android:layout_alignStart="@id/tv_weChatFriend"
-            android:background="@color/m_add_friend_line" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/rl_phoneFriend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -9,11 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.ShareUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +45,7 @@ public class AddContactActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.rl_back, R.id.tv_qr_code, R.id.tv_search, R.id.rl_weChatFriend})
+    @OnClick({R.id.rl_back, R.id.tv_qr_code, R.id.tv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //返回
@@ -62,12 +59,6 @@ public class AddContactActivity extends BaseActivity {
             //搜索
             case R.id.tv_search:
                 startActivity(new Intent(this, GlobalSearchActivity.class));
-                break;
-            //微信好友
-            case R.id.rl_weChatFriend:
-                UMImage image = new UMImage(this, R.drawable.shareimg_wechat);
-                ShareUtil.shareImg(AddContactActivity.this, image, new ShareUtil.ShareListener(),
-                        SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE);
                 break;
         }
     }

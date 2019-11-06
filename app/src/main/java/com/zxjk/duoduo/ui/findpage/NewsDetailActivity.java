@@ -84,7 +84,7 @@ public class NewsDetailActivity extends BaseActivity {
             UMWeb link = new UMWeb(currentUrl);
             link.setTitle("Hilamg新闻");
             link.setDescription(title);
-            link.setThumb(new UMImage(NewsDetailActivity.this, R.drawable.sharethumb));
+            link.setThumb(new UMImage(NewsDetailActivity.this, R.mipmap.ic_launcher));
             ShareUtil.shareLink(NewsDetailActivity.this, link, new ShareUtil.ShareListener() {
                 @Override
                 public void onResult(SHARE_MEDIA share_media) {

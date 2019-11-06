@@ -23,6 +23,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.DetailListActivity;
+import com.zxjk.duoduo.ui.msgpage.QrCodeActivity;
 import com.zxjk.duoduo.ui.walletpage.HuaZhuanActivity;
 import com.zxjk.duoduo.ui.walletpage.RecipetQRActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -113,15 +114,6 @@ public class BalanceLeftActivity extends BaseActivity {
 
     public void orderList(View view) {
         startActivity(new Intent(this, DetailListActivity.class));
-    }
-
-    public void huazhuan(View view) {
-        ToastUtils.showShort(R.string.developing);
-//        startActivity(new Intent(this, HuaZhuanActivity.class));
-    }
-
-    public void shoukuan(View view) {
-        startActivity(new Intent(this, RecipetQRActivity.class));
     }
 
 }

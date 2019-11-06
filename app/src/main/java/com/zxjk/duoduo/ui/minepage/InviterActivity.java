@@ -120,7 +120,7 @@ public class InviterActivity extends BaseActivity {
         UMWeb link = new UMWeb(inviteWeb);
         link.setTitle("海浪社区");
         link.setDescription(description);
-        link.setThumb(new UMImage(this, R.drawable.sharethumb));
+        link.setThumb(new UMImage(this, R.mipmap.ic_launcher));
         SHARE_MEDIA platform = SHARE_MEDIA.QQ;
         switch (plantform) {
             case 1:
