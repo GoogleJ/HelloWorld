@@ -221,19 +221,23 @@ public class DownCoinActivity extends BaseActivity {
                                 }
 
                                 GetParentSymbolBean bean = parentSymbolBeans.get(checkedIndex);
-
-                                ServiceFactory.getInstance().getBaseService(Api.class)
-                                        .getBalanceInfoByAddress(bean.getWalletAddress(), bean.getCoinType(), bean.getParentSymbol(), bean.getContractAddress(), bean.getTokenDecimal())
-                                        .compose(bindToLifecycle())
-                                        .compose(RxSchedulers.normalTrans())
-                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(DownCoinActivity.this)))
-                                        .subscribe(s -> {
-                                            blockMoney = s;
-                                            divider.setVisibility(View.VISIBLE);
-                                            tvAllIn.setVisibility(View.VISIBLE);
-                                            tvBalance.setVisibility(View.VISIBLE);
-                                            tvBalance.setText("数字钱包可用数量" + blockMoney + data.getCoin());
-                                        }, DownCoinActivity.this::handleApiError);
+                                if (!balance2block) {
+                                    ServiceFactory.getInstance().getBaseService(Api.class)
+                                            .getBalanceInfoByAddress(bean.getWalletAddress(), bean.getCoinType(), bean.getParentSymbol(), bean.getContractAddress(), bean.getTokenDecimal())
+                                            .compose(bindToLifecycle())
+                                            .compose(RxSchedulers.normalTrans())
+                                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(DownCoinActivity.this)))
+                                            .subscribe(s -> {
+                                                etBlockAddress.setText(bean.getWalletAddress());
+                                                blockMoney = s;
+                                                divider.setVisibility(View.VISIBLE);
+                                                tvAllIn.setVisibility(View.VISIBLE);
+                                                tvBalance.setVisibility(View.VISIBLE);
+                                                tvBalance.setText("数字钱包可用数量" + blockMoney + data.getCoin());
+                                            }, DownCoinActivity.this::handleApiError);
+                                } else {
+                                    etBlockAddress.setText(bean.getWalletAddress());
+                                }
                             }, true))
                     .build();
 
@@ -299,7 +303,7 @@ public class DownCoinActivity extends BaseActivity {
 
         String count = etCount.getText().toString().trim();
         if (TextUtils.isEmpty(count)) {
-            if (balance2block) {
+            if (!balance2block) {
                 ToastUtils.showShort(R.string.input_up_count);
             } else {
                 ToastUtils.showShort(R.string.input_down_count);
@@ -308,7 +312,7 @@ public class DownCoinActivity extends BaseActivity {
         }
 
         if (Double.parseDouble(count) <= 0) {
-            if (balance2block) {
+            if (!balance2block) {
                 ToastUtils.showShort(R.string.up_count_less_zero);
             } else {
                 ToastUtils.showShort(R.string.down_count_less_zero);
@@ -419,6 +423,12 @@ public class DownCoinActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 1 && data != null) {
             etBlockAddress.setText(data.getStringExtra("result"));
+            if (!balance2block) {
+                blockMoney = "";
+                divider.setVisibility(View.GONE);
+                tvAllIn.setVisibility(View.GONE);
+                tvBalance.setVisibility(View.GONE);
+            }
         }
     }
 }
