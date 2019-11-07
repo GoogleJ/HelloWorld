@@ -799,7 +799,7 @@
     <string name="copy_address">复制地址</string>
     <string name="from">从</string>
     <string name="to">到</string>
-    <string name="tips_downcoin" >输入或长按粘贴地址</string>
+    <string name="tips_downcoin">输入或长按粘贴地址</string>
     <string name="tips_downcoin1">请仔细核对区块链钱包地址，否则将资产造成损失并不可找回。\n请务必确认手机处于安全状态，防止信息被篡改或泄漏。</string>
     <string name="balance_not_enough">余额不足</string>
     <string name="input_up_count">请输入充币数量</string>
@@ -809,4 +809,8 @@
     <string name="down_coin_success">提币成功</string>
     <string name="choose_block_address">选择数字钱包地址</string>
     <string name="select_walletaddress">请选择钱包地址</string>
+    <string name="success1">操作成功</string>
+    <string name="tips_updowncoin_result">预计1分钟后到账，请稍后查看！</string>
+    <string name="check_orders">查看交易记录</string>
+    <string name="back2walletlist">返回钱包首页</string>
 </resources>

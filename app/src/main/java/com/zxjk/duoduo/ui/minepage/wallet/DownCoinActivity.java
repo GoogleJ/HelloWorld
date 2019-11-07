@@ -125,8 +125,8 @@ public class DownCoinActivity extends BaseActivity {
         divider.setVisibility(View.VISIBLE);
         tvAllIn.setVisibility(View.VISIBLE);
         tvBalance.setVisibility(View.VISIBLE);
-        tvBalance.setText("余额钱包可用数量" + data.getBalance() + data.getCurrencyName());
-        String str = "交易手续费为：" + data.getRate() + data.getCurrencyName();
+        tvBalance.setText("余额钱包可用数量" + data.getBalance() + data.getCoin());
+        String str = "交易手续费为：" + data.getRate() + data.getCoin();
         SpannableString string = new SpannableString(str);
         string.setSpan(new ForegroundColorSpan(Color.parseColor("#FC6660")), 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         string.setSpan(new RelativeSizeSpan(0.8f), str.length() - data.getCurrencyName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -232,7 +232,7 @@ public class DownCoinActivity extends BaseActivity {
                                             divider.setVisibility(View.VISIBLE);
                                             tvAllIn.setVisibility(View.VISIBLE);
                                             tvBalance.setVisibility(View.VISIBLE);
-                                            tvBalance.setText("数字钱包可用数量" + blockMoney + data.getCurrencyName());
+                                            tvBalance.setText("数字钱包可用数量" + blockMoney + data.getCoin());
                                         }, DownCoinActivity.this::handleApiError);
                             }, true))
                     .build();
@@ -335,7 +335,10 @@ public class DownCoinActivity extends BaseActivity {
                                     .compose(RxSchedulers.normalTrans())
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                     .subscribe(s -> {
-
+                                        Intent intent = new Intent(this, UpDownCoinResultActivity.class);
+                                        intent.putExtra("type", balance2block ? "提币" : "充币");
+                                        intent.putExtra("logo", data.getCoin());
+                                        startActivity(intent);
                                     }, this::handleApiError);
                         } else {
 
@@ -356,7 +359,10 @@ public class DownCoinActivity extends BaseActivity {
                                 .compose(RxSchedulers.normalTrans())
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                 .subscribe(s -> {
-
+                                    Intent intent = new Intent(this, UpDownCoinResultActivity.class);
+                                    intent.putExtra("type", balance2block ? "提币" : "充币");
+                                    intent.putExtra("logo", data.getLogo());
+                                    startActivity(intent);
                                 }, this::handleApiError);
                     }
                 });
@@ -383,8 +389,8 @@ public class DownCoinActivity extends BaseActivity {
                             divider.setVisibility(View.VISIBLE);
                             tvAllIn.setVisibility(View.VISIBLE);
                             tvBalance.setVisibility(View.VISIBLE);
-                            tvBalance.setText("余额钱包可用数量" + data.getBalance() + data.getCurrencyName());
-                            String str = "交易手续费为：" + data.getRate() + data.getCurrencyName();
+                            tvBalance.setText("余额钱包可用数量" + data.getBalance() + data.getCoin());
+                            String str = "交易手续费为：" + data.getRate() + data.getCoin();
                             SpannableString string = new SpannableString(str);
                             string.setSpan(new ForegroundColorSpan(Color.parseColor("#FC6660")), 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             string.setSpan(new RelativeSizeSpan(0.8f), str.length() - data.getCurrencyName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

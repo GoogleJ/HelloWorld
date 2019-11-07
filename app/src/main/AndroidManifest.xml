@@ -55,6 +55,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.minepage.wallet.UpDownCoinResultActivity"></activity>
         <activity
             android:name=".ui.minepage.wallet.DownCoinActivity"
             android:launchMode="singleTop"
@@ -352,10 +353,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.walletpage.BlockOrderDetailActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.HuaZhuanActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
