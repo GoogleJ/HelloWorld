@@ -22,6 +22,7 @@ import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
+import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
 import com.zxjk.duoduo.bean.response.GetPublicGroupResponse;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
@@ -643,4 +644,11 @@ public interface Api {
     Observable<BaseResponse<GetSymbolSerialResponse>> getSymbolSerial(@Field("pageSizeStr") String pageSizeStr,
                                                                       @Field("pageNoStr") String pageNoStr, @Field("symbol") String symbol, @Field("parentSymbol") String parentSymbol);
 
+    @POST("duoduo/currency/getParentSymbol")
+    @FormUrlEncoded
+    Observable<BaseResponse<List<GetParentSymbolBean>>> getParentSymbol(@Field("symbol") String symbol);
+
+    @POST("duoduo/wallet/getBalanceInfoByAddress")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> getBalanceInfoByAddress(@Field("walletAddress") String walletAddress, @Field("coinType") String coinType, @Field("parentSymbol") String parentSymbol, @Field("contractAddress") String contractAddress, @Field("tokenDecimal") String tokenDecimal);
 }

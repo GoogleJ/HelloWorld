@@ -25,7 +25,15 @@ public class SignTransactionRequest {
     private String serialType;
     private String tokenName;
     private String transType;
-    private String rateBalance;
+    private String rate;
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
 
     public String getFromAddress() {
         return fromAddress;
@@ -97,14 +105,6 @@ public class SignTransactionRequest {
 
     public void setTokenName(String tokenName) {
         this.tokenName = tokenName;
-    }
-
-    public String getRateBalance() {
-        return rateBalance;
-    }
-
-    public void setRateBalance(String rateBalance) {
-        this.rateBalance = rateBalance;
     }
 
 }

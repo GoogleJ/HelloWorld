@@ -13,18 +13,27 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.SignTransactionRequest;
 import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
+import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -32,10 +41,16 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.QrCodeActivity;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
+import razerdp.widget.QuickPopup;
 
 public class DownCoinActivity extends BaseActivity {
 
@@ -62,6 +77,14 @@ public class DownCoinActivity extends BaseActivity {
 
     private float gasMax;
     private float gasMin;
+
+    private QuickPopup chooseAddressPop;
+    private RecyclerView recyclerChooseAddress;
+    private BaseQuickAdapter<GetParentSymbolBean, BaseViewHolder> addressAdapter;
+    private ArrayList<GetParentSymbolBean> parentSymbolBeans = new ArrayList<>();
+    private int checkedIndex = -1;
+    //从本平台选择到的地址对应余额
+    private String blockMoney;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +142,11 @@ public class DownCoinActivity extends BaseActivity {
                 }
                 etCount.setText(String.valueOf(result));
             } else {
-
+                if (!TextUtils.isEmpty(blockMoney)) {
+                    etCount.setText(blockMoney);
+                }
             }
         });
-
 
         if (data.getParentSymbol().equals("ETH")) {
             //ETH
@@ -176,8 +200,93 @@ public class DownCoinActivity extends BaseActivity {
         startActivityForResult(intent, 1);
     }
 
+    @SuppressLint("CheckResult")
     public void chooseBlockAddress(View view) {
+        if (chooseAddressPop == null) {
+            TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
+            showAnimation.setDuration(250);
+            TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
+            dismissAnimation.setDuration(500);
+            chooseAddressPop = QuickPopupBuilder.with(this)
+                    .contentView(R.layout.pop_choose_blockaddress)
+                    .config(new QuickPopupConfig()
+                            .withShowAnimation(showAnimation)
+                            .withDismissAnimation(dismissAnimation)
+                            .dismissOnOutSideTouch(false)
+                            .withClick(R.id.ivClose, null, true)
+                            .withClick(R.id.tvConfirm, v -> {
+                                if (checkedIndex == -1) {
+                                    ToastUtils.showShort(R.string.select_walletaddress);
+                                    return;
+                                }
 
+                                GetParentSymbolBean bean = parentSymbolBeans.get(checkedIndex);
+
+                                ServiceFactory.getInstance().getBaseService(Api.class)
+                                        .getBalanceInfoByAddress(bean.getWalletAddress(), bean.getCoinType(), bean.getParentSymbol(), bean.getContractAddress(), bean.getTokenDecimal())
+                                        .compose(bindToLifecycle())
+                                        .compose(RxSchedulers.normalTrans())
+                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(DownCoinActivity.this)))
+                                        .subscribe(s -> {
+                                            blockMoney = s;
+                                            divider.setVisibility(View.VISIBLE);
+                                            tvAllIn.setVisibility(View.VISIBLE);
+                                            tvBalance.setVisibility(View.VISIBLE);
+                                            tvBalance.setText("数字钱包可用数量" + blockMoney + data.getCurrencyName());
+                                        }, DownCoinActivity.this::handleApiError);
+                            }, true))
+                    .build();
+
+            recyclerChooseAddress = chooseAddressPop.findViewById(R.id.recyclerChooseAddress);
+            recyclerChooseAddress.setLayoutManager(new LinearLayoutManager(this));
+            addressAdapter = new BaseQuickAdapter<GetParentSymbolBean, BaseViewHolder>(R.layout.item_choose_block_walletaddress) {
+                @Override
+                protected void convert(BaseViewHolder helper, GetParentSymbolBean item) {
+                    ImageView ivlogo = helper.getView(R.id.ivLogo);
+                    GlideUtil.loadNormalImg(ivlogo, item.getLogo());
+
+                    helper.setText(R.id.tvSymbol, item.getSymbol())
+                            .setText(R.id.tvAddress, item.getWalletAddress());
+                    CheckBox cb = helper.getView(R.id.cb);
+                    if (helper.getAdapterPosition() == checkedIndex) {
+                        cb.setChecked(true);
+                    } else {
+                        cb.setChecked(false);
+                    }
+                }
+            };
+            addressAdapter.setOnItemClickListener((adapter, view1, p) -> {
+                int position = -1;
+                if (checkedIndex != -1) {
+                    position = checkedIndex;
+                }
+                checkedIndex = p;
+                if (position != -1) {
+                    adapter.notifyItemChanged(position);
+                }
+                adapter.notifyItemChanged(checkedIndex);
+            });
+
+            recyclerChooseAddress.setAdapter(addressAdapter);
+        }
+
+        if (parentSymbolBeans.size() == 0) {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getParentSymbol(data.getCoin())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(list -> {
+                        this.parentSymbolBeans.addAll(list);
+                        addressAdapter.setNewData(list);
+                        chooseAddressPop.showPopupWindow();
+                    }, this::handleApiError);
+        } else {
+            checkedIndex = -1;
+            blockMoney = "";
+            addressAdapter.notifyDataSetChanged();
+            chooseAddressPop.showPopupWindow();
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -207,30 +316,50 @@ public class DownCoinActivity extends BaseActivity {
             return;
         }
 
-        if (balance2block) {
-            new NewPayBoard(this).show(result -> {
-                if (data.getParentSymbol().equals("ETH")) {
-                    SignTransactionRequest request = new SignTransactionRequest();
-                    request.setBalance(count);
-                    request.setTokenName(data.getCurrencyName());
-                    request.setToAddress(blockAddress);
+        new NewPayBoard(this)
+                .show(pwd -> {
+                    if (balance2block) {
+                        if (data.getParentSymbol().equals("ETH")) {
+                            SignTransactionRequest request = new SignTransactionRequest();
+                            request.setBalance(count);
+                            request.setTokenName(data.getCoin());
+                            request.setToAddress(blockAddress);
+                            request.setFromAddress(data.getBalanceAddress());
+                            request.setSerialType("1");
+                            request.setTransType("1");
+                            request.setRate(data.getRate());
 
-                    ServiceFactory.getInstance().getBaseService(Api.class)
-                            .signTransaction(GsonUtils.toJson(request), MD5Utils.getMD5(result))
-                            .compose(bindToLifecycle())
-                            .compose(RxSchedulers.normalTrans())
-                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                            .subscribe(s -> {
-//                                ToastUtils.showShort(R.string.down_coin_success);
-//                                finish();
-                            }, this::handleApiError);
-                } else {
+                            ServiceFactory.getInstance().getBaseService(Api.class)
+                                    .signTransaction(GsonUtils.toJson(request), MD5Utils.getMD5(pwd))
+                                    .compose(bindToLifecycle())
+                                    .compose(RxSchedulers.normalTrans())
+                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                                    .subscribe(s -> {
 
-                }
-            });
-        } else {
+                                    }, this::handleApiError);
+                        } else {
 
-        }
+                        }
+                    } else {
+                        SignTransactionRequest request = new SignTransactionRequest();
+                        request.setFromAddress(blockAddress);
+                        request.setToAddress(data.getBalanceAddress());
+                        request.setGasPrice(tvHuaZhuanGasPrice2.getText().toString().split(" ")[0]);
+                        request.setBalance(count);
+                        request.setSerialType("1");
+                        request.setTransType("0");
+                        request.setTokenName(data.getCoin());
+
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .signTransaction(GsonUtils.toJson(request), MD5Utils.getMD5(pwd))
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.normalTrans())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                                .subscribe(s -> {
+
+                                }, this::handleApiError);
+                    }
+                });
     }
 
     private void swapViewUpDown(View upView, View downView) {
@@ -272,7 +401,6 @@ public class DownCoinActivity extends BaseActivity {
                     }
                 });
     }
-
 
     private double subtract(double v1, double v2) {
         BigDecimal b1 = new BigDecimal(Double.toString(v1));

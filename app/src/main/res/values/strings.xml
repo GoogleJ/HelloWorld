@@ -807,4 +807,6 @@
     <string name="up_count_less_zero">充币数量不能小于0</string>
     <string name="down_count_less_zero">提币数量不能小于0</string>
     <string name="down_coin_success">提币成功</string>
+    <string name="choose_block_address">选择数字钱包地址</string>
+    <string name="select_walletaddress">请选择钱包地址</string>
 </resources>
