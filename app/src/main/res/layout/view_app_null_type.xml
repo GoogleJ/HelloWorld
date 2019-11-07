@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/app_type"
-        android:src="@drawable/icon_not_found_friend"
+        android:src="@drawable/ic_emptyview_nofriend"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_width="256dp"

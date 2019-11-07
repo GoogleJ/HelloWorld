@@ -66,7 +66,7 @@ public class GlobalSearchActivity extends BaseActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         ImageView app_type = emptyView.findViewById(R.id.app_type);
         TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
-        app_type.setImageResource(R.drawable.icon_no_search);
+        app_type.setImageResource(R.drawable.ic_empty_nosearch);
         app_prompt_text.setText(getString(R.string.no_search));
         app_prompt_text.setVisibility(View.GONE);
         LinearLayoutManager manager = new LinearLayoutManager(this);
