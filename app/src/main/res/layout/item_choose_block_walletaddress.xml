@@ -17,8 +17,7 @@
             android:id="@+id/ivLogo"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="12dp"
-            android:src="#e5e5e5" />
+            android:layout_marginEnd="12dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -31,7 +30,6 @@
                 android:id="@+id/tvSymbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ETH"
                 android:textColor="@color/black" />
 
             <TextView
@@ -41,7 +39,6 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="middle"
                 android:singleLine="true"
-                android:text="0x238hjf23fji99dqwj6cqwh15abv1cse19kasdn"
                 android:textColor="@color/textColor9" />
 
         </LinearLayout>
@@ -51,7 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_exchange_radio"
-            android:button="@null" />
+            android:button="@null"
+            android:clickable="false" />
 
     </LinearLayout>
 

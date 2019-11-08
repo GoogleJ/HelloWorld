@@ -40,6 +40,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.QrCodeActivity;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
+import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
@@ -249,7 +250,7 @@ public class DownCoinActivity extends BaseActivity {
                     ImageView ivlogo = helper.getView(R.id.ivLogo);
                     GlideUtil.loadNormalImg(ivlogo, item.getLogo());
 
-                    helper.setText(R.id.tvSymbol, item.getSymbol())
+                    helper.setText(R.id.tvSymbol, item.getWalletName())
                             .setText(R.id.tvAddress, item.getWalletAddress());
                     CheckBox cb = helper.getView(R.id.cb);
                     if (helper.getAdapterPosition() == checkedIndex) {
@@ -281,9 +282,15 @@ public class DownCoinActivity extends BaseActivity {
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .subscribe(list -> {
-                        this.parentSymbolBeans.addAll(list);
-                        addressAdapter.setNewData(list);
-                        chooseAddressPop.showPopupWindow();
+                        if (list.size() != 0) {
+                            this.parentSymbolBeans.addAll(list);
+                            addressAdapter.setNewData(list);
+                            chooseAddressPop.showPopupWindow();
+                        } else {
+                            MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消", "去创建", "提示", "您还未创建数字钱包，请创建后再进行划转。");
+                            dialog.setOnCommitListener(() -> startActivity(new Intent(this, BlockWalletEmptyActivity.class)));
+                            dialog.show();
+                        }
                     }, this::handleApiError);
         } else {
             checkedIndex = -1;
@@ -320,6 +327,11 @@ public class DownCoinActivity extends BaseActivity {
             return;
         }
 
+        if (blockAddress.equals(data.getBalanceAddress())) {
+            ToastUtils.showShort(R.string.address_same);
+            return;
+        }
+
         new NewPayBoard(this)
                 .show(pwd -> {
                     if (balance2block) {
@@ -343,6 +355,7 @@ public class DownCoinActivity extends BaseActivity {
                                         intent.putExtra("type", balance2block ? "提币" : "充币");
                                         intent.putExtra("logo", data.getCoin());
                                         startActivity(intent);
+                                        finish();
                                     }, this::handleApiError);
                         } else {
 
@@ -367,6 +380,7 @@ public class DownCoinActivity extends BaseActivity {
                                     intent.putExtra("type", balance2block ? "提币" : "充币");
                                     intent.putExtra("logo", data.getLogo());
                                     startActivity(intent);
+                                    finish();
                                 }, this::handleApiError);
                     }
                 });

@@ -42,6 +42,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ContactFragment extends BaseFragment {
 
@@ -71,6 +72,29 @@ public class ContactFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
+
+        getPermisson(rootView.findViewById(R.id.ll_contract_top3), granted -> {
+            if (!granted) {
+                return;
+            }
+            AMapLocationClient mLocationClient = new AMapLocationClient(Utils.getApp());
+            AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
+            mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
+            mLocationClient.setLocationOption(mLocationOption);
+            mLocationClient.setLocationListener(location -> {
+                CommonUtils.destoryDialog();
+                if (location.getErrorCode() == 0) {
+                    Intent intent = new Intent(getContext(), NearByActivity.class);
+                    intent.putExtra("location", location);
+                    startActivity(intent);
+                } else {
+                    ToastUtils.showShort(R.string.getlocation_fail);
+                }
+            });
+            CommonUtils.initDialog(getActivity(), getString(R.string.getlocation)).show();
+            mLocationClient.startLocation();
+        }, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
+
         ButterKnife.bind(this, rootView);
 
         textView.setOnClickListener(v -> startActivity(new Intent(getContext(), GlobalSearchActivity.class)));
@@ -110,7 +134,23 @@ public class ContactFragment extends BaseFragment {
         }
     }
 
+    @OnClick({R.id.ll_contract_top1, R.id.ll_contract_top2})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_contract_top1:
+                ((HomeActivity) getActivity()).badgeItem2.hide();
+                MMKVUtils.getInstance().enCode("newFriendCount", 0);
+                dotNewFriend.setVisibility(View.INVISIBLE);
+                startActivity(new Intent(getActivity(), NewFriendActivity.class));
+                break;
+            case R.id.ll_contract_top2:
+                startActivity(new Intent(getActivity(), GroupChatActivity.class));
+                break;
+        }
+    }
+
     private View headView;
+
     private void initHead(boolean isEmpty) {
         LinearLayout ll_contract_top1;
         LinearLayout ll_contract_top2;

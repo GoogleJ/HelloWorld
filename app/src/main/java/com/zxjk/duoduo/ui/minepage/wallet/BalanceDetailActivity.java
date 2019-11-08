@@ -114,11 +114,10 @@ public class BalanceDetailActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void initData() {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getSymbolSerial(String.valueOf(page), String.valueOf(numsPerPage), data.getCurrencyName(),
+                .getSymbolSerial(String.valueOf(numsPerPage), String.valueOf(page), data.getCurrencyName(),
                         data.getParentSymbol())
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
-                .doOnTerminate(() -> (refreshLayout).setRefreshing(false))
                 .map(response -> {
                     runOnUiThread(() -> {
                         if (TextUtils.isEmpty(data.getBalanceAddress())) {
@@ -129,6 +128,7 @@ public class BalanceDetailActivity extends BaseActivity {
                     return parseResponse(response);
                 })
                 .compose(RxSchedulers.ioObserver())
+                .doOnTerminate(() -> (refreshLayout).setRefreshing(false))
                 .subscribe(list -> {
                     page += 1;
                     if (page == 2) {

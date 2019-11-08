@@ -49,6 +49,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.provider.RedPacketProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SystemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.TransferProvider;
 import com.zxjk.duoduo.utils.MMKVUtils;
+import com.zxjk.duoduo.utils.MyCrashHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +79,11 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (BuildConfig.enableLog) {
+            MyCrashHandler mycrashHandler = new MyCrashHandler();
+            Thread.setDefaultUncaughtExceptionHandler(mycrashHandler);
+        }
 
         //init MMKV
         MMKV.initialize(this);
