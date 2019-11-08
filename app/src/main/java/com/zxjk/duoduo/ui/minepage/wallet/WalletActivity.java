@@ -52,7 +52,8 @@ public class WalletActivity extends BaseActivity {
 
     public void mall(View view) {
         Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra("url", "http://192.168.1.69:8090/#/" + "?user_id=" + Constant.userId + "&token=" + Constant.token);
+        intent.putExtra("url", "http://shopping.ztoken.cn/#/" + "?user_id=" +
+                Constant.userId + "&token=" + Constant.token);
         intent.putExtra("title", "商城");
         intent.putExtra("type", "mall");
         startActivity(intent);
