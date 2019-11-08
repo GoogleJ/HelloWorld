@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -44,6 +45,7 @@ import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
+import com.zxjk.duoduo.utils.MoneyValueFilter;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -122,6 +124,7 @@ public class DownCoinActivity extends BaseActivity {
         tvBlanceAddress.setText(data.getBalanceAddress());
         tvTips.setText("提币数量");
         etCount.setHint("请输入提币数量");
+        etCount.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(Integer.parseInt(data.getDecimals()))});
         tvGasPrice.setVisibility(View.VISIBLE);
         llBlock2Balance.setVisibility(View.GONE);
         divider.setVisibility(View.VISIBLE);
