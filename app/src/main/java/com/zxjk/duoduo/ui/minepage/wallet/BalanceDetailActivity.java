@@ -14,6 +14,7 @@ import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,12 +23,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.chad.library.adapter.base.BaseSectionQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.bean.response.GetSymbolSerialResponse;
-import com.zxjk.duoduo.bean.response.GetSymbolSerialSection;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -36,8 +36,6 @@ import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BalanceDetailActivity extends BaseActivity {
 
@@ -52,7 +50,8 @@ public class BalanceDetailActivity extends BaseActivity {
     private TextView tvAddress;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView recycler;
-    private BaseSectionQuickAdapter<GetSymbolSerialSection, BaseViewHolder> adapter;
+    private BaseQuickAdapter<GetSymbolSerialResponse.SymbolSerialDTOSBean, BaseViewHolder> adapter;
+    private boolean fromTrade;
 
     private int page = 1;
     private int numsPerPage = 10;
@@ -75,27 +74,49 @@ public class BalanceDetailActivity extends BaseActivity {
         initData();
     }
 
-    private void initAdapter() {
-        adapter = new BaseSectionQuickAdapter<GetSymbolSerialSection, BaseViewHolder>(R.layout.item_balancedetail, R.layout.item_balancedetail_head, null) {
-            @Override
-            protected void convertHead(BaseViewHolder helper, GetSymbolSerialSection item) {
-                helper.setText(R.id.tvDate, item.getMonth())
-                        .setText(R.id.tvIn, "收入:" + item.getIncome() + data.getCurrencyName())
-                        .setText(R.id.tvOut, "支出:" + item.getExpenditure() + data.getCurrencyName());
-            }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        fromTrade = true;
+    }
 
+    @Override
+    public void finish() {
+        if (fromTrade) {
+            Intent intent = new Intent(this, BalanceLeftActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } else {
+            super.finish();
+        }
+    }
+
+    private void initAdapter() {
+        adapter = new BaseQuickAdapter<GetSymbolSerialResponse.SymbolSerialDTOSBean, BaseViewHolder>(R.layout.item_balancedetail, null) {
             @Override
-            protected void convert(BaseViewHolder helper, GetSymbolSerialSection item) {
+            protected void convert(BaseViewHolder helper, GetSymbolSerialResponse.SymbolSerialDTOSBean item) {
                 ImageView ivIcon = helper.getView(R.id.ivIcon);
                 TextView tvMoney = helper.getView(R.id.tvMoney);
-                GlideUtil.loadNormalImg(ivIcon, item.t.getLogo());
-                helper.setText(R.id.tvTitle, item.t.getSerialTitle())
-                        .setText(R.id.tvTime, sdf.format(Long.parseLong(item.t.getCreateTime())));
+                GlideUtil.loadNormalImg(ivIcon, item.getLogo());
+                helper.setText(R.id.tvTitle, item.getSerialTitle())
+                        .setText(R.id.tvTime, sdf.format(Long.parseLong(item.getCreateTime())))
+                        .setText(R.id.tvDate, item.getMonth())
+                        .setText(R.id.tvIn, "收入:" + item.getIncome() + data.getCurrencyName())
+                        .setText(R.id.tvOut, "支出:" + item.getExpenditure() + data.getCurrencyName());
 
-                SpannableString string = new SpannableString((item.t.getSerialType().equals("0") ? "+" : "-") + item.t.getAmount() + " " + item.t.getSymbol());
-                string.setSpan(new RelativeSizeSpan(0.70f), string.length() - item.t.getSymbol().length(), string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                SpannableString string = new SpannableString((item.getSerialType().equals("0") ? "+" : "-") + item.getAmount() + " " + item.getSymbol());
+                string.setSpan(new RelativeSizeSpan(0.70f), string.length() - item.getSymbol().length(), string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tvMoney.setText(string);
-                tvMoney.setTextColor(item.t.getSerialType().equals("0") ? colorRed : colorBlack);
+                tvMoney.setTextColor(item.getSerialType().equals("0") ? colorRed : colorBlack);
+
+                LinearLayout llHean = helper.getView(R.id.llHead);
+                if (helper.getAdapterPosition() == 0) {
+                    llHean.setVisibility(View.VISIBLE);
+                } else if (getData().get(helper.getAdapterPosition() - 1).getMonth().equals(item.getMonth())) {
+                    llHean.setVisibility(View.GONE);
+                } else {
+                    llHean.setVisibility(View.VISIBLE);
+                }
             }
         };
 
@@ -118,25 +139,20 @@ public class BalanceDetailActivity extends BaseActivity {
                         data.getParentSymbol())
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
-                .map(response -> {
-                    runOnUiThread(() -> {
-                        if (TextUtils.isEmpty(data.getBalanceAddress())) {
-                            data.setBalanceAddress(response.getBalanceAddress());
-                            tvAddress.setText(data.getBalanceAddress());
-                        }
-                    });
-                    return parseResponse(response);
-                })
                 .compose(RxSchedulers.ioObserver())
                 .doOnTerminate(() -> (refreshLayout).setRefreshing(false))
-                .subscribe(list -> {
+                .subscribe(response -> {
+                    if (TextUtils.isEmpty(data.getBalanceAddress())) {
+                        data.setBalanceAddress(response.getBalanceAddress());
+                        tvAddress.setText(data.getBalanceAddress());
+                    }
                     page += 1;
                     if (page == 2) {
-                        adapter.setNewData(list);
+                        adapter.setNewData(response.getSymbolSerialDTOS());
                         adapter.disableLoadMoreIfNotFullPage();
                     } else {
-                        adapter.addData(list);
-                        if (list.size() >= numsPerPage) {
+                        adapter.addData(response.getSymbolSerialDTOS());
+                        if (response.getSymbolSerialDTOS().size() >= numsPerPage) {
                             adapter.loadMoreComplete();
                         } else {
                             adapter.loadMoreEnd(false);
@@ -146,22 +162,6 @@ public class BalanceDetailActivity extends BaseActivity {
                     if (page != 1) adapter.loadMoreFail();
                     handleApiError(t);
                 });
-    }
-
-    private List<GetSymbolSerialSection> parseResponse(GetSymbolSerialResponse response) {
-        ArrayList<GetSymbolSerialSection> result = new ArrayList<>();
-        for (int i = 0; i < response.getSymbolSerialDTOS().size(); i++) {
-            GetSymbolSerialResponse.SymbolSerialDTOSBean symbolSerialDTOSBean = response.getSymbolSerialDTOS().get(i);
-            GetSymbolSerialResponse.SymbolSerialDTOSBean.SerialListBean serialListBean = new GetSymbolSerialResponse.SymbolSerialDTOSBean.SerialListBean();
-
-            GetSymbolSerialSection section = new GetSymbolSerialSection(serialListBean, symbolSerialDTOSBean.getMonth(), symbolSerialDTOSBean.getIncome(), symbolSerialDTOSBean.getExpenditure());
-            section.isHeader = true;
-            result.add(section);
-            for (int j = 0; j < symbolSerialDTOSBean.getSerialList().size(); j++) {
-                result.add(new GetSymbolSerialSection(symbolSerialDTOSBean.getSerialList().get(j), "", "", ""));
-            }
-        }
-        return result;
     }
 
     private void initView() {

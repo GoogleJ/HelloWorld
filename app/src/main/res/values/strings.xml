@@ -814,4 +814,5 @@
     <string name="check_orders">查看交易记录</string>
     <string name="back2walletlist">返回钱包首页</string>
     <string name="address_same">钱包地址不能相同</string>
+    <string name="tips_downcoin2">请选择您的数字钱包地址</string>
 </resources>

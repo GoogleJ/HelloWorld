@@ -75,6 +75,7 @@ public class DownCoinActivity extends BaseActivity {
     private SeekBar seekHuaZhuan;
     private TextView tvHuaZhuanGasPrice2;
     private TextView tvGasPrice;
+    private ImageView ivScan;
 
     private float gasMax;
     private float gasMin;
@@ -94,7 +95,6 @@ public class DownCoinActivity extends BaseActivity {
 
         data = getIntent().getParcelableExtra("data");
         initView();
-
     }
 
     private void initView() {
@@ -117,6 +117,7 @@ public class DownCoinActivity extends BaseActivity {
         seekHuaZhuan = findViewById(R.id.seekHuaZhuan);
         tvHuaZhuanGasPrice2 = findViewById(R.id.tvHuaZhuanGasPrice2);
         tvGasPrice = findViewById(R.id.tvGasPrice);
+        ivScan = findViewById(R.id.ivScan);
 
         tvBlanceAddress.setText(data.getBalanceAddress());
         tvTips.setText("提币数量");
@@ -332,6 +333,17 @@ public class DownCoinActivity extends BaseActivity {
             return;
         }
 
+        String limit = data.getCurrencyLimit();
+        if (!TextUtils.isEmpty(limit)) {
+            double limitNum = Double.parseDouble(limit);
+            if (balance2block) {
+                if (Double.parseDouble(count) <= limitNum) {
+                    ToastUtils.showShort("当前提币数量不得小于" + limitNum);
+                    return;
+                }
+            }
+        }
+
         new NewPayBoard(this)
                 .show(pwd -> {
                     if (balance2block) {
@@ -413,6 +425,9 @@ public class DownCoinActivity extends BaseActivity {
                             string.setSpan(new ForegroundColorSpan(Color.parseColor("#FC6660")), 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             string.setSpan(new RelativeSizeSpan(0.8f), str.length() - data.getCurrencyName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             tvGasPrice.setText(string);
+                            ivScan.setVisibility(View.VISIBLE);
+                            etBlockAddress.setEnabled(true);
+                            etBlockAddress.setHint(R.string.tips_downcoin);
                         } else {
                             tvTips.setText("充币数量");
                             etCount.setHint("请输入充币数量");
@@ -421,6 +436,9 @@ public class DownCoinActivity extends BaseActivity {
                             divider.setVisibility(View.GONE);
                             tvAllIn.setVisibility(View.GONE);
                             tvBalance.setVisibility(View.GONE);
+                            ivScan.setVisibility(View.GONE);
+                            etBlockAddress.setEnabled(false);
+                            etBlockAddress.setHint(R.string.tips_downcoin2);
                         }
                     }
                 });

@@ -73,6 +73,16 @@ public class BalanceLeftActivity extends BaseActivity {
         recycler.setAdapter(adapter);
         isShow = !MMKVUtils.getInstance().decodeBool("bahaviour2_showWalletBalance");
 
+        initData();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        initData();
+    }
+
+    private void initData() {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getBalanceInfo()
                 .compose(bindToLifecycle())
