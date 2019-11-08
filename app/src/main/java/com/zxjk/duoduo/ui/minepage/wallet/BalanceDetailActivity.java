@@ -27,17 +27,22 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
+import com.zxjk.duoduo.bean.response.GetSerialBean;
 import com.zxjk.duoduo.bean.response.GetSymbolSerialResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.DetailInfoActivity;
+import com.zxjk.duoduo.ui.minepage.DetailListActivity;
 import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.text.SimpleDateFormat;
 
 public class BalanceDetailActivity extends BaseActivity {
+
+    private String canTransfer;
 
     private GetBalanceInfoResponse.BalanceListBean data;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -129,6 +134,21 @@ public class BalanceDetailActivity extends BaseActivity {
         adapter.setLoadMoreView(new NewsLoadMoreView());
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(this::initData, recycler);
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(BalanceDetailActivity.this, DetailInfoActivity.class);
+            GetSerialBean b = new GetSerialBean();
+            GetSymbolSerialResponse.SymbolSerialDTOSBean dtosBean = BalanceDetailActivity.this.adapter.getData().get(position);
+            b.setAmount(dtosBean.getAmount());
+            b.setCreateTime(dtosBean.getCreateTime());
+            b.setLogo(dtosBean.getLogo());
+            b.setSerialNumber(dtosBean.getSerialNumber());
+            b.setSerialTitle(dtosBean.getSerialTitle());
+            b.setSerialType(dtosBean.getSerialType());
+            b.setSymbol(dtosBean.getSymbol());
+            b.setSource(dtosBean.getSource());
+            intent.putExtra("data", b);
+            startActivity(intent);
+        });
         recycler.setAdapter(adapter);
     }
 
@@ -142,6 +162,7 @@ public class BalanceDetailActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver())
                 .doOnTerminate(() -> (refreshLayout).setRefreshing(false))
                 .subscribe(response -> {
+                    canTransfer = response.getCanTransfer();
                     if (TextUtils.isEmpty(data.getBalanceAddress())) {
                         data.setBalanceAddress(response.getBalanceAddress());
                         tvAddress.setText(data.getBalanceAddress());
@@ -195,12 +216,20 @@ public class BalanceDetailActivity extends BaseActivity {
     }
 
     public void downCoin(View view) {
+        if (!TextUtils.isEmpty(canTransfer) && canTransfer.equals("1")) {
+            ToastUtils.showShort(R.string.developing);
+            return;
+        }
         Intent intent = new Intent(this, DownCoinActivity.class);
         intent.putExtra("data", data);
         startActivity(intent);
     }
 
     public void upCoin(View view) {
+        if (!TextUtils.isEmpty(canTransfer) && canTransfer.equals("1")) {
+            ToastUtils.showShort(R.string.developing);
+            return;
+        }
         Intent intent = new Intent(this, UpCoinActivity.class);
         intent.putExtra("data", data);
         startActivity(intent);

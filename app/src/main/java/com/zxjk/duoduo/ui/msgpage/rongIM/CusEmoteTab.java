@@ -179,7 +179,7 @@ public class CusEmoteTab implements IEmoticonTab {
 
                 CusEmoteTabMessage msgContent = new CusEmoteTabMessage();
                 msgContent.setId(String.valueOf(index + 1));
-                if (index == 0 || index == 1 || index == 3 || index == 4 || index == 6 || index == 7 || index == 8 || index == 10) {
+                if (index == 0 || index == 1 || index == 3 || index == 4 || index == 6 || index == 7 || index == 8 || index == 9) {
                     msgContent.setIsGif("1");
                 } else {
                     msgContent.setIsGif("0");

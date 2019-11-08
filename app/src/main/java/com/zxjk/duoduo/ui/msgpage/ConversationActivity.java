@@ -474,6 +474,9 @@ public class ConversationActivity extends BaseActivity {
                 groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
             ToastUtils.showShort(R.string.picture_forbidden);
             return null;
+        } else if (message.getContent() instanceof CusEmoteTabMessage && groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
+            ToastUtils.showShort(R.string.picture_forbidden);
+            return null;
         }
         return message;
     }
@@ -693,6 +696,10 @@ public class ConversationActivity extends BaseActivity {
                 iterator.remove();
                 break;
             }
+            if (next.getTitle(this).equals("转发")) {
+                iterator.remove();
+                break;
+            }
         }
 
         if (isOwner || groupInfo.getGroupPermission() != null && groupInfo.getGroupPermission().getForceRecall().equals("1")) {
@@ -779,6 +786,20 @@ public class ConversationActivity extends BaseActivity {
                     iterator.remove();
                     extension.removePlugin(next);
                 }
+            }
+        }
+
+        List<MessageItemLongClickAction> actionList = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions();
+        Iterator<MessageItemLongClickAction> iterator = actionList.iterator();
+        while (iterator.hasNext()) {
+            MessageItemLongClickAction next = iterator.next();
+            if (next.getTitle(this).equals("强制撤回")) {
+                iterator.remove();
+                break;
+            }
+            if (next.getTitle(this).equals("转发")) {
+                iterator.remove();
+                break;
             }
         }
     }

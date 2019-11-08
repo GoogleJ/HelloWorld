@@ -9,12 +9,12 @@ import android.text.TextUtils;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.ui.HomeActivity;
+import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
@@ -28,7 +28,6 @@ import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 
 public class ForwardAction implements IClickActions {
@@ -41,14 +40,23 @@ public class ForwardAction implements IClickActions {
         ConversationFragment fragment = (ConversationFragment) curFragment;
         List<Message> messages = fragment.getCheckedMessages();
         for (Message msg : messages) {
-            boolean cantForward = msg.getContent() instanceof RedPacketMessage ||
-                    msg.getContent() instanceof TransferMessage ||
-                    msg.getContent() instanceof SystemMessage ||
-                    msg.getContent() instanceof GameResultMessage ||
-                    msg.getContent() instanceof DuoDuoMessage ||
-                    msg.getContent() instanceof VoiceMessage ||
-                    msg.getContent() instanceof GroupCardMessage ||
-                    (msg.getContent() instanceof TextMessage && !TextUtils.isEmpty(((TextMessage) msg.getContent()).getExtra()) && ((TextMessage) msg.getContent()).getExtra().equals("start"));
+            String objectName = msg.getObjectName();
+
+            boolean cantForward = objectName.equals("MRedPackageMsg") ||
+                    objectName.equals("app:transfer") ||
+                    objectName.equals("duoduo:Msg") ||
+                    objectName.equals("duoduo:system:system") ||
+                    objectName.equals("RC:VcMsg") ||
+                    objectName.equals("MGroupCardMsg");
+            if (!TextUtils.isEmpty(msg.getExtra())) {
+                try {
+                    ConversationInfo j = GsonUtils.fromJson(msg.getExtra(), ConversationInfo.class);
+                    if (j.getMessageBurnTime() != -1) {
+                        cantForward = true;
+                    }
+                } catch (Exception e) {
+                }
+            }
             if (cantForward) {
                 ToastUtils.showShort(R.string.cant_forward);
                 return;

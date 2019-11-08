@@ -14,7 +14,16 @@ public class GetSymbolSerialResponse implements Parcelable {
      */
 
     private String balanceAddress;
+    private String canTransfer;
     private List<SymbolSerialDTOSBean> symbolSerialDTOS;
+
+    public String getCanTransfer() {
+        return canTransfer;
+    }
+
+    public void setCanTransfer(String canTransfer) {
+        this.canTransfer = canTransfer;
+    }
 
     public String getBalanceAddress() {
         return balanceAddress;
@@ -209,6 +218,9 @@ public class GetSymbolSerialResponse implements Parcelable {
         };
     }
 
+    public GetSymbolSerialResponse() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -217,19 +229,17 @@ public class GetSymbolSerialResponse implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.balanceAddress);
-        dest.writeList(this.symbolSerialDTOS);
-    }
-
-    public GetSymbolSerialResponse() {
+        dest.writeString(this.canTransfer);
+        dest.writeTypedList(this.symbolSerialDTOS);
     }
 
     protected GetSymbolSerialResponse(Parcel in) {
         this.balanceAddress = in.readString();
-        this.symbolSerialDTOS = new ArrayList<SymbolSerialDTOSBean>();
-        in.readList(this.symbolSerialDTOS, SymbolSerialDTOSBean.class.getClassLoader());
+        this.canTransfer = in.readString();
+        this.symbolSerialDTOS = in.createTypedArrayList(SymbolSerialDTOSBean.CREATOR);
     }
 
-    public static final Parcelable.Creator<GetSymbolSerialResponse> CREATOR = new Parcelable.Creator<GetSymbolSerialResponse>() {
+    public static final Creator<GetSymbolSerialResponse> CREATOR = new Creator<GetSymbolSerialResponse>() {
         @Override
         public GetSymbolSerialResponse createFromParcel(Parcel source) {
             return new GetSymbolSerialResponse(source);

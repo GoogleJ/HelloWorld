@@ -48,7 +48,7 @@ public class ServiceFactory {
                             .header("token", Constant.token)
                             .header("Accept-Language", Constant.language)
                             .header("phoneUuid", Constant.phoneUuid)
-                            .header("systemType", "Android");
+                            .header("systemType", "1");
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 })
@@ -113,7 +113,7 @@ public class ServiceFactory {
                             .header("token", Constant.token)
                             .header("Accept-Language", Constant.language)
                             .header("phoneUuid", Constant.phoneUuid)
-                            .header("systemType", "Android");
+                            .header("systemType", "1");
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 })

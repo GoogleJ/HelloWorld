@@ -30,7 +30,7 @@ public class CusConversationFragment extends ConversationFragment {
     public List<IClickActions> getMoreClickActions() {
         ArrayList<IClickActions> actions = new ArrayList(2);
         actions.add(new DeleteClickActions());
-        actions.add(new ForwardAction());
+//        actions.add(new ForwardAction());
         return actions;
     }
 

@@ -340,7 +340,7 @@
     <string name="receiptCode">收款码</string>
     <string name="setmoney">设置金额</string>
     <string name="recipetorders">收款记录</string>
-    <string name="shouruxiangqing">收入详情</string>
+    <string name="shouruxiangqing">明细详情</string>
     <string name="tradeDone">交易成功</string>
     <string name="tradeType">交易类型</string>
     <string name="tradeTime">交易时间</string>
@@ -538,7 +538,7 @@
     <string name="transfermessagefail">转发失败</string>
     <string name="forwarding">转发中</string>
     <string name="forward_success">转发成功</string>
-    <string name="cant_forward">无法转发语音、红包、转账、下注、群名片、系统等消息</string>
+    <string name="cant_forward">无法转发语音、红包、转账、群名片、系统等消息</string>
     <string name="update_success">更新成功</string>
     <string name="chat">密聊</string>
     <string name="news">资讯</string>

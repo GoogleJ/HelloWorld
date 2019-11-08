@@ -60,7 +60,6 @@ public class BaseActivity extends RxAppCompatActivity {
         }
         KeyboardUtils.clickBlankArea2HideSoftInput();
         setLightStatusBar(true);
-        BarUtils.setNavBarColor(this, Color.WHITE);
         super.onCreate(savedInstanceState);
     }
 

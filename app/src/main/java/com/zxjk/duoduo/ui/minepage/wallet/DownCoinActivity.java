@@ -292,7 +292,7 @@ public class DownCoinActivity extends BaseActivity {
                             chooseAddressPop.showPopupWindow();
                         } else {
                             MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消", "去创建", "提示", "您还未创建数字钱包，请创建后再进行划转。");
-                            dialog.setOnCommitListener(() -> startActivity(new Intent(this, BlockWalletEmptyActivity.class)));
+                            dialog.setOnCommitListener(() -> startActivity(new Intent(this, CreateWalletActivity.class)));
                             dialog.show();
                         }
                     }, this::handleApiError);
