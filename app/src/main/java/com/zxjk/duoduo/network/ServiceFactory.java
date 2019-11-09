@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
+import com.zxjk.duoduo.utils.OkHttpClientUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,6 +13,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
+import cn.rongcloud.rtc.media.http.SSLUtils;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,14 +57,14 @@ public class ServiceFactory {
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 })
-                .hostnameVerifier((s, sslSession) -> true)
+                .hostnameVerifier((hostname, session) -> hostname.equals("mochart.ztoken.cn"))
                 .readTimeout(8, TimeUnit.SECONDS)
                 .writeTimeout(8, TimeUnit.SECONDS)
                 .build();
 
         //buildApi
         retrofit = new Retrofit.Builder().baseUrl(Constant.BASE_URL)
-                .client(client)
+                .client(OkHttpClientUtil.getSSLClient(client, Utils.getApp(), "cacert.cer"))
                 .addConverterFactory(BasicConvertFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -95,39 +100,6 @@ public class ServiceFactory {
                 .build();
     }
 
-    private Retrofit initNormal1() {
-        //Log拦截器
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        if (BuildConfig.enableLog) {
-            interceptor.level(HttpLoggingInterceptor.Level.BODY);
-        } else {
-            interceptor.level(HttpLoggingInterceptor.Level.NONE);
-        }
-        //构造client对象
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor).connectTimeout(8, TimeUnit.SECONDS)
-                .addInterceptor(chain -> {
-                    Request original = chain.request();
-                    Request.Builder requestBuilder = original.newBuilder()
-                            .header("id", Constant.userId)
-                            .header("token", Constant.token)
-                            .header("Accept-Language", Constant.language)
-                            .header("phoneUuid", Constant.phoneUuid)
-                            .header("systemType", "1");
-                    Request request = requestBuilder.build();
-                    return chain.proceed(request);
-                })
-                .readTimeout(8, TimeUnit.SECONDS)
-                .writeTimeout(8, TimeUnit.SECONDS)
-                .build();
-
-        return new Retrofit.Builder().baseUrl("http://47.56.100.52:8050/")
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-    }
-
     public static ServiceFactory getInstance() {
         if (instance == null) {
             instance = new ServiceFactory();
@@ -137,10 +109,6 @@ public class ServiceFactory {
 
     public <T> T getNormalService(String url, Class<T> from) {
         return initNormal(url).create(from);
-    }
-
-    public <T> T getNormalService1(Class<T> from) {
-        return initNormal1().create(from);
     }
 
     public <T> T getBaseService(Class<T> from) {
