@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.huawei.updatesdk.sdk.a.b.c;
+import com.zxjk.duoduo.R;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
@@ -238,6 +240,48 @@ public class OkHttpClientUtil {
             return null;
         }
     }
+
+    /**
+     * 双向认证
+     *
+     * @return SSLSocketFactory
+     */
+//    public static SSLSocketFactory getSSLSocketFactoryForTwoWay() {
+//        try {
+//            InputStream certificate = Utils.getContext().getResources().openRawResource(R.raw.capk);
+//            //  CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509", "BC");
+//            KeyStore keyStore = KeyStore.getInstance(CLIENT_TRUST_KEY);
+//            keyStore.load(certificate, SELF_CERT_PWD.toCharArray());
+//            KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+//            kmf.init(keyStore, SELF_CERT_PWD.toCharArray());
+//
+//            try {
+//                if (certificate != null)
+//                    certificate.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            //初始化keystore
+//            KeyStore clientKeyStore = KeyStore.getInstance(CLIENT_TRUST_KEYSTORE);
+//            clientKeyStore.load(Utils.getContext().getResources().openRawResource(R.raw.cabks), TRUST_CA_PWD.toCharArray());
+//
+//            SSLContext sslContext = SSLContext.getInstance(CLIENT_AGREEMENT);
+//            TrustManagerFactory trustManagerFactory = TrustManagerFactory.
+//                    getInstance(TrustManagerFactory.getDefaultAlgorithm());
+//
+//            trustManagerFactory.init(clientKeyStore);
+//
+//            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+//            keyManagerFactory.init(clientKeyStore, SELF_CERT_PWD.toCharArray());
+//
+//            sslContext.init(kmf.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
+//            return sslContext.getSocketFactory();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     /**
      * 由于okhttp header 中的 value 不支持 null, \n 和 中文这样的特殊字符,所以encode字符串
