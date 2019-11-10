@@ -1,13 +1,11 @@
 package com.zxjk.duoduo.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
 
@@ -22,49 +20,33 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.AddFriendDetailsActivity;
 import com.zxjk.duoduo.ui.msgpage.FriendDetailsActivity;
+import com.zxjk.duoduo.ui.widget.dialog.LoadingDialog;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.model.UserInfo;
 
 @SuppressLint("CheckResult")
 public class CommonUtils {
-    private static Dialog dialog;
+    private static LoadingDialog loadingDialog;
 
-    public static Dialog initDialog(Context context) {
+    public static LoadingDialog initDialog(Context context) {
         return initDialog(context, null);
     }
 
-    public static Dialog initDialog(Context context, String loadText) {
-        destoryDialog();
-        dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_loading);
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        if (!TextUtils.isEmpty(loadText)) {
-            TextView tips = dialog.findViewById(R.id.tv_dialog_content);
-            tips.setText(loadText);
-        }
-        return dialog;
-    }
-
-    public static Dialog getDialog() {
-        return dialog;
+    public static LoadingDialog initDialog(Context context, String loadText) {
+        loadingDialog = new LoadingDialog(context, loadText);
+        return loadingDialog;
     }
 
     public static void destoryDialog() {
-        if (dialog != null) {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            dialog = null;
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
         }
     }
 
@@ -140,14 +122,16 @@ public class CommonUtils {
         LifecycleProvider<Lifecycle.Event> provider = AndroidLifecycle.createLifecycleProvider(activity);
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getFriendListById()
-                .compose(provider.bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(activity)))
+                .compose(provider.bindUntilEvent(Lifecycle.Event.ON_DESTROY))
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(friendInfoResponses -> {
-//                        Constant.friendsList = friendInfoResponses;
+                .doOnNext(friendInfoResponses -> {
                     for (FriendInfoResponse f : friendInfoResponses) {
                         RongUserInfoManager.getInstance().setUserInfo(new UserInfo(f.getId(), TextUtils.isEmpty(f.getRemark()) ? f.getNick() : f.getRemark(), Uri.parse(f.getHeadPortrait())));
                     }
+                })
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(activity)))
+                .subscribe(friendInfoResponses -> {
+//                        Constant.friendsList = friendInfoResponses;
                     handleFriendList(friendInfoResponses, activity, friendId, groupId, finish);
                 }, activity::handleApiError);
 //        } else {
