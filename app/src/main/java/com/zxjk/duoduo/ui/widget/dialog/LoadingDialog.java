@@ -14,11 +14,11 @@ import com.zxjk.duoduo.R;
 import java.lang.ref.WeakReference;
 
 public class LoadingDialog extends Dialog {
-    public static final int MSG_SHOW = 1;
-    public static final int MSG_HIDE = 2;
-    public static final int MSG_REAL_HIDE = 3;
+    private static final int MSG_SHOW = 1;
+    private static final int MSG_HIDE = 2;
+    private static final int MSG_REAL_HIDE = 3;
 
-    private static int delayTimeStamp = 500;
+    private static int delayTimeStamp = 400;
     private static int showTimeStamp = 700;
 
     private Handler mHandler;
@@ -33,6 +33,7 @@ public class LoadingDialog extends Dialog {
         setCancelable(false);
         setCanceledOnTouchOutside(false);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        getWindow().setDimAmount(0f);
         if (!TextUtils.isEmpty(loadText)) {
             TextView tips = findViewById(R.id.tv_dialog_content);
             tips.setText(loadText);
