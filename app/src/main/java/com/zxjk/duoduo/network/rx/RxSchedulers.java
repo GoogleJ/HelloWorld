@@ -3,7 +3,6 @@ package com.zxjk.duoduo.network.rx;
 import android.app.Dialog;
 
 import com.zxjk.duoduo.bean.response.BaseResponse;
-import com.zxjk.duoduo.utils.CommonUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -33,16 +32,16 @@ public class RxSchedulers {
                     d.show();
                 })
                 .doOnDispose(() -> {
-                    if (d != null) CommonUtils.destoryDialog();
+                    if (d != null) d.dismiss();
                 })
                 .doOnNext(t -> {
-                    if (d != null) CommonUtils.destoryDialog();
+                    if (d != null) d.dismiss();
                 })
                 .doOnError(t -> {
-                    if (d != null) CommonUtils.destoryDialog();
+                    if (d != null) d.dismiss();
                 })
                 .doOnComplete((Action) () -> {
-                    if (d != null) CommonUtils.destoryDialog();
+                    if (d != null) d.dismiss();
                 });
     }
 

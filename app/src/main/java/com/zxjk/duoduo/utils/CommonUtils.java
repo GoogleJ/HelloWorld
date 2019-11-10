@@ -40,6 +40,9 @@ public class CommonUtils {
     }
 
     public static LoadingDialog initDialog(Context context, String loadText) {
+        if (loadingDialog != null) {
+            loadingDialog.dismissReally();
+        }
         loadingDialog = new LoadingDialog(context, loadText);
         return loadingDialog;
     }

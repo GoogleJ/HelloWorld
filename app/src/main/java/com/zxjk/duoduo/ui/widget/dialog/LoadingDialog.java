@@ -19,7 +19,7 @@ public class LoadingDialog extends Dialog {
     public static final int MSG_REAL_HIDE = 3;
 
     private static int delayTimeStamp = 500;
-    private static int showTimeStamp = 1000;
+    private static int showTimeStamp = 700;
 
     private Handler mHandler;
 
@@ -49,7 +49,7 @@ public class LoadingDialog extends Dialog {
         mHandler.sendEmptyMessage(MSG_HIDE);
     }
 
-    private void dismissReally() {
+    public void dismissReally() {
         if (parent != null && !parent.isFinishing()) {
             mHandler.removeCallbacksAndMessages(null);
             if (isShowing()) {
@@ -58,7 +58,7 @@ public class LoadingDialog extends Dialog {
         }
     }
 
-    private void showReally() {
+    public void showReally() {
         if (parent != null && !parent.isFinishing()) {
             super.show();
         }
