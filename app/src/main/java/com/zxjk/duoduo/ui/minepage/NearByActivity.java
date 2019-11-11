@@ -67,7 +67,7 @@ public class NearByActivity extends BaseActivity {
                         new LatLng(Double.parseDouble(item.getLatitude()), Double.parseDouble(item.getLongitude())),
                         new LatLng(l.getLatitude(), l.getLongitude()));
 
-                helper.setText(R.id.tvName, item.getNick())
+                helper.setText(R.id.tvName, item.getNick().length() >= 15 ? item.getNick().substring(0, 12) + "..." : item.getNick())
                         .setText(R.id.tvSign, "个性签名：" + (TextUtils.isEmpty(item.getSignature()) ? "暂无" : item.getSignature()))
                         .setText(R.id.tvDistance, parseDistance(distance));
 
