@@ -22,6 +22,7 @@ import com.zxjk.duoduo.ui.msgpage.AddFriendDetailsActivity;
 import com.zxjk.duoduo.ui.msgpage.FriendDetailsActivity;
 import com.zxjk.duoduo.ui.widget.dialog.LoadingDialog;
 
+import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,23 +34,27 @@ import io.rong.imlib.model.UserInfo;
 
 @SuppressLint("CheckResult")
 public class CommonUtils {
-    private static LoadingDialog loadingDialog;
+    private static WeakReference<LoadingDialog> loadingDialog = new WeakReference<>(null);
 
     public static LoadingDialog initDialog(Context context) {
         return initDialog(context, null);
     }
 
     public static LoadingDialog initDialog(Context context, String loadText) {
-        if (loadingDialog != null) {
-            loadingDialog.dismissReally();
+        LoadingDialog d = loadingDialog.get();
+        if (d != null) {
+            d.dismissReally();
+            loadingDialog.clear();
         }
-        loadingDialog = new LoadingDialog(context, loadText);
-        return loadingDialog;
+        d = new LoadingDialog(context, loadText);
+        loadingDialog = new WeakReference<>(d);
+        return d;
     }
 
     public static void destoryDialog() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
+        LoadingDialog d = loadingDialog.get();
+        if (d != null) {
+            d.dismiss();
         }
     }
 
