@@ -58,7 +58,7 @@ public class BalanceDetailActivity extends BaseActivity {
     private BaseQuickAdapter<GetSymbolSerialResponse.SymbolSerialDTOSBean, BaseViewHolder> adapter;
     private boolean fromTrade;
 
-    private int page = 1;
+    private int page = 0;
     private int numsPerPage = 10;
 
     @Override
@@ -168,7 +168,7 @@ public class BalanceDetailActivity extends BaseActivity {
                         tvAddress.setText(data.getBalanceAddress());
                     }
                     page += 1;
-                    if (page == 2) {
+                    if (page == 1) {
                         adapter.setNewData(response.getSymbolSerialDTOS());
                         adapter.disableLoadMoreIfNotFullPage();
                     } else {
@@ -180,7 +180,7 @@ public class BalanceDetailActivity extends BaseActivity {
                         }
                     }
                 }, t -> {
-                    if (page != 1) adapter.loadMoreFail();
+                    if (page != 0) adapter.loadMoreFail();
                     handleApiError(t);
                 });
     }
@@ -209,7 +209,7 @@ public class BalanceDetailActivity extends BaseActivity {
         }
 
         refreshLayout.setOnRefreshListener(() -> {
-            page = 1;
+            page = 0;
             initData();
         });
         refreshLayout.setColorSchemeResources(R.color.colorTheme);
