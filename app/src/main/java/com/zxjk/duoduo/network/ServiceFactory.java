@@ -13,10 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
-import cn.rongcloud.rtc.media.http.SSLUtils;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -57,7 +53,7 @@ public class ServiceFactory {
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 })
-                .hostnameVerifier((hostname, session) -> hostname.equals("mochart.ztoken.cn"))
+                .hostnameVerifier((hostname, session) -> BuildConfig.enableLog || hostname.equals("mochart.ztoken.cn"))
                 .readTimeout(8, TimeUnit.SECONDS)
                 .writeTimeout(8, TimeUnit.SECONDS)
                 .build();
