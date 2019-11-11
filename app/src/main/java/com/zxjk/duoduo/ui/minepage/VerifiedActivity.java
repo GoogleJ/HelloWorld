@@ -43,8 +43,6 @@ import butterknife.OnClick;
 
 @SuppressLint("CheckResult")
 public class VerifiedActivity extends BaseActivity {
-    public static final int REQUEST_TAKE = 1;
-    public static final int REQUEST_ALBUM = 2;
     String url1;
     String url2;
     String url3;
@@ -243,12 +241,12 @@ public class VerifiedActivity extends BaseActivity {
                 //拍照
                 holder.setOnClickListener(R.id.tv_photograph, v -> {
                     dialog.dismiss();
-                    TakePicUtil.takePicture(VerifiedActivity.this);
+                    TakePicUtil.takePicture(VerifiedActivity.this, false);
                 });
                 //相册选择
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
-                    TakePicUtil.albumPhoto(VerifiedActivity.this);
+                    TakePicUtil.albumPhoto(VerifiedActivity.this, false);
                 });
                 //取消
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());

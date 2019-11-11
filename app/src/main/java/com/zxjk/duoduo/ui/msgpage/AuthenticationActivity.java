@@ -2,7 +2,6 @@ package com.zxjk.duoduo.ui.msgpage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -87,9 +86,6 @@ public class AuthenticationActivity extends BaseActivity {
     //反面
     String reverseUrl = "";
     String body = "";
-    public static final int REQUEST_TAKE = 1;
-
-    public static final int REQUEST_ALBUM = 2;
 
     private int currentPictureFlag;
 
@@ -258,12 +254,12 @@ public class AuthenticationActivity extends BaseActivity {
                 //拍照
                 holder.setOnClickListener(R.id.tv_photograph, v -> {
                     dialog.dismiss();
-                    TakePicUtil.takePicture(AuthenticationActivity.this);
+                    TakePicUtil.takePicture(AuthenticationActivity.this, false);
                 });
                 //相册选择
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
-                    TakePicUtil.albumPhoto(AuthenticationActivity.this);
+                    TakePicUtil.albumPhoto(AuthenticationActivity.this, false);
                 });
                 //取消
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());

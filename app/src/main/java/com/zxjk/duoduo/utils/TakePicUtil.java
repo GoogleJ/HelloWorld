@@ -123,7 +123,7 @@ public class TakePicUtil {
             corp(activity, new File(filePath));
             return null;
         }
-        if (requestCode == CODE_CORP) {
+        if (requestCode == CODE_CORP || requestCode == CODE_ALBUM_NOCORP || requestCode == CODE_PICTURE_NOCORP) {
             return output;
         }
         return null;
