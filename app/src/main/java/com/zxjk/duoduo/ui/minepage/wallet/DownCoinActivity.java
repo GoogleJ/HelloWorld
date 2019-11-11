@@ -340,7 +340,7 @@ public class DownCoinActivity extends BaseActivity {
         if (!TextUtils.isEmpty(limit)) {
             double limitNum = Double.parseDouble(limit);
             if (balance2block) {
-                if (Double.parseDouble(count) <= limitNum) {
+                if (Double.parseDouble(count) < limitNum) {
                     ToastUtils.showShort("当前提币数量不得小于" + limitNum);
                     return;
                 }

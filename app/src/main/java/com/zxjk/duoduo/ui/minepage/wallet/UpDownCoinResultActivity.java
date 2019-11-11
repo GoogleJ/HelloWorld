@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.GlideUtil;
 
 public class UpDownCoinResultActivity extends BaseActivity {
 
@@ -25,7 +24,7 @@ public class UpDownCoinResultActivity extends BaseActivity {
 
         TextView title = findViewById(R.id.tv_title);
         title.setText(type + "详情");
-        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        findViewById(R.id.rl_back).setOnClickListener(v -> back2Detail(null));
 
         switch (logo) {
             case "BTC":

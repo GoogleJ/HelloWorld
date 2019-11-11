@@ -1,6 +1,5 @@
 package com.zxjk.duoduo.ui.widget.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Message;
@@ -23,12 +22,9 @@ public class LoadingDialog extends Dialog {
 
     private Handler mHandler;
 
-    private Activity parent;
-
     public LoadingDialog(@NonNull Context context, String loadText) {
         super(context);
         mHandler = new Handler(this);
-        parent = (Activity) context;
         setContentView(R.layout.dialog_loading);
         setCancelable(false);
         setCanceledOnTouchOutside(false);
@@ -51,18 +47,14 @@ public class LoadingDialog extends Dialog {
     }
 
     public void dismissReally() {
-        if (parent != null && !parent.isFinishing()) {
-            mHandler.removeCallbacksAndMessages(null);
-            if (isShowing()) {
-                super.dismiss();
-            }
+        mHandler.removeCallbacksAndMessages(null);
+        if (isShowing()) {
+            super.dismiss();
         }
     }
 
     public void showReally() {
-        if (parent != null && !parent.isFinishing()) {
-            super.show();
-        }
+        super.show();
     }
 
     static class Handler extends android.os.Handler {

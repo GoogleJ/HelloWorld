@@ -34,7 +34,6 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.DetailInfoActivity;
-import com.zxjk.duoduo.ui.minepage.DetailListActivity;
 import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -88,6 +87,7 @@ public class BalanceDetailActivity extends BaseActivity {
     @Override
     public void finish() {
         if (fromTrade) {
+            overridePendingTransition(0, 0);
             Intent intent = new Intent(this, BalanceLeftActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
