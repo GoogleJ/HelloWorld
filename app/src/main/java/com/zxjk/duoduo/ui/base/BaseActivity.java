@@ -17,7 +17,6 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
@@ -46,6 +45,7 @@ import top.zibin.luban.Luban;
 
 @SuppressLint({"CheckResult", "Registered"})
 public class BaseActivity extends RxAppCompatActivity {
+    private boolean enableTouchHideKeyBoard = true;
     public RxPermissions rxPermissions = new RxPermissions(this);
     public File corpFile;
 
@@ -58,9 +58,12 @@ public class BaseActivity extends RxAppCompatActivity {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
             fixOrientation();
         }
-        KeyboardUtils.clickBlankArea2HideSoftInput();
         setLightStatusBar(true);
         super.onCreate(savedInstanceState);
+    }
+
+    public void setEnableTouchHideKeyBoard(boolean enableTouchHideKeyBoard) {
+        this.enableTouchHideKeyBoard = enableTouchHideKeyBoard;
     }
 
     private boolean isTranslucentOrFloating() {
@@ -192,7 +195,7 @@ public class BaseActivity extends RxAppCompatActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        if (enableTouchHideKeyBoard && ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (isShouldHideKeyboard(v, ev)) {
                 InputMethodManager imm =

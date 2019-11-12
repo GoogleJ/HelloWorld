@@ -135,6 +135,7 @@ public class ConversationActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setEnableTouchHideKeyBoard(false);
 
         initDao();
 
