@@ -145,7 +145,11 @@ public class DownCoinActivity extends BaseActivity {
                     ToastUtils.showShort(R.string.balance_not_enough);
                     return;
                 }
-                etCount.setText(String.valueOf(result));
+                if (String.valueOf(result).length() > Integer.parseInt(data.getDecimals())) {
+                    ToastUtils.showShort(R.string.number_overlimit);
+                } else {
+                    etCount.setText(String.valueOf(result));
+                }
             } else {
                 if (!TextUtils.isEmpty(blockMoney)) {
                     etCount.setText(blockMoney);

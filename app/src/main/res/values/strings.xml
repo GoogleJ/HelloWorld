@@ -74,7 +74,6 @@
     <string name="select_buytype_tips">请选择支付方式</string>
     <string name="select_saletype_tips">请选择至少一种收款方式</string>
     <string name="choosecount">请输入数量</string>
-    //红包相关
     <string name="m_red_envelopes_label">鸿运当头，大吉大利</string>
     <string name="m_red_envelopes_money_text">0.00</string>
     <string name="m_red_envelopes_commit_btn">塞进红包</string>
@@ -169,7 +168,6 @@
     <string name="unUpload">未上传</string>
     <string name="buy_complete">我已完成支付</string>
     <string name="buyIn15MinuteLimit">请在15分钟内完成支付</string>
-    //群组相关
     <string name="group_chat_name_label">群聊名称</string>
     <string name="see_more_group_members">查看更多群成员></string>
     <string name="group_announcement">群公告</string>
@@ -815,4 +813,6 @@
     <string name="back2walletlist">返回钱包首页</string>
     <string name="address_same">钱包地址不能相同</string>
     <string name="tips_downcoin2">请选择您的数字钱包地址</string>
+    <string name="verify_success">认证成功</string>
+    <string name="number_overlimit">请手动输入</string>
 </resources>
