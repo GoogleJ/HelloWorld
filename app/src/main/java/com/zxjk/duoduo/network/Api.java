@@ -665,4 +665,6 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<CommunityInfoResponse>> communityInfo(@Field("groupId") String groupId);
 
+    @POST("duoduo/customer/getAuthToken")
+    Observable<BaseResponse<String>> getAuthToken();
 }

@@ -68,10 +68,20 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation(name: 'FaceLivenessOpen-2.2.0.4', ext: 'aar')
+    implementation(name: 'rpsdk-3.2.0.3', ext: 'aar')
+    implementation(name: 'SecurityBodySDK-external-release-5.4.12129577', ext: 'aar')
+    implementation(name: 'SecurityGuardSDK-external-release-5.4.178', ext: 'aar')
 
     //Rxlifecycle
     implementation 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'

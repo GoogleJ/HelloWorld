@@ -4,25 +4,20 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.security.rp.RPSDK;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.shehuan.nicedialog.BaseNiceDialog;
-import com.shehuan.nicedialog.NiceDialog;
-import com.shehuan.nicedialog.ViewConvertListener;
-import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.msgpage.AuthenticationActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
@@ -92,48 +87,56 @@ public class SettingActivity extends BaseActivity {
             } else if (Constant.currentUser.getIsAuthentication().equals("0")) {
                 ToastUtils.showShort(R.string.authen_true);
             } else {
-                NiceDialog.init().setLayoutId(R.layout.layout_general_dialog11).setConvertListener(new ViewConvertListener() {
-                    @Override
-                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        otherIdCardType = "";
-                        ImageView iv_idCard = holder.getView(R.id.iv_idCard);
-                        ImageView iv_passport = holder.getView(R.id.iv_passport);
-                        ImageView iv_other = holder.getView(R.id.iv_other);
-                        holder.setOnClickListener(R.id.ll_idCard, v13 -> {
-                            iv_idCard.setImageResource(R.drawable.ic_radio_select);
-                            iv_passport.setImageResource(R.drawable.ic_radio_unselect);
-                            iv_other.setImageResource(R.drawable.ic_radio_unselect);
-                            otherIdCardType = "1";
-                        });
-                        holder.setOnClickListener(R.id.ll_passport, v14 -> {
-                            iv_idCard.setImageResource(R.drawable.ic_radio_unselect);
-                            iv_passport.setImageResource(R.drawable.ic_radio_select);
-                            iv_other.setImageResource(R.drawable.ic_radio_unselect);
-                            otherIdCardType = "2";
-                        });
-                        holder.setOnClickListener(R.id.ll_other, v16 -> {
-                            iv_idCard.setImageResource(R.drawable.ic_radio_unselect);
-                            iv_passport.setImageResource(R.drawable.ic_radio_unselect);
-                            iv_other.setImageResource(R.drawable.ic_radio_select);
-                            otherIdCardType = "3";
-                        });
-                        holder.setOnClickListener(R.id.tv_confirm, v15 -> {
-                            if (!TextUtils.isEmpty(otherIdCardType)) {
-                                dialog.dismiss();
-                                if (otherIdCardType.equals("1")) {
-                                    Intent intent = new Intent(SettingActivity.this, AuthenticationActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Intent intent = new Intent(SettingActivity.this, VerifiedActivity.class);
-                                    intent.putExtra("otherIdCardType", otherIdCardType);
-                                    startActivity(intent);
-                                }
-                            } else {
-                                ToastUtils.showShort("请选择证件类型");
-                            }
-                        });
-                    }
-                }).setDimAmount(0.5f).setOutCancel(true).show(getSupportFragmentManager());
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .getAuthToken()
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .subscribe(s -> RPSDK.start(s, this, (audit, s1) -> {
+                            
+                        }), this::handleApiError);
+//                NiceDialog.init().setLayoutId(R.layout.layout_general_dialog11).setConvertListener(new ViewConvertListener() {
+//                    @Override
+//                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+//                        otherIdCardType = "";
+//                        ImageView iv_idCard = holder.getView(R.id.iv_idCard);
+//                        ImageView iv_passport = holder.getView(R.id.iv_passport);
+//                        ImageView iv_other = holder.getView(R.id.iv_other);
+//                        holder.setOnClickListener(R.id.ll_idCard, v13 -> {
+//                            iv_idCard.setImageResource(R.drawable.ic_radio_select);
+//                            iv_passport.setImageResource(R.drawable.ic_radio_unselect);
+//                            iv_other.setImageResource(R.drawable.ic_radio_unselect);
+//                            otherIdCardType = "1";
+//                        });
+//                        holder.setOnClickListener(R.id.ll_passport, v14 -> {
+//                            iv_idCard.setImageResource(R.drawable.ic_radio_unselect);
+//                            iv_passport.setImageResource(R.drawable.ic_radio_select);
+//                            iv_other.setImageResource(R.drawable.ic_radio_unselect);
+//                            otherIdCardType = "2";
+//                        });
+//                        holder.setOnClickListener(R.id.ll_other, v16 -> {
+//                            iv_idCard.setImageResource(R.drawable.ic_radio_unselect);
+//                            iv_passport.setImageResource(R.drawable.ic_radio_unselect);
+//                            iv_other.setImageResource(R.drawable.ic_radio_select);
+//                            otherIdCardType = "3";
+//                        });
+//                        holder.setOnClickListener(R.id.tv_confirm, v15 -> {
+//                            if (!TextUtils.isEmpty(otherIdCardType)) {
+//                                dialog.dismiss();
+//                                if (otherIdCardType.equals("1")) {
+//                                    Intent intent = new Intent(SettingActivity.this, AuthenticationActivity.class);
+//                                    startActivity(intent);
+//                                } else {
+//                                    Intent intent = new Intent(SettingActivity.this, VerifiedActivity.class);
+//                                    intent.putExtra("otherIdCardType", otherIdCardType);
+//                                    startActivity(intent);
+//                                }
+//                            } else {
+//                                ToastUtils.showShort("请选择证件类型");
+//                            }
+//                        });
+//                    }
+//                }).setDimAmount(0.5f).setOutCancel(true).show(getSupportFragmentManager());
             }
         });
         //收款信息

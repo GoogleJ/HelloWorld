@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+import com.alibaba.security.rp.RPSDK;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -108,6 +109,8 @@ public class Application extends android.app.Application {
 
         //Umeng
         initUmeng();
+
+        RPSDK.initialize(getApplicationContext());
     }
 
     private void initUmeng() {
