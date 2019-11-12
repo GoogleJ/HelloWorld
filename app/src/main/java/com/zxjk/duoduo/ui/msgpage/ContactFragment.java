@@ -140,7 +140,9 @@ public class ContactFragment extends BaseFragment {
             case R.id.ll_contract_top1:
                 ((HomeActivity) getActivity()).badgeItem2.hide();
                 MMKVUtils.getInstance().enCode("newFriendCount", 0);
-                dotNewFriend.setVisibility(View.INVISIBLE);
+                if (dotNewFriend != null) {
+                    dotNewFriend.setVisibility(View.INVISIBLE);
+                }
                 startActivity(new Intent(getActivity(), NewFriendActivity.class));
                 break;
             case R.id.ll_contract_top2:
