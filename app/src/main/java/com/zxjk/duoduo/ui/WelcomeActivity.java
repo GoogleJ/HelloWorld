@@ -111,4 +111,9 @@ public class WelcomeActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.anim_welcome_exit);
+    }
 }
