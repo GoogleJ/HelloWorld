@@ -262,10 +262,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.AMapActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.msgpage.AuthenticationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

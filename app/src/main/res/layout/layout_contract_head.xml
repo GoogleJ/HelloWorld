@@ -37,7 +37,7 @@
                 android:layout_height="8dp"
                 android:layout_gravity="end"
                 android:visibility="gone"
-                android:background="@drawable/bac_newfriend_request" />
+                android:background="@drawable/shape_dot_red" />
 
         </FrameLayout>
 
