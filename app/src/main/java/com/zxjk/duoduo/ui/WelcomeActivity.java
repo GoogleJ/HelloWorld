@@ -8,7 +8,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;

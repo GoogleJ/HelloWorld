@@ -28,8 +28,13 @@ public class TakePicUtil {
     private static final int CODE_CORP = 103;
     private static final int CODE_PICTURE_NOCORP = 104;
     private static final int CODE_ALBUM_NOCORP = 105;
+    private static Config config;
 
-    public static File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Hilamg/portraits/" + "temp.png");
+    private static File output = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Hilamg/portraits/" + "temp.png");
+
+    public static void config(Config c) {
+        config = c;
+    }
 
     public static void takePicture(Activity activity) {
         takePicture(activity, true);
@@ -86,10 +91,24 @@ public class TakePicUtil {
             cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
-        cropIntent.putExtra("aspectX", 1);
-        cropIntent.putExtra("aspectY", 1);
-        cropIntent.putExtra("outputX", 400);
-        cropIntent.putExtra("outputY", 400);
+        if (config == null) {
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+        } else {
+            if (config.circleCorp) {
+                cropIntent.putExtra("circleCrop", true);
+            }
+            if (config.acceptX != 0) {
+                cropIntent.putExtra("aspectX", config.acceptX);
+                cropIntent.putExtra("aspectY", config.acceptY);
+            }
+            if (config.enableZipPixel) {
+                cropIntent.putExtra("outputX", (config.acceptX * 400));
+                cropIntent.putExtra("outputY", (config.acceptY * 400));
+            }
+        }
+        config = null;
+
         cropIntent.putExtra("return-data", false);
         cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(output));
@@ -222,4 +241,29 @@ public class TakePicUtil {
     private static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
+
+    public static class Config {
+        private boolean enableZipPixel;
+        private boolean circleCorp;
+        private int acceptX = 1;
+        private int acceptY = 1;
+
+        public Config enableZipPixel() {
+            enableZipPixel = true;
+            return this;
+        }
+
+        public Config enableCircleCorp() {
+            circleCorp = true;
+            return this;
+        }
+
+        public Config rectParm(int acceptX, int acceptY) {
+            this.acceptX = acceptX;
+            this.acceptY = acceptY;
+            return this;
+        }
+
+    }
+
 }

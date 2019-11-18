@@ -16,8 +16,8 @@ public class Constant {
     public static final String CITY_DATA = "china_city_data.json";
     //阿里OSS上传地址
     public static final String OSS_URL = "https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/";
-    public static final String BASE_URL = "https://mochart.ztoken.cn";
-//            public static final String BASE_URL = "https://192.168.1.73:8085/";
+//    public static final String BASE_URL = "https://mochart.ztoken.cn";
+            public static final String BASE_URL = "https://192.168.1.73:8085/";
 //    public static final String BASE_URL = "https://duoduoweb.zzgb.net.cn";
     public static final String APP_CODE = "fb0e95b069f74f29a2f972f9454d7d1a";
 

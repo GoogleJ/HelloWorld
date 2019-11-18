@@ -20,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.socialspace.SocialPage;
 import com.zxjk.duoduo.ui.walletpage.RecipetQRActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.MsgTitleView;
@@ -133,12 +134,15 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         indicator.setNavigator(navigator);
     }
 
-    private CusConversationListFragment createConversationList(boolean isGroup) {
+    private Fragment createConversationList(boolean isGroup) {
+        if (isGroup) {
+            return new SocialPage();
+        }
         CusConversationListFragment listFragment = new CusConversationListFragment();
         Uri uri = Uri.parse("rong://" + getActivity().getApplicationInfo().packageName).buildUpon()
                 .appendPath("conversationlist")
-                .appendQueryParameter(isGroup ? Conversation.ConversationType.GROUP.getName() :
-                        Conversation.ConversationType.PRIVATE.getName(), "false")
+                .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false")
+                .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")
                 //公共服务号
                 .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "true")
                 //订阅号

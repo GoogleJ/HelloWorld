@@ -538,8 +538,8 @@
     <string name="forward_success">转发成功</string>
     <string name="cant_forward">无法转发语音、红包、转账、群名片、系统等消息</string>
     <string name="update_success">更新成功</string>
-    <string name="chat">密聊</string>
-    <string name="news">资讯</string>
+    <string name="chat">消息</string>
+    <string name="news">社群</string>
     <string name="conjuncture">行情</string>
     <string name="boutique">精选</string>
     <string name="activity">活动专区</string>
@@ -815,4 +815,14 @@
     <string name="tips_downcoin2">请选择您的数字钱包地址</string>
     <string name="verify_success">认证成功</string>
     <string name="number_overlimit">请手动输入</string>
+    <string name="no_social">太低调了,你还没有加入任何社群！</string>
+    <string name="read_and_agree">我已阅读并同意</string>
+    <string name="create_social">创建社群</string>
+    <string name="social_type">社群类型</string>
+    <string name="paysocial">收费社群</string>
+    <string name="freesocial">免费社群</string>
+    <string name="set_money1">设置费用</string>
+    <string name="create_social_tips1">设置收费币种及金额</string>
+    <string name="tips_create_social1">请设置费用</string>
+    <string name="modify">编辑</string>
 </resources>
