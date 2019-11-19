@@ -138,7 +138,7 @@ public class CreateSocialActivity4 extends BaseActivity {
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-//                    intent = new Intent(this, SocialHomeActivity.class);
+                    intent = new Intent(this, SocialHomeActivity.class);
                     startActivity(intent);
                 }, this::handleApiError);
     }

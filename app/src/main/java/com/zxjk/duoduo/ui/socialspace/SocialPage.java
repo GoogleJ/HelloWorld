@@ -72,9 +72,11 @@ public class SocialPage extends BaseFragment {
             }
         };
 
+        adapter.setOnItemClickListener((adapter, view, position) -> startActivity(new Intent(getContext(), SocialHomeActivity.class)));
+
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recycler.addItemDecoration(new RecyclerItemAverageDecoration(CommonUtils.dip2px(getContext(),12), CommonUtils.dip2px(getContext(),12), 2));
+        recycler.addItemDecoration(new RecyclerItemAverageDecoration(CommonUtils.dip2px(getContext(), 12), CommonUtils.dip2px(getContext(), 12), 2));
 
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -112,9 +114,13 @@ public class SocialPage extends BaseFragment {
             }
         });
 
-        initData();
-
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
     }
 
     @SuppressLint("CheckResult")
