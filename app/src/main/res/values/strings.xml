@@ -18,7 +18,7 @@
     <string name="zh_tw">繁体中文</string>
     <string name="en_us">English</string>
     <!--actionbar title ===================================未翻译-->
-    <string name="de_actionbar_sub_group">"群组"</string>
+    <string name="de_actionbar_sub_group">"社群"</string>
     <string name="m_add_friend_search_edit">输入手机号/Hilamg号</string>
     <string name="m_add_friend_label_qr_code">我的二维码名片</string>
     <string name="m_add_friend_contact_label_1">手机联系人</string>
@@ -825,4 +825,10 @@
     <string name="create_social_tips1">设置收费币种及金额</string>
     <string name="tips_create_social1">请设置费用</string>
     <string name="modify">编辑</string>
+    <string name="socialname">社群名称</string>
+    <string name="input_socialname">请输入社群名称 (必填)</string>
+    <string name="socialslogan">社群简介</string>
+    <string name="input_socialslogan">请输入社群简介 (选填)</string>
+    <string name="input_socialname1">请输入社群名称</string>
+    <string name="create_social_success">创建成功</string>
 </resources>

@@ -84,7 +84,10 @@ public class CreateSocialActivity3 extends BaseActivity {
             return;
         }
 
-        startActivity(new Intent(this, CreateSocialActivity4.class));
+        Intent intent = new Intent(this, CreateSocialActivity4.class);
+        intent.putExtra("pay", result);
+        intent.putExtra("payMoney", money);
+        startActivity(intent);
     }
 
     @Override

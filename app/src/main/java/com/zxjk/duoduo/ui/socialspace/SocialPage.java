@@ -1,5 +1,6 @@
 package com.zxjk.duoduo.ui.socialspace;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.CommunityListBean;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.RecyclerItemAverageDecoration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +40,7 @@ public class SocialPage extends BaseFragment {
     private LinearLayout llEmpty;
     private ImageView ivCreate;
     private RecyclerView recycler;
-    private BaseQuickAdapter<String, BaseViewHolder> adapter;
+    private BaseQuickAdapter<CommunityListBean, BaseViewHolder> adapter;
 
     private Disposable animDispose;
     private ViewPropertyAnimator scaleXAnim;
@@ -48,15 +56,25 @@ public class SocialPage extends BaseFragment {
         ivCreate = rootView.findViewById(R.id.ivCreate);
         recycler = rootView.findViewById(R.id.recycler);
 
-        adapter = new BaseQuickAdapter(R.layout.item_social, null) {
+        adapter = new BaseQuickAdapter<CommunityListBean, BaseViewHolder>(R.layout.item_social, null) {
             @Override
-            protected void convert(BaseViewHolder helper, Object item) {
-
+            protected void convert(BaseViewHolder helper, CommunityListBean item) {
+                ImageView ivhead = helper.getView(R.id.ivHead);
+                ImageView ivPay = helper.getView(R.id.ivPay);
+                GlideUtil.loadNormalImg(ivhead, item.getCommunityLogo());
+                helper.setText(R.id.tvTitle, item.getCommunityName())
+                        .setText(R.id.tvOwner, item.getOwnerNick());
+                if (item.getIsPay().equals("1")) {
+                    ivPay.setVisibility(View.VISIBLE);
+                } else {
+                    ivPay.setVisibility(View.GONE);
+                }
             }
         };
 
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recycler.addItemDecoration(new RecyclerItemAverageDecoration(CommonUtils.dip2px(getContext(),12), CommonUtils.dip2px(getContext(),12), 2));
 
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -93,6 +111,26 @@ public class SocialPage extends BaseFragment {
                 startActivity(new Intent(getContext(), CreateSocialActivity1.class));
             }
         });
+
+        initData();
+
         return rootView;
+    }
+
+    @SuppressLint("CheckResult")
+    private void initData() {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .communityList()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver())
+                .subscribe(list -> {
+                    if (list.size() == 0) {
+                        llEmpty.setVisibility(View.VISIBLE);
+                    } else {
+                        llEmpty.setVisibility(View.GONE);
+                    }
+                    adapter.setNewData(list);
+                }, this::handleApiError);
     }
 }

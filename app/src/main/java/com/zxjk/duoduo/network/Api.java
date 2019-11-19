@@ -7,6 +7,8 @@ import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.AssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
+import com.zxjk.duoduo.bean.response.CommunityListBean;
+import com.zxjk.duoduo.bean.response.CommuntiyResponse;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.DetailListResposne;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
@@ -651,4 +653,12 @@ public interface Api {
     @POST("duoduo/wallet/getBalanceInfoByAddress")
     @FormUrlEncoded
     Observable<BaseResponse<String>> getBalanceInfoByAddress(@Field("walletAddress") String walletAddress, @Field("coinType") String coinType, @Field("parentSymbol") String parentSymbol, @Field("contractAddress") String contractAddress, @Field("tokenDecimal") String tokenDecimal);
+
+    @POST("duoduo/community/communityList")
+    Observable<BaseResponse<List<CommunityListBean>>> communityList();
+
+    @POST("duoduo/community/saveCommuntiy")
+    @FormUrlEncoded
+    Observable<BaseResponse<CommuntiyResponse>> saveCommuntiy(@Field("data") String data);
+
 }
