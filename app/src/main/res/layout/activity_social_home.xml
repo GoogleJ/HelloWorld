@@ -112,16 +112,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp">
+                    android:gravity="center_vertical">
 
-                    <ImageView
-                        android:id="@+id/ivToolBarStart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="back"
-                        android:src="@drawable/ic_social_back" />
+                    <FrameLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:onClick="back">
+
+                        <ImageView
+                            android:id="@+id/ivToolBarStart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_social_back" />
+
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/tvTitle"
@@ -134,14 +139,22 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:textColor="#020818"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:visibility="invisible" />
 
-                    <ImageView
-                        android:id="@+id/ivToolBarEnd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="menu"
-                        android:src="@drawable/ic_social_menu" />
+                    <FrameLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:onClick="menu">
+
+                        <ImageView
+                            android:id="@+id/ivToolBarEnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_social_menu" />
+
+                    </FrameLayout>
 
                 </LinearLayout>
 
@@ -169,8 +182,9 @@
 
             <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/indicatorTop"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
                 android:visibility="gone" />
 
             <LinearLayout
@@ -249,14 +263,16 @@
 
             <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/indicatorOut"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/pagerOut"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
 
         </LinearLayout>
 
