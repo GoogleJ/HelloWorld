@@ -19,7 +19,8 @@
             <ImageView
                 android:id="@+id/ivHead"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop" />
 
             <ImageView
                 android:id="@+id/ivPay"

@@ -831,4 +831,5 @@
     <string name="input_socialslogan">请输入社群简介 (选填)</string>
     <string name="input_socialname1">请输入社群名称</string>
     <string name="create_social_success">创建成功</string>
+    <string name="social_notice">社群公告</string>
 </resources>

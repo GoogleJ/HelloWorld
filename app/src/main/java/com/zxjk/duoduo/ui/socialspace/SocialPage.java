@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
@@ -41,6 +42,7 @@ public class SocialPage extends BaseFragment {
     private ImageView ivCreate;
     private RecyclerView recycler;
     private BaseQuickAdapter<CommunityListBean, BaseViewHolder> adapter;
+    private int itemHeight;
 
     private Disposable animDispose;
     private ViewPropertyAnimator scaleXAnim;
@@ -52,6 +54,10 @@ public class SocialPage extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_social, container, false);
 
+        int dp2pixel12 = CommonUtils.dip2px(getContext(), 12);
+
+        itemHeight = (ScreenUtils.getScreenWidth() - dp2pixel12 * 3) / 2;
+
         llEmpty = rootView.findViewById(R.id.llEmpty);
         ivCreate = rootView.findViewById(R.id.ivCreate);
         recycler = rootView.findViewById(R.id.recycler);
@@ -61,6 +67,13 @@ public class SocialPage extends BaseFragment {
             protected void convert(BaseViewHolder helper, CommunityListBean item) {
                 ImageView ivhead = helper.getView(R.id.ivHead);
                 ImageView ivPay = helper.getView(R.id.ivPay);
+
+                ViewGroup.LayoutParams layoutParams = ivhead.getLayoutParams();
+                if (layoutParams.height != itemHeight) {
+                    layoutParams.height = itemHeight;
+                    ivhead.setLayoutParams(layoutParams);
+                }
+
                 GlideUtil.loadNormalImg(ivhead, item.getCommunityLogo());
                 helper.setText(R.id.tvTitle, item.getCommunityName())
                         .setText(R.id.tvOwner, item.getOwnerNick());
@@ -76,7 +89,7 @@ public class SocialPage extends BaseFragment {
 
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recycler.addItemDecoration(new RecyclerItemAverageDecoration(CommonUtils.dip2px(getContext(), 12), CommonUtils.dip2px(getContext(), 12), 2));
+        recycler.addItemDecoration(new RecyclerItemAverageDecoration(dp2pixel12, dp2pixel12, 2));
 
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

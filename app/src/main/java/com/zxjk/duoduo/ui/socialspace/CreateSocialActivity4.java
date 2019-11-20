@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ScreenUtils;
@@ -65,6 +66,7 @@ public class CreateSocialActivity4 extends BaseActivity {
         super.onCreate(savedInstanceState);
         setEnableTouchHideKeyBoard(false);
         setTrasnferStatusBar(true);
+        BarUtils.setStatusBarLightMode(this, true);
         setContentView(R.layout.activity_create_social4);
 
         initView();
