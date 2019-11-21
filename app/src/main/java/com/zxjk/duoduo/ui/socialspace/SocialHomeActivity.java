@@ -1,11 +1,11 @@
 package com.zxjk.duoduo.ui.socialspace;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -38,9 +39,6 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.AddContactActivity;
-import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
-import com.zxjk.duoduo.ui.msgpage.QrCodeActivity;
-import com.zxjk.duoduo.ui.walletpage.RecipetQRActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.SlopScrollView;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -53,6 +51,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import razerdp.basepopup.QuickPopupBuilder;
@@ -131,7 +131,7 @@ public class SocialHomeActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
-                    socialMemAdapter.setNewData(r.getMembers());
+                    initAdapterForSocialMem(r.getMembers());
                     tvSlogan.setText("社群简介:" + r.getIntroduction());
                     tvSocialId.setText("社群号:" + r.getCode());
                     tvSocialName.setText(r.getName());
@@ -139,6 +139,48 @@ public class SocialHomeActivity extends BaseActivity {
                     GlideUtil.loadNormalImg(ivHead, r.getLogo());
                     tvTitle.setText(r.getName());
                 }, this::handleApiError);
+    }
+
+    private void initAdapterForSocialMem(List<CommunityInfoResponse.MembersBean> data) {
+        int maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 64)) % CommonUtils.dip2px(this, 48);
+        int spanCount = data.size() < maxMemVisiableItem ? data.size() : maxMemVisiableItem;
+        recyclerGroupMember.setLayoutManager(new GridLayoutManager(this, spanCount));
+        colorOwner = Color.parseColor("#ffc000");
+        socialMemAdapter = new BaseQuickAdapter<CommunityInfoResponse.MembersBean, BaseViewHolder>(R.layout.item_social_membs) {
+            @Override
+            protected void convert(BaseViewHolder helper, CommunityInfoResponse.MembersBean item) {
+                CircleImageView ivMemberHead = helper.getView(R.id.ivMemberHead);
+                ImageView ivOwner = helper.getView(R.id.ivOwner);
+                TextView tvMore = helper.getView(R.id.tvMore);
+
+                if (helper.getAdapterPosition() == maxMemVisiableItem - 1) {
+                    ivMemberHead.setVisibility(View.GONE);
+                    tvMore.setVisibility(View.VISIBLE);
+
+                    int moreNumb = getData().size() - maxMemVisiableItem;
+                    if (moreNumb >= 1000) {
+                        moreNumb = 999;
+                    }
+                    tvMore.setText("+" + moreNumb);
+                    return;
+                } else {
+                    ivMemberHead.setVisibility(View.VISIBLE);
+                    tvMore.setVisibility(View.GONE);
+                }
+
+                Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
+
+                if (helper.getAdapterPosition() == 0) {
+                    ivOwner.setVisibility(View.VISIBLE);
+                    ivMemberHead.setBorderColor(colorOwner);
+                } else {
+                    ivOwner.setVisibility(View.GONE);
+                    ivMemberHead.setBorderColor(Color.WHITE);
+                }
+            }
+        };
+        recyclerGroupMember.setAdapter(socialMemAdapter);
+        socialMemAdapter.setNewData(data);
     }
 
     private void initSlopScrollView() {
@@ -164,6 +206,7 @@ public class SocialHomeActivity extends BaseActivity {
             }
             if (totalScrollRange <= 0) {
                 totalScrollRange = app_bar.getTotalScrollRange();
+                collapsingLayout.setScrimVisibleHeightTrigger((int) (totalScrollRange * 0.5));
             }
 
             if (absOffset <= minimumHeightForVisibleOverlappingContent) {
@@ -227,48 +270,6 @@ public class SocialHomeActivity extends BaseActivity {
         tvSocialName = findViewById(R.id.tvSocialName);
         tvSocialId = findViewById(R.id.tvSocialId);
         ivHead = findViewById(R.id.ivHead);
-
-        initAdapterForSocialMem();
-    }
-
-    private void initAdapterForSocialMem() {
-        int maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 64)) % CommonUtils.dip2px(this, 48);
-        recyclerGroupMember.setLayoutManager(new GridLayoutManager(this, maxMemVisiableItem));
-        colorOwner = Color.parseColor("#ffc000");
-        socialMemAdapter = new BaseQuickAdapter<CommunityInfoResponse.MembersBean, BaseViewHolder>(R.layout.item_social_membs) {
-            @Override
-            protected void convert(BaseViewHolder helper, CommunityInfoResponse.MembersBean item) {
-                CircleImageView ivMemberHead = helper.getView(R.id.ivMemberHead);
-                ImageView ivOwner = helper.getView(R.id.ivOwner);
-                TextView tvMore = helper.getView(R.id.tvMore);
-
-                if (helper.getAdapterPosition() == maxMemVisiableItem - 1) {
-                    ivMemberHead.setVisibility(View.GONE);
-                    tvMore.setVisibility(View.VISIBLE);
-
-                    int moreNumb = getData().size() - maxMemVisiableItem;
-                    if (moreNumb >= 1000) {
-                        moreNumb = 999;
-                    }
-                    tvMore.setText("+" + moreNumb);
-                    return;
-                } else {
-                    ivMemberHead.setVisibility(View.VISIBLE);
-                    tvMore.setVisibility(View.GONE);
-                }
-
-                Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
-
-                if (helper.getAdapterPosition() == 0) {
-                    ivOwner.setVisibility(View.VISIBLE);
-                    ivMemberHead.setBorderColor(colorOwner);
-                } else {
-                    ivOwner.setVisibility(View.GONE);
-                    ivMemberHead.setBorderColor(Color.WHITE);
-                }
-            }
-        };
-        recyclerGroupMember.setAdapter(socialMemAdapter);
     }
 
     private void initPager() {
@@ -361,26 +362,18 @@ public class SocialHomeActivity extends BaseActivity {
 
     public void menu(View view) {
         if (menuPop == null) {
+            View.OnClickListener onClickListener = child -> ToastUtils.showShort(R.string.developing);
             menuPop = QuickPopupBuilder.with(this)
-                    .contentView(R.layout.pop_msg_top)
+                    .contentView(R.layout.pop_social_top)
                     .config(new QuickPopupConfig()
                             .backgroundColor(android.R.color.transparent)
                             .gravity(Gravity.BOTTOM | Gravity.END)
                             .withShowAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_in))
                             .withDismissAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_out))
-                            .withClick(R.id.send_group_chat, child -> {
-                                Intent intent = new Intent(this, CreateGroupActivity.class);
-                                intent.putExtra("eventType", 1);
-                                startActivity(intent);
-                            }, true)
-                            .withClick(R.id.invite_friends, child -> startActivity(new Intent(this, AddContactActivity.class)), true)
-                            .withClick(R.id.collection_and_payment, child -> startActivity(new Intent(this, RecipetQRActivity.class)), true))
+                            .withClick(R.id.ic_social_end_pop1, onClickListener, true)
+                            .withClick(R.id.ic_social_end_pop2, child -> startActivity(new Intent(this, AddContactActivity.class)), true)
+                            .withClick(R.id.ic_social_end_pop3, onClickListener, true))
                     .build();
-
-            getPermisson(menuPop.findViewById(R.id.scan), granted -> {
-                menuPop.dismiss();
-                if (granted) startActivity(new Intent(this, QrCodeActivity.class));
-            }, Manifest.permission.CAMERA);
         }
 
         menuPop.showPopupWindow(view);

@@ -834,4 +834,7 @@
     <string name="social_notice">社群公告</string>
     <string name="social_calture">社群文化</string>
     <string name="social_act">社群动态</string>
+    <string name="ic_social_end_pop1">发布动态</string>
+    <string name="ic_social_end_pop2">社群管理</string>
+    <string name="ic_social_end_pop3">社群文化</string>
 </resources>

@@ -39,8 +39,7 @@
                 android:background="@drawable/shape_create_social_top"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.6">
+                app:layout_collapseMode="pin">
 
                 <com.gcssloop.widget.RCRelativeLayout
                     android:layout_width="88dp"
@@ -195,14 +194,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/shape_white_8"
+                    android:background="@drawable/shape_create_social_bottom"
                     android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerGroupMember"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="48dp"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="16dp"
@@ -260,7 +260,7 @@
                             android:text="@string/social_notice"
                             android:textColor="@color/black"
                             android:textSize="16sp"
-                            android:textStyle="italic" />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvNotice"
