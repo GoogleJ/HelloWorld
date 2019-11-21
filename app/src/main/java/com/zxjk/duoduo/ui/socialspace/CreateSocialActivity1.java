@@ -75,7 +75,7 @@ public class CreateSocialActivity1 extends BaseActivity {
             }
         });
 
-        mWebView.loadUrl("www.baidu.com");
+        mWebView.loadUrl("file:///android_asset/social.html");
     }
 
     public void nextStep(View view) {
