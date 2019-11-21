@@ -85,7 +85,12 @@ public class SocialPage extends BaseFragment {
             }
         };
 
-        adapter.setOnItemClickListener((adapter, view, position) -> startActivity(new Intent(getContext(), SocialHomeActivity.class)));
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(getContext(), SocialHomeActivity.class);
+            CommunityListBean b = (CommunityListBean) adapter.getData().get(position);
+            intent.putExtra("id", b.getGroupId());
+            startActivity(intent);
+        });
 
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new GridLayoutManager(getContext(), 2));

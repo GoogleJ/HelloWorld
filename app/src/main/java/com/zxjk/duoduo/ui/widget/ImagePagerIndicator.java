@@ -25,15 +25,19 @@ public class ImagePagerIndicator extends View implements IPagerIndicator {
     private List<PositionData> mPositionDataList;
     private float currentXCenter;
 
-    public ImagePagerIndicator(Context context) {
+    public ImagePagerIndicator(Context context, float yOffset) {
         super(context);
-        init(context);
+        init(context, yOffset);
     }
 
-    private void init(Context context) {
+    public ImagePagerIndicator(Context context) {
+        this(context, 0.5f);
+    }
+
+    private void init(Context context, float yOffset) {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.indicator_msg);
-        mYOffset = UIUtil.dip2px(context, 0.5);
+        mYOffset = UIUtil.dip2px(context, yOffset);
     }
 
     @Override

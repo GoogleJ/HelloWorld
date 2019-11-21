@@ -7,8 +7,8 @@ import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.AssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
+import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
-import com.zxjk.duoduo.bean.response.CommuntiyResponse;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.DetailListResposne;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
@@ -659,6 +659,10 @@ public interface Api {
 
     @POST("duoduo/community/saveCommuntiy")
     @FormUrlEncoded
-    Observable<BaseResponse<CommuntiyResponse>> saveCommuntiy(@Field("data") String data);
+    Observable<BaseResponse<CommunityInfoResponse>> saveCommuntiy(@Field("data") String data);
+
+    @POST("duoduo/community/communityInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<CommunityInfoResponse>> communityInfo(@Field("groupId") String groupId);
 
 }

@@ -19,6 +19,7 @@
             app:collapsedTitleGravity="center"
             app:contentScrim="@color/white"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:scrimAnimationDuration="500"
             app:titleEnabled="false">
 
             <ImageView
@@ -53,8 +54,7 @@
                     <ImageView
                         android:id="@+id/ivHead"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/rc_default_portrait" />
+                        android:layout_height="match_parent" />
 
                     <TextView
                         android:id="@+id/tvLogo"
@@ -67,11 +67,13 @@
                         android:paddingBottom="2dp"
                         android:text="LOGO"
                         android:textColor="@color/black"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:visibility="invisible" />
 
                 </com.gcssloop.widget.RCRelativeLayout>
 
                 <TextView
+                    android:id="@+id/tvSocialName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -80,11 +82,11 @@
                     android:ellipsize="middle"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="Hilamg官方社群"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tvSocialId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -94,7 +96,6 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:lines="1"
-                    android:text="社群号：4587921"
                     android:textColor="@color/textColor6"
                     android:textSize="13sp" />
 
@@ -104,14 +105,12 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginTop="24dp"
-                app:collapseContentDescription="NIHAO"
                 app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical">
 
                     <FrameLayout
@@ -121,9 +120,10 @@
 
                         <ImageView
                             android:id="@+id/ivToolBarStart"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:layout_gravity="center"
+                            android:scaleType="centerInside"
                             android:src="@drawable/ic_social_back" />
 
                     </FrameLayout>
@@ -149,9 +149,10 @@
 
                         <ImageView
                             android:id="@+id/ivToolBarEnd"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:layout_gravity="center"
+                            android:scaleType="centerInside"
                             android:src="@drawable/ic_social_menu" />
 
                     </FrameLayout>
@@ -173,108 +174,132 @@
         android:scrollbars="none"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:layout_height="wrap_content">
 
             <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/indicatorTop"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/shape_white_8"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerGroupMember"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:overScrollMode="never" />
-
-                <TextView
-                    android:id="@+id/tvSlogan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="12dp"
-                    android:ellipsize="middle"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="社群简介：海浪官方"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/shape_white_8"
-                android:padding="12dp">
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/shape_white_8"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_social_notice"
-                        android:drawablePadding="2dp"
-                        android:text="@string/social_notice"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerGroupMember"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="16dp"
+                        android:overScrollMode="never" />
 
-                    <TextView
-                        android:id="@+id/tvNotice"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="24dp"
-                        android:ellipsize="end"
-                        android:lineSpacingExtra="6dp"
-                        android:maxLines="3"
-                        android:textColor="@color/textColor9" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:onClick="socialSlogan"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/tvSlogan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:lineSpacingExtra="6dp"
+                            android:maxLines="2"
+                            android:textColor="@color/black" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_arrow_choosecoin_right"
+                            android:tint="#cfcfcf" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_arrow_choosecoin_right"
-                    android:tint="#cfcfcf" />
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/shape_white_8"
+                    android:onClick="socialNotice"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_social_notice"
+                            android:drawablePadding="4dp"
+                            android:text="@string/social_notice"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/tvNotice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="24dp"
+                            android:ellipsize="end"
+                            android:lineSpacingExtra="6dp"
+                            android:maxLines="3"
+                            android:textColor="@color/textColor9" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_arrow_choosecoin_right"
+                        android:tint="#cfcfcf" />
+
+                </LinearLayout>
+
+                <net.lucode.hackware.magicindicator.MagicIndicator
+                    android:id="@+id/indicatorOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pagerOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
-            <net.lucode.hackware.magicindicator.MagicIndicator
-                android:id="@+id/indicatorOut"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp" />
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/pagerOut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never" />
-
-        </LinearLayout>
+        </FrameLayout>
 
     </com.zxjk.duoduo.ui.widget.SlopScrollView>
 
