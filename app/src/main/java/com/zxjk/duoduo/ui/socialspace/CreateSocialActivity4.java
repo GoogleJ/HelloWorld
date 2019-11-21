@@ -46,7 +46,6 @@ import java.util.Collections;
 public class CreateSocialActivity4 extends BaseActivity {
 
     private FrameLayout flTop;
-    private TextView tvTitle;
     private ImageView ivBackground;
     private ImageView ivHead;
     private EditText etName;
@@ -74,7 +73,6 @@ public class CreateSocialActivity4 extends BaseActivity {
 
     private void initView() {
         flTop = findViewById(R.id.flTop);
-        tvTitle = findViewById(R.id.tvTitle);
         ivBackground = findViewById(R.id.ivBackground);
         ivHead = findViewById(R.id.ivHead);
         etName = findViewById(R.id.etName);
@@ -88,8 +86,6 @@ public class CreateSocialActivity4 extends BaseActivity {
 
         Glide.with(this).load(R.drawable.bg_default_social).into(ivBackground);
         Glide.with(this).load(io.rong.imkit.R.drawable.rc_default_portrait).into(ivHead);
-
-        tvTitle.setText(R.string.modify);
 
         etSlogan.addTextChangedListener(new TextWatcher() {
             @Override
