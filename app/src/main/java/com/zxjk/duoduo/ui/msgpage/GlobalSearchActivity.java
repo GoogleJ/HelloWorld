@@ -10,17 +10,21 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.GlobalSearchAdapter;
 import com.zxjk.duoduo.utils.CommonUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -86,16 +90,12 @@ public class GlobalSearchActivity extends BaseActivity {
             ToastUtils.showShort(R.string.input_empty);
             return;
         }
+        KeyboardUtils.hideSoftInput(GlobalSearchActivity.this);
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .searchCustomerInfo(data)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(GlobalSearchActivity.this, getString(R.string.searching))))
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(list -> {
-                    if (list.size() == 0) {
-                        ToastUtils.showShort(R.string.no_search);
-                    }
-                    mAdapter.setNewData(list);
-                }, this::handleApiError);
+                .subscribe(mAdapter::setNewData, this::handleApiError);
     }
 }

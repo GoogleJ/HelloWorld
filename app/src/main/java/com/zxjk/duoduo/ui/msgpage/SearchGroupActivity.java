@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -67,6 +68,7 @@ public class SearchGroupActivity extends BaseActivity {
                     ToastUtils.showShort(R.string.input_empty);
                     return false;
                 }
+                KeyboardUtils.hideSoftInput(SearchGroupActivity.this);
                 api.getPublicGroupList(str)
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
