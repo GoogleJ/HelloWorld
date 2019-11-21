@@ -57,157 +57,166 @@
 
     </FrameLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clipChildren="false"
-        android:orientation="vertical">
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="-128dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/shape_create_social_top"
+            android:clipChildren="false"
             android:orientation="vertical">
-
-            <com.gcssloop.widget.RCRelativeLayout
-                android:layout_width="88dp"
-                android:layout_height="88dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-44dp"
-                app:round_as_circle="true"
-                app:stroke_color="@color/white"
-                app:stroke_width="1.5dp">
-
-                <ImageView
-                    android:id="@+id/ivHead"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/rc_default_portrait" />
-
-                <TextView
-                    android:id="@+id/tvLogo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="bottom"
-                    android:background="#D8DADA"
-                    android:gravity="center"
-                    android:paddingBottom="2dp"
-                    android:text="LOGO"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
-
-            </com.gcssloop.widget.RCRelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="64dp"
-                android:text="@string/socialname"
-                android:textColor="@color/black"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/shape_f3f3f3_5"
-                android:hint="@string/input_socialname"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/textColor9"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="@string/socialslogan"
-                android:textColor="@color/black"
-                android:textSize="17sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/shape_f3f3f3_5"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="-96dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_create_social_top"
                 android:orientation="vertical">
 
+                <com.gcssloop.widget.RCRelativeLayout
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-44dp"
+                    app:round_as_circle="true"
+                    app:stroke_color="@color/white"
+                    app:stroke_width="1.5dp">
+
+                    <ImageView
+                        android:id="@+id/ivHead"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/rc_default_portrait" />
+
+                    <TextView
+                        android:id="@+id/tvLogo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="bottom"
+                        android:background="#D8DADA"
+                        android:gravity="center"
+                        android:paddingBottom="2dp"
+                        android:text="LOGO"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                </com.gcssloop.widget.RCRelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="64dp"
+                    android:text="@string/socialname"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
                 <EditText
-                    android:id="@+id/etSlogan"
+                    android:id="@+id/etName"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start"
-                    android:hint="@string/input_socialslogan"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:lineSpacingExtra="4dp"
-                    android:maxLength="1000"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/shape_f3f3f3_5"
+                    android:hint="@string/input_socialname"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/textColor9"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tvCount"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="6dp"
-                    android:gravity="end"
-                    android:text="0/1000"
-                    android:textColor="@color/textColor9"
-                    android:textSize="13sp" />
+                    android:layout_marginStart="12dp"
+                    android:text="@string/socialslogan"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/shape_f3f3f3_5"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/etSlogan"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="start"
+                        android:hint="@string/input_socialslogan"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:lineSpacingExtra="4dp"
+                        android:maxLength="1000"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/textColor9"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="6dp"
+                        android:gravity="end"
+                        android:text="0/1000"
+                        android:textColor="@color/textColor9"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#DDDDDD" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/shape_stroke_theme_4"
+                android:gravity="center"
+                android:onClick="createSocial"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/done1"
+                android:textColor="@color/colorTheme"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#DDDDDD" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/shape_stroke_theme_4"
-            android:gravity="center"
-            android:onClick="createSocial"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="@string/done1"
-            android:textColor="@color/colorTheme"
-            android:textSize="17sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
