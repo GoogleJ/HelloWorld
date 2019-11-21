@@ -1,15 +1,13 @@
 package com.zxjk.duoduo.ui.widget.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Message;
 import android.text.TextUtils;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
 import com.zxjk.duoduo.R;
-
 import java.lang.ref.WeakReference;
 
 public class LoadingDialog extends Dialog {
@@ -22,8 +20,11 @@ public class LoadingDialog extends Dialog {
 
     private Handler mHandler;
 
+    private WeakReference<Activity> parent;
+
     public LoadingDialog(@NonNull Context context, String loadText) {
         super(context);
+        parent = new WeakReference<>((Activity) context);
         mHandler = new Handler(this);
         setContentView(R.layout.dialog_loading);
         setCancelable(false);
@@ -49,12 +50,18 @@ public class LoadingDialog extends Dialog {
     public void dismissReally() {
         mHandler.removeCallbacksAndMessages(null);
         if (isShowing()) {
-            super.dismiss();
+            Activity activity = parent.get();
+            if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+                super.dismiss();
+            }
         }
     }
 
-    public void showReally() {
-        super.show();
+    private void showReally() {
+        Activity activity = parent.get();
+        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            super.show();
+        }
     }
 
     static class Handler extends android.os.Handler {
