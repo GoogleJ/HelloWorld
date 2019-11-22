@@ -17,6 +17,15 @@ public class CommunityListBean {
     private String communityName;
     private String isPay;
     private String members;
+    private String isInGroup;
+
+    public String getIsInGroup() {
+        return isInGroup;
+    }
+
+    public void setIsInGroup(String isInGroup) {
+        this.isInGroup = isInGroup;
+    }
 
     public String getOwnerNick() {
         return ownerNick;

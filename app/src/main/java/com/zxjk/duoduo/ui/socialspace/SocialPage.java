@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -81,6 +82,18 @@ public class SocialPage extends BaseFragment {
                     ivPay.setVisibility(View.VISIBLE);
                 } else {
                     ivPay.setVisibility(View.GONE);
+                }
+
+                Button btnJoin = helper.getView(R.id.btnJoin);
+                if (item.getIsInGroup().equals("1")) {
+                    btnJoin.setVisibility(View.VISIBLE);
+                    if (item.getIsPay().equals("1")) {
+                        btnJoin.setText("付费");
+                    } else {
+                        btnJoin.setText("进入");
+                    }
+                } else {
+                    btnJoin.setVisibility(View.GONE);
                 }
             }
         };
