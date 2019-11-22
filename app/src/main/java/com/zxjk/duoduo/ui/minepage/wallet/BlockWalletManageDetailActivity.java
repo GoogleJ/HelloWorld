@@ -148,7 +148,9 @@ public class BlockWalletManageDetailActivity extends BaseActivity {
                                     .withClick(R.id.btnCopy, v -> {
                                         ToastUtils.showShort(R.string.duplicated_to_clipboard);
                                         ClipboardManager cm = (ClipboardManager) Utils.getApp().getSystemService(Context.CLIPBOARD_SERVICE);
-                                        cm.setPrimaryClip(ClipData.newPlainText("text", key));
+                                        if (cm != null) {
+                                            cm.setPrimaryClip(ClipData.newPlainText("text", key));
+                                        }
                                     }, true)
                                     .blurBackground(true)
                                     .withShowAnimation(showAnim)

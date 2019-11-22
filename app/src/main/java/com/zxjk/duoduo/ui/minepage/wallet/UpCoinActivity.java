@@ -68,6 +68,8 @@ public class UpCoinActivity extends BaseActivity {
     public void copyAddress(View view) {
         ToastUtils.showShort(R.string.duplicated_to_clipboard);
         ClipboardManager cm = (ClipboardManager) Utils.getApp().getSystemService(Context.CLIPBOARD_SERVICE);
-        cm.setPrimaryClip(ClipData.newPlainText("text", data.getBalanceAddress()));
+        if (cm != null) {
+            cm.setPrimaryClip(ClipData.newPlainText("text", data.getBalanceAddress()));
+        }
     }
 }

@@ -84,19 +84,34 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/tvSocialId"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="16dp"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:textColor="@color/textColor6"
-                    android:textSize="13sp" />
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvSocialId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:textColor="@color/textColor6"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="copySocialId"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_balancedetail_copy"
+                        android:tint="#7E7F80" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

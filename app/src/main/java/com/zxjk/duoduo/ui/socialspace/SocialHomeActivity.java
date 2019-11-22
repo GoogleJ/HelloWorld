@@ -1,6 +1,8 @@
 package com.zxjk.duoduo.ui.socialspace;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,6 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -359,6 +362,14 @@ public class SocialHomeActivity extends BaseActivity {
 
     public void socialNotice(View view) {
 
+    }
+
+    public void copySocialId(View view) {
+        ToastUtils.showShort(R.string.duplicated_to_clipboard);
+        ClipboardManager cm = (ClipboardManager) Utils.getApp().getSystemService(Context.CLIPBOARD_SERVICE);
+        if (cm != null) {
+            cm.setPrimaryClip(ClipData.newPlainText("text", response.getCode()));
+        }
     }
 
     public void openConversation(View view) {

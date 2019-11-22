@@ -139,7 +139,9 @@ public class BackupKeystoreActivity extends BaseActivity {
     public void copyKeystore(View view) {
         ToastUtils.showShort(R.string.duplicated_to_clipboard);
         ClipboardManager cm = (ClipboardManager) Utils.getApp().getSystemService(Context.CLIPBOARD_SERVICE);
-        cm.setPrimaryClip(ClipData.newPlainText("text", keystore));
+        if (cm != null) {
+            cm.setPrimaryClip(ClipData.newPlainText("text", keystore));
+        }
     }
 
     @SuppressLint("CheckResult")
