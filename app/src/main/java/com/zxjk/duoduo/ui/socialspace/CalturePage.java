@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.zxjk.duoduo.ui.base.BaseFragment;
 public class CalturePage extends BaseFragment {
 
     private TextView tvTips;
+    private ImageView ivTop;
     private boolean isSocial2;
 
     @Nullable
@@ -22,8 +24,10 @@ public class CalturePage extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.calturepager, container, false);
         tvTips = rootView.findViewById(R.id.tvTips);
+        ivTop = rootView.findViewById(R.id.ivTop);
         if (isSocial2) {
             tvTips.setText("暂未开放，尽情期待！");
+            ivTop.setImageResource(R.drawable.ic_emptyview_nofriend);
         }
         return rootView;
     }

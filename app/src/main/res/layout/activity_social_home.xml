@@ -201,11 +201,11 @@
                         android:id="@+id/recyclerGroupMember"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
-                        android:nestedScrollingEnabled="false"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="16dp"
+                        android:nestedScrollingEnabled="false"
                         android:overScrollMode="never" />
 
                     <LinearLayout
@@ -223,8 +223,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ellipsize="end"
-                            android:lineSpacingExtra="6dp"
                             android:gravity="center"
+                            android:lineSpacingExtra="6dp"
                             android:maxLines="2"
                             android:textColor="@color/black" />
 
@@ -303,5 +303,13 @@
         </FrameLayout>
 
     </com.zxjk.duoduo.ui.widget.SlopScrollView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="80dp"
+        android:onClick="openConversation"
+        android:src="@drawable/ic_social_conversation" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

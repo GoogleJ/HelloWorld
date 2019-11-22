@@ -53,6 +53,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.rong.imkit.RongIM;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
@@ -84,6 +85,7 @@ public class SocialHomeActivity extends BaseActivity {
     private TextView tvSlogan;
     private TextView tvSocialName;
     private TextView tvSocialId;
+    private TextView tvNotice;
     private ImageView ivHead;
 
     private QuickPopup menuPop;
@@ -139,6 +141,7 @@ public class SocialHomeActivity extends BaseActivity {
                     GlideUtil.loadNormalImg(ivBg, r.getBgi());
                     GlideUtil.loadNormalImg(ivHead, r.getLogo());
                     tvTitle.setText(r.getName());
+                    tvNotice.setText(r.getAnnouncement());
                 }, this::handleApiError);
     }
 
@@ -265,6 +268,7 @@ public class SocialHomeActivity extends BaseActivity {
         indicatorTop = findViewById(R.id.indicatorTop);
         ivToolBarStart = findViewById(R.id.ivToolBarStart);
         tvTitle = findViewById(R.id.tvTitle);
+        tvNotice = findViewById(R.id.tvNotice);
         ivToolBarEnd = findViewById(R.id.ivToolBarEnd);
         recyclerGroupMember = findViewById(R.id.recyclerGroupMember);
         tvSlogan = findViewById(R.id.tvSlogan);
@@ -355,6 +359,10 @@ public class SocialHomeActivity extends BaseActivity {
 
     public void socialNotice(View view) {
 
+    }
+
+    public void openConversation(View view) {
+        RongIM.getInstance().startGroupChat(this, response.getGroupId(), response.getName());
     }
 
     public void back(View view) {

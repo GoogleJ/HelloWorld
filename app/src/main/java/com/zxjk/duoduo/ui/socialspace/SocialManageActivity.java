@@ -42,6 +42,7 @@ public class SocialManageActivity extends BaseActivity {
     private TextView tvNick;
     private LinearLayout llOwner;
     private LinearLayout llNewOwner;
+    private LinearLayout llReport;
     private Switch switch1;
     private Switch switch2;
     private LinearLayout ll_groupmanager;
@@ -62,6 +63,7 @@ public class SocialManageActivity extends BaseActivity {
         tvNick = findViewById(R.id.tvNick);
         llOwner = findViewById(R.id.llOwner);
         llNewOwner = findViewById(R.id.llNewOwner);
+        llReport = findViewById(R.id.llReport);
         switch1 = findViewById(R.id.switch1);
         switch2 = findViewById(R.id.switch2);
         ll_groupmanager = findViewById(R.id.ll_groupmanager);
@@ -72,6 +74,7 @@ public class SocialManageActivity extends BaseActivity {
         switch (identity) {
             case "0":
                 //成员
+                llReport.setVisibility(View.VISIBLE);
                 break;
             case "1":
                 //管理
