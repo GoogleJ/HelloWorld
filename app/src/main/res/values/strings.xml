@@ -829,7 +829,9 @@
     <string name="input_socialname">请输入社群名称 (必填)</string>
     <string name="socialslogan">社群简介</string>
     <string name="input_socialslogan">请输入社群简介 (选填)</string>
+    <string name="input_socialslogan1">请输入社群简介</string>
     <string name="input_socialname1">请输入社群名称</string>
+    <string name="input_socialnotice">请输入社群公告</string>
     <string name="create_social_success">创建成功</string>
     <string name="social_notice">社群公告</string>
     <string name="social_calture">社群文化</string>
@@ -847,4 +849,5 @@
     <string name="join_now">立即加入</string>
     <string name="pay_confirm">确认支付</string>
     <string name="cantdone">暂时无法操作</string>
+    <string name="only_owner_edit">仅群主和管理员可编辑</string>
 </resources>

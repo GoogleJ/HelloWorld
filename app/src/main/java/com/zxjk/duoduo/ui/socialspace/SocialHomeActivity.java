@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -78,6 +79,8 @@ public class SocialHomeActivity extends BaseActivity {
 
     private int[] detailTitles = {R.string.social_calture, R.string.social_act};
     //    private static final float SCROLL_SLOP = ;
+    private static final int REQUEST_SLOGAN = 1;
+    private static final int REQUEST_NOTICE = 2;
     private int minimumHeightForVisibleOverlappingContent = 0;
     private int totalScrollRange = 0;
     private int toolbarHeight = 0;
@@ -443,6 +446,10 @@ public class SocialHomeActivity extends BaseActivity {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
+        Intent intent = new Intent(this, EditSocialBasicActivity.class);
+        intent.putExtra("type", "1");
+        intent.putExtra("data", response);
+        startActivityForResult(intent, REQUEST_SLOGAN);
     }
 
     public void socialNotice(View view) {
@@ -450,6 +457,10 @@ public class SocialHomeActivity extends BaseActivity {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
+        Intent intent = new Intent(this, EditSocialBasicActivity.class);
+        intent.putExtra("type", "2");
+        intent.putExtra("data", response);
+        startActivityForResult(intent, REQUEST_NOTICE);
     }
 
     public void copySocialId(View view) {
@@ -496,4 +507,24 @@ public class SocialHomeActivity extends BaseActivity {
         menuPop.showPopupWindow(view);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && resultCode == 1) {
+            switch (requestCode) {
+                case REQUEST_NOTICE:
+                    response.setAnnouncementEditDate(data.getStringExtra("result"));
+                    response.setAnnouncement(data.getStringExtra("notice"));
+                    tvNotice.setText(response.getAnnouncement());
+                    break;
+                case REQUEST_SLOGAN:
+                    response.setIntroductionEditDate(data.getStringExtra("result"));
+                    response.setName(data.getStringExtra("name"));
+                    response.setIntroduction(data.getStringExtra("slogan"));
+                    tvSocialName.setText(response.getName());
+                    tvSlogan.setText(response.getIntroduction());
+                    break;
+            }
+        }
+    }
 }
