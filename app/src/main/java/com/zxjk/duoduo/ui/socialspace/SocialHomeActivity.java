@@ -65,6 +65,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
@@ -224,7 +225,10 @@ public class SocialHomeActivity extends BaseActivity {
                     GlideUtil.loadNormalImg(ivHead, r.getLogo());
                     tvTitle.setText(r.getName());
                     tvNotice.setText(r.getAnnouncement());
-                }, this::handleApiError);
+                }, t -> {
+                    handleApiError(t);
+                    finish();
+                });
     }
 
     private void initAdapterForSocialMem(List<CommunityInfoResponse.MembersBean> data) {
