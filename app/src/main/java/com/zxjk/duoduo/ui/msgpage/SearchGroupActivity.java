@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,21 +23,17 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetPublicGroupResponse;
+import com.zxjk.duoduo.bean.response.SearchCommunityBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
-import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
-import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
-import io.rong.message.InformationNotificationMessage;
+import java.util.Collections;
 
 public class SearchGroupActivity extends BaseActivity {
 
@@ -69,13 +64,13 @@ public class SearchGroupActivity extends BaseActivity {
                     return false;
                 }
                 KeyboardUtils.hideSoftInput(SearchGroupActivity.this);
-                api.getPublicGroupList(str)
+                api.searchCommunity(str)
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .subscribe(data -> {
+                        .subscribe(b -> {
                             if (!hasSearch) recycler.setAdapter(adapter);
-                            adapter.setNewData(data);
+                            adapter.setNewData(Collections.singletonList(b));
                         }, this::handleApiError);
                 return true;
             }
@@ -85,55 +80,34 @@ public class SearchGroupActivity extends BaseActivity {
         float itemHeight = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 36)) / 2f;
 
         recycler.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new BaseQuickAdapter<GetPublicGroupResponse, BaseViewHolder>(R.layout.item_publicgroup) {
+        adapter = new BaseQuickAdapter<SearchCommunityBean, BaseViewHolder>(R.layout.item_publicgroup) {
             @Override
-            protected void convert(BaseViewHolder helper, GetPublicGroupResponse item) {
-                helper.setText(R.id.tvGroupName, item.getGroupNikeName())
-                        .setText(R.id.tvGroupOnwerName, item.getGroupOwnerNike())
-                        .setText(R.id.tvCount, " (" + item.getGroupMemberCount() + "人) ");
+            protected void convert(BaseViewHolder helper, SearchCommunityBean item) {
+                helper.setText(R.id.tvGroupName, item.getCommunityName())
+                        .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
+                        .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
 
                 FrameLayout fl = helper.getView(R.id.fl);
                 ViewGroup.LayoutParams layoutParams = fl.getLayoutParams();
                 layoutParams.height = (int) itemHeight;
                 fl.setLayoutParams(layoutParams);
 
-                GlideUtil.loadNormalImg(helper.getView(R.id.ivHead), item.getHeadPortrait().split(",")[0]);
+                GlideUtil.loadNormalImg(helper.getView(R.id.ivHead), item.getCommunityLogo());
 
-                helper.setVisible(R.id.ivPay, item.getIsOpen().equals("1"));
+                helper.setVisible(R.id.ivPay, item.getIsPay().equals("1"));
 
                 Button btnJoin = helper.getView(R.id.btnJoin);
-                if (item.getIsNotInGroup().equals("1")) {
-                    btnJoin.setEnabled(true);
+                if (item.getInGroup().equals("0")) {
                     btnJoin.setText(R.string.join);
-                    btnJoin.setBackground(ContextCompat.getDrawable(SearchGroupActivity.this, R.drawable.shape_theme2));
-                    btnJoin.setOnClickListener(v -> {
-                        if (item.getIsOpen().equals("1")) {
-                            Intent intent = new Intent(v.getContext(), AgreeGroupChatActivity.class);
-                            intent.putExtra("groupId", item.getId());
-                            v.getContext().startActivity(intent);
-                            finish();
-                        } else {
-                            ServiceFactory.getInstance().getBaseService(Api.class)
-                                    .enterGroup(item.getId(), item.getGroupOwnerId(), Constant.userId)
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(SearchGroupActivity.this)))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(s -> {
-                                        //发送进群灰条
-                                        InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                Constant.currentUser.getNick() + "\"加入了群组");
-                                        Message message = Message.obtain(item.getId(), Conversation.ConversationType.GROUP, notificationMessage);
-                                        RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-                                        finish();
-                                        RongIM.getInstance().startGroupChat(SearchGroupActivity.this, item.getId(), item.getGroupNikeName());
-                                    }, SearchGroupActivity.this::handleApiError);
-                        }
-                    });
                 } else {
-                    btnJoin.setEnabled(false);
-                    btnJoin.setText(R.string.joined);
-                    btnJoin.setBackground(ContextCompat.getDrawable(SearchGroupActivity.this, R.drawable.shape_ceced0_cor40));
+                    btnJoin.setText(R.string.check);
                 }
+
+                btnJoin.setOnClickListener(v -> {
+                    Intent intent = new Intent(SearchGroupActivity.this, SocialHomeActivity.class);
+                    intent.putExtra("id", item.getGroupId());
+                    startActivity(intent);
+                });
             }
         };
 

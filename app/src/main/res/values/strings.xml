@@ -843,4 +843,8 @@
     <string name="exit_social">退出社群</string>
     <string name="you_have_disbanded_the_group1">已解散社群</string>
     <string name="you_have_left_the_group_chat1">已退出社群</string>
+    <string name="check">查看</string>
+    <string name="join_now">立即加入</string>
+    <string name="pay_confirm">确认支付</string>
+    <string name="cantdone">暂时无法操作</string>
 </resources>

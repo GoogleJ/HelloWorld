@@ -255,6 +255,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llSocialNotice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -301,6 +302,18 @@
 
                 </LinearLayout>
 
+                <ViewStub
+                    android:id="@+id/viewStubPay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout="@layout/stub_social_pay" />
+
+                <ViewStub
+                    android:id="@+id/viewStubFree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout="@layout/stub_social_free" />
+
                 <net.lucode.hackware.magicindicator.MagicIndicator
                     android:id="@+id/indicatorOut"
                     android:layout_width="wrap_content"
@@ -320,6 +333,7 @@
     </com.zxjk.duoduo.ui.widget.SlopScrollView>
 
     <ImageView
+        android:id="@+id/ivOpenConversation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

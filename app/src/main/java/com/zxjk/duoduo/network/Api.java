@@ -7,6 +7,7 @@ import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.AssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
+import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
@@ -51,6 +52,7 @@ import com.zxjk.duoduo.bean.response.ReceivePointResponse;
 import com.zxjk.duoduo.bean.response.RedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
 import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
+import com.zxjk.duoduo.bean.response.SearchCommunityBean;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.SignHkbOrHkExchangeResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
@@ -667,4 +669,12 @@ public interface Api {
 
     @POST("duoduo/customer/getAuthToken")
     Observable<BaseResponse<String>> getAuthToken();
+
+    @POST("duoduo/community/searchCommunity")
+    @FormUrlEncoded
+    Observable<BaseResponse<SearchCommunityBean>> searchCommunity(@Field("code") String code);
+
+    @POST("duoduo/community/communityCulture")
+    @FormUrlEncoded
+    Observable<BaseResponse<CommunityCultureResponse>> communityCulture(@Field("groupId") String id);
 }

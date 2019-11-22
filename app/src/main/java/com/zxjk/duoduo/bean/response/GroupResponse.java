@@ -14,7 +14,6 @@ public class GroupResponse implements Serializable {
     private GroupInfoBean groupInfo;
     private String maxNumber;
     private List<CustomersBean> customers;
-    private ChatInfoBean chatInfo;
     private String isAdmin;
     private PermissionBean groupPermission;
     private GroupPayBean groupPay;
@@ -142,14 +141,6 @@ public class GroupResponse implements Serializable {
         this.customers = customers;
     }
 
-    public ChatInfoBean getChatInfo() {
-        return chatInfo;
-    }
-
-    public void setChatInfo(ChatInfoBean chatInfo) {
-        this.chatInfo = chatInfo;
-    }
-
     public static class PermissionBean implements Serializable {
 
         /**
@@ -274,53 +265,6 @@ public class GroupResponse implements Serializable {
 
         public void setOpenVideo(String openVideo) {
             this.openVideo = openVideo;
-        }
-    }
-
-    public static class ChatInfoBean implements Serializable {
-
-        /**
-         * type : group
-         * targetId : 260
-         * screenCapture : false
-         * incinerationTime : -1
-         */
-
-        private String type;
-        private String targetId;
-        private int screenCapture;
-        private int incinerationTime;
-
-        public int getScreenCapture() {
-            return screenCapture;
-        }
-
-        public void setScreenCapture(int screenCapture) {
-            this.screenCapture = screenCapture;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getTargetId() {
-            return targetId;
-        }
-
-        public void setTargetId(String targetId) {
-            this.targetId = targetId;
-        }
-
-        public int getIncinerationTime() {
-            return incinerationTime;
-        }
-
-        public void setIncinerationTime(int incinerationTime) {
-            this.incinerationTime = incinerationTime;
         }
     }
 

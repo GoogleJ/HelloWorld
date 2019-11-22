@@ -79,7 +79,7 @@
                 android:id="@+id/btnJoin"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:textColor="@color/white"
-                android:background="@drawable/shape_ceced0_cor40"
+                android:background="@drawable/shape_theme2"
                 android:layout_alignParentEnd="true"
                 android:layout_width="66dp"
                 android:layout_height="28dp" />

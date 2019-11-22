@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,16 +36,21 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.BaseResponse;
+import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
+import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.ui.widget.SlopScrollView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.MD5Utils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -56,7 +63,13 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.InformationNotificationMessage;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
@@ -90,6 +103,12 @@ public class SocialHomeActivity extends BaseActivity {
     private TextView tvSocialId;
     private TextView tvNotice;
     private ImageView ivHead;
+    private ImageView ivOpenConversation;
+    private LinearLayout llSocialNotice;
+
+    private ViewStub viewStubPay;
+    private ViewStub viewStubFree;
+    private boolean contentEnable = false;
 
     private QuickPopup menuPop;
 
@@ -110,8 +129,6 @@ public class SocialHomeActivity extends BaseActivity {
 
         setToolBarMarginTop();
 
-        tvTitle.setText(R.string.de_actionbar_sub_group);
-
         setSupportActionBar(toolbar);
 
         onAppBarScroll();
@@ -123,18 +140,77 @@ public class SocialHomeActivity extends BaseActivity {
         initIndicator();
 
         initPager();
-
-        ViewPagerHelper.bind(indicatorOut, pagerOut);
-        ViewPagerHelper.bind(indicatorTop, pagerOut);
     }
 
     @SuppressLint("CheckResult")
     private void initData() {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .communityInfo(getIntent().getStringExtra("id"))
+        String groupId = getIntent().getStringExtra("id");
+        Api api = ServiceFactory.getInstance().getBaseService(Api.class);
+
+        api.communityCulture(groupId)
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
+                .flatMap((Function<CommunityCultureResponse, ObservableSource<BaseResponse<CommunityInfoResponse>>>) r -> {
+                    runOnUiThread(() -> {
+                        if (!r.getType().equals("culture")) {
+                            contentEnable = false;
+                            llSocialNotice.setVisibility(View.GONE);
+                            indicatorOut.setVisibility(View.GONE);
+                            pagerOut.setVisibility(View.GONE);
+                            ivOpenConversation.setVisibility(View.GONE);
+                            if (r.getType().equals("free")) {
+                                View inflate = viewStubFree.inflate();
+                                inflate.findViewById(R.id.tvFunc).setOnClickListener(v ->
+                                        api.enterGroup(groupId, "", Constant.userId)
+                                                .compose(bindToLifecycle())
+                                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                                                .compose(RxSchedulers.normalTrans())
+                                                .subscribe(s -> {
+                                                    inflate.setVisibility(View.GONE);
+                                                    llSocialNotice.setVisibility(View.VISIBLE);
+                                                    indicatorOut.setVisibility(View.VISIBLE);
+                                                    pagerOut.setVisibility(View.VISIBLE);
+                                                    ivOpenConversation.setVisibility(View.VISIBLE);
+
+                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
+                                                            Constant.currentUser.getNick() + "\"加入了群组");
+                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
+                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                                                }, this::handleApiError));
+                            } else if (r.getType().equals("pay")) {
+                                View inflate = viewStubPay.inflate();
+                                TextView tvPayMoney = inflate.findViewById(R.id.tvPayMoney);
+                                TextView tvSymbol = inflate.findViewById(R.id.tvSymbol);
+                                ImageView ivIcon = inflate.findViewById(R.id.ivIcon);
+                                tvPayMoney.setText(r.getPay().getPayFee());
+                                tvSymbol.setText(r.getPay().getPaySymbol());
+                                GlideUtil.loadNormalImg(ivIcon, r.getPay().getPayLogo());
+                                findViewById(R.id.tvFunc).setOnClickListener(v -> new NewPayBoard(this).show(pwd ->
+                                        api.payToGroup(groupId, "", MD5Utils.getMD5(pwd), r.getPay().getPayFee(), r.getPay().getPaySymbol())
+                                                .compose(bindToLifecycle())
+                                                .compose(RxSchedulers.normalTrans())
+                                                .compose(RxSchedulers.ioObserver())
+                                                .subscribe(s -> {
+                                                    inflate.setVisibility(View.GONE);
+                                                    llSocialNotice.setVisibility(View.VISIBLE);
+                                                    indicatorOut.setVisibility(View.VISIBLE);
+                                                    pagerOut.setVisibility(View.VISIBLE);
+                                                    ivOpenConversation.setVisibility(View.VISIBLE);
+
+                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
+                                                            Constant.currentUser.getNick() + "\"加入了群组");
+                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
+                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                                                }, this::handleApiError)));
+                            }
+                        } else {
+                            contentEnable = true;
+                        }
+                    });
+                    return api.communityInfo(groupId);
+                })
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
                     response = r;
                     initAdapterForSocialMem(r.getMembers());
@@ -278,6 +354,10 @@ public class SocialHomeActivity extends BaseActivity {
         tvSocialName = findViewById(R.id.tvSocialName);
         tvSocialId = findViewById(R.id.tvSocialId);
         ivHead = findViewById(R.id.ivHead);
+        ivOpenConversation = findViewById(R.id.ivOpenConversation);
+        llSocialNotice = findViewById(R.id.llSocialNotice);
+        viewStubPay = findViewById(R.id.viewStubPay);
+        viewStubFree = findViewById(R.id.viewStubFree);
     }
 
     private void initPager() {
@@ -295,6 +375,8 @@ public class SocialHomeActivity extends BaseActivity {
                 return 2;
             }
         });
+        ViewPagerHelper.bind(indicatorOut, pagerOut);
+        ViewPagerHelper.bind(indicatorTop, pagerOut);
     }
 
     private void setPagerHeight() {
@@ -357,11 +439,17 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void socialSlogan(View view) {
-
+        if (!contentEnable) {
+            ToastUtils.showShort(R.string.cantdone);
+            return;
+        }
     }
 
     public void socialNotice(View view) {
-
+        if (!contentEnable) {
+            ToastUtils.showShort(R.string.cantdone);
+            return;
+        }
     }
 
     public void copySocialId(View view) {
@@ -381,6 +469,10 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void menu(View view) {
+        if (!contentEnable) {
+            ToastUtils.showShort(R.string.cantdone);
+            return;
+        }
         if (menuPop == null) {
             View.OnClickListener onClickListener = child -> ToastUtils.showShort(R.string.developing);
             menuPop = QuickPopupBuilder.with(this)
