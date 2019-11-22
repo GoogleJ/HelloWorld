@@ -1,8 +1,12 @@
 package com.zxjk.duoduo.bean.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class CommunityInfoResponse {
+public class CommunityInfoResponse implements Parcelable {
 
     /**
      * id : 2
@@ -28,7 +32,16 @@ public class CommunityInfoResponse {
     private String announcement;
     private String status;
     private String createTime;
+    private String identity;
     private List<MembersBean> members;
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
 
     public String getId() {
         return id;
@@ -118,7 +131,7 @@ public class CommunityInfoResponse {
         this.members = members;
     }
 
-    public static class MembersBean {
+    public static class MembersBean implements Parcelable {
         /**
          * headPortrait : https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/31573119859032
          * identity : 2
@@ -142,5 +155,88 @@ public class CommunityInfoResponse {
         public void setIdentity(String identity) {
             this.identity = identity;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.headPortrait);
+            dest.writeString(this.identity);
+        }
+
+        public MembersBean() {
+        }
+
+        protected MembersBean(Parcel in) {
+            this.headPortrait = in.readString();
+            this.identity = in.readString();
+        }
+
+        public static final Creator<MembersBean> CREATOR = new Creator<MembersBean>() {
+            @Override
+            public MembersBean createFromParcel(Parcel source) {
+                return new MembersBean(source);
+            }
+
+            @Override
+            public MembersBean[] newArray(int size) {
+                return new MembersBean[size];
+            }
+        };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.groupId);
+        dest.writeString(this.name);
+        dest.writeString(this.logo);
+        dest.writeString(this.bgi);
+        dest.writeString(this.code);
+        dest.writeString(this.introduction);
+        dest.writeString(this.announcement);
+        dest.writeString(this.status);
+        dest.writeString(this.createTime);
+        dest.writeString(this.identity);
+        dest.writeList(this.members);
+    }
+
+    public CommunityInfoResponse() {
+    }
+
+    protected CommunityInfoResponse(Parcel in) {
+        this.id = in.readString();
+        this.groupId = in.readString();
+        this.name = in.readString();
+        this.logo = in.readString();
+        this.bgi = in.readString();
+        this.code = in.readString();
+        this.introduction = in.readString();
+        this.announcement = in.readString();
+        this.status = in.readString();
+        this.createTime = in.readString();
+        this.identity = in.readString();
+        this.members = new ArrayList<MembersBean>();
+        in.readList(this.members, MembersBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<CommunityInfoResponse> CREATOR = new Parcelable.Creator<CommunityInfoResponse>() {
+        @Override
+        public CommunityInfoResponse createFromParcel(Parcel source) {
+            return new CommunityInfoResponse(source);
+        }
+
+        @Override
+        public CommunityInfoResponse[] newArray(int size) {
+            return new CommunityInfoResponse[size];
+        }
+    };
 }

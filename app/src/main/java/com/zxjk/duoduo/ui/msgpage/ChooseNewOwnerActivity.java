@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
@@ -22,20 +24,19 @@ import com.zxjk.duoduo.utils.CommonUtils;
 
 @SuppressLint("CheckResult")
 public class ChooseNewOwnerActivity extends BaseActivity {
-    RecyclerView mRecyclerView;
-    ChooseNewOwnerAdapter mAdapter;
-
-    String groupId;
-    boolean isGameGroup;
+    private RecyclerView mRecyclerView;
+    private ChooseNewOwnerAdapter mAdapter;
+    private String groupId;
+    private boolean fromSocial;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_new_owner);
         groupId = getIntent().getStringExtra("groupId");
-        isGameGroup = getIntent().getBooleanExtra("isGameGroup", false);
+        fromSocial = getIntent().getBooleanExtra("fromSocial", false);
         TextView tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(getString(R.string.choose_a_new_owner_title));
+        tv_title.setText(R.string.choose_a_new_owner_title);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         mRecyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -44,28 +45,20 @@ public class ChooseNewOwnerActivity extends BaseActivity {
         mAdapter = new ChooseNewOwnerAdapter();
         getGroupMemByGroupId(groupId);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> NiceDialog.init().setLayoutId(R.layout.layout_general_dialog4).setConvertListener(new ViewConvertListener() {
+            @Override
+            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                holder.setText(R.id.tv_content, "确定选择为新群主吗?");
+                holder.setText(R.id.tv_cancel, "取消");
+                holder.setText(R.id.tv_notarize, "确定");
+                holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
+                holder.setOnClickListener(R.id.tv_notarize, v -> {
+                    updateGroupOwner(groupId, mAdapter.getData().get(position).getId());
+                    dialog.dismiss();
+                });
 
-            NiceDialog.init().setLayoutId(R.layout.layout_general_dialog4).setConvertListener(new ViewConvertListener() {
-                @Override
-                protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                    holder.setText(R.id.tv_content, "确定选择为新群主吗?");
-                    holder.setText(R.id.tv_cancel, "取消");
-                    holder.setText(R.id.tv_notarize, "确定");
-                    holder.setOnClickListener(R.id.tv_cancel, v -> {
-                        dialog.dismiss();
-
-                    });
-                    holder.setOnClickListener(R.id.tv_notarize, v -> {
-                        updateGroupOwner(groupId, mAdapter.getData().get(position).getId());
-                        dialog.dismiss();
-                    });
-
-                }
-            }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
-
-
-        });
+            }
+        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager()));
     }
 
     /**
@@ -99,6 +92,10 @@ public class ChooseNewOwnerActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
                     ToastUtils.showShort(ChooseNewOwnerActivity.this.getString(R.string.transfer_group_successful));
+                    if (fromSocial) {
+                        finish();
+                        return;
+                    }
                     Intent intent = new Intent(ChooseNewOwnerActivity.this, ConversationActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,6 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.msgpage.AddContactActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.SlopScrollView;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -90,6 +88,8 @@ public class SocialHomeActivity extends BaseActivity {
 
     private QuickPopup menuPop;
 
+    private CommunityInfoResponse response;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +131,7 @@ public class SocialHomeActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
+                    response = r;
                     initAdapterForSocialMem(r.getMembers());
                     tvSlogan.setText("社群简介:" + r.getIntroduction());
                     tvSocialId.setText("社群号:" + r.getCode());
@@ -371,7 +372,12 @@ public class SocialHomeActivity extends BaseActivity {
                             .withShowAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_in))
                             .withDismissAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_out))
                             .withClick(R.id.ic_social_end_pop1, onClickListener, true)
-                            .withClick(R.id.ic_social_end_pop2, child -> startActivity(new Intent(this, AddContactActivity.class)), true)
+                            .withClick(R.id.ic_social_end_pop2, child -> {
+                                if (response == null) return;
+                                Intent intent = new Intent(this, SocialManageActivity.class);
+                                intent.putExtra("data", response);
+                                startActivity(intent);
+                            }, true)
                             .withClick(R.id.ic_social_end_pop3, onClickListener, true))
                     .build();
         }

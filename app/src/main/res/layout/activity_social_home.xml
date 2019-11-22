@@ -224,6 +224,7 @@
                             android:layout_weight="1"
                             android:ellipsize="end"
                             android:lineSpacingExtra="6dp"
+                            android:gravity="center"
                             android:maxLines="2"
                             android:textColor="@color/black" />
 

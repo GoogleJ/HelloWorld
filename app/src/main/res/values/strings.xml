@@ -218,7 +218,7 @@
     <string name="inputhuazhuancount">请输入划转数量</string>
     <string name="huazhuanAll">全部划转</string>
     <string name="receiveBalance">获得余额</string>
-    <string name="transfer_group_successful">群主转让成功</string>
+    <string name="transfer_group_successful">转让成功</string>
     <string name="send_verification">发送验证</string>
     <string name="verifyfirstpls">请先完成实名认证</string>
     <string name="verifying_pleasewait">正在实名认证中，请等待认证结果</string>
@@ -837,4 +837,10 @@
     <string name="ic_social_end_pop1">发布动态</string>
     <string name="ic_social_end_pop2">社群管理</string>
     <string name="ic_social_end_pop3">社群文化</string>
+    <string name="social_remark">我在本社群昵称</string>
+    <string name="invite_wechat">邀请微信好友</string>
+    <string name="close_social">解散社群</string>
+    <string name="exit_social">退出社群</string>
+    <string name="you_have_disbanded_the_group1">已解散社群</string>
+    <string name="you_have_left_the_group_chat1">已退出社群</string>
 </resources>
