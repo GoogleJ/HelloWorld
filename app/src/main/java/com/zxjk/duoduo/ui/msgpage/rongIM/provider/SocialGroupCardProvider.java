@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
@@ -25,7 +27,7 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
     private int itemSize;
 
     public SocialGroupCardProvider() {
-        itemSize = ScreenUtils.getScreenWidth() * 2 / 5;
+        itemSize = (int) (ScreenUtils.getScreenWidth() * 0.45f);
     }
 
     @Override
@@ -33,8 +35,12 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
         ViewHolder holder = (ViewHolder) view.getTag();
         GlideUtil.loadNormalImg(holder.ivHead, groupCardMessage.getIcon());
         holder.ivPay.setVisibility(View.GONE);
-        holder.tvOwner.setText("我和" + groupCardMessage.getMemberNum() + "个小伙伴在【" + groupCardMessage.getGroupName()
-                + "】,等待你加入！");
+        if (!TextUtils.isEmpty(groupCardMessage.getMemberNum()) && Integer.parseInt(groupCardMessage.getMemberNum()) != 0) {
+            holder.tvOwner.setText("我和" + groupCardMessage.getMemberNum() + "个小伙伴在【" + groupCardMessage.getGroupName()
+                    + "】,等待你加入！");
+        } else {
+            holder.tvOwner.setText("我在【" + groupCardMessage.getGroupName() + "】,等待你加入！");
+        }
     }
 
     @Override
@@ -57,12 +63,16 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
         holder.ivPay = view.findViewById(R.id.ivPay);
         holder.tvTitle = view.findViewById(R.id.tvTitle);
         holder.tvOwner = view.findViewById(R.id.tvOwner);
+        holder.llContent = view.findViewById(R.id.llContent);
         holder.tvTitle.setVisibility(View.GONE);
-        holder.tvOwner.setLines(3);
-        ViewGroup.LayoutParams layoutParams = holder.ivHead.getLayoutParams();
+        holder.tvOwner.setMaxLines(3);
+        ViewGroup.LayoutParams layoutParams = holder.llContent.getLayoutParams();
         layoutParams.width = itemSize;
-        layoutParams.height = itemSize;
-        holder.ivHead.setLayoutParams(layoutParams);
+        holder.llContent.setLayoutParams(layoutParams);
+        ViewGroup.LayoutParams layoutParams1 = holder.ivHead.getLayoutParams();
+        layoutParams1.height = itemSize;
+        holder.ivHead.setLayoutParams(layoutParams1);
+        holder.ivHead.setScaleType(ImageView.ScaleType.FIT_XY);
         view.setTag(holder);
         return view;
     }
@@ -72,5 +82,6 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
         private ImageView ivPay;
         private TextView tvTitle;
         private TextView tvOwner;
+        private LinearLayout llContent;
     }
 }

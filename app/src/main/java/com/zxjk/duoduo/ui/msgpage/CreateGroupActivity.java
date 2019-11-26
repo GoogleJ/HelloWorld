@@ -555,7 +555,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
         if (getIntent().getBooleanExtra("fromSocial", false)) {
             SocialGroupCardMessage socialGroupCardMessage = new SocialGroupCardMessage();
-            socialGroupCardMessage.setIcon(stringBuilder.substring(0, stringBuilder.length() - 1));
+            socialGroupCardMessage.setIcon(getIntent().getStringExtra("socialLogo"));
             socialGroupCardMessage.setGroupId(groupResponse.getGroupInfo().getId());
             socialGroupCardMessage.setInviterId(Constant.userId);
             socialGroupCardMessage.setName(Constant.currentUser.getNick());

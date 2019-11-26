@@ -131,7 +131,7 @@ public class SocialHomeActivity extends BaseActivity {
 
         initView();
 
-        maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 64)) % CommonUtils.dip2px(this, 48);
+        maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 64)) / CommonUtils.dip2px(this, 48);
 
         initData();
 
@@ -287,6 +287,7 @@ public class SocialHomeActivity extends BaseActivity {
                             intent.putExtra("eventType", 2);
                             intent.putExtra("groupId", response.getGroupId());
                             intent.putExtra("fromSocial", true);
+                            intent.putExtra("socialLogo", response.getLogo());
                             startActivity(intent);
                         });
                     } else {
@@ -312,6 +313,7 @@ public class SocialHomeActivity extends BaseActivity {
                             intent.putExtra("eventType", 2);
                             intent.putExtra("groupId", response.getGroupId());
                             intent.putExtra("fromSocial", true);
+                            intent.putExtra("socialLogo", response.getLogo());
                             startActivity(intent);
                         });
                     } else {
