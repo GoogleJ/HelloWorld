@@ -31,6 +31,7 @@ import com.zxjk.duoduo.ui.msgpage.adapter.CreateGroupTopAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.GroupMemberAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.GroupMemberTopAdapter;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.SocialGroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
 import com.zxjk.duoduo.ui.widget.MaxWidthRecyclerView;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -552,28 +553,54 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             stringBuilder.append(b.getHeadPortrait() + ",");
         }
 
-        GroupCardMessage groupCardMessage = new GroupCardMessage();
-        groupCardMessage.setIcon(stringBuilder.substring(0, stringBuilder.length() - 1));
-        groupCardMessage.setGroupId(groupResponse.getGroupInfo().getId());
-        groupCardMessage.setInviterId(Constant.userId);
-        groupCardMessage.setName(Constant.currentUser.getNick());
-        groupCardMessage.setGroupName(groupResponse.getGroupInfo().getGroupNikeName());
+        if (getIntent().getBooleanExtra("fromSocial", false)) {
+            SocialGroupCardMessage socialGroupCardMessage = new SocialGroupCardMessage();
+            socialGroupCardMessage.setIcon(stringBuilder.substring(0, stringBuilder.length() - 1));
+            socialGroupCardMessage.setGroupId(groupResponse.getGroupInfo().getId());
+            socialGroupCardMessage.setInviterId(Constant.userId);
+            socialGroupCardMessage.setName(Constant.currentUser.getNick());
+            socialGroupCardMessage.setGroupName(groupResponse.getGroupInfo().getGroupNikeName());
+            socialGroupCardMessage.setMemberNum(groupResponse.getCustomers().size() + "");
 
-        Observable.interval(0, 250, TimeUnit.MILLISECONDS)
-                .take(data1.size())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> CommonUtils.initDialog(CreateGroupActivity.this, getString(R.string.inviting)).show())
-                .doOnDispose(CommonUtils::destoryDialog)
-                .doOnComplete(() -> {
-                    ToastUtils.showShort(R.string.invite_success);
-                    CommonUtils.destoryDialog();
-                    finish();
-                })
-                .compose(bindToLifecycle())
-                .subscribe(l -> {
-                    Message message = Message.obtain(data1.get(l.intValue()).getId(), Conversation.ConversationType.PRIVATE, groupCardMessage);
-                    RongIM.getInstance().sendMessage(message, null, null, (IRongCallback.ISendMessageCallback) null);
-                });
+            Observable.interval(0, 250, TimeUnit.MILLISECONDS)
+                    .take(data1.size())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(d -> CommonUtils.initDialog(CreateGroupActivity.this, getString(R.string.inviting)).show())
+                    .doOnDispose(CommonUtils::destoryDialog)
+                    .doOnComplete(() -> {
+                        ToastUtils.showShort(R.string.invite_success);
+                        CommonUtils.destoryDialog();
+                        finish();
+                    })
+                    .compose(bindToLifecycle())
+                    .subscribe(l -> {
+                        Message message = Message.obtain(data1.get(l.intValue()).getId(), Conversation.ConversationType.PRIVATE, socialGroupCardMessage);
+                        RongIM.getInstance().sendMessage(message, null, null, (IRongCallback.ISendMessageCallback) null);
+                    });
+        } else {
+            GroupCardMessage groupCardMessage = new GroupCardMessage();
+            groupCardMessage.setIcon(stringBuilder.substring(0, stringBuilder.length() - 1));
+            groupCardMessage.setGroupId(groupResponse.getGroupInfo().getId());
+            groupCardMessage.setInviterId(Constant.userId);
+            groupCardMessage.setName(Constant.currentUser.getNick());
+            groupCardMessage.setGroupName(groupResponse.getGroupInfo().getGroupNikeName());
+
+            Observable.interval(0, 250, TimeUnit.MILLISECONDS)
+                    .take(data1.size())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(d -> CommonUtils.initDialog(CreateGroupActivity.this, getString(R.string.inviting)).show())
+                    .doOnDispose(CommonUtils::destoryDialog)
+                    .doOnComplete(() -> {
+                        ToastUtils.showShort(R.string.invite_success);
+                        CommonUtils.destoryDialog();
+                        finish();
+                    })
+                    .compose(bindToLifecycle())
+                    .subscribe(l -> {
+                        Message message = Message.obtain(data1.get(l.intValue()).getId(), Conversation.ConversationType.PRIVATE, groupCardMessage);
+                        RongIM.getInstance().sendMessage(message, null, null, (IRongCallback.ISendMessageCallback) null);
+                    });
+        }
     }
 
     //删除成员
@@ -680,12 +707,10 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
     }
 
     @Override

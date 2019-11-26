@@ -35,6 +35,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.SocialGroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnImageMessageItemProvider;
@@ -47,6 +48,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GameResultMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GroupCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.MInfoNotificationMsgItemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.RedPacketProvider;
+import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SocialGroupCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SystemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.TransferProvider;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -227,6 +229,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageType(GameResultMessage.class);
         RongIM.registerMessageType(DuoDuoMessage.class);
         RongIM.registerMessageType(CusEmoteTabMessage.class);
+        RongIM.registerMessageType(SocialGroupCardMessage.class);
         RongIM.registerMessageTemplate(new MInfoNotificationMsgItemProvider());
         RongIM.registerMessageTemplate(new SightMessageItemProvider());
         RongIM.registerMessageTemplate(new BurnVoiceMessageProvider());
@@ -240,6 +243,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new BurnTextMessageProvider());
         RongIM.registerMessageTemplate(new BurnImageMessageItemProvider());
         RongIM.registerMessageTemplate(new CusEmoteTabMessageProvider());
+        RongIM.registerMessageTemplate(new SocialGroupCardProvider());
         RongIM.getInstance().setMessageAttachedUserInfo(true);
         RongIM.getInstance().enableNewComingMessageIcon(true);//显示新消息提醒
         RongIM.getInstance().enableUnreadMessageIcon(true);//显示未读消息数目
