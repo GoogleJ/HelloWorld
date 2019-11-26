@@ -348,7 +348,7 @@
     <string name="changegroupname">修改群名称</string>
     <string name="hint_groupname">输入群名称</string>
     <string name="create_group_tips">创建群至少需要邀请两位好友</string>
-    <string name="remove_from_group">移除群聊</string>
+    <string name="remove_from_group">移除</string>
     <string name="please_open_permission">请开启相关权限</string>
     <string name="select_remove_member">请至少选择一位要移除的群成员</string>
     <string name="select_invite_member">请至少选择一位要邀请的好友</string>

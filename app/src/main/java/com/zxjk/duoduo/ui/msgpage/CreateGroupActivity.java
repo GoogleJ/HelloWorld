@@ -88,6 +88,8 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
     private TextView tv_commit;
 
+    private GroupResponse groupResponse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,13 +100,55 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         TextView tv_title = findViewById(R.id.tv_title);
         tv_commit.setVisibility(View.VISIBLE);
         tv_commit.setText(getString(R.string.ok));
-        tv_title.setText(getString(R.string.select_contacts));
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
-        GroupResponse group = (GroupResponse) getIntent().getSerializableExtra("members");
-        if (group != null) {
-            List<GroupResponse.CustomersBean> customers = group.getCustomers();
+        groupResponse = (GroupResponse) getIntent().getSerializableExtra("members");
+        if (groupResponse == null) {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getGroupByGroupId(getIntent().getStringExtra("groupId"))
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(groupResponse -> {
+                        this.groupResponse = groupResponse;
+                        List<GroupResponse.CustomersBean> customers = groupResponse.getCustomers();
+                        c.addAll(customers);
+                        if (eventType == EVENT_CREATEGROUP) {
+                            tv_title.setText(getString(R.string.select_contacts));
+                            handleCreateGroup();
+                        } else if (eventType == EVENT_ADDMENBER) {
+                            tv_title.setText(getString(R.string.select_contacts));
+                            handleAddMember();
+                        } else if (eventType == EVENT_DELETEMEMBER) {
+                            tv_title.setText(R.string.remove_from_group);
+                            handleDeleteMember();
+                        } else if (eventType == EVENT_ADDMANAGER) {
+                            tv_title.setText(R.string.add_manager);
+                            handleAddManager();
+                        } else if (eventType == EVENT_DELETEMANAGER) {
+                            tv_title.setText(R.string.delete_manager);
+                            handleDeleteManager();
+                        }
+                    }, this::handleApiError);
+        } else {
+            List<GroupResponse.CustomersBean> customers = groupResponse.getCustomers();
             c.addAll(customers);
+            if (eventType == EVENT_CREATEGROUP) {
+                tv_title.setText(getString(R.string.select_contacts));
+                handleCreateGroup();
+            } else if (eventType == EVENT_ADDMENBER) {
+                tv_title.setText(getString(R.string.select_contacts));
+                handleAddMember();
+            } else if (eventType == EVENT_DELETEMEMBER) {
+                tv_title.setText(R.string.remove_from_group);
+                handleDeleteMember();
+            } else if (eventType == EVENT_ADDMANAGER) {
+                tv_title.setText(R.string.add_manager);
+                handleAddManager();
+            } else if (eventType == EVENT_DELETEMANAGER) {
+                tv_title.setText(R.string.delete_manager);
+                handleDeleteManager();
+            }
         }
 
         eventType = getIntent().getIntExtra("eventType", -1);
@@ -117,21 +161,6 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
         indexCreateGroup.setShowTextDialog(tv_hit_letter);
         indexCreateGroup.setOnTouchingLetterChangedListener(letter -> recycler2.scrollToPosition(getScrollPosition(letter)));
-
-        if (eventType == EVENT_CREATEGROUP) {
-            handleCreateGroup();
-        } else if (eventType == EVENT_ADDMENBER) {
-            handleAddMember();
-        } else if (eventType == EVENT_DELETEMEMBER) {
-            tv_title.setText(R.string.remove_from_group);
-            handleDeleteMember();
-        } else if (eventType == EVENT_ADDMANAGER) {
-            tv_title.setText(R.string.add_manager);
-            handleAddManager();
-        } else if (eventType == EVENT_DELETEMANAGER) {
-            tv_title.setText(R.string.delete_manager);
-            handleDeleteManager();
-        }
 
         tv_commit.setOnClickListener(v -> confirm());
     }
@@ -378,14 +407,13 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
     //获取群成员
     private void initData2() {
-        GroupResponse group = (GroupResponse) getIntent().getSerializableExtra("members");
-        data2 = group.getCustomers();
-        Iterator<GroupResponse.CustomersBean> iterator = data2.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().getId().equals(Constant.userId)) {
-                iterator.remove();
+            data2 = groupResponse.getCustomers();
+            Iterator<GroupResponse.CustomersBean> iterator = data2.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next().getId().equals(Constant.userId)) {
+                    iterator.remove();
+                }
             }
-        }
     }
 
     //获取群管理员
@@ -406,7 +434,6 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
     //获取普通群成员（不是管理员）
     private void initData4() {
-        GroupResponse groupResponse = (GroupResponse) getIntent().getSerializableExtra("members");
         ArrayList<PermissionInfoBean> managers = getIntent().getParcelableArrayListExtra("managers");
         data2 = groupResponse.getCustomers();
         Iterator<GroupResponse.CustomersBean> iterator = data2.iterator();
@@ -479,15 +506,13 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             return;
         }
 
-        GroupResponse group = (GroupResponse) getIntent().getSerializableExtra("members");
-
         StringBuilder sb = new StringBuilder();
         for (String str : selectedIds) {
             sb.append(str + ",");
         }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .addPermissionInfo(group.getGroupInfo().getId(), sb.substring(0, sb.length() - 1))
+                .addPermissionInfo(groupResponse.getGroupInfo().getId(), sb.substring(0, sb.length() - 1))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
@@ -495,7 +520,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                     ArrayList<PermissionInfoBean> data = new ArrayList<>(data3.size());
                     for (GroupResponse.CustomersBean b : data3) {
                         PermissionInfoBean bean = new PermissionInfoBean();
-                        bean.setGroupId(group.getGroupInfo().getId());
+                        bean.setGroupId(groupResponse.getGroupInfo().getId());
                         bean.setCustomerId(b.getId());
                         bean.setNick(b.getNick());
                         bean.setHeadPortrait(b.getHeadPortrait());
@@ -514,14 +539,13 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             ToastUtils.showShort(R.string.select_delete_manager);
             return;
         }
-        GroupResponse group = (GroupResponse) getIntent().getSerializableExtra("members");
         StringBuilder sb = new StringBuilder();
         for (String str : selectedIds) {
             sb.append(str + ",");
         }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .removePermissionInfo(group.getGroupInfo().getId(), sb.substring(0, sb.length() - 1))
+                .removePermissionInfo(groupResponse.getGroupInfo().getId(), sb.substring(0, sb.length() - 1))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
@@ -539,7 +563,6 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             ToastUtils.showShort(R.string.select_invite_member);
             return;
         }
-        GroupResponse group = (GroupResponse) getIntent().getSerializableExtra("members");
         StringBuilder stringBuilder = new StringBuilder();
         for (GroupResponse.CustomersBean b : c) {
             stringBuilder.append(b.getHeadPortrait() + ",");
@@ -547,10 +570,10 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
         GroupCardMessage groupCardMessage = new GroupCardMessage();
         groupCardMessage.setIcon(stringBuilder.substring(0, stringBuilder.length() - 1));
-        groupCardMessage.setGroupId(group.getGroupInfo().getId());
+        groupCardMessage.setGroupId(groupResponse.getGroupInfo().getId());
         groupCardMessage.setInviterId(Constant.userId);
         groupCardMessage.setName(Constant.currentUser.getNick());
-        groupCardMessage.setGroupName(group.getGroupInfo().getGroupNikeName());
+        groupCardMessage.setGroupName(groupResponse.getGroupInfo().getGroupNikeName());
 
         Observable.interval(0, 250, TimeUnit.MILLISECONDS)
                 .take(data1.size())
@@ -575,13 +598,12 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             ToastUtils.showShort(R.string.select_remove_member);
             return;
         }
-        GroupResponse group = (GroupResponse) getIntent().getSerializableExtra("members");
         StringBuilder sb = new StringBuilder();
         for (String ids : selectedIds) {
             sb.append(ids + ",");
         }
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .moveOutGroup(group.getGroupInfo().getId(), sb.substring(0, sb.length() - 1))
+                .moveOutGroup(groupResponse.getGroupInfo().getId(), sb.substring(0, sb.length() - 1))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(CreateGroupActivity.this)))
                 .compose(RxSchedulers.normalTrans())
@@ -615,7 +637,6 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                     RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP, s.getId(), message, selectedIds.toArray(new String[]{}), null, null, new IRongCallback.ISendMessageCallback() {
                         @Override
                         public void onAttached(Message message) {
-
                         }
 
                         @Override
