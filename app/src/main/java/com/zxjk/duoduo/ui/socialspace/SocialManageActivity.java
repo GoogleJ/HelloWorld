@@ -144,7 +144,7 @@ public class SocialManageActivity extends BaseActivity {
     }
 
     public void socialName(View view) {
-        if (response.getIdentity().equals("2")) {
+        if (!response.getIdentity().equals("0")) {
             GroupResponse group = new GroupResponse();
             GroupResponse.GroupInfoBean groupInfoBean = new GroupResponse.GroupInfoBean();
             groupInfoBean.setId(response.getGroupId());
