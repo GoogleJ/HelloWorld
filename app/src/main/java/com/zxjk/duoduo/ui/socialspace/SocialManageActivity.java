@@ -17,6 +17,7 @@ import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
@@ -26,10 +27,15 @@ import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.UpdateUserInfoActivity;
 import com.zxjk.duoduo.ui.msgpage.ChooseNewOwnerActivity;
+import com.zxjk.duoduo.ui.msgpage.MuteManageActivity;
+import com.zxjk.duoduo.ui.msgpage.OwnerGroupAuthorityActivity;
+import com.zxjk.duoduo.ui.msgpage.OwnerGroupManageActivity;
 import com.zxjk.duoduo.ui.msgpage.SkinReportActivity;
 import com.zxjk.duoduo.ui.widget.dialog.ConfirmDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -48,6 +54,9 @@ public class SocialManageActivity extends BaseActivity {
     private LinearLayout ll_groupmanager;
     private TextView tvBottom;
 
+    private GroupResponse group;
+
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +80,14 @@ public class SocialManageActivity extends BaseActivity {
 
         tvNick.setText(Constant.currentUser.getNick());
         String identity = response.getIdentity();
+        if (!"0".equals(identity)){
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getGroupByGroupId(response.getGroupId())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(group-> this.group = group, this::handleApiError);
+        }
         switch (identity) {
             case "0":
                 //成员
@@ -183,48 +200,48 @@ public class SocialManageActivity extends BaseActivity {
 
     //群主权限管理
     public void ownerAuthority(View view) {
-//        Intent intent = new Intent(this, OwnerGroupAuthorityActivity.class);
-//        intent.putExtra("group", group);
-//        startActivityForResult(intent, 1);
+        Intent intent = new Intent(this, OwnerGroupAuthorityActivity.class);
+        intent.putExtra("group", group);
+        startActivityForResult(intent, 1);
     }
 
     //群主群管理
     public void ownerGroupManage(View view) {
-//        Intent intent = new Intent(this, OwnerGroupManageActivity.class);
-//        intent.putExtra("group", group);
-//        startActivityForResult(intent, 1);
+        Intent intent = new Intent(this, OwnerGroupManageActivity.class);
+        intent.putExtra("group", group);
+        startActivityForResult(intent, 1);
     }
 
     //管理员禁言管理
     public void managerMute(View view) {
-//        GroupResponse.PermissionBean permission = group.getGroupPermission();
-//        if (permission.getOpenBanned().equals("0")) {
-//            ToastUtils.showShort(R.string.nopermisson);
-//            return;
-//        }
-//        Intent intent = new Intent(this, MuteManageActivity.class);
-//        intent.putExtra("groupId", group.getGroupInfo().getId());
-//        startActivity(intent);
+        GroupResponse.PermissionBean permission = group.getGroupPermission();
+        if (permission.getOpenBanned().equals("0")) {
+            ToastUtils.showShort(R.string.nopermisson);
+            return;
+        }
+        Intent intent = new Intent(this, MuteManageActivity.class);
+        intent.putExtra("groupId", group.getGroupInfo().getId());
+        startActivity(intent);
     }
 
     //管理员视频直播
     public void managerVideo(View view) {
-//        GroupResponse.PermissionBean permission = group.getGroupPermission();
-//        if (permission.getOpenVideo().equals("0")) {
-//            ToastUtils.showShort(R.string.nopermisson);
-//            return;
-//        }
-//        ToastUtils.showShort(R.string.developing);
+        GroupResponse.PermissionBean permission = group.getGroupPermission();
+        if (permission.getOpenVideo().equals("0")) {
+            ToastUtils.showShort(R.string.nopermisson);
+            return;
+        }
+        ToastUtils.showShort(R.string.developing);
     }
 
     //管理员语音直播
     public void managerAudio(View view) {
-//        GroupResponse.PermissionBean permission = group.getGroupPermission();
-//        if (permission.getOpenAudio().equals("0")) {
-//            ToastUtils.showShort(R.string.nopermisson);
-//            return;
-//        }
-//        ToastUtils.showShort(R.string.developing);
+        GroupResponse.PermissionBean permission = group.getGroupPermission();
+        if (permission.getOpenAudio().equals("0")) {
+            ToastUtils.showShort(R.string.nopermisson);
+            return;
+        }
+        ToastUtils.showShort(R.string.developing);
     }
 
     public void funBottom(View view) {

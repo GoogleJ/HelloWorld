@@ -101,8 +101,18 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         tv_commit.setVisibility(View.VISIBLE);
         tv_commit.setText(getString(R.string.ok));
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        confirmText = tv_commit.getText();
+        recycler1 = findViewById(R.id.recycler1);
+        recycler2 = findViewById(R.id.recycler2);
+        tv_hit_letter = findViewById(R.id.tv_hit_letter);
+        indexCreateGroup = findViewById(R.id.indexCreateGroup);
+        indexCreateGroup.setShowTextDialog(tv_hit_letter);
+        indexCreateGroup.setOnTouchingLetterChangedListener(letter -> recycler2.scrollToPosition(getScrollPosition(letter)));
+        tv_commit.setOnClickListener(v -> confirm());
 
+        eventType = getIntent().getIntExtra("eventType", -1);
         groupResponse = (GroupResponse) getIntent().getSerializableExtra("members");
+
         if (groupResponse == null) {
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getGroupByGroupId(getIntent().getStringExtra("groupId"))
@@ -111,58 +121,32 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .subscribe(groupResponse -> {
                         this.groupResponse = groupResponse;
-                        List<GroupResponse.CustomersBean> customers = groupResponse.getCustomers();
-                        c.addAll(customers);
-                        if (eventType == EVENT_CREATEGROUP) {
-                            tv_title.setText(getString(R.string.select_contacts));
-                            handleCreateGroup();
-                        } else if (eventType == EVENT_ADDMENBER) {
-                            tv_title.setText(getString(R.string.select_contacts));
-                            handleAddMember();
-                        } else if (eventType == EVENT_DELETEMEMBER) {
-                            tv_title.setText(R.string.remove_from_group);
-                            handleDeleteMember();
-                        } else if (eventType == EVENT_ADDMANAGER) {
-                            tv_title.setText(R.string.add_manager);
-                            handleAddManager();
-                        } else if (eventType == EVENT_DELETEMANAGER) {
-                            tv_title.setText(R.string.delete_manager);
-                            handleDeleteManager();
-                        }
+                        handleResult(tv_title, groupResponse);
                     }, this::handleApiError);
         } else {
-            List<GroupResponse.CustomersBean> customers = groupResponse.getCustomers();
-            c.addAll(customers);
-            if (eventType == EVENT_CREATEGROUP) {
-                tv_title.setText(getString(R.string.select_contacts));
-                handleCreateGroup();
-            } else if (eventType == EVENT_ADDMENBER) {
-                tv_title.setText(getString(R.string.select_contacts));
-                handleAddMember();
-            } else if (eventType == EVENT_DELETEMEMBER) {
-                tv_title.setText(R.string.remove_from_group);
-                handleDeleteMember();
-            } else if (eventType == EVENT_ADDMANAGER) {
-                tv_title.setText(R.string.add_manager);
-                handleAddManager();
-            } else if (eventType == EVENT_DELETEMANAGER) {
-                tv_title.setText(R.string.delete_manager);
-                handleDeleteManager();
-            }
+            handleResult(tv_title, groupResponse);
         }
+    }
 
-        eventType = getIntent().getIntExtra("eventType", -1);
-
-        confirmText = tv_commit.getText();
-        recycler1 = findViewById(R.id.recycler1);
-        recycler2 = findViewById(R.id.recycler2);
-        tv_hit_letter = findViewById(R.id.tv_hit_letter);
-        indexCreateGroup = findViewById(R.id.indexCreateGroup);
-
-        indexCreateGroup.setShowTextDialog(tv_hit_letter);
-        indexCreateGroup.setOnTouchingLetterChangedListener(letter -> recycler2.scrollToPosition(getScrollPosition(letter)));
-
-        tv_commit.setOnClickListener(v -> confirm());
+    private void handleResult(TextView tv_title, GroupResponse groupResponse) {
+        List<GroupResponse.CustomersBean> customers = groupResponse.getCustomers();
+        c.addAll(customers);
+        if (eventType == EVENT_CREATEGROUP) {
+            tv_title.setText(getString(R.string.select_contacts));
+            handleCreateGroup();
+        } else if (eventType == EVENT_ADDMENBER) {
+            tv_title.setText(getString(R.string.select_contacts));
+            handleAddMember();
+        } else if (eventType == EVENT_DELETEMEMBER) {
+            tv_title.setText(R.string.remove_from_group);
+            handleDeleteMember();
+        } else if (eventType == EVENT_ADDMANAGER) {
+            tv_title.setText(R.string.add_manager);
+            handleAddManager();
+        } else if (eventType == EVENT_DELETEMANAGER) {
+            tv_title.setText(R.string.delete_manager);
+            handleDeleteManager();
+        }
     }
 
     //删除管理员逻辑
@@ -407,13 +391,13 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
     //获取群成员
     private void initData2() {
-            data2 = groupResponse.getCustomers();
-            Iterator<GroupResponse.CustomersBean> iterator = data2.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next().getId().equals(Constant.userId)) {
-                    iterator.remove();
-                }
+        data2 = groupResponse.getCustomers();
+        Iterator<GroupResponse.CustomersBean> iterator = data2.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getId().equals(Constant.userId)) {
+                iterator.remove();
             }
+        }
     }
 
     //获取群管理员
@@ -608,9 +592,14 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(CreateGroupActivity.this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
-                    Intent intent = new Intent(this, ConversationActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    if (getIntent().getBooleanExtra("fromSocial", false)) {
+                        finish();
+                    } else {
+                        Intent intent = new Intent(this, ConversationActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+
                 }, this::handleApiError);
     }
 
