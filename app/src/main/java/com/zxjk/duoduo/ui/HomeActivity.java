@@ -99,8 +99,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     //私聊数
     private int msgCount1;
-    //群聊数
-    private int msgCount2;
 
     private BurnAfterReadMessageLocalBeanDao dao;
 
@@ -398,35 +396,16 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     msgFragment.getBadgeTitleViews()[0].getBadgeView().setVisibility(View.VISIBLE);
                 }
             }
-            if ((msgCount1 + msgCount2) == 0) {
+            if ((msgCount1) == 0) {
                 badgeItem.hide();
                 return;
             }
-            badgeItem.setText(String.valueOf(msgCount1 + msgCount2));
-            if ((msgCount1 + msgCount2) > 99) {
+            badgeItem.setText(String.valueOf(msgCount1));
+            if ((msgCount1) > 99) {
                 badgeItem.setText("99+");
             }
             badgeItem.show(true);
-        }, Conversation.ConversationType.PRIVATE);
-        RongIM.getInstance().addUnReadMessageCountChangedObserver(count -> {
-            msgCount2 = count;
-            if (msgFragment.getBadgeTitleViews()[1] != null) {
-                if (msgCount2 == 0) {
-                    msgFragment.getBadgeTitleViews()[1].getBadgeView().setVisibility(View.INVISIBLE);
-                } else {
-                    msgFragment.getBadgeTitleViews()[1].getBadgeView().setVisibility(View.VISIBLE);
-                }
-            }
-            if ((msgCount1 + msgCount2) == 0) {
-                badgeItem.hide();
-                return;
-            }
-            badgeItem.setText(String.valueOf(msgCount1 + msgCount2));
-            if ((msgCount1 + msgCount2) > 99) {
-                badgeItem.setText("99+");
-            }
-            badgeItem.show(true);
-        }, Conversation.ConversationType.GROUP);
+        }, Conversation.ConversationType.PRIVATE, Conversation.ConversationType.GROUP);
     }
 
     private void getNewFriendCount() {
