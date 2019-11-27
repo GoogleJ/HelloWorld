@@ -134,11 +134,16 @@ public class SocialHomeActivity extends BaseActivity {
 
         maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 64)) / CommonUtils.dip2px(this, 48);
 
+        ViewGroup.LayoutParams layoutParams = ivBg.getLayoutParams();
+        layoutParams.height = (int) (ScreenUtils.getScreenWidth() * 0.75);
+        ivBg.setLayoutParams(layoutParams);
+        ivBg.setImageResource(R.drawable.bg_default_social);
+
         initData();
 
-        setSocialBackgroundHeight();
-
         setToolBarMarginTop();
+
+        setSocialBackgroundHeight();
 
         setSupportActionBar(toolbar);
 
@@ -357,13 +362,6 @@ public class SocialHomeActivity extends BaseActivity {
     private void onAppBarScroll() {
         app_bar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             int absOffset = Math.abs(verticalOffset);
-            if (minimumHeightForVisibleOverlappingContent <= 0) {
-                minimumHeightForVisibleOverlappingContent = app_bar.getMinimumHeightForVisibleOverlappingContent();
-            }
-            if (totalScrollRange <= 0) {
-                totalScrollRange = app_bar.getTotalScrollRange();
-                collapsingLayout.setScrimVisibleHeightTrigger((int) (totalScrollRange * 0.5));
-            }
 
             if (absOffset <= minimumHeightForVisibleOverlappingContent) {
                 if (ivToolBarEnd.getVisibility() == View.GONE) {
@@ -401,15 +399,19 @@ public class SocialHomeActivity extends BaseActivity {
         toolbar.setLayoutParams(layoutParams1);
     }
 
+    private int appbarHeight;
+
     private void setSocialBackgroundHeight() {
-        llSecond.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+
+        collapsingLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (!hasInitTop) {
                 hasInitTop = true;
-                ViewGroup.LayoutParams layoutParams = ivBg.getLayoutParams();
-                layoutParams.height = (int) (ScreenUtils.getScreenWidth() * 0.75);
-                ivBg.setLayoutParams(layoutParams);
-                ivBg.setImageResource(R.drawable.bg_default_social);
-                llTop.setPadding(CommonUtils.dip2px(SocialHomeActivity.this, 16), layoutParams.height - llSecond.getHeight(), CommonUtils.dip2px(SocialHomeActivity.this, 16), 0);
+                llTop.setPadding(CommonUtils.dip2px(SocialHomeActivity.this, 16), (int) (ScreenUtils.getScreenWidth() * 0.75) - llSecond.getHeight(), CommonUtils.dip2px(SocialHomeActivity.this, 16), 0);
+            }
+            if (app_bar.getHeight() > appbarHeight) {
+                appbarHeight = app_bar.getHeight();
+                totalScrollRange = app_bar.getHeight() - BarUtils.getActionBarHeight() - statusbarHeight - CommonUtils.dip2px(SocialHomeActivity.this, 48);
+                minimumHeightForVisibleOverlappingContent = app_bar.getHeight() - CommonUtils.dip2px(SocialHomeActivity.this, 48) - CommonUtils.dip2px(SocialHomeActivity.this, 160);
             }
         });
     }

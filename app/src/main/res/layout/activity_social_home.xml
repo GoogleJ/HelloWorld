@@ -23,6 +23,7 @@
             app:contentScrim="@color/white"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:scrimAnimationDuration="500"
+            app:scrimVisibleHeightTrigger="160dp"
             app:titleEnabled="false">
 
             <ImageView
@@ -311,8 +312,7 @@
         android:id="@+id/pagerOut"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:background="#F2F3F5"
         android:overScrollMode="never"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
