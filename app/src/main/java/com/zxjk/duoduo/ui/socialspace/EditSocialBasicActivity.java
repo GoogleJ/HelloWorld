@@ -249,4 +249,8 @@ public class EditSocialBasicActivity extends BaseActivity {
         });
     }
 
+    public void back(View view) {
+        finish();
+    }
+
 }
