@@ -181,7 +181,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     indicatorOut.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
-
+                                                    flushAfterEnter();
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
                                                             Constant.currentUser.getNick() + "\"加入了群组");
                                                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
@@ -206,7 +206,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     indicatorOut.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
-
+                                                    flushAfterEnter();
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
                                                             Constant.currentUser.getNick() + "\"加入了群组");
                                                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
@@ -241,7 +241,7 @@ public class SocialHomeActivity extends BaseActivity {
                             list.add(new CommunityInfoResponse.MembersBean());
                             return list;
                         }
-                    } else {
+                    } else if (r.getIdentity().equals("1") || r.getIdentity().equals("2")){
                         ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(r.getMembers());
                         if (r.getMembers().size() >= maxMemVisiableItem - 1) {
                             List<CommunityInfoResponse.MembersBean> membersBeans = list.subList(0, maxMemVisiableItem - 2);
@@ -253,6 +253,14 @@ public class SocialHomeActivity extends BaseActivity {
                             list.add(new CommunityInfoResponse.MembersBean());
                             return list;
                         }
+                    } else {
+                        ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(r.getMembers());
+                        if (r.getMembers().size() > maxMemVisiableItem) {
+                            List<CommunityInfoResponse.MembersBean> membersBeans = list.subList(0, maxMemVisiableItem);
+                            return membersBeans;
+                        } else {
+                            return list;
+                        }
                     }
                 })
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -260,6 +268,24 @@ public class SocialHomeActivity extends BaseActivity {
                     handleApiError(t);
                     finish();
                 });
+    }
+
+    private void flushAfterEnter() {
+        CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
+        membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
+        ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(response.getMembers());
+        list.add(membersBean);
+        response.setMembers(list);
+        response.setIdentity("0");
+        if (response.getMembers().size() >= maxMemVisiableItem) {
+            List<CommunityInfoResponse.MembersBean> membersBeans = list.subList(0, maxMemVisiableItem - 1);
+            membersBeans.add(new CommunityInfoResponse.MembersBean());
+            initAdapterForSocialMem(membersBeans);
+        } else {
+            list.add(new CommunityInfoResponse.MembersBean());
+            initAdapterForSocialMem(list);
+        }
+        contentEnable = true;
     }
 
     private void initAdapterForSocialMem(List<CommunityInfoResponse.MembersBean> data) {
@@ -296,7 +322,7 @@ public class SocialHomeActivity extends BaseActivity {
 
                         });
                     }
-                } else {
+                } else if (response.getIdentity().equals("1") || response.getIdentity().equals("2")){
                     if (helper.getAdapterPosition() == data.size() - 1) {
                         ivMemberHead.setImageResource(R.drawable.ic_social_member_remove);
                         ivMemberHead.setOnClickListener(v -> {
@@ -322,6 +348,11 @@ public class SocialHomeActivity extends BaseActivity {
 
                         });
                     }
+                } else {
+                    Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
+                    ivMemberHead.setOnClickListener(v -> {
+
+                    });
                 }
             }
         };
