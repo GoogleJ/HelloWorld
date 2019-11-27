@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -47,10 +46,8 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
-import com.zxjk.duoduo.ui.msgpage.GroupChatInformationActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
-import com.zxjk.duoduo.ui.widget.SlopScrollView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
@@ -64,7 +61,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,24 +78,22 @@ import razerdp.widget.QuickPopup;
 public class SocialHomeActivity extends BaseActivity {
 
     private int[] detailTitles = {R.string.social_calture, R.string.social_act};
-    //    private static final float SCROLL_SLOP = ;
     private static final int REQUEST_SLOGAN = 1;
     private static final int REQUEST_NOTICE = 2;
     private int minimumHeightForVisibleOverlappingContent = 0;
     private int totalScrollRange = 0;
-    private int toolbarHeight = 0;
     private int statusbarHeight = 0;
 
     private AppBarLayout app_bar;
     private CollapsingToolbarLayout collapsingLayout;
+    private LinearLayout llTop;
+    private LinearLayout llSecond;
     private ImageView ivBg;
     private Toolbar toolbar;
     private ImageView ivToolBarStart;
     private TextView tvTitle;
     private ImageView ivToolBarEnd;
-    private SlopScrollView slopScroll;
     private ViewPager pagerOut;
-    private MagicIndicator indicatorOut;
     private MagicIndicator indicatorTop;
 
     private RecyclerView recyclerGroupMember;
@@ -117,10 +111,14 @@ public class SocialHomeActivity extends BaseActivity {
     private ViewStub viewStubPay;
     private ViewStub viewStubFree;
     private boolean contentEnable = false;
+    private boolean hasInitTop = false;
 
     private QuickPopup menuPop;
 
     private CommunityInfoResponse response;
+
+    private CalturePage calturePage;
+    private DynamicsPage dynamicsPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +128,9 @@ public class SocialHomeActivity extends BaseActivity {
         setContentView(R.layout.activity_social_home);
 
         initView();
+
+        calturePage = new CalturePage();
+        dynamicsPage = new DynamicsPage();
 
         maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 64)) / CommonUtils.dip2px(this, 48);
 
@@ -142,10 +143,6 @@ public class SocialHomeActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         onAppBarScroll();
-
-        initSlopScrollView();
-
-        setPagerHeight();
 
         initIndicator();
 
@@ -165,7 +162,6 @@ public class SocialHomeActivity extends BaseActivity {
                         if (!r.getType().equals("culture")) {
                             contentEnable = false;
                             llSocialNotice.setVisibility(View.GONE);
-                            indicatorOut.setVisibility(View.GONE);
                             pagerOut.setVisibility(View.GONE);
                             ivOpenConversation.setVisibility(View.GONE);
                             if (r.getType().equals("free")) {
@@ -178,7 +174,6 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .subscribe(s -> {
                                                     inflate.setVisibility(View.GONE);
                                                     llSocialNotice.setVisibility(View.VISIBLE);
-                                                    indicatorOut.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
                                                     flushAfterEnter();
@@ -203,7 +198,6 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .subscribe(s -> {
                                                     inflate.setVisibility(View.GONE);
                                                     llSocialNotice.setVisibility(View.VISIBLE);
-                                                    indicatorOut.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
                                                     flushAfterEnter();
@@ -241,7 +235,7 @@ public class SocialHomeActivity extends BaseActivity {
                             list.add(new CommunityInfoResponse.MembersBean());
                             return list;
                         }
-                    } else if (r.getIdentity().equals("1") || r.getIdentity().equals("2")){
+                    } else if (r.getIdentity().equals("1") || r.getIdentity().equals("2")) {
                         ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(r.getMembers());
                         if (r.getMembers().size() >= maxMemVisiableItem - 1) {
                             List<CommunityInfoResponse.MembersBean> membersBeans = list.subList(0, maxMemVisiableItem - 2);
@@ -322,7 +316,7 @@ public class SocialHomeActivity extends BaseActivity {
 
                         });
                     }
-                } else if (response.getIdentity().equals("1") || response.getIdentity().equals("2")){
+                } else if (response.getIdentity().equals("1") || response.getIdentity().equals("2")) {
                     if (helper.getAdapterPosition() == data.size() - 1) {
                         ivMemberHead.setImageResource(R.drawable.ic_social_member_remove);
                         ivMemberHead.setOnClickListener(v -> {
@@ -358,21 +352,6 @@ public class SocialHomeActivity extends BaseActivity {
         };
         recyclerGroupMember.setAdapter(socialMemAdapter);
         socialMemAdapter.setNewData(data);
-    }
-
-    private void initSlopScrollView() {
-        int slop = CommonUtils.dip2px(this, 240);
-        slopScroll.setScrollSlop(slop);
-
-        slopScroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY >= slop && indicatorTop.getVisibility() == View.INVISIBLE) {
-                indicatorTop.setVisibility(View.VISIBLE);
-                indicatorOut.setVisibility(View.INVISIBLE);
-            } else if (scrollY < slop && indicatorTop.getVisibility() == View.VISIBLE) {
-                indicatorTop.setVisibility(View.INVISIBLE);
-                indicatorOut.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     private void onAppBarScroll() {
@@ -417,17 +396,22 @@ public class SocialHomeActivity extends BaseActivity {
 
     private void setToolBarMarginTop() {
         FrameLayout.LayoutParams layoutParams1 = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
-        toolbarHeight = layoutParams1.height;
         statusbarHeight = BarUtils.getStatusBarHeight();
         layoutParams1.topMargin = statusbarHeight;
         toolbar.setLayoutParams(layoutParams1);
     }
 
     private void setSocialBackgroundHeight() {
-        ViewGroup.LayoutParams layoutParams = app_bar.getLayoutParams();
-        layoutParams.height = (int) (ScreenUtils.getScreenWidth() * 0.75);
-        app_bar.setLayoutParams(layoutParams);
-        ivBg.setImageResource(R.drawable.bg_default_social);
+        llSecond.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            if (!hasInitTop) {
+                hasInitTop = true;
+                ViewGroup.LayoutParams layoutParams = ivBg.getLayoutParams();
+                layoutParams.height = (int) (ScreenUtils.getScreenWidth() * 0.75);
+                ivBg.setLayoutParams(layoutParams);
+                ivBg.setImageResource(R.drawable.bg_default_social);
+                llTop.setPadding(CommonUtils.dip2px(SocialHomeActivity.this, 16), layoutParams.height - llSecond.getHeight(), CommonUtils.dip2px(SocialHomeActivity.this, 16), 0);
+            }
+        });
     }
 
     private void initView() {
@@ -435,9 +419,7 @@ public class SocialHomeActivity extends BaseActivity {
         collapsingLayout = findViewById(R.id.collapsingLayout);
         ivBg = findViewById(R.id.ivBg);
         toolbar = findViewById(R.id.toolbar);
-        slopScroll = findViewById(R.id.slopScroll);
         pagerOut = findViewById(R.id.pagerOut);
-        indicatorOut = findViewById(R.id.indicatorOut);
         indicatorTop = findViewById(R.id.indicatorTop);
         ivToolBarStart = findViewById(R.id.ivToolBarStart);
         tvTitle = findViewById(R.id.tvTitle);
@@ -452,6 +434,8 @@ public class SocialHomeActivity extends BaseActivity {
         llSocialNotice = findViewById(R.id.llSocialNotice);
         viewStubPay = findViewById(R.id.viewStubPay);
         viewStubFree = findViewById(R.id.viewStubFree);
+        llTop = findViewById(R.id.llTop);
+        llSecond = findViewById(R.id.llSecond);
     }
 
     private void initPager() {
@@ -459,9 +443,8 @@ public class SocialHomeActivity extends BaseActivity {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                CalturePage calturePage = new CalturePage();
-                if (position == 1) calturePage.social2();
-                return calturePage;
+                if (position == 0) return calturePage;
+                else return dynamicsPage;
             }
 
             @Override
@@ -469,14 +452,7 @@ public class SocialHomeActivity extends BaseActivity {
                 return 2;
             }
         });
-        ViewPagerHelper.bind(indicatorOut, pagerOut);
         ViewPagerHelper.bind(indicatorTop, pagerOut);
-    }
-
-    private void setPagerHeight() {
-        ViewGroup.LayoutParams layoutParams = pagerOut.getLayoutParams();
-        layoutParams.height = ScreenUtils.getScreenHeight() - (toolbarHeight + statusbarHeight + CommonUtils.dip2px(SocialHomeActivity.this, 48) + BarUtils.getNavBarHeight());
-        pagerOut.setLayoutParams(layoutParams);
     }
 
     private void initIndicator() {
@@ -504,32 +480,7 @@ public class SocialHomeActivity extends BaseActivity {
             }
         });
 
-        CommonNavigator navigator2 = new CommonNavigator(SocialHomeActivity.this);
-        navigator2.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return detailTitles.length;
-            }
-
-            @Override
-            public IPagerTitleView getTitleView(Context context, int index) {
-                SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
-                pagerTitleView.setTextSize(15.5f);
-                pagerTitleView.setNormalColor(ContextCompat.getColor(SocialHomeActivity.this, R.color.textColor9));
-                pagerTitleView.setSelectedColor(ContextCompat.getColor(SocialHomeActivity.this, R.color.black));
-                pagerTitleView.setText(detailTitles[index]);
-                pagerTitleView.setOnClickListener(v -> pagerOut.setCurrentItem(index));
-                return pagerTitleView;
-            }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-                return new ImagePagerIndicator(context, -3);
-            }
-        });
-
         indicatorTop.setNavigator(navigator1);
-        indicatorOut.setNavigator(navigator2);
     }
 
     public void socialSlogan(View view) {
