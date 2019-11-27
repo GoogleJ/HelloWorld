@@ -114,6 +114,11 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         eventType = getIntent().getIntExtra("eventType", -1);
         groupResponse = (GroupResponse) getIntent().getSerializableExtra("members");
 
+        if (eventType == EVENT_CREATEGROUP){
+            tv_title.setText(getString(R.string.select_contacts));
+            handleCreateGroup();
+            return;
+        }
         if (groupResponse == null) {
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getGroupByGroupId(getIntent().getStringExtra("groupId"))
@@ -132,10 +137,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
     private void handleResult(TextView tv_title, GroupResponse groupResponse) {
         List<GroupResponse.CustomersBean> customers = groupResponse.getCustomers();
         c.addAll(customers);
-        if (eventType == EVENT_CREATEGROUP) {
-            tv_title.setText(getString(R.string.select_contacts));
-            handleCreateGroup();
-        } else if (eventType == EVENT_ADDMENBER) {
+        if (eventType == EVENT_ADDMENBER) {
             tv_title.setText(getString(R.string.select_contacts));
             handleAddMember();
         } else if (eventType == EVENT_DELETEMEMBER) {
