@@ -166,7 +166,7 @@ public class NewBlockWalletActivity extends BaseActivity {
                         break;
                     case 2:
                         WalletChainInfosResponse.SymbolListBean.SymbolInfosBean bean = (WalletChainInfosResponse.SymbolListBean.SymbolInfosBean) item;
-                        helper.setText(R.id.tvCoin, (bean.getImportMethod().equals("3") ? "创建的" : "导入的") + bean.getSymbol() + "钱包地址")
+                        helper.setText(R.id.tvCoin, bean.getWalletName())
                                 .setText(R.id.tvMoney1, isShow ? bean.getBalance() : hideStr)
                                 .setText(R.id.tvMoney2, isShow ? (bean.getBalanceToCNY().equals("-") ? "-" : "≈¥" + bean.getBalanceToCNY()) : hideStr)
                                 .setText(R.id.tvAddress, isShow ? bean.getWalletAddress() : hideStr);

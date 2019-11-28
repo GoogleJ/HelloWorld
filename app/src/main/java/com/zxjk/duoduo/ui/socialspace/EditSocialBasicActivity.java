@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.socialspace;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -119,6 +120,7 @@ public class EditSocialBasicActivity extends BaseActivity {
                     tvEtTitle1.setVisibility(View.GONE);
                     etSocialName.setVisibility(View.GONE);
                     tvEtTitle2.setText(R.string.social_notice);
+                    etSocialSlogan.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1000)});
                     etSocialSlogan.setHint(R.string.input_socialnotice);
                     etSocialSlogan.setText(data.getAnnouncement());
                 } else {
