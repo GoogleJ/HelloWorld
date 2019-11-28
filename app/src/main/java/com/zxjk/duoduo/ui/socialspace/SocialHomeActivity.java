@@ -658,7 +658,7 @@ public class SocialHomeActivity extends BaseActivity {
                     response.setName(data.getStringExtra("name"));
                     response.setIntroduction(data.getStringExtra("slogan"));
                     tvSocialName.setText(response.getName());
-                    tvSlogan.setText(response.getIntroduction());
+                    tvSlogan.setText("社群简介:" + response.getIntroduction());
                     break;
             }
         }

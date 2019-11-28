@@ -688,7 +688,7 @@
     <string name="update_group_limit_tips3">1. 群主和管理员可通过付费对群人数进行升级。\n2. 群人数升级后、转让群、人数上限保留。</string>
     <string name="update2">已升级</string>
     <string name="update_success1">升级成功</string>
-    <string name="inpu_search_group">请输入社群关键字</string>
+    <string name="inpu_search_group">请输入社群号</string>
     <string name="emptylist">什么也没找到</string>
     <string name="join">加入</string>
     <string name="joined">已加入</string>
