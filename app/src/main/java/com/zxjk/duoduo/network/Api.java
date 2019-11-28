@@ -13,6 +13,7 @@ import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.DetailListResposne;
 import com.zxjk.duoduo.bean.response.EditCommunityResponse;
+import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
@@ -682,4 +683,8 @@ public interface Api {
     @POST("duoduo/community/editCommunity")
     @FormUrlEncoded
     Observable<BaseResponse<EditCommunityResponse>> editCommunity(@Field("data") String data);
+
+    @POST("duoduo/community/editListCommunityCulture")
+    @FormUrlEncoded
+    Observable<BaseResponse<EditListCommunityCultureResponse>> editListCommunityCulture(@Field("groupId") String groupId);
 }

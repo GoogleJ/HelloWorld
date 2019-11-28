@@ -6,9 +6,57 @@ public class CommunityCultureResponse {
      * pay : {"paySymbol":"USDT","payFee":"0.001","payLogo":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1571020793185.png?Expires=1886380789&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=40XcvkX5AftUJF8CLBtDrMWPlJE%3D"}
      * type : pay
      */
-
-    private PayBean pay;
     private String type;
+
+    //pay social
+    private PayBean pay;
+
+    //social calutre
+    private EditListCommunityCultureResponse.OfficialWebsiteBean officialWebsite;
+    private EditListCommunityCultureResponse.FilesBean files;
+    private EditListCommunityCultureResponse.VideoBean video;
+    private EditListCommunityCultureResponse.ApplicationBean application;
+    private EditListCommunityCultureResponse.ActivitiesBean activities;
+
+    public EditListCommunityCultureResponse.OfficialWebsiteBean getOfficialWebsite() {
+        return officialWebsite;
+    }
+
+    public void setOfficialWebsite(EditListCommunityCultureResponse.OfficialWebsiteBean officialWebsite) {
+        this.officialWebsite = officialWebsite;
+    }
+
+    public EditListCommunityCultureResponse.FilesBean getFiles() {
+        return files;
+    }
+
+    public void setFiles(EditListCommunityCultureResponse.FilesBean files) {
+        this.files = files;
+    }
+
+    public EditListCommunityCultureResponse.VideoBean getVideo() {
+        return video;
+    }
+
+    public void setVideo(EditListCommunityCultureResponse.VideoBean video) {
+        this.video = video;
+    }
+
+    public EditListCommunityCultureResponse.ApplicationBean getApplication() {
+        return application;
+    }
+
+    public void setApplication(EditListCommunityCultureResponse.ApplicationBean application) {
+        this.application = application;
+    }
+
+    public EditListCommunityCultureResponse.ActivitiesBean getActivities() {
+        return activities;
+    }
+
+    public void setActivities(EditListCommunityCultureResponse.ActivitiesBean activities) {
+        this.activities = activities;
+    }
 
     public PayBean getPay() {
         return pay;

@@ -49,12 +49,7 @@ public class RetrievePayPwdActivity extends BaseActivity implements View.OnClick
     private void initView() {
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.find_pay_password));
-        findViewById(R.id.rl_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         idCardImage = findViewById(R.id.id_card_image);
         phoneCodeImage = findViewById(R.id.phone_code_image);
         idCardLayout = findViewById(R.id.id_card_layout);
@@ -70,6 +65,7 @@ public class RetrievePayPwdActivity extends BaseActivity implements View.OnClick
 
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -90,7 +86,7 @@ public class RetrievePayPwdActivity extends BaseActivity implements View.OnClick
                                 phoneCodeLayout.setVisibility(View.VISIBLE);
                                 phoneCodeImage.setImageResource(R.drawable.icon_phone_code);
                                 isTrue = false;
-                            }, t -> handleApiError(t));
+                            }, this::handleApiError);
                 } else {
                     if (TextUtils.isEmpty(verifiedCodeEdit.getText().toString().trim())) {
                         ToastUtils.showShort(getString(R.string.please_enter_verification_code));

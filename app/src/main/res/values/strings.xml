@@ -850,4 +850,11 @@
     <string name="pay_confirm">确认支付</string>
     <string name="cantdone">暂时无法操作</string>
     <string name="only_owner_edit">仅群主和管理员可编辑</string>
+    <string name="social_homewebsite">社群官网</string>
+    <string name="empty_socialweb">您还没有官网，赶快去编辑吧</string>
+    <string name="social_files">社群资料</string>
+    <string name="social_videos">社群视频</string>
+    <string name="social_app">社群应用</string>
+    <string name="social_activity">社群活动</string>
+    <string name="edit_social_calture">编辑文化</string>
 </resources>

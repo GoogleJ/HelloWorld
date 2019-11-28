@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +42,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
+import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -98,7 +100,7 @@ public class SocialHomeActivity extends BaseActivity {
 
     private RecyclerView recyclerGroupMember;
     private BaseQuickAdapter<CommunityInfoResponse.MembersBean, BaseViewHolder> socialMemAdapter;
-    int maxMemVisiableItem;
+    private int maxMemVisiableItem;
     private int colorOwner;
     private TextView tvSlogan;
     private TextView tvSocialName;
@@ -110,15 +112,18 @@ public class SocialHomeActivity extends BaseActivity {
 
     private ViewStub viewStubPay;
     private ViewStub viewStubFree;
-    private boolean contentEnable = false;
-    private boolean hasInitTop = false;
+    private boolean contentEnable;
+    private boolean hasInitTop;
+    private boolean isInEditStatus;
 
     private QuickPopup menuPop;
 
     private CommunityInfoResponse response;
 
-    private CalturePage calturePage;
+    private SocialCalturePage socialCalturePage;
     private DynamicsPage dynamicsPage;
+
+    private String groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,8 +134,9 @@ public class SocialHomeActivity extends BaseActivity {
 
         initView();
 
-        calturePage = new CalturePage();
-        dynamicsPage = new DynamicsPage();
+        groupId = getIntent().getStringExtra("id");
+
+        initFragment();
 
         maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 64)) / CommonUtils.dip2px(this, 48);
 
@@ -154,9 +160,21 @@ public class SocialHomeActivity extends BaseActivity {
         initPager();
     }
 
+    private void initFragment() {
+        socialCalturePage = new SocialCalturePage(groupId);
+        dynamicsPage = new DynamicsPage(groupId);
+
+        socialCalturePage.setDoneAction(l -> {
+            isInEditStatus = false;
+            app_bar.setExpanded(true, true);
+            tvTitle.setText(response.getName());
+            ivOpenConversation.animate().translationXBy(-ivOpenConversation.getWidth())
+                    .setInterpolator(new OvershootInterpolator()).start();
+        });
+    }
+
     @SuppressLint("CheckResult")
     private void initData() {
-        String groupId = getIntent().getStringExtra("id");
         Api api = ServiceFactory.getInstance().getBaseService(Api.class);
 
         api.communityCulture(groupId)
@@ -216,6 +234,7 @@ public class SocialHomeActivity extends BaseActivity {
                             contentEnable = true;
                         }
                     });
+                    parseCaltureResult(r);
                     return api.communityInfo(groupId);
                 })
                 .compose(RxSchedulers.normalTrans())
@@ -269,6 +288,41 @@ public class SocialHomeActivity extends BaseActivity {
                 });
     }
 
+    //解析社群文化为多类型data
+    private void parseCaltureResult(CommunityCultureResponse r) {
+        if (!r.getType().equals("calture")) return;
+
+        ArrayList<SocialCaltureListBean> caltures = new ArrayList<>();
+
+        if (r.getOfficialWebsite() != null) {
+            SocialCaltureListBean webBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_WEB);
+            webBean.setOfficialWebsite(r.getOfficialWebsite());
+            caltures.add(webBean);
+        }
+        if (r.getFiles() != null) {
+            SocialCaltureListBean fileBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_FILE);
+            fileBean.setFiles(r.getFiles());
+            caltures.add(fileBean);
+        }
+        if (r.getVideo() != null) {
+            SocialCaltureListBean videoBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_VIDEO);
+            videoBean.setVideo(r.getVideo());
+            caltures.add(videoBean);
+        }
+        if (r.getApplication() != null) {
+            SocialCaltureListBean appBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_APP);
+            appBean.setApplication(r.getApplication());
+            caltures.add(appBean);
+        }
+        if (r.getActivities() != null) {
+            SocialCaltureListBean actBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_ACTIVITY);
+            actBean.setActivities(r.getActivities());
+            caltures.add(actBean);
+        }
+
+        socialCalturePage.bindCaltureData(caltures);
+    }
+
     private void flushAfterEnter() {
         CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
         membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
@@ -308,6 +362,10 @@ public class SocialHomeActivity extends BaseActivity {
                     if (helper.getAdapterPosition() == data.size() - 1) {
                         ivMemberHead.setImageResource(R.drawable.ic_social_member_add);
                         ivMemberHead.setOnClickListener(v -> {
+                            if (!contentEnable || isInEditStatus) {
+                                ToastUtils.showShort(R.string.cantdone);
+                                return;
+                            }
                             Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
                             intent.putExtra("eventType", 2);
                             intent.putExtra("groupId", response.getGroupId());
@@ -318,13 +376,20 @@ public class SocialHomeActivity extends BaseActivity {
                     } else {
                         Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
                         ivMemberHead.setOnClickListener(v -> {
-
+                            if (!contentEnable || isInEditStatus) {
+                                ToastUtils.showShort(R.string.cantdone);
+                                return;
+                            }
                         });
                     }
                 } else if (response.getIdentity().equals("1") || response.getIdentity().equals("2")) {
                     if (helper.getAdapterPosition() == data.size() - 1) {
                         ivMemberHead.setImageResource(R.drawable.ic_social_member_remove);
                         ivMemberHead.setOnClickListener(v -> {
+                            if (!contentEnable || isInEditStatus) {
+                                ToastUtils.showShort(R.string.cantdone);
+                                return;
+                            }
                             Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
                             intent.putExtra("eventType", 3);
                             intent.putExtra("groupId", response.getGroupId());
@@ -334,6 +399,10 @@ public class SocialHomeActivity extends BaseActivity {
                     } else if (helper.getAdapterPosition() == data.size() - 2) {
                         ivMemberHead.setImageResource(R.drawable.ic_social_member_add);
                         ivMemberHead.setOnClickListener(v -> {
+                            if (!contentEnable || isInEditStatus) {
+                                ToastUtils.showShort(R.string.cantdone);
+                                return;
+                            }
                             Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
                             intent.putExtra("eventType", 2);
                             intent.putExtra("groupId", response.getGroupId());
@@ -344,13 +413,19 @@ public class SocialHomeActivity extends BaseActivity {
                     } else {
                         Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
                         ivMemberHead.setOnClickListener(v -> {
-
+                            if (!contentEnable || isInEditStatus) {
+                                ToastUtils.showShort(R.string.cantdone);
+                                return;
+                            }
                         });
                     }
                 } else {
                     Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
                     ivMemberHead.setOnClickListener(v -> {
-
+                        if (!contentEnable || isInEditStatus) {
+                            ToastUtils.showShort(R.string.cantdone);
+                            return;
+                        }
                     });
                 }
             }
@@ -361,6 +436,10 @@ public class SocialHomeActivity extends BaseActivity {
 
     private void onAppBarScroll() {
         app_bar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            if (isInEditStatus) {
+                return;
+            }
+
             int absOffset = Math.abs(verticalOffset);
 
             if (absOffset <= minimumHeightForVisibleOverlappingContent) {
@@ -402,7 +481,6 @@ public class SocialHomeActivity extends BaseActivity {
     private int appbarHeight;
 
     private void setSocialBackgroundHeight() {
-
         collapsingLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (!hasInitTop) {
                 hasInitTop = true;
@@ -445,7 +523,7 @@ public class SocialHomeActivity extends BaseActivity {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                if (position == 0) return calturePage;
+                if (position == 0) return socialCalturePage;
                 else return dynamicsPage;
             }
 
@@ -486,7 +564,7 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void socialSlogan(View view) {
-        if (!contentEnable) {
+        if (!contentEnable || isInEditStatus) {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
@@ -497,7 +575,7 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void socialNotice(View view) {
-        if (!contentEnable) {
+        if (!contentEnable || isInEditStatus) {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
@@ -523,13 +601,13 @@ public class SocialHomeActivity extends BaseActivity {
         finish();
     }
 
+    @SuppressLint("CheckResult")
     public void menu(View view) {
         if (!contentEnable) {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
         if (menuPop == null) {
-            View.OnClickListener onClickListener = child -> ToastUtils.showShort(R.string.developing);
             menuPop = QuickPopupBuilder.with(this)
                     .contentView(R.layout.pop_social_top)
                     .config(new QuickPopupConfig()
@@ -537,14 +615,28 @@ public class SocialHomeActivity extends BaseActivity {
                             .gravity(Gravity.BOTTOM | Gravity.END)
                             .withShowAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_in))
                             .withDismissAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_out))
-                            .withClick(R.id.ic_social_end_pop1, onClickListener, true)
+                            .withClick(R.id.ic_social_end_pop1, child -> ToastUtils.showShort(R.string.developing), true)
                             .withClick(R.id.ic_social_end_pop2, child -> {
                                 if (response == null) return;
                                 Intent intent = new Intent(this, SocialManageActivity.class);
                                 intent.putExtra("data", response);
                                 startActivity(intent);
                             }, true)
-                            .withClick(R.id.ic_social_end_pop3, onClickListener, true))
+                            .withClick(R.id.ic_social_end_pop3, v -> ServiceFactory.getInstance().getBaseService(Api.class)
+                                    .editListCommunityCulture(groupId)
+                                    .compose(bindToLifecycle())
+                                    .compose(RxSchedulers.normalTrans())
+                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(SocialHomeActivity.this)))
+                                    .subscribe(r -> {
+                                        isInEditStatus = true;
+                                        ivToolBarEnd.setVisibility(View.GONE);
+                                        ivToolBarStart.setImageResource(R.drawable.ico_back);
+                                        tvTitle.setText(R.string.edit_social_calture);
+                                        tvTitle.setVisibility(View.VISIBLE);
+                                        socialCalturePage.change2Edit(r);
+                                        app_bar.setExpanded(false, true);
+                                        ivOpenConversation.animate().translationXBy(ivOpenConversation.getWidth()).start();
+                                    }, this::handleApiError), true))
                     .build();
         }
 

@@ -18,6 +18,11 @@ public class DynamicsPage extends BaseFragment {
     private TextView tvTips;
     private ImageView ivTop;
     private boolean isSocial2 = true;
+    private String groupId;
+
+    public DynamicsPage(String groupId) {
+        this.groupId = groupId;
+    }
 
     @Nullable
     @Override
