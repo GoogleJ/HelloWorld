@@ -15,12 +15,18 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.request.EditCommunityWebSiteRequest;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.utils.CommonUtils;
 
@@ -29,6 +35,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SocialCalturePage extends BaseFragment implements View.OnClickListener {
+    private final int REQUEST_SETTINGWEB = 1;
+    private final int REQUEST_SETTINGFILE = 2;
+    private final int REQUEST_SETTINGVIDEO = 3;
+    private final int REQUEST_SETTINGAPP = 4;
+    private final int REQUEST_SETTINGACT = 5;
+
     private LinearLayout llBottom;
     private RecyclerView recycler;
     private BaseMultiItemQuickAdapter<SocialCaltureListBean, BaseViewHolder> adapter;
@@ -55,6 +67,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
     private int dp56;
 
+    @SuppressLint("CheckResult")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,6 +92,14 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
             @Override
             protected void convert(BaseViewHolder helper, SocialCaltureListBean item) {
+                boolean isEdit = llBottom.getVisibility() == View.VISIBLE;
+                Switch sw = helper.getView(R.id.sw);
+                if (!isEdit) {
+                    sw.setVisibility(View.INVISIBLE);
+                } else {
+                    sw.setVisibility(View.VISIBLE);
+                }
+
                 helper.addOnClickListener(R.id.sw);
                 switch (helper.getItemViewType()) {
                     case SocialCaltureListBean.TYPE_WEB:
@@ -103,8 +124,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
                         break;
                     case SocialCaltureListBean.TYPE_ACTIVITY:
-                        Switch sw = helper.getView(R.id.sw);
-                        if (!sw.isChecked()) {
+                        if (llBottom.getVisibility() == View.VISIBLE) {
                             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
                             layoutParams.bottomMargin = dp56;
                             helper.itemView.setLayoutParams(layoutParams);
@@ -118,11 +138,23 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             }
         };
 
+        adapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.empty_recycler_social_calture, container, false));
+
         adapter.setOnItemClickListener((adapter, view, position) -> {
+            SocialCaltureListBean bean = (SocialCaltureListBean) adapter.getData().get(position);
             switch (adapter.getItemViewType(position)) {
                 case SocialCaltureListBean.TYPE_WEB:
-                    startActivity(new Intent(getContext(), SocialWebEditActivity.class));
-
+                    if (llBottom.getVisibility() == View.VISIBLE) {
+                        Intent intent = new Intent(getContext(), SocialWebEditActivity.class);
+                        intent.putExtra("id", groupId);
+                        intent.putExtra("bean", bean);
+                        startActivityForResult(intent, REQUEST_SETTINGWEB);
+                    } else {
+                        Intent intent = new Intent(getContext(), WebActivity.class);
+                        intent.putExtra("url", bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteUrl());
+                        intent.putExtra("title", bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle());
+                        startActivity(intent);
+                    }
                     break;
                 case SocialCaltureListBean.TYPE_FILE:
                     ToastUtils.showShort(R.string.developing);
@@ -141,9 +173,35 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         });
 
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
+            SocialCaltureListBean bean = (SocialCaltureListBean) adapter.getData().get(position);
+            Switch sw = (Switch) view;
             switch (adapter.getItemViewType(position)) {
                 case SocialCaltureListBean.TYPE_WEB:
-
+                    if (bean.getOfficialWebsite().getOfficialWebsiteList().size() == 0) {
+                        sw.setChecked(false);
+                        Intent intent = new Intent(getContext(), SocialWebEditActivity.class);
+                        intent.putExtra("id", groupId);
+                        intent.putExtra("bean", bean);
+                        startActivityForResult(intent, REQUEST_SETTINGWEB);
+                    } else {
+                        //call api 2 update status
+                        EditCommunityWebSiteRequest request = new EditCommunityWebSiteRequest();
+                        request.setGroupId(groupId);
+                        request.setType("openOrClose");
+                        request.setOfficialWebsiteOpen(sw.isChecked() ? "1" : "0");
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .editCommunityWebSite(GsonUtils.toJson(request))
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.normalTrans())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                                .subscribe(s -> {
+                                    bean.getOfficialWebsite().setOfficialWebsiteOpen(sw.isChecked() ? "1" : "0");
+                                    adapter.notifyItemChanged(position);
+                                }, t -> {
+                                    sw.setChecked(!sw.isChecked());
+                                    handleApiError(t);
+                                });
+                    }
                     break;
                 case SocialCaltureListBean.TYPE_FILE:
                     ((Switch) view).setChecked(false);
@@ -252,4 +310,47 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data == null) {
+            return;
+        }
+
+        if (requestCode == REQUEST_SETTINGWEB && resultCode == 1) {
+            SocialCaltureListBean bean = data.getParcelableExtra("data");
+            adapter.getData().add(0, bean);
+            adapter.getData().remove(1);
+            adapter.notifyItemChanged(0);
+        }
+
+        if (requestCode == REQUEST_SETTINGFILE && resultCode == 1) {
+            SocialCaltureListBean bean = data.getParcelableExtra("data");
+            adapter.getData().add(1, bean);
+            adapter.getData().remove(2);
+            adapter.notifyItemChanged(1);
+        }
+
+        if (requestCode == REQUEST_SETTINGVIDEO && resultCode == 1) {
+            SocialCaltureListBean bean = data.getParcelableExtra("data");
+            adapter.getData().add(2, bean);
+            adapter.getData().remove(3);
+            adapter.notifyItemChanged(2);
+        }
+
+        if (requestCode == REQUEST_SETTINGAPP && resultCode == 1) {
+            SocialCaltureListBean bean = data.getParcelableExtra("data");
+            adapter.getData().add(3, bean);
+            adapter.getData().remove(4);
+            adapter.notifyItemChanged(3);
+        }
+
+        if (requestCode == REQUEST_SETTINGACT && resultCode == 1) {
+            SocialCaltureListBean bean = data.getParcelableExtra("data");
+            adapter.getData().add(4, bean);
+            adapter.getData().remove(5);
+            adapter.notifyItemChanged(4);
+        }
+    }
 }

@@ -97,7 +97,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
             this.officialWebsiteList = officialWebsiteList;
         }
 
-        public static class OfficialWebsiteListBean {
+        public static class OfficialWebsiteListBean implements Parcelable {
             /**
              * websiteId : 1
              * websiteTitle : 百度官网
@@ -142,6 +142,41 @@ public class EditListCommunityCultureResponse implements Parcelable {
             public void setWebsiteUrl(String websiteUrl) {
                 this.websiteUrl = websiteUrl;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.websiteId);
+                dest.writeString(this.websiteTitle);
+                dest.writeString(this.websiteContent);
+                dest.writeString(this.websiteUrl);
+            }
+
+            public OfficialWebsiteListBean() {
+            }
+
+            protected OfficialWebsiteListBean(Parcel in) {
+                this.websiteId = in.readString();
+                this.websiteTitle = in.readString();
+                this.websiteContent = in.readString();
+                this.websiteUrl = in.readString();
+            }
+
+            public static final Creator<OfficialWebsiteListBean> CREATOR = new Creator<OfficialWebsiteListBean>() {
+                @Override
+                public OfficialWebsiteListBean createFromParcel(Parcel source) {
+                    return new OfficialWebsiteListBean(source);
+                }
+
+                @Override
+                public OfficialWebsiteListBean[] newArray(int size) {
+                    return new OfficialWebsiteListBean[size];
+                }
+            };
         }
 
         @Override
@@ -214,7 +249,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
             this.filesList = filesList;
         }
 
-        public static class FilesListBean {
+        public static class FilesListBean implements Parcelable {
             /**
              * fileId : 1
              * fileFormat : pdf
@@ -258,6 +293,41 @@ public class EditListCommunityCultureResponse implements Parcelable {
             public void setFileAddress(String fileAddress) {
                 this.fileAddress = fileAddress;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.fileId);
+                dest.writeString(this.fileFormat);
+                dest.writeString(this.fileName);
+                dest.writeString(this.fileAddress);
+            }
+
+            public FilesListBean() {
+            }
+
+            protected FilesListBean(Parcel in) {
+                this.fileId = in.readString();
+                this.fileFormat = in.readString();
+                this.fileName = in.readString();
+                this.fileAddress = in.readString();
+            }
+
+            public static final Creator<FilesListBean> CREATOR = new Creator<FilesListBean>() {
+                @Override
+                public FilesListBean createFromParcel(Parcel source) {
+                    return new FilesListBean(source);
+                }
+
+                @Override
+                public FilesListBean[] newArray(int size) {
+                    return new FilesListBean[size];
+                }
+            };
         }
 
         @Override
@@ -330,7 +400,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
             this.videoList = videoList;
         }
 
-        public static class VideoListBean {
+        public static class VideoListBean implements Parcelable {
             /**
              * videoId : 1
              * videoName : 官方视频
@@ -384,6 +454,43 @@ public class EditListCommunityCultureResponse implements Parcelable {
             public void setVideoAddress(String videoAddress) {
                 this.videoAddress = videoAddress;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.videoId);
+                dest.writeString(this.videoName);
+                dest.writeString(this.videoPic);
+                dest.writeString(this.videoDuration);
+                dest.writeString(this.videoAddress);
+            }
+
+            public VideoListBean() {
+            }
+
+            protected VideoListBean(Parcel in) {
+                this.videoId = in.readString();
+                this.videoName = in.readString();
+                this.videoPic = in.readString();
+                this.videoDuration = in.readString();
+                this.videoAddress = in.readString();
+            }
+
+            public static final Creator<VideoListBean> CREATOR = new Creator<VideoListBean>() {
+                @Override
+                public VideoListBean createFromParcel(Parcel source) {
+                    return new VideoListBean(source);
+                }
+
+                @Override
+                public VideoListBean[] newArray(int size) {
+                    return new VideoListBean[size];
+                }
+            };
         }
 
         @Override
@@ -456,7 +563,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
             this.applicationList = applicationList;
         }
 
-        public static class ApplicationListBean {
+        public static class ApplicationListBean implements Parcelable {
             /**
              * applicationId : 1
              * applicationName : 百度
@@ -500,6 +607,41 @@ public class EditListCommunityCultureResponse implements Parcelable {
             public void setApplicationAddress(String applicationAddress) {
                 this.applicationAddress = applicationAddress;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.applicationId);
+                dest.writeString(this.applicationName);
+                dest.writeString(this.applicationLogo);
+                dest.writeString(this.applicationAddress);
+            }
+
+            public ApplicationListBean() {
+            }
+
+            protected ApplicationListBean(Parcel in) {
+                this.applicationId = in.readString();
+                this.applicationName = in.readString();
+                this.applicationLogo = in.readString();
+                this.applicationAddress = in.readString();
+            }
+
+            public static final Creator<ApplicationListBean> CREATOR = new Creator<ApplicationListBean>() {
+                @Override
+                public ApplicationListBean createFromParcel(Parcel source) {
+                    return new ApplicationListBean(source);
+                }
+
+                @Override
+                public ApplicationListBean[] newArray(int size) {
+                    return new ApplicationListBean[size];
+                }
+            };
         }
 
         @Override
@@ -572,7 +714,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
             this.activityList = activityList;
         }
 
-        public static class ActivityListBean {
+        public static class ActivityListBean implements Parcelable {
             /**
              * activityId : 1
              * activityName : 周末爬山
@@ -646,6 +788,47 @@ public class EditListCommunityCultureResponse implements Parcelable {
             public void setActivityStatus(String activityStatus) {
                 this.activityStatus = activityStatus;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.activityId);
+                dest.writeString(this.activityName);
+                dest.writeString(this.activityAddress);
+                dest.writeString(this.activityPic);
+                dest.writeString(this.activityStartDate);
+                dest.writeString(this.activityEndDate);
+                dest.writeString(this.activityStatus);
+            }
+
+            public ActivityListBean() {
+            }
+
+            protected ActivityListBean(Parcel in) {
+                this.activityId = in.readString();
+                this.activityName = in.readString();
+                this.activityAddress = in.readString();
+                this.activityPic = in.readString();
+                this.activityStartDate = in.readString();
+                this.activityEndDate = in.readString();
+                this.activityStatus = in.readString();
+            }
+
+            public static final Creator<ActivityListBean> CREATOR = new Creator<ActivityListBean>() {
+                @Override
+                public ActivityListBean createFromParcel(Parcel source) {
+                    return new ActivityListBean(source);
+                }
+
+                @Override
+                public ActivityListBean[] newArray(int size) {
+                    return new ActivityListBean[size];
+                }
+            };
         }
 
         @Override

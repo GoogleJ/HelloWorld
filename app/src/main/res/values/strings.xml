@@ -857,4 +857,13 @@
     <string name="social_app">社群应用</string>
     <string name="social_activity">社群活动</string>
     <string name="edit_social_calture">编辑文化</string>
+    <string name="edit_social_web">编辑官网</string>
+    <string name="webname">官网名称</string>
+    <string name="input_webname">请输入官网名称</string>
+    <string name="webslogan">官网简介</string>
+    <string name="input_webslogan">请输入官网简介</string>
+    <string name="webaddress">官网地址</string>
+    <string name="input_webaddress">地址需加协议前缀，如https://</string>
+    <string name="input_social_web_address">请输入官网地址</string>
+    <string name="social_empty_tips">请联系管理员开放社群文化</string>
 </resources>

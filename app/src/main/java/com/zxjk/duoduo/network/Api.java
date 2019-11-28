@@ -687,4 +687,8 @@ public interface Api {
     @POST("duoduo/community/editListCommunityCulture")
     @FormUrlEncoded
     Observable<BaseResponse<EditListCommunityCultureResponse>> editListCommunityCulture(@Field("groupId") String groupId);
+
+    @POST("duoduo/community/editCommunityWebSite")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> editCommunityWebSite(@Field("data") String data);
 }

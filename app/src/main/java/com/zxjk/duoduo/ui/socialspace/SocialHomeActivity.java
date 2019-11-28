@@ -168,6 +168,7 @@ public class SocialHomeActivity extends BaseActivity {
             isInEditStatus = false;
             app_bar.setExpanded(true, true);
             tvTitle.setText(response.getName());
+            ivToolBarStart.setVisibility(View.VISIBLE);
             ivOpenConversation.animate().translationXBy(-ivOpenConversation.getWidth())
                     .setInterpolator(new OvershootInterpolator()).start();
         });
@@ -232,9 +233,9 @@ public class SocialHomeActivity extends BaseActivity {
                             }
                         } else {
                             contentEnable = true;
+                            parseCaltureResult(r);
                         }
                     });
-                    parseCaltureResult(r);
                     return api.communityInfo(groupId);
                 })
                 .compose(RxSchedulers.normalTrans())
@@ -290,7 +291,6 @@ public class SocialHomeActivity extends BaseActivity {
 
     //解析社群文化为多类型data
     private void parseCaltureResult(CommunityCultureResponse r) {
-        if (!r.getType().equals("calture")) return;
 
         ArrayList<SocialCaltureListBean> caltures = new ArrayList<>();
 
@@ -598,6 +598,9 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void back(View view) {
+        if (ivToolBarStart.getVisibility() != View.VISIBLE) {
+            return;
+        }
         finish();
     }
 
@@ -630,7 +633,7 @@ public class SocialHomeActivity extends BaseActivity {
                                     .subscribe(r -> {
                                         isInEditStatus = true;
                                         ivToolBarEnd.setVisibility(View.GONE);
-                                        ivToolBarStart.setImageResource(R.drawable.ico_back);
+                                        ivToolBarStart.setVisibility(View.GONE);
                                         tvTitle.setText(R.string.edit_social_calture);
                                         tvTitle.setVisibility(View.VISIBLE);
                                         socialCalturePage.change2Edit(r);
