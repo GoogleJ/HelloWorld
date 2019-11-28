@@ -116,7 +116,7 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
             }
 
             private void createTitleView(Context context, int index) {
-                MsgTitleView badgeTitleView = new MsgTitleView(context, R.layout.titleview_msgtitle);
+                MsgTitleView badgeTitleView = new MsgTitleView(context);
                 badgeTitleView.setOnClickListener(view -> {
                     pagerMsg.setCurrentItem(index);
                     badgeTitleView.getBadgeView().setVisibility(View.INVISIBLE);

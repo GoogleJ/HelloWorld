@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -545,8 +546,36 @@ public class SocialHomeActivity extends BaseActivity {
 
             @Override
             public IPagerTitleView getTitleView(Context context, int index) {
-                SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
-                pagerTitleView.setTextSize(15.5f);
+                SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context) {
+                    float mMinScale = 0.85f;
+
+                    @Override
+                    public void onSelected(int index, int totalCount) {
+                        super.onSelected(index, totalCount);
+                        setTypeface(Typeface.DEFAULT_BOLD);
+                    }
+
+                    @Override
+                    public void onDeselected(int index, int totalCount) {
+                        super.onDeselected(index, totalCount);
+                        setTypeface(Typeface.DEFAULT);
+                    }
+
+                    @Override
+                    public void onLeave(int index, int totalCount, float leavePercent, boolean leftToRight) {
+                        super.onLeave(index, totalCount, leavePercent, leftToRight);
+                        setScaleX(1.0f + (mMinScale - 1.0f) * leavePercent);
+                        setScaleY(1.0f + (mMinScale - 1.0f) * leavePercent);
+                    }
+
+                    @Override
+                    public void onEnter(int index, int totalCount, float enterPercent, boolean leftToRight) {
+                        super.onEnter(index, totalCount, enterPercent, leftToRight);
+                        setScaleX(mMinScale + (1.0f - mMinScale) * enterPercent);
+                        setScaleY(mMinScale + (1.0f - mMinScale) * enterPercent);
+                    }
+                };
+                pagerTitleView.setTextSize(16f);
                 pagerTitleView.setNormalColor(ContextCompat.getColor(SocialHomeActivity.this, R.color.textColor9));
                 pagerTitleView.setSelectedColor(ContextCompat.getColor(SocialHomeActivity.this, R.color.black));
                 pagerTitleView.setText(detailTitles[index]);

@@ -93,7 +93,7 @@ public class FindFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                MsgTitleView titleView = new MsgTitleView(context, R.layout.titleview_msgtitle);
+                MsgTitleView titleView = new MsgTitleView(context);
                 titleView.setOnClickListener(view -> pager.setCurrentItem(index));
                 titleView.getTitleView().setText(mTitleDataList[index]);
                 titleView.getBadgeView().setVisibility(View.INVISIBLE);

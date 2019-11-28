@@ -22,9 +22,9 @@ public class MsgTitleView extends CommonPagerTitleView {
         return titleView;
     }
 
-    public MsgTitleView(Context context, int layoutid) {
+    public MsgTitleView(Context context) {
         super(context);
-        View inflate = LayoutInflater.from(context).inflate(layoutid, null);
+        View inflate = LayoutInflater.from(context).inflate(R.layout.titleview_msgtitle, null);
 
         setContentView(inflate);
 
