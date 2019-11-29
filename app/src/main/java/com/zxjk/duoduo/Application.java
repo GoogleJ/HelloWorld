@@ -244,7 +244,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new BurnImageMessageItemProvider());
         RongIM.registerMessageTemplate(new CusEmoteTabMessageProvider());
         RongIM.registerMessageTemplate(new SocialGroupCardProvider());
-        RongIM.getInstance().setMessageAttachedUserInfo(true);
+//        RongIM.getInstance().setMessageAttachedUserInfo(true);
         RongIM.getInstance().enableNewComingMessageIcon(true);//显示新消息提醒
         RongIM.getInstance().enableUnreadMessageIcon(true);//显示未读消息数目
         setMyExtensionModule();

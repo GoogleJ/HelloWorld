@@ -81,6 +81,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Group;
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.imlib.typingmessage.TypingStatus;
 import io.rong.message.CommandMessage;
@@ -666,6 +667,8 @@ public class ConversationActivity extends BaseActivity {
 
                         Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupInfo.getGroupInfo().getId());
                         if (null == ronginfo ||
+                                ronginfo.getPortraitUri() == null ||
+                                TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
                                 !ronginfo.getName().equals(groupInfo.getGroupInfo().getGroupNikeName()) ||
                                 !ronginfo.getPortraitUri().toString().equals(groupInfo.getGroupInfo().getHeadPortrait())) {
                             RongIM.getInstance().refreshGroupInfoCache(new Group(groupInfo.getGroupInfo().getId(), groupInfo.getGroupInfo().getGroupNikeName(), Uri.parse(groupInfo.getGroupInfo().getHeadPortrait())));
@@ -710,8 +713,19 @@ public class ConversationActivity extends BaseActivity {
         if (isOwner || groupInfo.getGroupPermission() != null && groupInfo.getGroupPermission().getForceRecall().equals("1")) {
             MessageItemLongClickAction forceRecallAction = new MessageItemLongClickAction.Builder()
                     .title("强制撤回")
-                    .showFilter(uiMessage -> !uiMessage.getSenderUserId().equals(Constant.userId) ||
-                            !uiMessage.getSenderUserId().equals(groupInfo.getGroupInfo().getGroupOwnerId()))
+                    .showFilter(uiMessage -> {
+
+                        String objectName = uiMessage.getObjectName();
+
+                        String senderUserId = uiMessage.getSenderUserId();
+
+                        groupInfo.getGroupInfo().getGroupOwnerId();
+
+                        MessageContent messageContent = uiMessage.getContent();
+
+                        return (messageContent instanceof TextMessage || messageContent instanceof VoiceMessage || messageContent instanceof ImageMessage) &&
+                                !senderUserId.equals(Constant.userId) && !senderUserId.equals(groupInfo.getGroupInfo().getGroupOwnerId());
+                    })
                     .actionListener((context, uiMessage) -> {
                         ServiceFactory.getInstance().getBaseService(Api.class)
                                 .recallGroupMessage(uiMessage.getMessage().getUId())
@@ -721,8 +735,7 @@ public class ConversationActivity extends BaseActivity {
                                 .subscribe(s -> {
                                 }, ConversationActivity.this::handleApiError);
                         return true;
-                    })
-                    .build();
+                    }).build();
             RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction);
         }
     }

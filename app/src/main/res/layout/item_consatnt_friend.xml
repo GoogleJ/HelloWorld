@@ -38,7 +38,7 @@
             android:layout_toEndOf="@id/m_constants_header_icon"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:paddingEnd="10dp">
+            android:paddingEnd="12dp">
 
             <TextView
                 android:id="@+id/m_user_name"

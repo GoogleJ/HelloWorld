@@ -310,6 +310,7 @@
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@id/iv_enter8"
                     android:layout_toEndOf="@id/tvMailTitle"
                     android:ellipsize="end"

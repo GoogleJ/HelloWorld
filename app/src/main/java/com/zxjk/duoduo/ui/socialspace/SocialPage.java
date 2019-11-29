@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -119,8 +120,8 @@ public class SocialPage extends BaseFragment {
                     animDispose = Observable.timer(800, TimeUnit.MILLISECONDS, Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(a -> {
-                                scaleXAnim = ivCreate.animate().scaleX(1).setInterpolator(new AccelerateInterpolator()).setDuration(100);
-                                scaleYAnim = ivCreate.animate().scaleY(1).setInterpolator(new AccelerateInterpolator()).setDuration(100);
+                                scaleXAnim = ivCreate.animate().scaleX(1).setInterpolator(new OvershootInterpolator()).setDuration(100);
+                                scaleYAnim = ivCreate.animate().scaleY(1).setInterpolator(new OvershootInterpolator()).setDuration(100);
                                 scaleXAnim.start();
                                 scaleYAnim.start();
                                 isAnimting = true;

@@ -150,19 +150,18 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initGreenDaoSession();
 
-        RongIM.setGroupInfoProvider(s -> {
+        RongIM.setGroupInfoProvider(id -> {
             ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getGroupByGroupId(s)
+                    .getGroupByGroupId(id)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .map(groupResponse -> {
                         String groupHead = "";
-
-                        StringBuilder stringBuilder = new StringBuilder();
+                        StringBuffer sbf = new StringBuffer();
                         for (int i = 0; i < groupResponse.getCustomers().size(); i++) {
-                            stringBuilder.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
+                            sbf.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
                             if (i == groupResponse.getCustomers().size() - 1 || i == 8) {
-                                groupHead = stringBuilder.substring(0, stringBuilder.length() - 1);
+                                groupHead = sbf.substring(0, sbf.length() - 1);
                                 break;
                             }
                         }
@@ -170,7 +169,20 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                         return new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead));
                     })
                     .compose(RxSchedulers.ioObserver())
-                    .subscribe(group -> RongIM.getInstance().refreshGroupInfoCache(group), HomeActivity.this::handleApiError);
+                    .subscribe(group -> RongIM.getInstance().refreshGroupInfoCache(group), t -> {
+                    });
+            return null;
+        }, true);
+
+        RongIM.setUserInfoProvider(id -> {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getCustomerInfoById(id)
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .map(user -> new UserInfo(id, user.getNick(), Uri.parse(user.getHeadPortrait())))
+                    .compose(RxSchedulers.ioObserver())
+                    .subscribe(info -> RongIM.getInstance().refreshUserInfoCache(info), t -> {
+                    });
             return null;
         }, true);
     }
