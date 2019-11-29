@@ -17,7 +17,6 @@ import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
@@ -25,6 +24,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.InviteForSocialActivity;
 import com.zxjk.duoduo.ui.minepage.UpdateUserInfoActivity;
 import com.zxjk.duoduo.ui.msgpage.ChooseNewOwnerActivity;
 import com.zxjk.duoduo.ui.msgpage.MuteManageActivity;
@@ -34,8 +34,6 @@ import com.zxjk.duoduo.ui.msgpage.SkinReportActivity;
 import com.zxjk.duoduo.ui.widget.dialog.ConfirmDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -80,13 +78,13 @@ public class SocialManageActivity extends BaseActivity {
 
         tvNick.setText(Constant.currentUser.getNick());
         String identity = response.getIdentity();
-        if (!"0".equals(identity)){
+        if (!"0".equals(identity)) {
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getGroupByGroupId(response.getGroupId())
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(group-> this.group = group, this::handleApiError);
+                    .subscribe(group -> this.group = group, this::handleApiError);
         }
         switch (identity) {
             case "0":
@@ -159,7 +157,10 @@ public class SocialManageActivity extends BaseActivity {
     }
 
     public void inviteWechat(View view) {
-
+        Intent intent = new Intent(this, InviteForSocialActivity.class);
+        intent.putExtra("groupId", response.getId());
+        intent.putExtra("groupName", response.getName());
+        startActivity(intent);
     }
 
     public void clearHistory(View view) {

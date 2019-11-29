@@ -27,7 +27,6 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
 import com.zxjk.duoduo.network.Api;
@@ -51,14 +50,13 @@ import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
 
-public class InviterActivity extends BaseActivity {
+public class InviteForSocialActivity extends BaseActivity {
     private int page = 1;
 
     private ImageView ivQR;
 
     private String inviteWeb;
-    private String description = "限时注册奖励，先注册先得";
-
+    private String description = "限时邀请好友入群，先注册 先得";
 
     private QuickPopup invitePop;
     private QuickPopup popup;
@@ -75,7 +73,7 @@ public class InviterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inviter);
+        setContentView(R.layout.activity_invite_for_social);
         setTrasnferStatusBar(true);
 
         color1 = Color.parseColor("#999999");
@@ -94,7 +92,7 @@ public class InviterActivity extends BaseActivity {
         tvSocialName = findViewById(R.id.tvSocialName);
         tvtitle.setText(R.string.invite_friends1);
         ivQR = findViewById(R.id.ivQR);
-        tvSocialName.setText("ID:" + Constant.currentUser.getNick());
+        tvSocialName.setText(getIntent().getStringExtra("groupName"));
     }
 
     @SuppressLint("CheckResult")
@@ -102,7 +100,7 @@ public class InviterActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(view -> finish());
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getUInvitationUrl()
+                .getUInvitationUrl(getIntent().getStringExtra("groupId"))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -235,7 +233,7 @@ public class InviterActivity extends BaseActivity {
 
     private void shareTo(int plantform) {
         UMWeb link = new UMWeb(inviteWeb);
-        link.setTitle(Constant.currentUser.getNick() + "邀请你加入海浪社区");
+        link.setTitle(getIntent().getStringExtra("groupName"));
         link.setDescription(description);
         link.setThumb(new UMImage(this, R.drawable.ic_share_red));
         SHARE_MEDIA platform = SHARE_MEDIA.QQ;
@@ -263,11 +261,11 @@ public class InviterActivity extends BaseActivity {
     private void save() {
         getPermisson(findViewById(R.id.llSave),
                 granted -> Observable.create((ObservableOnSubscribe<Boolean>)
-                        e -> SaveImageUtil.get().savePic(ScreenUtils.screenShot(InviterActivity.this, false),
+                        e -> SaveImageUtil.get().savePic(ScreenUtils.screenShot(InviteForSocialActivity.this, false),
                                 success -> {
                                     if (success) e.onNext(true);
                                     else e.onNext(false);
-                                })).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver(CommonUtils.initDialog(InviterActivity.this)))
+                                })).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver(CommonUtils.initDialog(InviteForSocialActivity.this)))
                         .subscribe(success -> {
                             if (success) {
                                 ToastUtils.showShort(R.string.savesucceed);

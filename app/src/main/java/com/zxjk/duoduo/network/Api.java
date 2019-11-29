@@ -11,13 +11,11 @@ import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
-import com.zxjk.duoduo.bean.response.DetailListResposne;
 import com.zxjk.duoduo.bean.response.EditCommunityResponse;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
-import com.zxjk.duoduo.bean.response.GetBalanceHkResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
 import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
@@ -29,7 +27,6 @@ import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
 import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
 import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
-import com.zxjk.duoduo.bean.response.GetPublicGroupResponse;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
@@ -37,6 +34,7 @@ import com.zxjk.duoduo.bean.response.GetSerialBean;
 import com.zxjk.duoduo.bean.response.GetSignListResponse;
 import com.zxjk.duoduo.bean.response.GetSymbolSerialResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
+import com.zxjk.duoduo.bean.response.GetUInvitationUrlBean;
 import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
 import com.zxjk.duoduo.bean.response.GetVicinityResponse;
 import com.zxjk.duoduo.bean.response.GroupChatResponse;
@@ -56,7 +54,6 @@ import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
 import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
 import com.zxjk.duoduo.bean.response.SearchCommunityBean;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
-import com.zxjk.duoduo.bean.response.SignHkbOrHkExchangeResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
 
@@ -102,18 +99,14 @@ public interface Api {
 
     @POST("duoduo/friend/getFriendInfoById")
     @FormUrlEncoded
-    Observable<BaseResponse<FriendInfoResponse>> getFriendInfoById(
-            @Field("friendId") String friendId
-    );
+    Observable<BaseResponse<FriendInfoResponse>> getFriendInfoById(@Field("friendId") String friendId);
 
     @POST("duoduo/friend/getFriendListById")
     Observable<BaseResponse<List<FriendInfoResponse>>> getFriendListById();
 
     @POST("duoduo/friend/searchCustomer")
     @FormUrlEncoded
-    Observable<BaseResponse<List<FriendInfoResponse>>> searchCustomerInfo(
-            @Field("data") String data
-    );
+    Observable<BaseResponse<List<FriendInfoResponse>>> searchCustomerInfo(@Field("data") String data);
 
     @POST("duoduo/friend/applyAddFriend")
     @FormUrlEncoded
@@ -144,10 +137,6 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<List<GroupChatResponse>>> getMygroupinformation(@Field("customerId") String customerId);
 
-    @POST("duoduo/exchange/getBalanceHk")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetBalanceHkResponse>> getBalanceHk(@Field("address") String address);
-
     @POST("duoduo/exchange/getNumbeOfTransaction")
     Observable<BaseResponse<GetNumbeOfTransactionResponse>> getNumbeOfTransaction();
 
@@ -169,9 +158,7 @@ public interface Api {
 
     @POST("duoduo/friend/deleteFriend")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> deleteFriend(
-            @Field("friendId") String friendId
-    );
+    Observable<BaseResponse<String>> deleteFriend(@Field("friendId") String friendId);
 
     @POST("duoduo/customer/updatePwd")
     @FormUrlEncoded
@@ -186,15 +173,11 @@ public interface Api {
 
     @POST("duoduo/customer/addPayInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> addPayInfo(
-            @Field("data") String data
-    );
+    Observable<BaseResponse<String>> addPayInfo(@Field("data") String data);
 
     @POST("duoduo/customer/certification")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> certification(
-            @Field("data") String data
-    );
+    Observable<BaseResponse<String>> certification(@Field("data") String data);
 
     @POST("duoduo/exchange/closeSellOrder")
     @FormUrlEncoded
@@ -238,9 +221,7 @@ public interface Api {
 
     @POST("duoduo/customer/updatePayInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> updatePayInfo(
-            @Field("payType") String payType
-    );
+    Observable<BaseResponse<String>> updatePayInfo(@Field("payType") String payType);
 
     @POST("duoduo/customer/getCustomerAuth")
     Observable<BaseResponse<String>> getCustomerAuth();
@@ -267,9 +248,7 @@ public interface Api {
 
     @POST("duoduo/group/getGroupMemByGroupId")
     @FormUrlEncoded
-    Observable<BaseResponse<List<AllGroupMembersResponse>>> getGroupMemByGroupId(
-            @Field("groupId") String groupId
-    );
+    Observable<BaseResponse<List<AllGroupMembersResponse>>> getGroupMemByGroupId(@Field("groupId") String groupId);
 
     @POST("duoduo/group/enterGroup")
     @FormUrlEncoded
@@ -281,9 +260,7 @@ public interface Api {
 
     @POST("duoduo/group/getGroupByGroupId")
     @FormUrlEncoded
-    Observable<BaseResponse<GroupResponse>> getGroupByGroupId(
-            @Field("groupId") String groupId
-    );
+    Observable<BaseResponse<GroupResponse>> getGroupByGroupId(@Field("groupId") String groupId);
 
     @POST("duoduo/group/getGroupByGroupId")
     @FormUrlEncoded
@@ -294,9 +271,7 @@ public interface Api {
 
     @POST("duoduo/group/updateGroupInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<GroupResponse.GroupInfoBean>> updateGroupInfo(
-            @Field("groupInfo") String groupInfo
-    );
+    Observable<BaseResponse<GroupResponse.GroupInfoBean>> updateGroupInfo(@Field("groupInfo") String groupInfo);
 
     @POST("duoduo/group/disBandGroup")
     @FormUrlEncoded
@@ -330,18 +305,9 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> signTransaction(@Field("blockChainSerial") String blockChainSerial, @Field("password") String password);
 
-    @POST("duoduo/wallet/signHkbOrHkExchange")
-    @FormUrlEncoded
-    Observable<BaseResponse<SignHkbOrHkExchangeResponse>> signHkbOrHkExchange(@Field("payPwd") String payPwd, @Field("type") String type, @Field("address") String address,
-                                                                              @Field("gasPrice") String gasPrice, @Field("number") String number,
-                                                                              @Field("keyStore") String keyStore, @Field("duoduoId") String duoduoId);
-
-
     @POST("duoduo/redPackage/sendSingleRedPackage")
     @FormUrlEncoded
-    Observable<BaseResponse<RedPackageResponse>> sendSingleRedPackage(
-            @Field("data") String data
-    );
+    Observable<BaseResponse<RedPackageResponse>> sendSingleRedPackage(@Field("data") String data);
 
     @POST("duoduo/customer/getCustomerInfoById")
     @FormUrlEncoded
@@ -385,10 +351,6 @@ public interface Api {
     @POST("duoduo/customer/verifyPayPwd")
     @FormUrlEncoded
     Observable<BaseResponse<String>> verifyPayPwd(@Field("payPwd") String payPwd);
-
-    @POST("duoduo/exchange/getDetailList")
-    @FormUrlEncoded
-    Observable<BaseResponse<List<DetailListResposne>>> getDetailList(@Field("type") String type);
 
     @POST("duoduo/customer/verifyPaperworkNumber")
     @FormUrlEncoded
@@ -510,8 +472,7 @@ public interface Api {
 
     @POST("duoduo/group/groupPayInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> groupPayInfo(@Field("groupId") String groupId, @Field("payFee") String payFee, @Field("isOpen") String isOpen
-            , @Field("symbol") String symbol);
+    Observable<BaseResponse<String>> groupPayInfo(@Field("groupId") String groupId, @Field("payFee") String payFee, @Field("isOpen") String isOpen, @Field("symbol") String symbol);
 
     @POST("duoduo/group/payToGroup")
     @FormUrlEncoded
@@ -531,7 +492,8 @@ public interface Api {
     Observable<BaseResponse<GetRedNewPersonInfoResponse>> receiveNewPersonRedPackage(@Field("groupId") String groupId);
 
     @POST("duoduo/customer/getInviteInfo")
-    Observable<BaseResponse<GetInviteInfoResponse>> getInviteInfo();
+    @FormUrlEncoded
+    Observable<BaseResponse<GetInviteInfoResponse>> getInviteInfo(@Field("page") int page);
 
     @POST("duoduo/customer/appUserRegisterAndLogin")
     @FormUrlEncoded
@@ -547,10 +509,6 @@ public interface Api {
                                                        @Field("payPwd") String payPwd,
                                                        @Field("groupTag") String groupTag,
                                                        @Field("mot") String mot);
-
-    @POST("duoduo/group/getPublicGroupList")
-    @FormUrlEncoded
-    Observable<BaseResponse<List<GetPublicGroupResponse>>> getPublicGroupList(@Field("groupName") String groupName);
 
     @POST("duoduo/rongcloud/recallGroupMessage")
     @FormUrlEncoded
@@ -691,4 +649,11 @@ public interface Api {
     @POST("duoduo/community/editCommunityWebSite")
     @FormUrlEncoded
     Observable<BaseResponse<String>> editCommunityWebSite(@Field("data") String data);
+
+    @POST("duoduo/customer/getUInvitationUrl")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetUInvitationUrlBean>> getUInvitationUrl(@Field("communityId") String communityId);
+
+    @POST("duoduo/customer/getUInvitationUrl")
+    Observable<BaseResponse<GetUInvitationUrlBean>> getUInvitationUrl();
 }

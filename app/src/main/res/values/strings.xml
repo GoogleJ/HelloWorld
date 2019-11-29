@@ -866,4 +866,5 @@
     <string name="input_webaddress">地址需加协议前缀，如https://</string>
     <string name="input_social_web_address">请输入官网地址</string>
     <string name="social_empty_tips">请联系管理员开放社群文化</string>
+    <string name="copylink">复制链接</string>
 </resources>

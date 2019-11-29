@@ -56,7 +56,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.socialspace.SocialWebEditActivity"></activity>
+        <activity android:name=".ui.minepage.InviteForSocialActivity"></activity>
+        <activity android:name=".ui.socialspace.SocialWebEditActivity" />
         <activity android:name=".ui.socialspace.EditSocialBasicActivity" />
         <activity
             android:name=".ui.socialspace.SocialManageActivity"

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_invite1"
+    android:background="@drawable/bg_invite"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -60,138 +60,77 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="-32dp"
-        android:src="@drawable/ic_invite_title1" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/ic_invite_title" />
 
-    <View
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_f8d337_stroke_3"
+        android:paddingStart="14dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="6dp"
+        android:text="社群空间，让价值更好更快流通"
+        android:textColor="#F8D337"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_invite_person_middle1"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_invite_person_middle2"
-            android:gravity="center"
-            android:text="产品特色"
+            android:layout_marginEnd="32dp"
+            android:drawableStart="@drawable/ic_invite_check"
+            android:drawablePadding="8dp"
+            android:text="付费进群"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp">
+            android:layout_marginEnd="24dp"
+            android:drawableStart="@drawable/ic_invite_check"
+            android:drawablePadding="8dp"
+            android:text="进群领红包"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/bg_invite_person_middle3" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:text="最火热"
-                    android:textColor="#DA6D0E"
-                    android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:drawableStart="@drawable/ic_invite_check"
+            android:drawablePadding="8dp"
+            android:text="慢速模式"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="熊岸、彼岸花资本等战略领投"
-                    android:textColor="@color/textColor3"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/bg_invite_person_middle4" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:text="多应用"
-                    android:textColor="#DA6D0E"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="多项应用生态真实落地"
-                    android:textColor="@color/textColor3"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/bg_invite_person_middle5" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:text="安心用"
-                    android:textColor="#DA6D0E"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="唯一一款可数字支付的社交app"
-                    android:textColor="@color/textColor3"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:drawableStart="@drawable/ic_invite_check"
+            android:drawablePadding="8dp"
+            android:text="群消息过滤"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -267,7 +206,7 @@
                     android:id="@+id/tvTips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="快分享给微信好友领取奖励吧"
+                    android:text="邀请好友成功注册可获得5USDT"
                     android:textColor="@color/textColor6"
                     android:textSize="12.5sp" />
 

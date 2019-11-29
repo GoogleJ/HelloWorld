@@ -87,7 +87,7 @@
                 android:drawablePadding="6dp"
                 android:gravity="center"
                 android:textColor="@color/textcolor3"
-                android:text="@string/save"
+                android:text="@string/copylink"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
