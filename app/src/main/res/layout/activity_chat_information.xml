@@ -34,31 +34,40 @@
                     android:layout_height="56dp"
                     android:layout_margin="12dp" />
 
+                <ImageView
+                    android:id="@+id/ivEnd"
+                    style="@style/ImageEnter" />
+
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@id/iv_head"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@id/ivEnd"
                     android:layout_toEndOf="@id/iv_head"
                     android:ellipsize="end"
                     android:lineSpacingExtra="4dp"
-                    android:maxLines="2"
+                    android:maxLines="1"
                     android:textColor="@color/text_color3"
-                    android:textSize="16.5sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_qm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_name"
                     android:layout_alignBottom="@id/iv_head"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="5dp"
+                    android:layout_toStartOf="@id/ivEnd"
                     android:layout_toEndOf="@id/iv_head"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:lines="1"
                     android:textColor="@color/text_color2"
                     android:textSize="14sp" />
-
-                <ImageView style="@style/ImageEnter" />
 
             </RelativeLayout>
 
