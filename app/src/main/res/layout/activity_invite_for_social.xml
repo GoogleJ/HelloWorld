@@ -207,7 +207,7 @@
                     android:id="@+id/tvTips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="邀请好友成功注册可获得5USDT"
+                    android:text="快分享给微信好友领取奖励吧"
                     android:textColor="@color/textColor6"
                     android:textSize="12.5sp" />
 

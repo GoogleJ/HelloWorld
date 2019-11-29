@@ -44,8 +44,5 @@ public class PaySettingActivity extends BaseActivity {
         findViewById(R.id.rl_findPayPassword).setOnClickListener(v ->
                 startActivity(new Intent(PaySettingActivity.this, UpdatePayPwdActivity.class)));
 
-
     }
-
-
 }

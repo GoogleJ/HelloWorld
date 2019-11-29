@@ -16,6 +16,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.utils.ImageUtil;
 
+import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.adapter.ConversationListAdapter;
@@ -80,30 +81,10 @@ public class CusConversationListAdapter extends ConversationListAdapter {
 
         Group groupInfo = RongUserInfoManager.getInstance().getGroupInfo(data.getConversationTargetId());
         if (groupInfo != null && !TextUtils.isEmpty(groupInfo.getPortraitUri().toString())) {
+            if (groupInfo.describeContents())
             ImageUtil.loadGroupPortrait(groupHead, groupInfo.getPortraitUri().toString());
         } else {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getGroupByGroupId(data.getConversationTargetId())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver())
-                    .subscribe(r -> {
-                        String s = "";
 
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 0; i < r.getCustomers().size(); i++) {
-                            stringBuilder.append(r.getCustomers().get(i).getHeadPortrait() + ",");
-                            if (i == r.getCustomers().size() - 1 || i == 8) {
-                                s = stringBuilder.substring(0, stringBuilder.length() - 1);
-                                break;
-                            }
-                        }
-
-                        Group group = new Group(r.getGroupInfo().getId(), r.getGroupInfo().getGroupNikeName(), Uri.parse(s));
-                        RongUserInfoManager.getInstance().setGroupInfo(group);
-
-                        ImageUtil.loadGroupPortrait(groupHead, s);
-                    }, t -> {
-                    });
         }
     }
 

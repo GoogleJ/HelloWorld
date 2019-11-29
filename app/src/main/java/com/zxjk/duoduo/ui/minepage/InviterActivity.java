@@ -103,7 +103,13 @@ public class InviterActivity extends BaseActivity {
         tvSocialName = findViewById(R.id.tvSocialName);
         tvtitle.setText(R.string.invite_friends1);
         ivQR = findViewById(R.id.ivQR);
-        tvSocialName.setText("ID:" + Constant.currentUser.getNick());
+
+        String userName = "ID:" + Constant.currentUser.getNick();
+        if (userName.length() > 7) {
+            tvSocialName.setText(userName.substring(0, 5) + "...");
+        } else {
+            tvSocialName.setText(userName);
+        }
     }
 
     @SuppressLint("CheckResult")

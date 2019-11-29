@@ -664,7 +664,7 @@ public class ConversationActivity extends BaseActivity {
                         if (null == ronginfo ||
                                 !ronginfo.getName().equals(groupInfo.getGroupInfo().getGroupNikeName()) ||
                                 !ronginfo.getPortraitUri().toString().equals(groupInfo.getGroupInfo().getHeadPortrait())) {
-                            RongUserInfoManager.getInstance().setGroupInfo(new Group(groupInfo.getGroupInfo().getId(), groupInfo.getGroupInfo().getGroupNikeName(), Uri.parse(groupInfo.getGroupInfo().getHeadPortrait())));
+                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupInfo.getGroupInfo().getId(), groupInfo.getGroupInfo().getGroupNikeName(), Uri.parse(groupInfo.getGroupInfo().getHeadPortrait())));
                         }
 
                         handleGroupPlugin(groupInfo);
@@ -1054,7 +1054,7 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void initView() {
-        if (!groupInfo.getGroupInfo().getGroupType().equals("1")) {
+        if (groupInfo != null && !groupInfo.getGroupInfo().getGroupType().equals("1")) {
             RelativeLayout rl_end = findViewById(R.id.rl_end);
             rl_end.setVisibility(View.VISIBLE);
             rl_end.setOnClickListener(v -> detail());

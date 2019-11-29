@@ -141,6 +141,10 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
+    public void paySetting(View view) {
+        startActivity(new Intent(this, PaySettingActivity.class));
+    }
+
     private void isAuthentication() {
         if (!Constant.currentUser.getIsAuthentication().equals("0")) {
             ServiceFactory.getInstance().getBaseService(Api.class)

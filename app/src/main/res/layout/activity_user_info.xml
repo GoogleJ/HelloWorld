@@ -57,6 +57,7 @@
                 android:onClick="changeNick">
 
                 <TextView
+                    android:id="@+id/tvNickTitle"
                     style="@style/textStyle"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
@@ -66,8 +67,13 @@
                     android:id="@+id/tv_nickname"
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@id/iv_enter1" />
+                    android:layout_toStartOf="@id/iv_enter1"
+                    android:layout_toEndOf="@id/tvNickTitle"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:lines="1" />
 
                 <ImageView
                     android:id="@+id/iv_enter1"
@@ -197,6 +203,7 @@
             <RelativeLayout style="@style/RLayoutStyle">
 
                 <TextView
+                    android:id="@+id/tvNameTitle"
                     style="@style/textStyle"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
@@ -207,7 +214,13 @@
                     style="@style/textStyle14"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="12dp" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_toEndOf="@id/tvNameTitle"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:lines="1"
+                    android:text="" />
 
             </RelativeLayout>
 
@@ -231,9 +244,9 @@
                     android:id="@+id/tv_phoneNumber"
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_toStartOf="@id/iv_enter6"/>
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter6" />
 
                 <ImageView
                     android:id="@+id/iv_enter6"
@@ -251,6 +264,7 @@
                 android:onClick="changeSign">
 
                 <TextView
+                    android:id="@+id/tvSignTitle"
                     style="@style/textStyle"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
@@ -260,14 +274,17 @@
                     android:id="@+id/tv_personalizedSignature"
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_toStartOf="@id/iv_enter7"/>
+                    android:layout_marginEnd="10dp"
+                    android:layout_toStartOf="@id/iv_enter7"
+                    android:layout_toEndOf="@id/tvSignTitle"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:lines="1" />
 
                 <ImageView
                     android:id="@+id/iv_enter7"
                     style="@style/ImageEnter" />
-
 
             </RelativeLayout>
 
@@ -282,6 +299,7 @@
                 android:onClick="changeEmail">
 
                 <TextView
+                    android:id="@+id/tvMailTitle"
                     style="@style/textStyle"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
@@ -291,13 +309,17 @@
                     android:id="@+id/tv_email"
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_toStartOf="@id/iv_enter8"/>
+                    android:layout_toStartOf="@id/iv_enter8"
+                    android:layout_toEndOf="@id/tvMailTitle"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:lines="1" />
 
                 <ImageView
                     android:id="@+id/iv_enter8"
                     style="@style/ImageEnter" />
+
             </RelativeLayout>
 
             <View

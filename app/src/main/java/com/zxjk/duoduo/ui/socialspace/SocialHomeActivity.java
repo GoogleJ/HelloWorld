@@ -83,6 +83,7 @@ public class SocialHomeActivity extends BaseActivity {
     private int[] detailTitles = {R.string.social_calture, R.string.social_act};
     private static final int REQUEST_SLOGAN = 1;
     private static final int REQUEST_NOTICE = 2;
+    private static final int REQUEST_SOCIALNAME = 3;
     private int minimumHeightForVisibleOverlappingContent = 0;
     private int totalScrollRange = 0;
     private int statusbarHeight = 0;
@@ -672,7 +673,7 @@ public class SocialHomeActivity extends BaseActivity {
                                 if (response == null) return;
                                 Intent intent = new Intent(this, SocialManageActivity.class);
                                 intent.putExtra("data", response);
-                                startActivity(intent);
+                                startActivityForResult(intent, REQUEST_SOCIALNAME);
                             }, true)
                             .withClick(R.id.ic_social_end_pop3, v -> ServiceFactory.getInstance().getBaseService(Api.class)
                                     .editListCommunityCulture(groupId)
@@ -712,6 +713,9 @@ public class SocialHomeActivity extends BaseActivity {
                     tvSocialName.setText(response.getName());
                     tvSlogan.setText("社群简介:" + response.getIntroduction());
                     break;
+                case REQUEST_SOCIALNAME:
+                    response.setName(data.getStringExtra("name"));
+                    tvSocialName.setText(response.getName());
             }
         }
     }

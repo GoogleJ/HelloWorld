@@ -36,7 +36,7 @@ public class FindFragment extends BaseFragment implements View.OnClickListener {
 
     private MagicIndicator indicator;
     private ViewPager pager;
-    private int[] mTitleDataList = new int[]{R.string.news, R.string.conjuncture};
+    private int[] mTitleDataList = new int[]{R.string.zixun1, R.string.conjuncture};
     private ImageView ivSearch;
     private ImageView ivPublish;
 

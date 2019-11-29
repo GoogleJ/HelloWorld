@@ -77,6 +77,7 @@ public class SocialManageActivity extends BaseActivity {
         tvBottom = findViewById(R.id.tvBottom);
 
         tvNick.setText(Constant.currentUser.getNick());
+        tvSocialName.setText(response.getName());
         String identity = response.getIdentity();
         if (!"0".equals(identity)) {
             ServiceFactory.getInstance().getBaseService(Api.class)
@@ -308,5 +309,15 @@ public class SocialManageActivity extends BaseActivity {
             response.setName(data.getStringExtra("result"));
             tvSocialName.setText(data.getStringExtra("result"));
         }
+    }
+
+    @Override
+    public void finish() {
+        if (response != null) {
+            Intent intent = new Intent();
+            intent.putExtra("name", response.getName());
+            this.setResult(1,intent);
+        }
+        super.finish();
     }
 }

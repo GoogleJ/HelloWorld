@@ -101,7 +101,13 @@ public class InviteForSocialActivity extends BaseActivity {
         tvSocialName = findViewById(R.id.tvSocialName);
         tvtitle.setText(R.string.invite_friends1);
         ivQR = findViewById(R.id.ivQR);
-        tvSocialName.setText(getIntent().getStringExtra("groupName"));
+
+        String groupName = getIntent().getStringExtra("groupName");
+        if (groupName.length() > 7) {
+            tvSocialName.setText(groupName.substring(0, 5) + "...");
+        } else {
+            tvSocialName.setText(groupName);
+        }
     }
 
     @SuppressLint("CheckResult")

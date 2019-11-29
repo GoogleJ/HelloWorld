@@ -77,6 +77,7 @@ import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.provider.MessageItemLongClickAction;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Group;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
@@ -148,6 +149,30 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initMessageLongClickAction();
 
         initGreenDaoSession();
+
+        RongIM.setGroupInfoProvider(s -> {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getGroupByGroupId(s)
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .map(groupResponse -> {
+                        String groupHead = "";
+
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < groupResponse.getCustomers().size(); i++) {
+                            stringBuilder.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
+                            if (i == groupResponse.getCustomers().size() - 1 || i == 8) {
+                                groupHead = stringBuilder.substring(0, stringBuilder.length() - 1);
+                                break;
+                            }
+                        }
+
+                        return new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead));
+                    })
+                    .compose(RxSchedulers.ioObserver())
+                    .subscribe(group -> RongIM.getInstance().refreshGroupInfoCache(group), HomeActivity.this::handleApiError);
+            return null;
+        }, true);
     }
 
     private void registerRongMsgReceiver() {
