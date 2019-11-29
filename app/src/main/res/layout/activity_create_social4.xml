@@ -167,7 +167,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="textMultiLine"
                         android:lineSpacingExtra="4dp"
-                        android:maxLength="1000"
+                        android:maxLength="200"
                         android:textColor="@color/black"
                         android:textColorHint="@color/textColor9"
                         android:textSize="16sp" />
@@ -180,7 +180,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="6dp"
                         android:gravity="end"
-                        android:text="0/1000"
+                        android:text="0/200"
                         android:textColor="@color/textColor9"
                         android:textSize="13sp" />
 

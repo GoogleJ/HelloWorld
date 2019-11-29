@@ -116,7 +116,7 @@ public class EditSocialBasicActivity extends BaseActivity {
                 etSocialName.setText(data.getName());
 
                 if (type.equals("2")) {
-                    //公告`
+                    //公告
                     tvEtTitle1.setVisibility(View.GONE);
                     etSocialName.setVisibility(View.GONE);
                     tvEtTitle2.setText(R.string.social_notice);

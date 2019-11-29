@@ -98,7 +98,7 @@ public class CreateSocialActivity4 extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                tvCount.setText(s.length() + "/1000");
+                tvCount.setText(s.length() + "/200");
             }
         });
     }
