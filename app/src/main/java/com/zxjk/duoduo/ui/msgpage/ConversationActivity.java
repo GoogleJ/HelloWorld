@@ -643,11 +643,15 @@ public class ConversationActivity extends BaseActivity {
                         conversationInfo.setMessageBurnTime(response.getChatInfo().getIncinerationTime());
                         conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
                         conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
-                        targetUserInfo = new UserInfo(targetId,
-                                TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
-                                        response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
-                                Uri.parse(response.getCustomerForChat().getHeadPortrait()));
-                        RongUserInfoManager.getInstance().setUserInfo(targetUserInfo);
+
+                        if (!targetId.equals(Constant.userId)) {
+                            targetUserInfo = new UserInfo(targetId,
+                                    TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
+                                            response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
+                                    Uri.parse(response.getCustomerForChat().getHeadPortrait()));
+                            RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
+                        }
+
                         handlePrivate();
                     }, this::handleApiError);
         } else if (conversationType.equals("group")) {
@@ -1054,13 +1058,15 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void initView() {
-        if (groupInfo != null && !groupInfo.getGroupInfo().getGroupType().equals("1")) {
+        if (groupInfo != null && !groupInfo.getGroupInfo().getGroupType().equals("1") || targetUserInfo != null) {
             RelativeLayout rl_end = findViewById(R.id.rl_end);
             rl_end.setVisibility(View.VISIBLE);
             rl_end.setOnClickListener(v -> detail());
         }
+
         tvTitle = findViewById(R.id.tv_title);
-        tvTitle.setText(targetUserInfo == null ? (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getCustomers().size() + ")") : targetUserInfo.getName());
+
+        tvTitle.setText(targetUserInfo == null ? (groupInfo == null ? (Constant.currentUser.getNick()) : (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getCustomers().size() + ")")) : targetUserInfo.getName());
         registerOnTitleChange();
         initScreenCapture();
     }

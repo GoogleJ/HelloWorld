@@ -160,6 +160,7 @@ public class UpdateUserInfoActivity extends BaseActivity {
                         case TYPE_NICK:
                             Constant.currentUser.setNick(sign);
                             UserInfo userInfo = new UserInfo(Constant.userId, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
+                            RongIM.getInstance().refreshUserInfoCache(userInfo);
                             RongIM.getInstance().setCurrentUserInfo(userInfo);
                             break;
                         case TYPE_SIGN:

@@ -259,8 +259,9 @@ public class UserInfoActivity extends BaseActivity {
                                 Constant.currentUser.setHeadPortrait(url);
                                 MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                                 GlideUtil.loadCircleImg(iv_headPortrait, url);
-                                UserInfo userInfo = new UserInfo(Constant.userId, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
-                                RongIM.getInstance().setCurrentUserInfo(userInfo);
+
+                                UserInfo userInfo = new UserInfo(Constant.userId, Constant.currentUser.getNick(), Uri.parse(url));
+                                RongIM.getInstance().refreshUserInfoCache(userInfo);
                                 ToastUtils.showShort(R.string.update_head_portrail);
                             }, UserInfoActivity.this::handleApiError);
                 });
