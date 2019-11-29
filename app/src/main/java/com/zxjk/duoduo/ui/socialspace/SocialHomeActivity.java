@@ -185,6 +185,7 @@ public class SocialHomeActivity extends BaseActivity {
                 .flatMap((Function<CommunityCultureResponse, ObservableSource<BaseResponse<CommunityInfoResponse>>>) r -> {
                     runOnUiThread(() -> {
                         if (!r.getType().equals("culture")) {
+                            indicatorTop.setVisibility(View.GONE);
                             contentEnable = false;
                             llSocialNotice.setVisibility(View.GONE);
                             pagerOut.setVisibility(View.GONE);

@@ -126,7 +126,7 @@
                     android:id="@+id/tvArea"
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="6dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@id/iv"
                     android:layout_toEndOf="@id/tv"
@@ -209,7 +209,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="12dp" />
 
-
             </RelativeLayout>
 
             <View
@@ -233,8 +232,8 @@
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@id/iv_enter6"
-                    android:text="" />
+                    android:layout_marginStart="10dp"
+                    android:layout_toStartOf="@id/iv_enter6"/>
 
                 <ImageView
                     android:id="@+id/iv_enter6"
@@ -262,8 +261,8 @@
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@id/iv_enter7"
-                    android:text="" />
+                    android:layout_marginStart="10dp"
+                    android:layout_toStartOf="@id/iv_enter7"/>
 
                 <ImageView
                     android:id="@+id/iv_enter7"
@@ -293,8 +292,8 @@
                     style="@style/textStyle14"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@id/iv_enter8"
-                    android:text="" />
+                    android:layout_marginStart="10dp"
+                    android:layout_toStartOf="@id/iv_enter8"/>
 
                 <ImageView
                     android:id="@+id/iv_enter8"
