@@ -473,11 +473,13 @@
                 android:background="#e5e5e5" />
 
             <LinearLayout
+                android:id="@+id/llPublic"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -491,7 +493,7 @@
                         android:drawableStart="@drawable/ic_groupmanage13"
                         android:drawablePadding="4dp"
                         android:gravity="center_vertical"
-                        android:text="@string/grouppublic"
+                        android:text="社群公开"
                         android:textColor="@color/textcolor1"
                         android:textSize="16sp" />
 

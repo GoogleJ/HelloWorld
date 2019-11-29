@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
     private Api api;
 
     private RelativeLayout rl_back;
+    private LinearLayout llPublic;
     private TextView tv_title;
     private Switch switchMuteAll;
     private Switch switchAddFriend;
@@ -69,6 +71,11 @@ public class OwnerGroupManageActivity extends BaseActivity {
         switchGroupPublic = findViewById(R.id.switchGroupPublic);
         tvGroupTips2 = findViewById(R.id.tvGroupTips2);
         tvGroupTips3 = findViewById(R.id.tvGroupTips3);
+        llPublic = findViewById(R.id.llPublic);
+
+        if (getIntent().getBooleanExtra("fromSocial", false)) {
+            llPublic.setVisibility(View.VISIBLE);
+        }
     }
 
     @SuppressLint("CheckResult")

@@ -790,7 +790,7 @@
     <string name="m_group_add_my_way">加群方式</string>
     <string name="groupmanage_tips2">开启后,只有群主和管理员可以发言</string>
     <string name="groupmanage_tips3">限制群成员发消息间隔时间</string>
-    <string name="groupmanage_tips4">根据群名称或群号搜索到此群</string>
+    <string name="groupmanage_tips4">可根据社群号搜索到本社群</string>
     <string name="tibi">提币</string>
     <string name="chongbi">充币</string>
     <string name="emptylist3">您的钱包记录是空的呦！</string>

@@ -210,6 +210,7 @@ public class SocialManageActivity extends BaseActivity {
     public void ownerGroupManage(View view) {
         Intent intent = new Intent(this, OwnerGroupManageActivity.class);
         intent.putExtra("group", group);
+        intent.putExtra("fromsocial", true);
         startActivityForResult(intent, 1);
     }
 
