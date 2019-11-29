@@ -120,6 +120,7 @@ public class NewLoginActivity extends BaseActivity {
             ppivVerify.setVisibility(View.GONE);
             llPhone.setVisibility(View.VISIBLE);
             btnConfirm.setText(R.string.next);
+            ppivVerify.cleanPsd();
             return;
         }
 
@@ -186,7 +187,11 @@ public class NewLoginActivity extends BaseActivity {
 
         llContrary.setOnClickListener(v -> startActivityForResult(new Intent(this, CountrySelectActivity.class), 200));
 
-        ivBack.setOnClickListener(v -> changeState());
+        ivBack.setOnClickListener(v -> {
+            if (!isAniming) {
+                changeState();
+            }
+        });
 
         btnConfirm.setOnClickListener(v -> {
 

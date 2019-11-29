@@ -32,7 +32,8 @@
             android:gravity="end"
             android:padding="16dp"
             android:text="@string/change_language"
-            android:textColor="#738399" />
+            android:textColor="#738399"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
