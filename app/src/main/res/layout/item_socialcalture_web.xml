@@ -23,6 +23,9 @@
             android:text="@string/social_homewebsite"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginEnd="12dp"
             android:textStyle="bold" />
 
         <Switch
