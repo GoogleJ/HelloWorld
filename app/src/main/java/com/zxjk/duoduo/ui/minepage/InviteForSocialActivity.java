@@ -297,11 +297,10 @@ public class InviteForSocialActivity extends BaseActivity {
                     if (i != r.getInvitationMessage().size() - 1) {
                         ssb.append("\n");
                     }
-
                 }
 
                 ssb.setSpan(new BulletSpan(CommonUtils.dip2px(InviteForSocialActivity.this, 8), 0xff4585f5), 0, r.getInvitationMessage().get(0).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                ssb.setSpan(new BulletSpan(CommonUtils.dip2px(InviteForSocialActivity.this, 8), 0xff3dcc9c), r.getInvitationMessage().get(0).length() + 1, r.getInvitationMessage().get(1).length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.setSpan(new BulletSpan(CommonUtils.dip2px(InviteForSocialActivity.this, 8), 0xff3dcc9c), r.getInvitationMessage().get(0).length() + 1, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 tv.setText(ssb);
             }

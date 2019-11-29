@@ -116,7 +116,7 @@ public class NewLoginActivity extends BaseActivity {
             vf.showNext();
             tvTips.setVisibility(View.GONE);
             ivBack.setVisibility(View.INVISIBLE);
-            tvChangeLanguage.setVisibility(View.VISIBLE);
+//            tvChangeLanguage.setVisibility(View.VISIBLE);
             ppivVerify.setVisibility(View.GONE);
             llPhone.setVisibility(View.VISIBLE);
             btnConfirm.setText(R.string.next);
@@ -127,7 +127,7 @@ public class NewLoginActivity extends BaseActivity {
         vf.showPrevious();
         tvTips.setVisibility(View.VISIBLE);
         ivBack.setVisibility(View.VISIBLE);
-        tvChangeLanguage.setVisibility(View.INVISIBLE);
+//        tvChangeLanguage.setVisibility(View.INVISIBLE);
         ppivVerify.setVisibility(View.VISIBLE);
         llPhone.setVisibility(View.GONE);
         btnConfirm.setText(R.string.login);

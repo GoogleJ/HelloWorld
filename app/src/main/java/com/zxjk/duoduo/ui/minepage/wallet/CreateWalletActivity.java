@@ -71,11 +71,11 @@ public class CreateWalletActivity extends BaseActivity {
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
             CurrencyInfosByCustomerBean item = (CurrencyInfosByCustomerBean) adapter.getData().get(position);
+            if (item.getIsDelete().equals("1")) {
+                ToastUtils.showShort(R.string.createwallet_coinunable);
+                return;
+            }
             if (!isImport) {
-                if (item.getIsDelete().equals("1")) {
-                    ToastUtils.showShort(R.string.createwallet_coinunable);
-                    return;
-                }
                 if (item.getIsAlready().equals("1")) {
                     return;
                 }

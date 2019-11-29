@@ -290,7 +290,7 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/shape_circular_bead_btn1"
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                android:text="点击申请 商务合作"
+                android:text="点击申请商务合作"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 

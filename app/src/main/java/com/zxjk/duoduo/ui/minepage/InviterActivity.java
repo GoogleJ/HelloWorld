@@ -245,7 +245,7 @@ public class InviterActivity extends BaseActivity {
 
     private void shareTo(int plantform) {
         UMWeb link = new UMWeb(inviteWeb);
-        link.setTitle(Constant.currentUser.getNick() + "邀请你加入海浪社区");
+        link.setTitle("Hilamg红包");
         link.setDescription(description);
         link.setThumb(new UMImage(this, R.drawable.ic_share_red));
         SHARE_MEDIA platform = SHARE_MEDIA.QQ;
