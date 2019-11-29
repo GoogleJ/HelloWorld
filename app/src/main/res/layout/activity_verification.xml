@@ -41,6 +41,7 @@
             android:layout_toStartOf="@+id/m_verification_icon"
             android:background="@null"
             android:hint="@string/send_verification"
+            android:maxLength="20"
             android:textColor="@color/theme_color"
             android:textSize="16sp" />
 
