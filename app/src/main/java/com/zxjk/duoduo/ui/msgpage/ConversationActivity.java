@@ -1054,9 +1054,11 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void initView() {
-        RelativeLayout rl_end = findViewById(R.id.rl_end);
-        rl_end.setVisibility(View.VISIBLE);
-        rl_end.setOnClickListener(v -> detail());
+        if (!groupInfo.getGroupInfo().getGroupType().equals("1")) {
+            RelativeLayout rl_end = findViewById(R.id.rl_end);
+            rl_end.setVisibility(View.VISIBLE);
+            rl_end.setOnClickListener(v -> detail());
+        }
         tvTitle = findViewById(R.id.tv_title);
         tvTitle.setText(targetUserInfo == null ? (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getCustomers().size() + ")") : targetUserInfo.getName());
         registerOnTitleChange();

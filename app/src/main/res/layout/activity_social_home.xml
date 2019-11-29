@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F2F3F5"
     android:clipChildren="false"
     android:orientation="vertical">
 
@@ -265,19 +266,36 @@
 
                     </FrameLayout>
 
-                    <TextView
-                        android:id="@+id/tvTitle"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_weight="1"
-                        android:ellipsize="middle"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:textColor="#020818"
-                        android:textSize="17sp"
-                        android:visibility="invisible" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="middle"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:textColor="#020818"
+                            android:textSize="17sp"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/tvSocialCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:textColor="@color/textColor6"
+                            android:textSize="12sp"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
 
                     <FrameLayout
                         android:layout_width="48dp"
@@ -312,7 +330,6 @@
         android:id="@+id/pagerOut"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F2F3F5"
         android:overScrollMode="never"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 

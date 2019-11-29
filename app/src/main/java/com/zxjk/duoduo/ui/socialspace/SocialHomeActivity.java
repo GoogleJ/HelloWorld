@@ -95,6 +95,7 @@ public class SocialHomeActivity extends BaseActivity {
     private Toolbar toolbar;
     private ImageView ivToolBarStart;
     private TextView tvTitle;
+    private TextView tvSocialCode;
     private ImageView ivToolBarEnd;
     private ViewPager pagerOut;
     private MagicIndicator indicatorTop;
@@ -185,6 +186,8 @@ public class SocialHomeActivity extends BaseActivity {
                 .flatMap((Function<CommunityCultureResponse, ObservableSource<BaseResponse<CommunityInfoResponse>>>) r -> {
                     runOnUiThread(() -> {
                         if (!r.getType().equals("culture")) {
+                            banAppBarScroll(false);
+
                             indicatorTop.setVisibility(View.GONE);
                             contentEnable = false;
                             llSocialNotice.setVisibility(View.GONE);
@@ -199,14 +202,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.normalTrans())
                                                 .subscribe(s -> {
                                                     inflate.setVisibility(View.GONE);
-                                                    llSocialNotice.setVisibility(View.VISIBLE);
-                                                    pagerOut.setVisibility(View.VISIBLE);
-                                                    ivOpenConversation.setVisibility(View.VISIBLE);
                                                     flushAfterEnter();
-                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"加入了群组");
-                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
-                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
                                                 }, this::handleApiError));
                             } else if (r.getType().equals("pay")) {
                                 View inflate = viewStubPay.inflate();
@@ -223,14 +219,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.ioObserver())
                                                 .subscribe(s -> {
                                                     inflate.setVisibility(View.GONE);
-                                                    llSocialNotice.setVisibility(View.VISIBLE);
-                                                    pagerOut.setVisibility(View.VISIBLE);
-                                                    ivOpenConversation.setVisibility(View.VISIBLE);
                                                     flushAfterEnter();
-                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"加入了群组");
-                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
-                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
                                                 }, this::handleApiError)));
                             }
                         } else {
@@ -250,6 +239,7 @@ public class SocialHomeActivity extends BaseActivity {
                         GlideUtil.loadNormalImg(ivBg, r.getBgi());
                         GlideUtil.loadNormalImg(ivHead, r.getLogo());
                         tvTitle.setText(r.getName());
+                        tvSocialCode.setText("社群号:" + r.getCode());
                         tvNotice.setText(r.getAnnouncement());
                     });
                     if (r.getIdentity().equals("0")) {
@@ -326,6 +316,12 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     private void flushAfterEnter() {
+        appbarHeight = 0;
+        banAppBarScroll(true);
+        indicatorTop.setVisibility(View.VISIBLE);
+        llSocialNotice.setVisibility(View.VISIBLE);
+        pagerOut.setVisibility(View.VISIBLE);
+        ivOpenConversation.setVisibility(View.VISIBLE);
         CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
         membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
         ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(response.getMembers());
@@ -341,6 +337,22 @@ public class SocialHomeActivity extends BaseActivity {
             initAdapterForSocialMem(list);
         }
         contentEnable = true;
+        InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
+                Constant.currentUser.getNick() + "\"加入了群组");
+        Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
+        RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+    }
+
+    private void banAppBarScroll(boolean isScroll) {
+        if (app_bar == null) return;
+        View mAppBarChildAt = app_bar.getChildAt(0);
+        AppBarLayout.LayoutParams mAppBarParams = (AppBarLayout.LayoutParams) mAppBarChildAt.getLayoutParams();
+        if (isScroll) {
+            mAppBarParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+            mAppBarChildAt.setLayoutParams(mAppBarParams);
+        } else {
+            mAppBarParams.setScrollFlags(0);
+        }
     }
 
     private void initAdapterForSocialMem(List<CommunityInfoResponse.MembersBean> data) {
@@ -452,6 +464,10 @@ public class SocialHomeActivity extends BaseActivity {
                 if (ivToolBarStart.getVisibility() == View.GONE) {
                     ivToolBarStart.setVisibility(View.VISIBLE);
                 }
+                if (tvTitle.getVisibility() == View.VISIBLE) {
+                    tvTitle.setVisibility(View.INVISIBLE);
+                    tvSocialCode.setVisibility(View.INVISIBLE);
+                }
             } else if (absOffset < totalScrollRange) {
                 if (ivToolBarEnd.getVisibility() == View.VISIBLE) {
                     ivToolBarEnd.setVisibility(View.GONE);
@@ -459,10 +475,12 @@ public class SocialHomeActivity extends BaseActivity {
                 }
                 if (tvTitle.getVisibility() == View.VISIBLE) {
                     tvTitle.setVisibility(View.INVISIBLE);
+                    tvSocialCode.setVisibility(View.INVISIBLE);
                 }
             } else if (absOffset == totalScrollRange) {
                 if (tvTitle.getVisibility() == View.INVISIBLE) {
                     tvTitle.setVisibility(View.VISIBLE);
+                    tvSocialCode.setVisibility(View.VISIBLE);
                 }
                 if (ivToolBarEnd.getVisibility() == View.VISIBLE) {
                     ivToolBarEnd.setVisibility(View.GONE);
@@ -483,7 +501,7 @@ public class SocialHomeActivity extends BaseActivity {
     private int appbarHeight;
 
     private void setSocialBackgroundHeight() {
-        collapsingLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+        app_bar.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (!hasInitTop) {
                 hasInitTop = true;
                 llTop.setPadding(CommonUtils.dip2px(SocialHomeActivity.this, 16), (int) (ScreenUtils.getScreenWidth() * 0.75) - llSecond.getHeight(), CommonUtils.dip2px(SocialHomeActivity.this, 16), 0);
@@ -505,6 +523,7 @@ public class SocialHomeActivity extends BaseActivity {
         indicatorTop = findViewById(R.id.indicatorTop);
         ivToolBarStart = findViewById(R.id.ivToolBarStart);
         tvTitle = findViewById(R.id.tvTitle);
+        tvSocialCode = findViewById(R.id.tvSocialCode);
         tvNotice = findViewById(R.id.tvNotice);
         ivToolBarEnd = findViewById(R.id.ivToolBarEnd);
         recyclerGroupMember = findViewById(R.id.recyclerGroupMember);
