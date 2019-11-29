@@ -8,7 +8,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -23,12 +26,17 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.shehuan.nicedialog.BaseNiceDialog;
+import com.shehuan.nicedialog.NiceDialog;
+import com.shehuan.nicedialog.ViewConvertListener;
+import com.shehuan.nicedialog.ViewHolder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
+import com.zxjk.duoduo.bean.response.GetUInvitationUrlBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -56,7 +64,8 @@ public class InviteForSocialActivity extends BaseActivity {
     private ImageView ivQR;
 
     private String inviteWeb;
-    private String description = "限时邀请好友入群，先注册 先得";
+    private String description = "限时邀请好友入群，先注册先得";
+    private GetUInvitationUrlBean r;
 
     private QuickPopup invitePop;
     private QuickPopup popup;
@@ -105,6 +114,7 @@ public class InviteForSocialActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
+                    this.r = r;
                     inviteWeb = r.getUrl();
                     tvCode.setText(r.getInviteCode());
 
@@ -273,5 +283,28 @@ public class InviteForSocialActivity extends BaseActivity {
                             }
                             ToastUtils.showShort(R.string.savefailed);
                         }), Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    public void help(View view) {
+        NiceDialog.init().setLayoutId(R.layout.dialog_invite_help).setConvertListener(new ViewConvertListener() {
+            @Override
+            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                TextView tv = holder.getView(R.id.tv);
+
+                SpannableStringBuilder ssb = new SpannableStringBuilder();
+                for (int i = 0; i < r.getInvitationMessage().size(); i++) {
+                    ssb.append(r.getInvitationMessage().get(i));
+                    if (i != r.getInvitationMessage().size() - 1) {
+                        ssb.append("\n");
+                    }
+
+                }
+
+                ssb.setSpan(new BulletSpan(CommonUtils.dip2px(InviteForSocialActivity.this, 8), 0xff4585f5), 0, r.getInvitationMessage().get(0).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.setSpan(new BulletSpan(CommonUtils.dip2px(InviteForSocialActivity.this, 8), 0xff3dcc9c), r.getInvitationMessage().get(0).length() + 1, r.getInvitationMessage().get(1).length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                tv.setText(ssb);
+            }
+        }).setDimAmount(0.5f).setOutCancel(true).show(getSupportFragmentManager());
     }
 }

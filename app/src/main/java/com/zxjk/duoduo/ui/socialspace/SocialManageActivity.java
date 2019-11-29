@@ -158,7 +158,7 @@ public class SocialManageActivity extends BaseActivity {
 
     public void inviteWechat(View view) {
         Intent intent = new Intent(this, InviteForSocialActivity.class);
-        intent.putExtra("groupId", response.getId());
+        intent.putExtra("groupId", response.getGroupId());
         intent.putExtra("groupName", response.getName());
         startActivity(intent);
     }
