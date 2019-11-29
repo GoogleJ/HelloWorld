@@ -19,9 +19,9 @@
         android:textStyle="bold" />
 
     <FrameLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/m_contact_search_edit_1"
@@ -40,10 +40,10 @@
             layout="@layout/layout_contract_head" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@+id/layout_contract_head"
             android:id="@+id/m_contact_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/layout_contract_head"
             android:overScrollMode="never" />
 
         <com.zxjk.duoduo.ui.msgpage.widget.IndexView

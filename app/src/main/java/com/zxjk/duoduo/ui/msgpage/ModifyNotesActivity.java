@@ -12,9 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -49,7 +47,7 @@ public class ModifyNotesActivity extends BaseActivity {
         });
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         modifyNotesEdit.setText(currentName);
-        modifyNotesEdit.setSelection(currentName.length());
+        modifyNotesEdit.setSelection(currentName.length() > 20 ? 20 : currentName.length());
     }
 
     public void updateRemark(String friendId, String remark) {

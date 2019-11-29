@@ -10,13 +10,16 @@
     <include layout="@layout/layout_title_back" />
 
     <EditText
-        android:layout_marginTop="10dp"
         android:id="@+id/m_modify_notes_edit"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/white"
         android:hint="@string/remark_name"
         android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLength="20"
+        android:maxLines="1"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:textColor="@color/theme_color"

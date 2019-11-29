@@ -9,13 +9,12 @@
 
     <ImageView
         android:id="@+id/m_item_search_icon"
-        android:layout_width="53dp"
-        android:layout_height="53dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/icon_header" />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/m_item_search_text"
@@ -24,7 +23,10 @@
         android:layout_alignTop="@id/m_item_search_icon"
         android:layout_marginStart="12dp"
         android:layout_marginTop="3dp"
+        android:layout_marginEnd="12dp"
         android:layout_toEndOf="@+id/m_item_search_icon"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/text_color3"
         android:textSize="16sp" />
 

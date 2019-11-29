@@ -13,9 +13,9 @@
         android:background="#eeeeee" />
 
     <androidx.core.widget.NestedScrollView
-        android:overScrollMode="never"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,10 +30,9 @@
 
                 <ImageView
                     android:id="@+id/iv_head"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="12dp"
-                    android:src="@drawable/icon_header" />
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_margin="12dp" />
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -41,9 +40,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@id/iv_head"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="32dp"
                     android:layout_toEndOf="@id/iv_head"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="4dp"
+                    android:maxLines="2"
                     android:textColor="@color/text_color3"
-                    android:textSize="18sp" />
+                    android:textSize="16.5sp" />
 
                 <TextView
                     android:id="@+id/tv_qm"

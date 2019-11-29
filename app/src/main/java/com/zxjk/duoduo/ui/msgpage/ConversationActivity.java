@@ -1073,6 +1073,7 @@ public class ConversationActivity extends BaseActivity {
             }
         } else if (requestCode == 2000 && resultCode == 1000) {
             tvTitle.setText(data.getStringExtra("title"));
+            targetUserInfo.setName(data.getStringExtra("title"));
             conversationInfo.setMessageBurnTime(data.getIntExtra("burn", conversationInfo.getMessageBurnTime()));
             conversationInfo.setCaptureScreenEnabled(data.getIntExtra("screenCapture", conversationInfo.getCaptureScreenEnabled()));
         }
