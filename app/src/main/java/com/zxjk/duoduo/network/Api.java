@@ -656,4 +656,8 @@ public interface Api {
 
     @POST("duoduo/customer/getUInvitationUrl")
     Observable<BaseResponse<GetUInvitationUrlBean>> getUInvitationUrl();
+
+    @POST("duoduo/customer/initAuthData")
+    Observable<BaseResponse<String>> initAuthData();
+
 }

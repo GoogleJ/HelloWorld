@@ -12,14 +12,20 @@ import android.widget.TextView;
 import com.alibaba.security.rp.RPSDK;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 @SuppressLint("CheckResult")
@@ -87,56 +93,26 @@ public class SettingActivity extends BaseActivity {
             } else if (Constant.currentUser.getIsAuthentication().equals("0")) {
                 ToastUtils.showShort(R.string.authen_true);
             } else {
-                ServiceFactory.getInstance().getBaseService(Api.class)
-                        .getAuthToken()
-                        .compose(bindToLifecycle())
+                Api api = ServiceFactory.getInstance().getBaseService(Api.class);
+                api.getAuthToken()
+                        .compose(bindUntilEvent(ActivityEvent.DESTROY))
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .subscribe(s -> RPSDK.start(s, this, (audit, s1) -> {
-                            
-                        }), this::handleApiError);
-//                NiceDialog.init().setLayoutId(R.layout.layout_general_dialog11).setConvertListener(new ViewConvertListener() {
-//                    @Override
-//                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-//                        otherIdCardType = "";
-//                        ImageView iv_idCard = holder.getView(R.id.iv_idCard);
-//                        ImageView iv_passport = holder.getView(R.id.iv_passport);
-//                        ImageView iv_other = holder.getView(R.id.iv_other);
-//                        holder.setOnClickListener(R.id.ll_idCard, v13 -> {
-//                            iv_idCard.setImageResource(R.drawable.ic_radio_select);
-//                            iv_passport.setImageResource(R.drawable.ic_radio_unselect);
-//                            iv_other.setImageResource(R.drawable.ic_radio_unselect);
-//                            otherIdCardType = "1";
-//                        });
-//                        holder.setOnClickListener(R.id.ll_passport, v14 -> {
-//                            iv_idCard.setImageResource(R.drawable.ic_radio_unselect);
-//                            iv_passport.setImageResource(R.drawable.ic_radio_select);
-//                            iv_other.setImageResource(R.drawable.ic_radio_unselect);
-//                            otherIdCardType = "2";
-//                        });
-//                        holder.setOnClickListener(R.id.ll_other, v16 -> {
-//                            iv_idCard.setImageResource(R.drawable.ic_radio_unselect);
-//                            iv_passport.setImageResource(R.drawable.ic_radio_unselect);
-//                            iv_other.setImageResource(R.drawable.ic_radio_select);
-//                            otherIdCardType = "3";
-//                        });
-//                        holder.setOnClickListener(R.id.tv_confirm, v15 -> {
-//                            if (!TextUtils.isEmpty(otherIdCardType)) {
-//                                dialog.dismiss();
-//                                if (otherIdCardType.equals("1")) {
-//                                    Intent intent = new Intent(SettingActivity.this, AuthenticationActivity.class);
-//                                    startActivity(intent);
-//                                } else {
-//                                    Intent intent = new Intent(SettingActivity.this, VerifiedActivity.class);
-//                                    intent.putExtra("otherIdCardType", otherIdCardType);
-//                                    startActivity(intent);
-//                                }
-//                            } else {
-//                                ToastUtils.showShort("请选择证件类型");
-//                            }
-//                        });
-//                    }
-//                }).setDimAmount(0.5f).setOutCancel(true).show(getSupportFragmentManager());
+                        .flatMap(s -> Observable.create(emitter ->
+                                RPSDK.start(s, SettingActivity.this, (audit, s1) -> {
+                                    if (audit == RPSDK.AUDIT.AUDIT_PASS || audit == RPSDK.AUDIT.AUDIT_FAIL) {
+                                        emitter.onNext(true);
+                                    } else {
+                                        emitter.onError(new RxException.ParamsException("认证失败,请稍后尝试", 100));
+                                    }
+                                })))
+                        .observeOn(Schedulers.io())
+                        .flatMap(b -> api.initAuthData())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(s -> {
+                            Constant.currentUser.setIsAuthentication("0");
+                            tv_authentication.setText(CommonUtils.getAuthenticate(Constant.currentUser.getIsAuthentication()));
+                        }, this::handleApiError);
             }
         });
         //收款信息
