@@ -81,7 +81,6 @@ public class CusConversationListAdapter extends ConversationListAdapter {
 
         Group groupInfo = RongUserInfoManager.getInstance().getGroupInfo(data.getConversationTargetId());
         if (groupInfo != null && !TextUtils.isEmpty(groupInfo.getPortraitUri().toString())) {
-            if (groupInfo.describeContents())
             ImageUtil.loadGroupPortrait(groupHead, groupInfo.getPortraitUri().toString());
         } else {
 
