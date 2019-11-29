@@ -110,8 +110,8 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         } else {
                             helper.setChecked(R.id.sw, false);
                         }
-                        helper.setText(R.id.tv, (web.getOfficialWebsiteList().size() == 0 || TextUtils.isEmpty(web.getOfficialWebsiteList().get(0).getWebsiteTitle())) ?
-                                getContext().getString(R.string.empty_socialweb) : web.getOfficialWebsiteList().get(0).getWebsiteTitle())
+                        helper.setText(R.id.tv, (web.getOfficialWebsiteList().size() == 0 || TextUtils.isEmpty(web.getOfficialWebsiteList().get(0).getWebsiteContent())) ?
+                                getContext().getString(R.string.empty_socialweb) : web.getOfficialWebsiteList().get(0).getWebsiteContent())
                                 .setText(R.id.tvTitle, item.getOfficialWebsite().getTitle());
                         break;
                     case SocialCaltureListBean.TYPE_FILE:
