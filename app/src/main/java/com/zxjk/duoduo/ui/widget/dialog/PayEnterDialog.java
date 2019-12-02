@@ -50,7 +50,7 @@ public class PayEnterDialog extends Dialog {
         tvCommit = view.findViewById(R.id.tvCommit);
         tvTitle = view.findViewById(R.id.tvTitle);
 
-        et.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4)});
+        et.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5)});
 
         ivRight.setOnClickListener(v -> dismiss());
         tvCancel.setOnClickListener(v -> dismiss());

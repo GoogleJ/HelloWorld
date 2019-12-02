@@ -169,6 +169,7 @@ public class SocialHomeActivity extends BaseActivity {
 
         socialCalturePage.setDoneAction(l -> {
             isInEditStatus = false;
+            tvSocialId.setVisibility(View.VISIBLE);
             app_bar.setExpanded(true, true);
             tvTitle.setText(response.getName());
             ivToolBarStart.setVisibility(View.VISIBLE);
@@ -683,6 +684,7 @@ public class SocialHomeActivity extends BaseActivity {
                                     .subscribe(r -> {
                                         isInEditStatus = true;
                                         ivToolBarEnd.setVisibility(View.GONE);
+                                        tvSocialId.setVisibility(View.GONE);
                                         ivToolBarStart.setVisibility(View.GONE);
                                         tvTitle.setText(R.string.edit_social_calture);
                                         tvTitle.setVisibility(View.VISIBLE);

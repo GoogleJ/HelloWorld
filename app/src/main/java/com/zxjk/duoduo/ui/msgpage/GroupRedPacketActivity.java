@@ -50,7 +50,7 @@ import io.rong.imlib.model.Message;
 @SuppressLint("CheckResult")
 public class GroupRedPacketActivity extends BaseActivity {
     // 红包类型：1.拼手气红包  2.普通红包
-    private String redType = "1";
+    private String redType = "2";
 
     private GetPaymentListBean result;
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();

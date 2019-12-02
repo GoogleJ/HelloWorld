@@ -17,7 +17,7 @@
 
         <ImageView
             android:id="@+id/ivIcon"
-            android:layout_marginTop="160dp"
+            android:layout_marginTop="120dp"
             android:layout_marginBottom="64dp"
             android:src="@drawable/ic_newlogin"
             android:layout_gravity="center"
@@ -39,7 +39,7 @@
                 android:id="@+id/tvTips1"
                 android:text="Hilamg"
                 android:alpha="0"
-                android:textSize="22sp"
+                android:textSize="26sp"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:gravity="center"
@@ -50,7 +50,7 @@
                 android:layout_marginTop="40dp"
                 android:text="安全沟通，值得信赖"
                 android:alpha="0"
-                android:textSize="22sp"
+                android:textSize="26sp"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

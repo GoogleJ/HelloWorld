@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.transition.ArcMotion;
 import android.transition.ChangeBounds;
@@ -161,9 +162,8 @@ public class AppFirstLogin extends AppCompatActivity {
         anim1.setDuration(1000);
 
         ValueAnimator anim2 = ValueAnimator.ofFloat(1f);
-        anim2.addUpdateListener(v ->
-                viewContent.setBackgroundColor((Integer) argbEvaluator.evaluate(v.getAnimatedFraction(),
-                        START_COLOR, END_COLOR)));
+        anim2.addUpdateListener(v -> 
+                viewContent.setBackgroundColor((Integer) argbEvaluator.evaluate(v.getAnimatedFraction(), START_COLOR, END_COLOR)));
         anim2.setDuration(1000);
 
         AnimatorSet set = new AnimatorSet();

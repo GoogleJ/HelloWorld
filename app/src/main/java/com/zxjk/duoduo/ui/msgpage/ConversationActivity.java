@@ -65,6 +65,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongExtension;
@@ -660,19 +661,31 @@ public class ConversationActivity extends BaseActivity {
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getGroupByGroupId(targetId)
                     .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .compose(bindToLifecycle())
-                    .subscribe(groupInfo -> {
-                        handleNewReceiveRed(groupInfo);
+                    .doOnNext(groupResponse -> {
+                        String groupHead = "";
+                        StringBuffer sbf = new StringBuffer();
+                        for (int i = 0; i < groupResponse.getCustomers().size(); i++) {
+                            sbf.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
+                            if (i == groupResponse.getCustomers().size() - 1 || i == 8) {
+                                groupHead = sbf.substring(0, sbf.length() - 1);
+                                break;
+                            }
+                        }
 
-                        Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupInfo.getGroupInfo().getId());
+                        Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupResponse.getGroupInfo().getId());
+
                         if (null == ronginfo ||
                                 ronginfo.getPortraitUri() == null ||
                                 TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
-                                !ronginfo.getName().equals(groupInfo.getGroupInfo().getGroupNikeName()) ||
-                                !ronginfo.getPortraitUri().toString().equals(groupInfo.getGroupInfo().getHeadPortrait())) {
-                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupInfo.getGroupInfo().getId(), groupInfo.getGroupInfo().getGroupNikeName(), Uri.parse(groupInfo.getGroupInfo().getHeadPortrait())));
+                                !ronginfo.getName().equals(groupResponse.getGroupInfo().getGroupNikeName()) ||
+                                !ronginfo.getPortraitUri().toString().equals(groupHead)) {
+                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead)));
                         }
+                    })
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(groupInfo -> {
+                        handleNewReceiveRed(groupInfo);
 
                         handleGroupPlugin(groupInfo);
 

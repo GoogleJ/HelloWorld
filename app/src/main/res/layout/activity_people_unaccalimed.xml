@@ -50,7 +50,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/head"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="17sp" />
 
@@ -60,7 +64,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/m_people_red_envelopes_title_bar"
             android:textSize="30sp"
             android:textStyle="bold" />

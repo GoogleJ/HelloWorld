@@ -150,27 +150,31 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initGreenDaoSession();
 
+        initRongUserProvider();
+    }
+
+    @SuppressLint("CheckResult")
+    private void initRongUserProvider() {
         RongIM.setGroupInfoProvider(id -> {
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getGroupByGroupId(id)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
-                    .map(groupResponse -> {
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(group -> {
                         String groupHead = "";
                         StringBuffer sbf = new StringBuffer();
-                        for (int i = 0; i < groupResponse.getCustomers().size(); i++) {
-                            sbf.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
-                            if (i == groupResponse.getCustomers().size() - 1 || i == 8) {
+                        for (int i = 0; i < group.getCustomers().size(); i++) {
+                            sbf.append(group.getCustomers().get(i).getHeadPortrait() + ",");
+                            if (i == group.getCustomers().size() - 1 || i == 8) {
                                 groupHead = sbf.substring(0, sbf.length() - 1);
                                 break;
                             }
                         }
-
-                        return new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead));
-                    })
-                    .compose(RxSchedulers.ioObserver())
-                    .subscribe(group -> RongIM.getInstance().refreshGroupInfoCache(group), t -> {
+                        RongIM.getInstance().refreshGroupInfoCache(new Group(group.getGroupInfo().getId(), group.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead)));
+                    }, t -> {
                     });
+
             return null;
         }, true);
 
@@ -179,10 +183,10 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     .getCustomerInfoById(id)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
-                    .map(user -> new UserInfo(id, user.getNick(), Uri.parse(user.getHeadPortrait())))
-                    .compose(RxSchedulers.ioObserver())
-                    .subscribe(info -> RongIM.getInstance().refreshUserInfoCache(info), t -> {
-                    });
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(user -> RongIM.getInstance().refreshUserInfoCache(new UserInfo(id, user.getNick(), Uri.parse(user.getHeadPortrait()))),
+                            t -> {
+                            });
             return null;
         }, true);
     }
