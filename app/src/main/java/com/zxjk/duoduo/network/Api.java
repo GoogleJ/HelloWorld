@@ -661,6 +661,7 @@ public interface Api {
     Observable<BaseResponse<String>> initAuthData();
 
     @POST("mochat/shopping/getShoppingUrl")
-    Observable<BaseResponse<String>> getShoppingUrl();
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> getShoppingUrl(@Field("type") String type);
 
 }
