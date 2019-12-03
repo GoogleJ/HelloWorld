@@ -660,4 +660,7 @@ public interface Api {
     @POST("duoduo/customer/initAuthData")
     Observable<BaseResponse<String>> initAuthData();
 
+    @POST("mochat/shopping/getShoppingUrl")
+    Observable<BaseResponse<String>> getShoppingUrl();
+
 }

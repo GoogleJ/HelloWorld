@@ -6,16 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.GsonUtils;
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.request.MallRequest;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 public class WalletActivity extends BaseActivity {
@@ -53,15 +49,19 @@ public class WalletActivity extends BaseActivity {
                 }, this::handleApiError);
     }
 
+    @SuppressLint("CheckResult")
     public void mall(View view) {
-        Intent intent = new Intent(this, WebActivity.class);
-        MallRequest tail = new MallRequest();
-        tail.setToken(Constant.token);
-        tail.setUserId(Constant.userId);
-
-        intent.putExtra("url", "http://shopping.ztoken.cn/#/" + "?data=" + AesUtil.getInstance().encrypt(GsonUtils.toJson(tail)));
-        intent.putExtra("title", "商城");
-        intent.putExtra("type", "mall");
-        startActivity(intent);
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getShoppingUrl()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(url -> {
+                    Intent intent = new Intent(this, WebActivity.class);
+                    intent.putExtra("url", url);
+                    intent.putExtra("title", "商城");
+                    intent.putExtra("type", "mall");
+                    startActivity(intent);
+                }, this::handleApiError);
     }
 }
