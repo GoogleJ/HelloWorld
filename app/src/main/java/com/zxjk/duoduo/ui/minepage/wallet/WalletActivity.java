@@ -52,7 +52,7 @@ public class WalletActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     public void mall(View view) {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getShoppingUrl("1")
+                .getShoppingUrl()
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))

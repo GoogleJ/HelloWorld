@@ -703,6 +703,8 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<GetGroupChatInfoByGroupIdResponse>> getGroupChatInfoByGroupId(@Field("groupId") String id);
 
+    @POST("mochat/shopping/getShoppingUrl")
+    Observable<BaseResponse<String>> getShoppingUrl();
 
     @POST("mochat/shopping/getShoppingUrl")
     @FormUrlEncoded
