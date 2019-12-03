@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
@@ -14,12 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
 import com.zxjk.duoduo.bean.request.EditCommunityWebSiteRequest;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
@@ -29,6 +33,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -103,36 +108,19 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 helper.addOnClickListener(R.id.sw);
                 switch (helper.getItemViewType()) {
                     case SocialCaltureListBean.TYPE_WEB:
-                        EditListCommunityCultureResponse.OfficialWebsiteBean web = item.getOfficialWebsite();
-                        if (!TextUtils.isEmpty(web.getOfficialWebsiteOpen())
-                                && web.getOfficialWebsiteOpen().equals("1")) {
-                            helper.setChecked(R.id.sw, true);
-                        } else {
-                            helper.setChecked(R.id.sw, false);
-                        }
-                        helper.setText(R.id.tv, (web.getOfficialWebsiteList().size() == 0 || TextUtils.isEmpty(web.getOfficialWebsiteList().get(0).getWebsiteContent())) ?
-                                getContext().getString(R.string.empty_socialweb) : web.getOfficialWebsiteList().get(0).getWebsiteContent())
-                                .setText(R.id.tvTitle, item.getOfficialWebsite().getTitle());
+                        initViewForWebPage(helper, item);
                         break;
                     case SocialCaltureListBean.TYPE_FILE:
 
                         break;
                     case SocialCaltureListBean.TYPE_VIDEO:
-
+                        initViewForVideoPage(helper, item);
                         break;
                     case SocialCaltureListBean.TYPE_APP:
 
                         break;
                     case SocialCaltureListBean.TYPE_ACTIVITY:
-                        if (llBottom.getVisibility() == View.VISIBLE) {
-                            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
-                            layoutParams.bottomMargin = dp56;
-                            helper.itemView.setLayoutParams(layoutParams);
-                        } else {
-                            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
-                            layoutParams.bottomMargin = 0;
-                            helper.itemView.setLayoutParams(layoutParams);
-                        }
+                        initViewForActivityPage(helper);
                         break;
                 }
             }
@@ -161,7 +149,14 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
                     break;
                 case SocialCaltureListBean.TYPE_VIDEO:
-                    ToastUtils.showShort(R.string.developing);
+                    if (llBottom.getVisibility() == View.VISIBLE) {
+                        Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
+                        intent.putExtra("id", groupId);
+                        intent.putExtra("bean", bean);
+                        startActivityForResult(intent, REQUEST_SETTINGWEB);
+                    } else {
+                        ToastUtils.showShort("暂时无法播放本视频");
+                    }
                     break;
                 case SocialCaltureListBean.TYPE_APP:
                     ToastUtils.showShort(R.string.developing);
@@ -208,8 +203,31 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     ToastUtils.showShort(R.string.developing);
                     break;
                 case SocialCaltureListBean.TYPE_VIDEO:
-                    ((Switch) view).setChecked(false);
-                    ToastUtils.showShort(R.string.developing);
+                    if (bean.getVideo().getVideoList().size() == 0) {
+                        sw.setChecked(false);
+                        Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
+                        intent.putExtra("id", groupId);
+                        intent.putExtra("bean", bean);
+                        startActivityForResult(intent, REQUEST_SETTINGWEB);
+                    } else {
+                        //call api 2 update status
+                        EditCommunityVideoRequest request = new EditCommunityVideoRequest();
+                        request.setGroupId(groupId);
+                        request.setType("openOrClose");
+                        request.setVideoOpen(sw.isChecked() ? "1" : "0");
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .editCommunityVideo(GsonUtils.toJson(request))
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.normalTrans())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                                .subscribe(s -> {
+                                    bean.getVideo().setVideoOpen(sw.isChecked() ? "1" : "0");
+                                    adapter.notifyItemChanged(position);
+                                }, t -> {
+                                    sw.setChecked(!sw.isChecked());
+                                    handleApiError(t);
+                                });
+                    }
                     break;
                 case SocialCaltureListBean.TYPE_APP:
                     ((Switch) view).setChecked(false);
@@ -225,6 +243,70 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         recycler.setAdapter(adapter);
 
         return rootView;
+    }
+
+    private void initViewForActivityPage(BaseViewHolder helper) {
+        if (llBottom.getVisibility() == View.VISIBLE) {
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
+            layoutParams.bottomMargin = dp56;
+            helper.itemView.setLayoutParams(layoutParams);
+        } else {
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
+            layoutParams.bottomMargin = 0;
+            helper.itemView.setLayoutParams(layoutParams);
+        }
+    }
+
+    private void initViewForWebPage(BaseViewHolder helper, SocialCaltureListBean item) {
+        EditListCommunityCultureResponse.OfficialWebsiteBean web = item.getOfficialWebsite();
+        if (!TextUtils.isEmpty(web.getOfficialWebsiteOpen())
+                && web.getOfficialWebsiteOpen().equals("1")) {
+            helper.setChecked(R.id.sw, true);
+        } else {
+            helper.setChecked(R.id.sw, false);
+        }
+        helper.setText(R.id.tv, (web.getOfficialWebsiteList().size() == 0 || TextUtils.isEmpty(web.getOfficialWebsiteList().get(0).getWebsiteContent())) ?
+                getContext().getString(R.string.empty_socialweb) : web.getOfficialWebsiteList().get(0).getWebsiteContent())
+                .setText(R.id.tvTitle, item.getOfficialWebsite().getTitle());
+    }
+
+    private void initViewForVideoPage(BaseViewHolder helper, SocialCaltureListBean item) {
+        ViewPager pagerVideo = helper.getView(R.id.pagerVideo);
+        LinearLayout llVideoEmpty = helper.getView(R.id.llVideoEmpty);
+
+        if (item.getVideo().getVideoList().size() != 0) {
+            pagerVideo.setVisibility(View.VISIBLE);
+            llVideoEmpty.setVisibility(View.GONE);
+        } else {
+            pagerVideo.setVisibility(View.GONE);
+            llVideoEmpty.setVisibility(View.VISIBLE);
+        }
+
+        if (item.getVideo().getVideoList().size() != 0 && item.getVideo().getVideoOpen().equals("1")) {
+            pagerVideo.setAdapter(new PagerAdapter() {
+                @Override
+                public int getCount() {
+                    return item.getVideo().getVideoList().size();
+                }
+
+                @Override
+                public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+                    return view == object;
+                }
+
+                @NonNull
+                @Override
+                public Object instantiateItem(@NonNull ViewGroup container, int position) {
+                    ImageView imageView = new ImageView(getContext());
+                    GlideUtil.loadNormalImg(imageView, item.getVideo().getVideoList().get(position).getVideoPic());
+                    return imageView;
+                }
+
+                @Override
+                public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+                }
+            });
+        }
     }
 
     public void bindCaltureData(List<SocialCaltureListBean> data) {

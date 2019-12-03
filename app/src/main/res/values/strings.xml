@@ -869,4 +869,6 @@
     <string name="copylink">复制链接</string>
     <string name="authen_failure">认证失败</string>
     <string name="zixun1">资讯</string>
+    <string name="tips_upload_socialvideo">最多上传3份企业宣传视频，请上传体验</string>
+    <string name="video_manage1">视频管理</string>
 </resources>
