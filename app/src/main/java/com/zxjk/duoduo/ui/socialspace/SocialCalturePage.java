@@ -271,18 +271,20 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
     }
 
     private void initViewForVideoPage(BaseViewHolder helper, SocialCaltureListBean item) {
+        EditListCommunityCultureResponse.VideoBean video = item.getVideo();
+        if (!TextUtils.isEmpty(video.getVideoOpen())
+                && video.getVideoOpen().equals("1")) {
+            helper.setChecked(R.id.sw, true);
+        } else {
+            helper.setChecked(R.id.sw, false);
+        }
+
         ViewPager pagerVideo = helper.getView(R.id.pagerVideo);
         LinearLayout llVideoEmpty = helper.getView(R.id.llVideoEmpty);
 
         if (item.getVideo().getVideoList().size() != 0) {
             pagerVideo.setVisibility(View.VISIBLE);
             llVideoEmpty.setVisibility(View.GONE);
-        } else {
-            pagerVideo.setVisibility(View.GONE);
-            llVideoEmpty.setVisibility(View.VISIBLE);
-        }
-
-        if (item.getVideo().getVideoList().size() != 0 && item.getVideo().getVideoOpen().equals("1")) {
             pagerVideo.setAdapter(new PagerAdapter() {
                 @Override
                 public int getCount() {
@@ -299,6 +301,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 public Object instantiateItem(@NonNull ViewGroup container, int position) {
                     ImageView imageView = new ImageView(getContext());
                     GlideUtil.loadNormalImg(imageView, item.getVideo().getVideoList().get(position).getVideoPic());
+                    container.addView(imageView);
                     return imageView;
                 }
 
@@ -306,6 +309,9 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
                 }
             });
+        } else {
+            pagerVideo.setVisibility(View.GONE);
+            llVideoEmpty.setVisibility(View.VISIBLE);
         }
     }
 

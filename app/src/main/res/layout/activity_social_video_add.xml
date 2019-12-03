@@ -55,22 +55,32 @@
             android:layout_height="0.5dp"
             android:background="#DDDDDD" />
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/llBottom1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/shape_stroke_theme_4"
-            android:gravity="center"
-            android:onClick="createVideo"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="@string/upload_newvideo"
-            android:textColor="@color/colorTheme"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvCurrentCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="已选 (0/3)"
+                android:textColor="@color/textColor6" />
+
+            <Button
+                android:layout_width="66dp"
+                android:layout_height="28dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/shape_theme2"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:onClick="uploadVideo"
+                android:text="@string/add"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

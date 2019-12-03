@@ -1,152 +1,94 @@
 package com.zxjk.duoduo.ui.socialspace;
 
-import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
+import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.GlideUtil;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 
 public class SocialVideoEditActivity extends BaseActivity {
 
+    private static final int REQUEST_ADD = 1;
+
+    private LinearLayout llTopTips;
     private RecyclerView recycler;
-    private BaseQuickAdapter<MediaBean, BaseViewHolder> adapter;
+    private BaseQuickAdapter<EditListCommunityCultureResponse.VideoBean, BaseViewHolder> adapter;
+
+    private SocialCaltureListBean bean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_video_edit);
 
+        bean = getIntent().getParcelableExtra("bean");
+
+        llTopTips = findViewById(R.id.llTopTips);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.video_manage1);
 
         recycler = findViewById(R.id.recycler);
+
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new BaseQuickAdapter<MediaBean, BaseViewHolder>(R.layout.item_social_video_list, null) {
+        adapter = new BaseQuickAdapter<EditListCommunityCultureResponse.VideoBean, BaseViewHolder>(R.layout.item_social_video_list_edit, null) {
             @Override
-            protected void convert(BaseViewHolder helper, MediaBean item) {
-                GlideUtil.loadCornerImg(helper.getView(R.id.ivHead), item.getThumbPath(), 3);
-                helper.setText(R.id.tvTitle, item.getDisplayName());
+            protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.VideoBean item) {
+
             }
         };
+
+        View emptyview = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
+        TextView tv = emptyview.findViewById(R.id.tv);
+        ImageView iv = emptyview.findViewById(R.id.iv);
+        tv.setText(R.string.emptylist4);
+        iv.setImageResource(R.drawable.ic_empty_videos);
+        adapter.setEmptyView(emptyview);
+
         recycler.setAdapter(adapter);
-
-        getAllVideoInfos();
     }
 
-    /**
-     * 获取手机中所有视频的信息
-     */
-    @SuppressLint("CheckResult")
-    private void getAllVideoInfos() {
-        Observable.create((ObservableOnSubscribe<List<MediaBean>>) emitter -> {
-            List<MediaBean> data = new ArrayList<>();
-
-            Uri mImageUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-            String[] proj = {MediaStore.Video.Thumbnails._ID
-                    , MediaStore.Video.Thumbnails.DATA
-                    , MediaStore.Video.Media.DURATION
-                    , MediaStore.Video.Media.SIZE
-                    , MediaStore.Video.Media.DISPLAY_NAME
-                    , MediaStore.Video.Media.DATE_MODIFIED};
-            Cursor mCursor = getContentResolver().query(mImageUri,
-                    proj,
-                    MediaStore.Video.Media.MIME_TYPE + "=?",
-                    new String[]{"video/mp4"},
-                    MediaStore.Video.Media.DATE_MODIFIED + " desc");
-            if (mCursor != null) {
-                while (mCursor.moveToNext()) {
-                    int videoId = mCursor.getInt(mCursor.getColumnIndex(MediaStore.Video.Media._ID));
-                    String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DATA));
-                    int duration = mCursor.getInt(mCursor.getColumnIndex(MediaStore.Video.Media.DURATION));
-                    long size = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.SIZE));
-                    if (size < 0) {
-                        //某些设备获取size<0，直接计算
-                        size = new File(path).length();
-                    }
-                    String displayName = mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-                    long modifyTime = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED));
-
-                    MediaStore.Video.Thumbnails.getThumbnail(getContentResolver(), videoId, MediaStore.Video.Thumbnails.MICRO_KIND, null);
-                    String[] projection = {MediaStore.Video.Thumbnails._ID, MediaStore.Video.Thumbnails.DATA};
-                    Cursor cursor = getContentResolver().query(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI
-                            , projection
-                            , MediaStore.Video.Thumbnails.VIDEO_ID + "=?"
-                            , new String[]{videoId + ""}
-                            , null);
-                    String thumbPath = "";
-                    while (cursor.moveToNext()) {
-                        thumbPath = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
-                    }
-                    cursor.close();
-                    data.add(new MediaBean(path, thumbPath, duration, size, displayName, modifyTime));
-                }
-                mCursor.close();
-            }
-            emitter.onNext(data);
-        }).compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver())
-                .subscribe(adapter::setNewData);
+    public void closeTip(View view) {
+        llTopTips.setVisibility(View.GONE);
     }
 
-    static class MediaBean {
-        private String path;
-        private String thumbPath;
-        private long duration;
-        private long size;
-        private String displayName;
-        private long modifyTime;
-
-        public MediaBean(String path, String thumbPath, long duration, long size, String displayName, long modifyTime) {
-            this.path = path;
-            this.thumbPath = thumbPath;
-            this.duration = duration;
-            this.size = size;
-            this.displayName = displayName;
-            this.modifyTime = modifyTime;
+    public void createVideo(View view) {
+        if (bean.getVideo().getVideoList().size() != 3) {
+            ToastUtils.showShort(R.string.upload_video_max);
+            return;
         }
+        Intent intent = new Intent(this, SocialVideoAddActivity.class);
+        intent.putExtra("id", getIntent().getStringExtra("id"));
+        intent.putExtra("maxCount", 3 - bean.getVideo().getVideoList().size());
+        startActivityForResult(intent, REQUEST_ADD);
+    }
 
-        public String getPath() {
-            return path;
-        }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        public String getThumbPath() {
-            return thumbPath;
-        }
+        if (data == null) return;
+        if (resultCode != 1) return;
 
-        public long getDuration() {
-            return duration;
-        }
+        switch (requestCode) {
+            case REQUEST_ADD:
 
-        public long getSize() {
-            return size;
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-
-        public long getModifyTime() {
-            return modifyTime;
+                break;
         }
     }
 }

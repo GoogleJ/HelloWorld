@@ -15,12 +15,14 @@ public class LoadingDialog extends Dialog {
     private static final int MSG_HIDE = 2;
     private static final int MSG_REAL_HIDE = 3;
 
-    private static int delayTimeStamp = 400;
+    private int delayTimeStamp = 400;
     private static int showTimeStamp = 700;
 
     private Handler mHandler;
 
     private WeakReference<Activity> parent;
+
+    private TextView tips;
 
     public LoadingDialog(@NonNull Context context, String loadText) {
         super(context);
@@ -31,10 +33,18 @@ public class LoadingDialog extends Dialog {
         setCanceledOnTouchOutside(false);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         getWindow().setDimAmount(0f);
+        tips = findViewById(R.id.tv_dialog_content);
         if (!TextUtils.isEmpty(loadText)) {
-            TextView tips = findViewById(R.id.tv_dialog_content);
             tips.setText(loadText);
         }
+    }
+
+    public void setDelayTimeStamp(int delayTimeStamp) {
+        this.delayTimeStamp = delayTimeStamp;
+    }
+
+    public void setText(String text) {
+        tips.setText(text);
     }
 
     @Override
