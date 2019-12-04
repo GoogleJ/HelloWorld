@@ -13,14 +13,17 @@ import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
@@ -34,6 +37,7 @@ import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.RecyclerItemAverageDecoration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,7 +53,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
     private LinearLayout llBottom;
     private RecyclerView recycler;
     private BaseMultiItemQuickAdapter<SocialCaltureListBean, BaseViewHolder> adapter;
-
     private String groupId;
 
     private OnDoneAction doneAction;
@@ -117,7 +120,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         initViewForVideoPage(helper, item);
                         break;
                     case SocialCaltureListBean.TYPE_APP:
-
+                        initViewForAppPage(helper, item);
                         break;
                     case SocialCaltureListBean.TYPE_ACTIVITY:
                         initViewForActivityPage(helper);
@@ -268,6 +271,70 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         helper.setText(R.id.tv, (web.getOfficialWebsiteList().size() == 0 || TextUtils.isEmpty(web.getOfficialWebsiteList().get(0).getWebsiteContent())) ?
                 getContext().getString(R.string.empty_socialweb) : web.getOfficialWebsiteList().get(0).getWebsiteContent())
                 .setText(R.id.tvTitle, item.getOfficialWebsite().getTitle());
+    }
+
+    private void initViewForAppPage(BaseViewHolder helper, SocialCaltureListBean item) {
+        EditListCommunityCultureResponse.ApplicationBean app = item.getApplication();
+        if (!TextUtils.isEmpty(app.getApplicationOpen())
+                && app.getApplicationOpen().equals("1")) {
+            helper.setChecked(R.id.sw, true);
+        } else {
+            helper.setChecked(R.id.sw, false);
+        }
+
+        RecyclerView appRecycler = helper.getView(R.id.recycler);
+        appRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
+
+        int dp56 = CommonUtils.dip2px(getContext(), 56);
+        int dp48 = CommonUtils.dip2px(getContext(), 48);
+        int dp10 = CommonUtils.dip2px(getContext(), 10);
+        int dp1 = CommonUtils.dip2px(getContext(), 1);
+        int recyclerWidth = ScreenUtils.getScreenWidth() - dp56;
+        int gap;
+        boolean isNormalSize = true;
+        if (((recyclerWidth - dp56 * 4) / 3) >= dp10) {
+            gap = (recyclerWidth - dp56 * 4) / 3 - dp1;
+        } else {
+            gap = (recyclerWidth - dp48 * 4) / 3 - dp1;
+            isNormalSize = false;
+        }
+        appRecycler.addItemDecoration(new RecyclerItemAverageDecoration(0, gap, 4));
+
+        boolean finalIsNormalSize = isNormalSize;
+
+        BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder> appAdapter;
+        appAdapter = new BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder>(R.layout.item_social_app, item.getApplication().getApplicationList()) {
+            @Override
+            protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean item) {
+                ImageView ivAppIcon = helper.getView(R.id.ivAppIcon);
+                if (!finalIsNormalSize) {
+                    ViewGroup.LayoutParams layoutParams = helper.itemView.getLayoutParams();
+                    if (layoutParams.width != dp48) {
+                        layoutParams.width = dp48;
+                        helper.itemView.setLayoutParams(layoutParams);
+                        ViewGroup.LayoutParams layoutParams1 = ivAppIcon.getLayoutParams();
+                        layoutParams1.width = dp48;
+                        layoutParams1.height = dp48;
+                        ivAppIcon.setLayoutParams(layoutParams1);
+                    }
+                }
+
+                GlideUtil.loadCornerImg(ivAppIcon, item.getApplicationLogo(), 5);
+                helper.setText(R.id.tvTitle, item.getApplicationName());
+            }
+        };
+
+        View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_recycler_social_app, (ViewGroup) rootView, false);
+        appAdapter.setEmptyView(emptyView);
+        emptyView.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SocialAppEditActivity.class);
+            intent.putExtra("groupId", groupId);
+            startActivityForResult(intent, REQUEST_SETTINGAPP);
+        });
+
+        appRecycler.setAdapter(appAdapter);
+
+        appAdapter.setNewData(item.getApplication().getApplicationList());
     }
 
     private void initViewForVideoPage(BaseViewHolder helper, SocialCaltureListBean item) {
