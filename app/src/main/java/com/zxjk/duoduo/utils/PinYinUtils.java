@@ -11,6 +11,9 @@ public class PinYinUtils {
     public static String converterToFirstSpell(String chines) {
         StringBuilder pinyinName = new StringBuilder();
         char[] nameChar = chines.toCharArray();
+        if (nameChar.length == 0) {
+            return "#";
+        }
         HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
         defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
         defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
