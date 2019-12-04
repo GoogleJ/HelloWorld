@@ -124,11 +124,8 @@ public class SocialAppActivity extends BaseActivity {
         emptyView2.setTextColor(ContextCompat.getColor(this, R.color.textcolor2));
         adapter2.setEmptyView(emptyView2);
 
-        int gap = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 256)) / 3 - CommonUtils.dip2px(this, 1);
         recyclerApp1.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerApp2.setLayoutManager(new GridLayoutManager(this, 4));
-        recyclerApp1.addItemDecoration(new RecyclerItemAverageDecoration(0, gap, 4));
-        recyclerApp2.addItemDecoration(new RecyclerItemAverageDecoration(0, gap, 4));
         recyclerApp1.setAdapter(adapter1);
         recyclerApp2.setAdapter(adapter2);
 

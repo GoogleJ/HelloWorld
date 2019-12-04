@@ -26,6 +26,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.request.EditCommunityApplicationRequest;
 import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
 import com.zxjk.duoduo.bean.request.EditCommunityWebSiteRequest;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
@@ -37,7 +38,6 @@ import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
-import com.zxjk.duoduo.utils.RecyclerItemAverageDecoration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -87,6 +87,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         llBottom.setOnClickListener(this);
 
         recycler = rootView.findViewById(R.id.recycler);
+        recycler.setItemAnimator(null);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new BaseMultiItemQuickAdapter<SocialCaltureListBean, BaseViewHolder>(null) {
 
@@ -162,7 +163,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                     break;
                 case SocialCaltureListBean.TYPE_APP:
-                    ToastUtils.showShort(R.string.developing);
+                    if (llBottom.getVisibility() == View.VISIBLE) {
+                        Intent intent = new Intent(getContext(), SocialAppActivity.class);
+                        intent.putExtra("groupId", groupId);
+                        intent.putExtra("data", bean);
+                        startActivityForResult(intent, REQUEST_SETTINGAPP);
+                    }
                     break;
                 case SocialCaltureListBean.TYPE_ACTIVITY:
                     ToastUtils.showShort(R.string.developing);
@@ -233,8 +239,31 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                     break;
                 case SocialCaltureListBean.TYPE_APP:
-                    ((Switch) view).setChecked(false);
-                    ToastUtils.showShort(R.string.developing);
+                    if (bean.getApplication().getApplicationList().size() == 0) {
+                        sw.setChecked(false);
+                        Intent intent = new Intent(getContext(), SocialAppActivity.class);
+                        intent.putExtra("groupId", groupId);
+                        intent.putExtra("bean", bean);
+                        startActivityForResult(intent, REQUEST_SETTINGAPP);
+                    } else {
+                        //call api 2 update status
+                        EditCommunityApplicationRequest request = new EditCommunityApplicationRequest();
+                        request.setGroupId(groupId);
+                        request.setType("openOrClose");
+                        request.setApplicationOpen(sw.isChecked() ? "1" : "0");
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .editCommunityApplication(GsonUtils.toJson(request))
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.normalTrans())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                                .subscribe(s -> {
+                                    bean.getApplication().setApplicationOpen(sw.isChecked() ? "1" : "0");
+                                    adapter.notifyItemChanged(position);
+                                }, t -> {
+                                    sw.setChecked(!sw.isChecked());
+                                    handleApiError(t);
+                                });
+                    }
                     break;
                 case SocialCaltureListBean.TYPE_ACTIVITY:
                     ((Switch) view).setChecked(false);
@@ -285,20 +314,14 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         RecyclerView appRecycler = helper.getView(R.id.recycler);
         appRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
+        int dp64 = CommonUtils.dip2px(getContext(), 64);
         int dp56 = CommonUtils.dip2px(getContext(), 56);
-        int dp48 = CommonUtils.dip2px(getContext(), 48);
-        int dp10 = CommonUtils.dip2px(getContext(), 10);
-        int dp1 = CommonUtils.dip2px(getContext(), 1);
+        int dp8 = CommonUtils.dip2px(getContext(), 8);
         int recyclerWidth = ScreenUtils.getScreenWidth() - dp56;
-        int gap;
         boolean isNormalSize = true;
-        if (((recyclerWidth - dp56 * 4) / 3) >= dp10) {
-            gap = (recyclerWidth - dp56 * 4) / 3 - dp1;
-        } else {
-            gap = (recyclerWidth - dp48 * 4) / 3 - dp1;
+        if (((recyclerWidth - dp64 * 4) / 4) < dp8) {
             isNormalSize = false;
         }
-        appRecycler.addItemDecoration(new RecyclerItemAverageDecoration(0, gap, 4));
 
         boolean finalIsNormalSize = isNormalSize;
 
@@ -308,13 +331,14 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean item) {
                 ImageView ivAppIcon = helper.getView(R.id.ivAppIcon);
                 if (!finalIsNormalSize) {
-                    ViewGroup.LayoutParams layoutParams = helper.itemView.getLayoutParams();
-                    if (layoutParams.width != dp48) {
-                        layoutParams.width = dp48;
-                        helper.itemView.setLayoutParams(layoutParams);
+                    LinearLayout llContent = helper.getView(R.id.llContent);
+                    ViewGroup.LayoutParams layoutParams = llContent.getLayoutParams();
+                    if (layoutParams.width != dp56) {
+                        layoutParams.width = dp56;
+                        llContent.setLayoutParams(layoutParams);
                         ViewGroup.LayoutParams layoutParams1 = ivAppIcon.getLayoutParams();
-                        layoutParams1.width = dp48;
-                        layoutParams1.height = dp48;
+                        layoutParams1.width = dp56;
+                        layoutParams1.height = dp56;
                         ivAppIcon.setLayoutParams(layoutParams1);
                     }
                 }
@@ -323,6 +347,21 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 helper.setText(R.id.tvTitle, item.getApplicationName());
             }
         };
+
+        appAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (llBottom.getVisibility() == View.VISIBLE) {
+                Intent intent = new Intent(getContext(), SocialAppActivity.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("data", item);
+                startActivityForResult(intent, REQUEST_SETTINGAPP);
+                return;
+            }
+            EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean applicationListBean = appAdapter.getData().get(position);
+            Intent intent = new Intent(getContext(), WebActivity.class);
+            intent.putExtra("url", applicationListBean.getApplicationAddress());
+            intent.putExtra("title", applicationListBean.getApplicationName());
+            startActivity(intent);
+        });
 
         View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_recycler_social_app, (ViewGroup) rootView, false);
         appAdapter.setEmptyView(emptyView);
@@ -370,6 +409,16 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     ImageView imageView = new ImageView(getContext());
                     GlideUtil.loadNormalImg(imageView, item.getVideo().getVideoList().get(position).getVideoPic());
                     container.addView(imageView);
+                    imageView.setOnClickListener(v -> {
+                        if (llBottom.getVisibility() == View.VISIBLE) {
+                            Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
+                            intent.putExtra("id", groupId);
+                            intent.putExtra("data", item);
+                            startActivityForResult(intent, REQUEST_SETTINGVIDEO);
+                        } else {
+
+                        }
+                    });
                     return imageView;
                 }
 

@@ -18,15 +18,17 @@ public class RecyclerItemAverageDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+        int position = parent.getChildAdapterPosition(view) % itemNum;
+
         if (parent.getChildCount() > 0) {
-            int position = parent.getChildAdapterPosition(view) % itemNum;
-            if (position == 0) {
+            if (position  == 0) {                  //最左边Item
                 outRect.left = itemSpaceLeft;
                 outRect.right = itemSpaceCenter / 2;
-            } else if (position % itemNum == itemNum - 1) {
+            } else if (position  == itemNum - 1) { //最右边Item
                 outRect.left = itemSpaceCenter / 2;
                 outRect.right = itemSpaceLeft;
-            } else {
+            } else {                                        //中间Item
                 outRect.left = itemSpaceCenter / 2;
                 outRect.right = itemSpaceCenter / 2;
             }

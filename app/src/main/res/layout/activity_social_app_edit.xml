@@ -156,7 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:background="@null"
-                android:hint="@string/input_socialappname"
+                android:hint="@string/input_socialapp_address"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLines="1"
@@ -175,5 +175,41 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
         android:background="#dddddd" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/llBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#dddddd" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/shape_ff655c_stroke_4"
+            android:gravity="center"
+            android:onClick="deleteApp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/delete_app"
+            android:textColor="#FF655C"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </LinearLayout>

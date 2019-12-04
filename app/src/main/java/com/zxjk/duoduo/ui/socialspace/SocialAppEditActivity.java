@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
@@ -45,6 +46,7 @@ public class SocialAppEditActivity extends BaseActivity {
     private ImageView ivLogo;
     private EditText etName;
     private EditText etAddress;
+    private LinearLayout llBottom;
 
     private String modifyLogoAddress;
 
@@ -58,6 +60,7 @@ public class SocialAppEditActivity extends BaseActivity {
         ivLogo = findViewById(R.id.ivLogo);
         etName = findViewById(R.id.etName);
         etAddress = findViewById(R.id.etAddress);
+        llBottom = findViewById(R.id.llBottom);
 
         groupId = getIntent().getStringExtra("groupId");
 
@@ -70,6 +73,8 @@ public class SocialAppEditActivity extends BaseActivity {
             GlideUtil.loadCornerImg(ivLogo, applicationLogo, 3);
             etAddress.setText(applicationAddress);
             etName.setText(applicationName);
+
+            llBottom.setVisibility(View.VISIBLE);
         }
 
         getPermisson(findViewById(R.id.ivLogo), result -> {
@@ -110,7 +115,7 @@ public class SocialAppEditActivity extends BaseActivity {
             return;
         }
 
-        String name = etAddress.getText().toString().trim();
+        String name = etName.getText().toString().trim();
         if (name.isEmpty()) {
             ToastUtils.showShort(R.string.input_socialapp_name);
             return;
@@ -129,11 +134,16 @@ public class SocialAppEditActivity extends BaseActivity {
             request.setType("add");
         } else {
             request.setType("update");
-            request.setApplicationId(applicationId);
-            request.setApplicationAddress(address);
-            request.setApplicationLogo(modifyLogoAddress);
-            request.setApplicationName(name);
+
         }
+
+        if (!TextUtils.isEmpty(modifyLogoAddress)) {
+            request.setApplicationLogo(modifyLogoAddress);
+        }
+
+        request.setApplicationId(applicationId);
+        request.setApplicationAddress(address);
+        request.setApplicationName(name);
 
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .editCommunityApplication(GsonUtils.toJson(request))
@@ -151,7 +161,25 @@ public class SocialAppEditActivity extends BaseActivity {
                         finish();
                     }
                 }, this::handleApiError);
+    }
 
+    @SuppressLint("CheckResult")
+    public void deleteApp(View view) {
+        EditCommunityApplicationRequest request = new EditCommunityApplicationRequest();
+        request.setGroupId(groupId);
+        request.setType("del");
+        request.setApplicationId(applicationId);
+
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .editCommunityApplication(GsonUtils.toJson(request))
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(s -> {
+                    Intent intent = new Intent();
+                    setResult(1, intent);
+                    finish();
+                }, this::handleApiError);
     }
 
     public void back(View view) {
