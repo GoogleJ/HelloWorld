@@ -87,6 +87,12 @@ public class NewLoginActivity extends BaseActivity {
 
     private String phone;
 
+    /**
+     * 0：国外
+     * 1：国内
+     */
+    private String isChinaPhone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,13 +229,21 @@ public class NewLoginActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void getCode() {
-        phone = etPhone.getText().toString().trim();
-        if (TextUtils.isEmpty(phone) || !RegexUtils.isMobileExact(phone)) {
+        String phoneText = etPhone.getText().toString().trim();
+        if ("86".equals(tvContrary.getText().toString().substring(1))){
+            isChinaPhone = "1";
+            phone = phoneText;
+        } else {
+            isChinaPhone = "0";
+            phone = tvContrary.getText().toString().substring(1) + phoneText;
+        }
+        if (TextUtils.isEmpty(phone) || ("1".equals(isChinaPhone) && !RegexUtils.isMobileExact(phone))) {
             ToastUtils.showShort(R.string.edit_mobile_tip);
             return;
         }
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getCode(tvContrary.getText().toString().substring(1) + "-" + phone, "0")
+//                .getCode(tvContrary.getText().toString().substring(1) + "-" + phone, "0")
+                .getCode(phone, isChinaPhone)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))

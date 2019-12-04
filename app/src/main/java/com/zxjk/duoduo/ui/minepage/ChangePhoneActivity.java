@@ -1,20 +1,25 @@
 package com.zxjk.duoduo.ui.minepage;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.CountryEntity;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.CountrySelectActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -26,6 +31,10 @@ public class ChangePhoneActivity extends BaseActivity implements View.OnClickLis
     private EditText et_verificationCode;
     private TextView tv_verificationCode;
     private String verify;
+    private LinearLayout llContrary;
+    private TextView tv_countryCode;
+    private String isChinaPhone;
+
 
     CountDownTimer timer = new CountDownTimer(60000, 1000) {
         @Override
@@ -51,12 +60,24 @@ public class ChangePhoneActivity extends BaseActivity implements View.OnClickLis
         et_phone = findViewById(R.id.et_phone);
         et_verificationCode = findViewById(R.id.et_verificationCode);
         tv_verificationCode = findViewById(R.id.tv_verificationCode);
-        TextView tv_countryCode = findViewById(R.id.tv_countryCode);
+        tv_countryCode = findViewById(R.id.tv_countryCode);
         tv_verificationCode.setOnClickListener(this);
-        tv_countryCode.setText("+" + Constant.HEAD_LOCATION);
+        llContrary = findViewById(R.id.ll_contrary);
+        llContrary.setOnClickListener(v -> startActivityForResult(new Intent(this, CountrySelectActivity.class), 200));
+//        tv_countryCode.setText("+" + Constant.HEAD_LOCATION);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200 && resultCode == Activity.RESULT_OK && data != null) {
+            CountryEntity countryEntity = (CountryEntity) data.getSerializableExtra("country");
+            tv_countryCode.setText("+" + (countryEntity != null ? countryEntity.countryCode : "86"));
+            if (countryEntity != null) {
+                Constant.HEAD_LOCATION = countryEntity.countryCode;
+            }
+        }
+    }
     private void doChangePhone(String verifyCode) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .updateMobile(verify, verifyCode)
@@ -78,8 +99,14 @@ public class ChangePhoneActivity extends BaseActivity implements View.OnClickLis
             ToastUtils.showShort(getString(R.string.please_enter_phone_number));
             return;
         }
-        if (RegexUtils.isMobileExact(phone)) {
+        if ("86".equals(tv_countryCode.getText().toString().substring(1))){
+            isChinaPhone = "1";
             verify = phone;
+        } else {
+            isChinaPhone = "0";
+            verify = tv_countryCode.getText().toString().substring(1) + phone;
+        }
+        if ("0".equals(isChinaPhone) || ("1".equals(isChinaPhone) && RegexUtils.isMobileExact(verify))) {
             getVerifyCode();
             tv_verificationCode.setClickable(false);
             return;
@@ -90,7 +117,7 @@ public class ChangePhoneActivity extends BaseActivity implements View.OnClickLis
     private void getVerifyCode() {
         timer.start();
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getCode(Constant.HEAD_LOCATION + "-" + verify, "0")
+                .getCode(verify, isChinaPhone)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ChangePhoneActivity.this)))
                 .compose(RxSchedulers.normalTrans())
@@ -115,11 +142,13 @@ public class ChangePhoneActivity extends BaseActivity implements View.OnClickLis
             return;
         }
 
-        if (!RegexUtils.isMobileExact(phone)) {
+        if ("1".equals(isChinaPhone) && !RegexUtils.isMobileExact(phone)) {
             ToastUtils.showShort(getString(R.string.please_enter_a_valid_phone_number));
             return;
         }
-
+        if (!"86".equals(tv_countryCode.getText().toString().substring(1))){
+            phone = tv_countryCode.getText().toString().substring(1) + phone;
+        }
         if (!phone.equals(verify)) {
             ToastUtils.showShort(getString(R.string.verification_code_error));
             return;

@@ -18,21 +18,30 @@
         android:layout_marginEnd="40dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_countryCode"
+        <LinearLayout
+            android:id="@+id/ll_contrary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_bottom"
-            android:drawablePadding="10dp"
-            android:textColor="@color/theme_color"
-            android:textSize="16sp" />
+            android:gravity="center_vertical"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp">
+
+            <TextView
+                android:id="@+id/tv_countryCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+86"
+                android:drawableEnd="@drawable/ic_bottom"
+                android:drawablePadding="10dp"
+                android:textColor="@color/theme_color"
+                android:textSize="16sp" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
             android:background="@color/view_color" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/et_phone"
