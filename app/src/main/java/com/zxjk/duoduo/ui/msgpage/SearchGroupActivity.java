@@ -70,7 +70,8 @@ public class SearchGroupActivity extends BaseActivity {
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(b -> {
                             if (!hasSearch) recycler.setAdapter(adapter);
-                            adapter.setNewData(Collections.singletonList(b));
+//                            adapter.setNewData(Collections.singletonList(b));
+                            adapter.setNewData(b);
                         }, this::handleApiError);
                 return true;
             }

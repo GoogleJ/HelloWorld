@@ -633,7 +633,7 @@ public interface Api {
 
     @POST("duoduo/community/searchCommunity")
     @FormUrlEncoded
-    Observable<BaseResponse<SearchCommunityBean>> searchCommunity(@Field("code") String code);
+    Observable<BaseResponse<List<SearchCommunityBean>>> searchCommunity(@Field("code") String code);
 
     @POST("duoduo/community/communityCulture")
     @FormUrlEncoded
