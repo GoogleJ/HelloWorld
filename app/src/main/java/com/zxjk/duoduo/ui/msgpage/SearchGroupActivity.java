@@ -2,8 +2,12 @@ package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +37,8 @@ import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
-import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SearchGroupActivity extends BaseActivity {
 
@@ -43,6 +48,8 @@ public class SearchGroupActivity extends BaseActivity {
     private EditText etSearch;
     private BaseQuickAdapter adapter;
     private Api api;
+    private String str;
+    private SpannableString builder;
 
     @SuppressLint("CheckResult")
     @Override
@@ -58,7 +65,7 @@ public class SearchGroupActivity extends BaseActivity {
 
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                String str = etSearch.getText().toString().trim();
+                str = etSearch.getText().toString().trim();
                 if (TextUtils.isEmpty(str)) {
                     ToastUtils.showShort(R.string.input_empty);
                     return false;
@@ -84,9 +91,20 @@ public class SearchGroupActivity extends BaseActivity {
         adapter = new BaseQuickAdapter<SearchCommunityBean, BaseViewHolder>(R.layout.item_publicgroup) {
             @Override
             protected void convert(BaseViewHolder helper, SearchCommunityBean item) {
-                helper.setText(R.id.tvGroupName, item.getCommunityName())
-                        .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
-                        .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
+                if (item.getCommunityName().contains(str)){
+                    helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), str))
+                            .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
+                            .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
+                } else if (item.getCode().contains(str)){
+                    helper.setText(R.id.tvGroupName, item.getCommunityName())
+                            .setText(R.id.tvGroupOnwerName, "社群号:" + item.getCode())
+                            .setTextColor(R.id.tvGroupOnwerName, Color.parseColor("#4486ff"))
+                            .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
+                } else if (item.getOwnerNick().contains(str)){
+                    helper.setText(R.id.tvGroupName, item.getCommunityName())
+                            .setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), str))
+                            .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
+                }
 
                 FrameLayout fl = helper.getView(R.id.fl);
                 ViewGroup.LayoutParams layoutParams = fl.getLayoutParams();
@@ -132,4 +150,15 @@ public class SearchGroupActivity extends BaseActivity {
         overridePendingTransition(0, 0);
     }
 
+    private SpannableString matcherSearchText(int color, String text, String keyword) {
+        builder = new SpannableString(text);
+        Pattern pattern = Pattern.compile(keyword);
+        Matcher matcher = pattern.matcher(builder);
+        while (matcher.find()) {
+            int start = matcher.start();
+            int end = matcher.end();
+            builder.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return builder;
+    }
 }

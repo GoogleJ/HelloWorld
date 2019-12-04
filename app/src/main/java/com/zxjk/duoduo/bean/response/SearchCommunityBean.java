@@ -19,6 +19,7 @@ public class SearchCommunityBean {
     private String isPay;
     private String members;
     private String inGroup;
+    private String code;
 
     public String getOwnerNick() {
         return ownerNick;
@@ -74,5 +75,13 @@ public class SearchCommunityBean {
 
     public void setInGroup(String inGroup) {
         this.inGroup = inGroup;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
