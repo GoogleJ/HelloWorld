@@ -881,4 +881,12 @@
     <string name="select_videopic">选择封面</string>
     <string name="rename_socialvideo">企业视频重命名</string>
     <string name="hint_videoname">企业视频名称</string>
+    <string name="addapp">添加应用</string>
+    <string name="editApp">编辑应用</string>
+    <string name="social_appname">应用名称</string>
+    <string name="input_socialappname">请输入应用名称</string>
+    <string name="social_appaddress">应用地址</string>
+    <string name="input_socialapp_address">请输入应用地址</string>
+    <string name="input_socialapp_name">请输入应用名称</string>
+    <string name="set_socialapp_logo">请上传应用logo</string>
 </resources>

@@ -87,6 +87,7 @@ public class TakePicUtil {
 
         cropIntent.setDataAndType(uri, "image/*");
         cropIntent.putExtra("crop", "true");
+        cropIntent.putExtra("circleCrop", false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);

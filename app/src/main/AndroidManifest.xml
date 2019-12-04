@@ -57,6 +57,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity android:name=".ui.socialspace.SocialAppEditActivity"></activity>
+        <activity android:name=".ui.socialspace.SocialAppActivity" />
         <activity
             android:name=".ui.socialspace.EditSocialVideoNameActivity"
             android:launchMode="singleTop"

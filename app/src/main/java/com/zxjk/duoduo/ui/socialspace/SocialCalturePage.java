@@ -319,7 +319,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                 }
 
-                GlideUtil.loadCornerImg(ivAppIcon, item.getApplicationLogo(), 5);
+                GlideUtil.loadCornerImg(ivAppIcon, item.getApplicationLogo(), 4);
                 helper.setText(R.id.tvTitle, item.getApplicationName());
             }
         };
@@ -327,8 +327,9 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_recycler_social_app, (ViewGroup) rootView, false);
         appAdapter.setEmptyView(emptyView);
         emptyView.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), SocialAppEditActivity.class);
+            Intent intent = new Intent(getContext(), SocialAppActivity.class);
             intent.putExtra("groupId", groupId);
+            intent.putExtra("data", item);
             startActivityForResult(intent, REQUEST_SETTINGAPP);
         });
 
