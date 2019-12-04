@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.socialspace;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class SocialVideoAddActivity extends BaseActivity {
 
     private LinearLayout llTopTips;
     private TextView tvCurrentCount;
+    private TextView tvMaxCount;
     private ArrayList<MediaBean> selectedVideos;
     private RecyclerView recycler;
     private BaseQuickAdapter<MediaBean, BaseViewHolder> adapter;
@@ -64,7 +66,7 @@ public class SocialVideoAddActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_video_add);
 
-        maxCount = getIntent().getIntExtra("maxCount", 3);
+        maxCount = getIntent().getIntExtra("currentMax", 3);
 
         uploadLoading = new LoadingDialog(this, "上传中");
         uploadLoading.setDelayTimeStamp(0);
@@ -78,8 +80,15 @@ public class SocialVideoAddActivity extends BaseActivity {
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.video_add);
 
+        tvMaxCount = findViewById(R.id.tvMaxCount);
+        tvMaxCount.setText("最多上传" + getIntent().getIntExtra("maxCount", 3) + "份企业宣传视频，请上传体验");
         llTopTips = findViewById(R.id.llTopTips);
         tvCurrentCount = findViewById(R.id.tvCurrentCount);
+        if (maxCount == 0) {
+            tvCurrentCount.setText("目前已达上传上限");
+        } else {
+            tvCurrentCount.setText("已选" + " (0" + "/" + maxCount + ")");
+        }
         recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setItemAnimator(null);
@@ -128,7 +137,7 @@ public class SocialVideoAddActivity extends BaseActivity {
         getAllVideoInfos();
     }
 
-    public String stringForTime(long timeMs) {
+    private String stringForTime(long timeMs) {
         long totalSeconds = timeMs / 1000;
         long seconds = totalSeconds % 60;
 
@@ -233,6 +242,8 @@ public class SocialVideoAddActivity extends BaseActivity {
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(s -> {
                             ToastUtils.showShort(R.string.upload_social_video_success);
+                            Intent intent = new Intent();
+                            setResult(1, intent);
                             finish();
                         }, t -> {
                             finish();
@@ -258,7 +269,7 @@ public class SocialVideoAddActivity extends BaseActivity {
                         EditCommunityVideoRequest.VideoListBean bean = new EditCommunityVideoRequest.VideoListBean();
                         bean.setVideoAddress(videoAddress);
                         bean.setVideoPic(thumbUrl);
-                        bean.setVideoDuration(stringForTime(selectedVideos.get(0).getDuration()));
+                        bean.setVideoDuration(selectedVideos.get(0).getDuration() + "");
                         bean.setVideoName(selectedVideos.get(0).getDisplayName());
                         uploadList.add(bean);
                         selectedVideos.remove(0);

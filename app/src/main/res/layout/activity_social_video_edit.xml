@@ -21,10 +21,11 @@
         android:paddingBottom="8dp">
 
         <TextView
+            android:id="@+id/tvMaxCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/tips_upload_socialvideo"
+            android:text="最多上传0份企业宣传视频，请上传体验"
             android:textColor="#F9B313"
             android:textSize="12sp" />
 

@@ -629,7 +629,7 @@
     <string name="pay_money">付费金额</string>
     <string name="payrecord">付费记录</string>
     <string name="person">人</string>
-    <string name="date">日期</string>
+    <string name="createTime">日期</string>
     <string name="user">用户</string>
     <string name="money1">金额</string>
     <string name="setmoneyfirst">请先设置付费金额</string>
@@ -869,7 +869,6 @@
     <string name="copylink">复制链接</string>
     <string name="authen_failure">认证失败</string>
     <string name="zixun1">资讯</string>
-    <string name="tips_upload_socialvideo">最多上传3份企业宣传视频，请上传体验</string>
     <string name="video_manage1">视频管理</string>
     <string name="selectVideos">请选择要上传的视频</string>
     <string name="upload_social_video_fail">视频上传失败！请尝试单个上传或选择较小的视频。</string>
@@ -878,4 +877,8 @@
     <string name="emptylist4">暂无社群视频</string>
     <string name="upload_newvideo">上传新视频</string>
     <string name="upload_video_max">视频已达上限，暂时不可上传新视频</string>
+    <string name="rename">重命名</string>
+    <string name="select_videopic">选择封面</string>
+    <string name="rename_socialvideo">企业视频重命名</string>
+    <string name="hint_videoname">企业视频名称</string>
 </resources>

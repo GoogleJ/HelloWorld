@@ -10,6 +10,7 @@ import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
+import com.zxjk.duoduo.bean.response.CommunityVideoListResponse;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.EditCommunityResponse;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
@@ -663,6 +664,10 @@ public interface Api {
     @POST("duoduo/community/editCommunityVideo")
     @FormUrlEncoded
     Observable<BaseResponse<String>> editCommunityVideo(@Field("data") String data);
+
+    @POST("duoduo/community/communityVideoList")
+    @FormUrlEncoded
+    Observable<BaseResponse<CommunityVideoListResponse>> communityVideoList(@Field("groupId") String groupId);
 
     @POST("mochat/shopping/getShoppingUrl")
     @FormUrlEncoded

@@ -56,8 +56,21 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.socialspace.SocialVideoEditActivity"></activity>
-        <activity android:name=".ui.socialspace.SocialVideoAddActivity" />
+        <activity
+            android:name=".ui.socialspace.EditSocialVideoNameActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.socialspace.SocialVideoEditActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.socialspace.SocialVideoAddActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.minepage.InviteForSocialActivity"
             android:launchMode="singleTop"
