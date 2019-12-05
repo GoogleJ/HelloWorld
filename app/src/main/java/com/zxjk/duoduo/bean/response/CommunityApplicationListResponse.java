@@ -13,8 +13,8 @@ public class CommunityApplicationListResponse {
 
     private String permission;
     private String appCreate;
-    private List<ApplicationBean> application;
-    private List<ApplicationBean> officialApplication;
+    private List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> application;
+    private List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> officialApplication;
 
     public String getPermission() {
         return permission;
@@ -32,75 +32,19 @@ public class CommunityApplicationListResponse {
         this.appCreate = appCreate;
     }
 
-    public List<ApplicationBean> getApplication() {
+    public List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> getApplication() {
         return application;
     }
 
-    public void setApplication(List<ApplicationBean> application) {
+    public void setApplication(List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> application) {
         this.application = application;
     }
 
-    public List<ApplicationBean> getOfficialApplication() {
+    public List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> getOfficialApplication() {
         return officialApplication;
     }
 
-    public void setOfficialApplication(List<ApplicationBean> officialApplication) {
+    public void setOfficialApplication(List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> officialApplication) {
         this.officialApplication = officialApplication;
-    }
-
-    public static class ApplicationBean {
-        /**
-         * applicationId : 1
-         * applicationName : 海浪官方应用(测试)
-         * applicationLogo : https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/4qnihrkux4nk4cqw3wq5.jpg
-         * applicationAddress : https://www.baidu.com
-         * isOpen : 1
-         */
-
-        private String applicationId;
-        private String applicationName;
-        private String applicationLogo;
-        private String applicationAddress;
-        private String isOpen = "1";
-
-        public String getApplicationId() {
-            return applicationId;
-        }
-
-        public void setApplicationId(String applicationId) {
-            this.applicationId = applicationId;
-        }
-
-        public String getApplicationName() {
-            return applicationName;
-        }
-
-        public void setApplicationName(String applicationName) {
-            this.applicationName = applicationName;
-        }
-
-        public String getApplicationLogo() {
-            return applicationLogo;
-        }
-
-        public void setApplicationLogo(String applicationLogo) {
-            this.applicationLogo = applicationLogo;
-        }
-
-        public String getApplicationAddress() {
-            return applicationAddress;
-        }
-
-        public void setApplicationAddress(String applicationAddress) {
-            this.applicationAddress = applicationAddress;
-        }
-
-        public String getIsOpen() {
-            return isOpen;
-        }
-
-        public void setIsOpen(String isOpen) {
-            this.isOpen = isOpen;
-        }
     }
 }

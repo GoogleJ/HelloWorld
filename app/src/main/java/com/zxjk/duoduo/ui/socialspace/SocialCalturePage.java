@@ -243,7 +243,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         sw.setChecked(false);
                         Intent intent = new Intent(getContext(), SocialAppActivity.class);
                         intent.putExtra("groupId", groupId);
-                        intent.putExtra("bean", bean);
+                        intent.putExtra("data", bean);
                         startActivityForResult(intent, REQUEST_SETTINGAPP);
                     } else {
                         //call api 2 update status

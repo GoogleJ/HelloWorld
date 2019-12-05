@@ -575,6 +575,15 @@ public class EditListCommunityCultureResponse implements Parcelable {
             private String applicationName;
             private String applicationLogo;
             private String applicationAddress;
+            private String isOpen = "1";
+
+            public String getIsOpen() {
+                return isOpen;
+            }
+
+            public void setIsOpen(String isOpen) {
+                this.isOpen = isOpen;
+            }
 
             public String getApplicationId() {
                 return applicationId;
@@ -608,6 +617,9 @@ public class EditListCommunityCultureResponse implements Parcelable {
                 this.applicationAddress = applicationAddress;
             }
 
+            public ApplicationListBean() {
+            }
+
             @Override
             public int describeContents() {
                 return 0;
@@ -619,9 +631,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
                 dest.writeString(this.applicationName);
                 dest.writeString(this.applicationLogo);
                 dest.writeString(this.applicationAddress);
-            }
-
-            public ApplicationListBean() {
+                dest.writeString(this.isOpen);
             }
 
             protected ApplicationListBean(Parcel in) {
@@ -629,6 +639,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
                 this.applicationName = in.readString();
                 this.applicationLogo = in.readString();
                 this.applicationAddress = in.readString();
+                this.isOpen = in.readString();
             }
 
             public static final Creator<ApplicationListBean> CREATOR = new Creator<ApplicationListBean>() {

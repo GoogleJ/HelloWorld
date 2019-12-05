@@ -18,6 +18,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.CommunityApplicationListResponse;
+import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
+import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -35,10 +37,12 @@ public class SocialAppActivity extends BaseActivity {
     private RecyclerView recyclerApp1;
     private RecyclerView recyclerApp2;
 
-    private BaseQuickAdapter<CommunityApplicationListResponse.ApplicationBean, BaseViewHolder> adapter1;
-    private BaseQuickAdapter<CommunityApplicationListResponse.ApplicationBean, BaseViewHolder> adapter2;
+    private BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder> adapter1;
+    private BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder> adapter2;
 
     private boolean isEdit = true;
+
+    private SocialCaltureListBean data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,8 @@ public class SocialAppActivity extends BaseActivity {
 
         isEdit = getIntent().getBooleanExtra("isEdit", true);
 
+        data = getIntent().getParcelableExtra("data");
+
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.social_app);
@@ -54,9 +60,9 @@ public class SocialAppActivity extends BaseActivity {
         recyclerApp1 = findViewById(R.id.recyclerApp1);
         recyclerApp2 = findViewById(R.id.recyclerApp2);
 
-        adapter1 = new BaseQuickAdapter<CommunityApplicationListResponse.ApplicationBean, BaseViewHolder>(R.layout.item_social_app_list, null) {
+        adapter1 = new BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder>(R.layout.item_social_app_list, null) {
             @Override
-            protected void convert(BaseViewHolder helper, CommunityApplicationListResponse.ApplicationBean item) {
+            protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean item) {
                 TextView textView = helper.getView(R.id.tvUnable);
                 if (item.getIsOpen().equals("0")) {
                     textView.setVisibility(View.VISIBLE);
@@ -71,9 +77,9 @@ public class SocialAppActivity extends BaseActivity {
             }
         };
 
-        adapter2 = new BaseQuickAdapter<CommunityApplicationListResponse.ApplicationBean, BaseViewHolder>(R.layout.item_social_app_list, null) {
+        adapter2 = new BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder>(R.layout.item_social_app_list, null) {
             @Override
-            protected void convert(BaseViewHolder helper, CommunityApplicationListResponse.ApplicationBean item) {
+            protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean item) {
                 ImageView ivAppIcon = helper.getView(R.id.ivAppIcon);
                 GlideUtil.loadNormalImg(ivAppIcon, item.getApplicationLogo());
 
@@ -129,17 +135,18 @@ public class SocialAppActivity extends BaseActivity {
         recyclerApp1.setAdapter(adapter1);
         recyclerApp2.setAdapter(adapter2);
 
-        initData();
+        initData(false);
     }
 
     @SuppressLint("CheckResult")
-    private void initData() {
+    private void initData(boolean refreshOrigin) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .communityApplicationList(getIntent().getStringExtra("groupId"))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
+                    if (refreshOrigin) data.getApplication().setApplicationList(r.getApplication());
                     adapter1.setNewData(r.getOfficialApplication());
                     adapter2.setNewData(r.getApplication());
                 }, this::handleApiError);
@@ -154,8 +161,10 @@ public class SocialAppActivity extends BaseActivity {
 
     @Override
     public void finish() {
-        if (isEdit) {
-
+        if (data != null) {
+            Intent intent = new Intent();
+            intent.putExtra("data", data);
+            setResult(1, intent);
         }
         super.finish();
     }
@@ -169,9 +178,9 @@ public class SocialAppActivity extends BaseActivity {
         if (resultCode != 1) return;
 
         if (requestCode == REQUEST_ADD) {
-            initData();
+            initData(true);
         } else if (requestCode == REQUEST_MODIFY) {
-            initData();
+            initData(true);
         }
     }
 }
