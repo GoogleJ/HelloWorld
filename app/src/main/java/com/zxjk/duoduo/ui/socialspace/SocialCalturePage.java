@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,7 @@ import com.zxjk.duoduo.utils.GlideUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 public class SocialCalturePage extends BaseFragment implements View.OnClickListener {
     private final int REQUEST_SETTINGWEB = 1;
@@ -75,10 +77,16 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
     private int dp56;
 
+    private java.util.Formatter timeFormatter;
+    private StringBuilder mFormatBuilder;
+
     @SuppressLint("CheckResult")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mFormatBuilder = new StringBuilder();
+        timeFormatter = new java.util.Formatter(mFormatBuilder, Locale.ENGLISH);
+
         rootView = inflater.inflate(R.layout.calturepager, container, false);
 
         dp56 = CommonUtils.dip2px(getContext(), 56);
@@ -115,7 +123,10 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         initViewForWebPage(helper, item);
                         break;
                     case SocialCaltureListBean.TYPE_FILE:
-
+//                        if (llBottom.getVisibility() == View.VISIBLE) {
+//                            TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
+//                            tvNumLeft.setText("(还可上传" + (Integer.parseInt(item.getVideo().getVideoCreate()) - item.getVideo().getVideoList().size()) + "条视频)");
+//                        }
                         break;
                     case SocialCaltureListBean.TYPE_VIDEO:
                         initViewForVideoPage(helper, item);
@@ -157,9 +168,9 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
                         intent.putExtra("id", groupId);
                         intent.putExtra("bean", bean);
-                        startActivityForResult(intent, REQUEST_SETTINGWEB);
+                        startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                     } else {
-                        ToastUtils.showShort("暂时无法播放本视频");
+                        ToastUtils.showShort("Fuck you!");
                     }
                     break;
                 case SocialCaltureListBean.TYPE_APP:
@@ -217,7 +228,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
                         intent.putExtra("id", groupId);
                         intent.putExtra("bean", bean);
-                        startActivityForResult(intent, REQUEST_SETTINGWEB);
+                        startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                     } else {
                         //call api 2 update status
                         EditCommunityVideoRequest request = new EditCommunityVideoRequest();
@@ -314,6 +325,13 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         RecyclerView appRecycler = helper.getView(R.id.recycler);
         appRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
+        TextView tvTips = helper.getView(R.id.tvTips);
+        if (llBottom.getVisibility() == View.VISIBLE) {
+            tvTips.setVisibility(View.VISIBLE);
+        } else {
+            tvTips.setVisibility(View.INVISIBLE);
+        }
+
         int dp64 = CommonUtils.dip2px(getContext(), 64);
         int dp56 = CommonUtils.dip2px(getContext(), 56);
         int dp8 = CommonUtils.dip2px(getContext(), 8);
@@ -343,7 +361,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                 }
 
-                GlideUtil.loadCornerImg(ivAppIcon, item.getApplicationLogo(), 4);
+                GlideUtil.loadCornerImg(ivAppIcon, item.getApplicationLogo(), 10);
                 helper.setText(R.id.tvTitle, item.getApplicationName());
             }
         };
@@ -389,6 +407,15 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         ViewPager pagerVideo = helper.getView(R.id.pagerVideo);
         LinearLayout llVideoEmpty = helper.getView(R.id.llVideoEmpty);
 
+        TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
+        if (llBottom.getVisibility() == View.VISIBLE) {
+            tvNumLeft.setText("(还可上传" + (Integer.parseInt(item.getVideo().getVideoCreate()) - item.getVideo().getVideoList().size()) + "条视频)");
+        } else {
+            tvNumLeft.setText("");
+        }
+
+        pagerVideo.setPageMargin(CommonUtils.dip2px(getContext(), 12));
+
         if (item.getVideo().getVideoList().size() != 0) {
             pagerVideo.setVisibility(View.VISIBLE);
             llVideoEmpty.setVisibility(View.GONE);
@@ -406,20 +433,29 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 @NonNull
                 @Override
                 public Object instantiateItem(@NonNull ViewGroup container, int position) {
-                    ImageView imageView = new ImageView(getContext());
+                    View inflate = LayoutInflater.from(getContext()).inflate(R.layout.item_social_video, container, false);
+
+                    ImageView imageView = inflate.findViewById(R.id.ivVideoPic);
                     GlideUtil.loadNormalImg(imageView, item.getVideo().getVideoList().get(position).getVideoPic());
-                    container.addView(imageView);
                     imageView.setOnClickListener(v -> {
                         if (llBottom.getVisibility() == View.VISIBLE) {
                             Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
                             intent.putExtra("id", groupId);
-                            intent.putExtra("data", item);
+                            intent.putExtra("bean", item);
                             startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                         } else {
-
+                            ToastUtils.showShort("Fuck you!");
                         }
                     });
-                    return imageView;
+
+                    TextView tvVideoTitle = inflate.findViewById(R.id.tvVideoTitle);
+                    tvVideoTitle.setText(item.getVideo().getVideoList().get(position).getVideoName());
+                    TextView tvDuration = inflate.findViewById(R.id.tvDuration);
+                    tvDuration.setText(stringForTime(Long.parseLong(item.getVideo().getVideoList().get(position).getVideoDuration())));
+
+                    container.addView(inflate);
+
+                    return inflate;
                 }
 
                 @Override
@@ -429,6 +465,23 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         } else {
             pagerVideo.setVisibility(View.GONE);
             llVideoEmpty.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private String stringForTime(long timeMs) {
+        long totalSeconds = timeMs / 1000;
+        long seconds = totalSeconds % 60;
+
+        long minutes = (totalSeconds / 60) % 60;
+
+        long hours = totalSeconds / 3600;
+
+        mFormatBuilder.setLength(0);
+        if (hours > 0) {
+            return timeFormatter.format("%d:%02d:%02d", hours, minutes, seconds)
+                    .toString();
+        } else {
+            return timeFormatter.format("%02d:%02d", minutes, seconds).toString();
         }
     }
 

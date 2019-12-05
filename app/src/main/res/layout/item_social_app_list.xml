@@ -15,7 +15,7 @@
         <com.gcssloop.widget.RCRelativeLayout
             android:layout_width="64dp"
             android:layout_height="64dp"
-            app:round_corner="4dp">
+            app:round_corner="10dp">
 
             <ImageView
                 android:id="@+id/ivAppIcon"

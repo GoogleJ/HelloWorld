@@ -21,7 +21,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
-import com.zxjk.duoduo.bean.response.CommunityVideoListResponse;
+import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -32,6 +32,7 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import razerdp.basepopup.QuickPopupBuilder;
@@ -45,7 +46,7 @@ public class SocialVideoEditActivity extends BaseActivity {
     private LinearLayout llTopTips;
     private TextView tvMaxCount;
     private RecyclerView recycler;
-    private BaseQuickAdapter<CommunityVideoListResponse.VideoBean, BaseViewHolder> adapter;
+    private BaseQuickAdapter<EditListCommunityCultureResponse.VideoBean.VideoListBean, BaseViewHolder> adapter;
 
     private SocialCaltureListBean bean;
 
@@ -77,9 +78,9 @@ public class SocialVideoEditActivity extends BaseActivity {
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new BaseQuickAdapter<CommunityVideoListResponse.VideoBean, BaseViewHolder>(R.layout.item_social_video_list_edit, null) {
+        adapter = new BaseQuickAdapter<EditListCommunityCultureResponse.VideoBean.VideoListBean, BaseViewHolder>(R.layout.item_social_video_list_edit, null) {
             @Override
-            protected void convert(BaseViewHolder helper, CommunityVideoListResponse.VideoBean item) {
+            protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.VideoBean.VideoListBean item) {
                 GlideUtil.loadCornerImg(helper.getView(R.id.ivHead), item.getVideoPic(), 4);
                 helper.setText(R.id.tvTitle, item.getVideoName())
                         .setText(R.id.tvDuration, stringForTime(Long.parseLong(item.getVideoDuration())))
@@ -116,11 +117,19 @@ public class SocialVideoEditActivity extends BaseActivity {
         initData();
     }
 
+    @Override
+    public void finish() {
+        Intent intent = new Intent();
+        intent.putExtra("data", bean);
+        setResult(1, intent);
+        super.finish();
+    }
+
     private int currentRenamePosition;
 
     private void renameVideo(int position) {
         currentRenamePosition = position;
-        CommunityVideoListResponse.VideoBean videoBean = adapter.getData().get(position);
+        EditListCommunityCultureResponse.VideoBean.VideoListBean videoBean = adapter.getData().get(position);
         Intent intent = new Intent(this, EditSocialVideoNameActivity.class);
         intent.putExtra("videoName", videoBean.getVideoName());
         intent.putExtra("videoId", videoBean.getVideoId());
@@ -160,6 +169,11 @@ public class SocialVideoEditActivity extends BaseActivity {
                     maxCount = Integer.parseInt(r.getVideoCreate());
                     tvMaxCount.setText("最多上传" + maxCount + "份企业宣传视频，请上传体验");
                     adapter.setNewData(r.getVideo());
+                    if (r.getVideo() == null || r.getVideo().size() == 0) {
+                        bean.getVideo().setVideoList(new ArrayList<>());
+                    } else {
+                        bean.getVideo().setVideoList(r.getVideo());
+                    }
                 }, this::handleApiError);
     }
 
@@ -185,7 +199,7 @@ public class SocialVideoEditActivity extends BaseActivity {
     }
 
     public void createVideo(View view) {
-        if (bean.getVideo().getVideoList().size() != 3) {
+        if (bean.getVideo().getVideoList().size() == maxCount) {
             ToastUtils.showShort(R.string.upload_video_max);
             return;
         }
@@ -209,6 +223,7 @@ public class SocialVideoEditActivity extends BaseActivity {
                 break;
             case REQUEST_RENAME:
                 adapter.getData().get(currentRenamePosition).setVideoName(data.getStringExtra("name"));
+                bean.getVideo().getVideoList().get(currentRenamePosition).setVideoName(data.getStringExtra("name"));
                 adapter.notifyItemChanged(currentRenamePosition);
         }
     }

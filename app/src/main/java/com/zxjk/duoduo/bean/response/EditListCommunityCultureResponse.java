@@ -223,7 +223,16 @@ public class EditListCommunityCultureResponse implements Parcelable {
 
         private String title;
         private String filesOpen;
+        private String fileCreate;
         private List<FilesListBean> filesList;
+
+        public String getFileCreate() {
+            return fileCreate;
+        }
+
+        public void setFileCreate(String fileCreate) {
+            this.fileCreate = fileCreate;
+        }
 
         public String getTitle() {
             return title;
@@ -330,6 +339,9 @@ public class EditListCommunityCultureResponse implements Parcelable {
             };
         }
 
+        public FilesBean() {
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -339,17 +351,15 @@ public class EditListCommunityCultureResponse implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(this.title);
             dest.writeString(this.filesOpen);
-            dest.writeList(this.filesList);
-        }
-
-        public FilesBean() {
+            dest.writeString(this.fileCreate);
+            dest.writeTypedList(this.filesList);
         }
 
         protected FilesBean(Parcel in) {
             this.title = in.readString();
             this.filesOpen = in.readString();
-            this.filesList = new ArrayList<FilesListBean>();
-            in.readList(this.filesList, FilesListBean.class.getClassLoader());
+            this.fileCreate = in.readString();
+            this.filesList = in.createTypedArrayList(FilesListBean.CREATOR);
         }
 
         public static final Creator<FilesBean> CREATOR = new Creator<FilesBean>() {
@@ -374,7 +384,16 @@ public class EditListCommunityCultureResponse implements Parcelable {
 
         private String title;
         private String videoOpen;
+        private String videoCreate;
         private List<VideoListBean> videoList;
+
+        public String getVideoCreate() {
+            return videoCreate;
+        }
+
+        public void setVideoCreate(String videoCreate) {
+            this.videoCreate = videoCreate;
+        }
 
         public String getTitle() {
             return title;
@@ -414,6 +433,15 @@ public class EditListCommunityCultureResponse implements Parcelable {
             private String videoPic;
             private String videoDuration;
             private String videoAddress;
+            private String createTime;
+
+            public String getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(String createTime) {
+                this.createTime = createTime;
+            }
 
             public String getVideoId() {
                 return videoId;
@@ -455,6 +483,9 @@ public class EditListCommunityCultureResponse implements Parcelable {
                 this.videoAddress = videoAddress;
             }
 
+            public VideoListBean() {
+            }
+
             @Override
             public int describeContents() {
                 return 0;
@@ -467,9 +498,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
                 dest.writeString(this.videoPic);
                 dest.writeString(this.videoDuration);
                 dest.writeString(this.videoAddress);
-            }
-
-            public VideoListBean() {
+                dest.writeString(this.createTime);
             }
 
             protected VideoListBean(Parcel in) {
@@ -478,6 +507,7 @@ public class EditListCommunityCultureResponse implements Parcelable {
                 this.videoPic = in.readString();
                 this.videoDuration = in.readString();
                 this.videoAddress = in.readString();
+                this.createTime = in.readString();
             }
 
             public static final Creator<VideoListBean> CREATOR = new Creator<VideoListBean>() {
@@ -493,6 +523,9 @@ public class EditListCommunityCultureResponse implements Parcelable {
             };
         }
 
+        public VideoBean() {
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -502,17 +535,15 @@ public class EditListCommunityCultureResponse implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(this.title);
             dest.writeString(this.videoOpen);
-            dest.writeList(this.videoList);
-        }
-
-        public VideoBean() {
+            dest.writeString(this.videoCreate);
+            dest.writeTypedList(this.videoList);
         }
 
         protected VideoBean(Parcel in) {
             this.title = in.readString();
             this.videoOpen = in.readString();
-            this.videoList = new ArrayList<VideoListBean>();
-            in.readList(this.videoList, VideoListBean.class.getClassLoader());
+            this.videoCreate = in.readString();
+            this.videoList = in.createTypedArrayList(VideoListBean.CREATOR);
         }
 
         public static final Creator<VideoBean> CREATOR = new Creator<VideoBean>() {
