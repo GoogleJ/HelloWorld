@@ -91,7 +91,7 @@ public class SocialFileActivity extends BaseActivity {
                 }
 
                 helper.setText(R.id.tvTitle, item.getFileName())
-                        .setText(R.id.tvUploadDate, item.getFileSize() + "   " + sdf.format(item.getCreateTime()));
+                        .setText(R.id.tvUploadDate, item.getFileSize() + "   " + sdf.format(Long.parseLong(item.getCreateTime())));
             }
         };
 
@@ -125,8 +125,8 @@ public class SocialFileActivity extends BaseActivity {
     }
 
     private void deleteFile(int position) {
-        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "确认", "取消", "提示", "是否确定删除此视频？");
-        dialog.setOnCancelListener(() -> {
+        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消", "确认", "提示", "是否确定删除此资料？");
+        dialog.setOnCommitListener(() -> {
             EditCommunityFileRequest request = new EditCommunityFileRequest();
             request.setGroupId(getIntent().getStringExtra("id"));
             request.setFileId(adapter.getData().get(position).getFileId());
@@ -149,7 +149,6 @@ public class SocialFileActivity extends BaseActivity {
         EditListCommunityCultureResponse.FilesBean.FilesListBean filesListBean = adapter.getData().get(position);
         Intent intent = new Intent(this, EditSocialVideoNameActivity.class);
         intent.putExtra("fromFile", true);
-        intent.putExtra("fileName", filesListBean.getFileName());
         intent.putExtra("fileId", filesListBean.getFileId());
         intent.putExtra("groupId", getIntent().getStringExtra("id"));
         startActivityForResult(intent, REQUEST_MODIFY);

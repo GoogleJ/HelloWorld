@@ -15,7 +15,7 @@
             android:id="@+id/ivAppIcon"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerInside" />
 
         <TextView
             android:id="@+id/tvTitle"

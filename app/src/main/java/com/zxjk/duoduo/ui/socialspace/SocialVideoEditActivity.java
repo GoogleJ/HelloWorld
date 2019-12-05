@@ -139,8 +139,8 @@ public class SocialVideoEditActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void deleteVideo(int position) {
-        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "确认", "取消", "提示", "是否确定删除此视频？");
-        dialog.setOnCancelListener(() -> {
+        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消", "确认", "提示", "是否确定删除此视频？");
+        dialog.setOnCommitListener(() -> {
             EditCommunityVideoRequest request = new EditCommunityVideoRequest();
             request.setGroupId(getIntent().getStringExtra("id"));
             request.setVideoId(adapter.getData().get(position).getVideoId());

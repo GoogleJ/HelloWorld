@@ -894,4 +894,7 @@
     <string name="emptylist5">暂无社群资料</string>
     <string name="addfile">添加资料</string>
     <string name="upload_file_max">资料已达上限，暂时不可上传新资料</string>
+    <string name="selectFiles">请选择要上传的资料</string>
+    <string name="upload_social_file_success">社群资料上传成功</string>
+    <string name="upload_social_file_fail">社群资料上传失败</string>
 </resources>

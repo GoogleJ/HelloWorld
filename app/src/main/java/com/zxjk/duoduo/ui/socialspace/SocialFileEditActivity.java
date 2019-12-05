@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.socialspace;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,14 +16,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.request.EditCommunityFileRequest;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.widget.dialog.LoadingDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.OssUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,11 +55,16 @@ public class SocialFileEditActivity extends BaseActivity {
 
     private ArrayList<FileBean> selectedFiles = new ArrayList<>();
 
+    private LoadingDialog uploadLoading;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_file_edit);
+
+        uploadLoading = new LoadingDialog(this, "上传中");
+        uploadLoading.setDelayTimeStamp(0);
 
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.addfile);
@@ -92,6 +104,12 @@ public class SocialFileEditActivity extends BaseActivity {
                 }
             }
         };
+
+        if (currentMax == 0) {
+            tvCurrentCount.setText("目前已达上传上限");
+        } else {
+            tvCurrentCount.setText("已选" + " (0" + "/" + currentMax + ")");
+        }
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
             FileBean b = (FileBean) adapter.getData().get(position);
@@ -136,8 +154,75 @@ public class SocialFileEditActivity extends BaseActivity {
         llTopTips.setVisibility(View.GONE);
     }
 
-    public void uploadFile(View view) {
+    private List<EditCommunityFileRequest.FilesListBean> uploadList;
 
+    public void uploadFile(View view) {
+        if (currentCount == 0) {
+            ToastUtils.showShort(R.string.selectFiles);
+            return;
+        }
+        uploadList = new ArrayList<>(currentMax);
+        uploadFiles();
+    }
+
+    @SuppressLint("CheckResult")
+    private void uploadFiles() {
+        if (selectedFiles.size() == 0) {
+            if (uploadList.size() != 0) {
+                //do upload
+                EditCommunityFileRequest request = new EditCommunityFileRequest();
+                request.setType("add");
+                request.setGroupId(getIntent().getStringExtra("id"));
+                request.setFilesList(uploadList);
+
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .editCommunityFile(GsonUtils.toJson(request, false))
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .subscribe(s -> {
+                            ToastUtils.showShort(R.string.upload_social_file_success);
+                            Intent intent = new Intent();
+                            setResult(1, intent);
+                            finish();
+                        }, t -> {
+                            finish();
+                            handleApiError(t);
+                        });
+            }
+            return;
+        }
+
+        if (uploadLoading.isShowing()) {
+            uploadLoading.dismissReally();
+        }
+
+        uploadLoading.setText("上传中");
+        uploadLoading.show();
+
+        OssUtils.uploadFile(selectedFiles.get(0).path, new OssUtils.OssCallBack1() {
+            @Override
+            public void onSuccess(String fileAddress) {
+                EditCommunityFileRequest.FilesListBean bean = new EditCommunityFileRequest.FilesListBean();
+                bean.setFileAddress(fileAddress);
+                bean.setFileFormat(selectedFiles.get(0).format);
+                bean.setFileName(selectedFiles.get(0).title);
+                bean.setFileSize(selectedFiles.get(0).size);
+
+                uploadList.add(bean);
+                selectedFiles.remove(0);
+                uploadFiles();
+            }
+
+            @Override
+            public void onFail() {
+                ToastUtils.showShort(R.string.upload_social_file_fail);
+                if (uploadLoading.isShowing()) {
+                    uploadLoading.dismissReally();
+                }
+                finish();
+            }
+        }, progress -> runOnUiThread(() -> uploadLoading.setText("上传中," + progress)));
     }
 
     /**

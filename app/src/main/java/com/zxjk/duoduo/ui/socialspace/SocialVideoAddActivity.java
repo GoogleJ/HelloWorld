@@ -220,8 +220,7 @@ public class SocialVideoAddActivity extends BaseActivity {
             ToastUtils.showShort(R.string.selectVideos);
             return;
         }
-        uploadList = new ArrayList<>(3);
-        uploadLoading.show();
+        uploadList = new ArrayList<>(maxCount);
         uploadVideos();
     }
 
