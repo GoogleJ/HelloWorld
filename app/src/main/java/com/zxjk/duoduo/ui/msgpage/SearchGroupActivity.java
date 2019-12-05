@@ -97,7 +97,7 @@ public class SearchGroupActivity extends BaseActivity {
                             .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
                 } else if (item.getCode().contains(str)){
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
-                            .setText(R.id.tvGroupOnwerName, "社群号:" + item.getCode())
+                            .setText(R.id.tvGroupOnwerName, "社群号:" + matcherSearchText(Color.parseColor("#4486ff"), item.getCode(), str))
                             .setTextColor(R.id.tvGroupOnwerName, Color.parseColor("#4486ff"))
                             .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
                 } else if (item.getOwnerNick().contains(str)){
