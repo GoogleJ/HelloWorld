@@ -1,5 +1,7 @@
 package com.zxjk.duoduo.bean.response;
 
+import java.util.ArrayList;
+
 public class SearchCommunityBean {
 
     /**
@@ -20,6 +22,15 @@ public class SearchCommunityBean {
     private String members;
     private String inGroup;
     private String code;
+    private ArrayList<Integer> hilightIndex;
+
+    public ArrayList<Integer> getHilightIndex() {
+        return hilightIndex;
+    }
+
+    public void setHilightIndex(ArrayList<Integer> hilightIndex) {
+        this.hilightIndex = hilightIndex;
+    }
 
     public String getOwnerNick() {
         return ownerNick;

@@ -8,6 +8,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +78,6 @@ public class SearchGroupActivity extends BaseActivity {
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(b -> {
                             if (!hasSearch) recycler.setAdapter(adapter);
-//                            adapter.setNewData(Collections.singletonList(b));
                             adapter.setNewData(b);
                         }, this::handleApiError);
                 return true;
@@ -98,7 +98,6 @@ public class SearchGroupActivity extends BaseActivity {
                 } else if (item.getCode().contains(str)){
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
                             .setText(R.id.tvGroupOnwerName, "社群号:" + matcherSearchText(Color.parseColor("#4486ff"), item.getCode(), str))
-                            .setTextColor(R.id.tvGroupOnwerName, Color.parseColor("#4486ff"))
                             .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
                 } else if (item.getOwnerNick().contains(str)){
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
