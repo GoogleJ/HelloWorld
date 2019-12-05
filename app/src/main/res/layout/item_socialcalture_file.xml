@@ -42,20 +42,11 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/ic_social_calture_empty_add" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"
-        android:text="暂无资料，点击上传"
-        android:textColor="@color/textColor9" />
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never" />
 
 </LinearLayout>

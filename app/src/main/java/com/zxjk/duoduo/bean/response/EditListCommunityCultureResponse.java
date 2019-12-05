@@ -267,9 +267,27 @@ public class EditListCommunityCultureResponse implements Parcelable {
              */
 
             private String fileId;
+            private String createTime;
             private String fileFormat;
             private String fileName;
             private String fileAddress;
+            private String fileSize;
+
+            public String getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(String createTime) {
+                this.createTime = createTime;
+            }
+
+            public String getFileSize() {
+                return fileSize;
+            }
+
+            public void setFileSize(String fileSize) {
+                this.fileSize = fileSize;
+            }
 
             public String getFileId() {
                 return fileId;
@@ -303,6 +321,9 @@ public class EditListCommunityCultureResponse implements Parcelable {
                 this.fileAddress = fileAddress;
             }
 
+            public FilesListBean() {
+            }
+
             @Override
             public int describeContents() {
                 return 0;
@@ -311,19 +332,20 @@ public class EditListCommunityCultureResponse implements Parcelable {
             @Override
             public void writeToParcel(Parcel dest, int flags) {
                 dest.writeString(this.fileId);
+                dest.writeString(this.createTime);
                 dest.writeString(this.fileFormat);
                 dest.writeString(this.fileName);
                 dest.writeString(this.fileAddress);
-            }
-
-            public FilesListBean() {
+                dest.writeString(this.fileSize);
             }
 
             protected FilesListBean(Parcel in) {
                 this.fileId = in.readString();
+                this.createTime = in.readString();
                 this.fileFormat = in.readString();
                 this.fileName = in.readString();
                 this.fileAddress = in.readString();
+                this.fileSize = in.readString();
             }
 
             public static final Creator<FilesListBean> CREATOR = new Creator<FilesListBean>() {

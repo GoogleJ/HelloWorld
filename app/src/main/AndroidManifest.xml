@@ -56,7 +56,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.socialspace.SocialAppEditActivity"></activity>
+        <activity android:name=".ui.socialspace.SocialFileEditActivity"></activity>
+        <activity android:name=".ui.socialspace.SocialFileActivity" />
+        <activity android:name=".ui.socialspace.SocialAppEditActivity" />
         <activity android:name=".ui.socialspace.SocialAppActivity" />
         <activity
             android:name=".ui.socialspace.EditSocialVideoNameActivity"

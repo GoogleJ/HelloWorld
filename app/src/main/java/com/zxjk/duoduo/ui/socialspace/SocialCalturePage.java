@@ -23,11 +23,13 @@ import androidx.viewpager.widget.ViewPager;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityApplicationRequest;
+import com.zxjk.duoduo.bean.request.EditCommunityFileRequest;
 import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
 import com.zxjk.duoduo.bean.request.EditCommunityWebSiteRequest;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
@@ -123,10 +125,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         initViewForWebPage(helper, item);
                         break;
                     case SocialCaltureListBean.TYPE_FILE:
-//                        if (llBottom.getVisibility() == View.VISIBLE) {
-//                            TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
-//                            tvNumLeft.setText("(还可上传" + (Integer.parseInt(item.getVideo().getVideoCreate()) - item.getVideo().getVideoList().size()) + "条视频)");
-//                        }
+                        initViewForFilePage(helper, item);
                         break;
                     case SocialCaltureListBean.TYPE_VIDEO:
                         initViewForVideoPage(helper, item);
@@ -160,13 +159,17 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                     break;
                 case SocialCaltureListBean.TYPE_FILE:
-                    ToastUtils.showShort(R.string.developing);
-
+                    if (llBottom.getVisibility() == View.VISIBLE) {
+                        Intent intent = new Intent(getContext(), SocialFileActivity.class);
+                        intent.putExtra("id", groupId);
+                        intent.putExtra("bean", bean);
+                        startActivityForResult(intent, REQUEST_SETTINGFILE);
+                    }
                     break;
                 case SocialCaltureListBean.TYPE_VIDEO:
                     if (llBottom.getVisibility() == View.VISIBLE) {
                         Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
-                        intent.putExtra("id", groupId);
+                        intent.putExtra("groupId", groupId);
                         intent.putExtra("bean", bean);
                         startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                     } else {
@@ -179,6 +182,8 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         intent.putExtra("groupId", groupId);
                         intent.putExtra("data", bean);
                         startActivityForResult(intent, REQUEST_SETTINGAPP);
+                    } else {
+                        ToastUtils.showShort("Fuck you!");
                     }
                     break;
                 case SocialCaltureListBean.TYPE_ACTIVITY:
@@ -219,8 +224,31 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                     break;
                 case SocialCaltureListBean.TYPE_FILE:
-                    ((Switch) view).setChecked(false);
-                    ToastUtils.showShort(R.string.developing);
+                    if (bean.getFiles().getFilesList().size() == 0) {
+                        sw.setChecked(false);
+                        Intent intent = new Intent(getContext(), SocialFileActivity.class);
+                        intent.putExtra("id", groupId);
+                        intent.putExtra("bean", bean);
+                        startActivityForResult(intent, REQUEST_SETTINGFILE);
+                    } else {
+                        //call api 2 update status
+                        EditCommunityFileRequest request = new EditCommunityFileRequest();
+                        request.setGroupId(groupId);
+                        request.setType("openOrClose");
+                        request.setFilesOpen(sw.isChecked() ? "1" : "0");
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .editCommunityFile(GsonUtils.toJson(request))
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.normalTrans())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                                .subscribe(s -> {
+                                    bean.getFiles().setFilesOpen(sw.isChecked() ? "1" : "0");
+                                    adapter.notifyItemChanged(position);
+                                }, t -> {
+                                    sw.setChecked(!sw.isChecked());
+                                    handleApiError(t);
+                                });
+                    }
                     break;
                 case SocialCaltureListBean.TYPE_VIDEO:
                     if (bean.getVideo().getVideoList().size() == 0) {
@@ -311,6 +339,91 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         helper.setText(R.id.tv, (web.getOfficialWebsiteList().size() == 0 || TextUtils.isEmpty(web.getOfficialWebsiteList().get(0).getWebsiteContent())) ?
                 getContext().getString(R.string.empty_socialweb) : web.getOfficialWebsiteList().get(0).getWebsiteContent())
                 .setText(R.id.tvTitle, item.getOfficialWebsite().getTitle());
+    }
+
+    private void initViewForFilePage(BaseViewHolder helper, SocialCaltureListBean item) {
+        TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
+        if (llBottom.getVisibility() == View.VISIBLE) {
+            tvNumLeft.setText("(还可上传" + (Integer.parseInt(item.getFiles().getFileCreate()) - item.getFiles().getFilesList().size()) + "份资料)");
+        } else {
+            tvNumLeft.setText("");
+        }
+
+        RecyclerView fileRecycler = helper.getView(R.id.recycler);
+        fileRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
+
+        int dp64 = CommonUtils.dip2px(getContext(), 64);
+        int dp56 = CommonUtils.dip2px(getContext(), 56);
+        int dp8 = CommonUtils.dip2px(getContext(), 8);
+        int recyclerWidth = ScreenUtils.getScreenWidth() - dp56;
+        boolean isNormalSize = true;
+        if (((recyclerWidth - dp64 * 4) / 4) < dp8) {
+            isNormalSize = false;
+        }
+
+        boolean finalIsNormalSize = isNormalSize;
+
+        BaseQuickAdapter<EditListCommunityCultureResponse.FilesBean.FilesListBean, BaseViewHolder> appAdapter;
+        appAdapter = new BaseQuickAdapter<EditListCommunityCultureResponse.FilesBean.FilesListBean, BaseViewHolder>(R.layout.item_social_app, item.getFiles().getFilesList()) {
+            @Override
+            protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.FilesBean.FilesListBean item) {
+                ImageView ivAppIcon = helper.getView(R.id.ivAppIcon);
+                if (!finalIsNormalSize) {
+                    LinearLayout llContent = helper.getView(R.id.llContent);
+                    ViewGroup.LayoutParams layoutParams = llContent.getLayoutParams();
+                    if (layoutParams.width != dp56) {
+                        layoutParams.width = dp56;
+                        llContent.setLayoutParams(layoutParams);
+                        ViewGroup.LayoutParams layoutParams1 = ivAppIcon.getLayoutParams();
+                        layoutParams1.width = dp56;
+                        layoutParams1.height = dp56;
+                        ivAppIcon.setLayoutParams(layoutParams1);
+                    }
+                }
+
+                switch (item.getFileFormat()) {
+                    case "excel":
+                        Glide.with(getContext()).load(R.drawable.ic_social_file_excel).into(ivAppIcon);
+                        break;
+                    case "ppt":
+                        Glide.with(getContext()).load(R.drawable.ic_social_file_ppt).into(ivAppIcon);
+                        break;
+                    case "word":
+                        Glide.with(getContext()).load(R.drawable.ic_social_file_word).into(ivAppIcon);
+                        break;
+                    case "pdf":
+                        Glide.with(getContext()).load(R.drawable.ic_social_file_pdf).into(ivAppIcon);
+                        break;
+                }
+
+                helper.setText(R.id.tvTitle, item.getFileName());
+            }
+        };
+
+        appAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (llBottom.getVisibility() == View.VISIBLE) {
+                Intent intent = new Intent(getContext(), SocialFileActivity.class);
+                intent.putExtra("id", groupId);
+                intent.putExtra("bean", item);
+                startActivityForResult(intent, REQUEST_SETTINGFILE);
+                return;
+            }
+            ToastUtils.showShort("Fuck you!");
+            EditListCommunityCultureResponse.FilesBean.FilesListBean filesListBean = appAdapter.getData().get(position);
+        });
+
+        View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_recycler_social_app, (ViewGroup) rootView, false);
+        appAdapter.setEmptyView(emptyView);
+        emptyView.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SocialFileActivity.class);
+            intent.putExtra("id", groupId);
+            intent.putExtra("bean", item);
+            startActivityForResult(intent, REQUEST_SETTINGFILE);
+        });
+
+        fileRecycler.setAdapter(appAdapter);
+
+        appAdapter.setNewData(item.getFiles().getFilesList());
     }
 
     private void initViewForAppPage(BaseViewHolder helper, SocialCaltureListBean item) {

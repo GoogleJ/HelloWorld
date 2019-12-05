@@ -9,6 +9,7 @@ import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
 import com.zxjk.duoduo.bean.response.CommunityApplicationListResponse;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
+import com.zxjk.duoduo.bean.response.CommunityFilesListResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.CommunityVideoListResponse;
@@ -677,6 +678,14 @@ public interface Api {
     @POST("duoduo/community/editCommunityApplication")
     @FormUrlEncoded
     Observable<BaseResponse<String>> editCommunityApplication(@Field("data") String data);
+
+    @POST("duoduo/community/editCommunityFile")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> editCommunityFile(@Field("data") String data);
+
+    @POST("duoduo/community/communityFilesList")
+    @FormUrlEncoded
+    Observable<BaseResponse<CommunityFilesListResponse>> communityFilesList(@Field("groupId") String id);
 
     @POST("mochat/shopping/getShoppingUrl")
     @FormUrlEncoded

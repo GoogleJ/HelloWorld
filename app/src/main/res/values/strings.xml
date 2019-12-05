@@ -890,4 +890,8 @@
     <string name="input_socialapp_name">请输入应用名称</string>
     <string name="set_socialapp_logo">请上传应用logo</string>
     <string name="delete_app">删除应用</string>
+    <string name="upload_newfile">上传新资料</string>
+    <string name="emptylist5">暂无社群资料</string>
+    <string name="addfile">添加资料</string>
+    <string name="upload_file_max">资料已达上限，暂时不可上传新资料</string>
 </resources>
