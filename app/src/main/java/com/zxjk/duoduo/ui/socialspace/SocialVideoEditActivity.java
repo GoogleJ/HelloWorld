@@ -152,7 +152,7 @@ public class SocialVideoEditActivity extends BaseActivity {
                     .compose(RxSchedulers.normalTrans())
                     .subscribe(s -> {
                         adapter.getData().remove(position);
-                        adapter.notifyItemChanged(position);
+                        adapter.notifyItemRemoved(position);
                     }, this::handleApiError);
         });
         dialog.show();

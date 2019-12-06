@@ -169,11 +169,11 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 case SocialCaltureListBean.TYPE_VIDEO:
                     if (llBottom.getVisibility() == View.VISIBLE) {
                         Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
-                        intent.putExtra("groupId", groupId);
+                        intent.putExtra("id", groupId);
                         intent.putExtra("bean", bean);
                         startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                     } else {
-                        ToastUtils.showShort("Fuck you!");
+                        ToastUtils.showShort("暂时不可用（无法查看视频 无法查看文件）");
                     }
                     break;
                 case SocialCaltureListBean.TYPE_APP:
@@ -183,7 +183,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         intent.putExtra("data", bean);
                         startActivityForResult(intent, REQUEST_SETTINGAPP);
                     } else {
-                        ToastUtils.showShort("Fuck you!");
+                        ToastUtils.showShort("暂时不可用（无法查看视频 无法查看文件）");
                     }
                     break;
                 case SocialCaltureListBean.TYPE_ACTIVITY:
@@ -349,6 +349,13 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             tvNumLeft.setText("");
         }
 
+        if (!TextUtils.isEmpty(item.getFiles().getFilesOpen())
+                && item.getFiles().getFilesOpen().equals("1")) {
+            helper.setChecked(R.id.sw, true);
+        } else {
+            helper.setChecked(R.id.sw, false);
+        }
+
         RecyclerView fileRecycler = helper.getView(R.id.recycler);
         fileRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
@@ -408,7 +415,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 startActivityForResult(intent, REQUEST_SETTINGFILE);
                 return;
             }
-            ToastUtils.showShort("Fuck you!");
+            ToastUtils.showShort("暂时不可用（无法查看视频 无法查看文件）");
             EditListCommunityCultureResponse.FilesBean.FilesListBean filesListBean = appAdapter.getData().get(position);
         });
 
@@ -557,7 +564,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                             intent.putExtra("bean", item);
                             startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                         } else {
-                            ToastUtils.showShort("Fuck you!");
+                            ToastUtils.showShort("暂时不可用（无法查看视频 无法查看文件）");
                         }
                     });
 
@@ -698,6 +705,8 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
         if (requestCode == REQUEST_SETTINGFILE && resultCode == 1) {
             SocialCaltureListBean bean = data.getParcelableExtra("data");
+            if (bean.getFiles().getFilesList().size() == 0)
+                bean.getFiles().setFilesOpen("0");
             adapter.getData().add(1, bean);
             adapter.getData().remove(2);
             adapter.notifyItemChanged(1);
@@ -705,6 +714,8 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
         if (requestCode == REQUEST_SETTINGVIDEO && resultCode == 1) {
             SocialCaltureListBean bean = data.getParcelableExtra("data");
+            if (bean.getVideo().getVideoList().size() == 0)
+                bean.getVideo().setVideoOpen("0");
             adapter.getData().add(2, bean);
             adapter.getData().remove(3);
             adapter.notifyItemChanged(2);
@@ -712,6 +723,8 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
         if (requestCode == REQUEST_SETTINGAPP && resultCode == 1) {
             SocialCaltureListBean bean = data.getParcelableExtra("data");
+            if (bean.getApplication().getApplicationList().size() == 0)
+                bean.getApplication().setApplicationOpen("0");
             adapter.getData().add(3, bean);
             adapter.getData().remove(4);
             adapter.notifyItemChanged(3);

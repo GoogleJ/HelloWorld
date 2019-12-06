@@ -56,10 +56,26 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.socialspace.SocialFileEditActivity"></activity>
-        <activity android:name=".ui.socialspace.SocialFileActivity" />
-        <activity android:name=".ui.socialspace.SocialAppEditActivity" />
-        <activity android:name=".ui.socialspace.SocialAppActivity" />
+        <activity
+            android:name=".ui.socialspace.SocialFileEditActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.socialspace.SocialFileActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.socialspace.SocialAppEditActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.socialspace.SocialAppActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.socialspace.EditSocialVideoNameActivity"
             android:launchMode="singleTop"
