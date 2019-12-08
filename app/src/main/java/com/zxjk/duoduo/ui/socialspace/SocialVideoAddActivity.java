@@ -17,10 +17,16 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.mabeijianxi.smallvideorecord2.LocalMediaCompress;
+import com.mabeijianxi.smallvideorecord2.model.AutoVBRMode;
+import com.mabeijianxi.smallvideorecord2.model.BaseMediaBitrateConfig;
+import com.mabeijianxi.smallvideorecord2.model.LocalMediaConfig;
+import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
 import com.zxjk.duoduo.network.Api;
@@ -54,10 +60,14 @@ public class SocialVideoAddActivity extends BaseActivity {
     private int currentCount;
     private int maxCount;
 
-    //100M
-    private final String MAX_VIDEO_SIZE = "104857600";
+    //200M
+    private final String MAX_VIDEO_SIZE = "209715200";
+    //10M
+    private final String MIN_VIDEO_SIZE = "10485760";
+    //6min
+    private final String MAX_VIDEO_DURATION = "360000";
     //10S
-    private final String MAX_VIDEO_DURATION = "1000";
+    private final String MIN_VIDEO_DURATION = "10000";
 
     private LoadingDialog uploadLoading;
 
@@ -81,7 +91,7 @@ public class SocialVideoAddActivity extends BaseActivity {
         title.setText(R.string.video_add);
 
         tvMaxCount = findViewById(R.id.tvMaxCount);
-        tvMaxCount.setText("最多上传" + getIntent().getIntExtra("maxCount", 3) + "份企业宣传视频，请上传体验");
+        tvMaxCount.setText("视频压缩时间根据机型不同，用时需3-6分钟，请耐心等待");
         llTopTips = findViewById(R.id.llTopTips);
         tvCurrentCount = findViewById(R.id.tvCurrentCount);
         if (maxCount == 0) {
@@ -167,9 +177,12 @@ public class SocialVideoAddActivity extends BaseActivity {
                     , MediaStore.Video.Media.DISPLAY_NAME
                     , MediaStore.Video.Media.DATE_MODIFIED};
             Cursor mCursor = getContentResolver().query(mImageUri, proj,
-                    MediaStore.Video.Media.MIME_TYPE + "=?" + "and " + MediaStore.Video.Media.DURATION + ">=?" +
-                            "and " + MediaStore.Video.Media.SIZE + "<=?",
-                    new String[]{"video/mp4", MAX_VIDEO_DURATION, MAX_VIDEO_SIZE},
+                    MediaStore.Video.Media.MIME_TYPE + "=?" +
+                            "and " + MediaStore.Video.Media.DURATION + "<=?" +
+                            "and " + MediaStore.Video.Media.DURATION + ">=?" +
+                            "and " + MediaStore.Video.Media.SIZE + "<=?" +
+                            "and " + MediaStore.Video.Media.SIZE + ">=?",
+                    new String[]{"video/mp4", MAX_VIDEO_DURATION, MIN_VIDEO_DURATION, MAX_VIDEO_SIZE, MIN_VIDEO_SIZE},
                     MediaStore.Video.Media.DATE_MODIFIED + " desc");
             if (mCursor != null) {
                 while (mCursor.moveToNext()) {
@@ -226,6 +239,10 @@ public class SocialVideoAddActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void uploadVideos() {
+        if (uploadLoading.isShowing()) {
+            uploadLoading.dismissReally();
+        }
+
         if (selectedVideos.size() == 0) {
             if (uploadList.size() != 0) {
                 //do upload
@@ -252,27 +269,62 @@ public class SocialVideoAddActivity extends BaseActivity {
             return;
         }
 
-        if (uploadLoading.isShowing()) {
-            uploadLoading.dismissReally();
-        }
-
-        uploadLoading.setText("上传中");
+        uploadLoading.setText("正在压缩，请耐心等待");
         uploadLoading.show();
 
-        OssUtils.uploadFile(selectedVideos.get(0).getPath(), new OssUtils.OssCallBack1() {
-            @Override
-            public void onSuccess(String videoAddress) {
-                OssUtils.uploadFile(selectedVideos.get(0).getThumbPath(), new OssUtils.OssCallBack1() {
+        Observable.create((ObservableOnSubscribe<OnlyCompressOverBean>) e -> {
+            LocalMediaConfig.Buidler buidler = new LocalMediaConfig.Buidler();
+            final LocalMediaConfig config = buidler
+                    .setVideoPath(selectedVideos.get(0).getPath())
+                    .captureThumbnailsTime(1)
+                    .doH264Compress(new AutoVBRMode(25).setVelocity(BaseMediaBitrateConfig.Velocity.FAST))
+                    .setFramerate(24)
+                    .build();
+            LocalMediaCompress compress = new LocalMediaCompress(config);
+            e.onNext(compress.startCompress());
+        }).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver()).subscribe(onlyCompressOverBean -> {
+            if (onlyCompressOverBean.isSucceed()) {
+                OssUtils.uploadFile(onlyCompressOverBean.getVideoPath(), new OssUtils.OssCallBack1() {
                     @Override
-                    public void onSuccess(String thumbUrl) {
-                        EditCommunityVideoRequest.VideoListBean bean = new EditCommunityVideoRequest.VideoListBean();
-                        bean.setVideoAddress(videoAddress);
-                        bean.setVideoPic(thumbUrl);
-                        bean.setVideoDuration(selectedVideos.get(0).getDuration() + "");
-                        bean.setVideoName(selectedVideos.get(0).getDisplayName());
-                        uploadList.add(bean);
-                        selectedVideos.remove(0);
-                        uploadVideos();
+                    public void onSuccess(String videoAddress) {
+                        uploadLoading.setText("正在上传封面");
+                        OssUtils.uploadFile(selectedVideos.get(0).getThumbPath(), new OssUtils.OssCallBack1() {
+                            @Override
+                            public void onSuccess(String thumbUrl) {
+                                EditCommunityVideoRequest.VideoListBean bean = new EditCommunityVideoRequest.VideoListBean();
+                                bean.setVideoAddress(videoAddress);
+                                bean.setVideoPic(thumbUrl);
+                                bean.setVideoDuration(selectedVideos.get(0).getDuration() + "");
+                                bean.setVideoName(selectedVideos.get(0).getDisplayName());
+                                uploadList.add(bean);
+                                selectedVideos.remove(0);
+
+                                if (!TextUtils.isEmpty(onlyCompressOverBean.getVideoPath())) {
+                                    File file = new File(onlyCompressOverBean.getVideoPath());
+                                    try {
+                                        FileUtils.deleteDir(file.getParentFile());
+                                    } catch (Exception e) {
+                                    }
+                                }
+
+                                uploadVideos();
+                            }
+
+                            @Override
+                            public void onFail() {
+                                ToastUtils.showShort(R.string.upload_social_video_fail);
+                                if (uploadLoading.isShowing()) {
+                                    uploadLoading.dismissReally();
+                                }
+                                if (!TextUtils.isEmpty(onlyCompressOverBean.getVideoPath())) {
+                                    File file = new File(onlyCompressOverBean.getVideoPath());
+                                    try {
+                                        FileUtils.deleteDir(file.getParentFile());
+                                    } catch (Exception e) {
+                                    }
+                                }
+                            }
+                        }, null);
                     }
 
                     @Override
@@ -281,20 +333,24 @@ public class SocialVideoAddActivity extends BaseActivity {
                         if (uploadLoading.isShowing()) {
                             uploadLoading.dismissReally();
                         }
-                        finish();
+                        if (!TextUtils.isEmpty(onlyCompressOverBean.getVideoPath())) {
+                            File file = new File(onlyCompressOverBean.getVideoPath());
+                            try {
+                                FileUtils.deleteDir(file.getParentFile());
+                            } catch (Exception e) {
+                            }
+                        }
                     }
-                }, null);
+                }, progress -> runOnUiThread(() -> uploadLoading.setText("上传中," + (int) (progress * 100) + "%")));
+            } else {
+                Observable.error(new Exception());
             }
-
-            @Override
-            public void onFail() {
-                ToastUtils.showShort(R.string.upload_social_video_fail);
-                if (uploadLoading.isShowing()) {
-                    uploadLoading.dismissReally();
-                }
-                finish();
+        }, t -> {
+            if (uploadLoading.isShowing()) {
+                uploadLoading.dismissReally();
             }
-        }, progress -> runOnUiThread(() -> uploadLoading.setText("上传中," + progress)));
+            ToastUtils.showShort(R.string.upload_social_video_fail);
+        });
     }
 
     static class MediaBean {

@@ -138,7 +138,8 @@ dependencies {
     implementation project(':CallLib')
     implementation project(':CallKit')
     implementation project(':Sight')
-    api project(':android-push-settings')
+    implementation 'com.mabeijianxi:small-video-record2:2.0.3@aar'
+    implementation project(':android-push-settings')
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'

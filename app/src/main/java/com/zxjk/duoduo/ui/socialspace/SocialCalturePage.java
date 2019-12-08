@@ -2,11 +2,13 @@ package com.zxjk.duoduo.ui.socialspace;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -564,7 +566,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                             intent.putExtra("bean", item);
                             startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                         } else {
-                            ToastUtils.showShort("暂时不可用（无法查看视频 无法查看文件）");
+                            String url = item.getVideo().getVideoList().get(position).getVideoAddress();
+                            String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+                            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                            Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
+                            mediaIntent.setDataAndType(Uri.parse(url), mimeType);
+                            startActivity(mediaIntent);
                         }
                     });
 

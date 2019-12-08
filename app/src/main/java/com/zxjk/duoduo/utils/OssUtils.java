@@ -33,7 +33,7 @@ public class OssUtils {
         PutObjectRequest put = new PutObjectRequest("zhongxingjike2", "upload/" +
                 fileName, filePath);
         if (progressCallBack != null) {
-            put.setProgressCallback((request, currentSize, totalSize) -> progressCallBack.onUpload((totalSize + 0f) / currentSize));
+            put.setProgressCallback((request, currentSize, totalSize) -> progressCallBack.onUpload((currentSize + 0f) / totalSize));
         }
         Application.oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
@@ -60,7 +60,7 @@ public class OssUtils {
         PutObjectRequest put = new PutObjectRequest("zhongxingjike2", "upload/" +
                 fileName, filePath);
         if (progressCallBack != null) {
-            put.setProgressCallback((request, currentSize, totalSize) -> progressCallBack.onUpload((totalSize + 0f) / currentSize));
+            put.setProgressCallback((request, currentSize, totalSize) -> progressCallBack.onUpload((currentSize + 0f) / totalSize));
         }
         Application.oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override

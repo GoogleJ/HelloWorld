@@ -167,6 +167,10 @@ public class SocialFileEditActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void uploadFiles() {
+        if (uploadLoading.isShowing()) {
+            uploadLoading.dismissReally();
+        }
+
         if (selectedFiles.size() == 0) {
             if (uploadList.size() != 0) {
                 //do upload
@@ -191,10 +195,6 @@ public class SocialFileEditActivity extends BaseActivity {
                         });
             }
             return;
-        }
-
-        if (uploadLoading.isShowing()) {
-            uploadLoading.dismissReally();
         }
 
         uploadLoading.setText("上传中");
@@ -222,7 +222,7 @@ public class SocialFileEditActivity extends BaseActivity {
                 }
                 finish();
             }
-        }, progress -> runOnUiThread(() -> uploadLoading.setText("上传中," + progress)));
+        }, progress -> runOnUiThread(() -> uploadLoading.setText("上传中," + (int) (progress * 100) + "%")));
     }
 
     /**
