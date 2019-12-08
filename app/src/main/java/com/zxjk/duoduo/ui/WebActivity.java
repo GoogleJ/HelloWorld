@@ -6,19 +6,11 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +20,12 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.tencent.smtt.export.external.interfaces.SslError;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.ProgressView;
@@ -40,7 +38,7 @@ public class WebActivity extends BaseActivity {
     String currentUrl;
 
     private WebSettings webSettings;
-    private WebView mWebView;
+    private com.tencent.smtt.sdk.WebView mWebView;
 
     private TextView tv_title;
 
@@ -110,7 +108,7 @@ public class WebActivity extends BaseActivity {
         webSettings = mWebView.getSettings();
         webSettings.setLoadsImagesAutomatically(true);
 
-        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+//        webSettings.setMixedContentMode(WebSettings.);
 
 //设置自适应屏幕，两者合用
         webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
@@ -161,33 +159,19 @@ public class WebActivity extends BaseActivity {
             }
 
             @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url == null) return false;
-
-                view.loadUrl(url);
-
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            public void onReceivedError(WebView webView, int i, String s, String s1) {
                 if (TextUtils.isEmpty(type) || !type.equals("mall")) {
                     ToastUtils.showShort(R.string.loadurl_fail);
                 }
-                super.onReceivedError(view, request, error);
+                super.onReceivedError(webView, i, s, s1);
             }
 
             @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, SslError sslError) {
                 if (TextUtils.isEmpty(type) || !type.equals("mall")) {
                     ToastUtils.showShort(R.string.loadurl_fail);
                 }
-                super.onReceivedSslError(view, handler, error);
+                super.onReceivedSslError(webView, sslErrorHandler, sslError);
             }
         });
 

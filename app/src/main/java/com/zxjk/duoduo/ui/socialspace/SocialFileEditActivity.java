@@ -88,19 +88,14 @@ public class SocialFileEditActivity extends BaseActivity {
                 helper.setText(R.id.tvTitle, item.title)
                         .setText(R.id.tvSize, item.size).setChecked(R.id.cbSelectVideo, item.isChecked());
 
-                switch (item.format) {
-                    case "excel":
-                        Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_excel).into(ivHead);
-                        break;
-                    case "ppt":
-                        Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_ppt).into(ivHead);
-                        break;
-                    case "word":
-                        Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_word).into(ivHead);
-                        break;
-                    case "pdf":
-                        Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_pdf).into(ivHead);
-                        break;
+                if (item.format.contains("doc") || item.format.contains("docx")) {
+                    Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_word).into(ivHead);
+                } else if (item.format.contains("xls") || item.format.contains("xlsx")) {
+                    Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_excel).into(ivHead);
+                } else if (item.format.contains("ppt") || item.format.contains("pptx")) {
+                    Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_ppt).into(ivHead);
+                } else {
+                    Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_pdf).into(ivHead);
                 }
             }
         };
@@ -113,6 +108,7 @@ public class SocialFileEditActivity extends BaseActivity {
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
             FileBean b = (FileBean) adapter.getData().get(position);
+
             if (!b.isChecked() && currentCount == currentMax) {
                 return;
             }
@@ -288,17 +284,29 @@ public class SocialFileEditActivity extends BaseActivity {
 
     private String getFileFormat(String path) {
         path = path.toLowerCase();
-        if (path.endsWith(".doc") || path.endsWith(".docx")) {
-            return "word";
+        if (path.endsWith(".doc")) {
+            return ".doc";
         }
-        if (path.endsWith(".xls") || path.endsWith(".xlsx")) {
-            return "excel";
+        if (path.endsWith(".docx")) {
+            return ".docx";
         }
-        if (path.endsWith(".ppt") || path.endsWith(".pptx")) {
-            return "ppt";
+        if (path.endsWith(".xls")) {
+            return ".xls";
         }
-        if (path.endsWith(".pdf") || path.endsWith(".pdfx")) {
-            return "pdf";
+        if (path.endsWith(".xlsx")) {
+            return ".xlsx";
+        }
+        if (path.endsWith(".ppt")) {
+            return ".ppt";
+        }
+        if (path.endsWith(".pptx")) {
+            return ".pptx";
+        }
+        if (path.endsWith(".pdf")) {
+            return ".pdf";
+        }
+        if (path.endsWith(".pdfx")) {
+            return ".pdfx";
         }
         return "unknow";
     }

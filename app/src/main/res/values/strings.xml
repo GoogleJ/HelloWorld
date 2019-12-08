@@ -897,4 +897,6 @@
     <string name="selectFiles">请选择要上传的资料</string>
     <string name="upload_social_file_success">社群资料上传成功</string>
     <string name="upload_social_file_fail">社群资料上传失败</string>
+    <string name="cantopenvideo">视频暂时无法加载，请稍后尝试</string>
+    <string name="cantopenfile">暂时无法查看文档，请稍后再试</string>
 </resources>

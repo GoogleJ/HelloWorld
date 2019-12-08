@@ -16,6 +16,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -37,7 +38,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
-import com.zxjk.duoduo.DuoDuoFileProvider;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.DaoMaster;
@@ -552,7 +552,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setDataAndType(DuoDuoFileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".FileProvider", file),
+                intent.setDataAndType(FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".FileProvider", file),
                         "application/vnd.android.package-archive");
             } else {
                 intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");

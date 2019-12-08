@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -17,7 +18,6 @@ import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.BuildConfig;
-import com.zxjk.duoduo.DuoDuoFileProvider;
 import com.zxjk.duoduo.R;
 
 import java.io.File;
@@ -80,7 +80,7 @@ public class TakePhotoPlugin implements IPluginModule {
 
     private static Uri getUriForFile(Context context, File file) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return DuoDuoFileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".FileProvider", file);
+            return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".FileProvider", file);
         }
         return Uri.fromFile(file);
     }

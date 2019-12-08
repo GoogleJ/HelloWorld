@@ -22,6 +22,7 @@ import com.blankj.utilcode.util.Utils;
 import com.mabeijianxi.smallvideorecord2.DeviceUtils;
 import com.mabeijianxi.smallvideorecord2.JianXiCamera;
 import com.tencent.mmkv.MMKV;
+import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -119,6 +120,8 @@ public class Application extends android.app.Application {
         RPSDK.initialize(getApplicationContext());
 
         initSmallVideo();
+
+        QbSdk.initX5Environment(this, null);
     }
 
     public static void initSmallVideo() {

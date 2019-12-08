@@ -75,19 +75,14 @@ public class SocialFileActivity extends BaseActivity {
             protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.FilesBean.FilesListBean item) {
                 ImageView ivHead = helper.getView(R.id.ivHead);
 
-                switch (item.getFileFormat()) {
-                    case "excel":
-                        Glide.with(SocialFileActivity.this).load(R.drawable.ic_social_file_excel).into(ivHead);
-                        break;
-                    case "ppt":
-                        Glide.with(SocialFileActivity.this).load(R.drawable.ic_social_file_ppt).into(ivHead);
-                        break;
-                    case "word":
-                        Glide.with(SocialFileActivity.this).load(R.drawable.ic_social_file_word).into(ivHead);
-                        break;
-                    case "pdf":
-                        Glide.with(SocialFileActivity.this).load(R.drawable.ic_social_file_pdf).into(ivHead);
-                        break;
+                if (item.getFileFormat().contains("doc") || item.getFileFormat().contains("docx")) {
+                    Glide.with(SocialFileActivity.this).load(R.drawable.ic_social_file_word).into(ivHead);
+                } else if (item.getFileFormat().contains("xls") || item.getFileFormat().contains("xlsx")) {
+                    Glide.with(SocialFileActivity.this).load(R.drawable.ic_social_file_excel).into(ivHead);
+                } else if (item.getFileFormat().contains("ppt") || item.getFileFormat().contains("pptx")) {
+                    Glide.with(SocialFileActivity.this).load(R.drawable.ic_social_file_ppt).into(ivHead);
+                } else {
+                    Glide.with(SocialFileActivity.this).load(R.drawable.ic_social_file_pdf).into(ivHead);
                 }
 
                 helper.setText(R.id.tvTitle, item.getFileName())

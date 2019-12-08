@@ -4,11 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.artifex.mupdf.viewer.DocumentActivity;
+import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -29,6 +31,9 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.mabeijianxi.smallvideorecord2.JianXiCamera;
+import com.tencent.smtt.sdk.QbSdk;
+import com.tencent.smtt.sdk.TbsVideo;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityApplicationRequest;
 import com.zxjk.duoduo.bean.request.EditCommunityFileRequest;
@@ -41,13 +46,24 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.widget.dialog.LoadingDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SocialCalturePage extends BaseFragment implements View.OnClickListener {
     private final int REQUEST_SETTINGWEB = 1;
@@ -175,7 +191,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         intent.putExtra("bean", bean);
                         startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                     } else {
-                        ToastUtils.showShort("暂时不可用（无法查看视频 无法查看文件）");
+
                     }
                     break;
                 case SocialCaltureListBean.TYPE_APP:
@@ -184,8 +200,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         intent.putExtra("groupId", groupId);
                         intent.putExtra("data", bean);
                         startActivityForResult(intent, REQUEST_SETTINGAPP);
-                    } else {
-                        ToastUtils.showShort("暂时不可用（无法查看视频 无法查看文件）");
                     }
                     break;
                 case SocialCaltureListBean.TYPE_ACTIVITY:
@@ -390,19 +404,14 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                 }
 
-                switch (item.getFileFormat()) {
-                    case "excel":
-                        Glide.with(getContext()).load(R.drawable.ic_social_file_excel).into(ivAppIcon);
-                        break;
-                    case "ppt":
-                        Glide.with(getContext()).load(R.drawable.ic_social_file_ppt).into(ivAppIcon);
-                        break;
-                    case "word":
-                        Glide.with(getContext()).load(R.drawable.ic_social_file_word).into(ivAppIcon);
-                        break;
-                    case "pdf":
-                        Glide.with(getContext()).load(R.drawable.ic_social_file_pdf).into(ivAppIcon);
-                        break;
+                if (item.getFileFormat().contains("doc") || item.getFileFormat().contains("docx")) {
+                    Glide.with(getContext()).load(R.drawable.ic_social_file_word).into(ivAppIcon);
+                } else if (item.getFileFormat().contains("xls") || item.getFileFormat().contains("xlsx")) {
+                    Glide.with(getContext()).load(R.drawable.ic_social_file_excel).into(ivAppIcon);
+                } else if (item.getFileFormat().contains("ppt") || item.getFileFormat().contains("pptx")) {
+                    Glide.with(getContext()).load(R.drawable.ic_social_file_ppt).into(ivAppIcon);
+                } else {
+                    Glide.with(getContext()).load(R.drawable.ic_social_file_pdf).into(ivAppIcon);
                 }
 
                 helper.setText(R.id.tvTitle, item.getFileName());
@@ -417,8 +426,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 startActivityForResult(intent, REQUEST_SETTINGFILE);
                 return;
             }
-            ToastUtils.showShort("暂时不可用（无法查看视频 无法查看文件）");
-            EditListCommunityCultureResponse.FilesBean.FilesListBean filesListBean = appAdapter.getData().get(position);
+            downloadAndShowFile(appAdapter, position);
         });
 
         View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_recycler_social_app, (ViewGroup) rootView, false);
@@ -433,6 +441,44 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         fileRecycler.setAdapter(appAdapter);
 
         appAdapter.setNewData(item.getFiles().getFilesList());
+    }
+
+    private void downloadAndShowFile(BaseQuickAdapter<EditListCommunityCultureResponse.FilesBean.FilesListBean, BaseViewHolder> appAdapter, int position) {
+        EditListCommunityCultureResponse.FilesBean.FilesListBean filesListBean = appAdapter.getData().get(position);
+        String url = filesListBean.getFileAddress().replace("https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/", "");
+        LoadingDialog loadingDialog = new LoadingDialog(getActivity(), "下载中，请稍后");
+        loadingDialog.show();
+        ServiceFactory.getInstance().getNormalService("https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/", Api.class)
+                .downloadFile(url)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        loadingDialog.dismissReally();
+                        if (response != null && response.isSuccessful()) {
+                            boolean toDisk = writeResponseBodyToDisk(response.body(), url + filesListBean.getFileFormat());
+                            if (toDisk && futureStudioIconFile != null && futureStudioIconFile.exists()) {
+                                if (!filesListBean.getFileFormat().contains("pdf")) {
+                                    QbSdk.openFileReader(getContext(), futureStudioIconFile.getPath(), null, null);
+                                } else {
+                                    Intent intent = new Intent(getContext(), DocumentActivity.class);
+                                    intent.setAction(Intent.ACTION_VIEW);
+                                    intent.setData(Uri.fromFile(new File(futureStudioIconFile.getPath())));
+                                    startActivity(intent);
+                                }
+                            } else {
+                                ToastUtils.showShort(R.string.cantopenfile);
+                            }
+                        } else {
+                            ToastUtils.showShort(R.string.cantopenfile);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        loadingDialog.dismissReally();
+                        ToastUtils.showShort(R.string.cantopenfile);
+                    }
+                });
     }
 
     private void initViewForAppPage(BaseViewHolder helper, SocialCaltureListBean item) {
@@ -567,11 +613,11 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                             startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                         } else {
                             String url = item.getVideo().getVideoList().get(position).getVideoAddress();
-                            String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-                            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-                            Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
-                            mediaIntent.setDataAndType(Uri.parse(url), mimeType);
-                            startActivity(mediaIntent);
+                            if (TbsVideo.canUseTbsPlayer(getContext())) {
+                                TbsVideo.openVideo(getContext(), url);
+                            } else {
+                                ToastUtils.showShort(R.string.cantopenvideo);
+                            }
                         }
                     });
 
@@ -742,6 +788,61 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             adapter.getData().add(4, bean);
             adapter.getData().remove(5);
             adapter.notifyItemChanged(4);
+        }
+    }
+
+    private File futureStudioIconFile;
+
+    private boolean writeResponseBodyToDisk(ResponseBody body, String name) {
+        try {
+            //判断文件夹是否存在
+            File dcim = Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            //创建一个文件
+            if (dcim.exists()) {
+                JianXiCamera.setVideoCachePath(dcim + "/Hilamg/");
+            } else {
+                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
+                        "/sdcard-ext/")
+                        + "/Hilamg/");
+            }
+            futureStudioIconFile = new File(dcim + "/Hilamg/SocialFiles/", name);
+            if (futureStudioIconFile.exists()) return true;
+            FileUtils.createOrExistsFile(futureStudioIconFile);
+            //初始化输入流
+            InputStream inputStream = null;
+            //初始化输出流
+            OutputStream outputStream = null;
+            try {
+                //设置每次读写的字节
+                byte[] fileReader = new byte[4096];
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(futureStudioIconFile);
+                while (true) {
+                    int read = inputStream.read(fileReader);
+                    if (read == -1) {
+                        break;
+                    }
+                    outputStream.write(fileReader, 0, read);
+                    fileSizeDownloaded += read;
+                }
+
+                outputStream.flush();
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
         }
     }
 }
