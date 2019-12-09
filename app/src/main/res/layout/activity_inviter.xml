@@ -122,7 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="熊岸、彼岸花资本等战略领投"
+                    android:text="雄岸、彼岸花资本等战略领投"
                     android:textColor="@color/textColor3"
                     android:textSize="13sp" />
 

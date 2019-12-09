@@ -16,11 +16,16 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.ItemTouchUIUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
+import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.network.Api;
@@ -43,7 +48,7 @@ public class SocialPage extends BaseFragment {
     private LinearLayout llEmpty;
     private ImageView ivCreate;
     private RecyclerView recycler;
-    private BaseQuickAdapter<CommunityListBean, BaseViewHolder> adapter;
+    private BaseItemDraggableAdapter<CommunityListBean, BaseViewHolder> adapter;
     private int itemHeight;
 
     private Disposable animDispose;
@@ -64,7 +69,7 @@ public class SocialPage extends BaseFragment {
         ivCreate = rootView.findViewById(R.id.ivCreate);
         recycler = rootView.findViewById(R.id.recycler);
 
-        adapter = new BaseQuickAdapter<CommunityListBean, BaseViewHolder>(R.layout.item_social, null) {
+        adapter = new BaseItemDraggableAdapter<CommunityListBean, BaseViewHolder>(R.layout.item_social, null) {
             @Override
             protected void convert(BaseViewHolder helper, CommunityListBean item) {
                 ImageView ivhead = helper.getView(R.id.ivHead);
@@ -98,6 +103,25 @@ public class SocialPage extends BaseFragment {
                 }
             }
         };
+
+        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(recycler);
+
+        adapter.enableDragItem(itemTouchHelper, R.id.cardSocial, true);
+        adapter.setOnItemDragListener(new OnItemDragListener() {
+            @Override
+            public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int i) {
+            }
+
+            @Override
+            public void onItemDragMoving(RecyclerView.ViewHolder viewHolder, int i, RecyclerView.ViewHolder viewHolder1, int i1) {
+            }
+
+            @Override
+            public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int i) {
+            }
+        });
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(getContext(), SocialHomeActivity.class);
