@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -65,7 +66,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongExtension;
@@ -674,13 +674,18 @@ public class ConversationActivity extends BaseActivity {
 
                         Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupResponse.getGroupInfo().getId());
 
-                        if (null == ronginfo ||
-                                ronginfo.getPortraitUri() == null ||
-                                TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
-                                !ronginfo.getName().equals(groupResponse.getGroupInfo().getGroupNikeName()) ||
-                                !ronginfo.getPortraitUri().toString().equals(groupHead)) {
+//                        if (null == ronginfo ||
+//                                ronginfo.getPortraitUri() == null ||
+//                                TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
+//                                !ronginfo.getName().equals(groupResponse.getGroupInfo().getGroupNikeName()) ||
+//                                !ronginfo.getPortraitUri().toString().equals(groupHead)) {
+                        if (groupResponse.getGroupInfo().getGroupType().equals("1")) {
+                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName() +
+                                    "おれは人间をやめるぞ！ジョジョ―――ッ!", Uri.parse(groupHead)));
+                        } else {
                             RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead)));
                         }
+//                        }
                     })
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -1084,13 +1089,15 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void initView() {
-        if (groupInfo != null && !groupInfo.getGroupInfo().getGroupType().equals("1") || targetUserInfo != null) {
+        tvTitle = findViewById(R.id.tv_title);
+
+        if (targetUserInfo != null) {
             RelativeLayout rl_end = findViewById(R.id.rl_end);
             rl_end.setVisibility(View.VISIBLE);
             rl_end.setOnClickListener(v -> detail());
+        } else if (groupInfo != null && groupInfo.getGroupInfo().getGroupType().equals("1")) {
+            tvTitle.setTextColor(Color.parseColor("#EC7A00"));
         }
-
-        tvTitle = findViewById(R.id.tv_title);
 
         tvTitle.setText(targetUserInfo == null ? (groupInfo == null ? (Constant.currentUser.getNick()) : (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getCustomers().size() + ")")) : targetUserInfo.getName());
         registerOnTitleChange();

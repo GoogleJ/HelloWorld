@@ -21,7 +21,9 @@ import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
+import com.zxjk.duoduo.bean.response.GetCustomerBasicInfoByIdResponse;
 import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
+import com.zxjk.duoduo.bean.response.GetGroupChatInfoByGroupIdResponse;
 import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
@@ -692,6 +694,15 @@ public interface Api {
     @POST("duoduo/community/communityFilesList")
     @FormUrlEncoded
     Observable<BaseResponse<CommunityFilesListResponse>> communityFilesList(@Field("groupId") String id);
+
+    @POST("duoduo/customer/getCustomerBasicInfoById")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetCustomerBasicInfoByIdResponse>> getCustomerBasicInfoById(@Field("friendId") String id);
+
+    @POST("duoduo/group/getGroupChatInfoByGroupId")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetGroupChatInfoByGroupIdResponse>> getGroupChatInfoByGroupId(@Field("groupId") String id);
+
 
     @POST("mochat/shopping/getShoppingUrl")
     @FormUrlEncoded

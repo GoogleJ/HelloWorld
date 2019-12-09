@@ -54,6 +54,7 @@ import com.zxjk.duoduo.ui.minepage.MineFragment;
 import com.zxjk.duoduo.ui.msgpage.ContactFragment;
 import com.zxjk.duoduo.ui.msgpage.MsgFragment;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
+import com.zxjk.duoduo.ui.msgpage.rongIM.GroupConversationProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
@@ -71,6 +72,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
@@ -149,6 +151,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initMessageLongClickAction();
 
         initGreenDaoSession();
+        RongContext.getInstance().registerConversationTemplate(new GroupConversationProvider());
 
         initRongUserProvider();
     }
@@ -157,30 +160,28 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private void initRongUserProvider() {
         RongIM.setGroupInfoProvider(id -> {
             ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getGroupByGroupId(id)
+                    .getGroupChatInfoByGroupId(id)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .subscribeOn(Schedulers.io())
                     .subscribe(group -> {
-                        String groupHead = "";
-                        StringBuffer sbf = new StringBuffer();
-                        for (int i = 0; i < group.getCustomers().size(); i++) {
-                            sbf.append(group.getCustomers().get(i).getHeadPortrait() + ",");
-                            if (i == group.getCustomers().size() - 1 || i == 8) {
-                                groupHead = sbf.substring(0, sbf.length() - 1);
-                                break;
-                            }
-                        }
-                        RongIM.getInstance().refreshGroupInfoCache(new Group(group.getGroupInfo().getId(), group.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead)));
-                    }, t -> {
-                    });
+                                if (group.getGroupType() == 1) {
+                                    RongIM.getInstance().refreshGroupInfoCache(new Group(id, group.getGroupNikeName()
+                                            + "おれは人间をやめるぞ！ジョジョ―――ッ!", Uri.parse(group.getHeadPortrait())));
+                                } else {
+                                    RongIM.getInstance().refreshGroupInfoCache(new Group(id, group.getGroupNikeName(),
+                                            Uri.parse(group.getHeadPortrait())));
+                                }
+                            },
+                            t -> {
+                            });
 
             return null;
         }, true);
 
         RongIM.setUserInfoProvider(id -> {
             ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getCustomerInfoById(id)
+                    .getCustomerBasicInfoById(id)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .subscribeOn(Schedulers.io())
