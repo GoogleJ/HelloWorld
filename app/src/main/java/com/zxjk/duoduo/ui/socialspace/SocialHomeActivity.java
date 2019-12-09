@@ -47,6 +47,7 @@ import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.ZoomActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
@@ -243,6 +244,25 @@ public class SocialHomeActivity extends BaseActivity {
                         tvTitle.setText(r.getName());
                         tvSocialCode.setText("社群号:" + r.getCode());
                         tvNotice.setText(r.getAnnouncement());
+
+                        ivHead.setOnClickListener(v -> {
+                            Intent intent = new Intent(this, ZoomActivity.class);
+                            intent.putExtra("image", r.getLogo());
+                            intent.putExtra("fromSocialHomePage", true);
+                            if (Constant.currentUser.getId().equals(r.getOwnerId())) {
+                                intent.putExtra("id", r.getGroupId());
+                            }
+                            startActivity(intent);
+                        });
+                        ivBg.setOnClickListener(v -> {
+                            Intent intent = new Intent(this, ZoomActivity.class);
+                            intent.putExtra("image", r.getBgi());
+                            intent.putExtra("fromSocialHomePage", true);
+                            if (Constant.currentUser.getId().equals(r.getOwnerId())) {
+                                intent.putExtra("id", r.getGroupId());
+                            }
+                            startActivity(intent);
+                        });
                     });
                     if (r.getIdentity().equals("0")) {
                         ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(r.getMembers());

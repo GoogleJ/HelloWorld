@@ -460,7 +460,7 @@
     <string name="share_success">分享成功</string>
     <string name="album">相册</string>
     <string name="photograph">拍照</string>
-    <string name="photo_select">从相册选择</string>
+    <string name="photo_select">从手机相册选择</string>
     <string name="waiting_audit">等待审核</string>
     <string name="waiting_audit_prompt">提示:系统已经帮您通知了对方账户,若对方还未及时处理可以拨打电话与对方沟通.</string>
     <string name="add_buddy">加好友</string>
