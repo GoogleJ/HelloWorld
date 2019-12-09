@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.socialspace;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +18,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.ItemTouchUIUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseItemDraggableAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
+import com.google.gson.reflect.TypeToken;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.network.Api;
@@ -34,8 +35,12 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.RecyclerItemAverageDecoration;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -120,6 +125,7 @@ public class SocialPage extends BaseFragment {
 
             @Override
             public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int i) {
+                MMKVUtils.getInstance().enCode("SocialListOrder", GsonUtils.toJson(adapter.getData()));
             }
         });
 
@@ -185,6 +191,60 @@ public class SocialPage extends BaseFragment {
                 .communityList()
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
+                .map(originList -> {
+                    String orderJson = MMKVUtils.getInstance().decodeString("SocialListOrder");
+                    if (!TextUtils.isEmpty(orderJson)) {
+                        List<CommunityListBean> cachedList = GsonUtils.fromJson(orderJson, new TypeToken<List<CommunityListBean>>() {
+                        }.getType());
+                        if (cachedList != null && cachedList.size() != 0) {
+                            List<CommunityListBean> result = new ArrayList<>(originList.size());
+
+                            //remove illegal data form cache
+                            Iterator<CommunityListBean> cachedIterator = cachedList.iterator();
+                            while (cachedIterator.hasNext()) {
+                                CommunityListBean cachedBean = cachedIterator.next();
+                                boolean isIllegalData = true;
+                                for (CommunityListBean bean : originList) {
+                                    if (bean.getGroupId().equals(cachedBean.getGroupId())) {
+                                        isIllegalData = false;
+                                        break;
+                                    }
+                                }
+                                if (isIllegalData) cachedIterator.remove();
+                            }
+
+                            if (cachedList.size() == 0) {
+                                MMKVUtils.getInstance().enCode("SocialListOrder", "");
+                                return originList;
+                            }
+
+                            //add origin first
+                            for (int i = 0; i < originList.size(); i++) {
+                                CommunityListBean originBean = originList.get(i);
+                                boolean isInCache = false;
+                                for (int j = 0; j < cachedList.size(); j++) {
+                                    CommunityListBean cachedBean = cachedList.get(j);
+                                    if (cachedBean.getGroupId().equals(originBean.getGroupId())) {
+                                        isInCache = true;
+                                        break;
+                                    }
+                                }
+                                if (!isInCache) result.add(originBean);
+                            }
+
+                            //add cached next
+                            result.addAll(cachedList);
+
+                            //update cache
+                            MMKVUtils.getInstance().enCode("SocialListOrder", GsonUtils.toJson(result));
+
+                            return result;
+                        } else {
+                            return originList;
+                        }
+                    }
+                    return originList;
+                })
                 .compose(RxSchedulers.ioObserver())
                 .subscribe(list -> {
                     if (list.size() == 0) {

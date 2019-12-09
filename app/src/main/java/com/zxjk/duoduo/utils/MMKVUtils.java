@@ -22,7 +22,6 @@ public class MMKVUtils {
         return mmkvUtils;
     }
 
-
     public void enCode(String key, long value) {
         mmkv.encode(key, value);
     }
@@ -39,7 +38,6 @@ public class MMKVUtils {
         mmkv.encode(key, value);
     }
 
-
     public long decodeLong(String key) {
         return mmkv.decodeLong(key, 0);
     }
@@ -54,8 +52,6 @@ public class MMKVUtils {
 
     public LoginResponse decodeParcelable(String key) {
         return mmkv.decodeParcelable(key, LoginResponse.class);
-
     }
-
 
 }

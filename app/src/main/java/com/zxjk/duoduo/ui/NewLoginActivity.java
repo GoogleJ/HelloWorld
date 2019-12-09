@@ -267,13 +267,13 @@ public class NewLoginActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(l -> {
+                    MMKVUtils.getInstance().decodeString("SocialListOrder");
                     Constant.token = l.getToken();
                     Constant.userId = l.getId();
                     Constant.currentUser = l;
                     Constant.authentication = l.getIsAuthentication();
 
                     connect(l.getRongToken(), l.getIsFirstLogin().equals(Constant.FLAG_FIRSTLOGIN));
-
                 }, this::handleApiError);
     }
 
