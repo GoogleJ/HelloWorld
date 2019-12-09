@@ -34,10 +34,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@drawable/shape_videoduration"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="9sp" />
 
             </FrameLayout>
 
@@ -53,7 +56,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
                 <View
                     android:layout_width="wrap_content"
@@ -65,16 +69,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#BBBBBB"
-                    android:textSize="12.5sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/ivFunc"
             android:layout_width="36dp"
-            android:layout_height="4dp"
+            android:layout_height="match_parent"
             android:layout_marginEnd="12dp"
+            android:padding="8dp"
             android:src="@drawable/icon_right_title"
             android:tint="@color/textColor6" />
 

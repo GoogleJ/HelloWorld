@@ -14,8 +14,8 @@
 
         <CheckBox
             android:id="@+id/cbSelectVideo"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginStart="16dp"
             android:background="@drawable/selector_document_selection"
             android:button="@null"
@@ -42,10 +42,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@drawable/shape_videoduration"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="9sp" />
 
             </FrameLayout>
 
@@ -61,7 +64,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
                 <View
                     android:layout_width="wrap_content"
@@ -73,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#BBBBBB"
-                    android:textSize="12.5sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 

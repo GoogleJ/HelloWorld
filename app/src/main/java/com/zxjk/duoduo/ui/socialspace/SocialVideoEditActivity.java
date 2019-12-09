@@ -19,6 +19,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.tencent.smtt.sdk.TbsVideo;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
@@ -46,7 +47,7 @@ public class SocialVideoEditActivity extends BaseActivity {
     private LinearLayout llTopTips;
     private TextView tvMaxCount;
     private RecyclerView recycler;
-    private BaseQuickAdapter<EditListCommunityCultureResponse.VideoBean.VideoListBean, BaseViewHolder> adapter;
+    private BaseQuickAdapter<EditListCommunityCultureResponse.VideoBean.VideoListBean, BaseViewHolder> madapter;
 
     private SocialCaltureListBean bean;
 
@@ -78,13 +79,14 @@ public class SocialVideoEditActivity extends BaseActivity {
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new BaseQuickAdapter<EditListCommunityCultureResponse.VideoBean.VideoListBean, BaseViewHolder>(R.layout.item_social_video_list_edit, null) {
+        madapter = new BaseQuickAdapter<EditListCommunityCultureResponse.VideoBean.VideoListBean, BaseViewHolder>(R.layout.item_social_video_list_edit, null) {
             @Override
             protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.VideoBean.VideoListBean item) {
                 GlideUtil.loadCornerImg(helper.getView(R.id.ivHead), item.getVideoPic(), 4);
                 helper.setText(R.id.tvTitle, item.getVideoName())
                         .setText(R.id.tvDuration, stringForTime(Long.parseLong(item.getVideoDuration())))
-                        .setText(R.id.tvUploadDate, sdf.format(Long.parseLong(item.getCreateTime())));
+                        .setText(R.id.tvUploadDate, sdf.format(Long.parseLong(item.getCreateTime())))
+                        .addOnClickListener(R.id.ivFunc);
             }
         };
 
@@ -93,9 +95,19 @@ public class SocialVideoEditActivity extends BaseActivity {
         ImageView iv = emptyview.findViewById(R.id.iv);
         tv.setText(R.string.emptylist4);
         iv.setImageResource(R.drawable.ic_empty_videos);
-        adapter.setEmptyView(emptyview);
+        madapter.setEmptyView(emptyview);
 
-        adapter.setOnItemClickListener((adapter, view, position) -> {
+        madapter.setOnItemClickListener((adapter, view, position) -> {
+            EditListCommunityCultureResponse.VideoBean.VideoListBean videoListBean = madapter.getData().get(position);
+            String url = videoListBean.getVideoAddress();
+            if (TbsVideo.canUseTbsPlayer(this)) {
+                TbsVideo.openVideo(this, url);
+            } else {
+                ToastUtils.showShort(R.string.cantopenvideo);
+            }
+        });
+
+        madapter.setOnItemChildClickListener((adapter, view, position) -> {
             TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
             showAnimation.setDuration(250);
             TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
@@ -112,7 +124,7 @@ public class SocialVideoEditActivity extends BaseActivity {
                     .show();
         });
 
-        recycler.setAdapter(adapter);
+        recycler.setAdapter(madapter);
 
         initData();
     }
@@ -129,7 +141,7 @@ public class SocialVideoEditActivity extends BaseActivity {
 
     private void renameVideo(int position) {
         currentRenamePosition = position;
-        EditListCommunityCultureResponse.VideoBean.VideoListBean videoBean = adapter.getData().get(position);
+        EditListCommunityCultureResponse.VideoBean.VideoListBean videoBean = madapter.getData().get(position);
         Intent intent = new Intent(this, EditSocialVideoNameActivity.class);
         intent.putExtra("videoName", videoBean.getVideoName());
         intent.putExtra("videoId", videoBean.getVideoId());
@@ -143,7 +155,7 @@ public class SocialVideoEditActivity extends BaseActivity {
         dialog.setOnCommitListener(() -> {
             EditCommunityVideoRequest request = new EditCommunityVideoRequest();
             request.setGroupId(getIntent().getStringExtra("id"));
-            request.setVideoId(adapter.getData().get(position).getVideoId());
+            request.setVideoId(madapter.getData().get(position).getVideoId());
             request.setType("del");
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .editCommunityVideo(GsonUtils.toJson(request))
@@ -151,8 +163,8 @@ public class SocialVideoEditActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .compose(RxSchedulers.normalTrans())
                     .subscribe(s -> {
-                        adapter.getData().remove(position);
-                        adapter.notifyItemRemoved(position);
+                        madapter.getData().remove(position);
+                        madapter.notifyItemRemoved(position);
                     }, this::handleApiError);
         });
         dialog.show();
@@ -168,7 +180,7 @@ public class SocialVideoEditActivity extends BaseActivity {
                 .subscribe(r -> {
                     maxCount = Integer.parseInt(r.getVideoCreate());
                     tvMaxCount.setText("最多上传" + maxCount + "份企业宣传视频，请上传体验");
-                    adapter.setNewData(r.getVideo());
+                    madapter.setNewData(r.getVideo());
                     if (r.getVideo() == null || r.getVideo().size() == 0) {
                         bean.getVideo().setVideoList(new ArrayList<>());
                     } else {
@@ -222,9 +234,9 @@ public class SocialVideoEditActivity extends BaseActivity {
                 initData();
                 break;
             case REQUEST_RENAME:
-                adapter.getData().get(currentRenamePosition).setVideoName(data.getStringExtra("name"));
+                madapter.getData().get(currentRenamePosition).setVideoName(data.getStringExtra("name"));
                 bean.getVideo().getVideoList().get(currentRenamePosition).setVideoName(data.getStringExtra("name"));
-                adapter.notifyItemChanged(currentRenamePosition);
+                madapter.notifyItemChanged(currentRenamePosition);
         }
     }
 }
