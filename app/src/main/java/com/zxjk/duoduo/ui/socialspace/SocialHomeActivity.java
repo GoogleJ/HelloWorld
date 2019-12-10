@@ -249,20 +249,20 @@ public class SocialHomeActivity extends BaseActivity {
 
                         ivHead.setOnClickListener(v -> {
                             Intent intent = new Intent(this, ZoomActivity.class);
-                            intent.putExtra("image", r.getLogo());
+                            intent.putExtra("image", response.getLogo());
                             intent.putExtra("fromSocialHomePage", true);
-                            if (!r.getIdentity().equals("0")) {
-                                intent.putExtra("id", r.getGroupId());
+                            if (!response.getIdentity().equals("0")) {
+                                intent.putExtra("id", response.getGroupId());
                                 intent.putExtra("type", 1);
                             }
                             startActivityForResult(intent, REQUEST_LOGO);
                         });
                         ivBg.setOnClickListener(v -> {
                             Intent intent = new Intent(this, ZoomActivity.class);
-                            intent.putExtra("image", r.getBgi());
+                            intent.putExtra("image", response.getBgi());
                             intent.putExtra("fromSocialHomePage", true);
-                            if (!r.getIdentity().equals("0")) {
-                                intent.putExtra("id", r.getGroupId());
+                            if (!response.getIdentity().equals("0")) {
+                                intent.putExtra("id", response.getGroupId());
                                 intent.putExtra("type", 2);
                             }
                             startActivityForResult(intent, REQUEST_BG);
@@ -746,10 +746,14 @@ public class SocialHomeActivity extends BaseActivity {
                     response.setName(data.getStringExtra("name"));
                     tvSocialName.setText(response.getName());
                 case REQUEST_LOGO:
-                    GlideUtil.loadNormalImg(ivHead, data.getStringExtra("url"));
+                    String logo = data.getStringExtra("url");
+                    response.setLogo(logo);
+                    GlideUtil.loadNormalImg(ivHead, logo);
                     break;
                 case REQUEST_BG:
-                    GlideUtil.loadNormalImg(ivBg, data.getStringExtra("url"));
+                    String bg = data.getStringExtra("url");
+                    response.setBgi(bg);
+                    GlideUtil.loadNormalImg(ivBg, bg);
                     break;
             }
         }
