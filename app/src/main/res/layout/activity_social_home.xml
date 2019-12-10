@@ -52,6 +52,7 @@
                     android:background="@drawable/shape_create_social_top"
                     android:clipChildren="false"
                     android:gravity="center_horizontal"
+                    android:onClick="fakeClick"
                     android:orientation="vertical">
 
                     <com.gcssloop.widget.RCRelativeLayout

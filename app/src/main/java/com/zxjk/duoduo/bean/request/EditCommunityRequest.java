@@ -6,6 +6,14 @@ public class EditCommunityRequest {
     private String announcement;
     private String name;
 
+    /**
+     * logo : logo url
+     * bgi : bgi url
+     */
+
+    private String logo;
+    private String bgi;
+
     public String getGroupId() {
         return groupId;
     }
@@ -36,5 +44,21 @@ public class EditCommunityRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getBgi() {
+        return bgi;
+    }
+
+    public void setBgi(String bgi) {
+        this.bgi = bgi;
     }
 }

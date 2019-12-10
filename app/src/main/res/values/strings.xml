@@ -873,7 +873,7 @@
     <string name="selectVideos">请选择要上传的视频</string>
     <string name="upload_social_video_fail">视频上传失败！请尝试单个上传或选择较小的视频。</string>
     <string name="video_add">视频添加</string>
-    <string name="upload_social_video_success">上传成功！</string>
+    <string name="upload_social_video_success">上传成功</string>
     <string name="emptylist4">暂无社群视频</string>
     <string name="upload_newvideo">上传新视频</string>
     <string name="upload_video_max">视频已达上限，暂时不可上传新视频</string>

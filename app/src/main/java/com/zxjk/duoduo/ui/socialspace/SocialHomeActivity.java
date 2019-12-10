@@ -85,6 +85,8 @@ public class SocialHomeActivity extends BaseActivity {
     private static final int REQUEST_SLOGAN = 1;
     private static final int REQUEST_NOTICE = 2;
     private static final int REQUEST_SOCIALNAME = 3;
+    private static final int REQUEST_LOGO = 4;
+    private static final int REQUEST_BG = 5;
     private int minimumHeightForVisibleOverlappingContent = 0;
     private int totalScrollRange = 0;
     private int statusbarHeight = 0;
@@ -249,19 +251,21 @@ public class SocialHomeActivity extends BaseActivity {
                             Intent intent = new Intent(this, ZoomActivity.class);
                             intent.putExtra("image", r.getLogo());
                             intent.putExtra("fromSocialHomePage", true);
-                            if (Constant.currentUser.getId().equals(r.getOwnerId())) {
+                            if (!r.getIdentity().equals("0")) {
                                 intent.putExtra("id", r.getGroupId());
+                                intent.putExtra("type", 1);
                             }
-                            startActivity(intent);
+                            startActivityForResult(intent, REQUEST_LOGO);
                         });
                         ivBg.setOnClickListener(v -> {
                             Intent intent = new Intent(this, ZoomActivity.class);
                             intent.putExtra("image", r.getBgi());
                             intent.putExtra("fromSocialHomePage", true);
-                            if (Constant.currentUser.getId().equals(r.getOwnerId())) {
+                            if (!r.getIdentity().equals("0")) {
                                 intent.putExtra("id", r.getGroupId());
+                                intent.putExtra("type", 2);
                             }
-                            startActivity(intent);
+                            startActivityForResult(intent, REQUEST_BG);
                         });
                     });
                     if (r.getIdentity().equals("0")) {
@@ -718,6 +722,9 @@ public class SocialHomeActivity extends BaseActivity {
         menuPop.showPopupWindow(view);
     }
 
+    public void fakeClick(View view) {
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -738,6 +745,12 @@ public class SocialHomeActivity extends BaseActivity {
                 case REQUEST_SOCIALNAME:
                     response.setName(data.getStringExtra("name"));
                     tvSocialName.setText(response.getName());
+                case REQUEST_LOGO:
+                    GlideUtil.loadNormalImg(ivHead, data.getStringExtra("url"));
+                    break;
+                case REQUEST_BG:
+                    GlideUtil.loadNormalImg(ivBg, data.getStringExtra("url"));
+                    break;
             }
         }
     }
