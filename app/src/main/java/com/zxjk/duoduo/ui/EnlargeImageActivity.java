@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -78,8 +80,10 @@ public class EnlargeImageActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_enlarge_image);
+        setLightStatusBar(false);
+        getWindow().setStatusBarColor(Color.BLACK);
+        BarUtils.setNavBarColor(this, Color.BLACK);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         ButterKnife.bind(this);
 
@@ -205,12 +209,6 @@ public class EnlargeImageActivity extends BaseActivity {
         return scale;
     }
 
-    @Override
-    public void finishAfterTransition() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        super.finishAfterTransition();
-    }
-
     class PagerAdapter extends androidx.viewpager.widget.PagerAdapter {
 
         @Override
@@ -242,9 +240,8 @@ public class EnlargeImageActivity extends BaseActivity {
         private View initView(int position) {
             RelativeLayout layout = new RelativeLayout(EnlargeImageActivity.this);
             SubsamplingScaleImageView imageView = new SubsamplingScaleImageView(EnlargeImageActivity.this);
-            SpinKitView progressBar = new SpinKitView(EnlargeImageActivity.this);
-            progressBar.setIndeterminateDrawable(SpriteFactory.create(Style.FADING_CIRCLE));
-            progressBar.setVisibility(View.GONE);
+//            SpinKitView progressBar = new SpinKitView(EnlargeImageActivity.this);
+//            progressBar.setIndeterminateDrawable(SpriteFactory.create(Style.FADING_CIRCLE));
 
             TextView textView = new TextView(EnlargeImageActivity.this);
             textView.setText(R.string.click_retry);
@@ -256,12 +253,12 @@ public class EnlargeImageActivity extends BaseActivity {
 
             layout.addView(imageView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             layout.addView(textView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            layout.addView(progressBar, layoutParams);
+//            layout.addView(progressBar, layoutParams);
+//            progressBar.setVisibility(View.GONE);
 
             textView.setOnClickListener(v -> {
                 textView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-
+//                progressBar.setVisibility(View.VISIBLE);
                 String sMessage;
                 Message message = images.get(position);
                 if (((ImageMessage) message.getContent()).getLocalUri() == null) {
@@ -269,17 +266,16 @@ public class EnlargeImageActivity extends BaseActivity {
                 } else {
                     sMessage = ((ImageMessage) message.getContent()).getLocalUri().toString();
                 }
-
                 Glide.with(EnlargeImageActivity.this).load(sMessage).into(new CustomViewTarget<SubsamplingScaleImageView, Drawable>(imageView) {
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                        progressBar.setVisibility(View.GONE);
+//                        progressBar.setVisibility(View.GONE);
                         textView.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        progressBar.setVisibility(View.GONE);
+//                        progressBar.setVisibility(View.GONE);
                         Bitmap bitmap = ImageUtils.drawable2Bitmap(resource);
                         currentBitmap = bitmap;
                         float initImageScale = getInitImageScale(bitmap);
@@ -291,8 +287,22 @@ public class EnlargeImageActivity extends BaseActivity {
 
                     @Override
                     protected void onResourceCleared(@Nullable Drawable placeholder) {
-                        progressBar.setVisibility(View.GONE);
+                        textView.setVisibility(View.GONE);
+//                        progressBar.setVisibility(View.GONE);
                     }
+
+                    @Override
+                    public void onStop() {
+//                        progressBar.setVisibility(View.GONE);
+                        super.onStop();
+                    }
+
+                    @Override
+                    public void onDestroy() {
+//                        progressBar.setVisibility(View.GONE);
+                        super.onDestroy();
+                    }
+
                 });
             });
 
