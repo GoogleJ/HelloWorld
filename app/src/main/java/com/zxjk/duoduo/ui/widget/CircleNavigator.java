@@ -24,7 +24,6 @@ import java.util.List;
 public class CircleNavigator extends View implements IPagerNavigator {
     private int mRadius;
     private int mCircleColor;
-    private int mStrokeWidth;
     private int mCircleSpacing;
     private int mCurrentIndex;
     private int mTotalCount;
@@ -52,7 +51,6 @@ public class CircleNavigator extends View implements IPagerNavigator {
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mRadius = UIUtil.dip2px(context, 4);
         mCircleSpacing = UIUtil.dip2px(context, 12);
-        mStrokeWidth = UIUtil.dip2px(context, 0.01);
     }
 
     @Override
@@ -89,7 +87,7 @@ public class CircleNavigator extends View implements IPagerNavigator {
                 break;
             case MeasureSpec.AT_MOST:
             case MeasureSpec.UNSPECIFIED:
-                result = mRadius * 2 + mStrokeWidth * 2 + getPaddingTop() + getPaddingBottom();
+                result = mRadius * 2  + getPaddingTop() + getPaddingBottom();
                 break;
             default:
                 break;
@@ -106,7 +104,6 @@ public class CircleNavigator extends View implements IPagerNavigator {
     private void drawCircles(Canvas canvas) {
         mPaint.setColor(Color.parseColor("#ADCAFF"));
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setStrokeWidth(mStrokeWidth);
         for (int i = 0, j = mCirclePoints.size(); i < j; i++) {
             PointF pointF = mCirclePoints.get(i);
             canvas.drawCircle(pointF.x, pointF.y, mRadius, mPaint);
@@ -243,14 +240,14 @@ public class CircleNavigator extends View implements IPagerNavigator {
         invalidate();
     }
 
-    public int getStrokeWidth() {
-        return mStrokeWidth;
-    }
-
-    public void setStrokeWidth(int strokeWidth) {
-        mStrokeWidth = strokeWidth;
-        invalidate();
-    }
+//    public int getStrokeWidth() {
+//        return mStrokeWidth;
+//    }
+//
+//    public void setStrokeWidth(int strokeWidth) {
+//        mStrokeWidth = strokeWidth;
+//        invalidate();
+//    }
 
     public int getCircleSpacing() {
         return mCircleSpacing;

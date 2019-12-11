@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,9 +47,12 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.widget.CircleNavigator;
 import com.zxjk.duoduo.ui.widget.dialog.LoadingDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,7 +63,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -574,18 +581,68 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
         ViewPager pagerVideo = helper.getView(R.id.pagerVideo);
         LinearLayout llVideoEmpty = helper.getView(R.id.llVideoEmpty);
-
+        MagicIndicator indicatorVideo = helper.getView(R.id.indicatorVideo);
         TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
+
         if (llBottom.getVisibility() == View.VISIBLE) {
             tvNumLeft.setText("(还可上传" + (Integer.parseInt(item.getVideo().getVideoCreate()) - item.getVideo().getVideoList().size()) + "条视频)");
         } else {
             tvNumLeft.setText("");
         }
 
-        pagerVideo.setPageMargin(CommonUtils.dip2px(getContext(), 12));
-
         if (item.getVideo().getVideoList().size() != 0) {
+            CircleNavigator navigator = new CircleNavigator(getContext());
+            navigator.setFollowTouch(true);
+            navigator.setCircleColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
+            navigator.setCircleCount(video.getVideoList().size());
+            indicatorVideo.setNavigator(navigator);
+
+            pagerVideo.setOffscreenPageLimit(3);
+            pagerVideo.setPageTransformer(false, new ViewPager.PageTransformer() {
+                private static final float MAX_ALPHA = 0.5f;
+                private static final float MAX_SCALE = 0.85f;
+
+                @Override
+                public void transformPage(View page, float position) {
+                    if (position < -1 || position > 1) {
+                        //不可见区域
+                        page.setAlpha(MAX_ALPHA);
+                        page.setScaleX(MAX_SCALE);
+                        page.setScaleY(MAX_SCALE);
+                    } else {
+                        //可见区域，透明度效果
+                        if (position <= 0) {
+                            //pos区域[-1,0)
+                            page.setAlpha(MAX_ALPHA + MAX_ALPHA * (1 + position));
+                        } else {
+                            //pos区域[0,1]
+                            page.setAlpha(MAX_ALPHA + MAX_ALPHA * (1 - position));
+                        }
+                        //可见区域，缩放效果
+                        float scale = Math.max(MAX_SCALE, 1 - Math.abs(position));
+                        page.setScaleX(scale);
+                        page.setScaleY(scale);
+                    }
+                }
+            });
+
+            pagerVideo.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    indicatorVideo.onPageScrolled(position % video.getVideoList().size(), positionOffset, positionOffsetPixels);
+                }
+
+                public void onPageSelected(int position) {
+                    indicatorVideo.onPageSelected(position % video.getVideoList().size());
+                }
+
+                public void onPageScrollStateChanged(int state) {
+                    indicatorVideo.onPageScrollStateChanged(state);
+                }
+            });
+
+
             pagerVideo.setVisibility(View.VISIBLE);
+            indicatorVideo.setVisibility(View.VISIBLE);
             llVideoEmpty.setVisibility(View.GONE);
             pagerVideo.setAdapter(new PagerAdapter() {
                 @Override
@@ -637,6 +694,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             });
         } else {
             pagerVideo.setVisibility(View.GONE);
+            indicatorVideo.setVisibility(View.GONE);
             llVideoEmpty.setVisibility(View.VISIBLE);
         }
     }

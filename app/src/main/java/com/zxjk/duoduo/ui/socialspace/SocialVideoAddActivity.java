@@ -91,7 +91,7 @@ public class SocialVideoAddActivity extends BaseActivity {
         title.setText(R.string.video_add);
 
         tvMaxCount = findViewById(R.id.tvMaxCount);
-        tvMaxCount.setText("视频压缩时间根据机型不同，用时需3-6分钟，请耐心等待");
+        tvMaxCount.setText("视频压缩时间根据机型不同，需用时3-8分钟，请耐心等待");
         llTopTips = findViewById(R.id.llTopTips);
         tvCurrentCount = findViewById(R.id.tvCurrentCount);
         if (maxCount == 0) {

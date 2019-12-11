@@ -47,12 +47,19 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pagerVideo"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="282dp"
+        android:layout_height="156dp"
+        android:layout_gravity="center_horizontal"
         android:clipChildren="false"
         android:overScrollMode="never"
+        android:visibility="gone" />
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/indicatorVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
         android:visibility="gone" />
 
     <LinearLayout

@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="12dp"
+        android:layout_margin="8dp"
         android:background="@drawable/shape_videoduration"
         android:drawableStart="@drawable/ic_video_play_small"
         android:drawablePadding="2.5dp"
