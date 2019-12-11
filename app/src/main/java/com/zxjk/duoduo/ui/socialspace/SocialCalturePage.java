@@ -63,10 +63,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -584,6 +581,13 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         MagicIndicator indicatorVideo = helper.getView(R.id.indicatorVideo);
         TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
 
+        ViewGroup.LayoutParams layoutParams = pagerVideo.getLayoutParams();
+        int width = (int) ((ScreenUtils.getScreenWidth() - CommonUtils.dip2px(getContext(), 64)) / 1.15f);
+        int height = (int) (width * 0.55f);
+        layoutParams.width = width;
+        layoutParams.height = height;
+        pagerVideo.setLayoutParams(layoutParams);
+
         if (llBottom.getVisibility() == View.VISIBLE) {
             tvNumLeft.setText("(还可上传" + (Integer.parseInt(item.getVideo().getVideoCreate()) - item.getVideo().getVideoList().size()) + "条视频)");
         } else {
@@ -600,7 +604,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             pagerVideo.setOffscreenPageLimit(3);
             pagerVideo.setPageTransformer(false, new ViewPager.PageTransformer() {
                 private static final float MAX_ALPHA = 0.5f;
-                private static final float MAX_SCALE = 0.85f;
+                private static final float MAX_SCALE = 0.9f;
 
                 @Override
                 public void transformPage(View page, float position) {

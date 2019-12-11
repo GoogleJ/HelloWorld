@@ -127,17 +127,17 @@ public class Application extends android.app.Application {
     public static void initSmallVideo() {
         // 设置拍摄视频缓存路径
         File dcim = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         if (DeviceUtils.isZte()) {
             if (dcim.exists()) {
-                JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
+                JianXiCamera.setVideoCachePath(dcim + "/Hilamg/ZipedVideos/");
             } else {
                 JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
                         "/sdcard-ext/")
-                        + "/mabeijianxi/");
+                        + "/Hilamg/ZipedVideos/");
             }
         } else {
-            JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
+            JianXiCamera.setVideoCachePath(dcim + "/Hilamg/ZipedVideos/");
         }
         JianXiCamera.initialize(false, null);
     }

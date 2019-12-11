@@ -27,6 +27,7 @@ import com.mabeijianxi.smallvideorecord2.model.AutoVBRMode;
 import com.mabeijianxi.smallvideorecord2.model.BaseMediaBitrateConfig;
 import com.mabeijianxi.smallvideorecord2.model.LocalMediaConfig;
 import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
+import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
 import com.zxjk.duoduo.network.Api;
@@ -45,6 +46,8 @@ import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
 public class SocialVideoAddActivity extends BaseActivity {
 
@@ -61,7 +64,7 @@ public class SocialVideoAddActivity extends BaseActivity {
     private int maxCount;
 
     //200M
-    private final String MAX_VIDEO_SIZE = "209715200";
+    private final String MAX_VIDEO_SIZE = "2097152000";
     //10M
     private final String MIN_VIDEO_SIZE = "10485760";
     //6min
@@ -277,12 +280,22 @@ public class SocialVideoAddActivity extends BaseActivity {
             final LocalMediaConfig config = buidler
                     .setVideoPath(selectedVideos.get(0).getPath())
                     .captureThumbnailsTime(1)
-                    .doH264Compress(new AutoVBRMode(25).setVelocity(BaseMediaBitrateConfig.Velocity.FAST))
+                    .doH264Compress(new AutoVBRMode(32).setVelocity(BaseMediaBitrateConfig.Velocity.ULTRAFAST))
                     .setFramerate(24)
                     .build();
             LocalMediaCompress compress = new LocalMediaCompress(config);
             e.onNext(compress.startCompress());
-        }).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver()).subscribe(onlyCompressOverBean -> {
+        }).compose(bindUntilEvent(ActivityEvent.DESTROY)).compose(RxSchedulers.ioObserver())
+                .doOnError(throwable -> {
+                    if (uploadLoading.isShowing()) uploadLoading.dismissReally();
+                })
+                .doOnDispose(() -> {
+                    if (uploadLoading.isShowing()) uploadLoading.dismissReally();
+                })
+                .doOnTerminate(() -> {
+                    if (uploadLoading.isShowing()) uploadLoading.dismissReally();
+                })
+                .subscribe(onlyCompressOverBean -> {
             if (onlyCompressOverBean.isSucceed()) {
                 OssUtils.uploadFile(onlyCompressOverBean.getVideoPath(), new OssUtils.OssCallBack1() {
                     @Override
@@ -345,12 +358,7 @@ public class SocialVideoAddActivity extends BaseActivity {
             } else {
                 Observable.error(new Exception());
             }
-        }, t -> {
-            if (uploadLoading.isShowing()) {
-                uploadLoading.dismissReally();
-            }
-            ToastUtils.showShort(R.string.upload_social_video_fail);
-        });
+        }, t -> ToastUtils.showShort(R.string.upload_social_video_fail));
     }
 
     static class MediaBean {
