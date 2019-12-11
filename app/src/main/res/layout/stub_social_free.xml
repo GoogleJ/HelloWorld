@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="请联系管理员开放社群文化！"
+            android:text="加入社群后查看更多社群空间信息"
             android:textColor="@color/textColor9" />
 
         <TextView
