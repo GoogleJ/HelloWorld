@@ -8,7 +8,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,18 +90,18 @@ public class SearchGroupActivity extends BaseActivity {
         adapter = new BaseQuickAdapter<SearchCommunityBean, BaseViewHolder>(R.layout.item_publicgroup) {
             @Override
             protected void convert(BaseViewHolder helper, SearchCommunityBean item) {
-                if (item.getCommunityName().contains(str)){
+                if (item.getCommunityName().contains(str)) {
                     helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), str))
                             .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
-                            .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
-                } else if (item.getCode().contains(str)){
+                            .setText(R.id.tvCount, item.getMembers());
+                } else if (item.getCode().contains(str)) {
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
                             .setText(R.id.tvGroupOnwerName, "社群号:" + matcherSearchText(Color.parseColor("#4486ff"), item.getCode(), str))
-                            .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
-                } else if (item.getOwnerNick().contains(str)){
+                            .setText(R.id.tvCount, item.getMembers());
+                } else if (item.getOwnerNick().contains(str)) {
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
                             .setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), str))
-                            .setText(R.id.tvCount, " (" + item.getMembers() + "人) ");
+                            .setText(R.id.tvCount, item.getMembers());
                 }
 
                 FrameLayout fl = helper.getView(R.id.fl);
