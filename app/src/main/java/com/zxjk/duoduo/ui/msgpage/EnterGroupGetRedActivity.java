@@ -115,7 +115,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                     //open
                     try {
                         request.setRedNewPersonStartTime(String.valueOf(df.parse(tvStartTime.getText().toString()).getTime()));
-                        request.setRedNewPersonEndTime(String.valueOf(df.parse(tvEndTime.getText().toString()).getTime()));
+                        request.setRedNewPersonEndTime(String.valueOf(df1.parse(tvEndTime.getText().toString() + " 23:59:59").getTime()));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -290,7 +290,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     }
 
     @SuppressLint("CheckResult")
-    public void setupEnd(View view) throws ParseException {
+    public void setupEnd(View view) {
         if (tvStartTime.getText().equals("请设置")) {
             ToastUtils.showShort(R.string.please_set_start_time);
             return;
@@ -302,7 +302,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                 request.setGroupId(groupId);
                 request.setSymbol(result.getSymbol());
                 try {
-                    request.setRedNewPersonEndTime(String.valueOf(df1.parse(year + "-" + month + "-" + day + " 23:" + "59:" + "59").getTime()));
+                    request.setRedNewPersonEndTime(String.valueOf(df1.parse(year + "-" + month + "-" + day + " 23:59:59").getTime()));
                 } catch (Exception e) {
                 }
                 ServiceFactory.getInstance().getBaseService(Api.class)
@@ -318,14 +318,10 @@ public class EnterGroupGetRedActivity extends BaseActivity {
             }
             tvEndTime.setText(year + "-" + month + "-" + day);
         });
-        String[] start = tvStartTime.getText().toString().split("-");
-        long time = df.parse(start[0] + "-" + start[1] + "-" + start[2]).getTime();
-        time += 86400000;
-        String format = df.format(new Date(time));
-        String[] split = format.split("-");
-
-        datePicker.setRangeStart(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
-        datePicker.setRangeEnd(Integer.parseInt(split[0]) + 3, Integer.parseInt(split[1]), 1);
+        String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
+        datePicker.setRangeStart(Integer.parseInt(nowString[0]),
+                Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
+        datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
         initPicker(datePicker);
         datePicker.show();
     }
