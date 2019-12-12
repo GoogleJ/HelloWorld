@@ -46,6 +46,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();
 
     private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private String groupId;
 
@@ -217,7 +218,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         PayEnterDialog payEnterDialog = new PayEnterDialog(this);
         payEnterDialog.setOnCommitClick(str -> {
             payEnterDialog.dismiss();
-            if (Float.parseFloat(str)==0) {
+            if (Float.parseFloat(str) == 0) {
                 ToastUtils.showShort(R.string.input_money1);
                 return;
             }
@@ -301,7 +302,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                 request.setGroupId(groupId);
                 request.setSymbol(result.getSymbol());
                 try {
-                    request.setRedNewPersonEndTime(String.valueOf(df.parse(year + "-" + month + "-" + day).getTime()));
+                    request.setRedNewPersonEndTime(String.valueOf(df1.parse(year + "-" + month + "-" + day + " 23:" + "59:" + "59").getTime()));
                 } catch (Exception e) {
                 }
                 ServiceFactory.getInstance().getBaseService(Api.class)
