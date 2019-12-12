@@ -294,7 +294,12 @@ public class Application extends android.app.Application {
         String SK = "h59RLWudf6XMXO4bSqSOwsK3nBHXSK";
         OSSPlainTextAKSKCredentialProvider ossPlainTextAKSKCredentialProvider =
                 new OSSPlainTextAKSKCredentialProvider(AK, SK);
-        String endpoint = "oss-cn-hongkong.aliyuncs.com";
+        String endpoint;
+        if (BuildConfig.DEBUG) {
+            endpoint = "oss-cn-beijing.aliyuncs.com";
+        } else {
+            endpoint = "oss-cn-hongkong.aliyuncs.com";
+        }
         oss = new OSSClient(this, endpoint, ossPlainTextAKSKCredentialProvider);
     }
 

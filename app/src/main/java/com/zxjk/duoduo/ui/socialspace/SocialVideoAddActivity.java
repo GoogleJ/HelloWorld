@@ -64,7 +64,7 @@ public class SocialVideoAddActivity extends BaseActivity {
     private int maxCount;
 
     //200M
-    private final String MAX_VIDEO_SIZE = "2097152000";
+    private final String MAX_VIDEO_SIZE = "209715200";
     //10M
     private final String MIN_VIDEO_SIZE = "10485760";
     //6min

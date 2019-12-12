@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -50,6 +51,8 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
+import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
+import com.zxjk.duoduo.ui.socialspace.SocialManageActivity;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.IExtensionClickAdapter;
@@ -1090,16 +1093,30 @@ public class ConversationActivity extends BaseActivity {
 
     private void initView() {
         tvTitle = findViewById(R.id.tv_title);
-
-        if (targetUserInfo != null) {
-            RelativeLayout rl_end = findViewById(R.id.rl_end);
-            rl_end.setVisibility(View.VISIBLE);
-            rl_end.setOnClickListener(v -> detail());
-        } else if (groupInfo != null && groupInfo.getGroupInfo().getGroupType().equals("1")) {
-            tvTitle.setTextColor(Color.parseColor("#EC7A00"));
-        }
+        RelativeLayout rl_end = findViewById(R.id.rl_end);
+        rl_end.setVisibility(View.VISIBLE);
+        rl_end.setOnClickListener(v -> detail());
 
         tvTitle.setText(targetUserInfo == null ? (groupInfo == null ? (Constant.currentUser.getNick()) : (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getCustomers().size() + ")")) : targetUserInfo.getName());
+
+        if (groupInfo != null && groupInfo.getGroupInfo().getGroupType().equals("1")) {
+            tvTitle.setTextColor(Color.parseColor("#EC7A00"));
+            ImageView iv_end = findViewById(R.id.iv_end);
+            iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_end));
+            rl_end.setOnClickListener(v -> {
+                Intent intent = new Intent(this, SocialManageActivity.class);
+                intent.putExtra("group", groupInfo);
+                startActivityForResult(intent, 1000);
+            });
+            tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
+            tvTitle.setOnClickListener(v -> {
+                Intent intent = new Intent(this, SocialHomeActivity.class);
+                intent.putExtra("id", groupInfo.getGroupInfo().getId());
+                intent.putExtra("fromConversatin", true);
+                startActivity(intent);
+            });
+        }
+
         registerOnTitleChange();
         initScreenCapture();
     }

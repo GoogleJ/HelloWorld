@@ -27,11 +27,30 @@
             app:scrimVisibleHeightTrigger="160dp"
             app:titleEnabled="false">
 
-            <ImageView
-                android:id="@+id/ivBg"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+                <View
+                    android:id="@+id/bgMask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/gradient_video_title"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="@color/white"
+                    android:textSize="13.5sp" />
+
+            </FrameLayout>
 
             <LinearLayout
                 android:id="@+id/llTop"
@@ -263,7 +282,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_social_back" />
+                            android:src="@drawable/ico_back_white" />
 
                     </FrameLayout>
 
@@ -309,7 +328,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_social_menu" />
+                            android:src="@drawable/ic_socialhome_end_white" />
 
                     </FrameLayout>
 

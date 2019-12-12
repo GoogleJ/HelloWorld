@@ -8,11 +8,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -75,9 +73,6 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.message.InformationNotificationMessage;
-import razerdp.basepopup.QuickPopupBuilder;
-import razerdp.basepopup.QuickPopupConfig;
-import razerdp.widget.QuickPopup;
 
 public class SocialHomeActivity extends BaseActivity {
 
@@ -115,6 +110,7 @@ public class SocialHomeActivity extends BaseActivity {
     private ImageView ivHead;
     private ImageView ivOpenConversation;
     private LinearLayout llSocialNotice;
+    private View bgMask;
 
     private ViewStub viewStubPay;
     private ViewStub viewStubFree;
@@ -122,14 +118,14 @@ public class SocialHomeActivity extends BaseActivity {
     private boolean hasInitTop;
     private boolean isInEditStatus;
 
-    private QuickPopup menuPop;
-
     private CommunityInfoResponse response;
 
     private SocialCalturePage socialCalturePage;
     private DynamicsPage dynamicsPage;
 
     private String groupId;
+
+    private boolean fromConversatin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +135,11 @@ public class SocialHomeActivity extends BaseActivity {
         setContentView(R.layout.activity_social_home);
 
         initView();
+
+        fromConversatin = getIntent().getBooleanExtra("fromConversatin", false);
+        if (fromConversatin) {
+            ivOpenConversation.setVisibility(View.GONE);
+        }
 
         groupId = getIntent().getStringExtra("id");
 
@@ -150,6 +151,10 @@ public class SocialHomeActivity extends BaseActivity {
         layoutParams.height = (int) (ScreenUtils.getScreenWidth() * 0.75);
         ivBg.setLayoutParams(layoutParams);
         ivBg.setImageResource(R.drawable.bg_default_social);
+
+        ViewGroup.LayoutParams layoutParams1 = bgMask.getLayoutParams();
+        layoutParams1.height = (int) (ScreenUtils.getScreenWidth() * 0.75 * 0.5);
+        bgMask.setLayoutParams(layoutParams1);
 
         initData();
 
@@ -485,11 +490,11 @@ public class SocialHomeActivity extends BaseActivity {
             if (absOffset <= minimumHeightForVisibleOverlappingContent) {
                 if (ivToolBarEnd.getVisibility() == View.GONE) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
-                    ivToolBarStart.setImageResource(R.drawable.ic_social_back);
-                }
-                if (ivToolBarStart.getVisibility() == View.GONE) {
+                    ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_white);
+                    ivToolBarStart.setImageResource(R.drawable.ico_back_white);
                     ivToolBarStart.setVisibility(View.VISIBLE);
                 }
+
                 if (tvTitle.getVisibility() == View.VISIBLE) {
                     tvTitle.setVisibility(View.INVISIBLE);
                     tvSocialCode.setVisibility(View.INVISIBLE);
@@ -508,11 +513,12 @@ public class SocialHomeActivity extends BaseActivity {
                     tvTitle.setVisibility(View.VISIBLE);
                     tvSocialCode.setVisibility(View.VISIBLE);
                 }
-                if (ivToolBarEnd.getVisibility() == View.VISIBLE) {
-                    ivToolBarEnd.setVisibility(View.GONE);
+                if (ivToolBarEnd.getVisibility() == View.GONE) {
+                    ivToolBarStart.setVisibility(View.VISIBLE);
+                    ivToolBarEnd.setVisibility(View.VISIBLE);
+                    ivToolBarStart.setImageResource(R.drawable.ico_back);
+                    ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_black);
                 }
-                ivToolBarStart.setVisibility(View.VISIBLE);
-                ivToolBarStart.setImageResource(R.drawable.ico_back);
             }
         });
     }
@@ -563,6 +569,7 @@ public class SocialHomeActivity extends BaseActivity {
         viewStubFree = findViewById(R.id.viewStubFree);
         llTop = findViewById(R.id.llTop);
         llSecond = findViewById(R.id.llSecond);
+        bgMask = findViewById(R.id.bgMask);
     }
 
     private void initPager() {
@@ -685,41 +692,23 @@ public class SocialHomeActivity extends BaseActivity {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
-        if (menuPop == null) {
-            menuPop = QuickPopupBuilder.with(this)
-                    .contentView(R.layout.pop_social_top)
-                    .config(new QuickPopupConfig()
-                            .backgroundColor(android.R.color.transparent)
-                            .gravity(Gravity.BOTTOM | Gravity.END)
-                            .withShowAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_in))
-                            .withDismissAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_out))
-                            .withClick(R.id.ic_social_end_pop1, child -> ToastUtils.showShort(R.string.developing), true)
-                            .withClick(R.id.ic_social_end_pop2, child -> {
-                                if (response == null) return;
-                                Intent intent = new Intent(this, SocialManageActivity.class);
-                                intent.putExtra("data", response);
-                                startActivityForResult(intent, REQUEST_SOCIALNAME);
-                            }, true)
-                            .withClick(R.id.ic_social_end_pop3, v -> ServiceFactory.getInstance().getBaseService(Api.class)
-                                    .editListCommunityCulture(groupId)
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.normalTrans())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(SocialHomeActivity.this)))
-                                    .subscribe(r -> {
-                                        isInEditStatus = true;
-                                        ivToolBarEnd.setVisibility(View.GONE);
-                                        tvSocialId.setVisibility(View.GONE);
-                                        ivToolBarStart.setVisibility(View.GONE);
-                                        tvTitle.setText(R.string.edit_social_calture);
-                                        tvTitle.setVisibility(View.VISIBLE);
-                                        socialCalturePage.change2Edit(r);
-                                        app_bar.setExpanded(false, true);
-                                        ivOpenConversation.animate().translationXBy(ivOpenConversation.getWidth()).start();
-                                    }, this::handleApiError), true))
-                    .build();
-        }
 
-        menuPop.showPopupWindow(view);
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .editListCommunityCulture(groupId)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(SocialHomeActivity.this)))
+                .subscribe(r -> {
+                    isInEditStatus = true;
+                    ivToolBarEnd.setVisibility(View.GONE);
+                    tvSocialId.setVisibility(View.GONE);
+                    ivToolBarStart.setVisibility(View.GONE);
+                    tvTitle.setText(R.string.edit_social_calture);
+                    tvTitle.setVisibility(View.VISIBLE);
+                    socialCalturePage.change2Edit(r);
+                    app_bar.setExpanded(false, true);
+                    ivOpenConversation.animate().translationXBy(ivOpenConversation.getWidth()).start();
+                }, this::handleApiError);
     }
 
     public void fakeClick(View view) {

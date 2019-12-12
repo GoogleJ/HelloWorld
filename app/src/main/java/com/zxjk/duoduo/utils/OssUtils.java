@@ -10,6 +10,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Application;
+import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
 
 public class OssUtils {
@@ -30,8 +31,15 @@ public class OssUtils {
 
     public static void uploadFile(String filePath, OssCallBack1 ossCallBack, OssProgressCallBack progressCallBack) {
         String fileName = Constant.userId + System.currentTimeMillis();
-        PutObjectRequest put = new PutObjectRequest("zhongxingjike2", "upload/" +
-                fileName, filePath);
+        PutObjectRequest put;
+        if (BuildConfig.enableLog) {
+            put = new PutObjectRequest("zhongxingjike1", "upload/" +
+                    fileName, filePath);
+        } else {
+            put = new PutObjectRequest("zhongxingjike2", "upload/" +
+                    fileName, filePath);
+        }
+
         if (progressCallBack != null) {
             put.setProgressCallback((request, currentSize, totalSize) -> progressCallBack.onUpload((currentSize + 0f) / totalSize));
         }
@@ -57,8 +65,14 @@ public class OssUtils {
 
     public static void uploadFile(String filePath, OssCallBack ossCallBack, OssProgressCallBack progressCallBack) {
         String fileName = Constant.userId + System.currentTimeMillis();
-        PutObjectRequest put = new PutObjectRequest("zhongxingjike2", "upload/" +
-                fileName, filePath);
+        PutObjectRequest put;
+        if (BuildConfig.enableLog) {
+            put = new PutObjectRequest("zhongxingjike1", "upload/" +
+                    fileName, filePath);
+        } else {
+            put = new PutObjectRequest("zhongxingjike2", "upload/" +
+                    fileName, filePath);
+        }
         if (progressCallBack != null) {
             put.setProgressCallback((request, currentSize, totalSize) -> progressCallBack.onUpload((currentSize + 0f) / totalSize));
         }

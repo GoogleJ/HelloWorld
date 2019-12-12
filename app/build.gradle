@@ -213,8 +213,8 @@ dependencies {
     implementation 'com.umeng.umsdk:utdid:1.1.5.3'
 
     //debugtools
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
+//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+//    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
 
 }

@@ -17,7 +17,6 @@ import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -40,8 +39,6 @@ import io.rong.imlib.model.Conversation;
 
 public class SocialManageActivity extends BaseActivity {
 
-    private CommunityInfoResponse response;
-
     private TextView tvSocialName;
     private TextView tvNick;
     private LinearLayout llOwner;
@@ -54,17 +51,19 @@ public class SocialManageActivity extends BaseActivity {
 
     private GroupResponse group;
 
+    private String identity;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_manage);
 
+        group = (GroupResponse) getIntent().getSerializableExtra("group");
+
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.ic_social_end_pop2);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-
-        response = getIntent().getParcelableExtra("data");
 
         tvSocialName = findViewById(R.id.tvSocialName);
         tvNick = findViewById(R.id.tvNick);
@@ -75,17 +74,20 @@ public class SocialManageActivity extends BaseActivity {
         switch2 = findViewById(R.id.switch2);
         ll_groupmanager = findViewById(R.id.ll_groupmanager);
         tvBottom = findViewById(R.id.tvBottom);
-
         tvNick.setText(Constant.currentUser.getNick());
-        tvSocialName.setText(response.getName());
-        String identity = response.getIdentity();
+        tvSocialName.setText(group.getGroupInfo().getGroupNikeName());
+
+
+        if (group.getGroupInfo().getGroupOwnerId().equals(Constant.userId)) {
+            identity = "2";
+        } else if (group.getIsAdmin().equals("1")) {
+            identity = "1";
+        } else {
+            identity = "0";
+        }
+
         if (!"0".equals(identity)) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getGroupByGroupId(response.getGroupId())
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(group -> this.group = group, this::handleApiError);
+            group = (GroupResponse) getIntent().getSerializableExtra("group");
         }
         switch (identity) {
             case "0":
@@ -104,7 +106,7 @@ public class SocialManageActivity extends BaseActivity {
                 break;
         }
 
-        RongIM.getInstance().getConversationNotificationStatus(Conversation.ConversationType.GROUP, response.getGroupId(), new RongIMClient.ResultCallback<Conversation.ConversationNotificationStatus>() {
+        RongIM.getInstance().getConversationNotificationStatus(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), new RongIMClient.ResultCallback<Conversation.ConversationNotificationStatus>() {
             @Override
             public void onSuccess(Conversation.ConversationNotificationStatus conversationNotificationStatus) {
                 if (conversationNotificationStatus == Conversation.ConversationNotificationStatus.NOTIFY) {
@@ -125,10 +127,10 @@ public class SocialManageActivity extends BaseActivity {
             } else {
                 status = Conversation.ConversationNotificationStatus.NOTIFY;
             }
-            RongIM.getInstance().setConversationNotificationStatus(Conversation.ConversationType.GROUP, response.getGroupId(), status, null);
+            RongIM.getInstance().setConversationNotificationStatus(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), status, null);
         });
 
-        RongIM.getInstance().getConversation(Conversation.ConversationType.GROUP, response.getGroupId(), new RongIMClient.ResultCallback<Conversation>() {
+        RongIM.getInstance().getConversation(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), new RongIMClient.ResultCallback<Conversation>() {
             @Override
             public void onSuccess(Conversation conversation) {
                 if (conversation != null) switch1.setChecked(conversation.isTop());
@@ -139,14 +141,14 @@ public class SocialManageActivity extends BaseActivity {
             public void onError(RongIMClient.ErrorCode errorCode) {
             }
         });
-        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> RongIM.getInstance().setConversationToTop(Conversation.ConversationType.GROUP, response.getGroupId(), isChecked, null));
+        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> RongIM.getInstance().setConversationToTop(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), isChecked, null));
     }
 
     public void socialName(View view) {
-        if (!response.getIdentity().equals("0")) {
+        if (!identity.equals("0")) {
             GroupResponse group = new GroupResponse();
             GroupResponse.GroupInfoBean groupInfoBean = new GroupResponse.GroupInfoBean();
-            groupInfoBean.setId(response.getGroupId());
+            groupInfoBean.setId(group.getGroupInfo().getId());
             group.setGroupInfo(groupInfoBean);
             Intent intent = new Intent(this, UpdateUserInfoActivity.class);
             intent.putExtra("type", 4);
@@ -159,8 +161,8 @@ public class SocialManageActivity extends BaseActivity {
 
     public void inviteWechat(View view) {
         Intent intent = new Intent(this, InviteForSocialActivity.class);
-        intent.putExtra("groupId", response.getGroupId());
-        intent.putExtra("groupName", response.getName());
+        intent.putExtra("groupId", group.getGroupInfo().getId());
+        intent.putExtra("groupName", group.getGroupInfo().getGroupNikeName());
         startActivity(intent);
     }
 
@@ -173,7 +175,7 @@ public class SocialManageActivity extends BaseActivity {
                 holder.setText(R.id.tv_cancel, "取消");
                 holder.setText(R.id.tv_notarize, "确认");
                 holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
-                holder.setOnClickListener(R.id.tv_notarize, v1 -> RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, response.getGroupId(), new RongIMClient.ResultCallback<Boolean>() {
+                holder.setOnClickListener(R.id.tv_notarize, v1 -> RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), new RongIMClient.ResultCallback<Boolean>() {
                     @Override
                     public void onSuccess(Boolean aBoolean) {
                         dialog.dismiss();
@@ -195,7 +197,7 @@ public class SocialManageActivity extends BaseActivity {
 
     public void chooseNewOwner(View view) {
         Intent intent = new Intent(this, ChooseNewOwnerActivity.class);
-        intent.putExtra("groupId", response.getGroupId());
+        intent.putExtra("groupId", group.getGroupInfo().getId());
         intent.putExtra("fromSocial", true);
         startActivity(intent);
     }
@@ -249,10 +251,10 @@ public class SocialManageActivity extends BaseActivity {
 
     public void funBottom(View view) {
         ConfirmDialog confirmDialog;
-        if (response.getIdentity().equals("2")) {
-            confirmDialog = new ConfirmDialog(this, "提示", "是否确定解散社群", v -> disBandGroup(response.getGroupId(), Constant.userId));
+        if (identity.equals("2")) {
+            confirmDialog = new ConfirmDialog(this, "提示", "是否确定解散社群", v -> disBandGroup(group.getGroupInfo().getId(), Constant.userId));
         } else {
-            confirmDialog = new ConfirmDialog(this, "提示", "是否确定退出社群", v -> exitGroup(response.getGroupId(), Constant.userId));
+            confirmDialog = new ConfirmDialog(this, "提示", "是否确定退出社群", v -> exitGroup(group.getGroupInfo().getId(), Constant.userId));
         }
         confirmDialog.show();
     }
@@ -306,17 +308,18 @@ public class SocialManageActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == 2) {
-            response.setName(data.getStringExtra("result"));
+            group.getGroupInfo().setGroupNikeName(data.getStringExtra("result"));
             tvSocialName.setText(data.getStringExtra("result"));
         }
     }
 
     @Override
     public void finish() {
-        if (response != null) {
+        if (group != null) {
             Intent intent = new Intent();
-            intent.putExtra("name", response.getName());
-            this.setResult(1,intent);
+            intent.putExtra("title", group.getGroupInfo().getGroupNikeName());
+            intent.putExtra("group", group);
+            this.setResult(1000, intent);
         }
         super.finish();
     }
