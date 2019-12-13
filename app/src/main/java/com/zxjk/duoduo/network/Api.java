@@ -57,7 +57,7 @@ import com.zxjk.duoduo.bean.response.ReceivePointResponse;
 import com.zxjk.duoduo.bean.response.RedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
 import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
-import com.zxjk.duoduo.bean.response.SearchCommunityBean;
+import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
@@ -643,7 +643,8 @@ public interface Api {
 
     @POST("duoduo/community/searchCommunity")
     @FormUrlEncoded
-    Observable<BaseResponse<List<SearchCommunityBean>>> searchCommunity(@Field("code") String code);
+    Observable<BaseResponse<SearchCommunityResponse>> searchCommunity(@Field("code") String code
+            , @Field("page") int page, @Field("offset") int offset);
 
     @POST("duoduo/community/communityCulture")
     @FormUrlEncoded

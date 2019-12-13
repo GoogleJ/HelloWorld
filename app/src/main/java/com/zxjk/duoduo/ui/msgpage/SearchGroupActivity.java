@@ -28,17 +28,20 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.SearchCommunityBean;
+import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
+import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.reactivex.functions.Consumer;
 
 public class SearchGroupActivity extends BaseActivity {
 
@@ -48,8 +51,11 @@ public class SearchGroupActivity extends BaseActivity {
     private EditText etSearch;
     private BaseQuickAdapter adapter;
     private Api api;
-    private String str;
     private SpannableString builder;
+
+    private String searchWord;
+    private int currentPage = 1;
+    private int pageOffset = 10;
 
     @SuppressLint("CheckResult")
     @Override
@@ -65,19 +71,21 @@ public class SearchGroupActivity extends BaseActivity {
 
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                str = etSearch.getText().toString().trim();
-                if (TextUtils.isEmpty(str)) {
+                searchWord = etSearch.getText().toString().trim();
+                if (TextUtils.isEmpty(searchWord)) {
                     ToastUtils.showShort(R.string.input_empty);
                     return false;
                 }
+                currentPage = 1;
                 KeyboardUtils.hideSoftInput(SearchGroupActivity.this);
-                api.searchCommunity(str)
+                api.searchCommunity(searchWord, currentPage, pageOffset)
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(b -> {
                             if (!hasSearch) recycler.setAdapter(adapter);
-                            adapter.setNewData(b);
+                            adapter.setNewData(b.getList());
+                            adapter.disableLoadMoreIfNotFullPage();
                         }, this::handleApiError);
                 return true;
             }
@@ -87,20 +95,20 @@ public class SearchGroupActivity extends BaseActivity {
         float itemHeight = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 36)) / 2f;
 
         recycler.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new BaseQuickAdapter<SearchCommunityBean, BaseViewHolder>(R.layout.item_publicgroup) {
+        adapter = new BaseQuickAdapter<SearchCommunityResponse.ListBean, BaseViewHolder>(R.layout.item_publicgroup) {
             @Override
-            protected void convert(BaseViewHolder helper, SearchCommunityBean item) {
-                if (item.getCommunityName().contains(str)) {
-                    helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), str))
+            protected void convert(BaseViewHolder helper, SearchCommunityResponse.ListBean item) {
+                if (item.getCommunityName().contains(searchWord)) {
+                    helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), searchWord))
                             .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
                             .setText(R.id.tvCount, item.getMembers());
-                } else if (item.getCode().contains(str)) {
+                } else if (item.getCode().contains(searchWord)) {
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
-                            .setText(R.id.tvGroupOnwerName, "社群号:" + matcherSearchText(Color.parseColor("#4486ff"), item.getCode(), str))
+                            .setText(R.id.tvGroupOnwerName, "社群号:" + matcherSearchText(Color.parseColor("#4486ff"), item.getCode(), searchWord))
                             .setText(R.id.tvCount, item.getMembers());
-                } else if (item.getOwnerNick().contains(str)) {
+                } else if (item.getOwnerNick().contains(searchWord)) {
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
-                            .setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), str))
+                            .setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), searchWord))
                             .setText(R.id.tvCount, item.getMembers());
                 }
 
@@ -134,6 +142,26 @@ public class SearchGroupActivity extends BaseActivity {
         iv.setImageResource(R.drawable.ic_empty_nosearch);
         tv.setText(R.string.no_search);
         adapter.setEmptyView(emptyView);
+
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(
+                () -> api.searchCommunity(searchWord, currentPage + 1, pageOffset)
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver())
+                        .subscribe(b -> {
+                            currentPage += 1;
+                            adapter.addData(b.getList());
+                            if (!b.isHasNextPage()) {
+                                adapter.loadMoreEnd();
+                            } else {
+                                adapter.loadMoreComplete();
+                            }
+                        }, t -> {
+                            handleApiError(t);
+                            adapter.loadMoreFail();
+                        }),
+                recycler);
 
         etSearch.requestFocus();
     }
