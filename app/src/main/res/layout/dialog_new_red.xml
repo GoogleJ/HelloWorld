@@ -9,6 +9,8 @@
         android:id="@+id/llContent1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/new_red_dialog_bg1"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -24,9 +26,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="32dp"
             android:gravity="center">
 
             <ImageView
@@ -40,6 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/white" />
 
@@ -53,8 +56,8 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="3"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
             android:text="@string/newredtip"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -66,6 +69,8 @@
         android:id="@+id/llContent2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/new_red_dialog_bg2"
         android:orientation="vertical"
         android:visibility="gone">
