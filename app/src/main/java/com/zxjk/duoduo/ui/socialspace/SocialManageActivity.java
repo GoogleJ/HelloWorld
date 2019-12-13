@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.socialspace;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -308,8 +309,11 @@ public class SocialManageActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == 2) {
-            group.getGroupInfo().setGroupNikeName(data.getStringExtra("result"));
-            tvSocialName.setText(data.getStringExtra("result"));
+            group = (GroupResponse) data.getSerializableExtra("group");
+            if (!TextUtils.isEmpty(data.getStringExtra("result"))) {
+                group.getGroupInfo().setGroupNikeName(data.getStringExtra("result"));
+                tvSocialName.setText(data.getStringExtra("result"));
+            }
         }
     }
 

@@ -75,6 +75,7 @@
             <include layout="@layout/layout_line10" />
 
             <RelativeLayout
+                android:visibility="gone"
                 style="@style/RLayoutStyle"
                 android:onClick="groupQR">
 
@@ -101,7 +102,7 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_line10" />
+            <include layout="@layout/layout_line10" android:visibility="gone"/>
 
             <RelativeLayout
                 android:id="@+id/rl_setTop"
@@ -306,9 +307,8 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_line" />
-
             <RelativeLayout
+                android:visibility="gone"
                 style="@style/RLayoutStyle"
                 android:onClick="announcement">
 

@@ -331,7 +331,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
     public void finish() {
         Intent intent = new Intent();
         intent.putExtra("group", group);
-        setResult(4, intent);
+        setResult(2, intent);
         super.finish();
     }
 }

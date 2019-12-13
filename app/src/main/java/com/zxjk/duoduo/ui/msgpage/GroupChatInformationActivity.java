@@ -60,11 +60,6 @@ public class GroupChatInformationActivity extends BaseActivity {
     private TextView tv_title;
     private GroupResponse group;
 
-    /**
-     * 1.群主 2.管理员 3.群员
-     */
-    private int inditify = 3;
-
     private Switch switch1;
     private Switch switch2;
 
@@ -86,32 +81,10 @@ public class GroupChatInformationActivity extends BaseActivity {
 
         group = (GroupResponse) getIntent().getSerializableExtra("group");
 
-        if (group != null && group.getGroupInfo().getGroupOwnerId().equals(Constant.currentUser.getId())) {
-            inditify = 1;
-        } else if (group != null && group.getIsAdmin().equals("1")) {
-            inditify = 2;
-        } else {
-            inditify = 3;
-        }
-
         initView();
     }
 
     private void initView() {
-        switch (inditify) {
-            case 1:
-                ll_groupowner.setVisibility(View.VISIBLE);
-                rl_groupManage.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                ll_groupmanager.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-
-                break;
-            default:
-        }
-
         RongIM.getInstance().getConversationNotificationStatus(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), new RongIMClient.ResultCallback<Conversation.ConversationNotificationStatus>() {
             @Override
             public void onSuccess(Conversation.ConversationNotificationStatus conversationNotificationStatus) {
