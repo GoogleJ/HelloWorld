@@ -35,6 +35,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.mabeijianxi.smallvideorecord2.JianXiCamera;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsVideo;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityApplicationRequest;
 import com.zxjk.duoduo.bean.request.EditCommunityFileRequest;
@@ -447,10 +448,10 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
     private void downloadAndShowFile(BaseQuickAdapter<EditListCommunityCultureResponse.FilesBean.FilesListBean, BaseViewHolder> appAdapter, int position) {
         EditListCommunityCultureResponse.FilesBean.FilesListBean filesListBean = appAdapter.getData().get(position);
-        String url = filesListBean.getFileAddress().replace("https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/", "");
+        String url = filesListBean.getFileAddress().replace(Constant.OSS_URL, "");
         LoadingDialog loadingDialog = new LoadingDialog(getActivity(), "下载中，请稍后");
         loadingDialog.show();
-        ServiceFactory.getInstance().getNormalService("https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/", Api.class)
+        ServiceFactory.getInstance().getNormalService(Constant.OSS_URL, Api.class)
                 .downloadFile(url)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override

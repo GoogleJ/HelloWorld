@@ -736,8 +736,6 @@ public class ConversationActivity extends BaseActivity {
                     .title("强制撤回")
                     .showFilter(uiMessage -> {
 
-                        String objectName = uiMessage.getObjectName();
-
                         String senderUserId = uiMessage.getSenderUserId();
 
                         groupInfo.getGroupInfo().getGroupOwnerId();
