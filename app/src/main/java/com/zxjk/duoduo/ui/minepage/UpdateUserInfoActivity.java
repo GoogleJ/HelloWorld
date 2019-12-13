@@ -25,7 +25,6 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.model.Group;
 import io.rong.imlib.model.UserInfo;
 
@@ -109,10 +108,9 @@ public class UpdateUserInfoActivity extends BaseActivity {
             return;
         }
 
-        GroupResponse data = (GroupResponse) getIntent().getSerializableExtra("data");
         if (type == TYPE_GROUP_TITLE) {
             GroupResponse.GroupInfoBean request = new GroupResponse.GroupInfoBean();
-            request.setId(data.getGroupInfo().getId());
+            request.setId(getIntent().getStringExtra("groupId"));
             request.setGroupNikeName(sign);
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .updateGroupInfo(GsonUtils.toJson(request))
@@ -120,10 +118,15 @@ public class UpdateUserInfoActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(UpdateUserInfoActivity.this)))
                     .compose(RxSchedulers.normalTrans())
                     .subscribe(groupResponse -> {
-                        RongUserInfoManager.getInstance().setGroupInfo(new Group(groupResponse.getId(),
-                                groupResponse.getGroupNikeName(), Uri.parse(groupResponse.getHeadPortrait())));
+                        if (getIntent().getBooleanExtra("fromSocial", false)) {
+                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getId(), groupResponse.getGroupNikeName() + "おれは人间をやめるぞ！ジョジョ―――ッ!",
+                                    Uri.parse(groupResponse.getHeadPortrait())));
+                        } else {
+                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getId(), groupResponse.getGroupNikeName(),
+                                    Uri.parse(groupResponse.getHeadPortrait())));
+                        }
+
                         Intent intent = new Intent();
-                        intent.putExtra("group", data);
                         intent.putExtra("result", sign);
                         setResult(2, intent);
                         finish();

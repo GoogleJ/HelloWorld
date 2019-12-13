@@ -147,13 +147,10 @@ public class SocialManageActivity extends BaseActivity {
 
     public void socialName(View view) {
         if (!identity.equals("0")) {
-//            GroupResponse group = new GroupResponse();
-            GroupResponse.GroupInfoBean groupInfoBean = new GroupResponse.GroupInfoBean();
-            groupInfoBean.setId(group.getGroupInfo().getId());
-            group.setGroupInfo(groupInfoBean);
             Intent intent = new Intent(this, UpdateUserInfoActivity.class);
             intent.putExtra("type", 4);
-            intent.putExtra("data", group);
+            intent.putExtra("groupId", group.getGroupInfo().getId());
+            intent.putExtra("fromSocial", true);
             startActivityForResult(intent, 1);
         } else {
             ToastUtils.showShort(getString(R.string.no_update_nick));
@@ -309,7 +306,9 @@ public class SocialManageActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == 2) {
-            group = (GroupResponse) data.getSerializableExtra("group");
+            if (data.getSerializableExtra("group") != null) {
+                group = (GroupResponse) data.getSerializableExtra("group");
+            }
             if (!TextUtils.isEmpty(data.getStringExtra("result"))) {
                 group.getGroupInfo().setGroupNikeName(data.getStringExtra("result"));
                 tvSocialName.setText(data.getStringExtra("result"));
