@@ -593,6 +593,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                                 " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
                                 "&nbsp;<font color='black'><b>"+appAdapter.getData().get(position).getApplicationName()+"</b></font>" +
                                 "&nbsp;直接并单独向您承担责任。</p>"));
+            } else {
+                EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean applicationListBean = appAdapter.getData().get(position);
+                Intent intent = new Intent(getContext(), WebActivity.class);
+                intent.putExtra("url", applicationListBean.getApplicationAddress());
+                intent.putExtra("title", applicationListBean.getApplicationName());
+                startActivity(intent);
             }
         });
 
