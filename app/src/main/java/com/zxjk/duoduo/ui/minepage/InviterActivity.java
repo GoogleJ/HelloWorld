@@ -104,7 +104,7 @@ public class InviterActivity extends BaseActivity {
         tvtitle.setText(R.string.invite_friends1);
         ivQR = findViewById(R.id.ivQR);
 
-        String userName = "ID:" + Constant.currentUser.getNick();
+        String userName = Constant.currentUser.getNick();
         if (userName.length() > 7) {
             tvSocialName.setText(userName.substring(0, 5) + "...");
         } else {
