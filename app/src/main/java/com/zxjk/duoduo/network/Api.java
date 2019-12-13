@@ -708,8 +708,4 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> getShoppingUrl(@Field("type") String type);
 
-    @POST("mochat/shopping/getShoppingUrl")
-    @FormUrlEncoded
-    Observable<BaseResponse<String>> getShoppingUrl(@Field("type") String type);
-
 }
