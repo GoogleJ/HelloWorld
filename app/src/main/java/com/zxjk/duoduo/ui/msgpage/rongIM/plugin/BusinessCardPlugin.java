@@ -33,6 +33,7 @@ public class BusinessCardPlugin implements IPluginModule {
     public void onClick(Fragment fragment, RongExtension rongExtension) {
         Intent intent = new Intent(fragment.getContext(), SelectContactForCardActivity.class);
         intent.putExtra("userId", rongExtension.getTargetId());
+        intent.putExtra("fromPulgin", true);
         fragment.startActivity(intent);
     }
 }

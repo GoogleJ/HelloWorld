@@ -29,13 +29,8 @@ public class BusinessCardProvider extends IContainerItemProvider.MessageProvider
         LinearLayout sendLayout;
     }
 
-    Context context;
-
     @Override
     public void bindView(View view, int i, BusinessCardMessage businessCardMessage, UIMessage uiMessage) {
-        if (context == null) {
-            context = view.getContext();
-        }
         ViewHolder holder = (ViewHolder) view.getTag();
 
         if (uiMessage.getMessageDirection() == Message.MessageDirection.SEND) {

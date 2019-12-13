@@ -1,11 +1,11 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,7 +25,6 @@ import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.SelectForCardAdapter;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
@@ -53,12 +52,13 @@ import io.rong.message.ImageMessage;
 @SuppressLint("CheckResult")
 public class SelectContactForCardActivity extends BaseActivity implements TextWatcher {
 
-    EditText searchEdit;
-    RecyclerView mRecyclerView;
-    SelectForCardAdapter mAdapter;
-    String userId;
+    private EditText searchEdit;
+    private RecyclerView mRecyclerView;
+    private SelectForCardAdapter mAdapter;
+    private String userId;
+    private boolean fromPulgin;
 
-    List<FriendInfoResponse> list = new ArrayList<>();
+    private List<FriendInfoResponse> list = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +72,7 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
 
     private void initRecyclerView() {
         userId = getIntent().getStringExtra("userId");
+        fromPulgin = getIntent().getBooleanExtra("fromPulgin", false);
 
         searchEdit.addTextChangedListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -218,12 +219,39 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                             holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                             holder.setOnClickListener(R.id.tv_notarize, v -> {
                                 dialog.dismiss();
+                                FriendInfoResponse listBean = mAdapter.getData().get(position);
+
+                                String toId;
+                                String toUserNick;
+                                String cardUserId;
+                                String cardUserNick;
+                                String cardUserDuoDuoId;
+                                String cardUserPortrait;
+
+                                if (fromPulgin) {
+                                    toId = c.getId();
+                                    toUserNick = TextUtils.isEmpty(c.getRemark()) ? c.getNick() : c.getRemark();
+                                    cardUserId = listBean.getId();
+                                    cardUserNick = listBean.getNick();
+                                    cardUserDuoDuoId = listBean.getDuoduoId();
+                                    cardUserPortrait = listBean.getHeadPortrait();
+                                } else {
+                                    toId = listBean.getId();
+                                    toUserNick = TextUtils.isEmpty(listBean.getRemark()) ? listBean
+                                            .getNick() : listBean.getRemark();
+                                    cardUserId = c.getId();
+                                    cardUserNick = c.getNick();
+                                    cardUserDuoDuoId = c.getDuoduoId();
+                                    cardUserPortrait = c.getHeadPortrait();
+                                }
+
                                 BusinessCardMessage message = new BusinessCardMessage();
-                                message.setDuoduo(c .getDuoduoId());
-                                message.setIcon(c .getHeadPortrait());
-                                message.setUserId(c .getId());
-                                message.setName(c .getNick());
-                                Message message1 = Message.obtain(list.get(position).getId(), Conversation.ConversationType.PRIVATE, message);
+                                message.setUserId(cardUserId);
+                                message.setDuoduo(cardUserDuoDuoId);
+                                message.setIcon(cardUserPortrait);
+                                message.setName(cardUserNick);
+
+                                Message message1 = Message.obtain(toId, Conversation.ConversationType.PRIVATE, message);
                                 RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
                                     @Override
                                     public void onAttached(Message message) {
@@ -231,11 +259,8 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
 
                                     @Override
                                     public void onSuccess(Message message) {
-                                        dialog.dismiss();
-                                        Intent intent = new Intent(SelectContactForCardActivity.this, HomeActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
-                                        RongIM.getInstance().startPrivateChat(SelectContactForCardActivity.this, list.get(position).getId(), mAdapter.getData().get(position).getNick());
+                                        if (fromPulgin) finish();
+                                        ToastUtils.showShort(R.string.has_bean_sent);
                                     }
 
                                     @Override
