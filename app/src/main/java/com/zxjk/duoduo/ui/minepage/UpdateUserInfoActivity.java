@@ -123,6 +123,7 @@ public class UpdateUserInfoActivity extends BaseActivity {
                         RongUserInfoManager.getInstance().setGroupInfo(new Group(groupResponse.getId(),
                                 groupResponse.getGroupNikeName(), Uri.parse(groupResponse.getHeadPortrait())));
                         Intent intent = new Intent();
+                        intent.putExtra("group", data);
                         intent.putExtra("result", sign);
                         setResult(2, intent);
                         finish();

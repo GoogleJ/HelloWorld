@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -66,6 +68,9 @@ import java.util.List;
 import java.util.Locale;
 
 import okhttp3.ResponseBody;
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
+import razerdp.widget.QuickPopup;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -175,10 +180,29 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         intent.putExtra("bean", bean);
                         startActivityForResult(intent, REQUEST_SETTINGWEB);
                     } else {
-                        Intent intent = new Intent(getContext(), WebActivity.class);
-                        intent.putExtra("url", bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteUrl());
-                        intent.putExtra("title", bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle());
-                        startActivity(intent);
+                        TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
+                        showAnimation.setDuration(250);
+                        TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
+                        dismissAnimation.setDuration(500);
+                        QuickPopup show = QuickPopupBuilder.with(getActivity())
+                                .contentView(R.layout.popup_dangerweb)
+                                .config(new QuickPopupConfig()
+                                        .withShowAnimation(showAnimation)
+                                        .withDismissAnimation(dismissAnimation)
+                                        .withClick(R.id.llBack, null, true)
+                                        .withClick(R.id.tv, v -> {
+                                            Intent intent = new Intent(getContext(), WebActivity.class);
+                                            intent.putExtra("url", bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteUrl());
+                                            intent.putExtra("title", bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle());
+                                            startActivity(intent);
+                                        }, true))
+                                .show();
+                        TextView tv = show.findViewById(R.id.tvTips);
+                        //tv.setText(bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle());
+                        tv.setText(Html.fromHtml(
+                                " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
+                                        "&nbsp;<font color='black'><b>"+bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle()+"</b></font>" +
+                                        "&nbsp;直接并单独向您承担责任。</p>"));
                     }
                     break;
                 case SocialCaltureListBean.TYPE_FILE:
@@ -545,11 +569,31 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 startActivityForResult(intent, REQUEST_SETTINGAPP);
                 return;
             }
-            EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean applicationListBean = appAdapter.getData().get(position);
-            Intent intent = new Intent(getContext(), WebActivity.class);
-            intent.putExtra("url", applicationListBean.getApplicationAddress());
-            intent.putExtra("title", applicationListBean.getApplicationName());
-            startActivity(intent);
+            if (appAdapter.getData().get(position).getIsOffical().equals("0")) {
+                TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
+                showAnimation.setDuration(250);
+                TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
+                dismissAnimation.setDuration(500);
+                QuickPopup show = QuickPopupBuilder.with(getActivity())
+                        .contentView(R.layout.popup_dangerweb)
+                        .config(new QuickPopupConfig()
+                                .withShowAnimation(showAnimation)
+                                .withDismissAnimation(dismissAnimation)
+                                .withClick(R.id.llBack, null, true)
+                                .withClick(R.id.tv, v -> {
+                                    EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean applicationListBean = appAdapter.getData().get(position);
+                                    Intent intent = new Intent(getContext(), WebActivity.class);
+                                    intent.putExtra("url", applicationListBean.getApplicationAddress());
+                                    intent.putExtra("title", applicationListBean.getApplicationName());
+                                    startActivity(intent);
+                                }, true))
+                        .show();
+                TextView tips = show.findViewById(R.id.tvTips);
+                tips.setText(Html.fromHtml(
+                                " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
+                                "&nbsp;<font color='black'><b>"+appAdapter.getData().get(position).getApplicationName()+"</b></font>" +
+                                "&nbsp;直接并单独向您承担责任。</p>"));
+            }
         });
 
         View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_recycler_social_app, (ViewGroup) rootView, false);
