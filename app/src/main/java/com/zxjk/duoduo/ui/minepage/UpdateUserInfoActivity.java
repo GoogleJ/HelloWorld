@@ -15,10 +15,10 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.bean.response.LoginResponse;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -159,9 +159,8 @@ public class UpdateUserInfoActivity extends BaseActivity {
                             break;
                         case TYPE_NICK:
                             Constant.currentUser.setNick(sign);
-                            UserInfo userInfo = new UserInfo(Constant.userId, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
+                            UserInfo userInfo = new UserInfo(Constant.userId, sign, Uri.parse(Constant.currentUser.getHeadPortrait()));
                             RongIM.getInstance().refreshUserInfoCache(userInfo);
-                            RongIM.getInstance().setCurrentUserInfo(userInfo);
                             break;
                         case TYPE_SIGN:
                             Constant.currentUser.setSignature(sign);
