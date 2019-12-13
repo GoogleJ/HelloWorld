@@ -222,7 +222,6 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                                 FriendInfoResponse listBean = mAdapter.getData().get(position);
 
                                 String toId;
-                                String toUserNick;
                                 String cardUserId;
                                 String cardUserNick;
                                 String cardUserDuoDuoId;
@@ -230,15 +229,12 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
 
                                 if (fromPulgin) {
                                     toId = c.getId();
-                                    toUserNick = TextUtils.isEmpty(c.getRemark()) ? c.getNick() : c.getRemark();
                                     cardUserId = listBean.getId();
                                     cardUserNick = listBean.getNick();
                                     cardUserDuoDuoId = listBean.getDuoduoId();
                                     cardUserPortrait = listBean.getHeadPortrait();
                                 } else {
                                     toId = listBean.getId();
-                                    toUserNick = TextUtils.isEmpty(listBean.getRemark()) ? listBean
-                                            .getNick() : listBean.getRemark();
                                     cardUserId = c.getId();
                                     cardUserNick = c.getNick();
                                     cardUserDuoDuoId = c.getDuoduoId();

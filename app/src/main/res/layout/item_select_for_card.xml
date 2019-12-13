@@ -12,10 +12,9 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
         android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
-        android:src="@drawable/icon_header" />
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="6dp" />
 
     <TextView
         android:id="@+id/user_name"
@@ -23,9 +22,11 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/remove_headers"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="16dp"
         android:layout_toEndOf="@id/remove_headers"
-        android:textColor="@color/textColor3"
-        android:textSize="16sp" />
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/textColor3" />
 
     <View
         android:layout_width="match_parent"
