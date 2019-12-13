@@ -88,7 +88,8 @@ public class SocialPage extends BaseFragment {
 
                 GlideUtil.loadNormalImg(ivhead, item.getCommunityLogo());
                 helper.setText(R.id.tvTitle, item.getCommunityName())
-                        .setText(R.id.tvOwner, item.getOwnerNick());
+                        .setText(R.id.tvOwner, item.getOwnerNick())
+                        .setText(R.id.tvCount, item.getMembers());
                 if (item.getIsPay().equals("1")) {
                     ivPay.setVisibility(View.VISIBLE);
                 } else {
