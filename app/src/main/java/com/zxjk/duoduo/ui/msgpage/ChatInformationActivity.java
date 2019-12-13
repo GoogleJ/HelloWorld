@@ -216,6 +216,9 @@ public class ChatInformationActivity extends BaseActivity {
         findViewById(R.id.rl_burnmessage).setOnClickListener(v -> {
             BurnMsgDialog burnMsgDialog = new BurnMsgDialog(this);
             burnMsgDialog.setOnCommitListener(str -> {
+                if (str.equals(tvBurnTime.getText().toString())) {
+                    return;
+                }
                 UpdateChatConfigRequest request = new UpdateChatConfigRequest();
                 request.setType("personal");
                 request.setTargetId(userInfo.getUserId());

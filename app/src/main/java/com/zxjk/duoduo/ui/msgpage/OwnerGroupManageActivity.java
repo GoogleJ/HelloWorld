@@ -252,47 +252,52 @@ public class OwnerGroupManageActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     public void func2(View view) {
         BurnMsgDialog burnMsgDialog = new BurnMsgDialog(this);
-        burnMsgDialog.setOnCommitListener(str -> ServiceFactory.getInstance().getBaseService(Api.class)
-                .groupOperation(group.getGroupInfo().getId(), str, "4")
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(s -> {
-                    String text = "";
-                    String tips = "";
-                    switch (str) {
-                        case "0":
-                            tips = "关闭";
-                            text = "群主关闭了慢速模式";
-                            break;
-                        case "30":
-                            text = "群主开启了慢速模式,发言间隔:30秒";
-                            tips = "发言间隔:30秒";
-                            break;
-                        case "60":
-                            text = "群主开启了慢速模式,发言间隔:1分钟";
-                            tips = "发言间隔:1分钟";
-                            break;
-                        case "300":
-                            text = "群主开启了慢速模式,发言间隔:5分钟";
-                            tips = "发言间隔:5分钟";
-                            break;
-                        case "600":
-                            text = "群主开启了慢速模式,发言间隔:10分钟";
-                            tips = "发言间隔:10分钟";
-                            break;
-                        case "3600":
-                            text = "群主开启了慢速模式,发言间隔:1小时";
-                            tips = "发言间隔:1小时";
-                            break;
-                    }
-                    tvGroupTips2.setText(tips);
-                    InformationNotificationMessage messageContent = InformationNotificationMessage.obtain(text);
-                    messageContent.setExtra(messageContent.getMessage());
-                    Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, messageContent);
-                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-                    group.getGroupInfo().setSlowMode(str);
-                }, this::handleApiError));
+        burnMsgDialog.setOnCommitListener(str -> {
+            if (group.getGroupInfo().getSlowMode().equals(str)) {
+                return;
+            }
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .groupOperation(group.getGroupInfo().getId(), str, "4")
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(s -> {
+                        String text = "";
+                        String tips = "";
+                        switch (str) {
+                            case "0":
+                                tips = "关闭";
+                                text = "群主关闭了慢速模式";
+                                break;
+                            case "30":
+                                text = "群主开启了慢速模式,发言间隔:30秒";
+                                tips = "发言间隔:30秒";
+                                break;
+                            case "60":
+                                text = "群主开启了慢速模式,发言间隔:1分钟";
+                                tips = "发言间隔:1分钟";
+                                break;
+                            case "300":
+                                text = "群主开启了慢速模式,发言间隔:5分钟";
+                                tips = "发言间隔:5分钟";
+                                break;
+                            case "600":
+                                text = "群主开启了慢速模式,发言间隔:10分钟";
+                                tips = "发言间隔:10分钟";
+                                break;
+                            case "3600":
+                                text = "群主开启了慢速模式,发言间隔:1小时";
+                                tips = "发言间隔:1小时";
+                                break;
+                        }
+                        tvGroupTips2.setText(tips);
+                        InformationNotificationMessage messageContent = InformationNotificationMessage.obtain(text);
+                        messageContent.setExtra(messageContent.getMessage());
+                        Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, messageContent);
+                        RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                        group.getGroupInfo().setSlowMode(str);
+                    }, this::handleApiError);
+        });
         burnMsgDialog.showSlowMode(parseTime(tvGroupTips2.getText().toString()));
     }
 
