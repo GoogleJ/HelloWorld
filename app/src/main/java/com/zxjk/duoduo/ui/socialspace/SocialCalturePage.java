@@ -194,8 +194,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         intent.putExtra("id", groupId);
                         intent.putExtra("bean", bean);
                         startActivityForResult(intent, REQUEST_SETTINGVIDEO);
-                    } else {
-
                     }
                     break;
                 case SocialCaltureListBean.TYPE_APP:

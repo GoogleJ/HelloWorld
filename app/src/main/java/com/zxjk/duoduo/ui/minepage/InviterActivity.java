@@ -158,7 +158,7 @@ public class InviterActivity extends BaseActivity {
                             .setText(R.id.tvName, item.getNick())
                             .setText(R.id.tvTime, sdf.format(Long.parseLong(item.getInviteDate())));
                     TextView tv = helper.getView(R.id.tvReward);
-                    if (item.getIsAuthentication().equals("0")) {
+                    if (!item.getIsAuthentication().equals("0")) {
                         tv.setTextColor(color1);
                         tv.setText("认证中");
                     } else {
