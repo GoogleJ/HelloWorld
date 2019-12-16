@@ -227,6 +227,11 @@ public class SocialPage extends BaseFragment {
                                     CommunityListBean cachedBean = cachedList.get(j);
                                     if (cachedBean.getGroupId().equals(originBean.getGroupId())) {
                                         isInCache = true;
+                                        cachedBean.setCommunityLogo(originBean.getCommunityLogo());
+                                        cachedBean.setCommunityName(originBean.getCommunityName());
+                                        cachedBean.setIsPay(originBean.getIsPay());
+                                        cachedBean.setMembers(originBean.getMembers());
+                                        cachedBean.setOwnerNick(originBean.getOwnerNick());
                                         break;
                                     }
                                 }
