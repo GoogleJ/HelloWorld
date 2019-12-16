@@ -29,8 +29,8 @@ public class OssUtils {
         void onFail();
     }
 
-    public static void uploadFile(String filePath, OssCallBack1 ossCallBack, OssProgressCallBack progressCallBack) {
-        String fileName = Constant.userId + System.currentTimeMillis();
+    public static void uploadFile(String filePath, String fileTail, OssCallBack1 ossCallBack, OssProgressCallBack progressCallBack) {
+        String fileName = Constant.userId + System.currentTimeMillis() + fileTail;
         PutObjectRequest put;
         if (BuildConfig.enableLog) {
             put = new PutObjectRequest("zhongxingjike1", "upload/" +
@@ -96,6 +96,10 @@ public class OssUtils {
 
     public static void uploadFile(String filePath, OssCallBack callBack) {
         uploadFile(filePath, callBack, null);
+    }
+
+    public static void uploadFile(String filePath, OssCallBack1 callBack, OssProgressCallBack progressCallBack) {
+        uploadFile(filePath, "", callBack, progressCallBack);
     }
 
 }

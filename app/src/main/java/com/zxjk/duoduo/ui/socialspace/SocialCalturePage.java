@@ -201,7 +201,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         //tv.setText(bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle());
                         tv.setText(Html.fromHtml(
                                 " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
-                                        "&nbsp;<font color='black'><b>"+bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle()+"</b></font>" +
+                                        "&nbsp;<font color='black'><b>" + bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle() + "</b></font>" +
                                         "&nbsp;直接并单独向您承担责任。</p>"));
                     }
                     break;
@@ -473,39 +473,74 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
     private void downloadAndShowFile(BaseQuickAdapter<EditListCommunityCultureResponse.FilesBean.FilesListBean, BaseViewHolder> appAdapter, int position) {
         EditListCommunityCultureResponse.FilesBean.FilesListBean filesListBean = appAdapter.getData().get(position);
         String url = filesListBean.getFileAddress().replace(Constant.OSS_URL, "");
-        LoadingDialog loadingDialog = new LoadingDialog(getActivity(), "下载中，请稍后");
-        loadingDialog.show();
-        ServiceFactory.getInstance().getNormalService(Constant.OSS_URL, Api.class)
-                .downloadFile(url)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        loadingDialog.dismissReally();
-                        if (response != null && response.isSuccessful()) {
-                            boolean toDisk = writeResponseBodyToDisk(response.body(), url + filesListBean.getFileFormat());
-                            if (toDisk && futureStudioIconFile != null && futureStudioIconFile.exists()) {
-                                if (!filesListBean.getFileFormat().contains("pdf")) {
-                                    QbSdk.openFileReader(getContext(), futureStudioIconFile.getPath(), null, null);
+
+        File dcim = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        if (dcim.exists()) {
+            JianXiCamera.setVideoCachePath(dcim + "/Hilamg/");
+        } else {
+            JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
+                    "/sdcard-ext/")
+                    + "/Hilamg/");
+        }
+        if (filesListBean.getFileFormat().contains(".")) {
+            futureStudioIconFile = new File(dcim + "/Hilamg/SocialFiles/", url + filesListBean.getFileFormat());
+        } else {
+            futureStudioIconFile = new File(dcim + "/Hilamg/SocialFiles/", url);
+        }
+        if (futureStudioIconFile.exists()) {
+            if (futureStudioIconFile != null && futureStudioIconFile.exists()) {
+                if (!filesListBean.getFileFormat().contains("pdf")) {
+                    QbSdk.openFileReader(getContext(), futureStudioIconFile.getPath(), null, null);
+                } else {
+                    Intent intent = new Intent(getContext(), DocumentActivity.class);
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.fromFile(new File(futureStudioIconFile.getPath())));
+                    startActivity(intent);
+                }
+            } else {
+                ToastUtils.showShort(R.string.cantopenfile);
+            }
+        } else {
+            LoadingDialog loadingDialog = new LoadingDialog(getActivity(), "下载中，请稍后");
+            loadingDialog.show();
+            ServiceFactory.getInstance().getNormalService(Constant.OSS_URL, Api.class)
+                    .downloadFile(url)
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            loadingDialog.dismissReally();
+                            if (response != null && response.isSuccessful()) {
+                                boolean toDisk;
+                                if (filesListBean.getFileFormat().contains(".")) {
+                                    toDisk = writeResponseBodyToDisk(response.body(), url + filesListBean.getFileFormat());
                                 } else {
-                                    Intent intent = new Intent(getContext(), DocumentActivity.class);
-                                    intent.setAction(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.fromFile(new File(futureStudioIconFile.getPath())));
-                                    startActivity(intent);
+                                    toDisk = writeResponseBodyToDisk(response.body(), url);
+                                }
+                                if (toDisk && futureStudioIconFile != null && futureStudioIconFile.exists()) {
+                                    if (!filesListBean.getFileFormat().contains("pdf")) {
+                                        QbSdk.openFileReader(getContext(), futureStudioIconFile.getPath(), null, null);
+                                    } else {
+                                        Intent intent = new Intent(getContext(), DocumentActivity.class);
+                                        intent.setAction(Intent.ACTION_VIEW);
+                                        intent.setData(Uri.fromFile(new File(futureStudioIconFile.getPath())));
+                                        startActivity(intent);
+                                    }
+                                } else {
+                                    ToastUtils.showShort(R.string.cantopenfile);
                                 }
                             } else {
                                 ToastUtils.showShort(R.string.cantopenfile);
                             }
-                        } else {
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            loadingDialog.dismissReally();
                             ToastUtils.showShort(R.string.cantopenfile);
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        loadingDialog.dismissReally();
-                        ToastUtils.showShort(R.string.cantopenfile);
-                    }
-                });
+                    });
+        }
     }
 
     private void initViewForAppPage(BaseViewHolder helper, SocialCaltureListBean item) {
@@ -590,8 +625,8 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         .show();
                 TextView tips = show.findViewById(R.id.tvTips);
                 tips.setText(Html.fromHtml(
-                                " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
-                                "&nbsp;<font color='black'><b>"+appAdapter.getData().get(position).getApplicationName()+"</b></font>" +
+                        " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
+                                "&nbsp;<font color='black'><b>" + appAdapter.getData().get(position).getApplicationName() + "</b></font>" +
                                 "&nbsp;直接并单独向您承担责任。</p>"));
             } else {
                 EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean applicationListBean = appAdapter.getData().get(position);
@@ -906,19 +941,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
     private boolean writeResponseBodyToDisk(ResponseBody body, String name) {
         try {
-            //判断文件夹是否存在
-            File dcim = Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            //创建一个文件
-            if (dcim.exists()) {
-                JianXiCamera.setVideoCachePath(dcim + "/Hilamg/");
-            } else {
-                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
-                        "/sdcard-ext/")
-                        + "/Hilamg/");
-            }
-            futureStudioIconFile = new File(dcim + "/Hilamg/SocialFiles/", name);
-            if (futureStudioIconFile.exists()) return true;
             FileUtils.createOrExistsFile(futureStudioIconFile);
             //初始化输入流
             InputStream inputStream = null;

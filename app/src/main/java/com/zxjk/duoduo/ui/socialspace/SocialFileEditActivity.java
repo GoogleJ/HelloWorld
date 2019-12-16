@@ -196,12 +196,12 @@ public class SocialFileEditActivity extends BaseActivity {
         uploadLoading.setText("上传中");
         uploadLoading.show();
 
-        OssUtils.uploadFile(selectedFiles.get(0).path, new OssUtils.OssCallBack1() {
+        OssUtils.uploadFile(selectedFiles.get(0).path, selectedFiles.get(0).format, new OssUtils.OssCallBack1() {
             @Override
             public void onSuccess(String fileAddress) {
                 EditCommunityFileRequest.FilesListBean bean = new EditCommunityFileRequest.FilesListBean();
                 bean.setFileAddress(fileAddress);
-                bean.setFileFormat(selectedFiles.get(0).format);
+                bean.setFileFormat(selectedFiles.get(0).format.replace(".", ""));
                 bean.setFileName(selectedFiles.get(0).title);
                 bean.setFileSize(selectedFiles.get(0).size);
 
