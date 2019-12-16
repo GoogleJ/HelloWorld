@@ -33,6 +33,7 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
     @Override
     public void bindView(View view, int i, SocialGroupCardMessage groupCardMessage, UIMessage uiMessage) {
         ViewHolder holder = (ViewHolder) view.getTag();
+        holder.tvCount.setText(groupCardMessage.getMemberNum());
         GlideUtil.loadNormalImg(holder.ivHead, groupCardMessage.getIcon());
         holder.ivPay.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(groupCardMessage.getMemberNum()) && Integer.parseInt(groupCardMessage.getMemberNum()) != 0) {
@@ -64,6 +65,7 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
         holder.tvTitle = view.findViewById(R.id.tvTitle);
         holder.tvOwner = view.findViewById(R.id.tvOwner);
         holder.llContent = view.findViewById(R.id.llContent);
+        holder.tvCount = view.findViewById(R.id.tvCount);
         holder.tvTitle.setVisibility(View.GONE);
         holder.tvOwner.setMaxLines(3);
         ViewGroup.LayoutParams layoutParams = holder.llContent.getLayoutParams();
@@ -82,6 +84,7 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
         private ImageView ivPay;
         private TextView tvTitle;
         private TextView tvOwner;
+        private TextView tvCount;
         private LinearLayout llContent;
     }
 }
