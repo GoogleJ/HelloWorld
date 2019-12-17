@@ -23,6 +23,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.GlobalSearchAdapter;
+import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import butterknife.BindView;
@@ -38,7 +39,9 @@ public class GlobalSearchActivity extends BaseActivity {
     GlobalSearchAdapter mAdapter;
     Intent intent;
 
-    View emptyView;
+    private int currentPage = -1;
+    private String pageSize = "10";
+    private String keyWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,8 @@ public class GlobalSearchActivity extends BaseActivity {
         searchEdit.setOnEditorActionListener((v, actionId, event) -> {
             //搜索按键action
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                searchCustomerInfo(searchEdit.getText().toString());
+                keyWord = searchEdit.getText().toString();
+                searchCustomerInfo(keyWord, true);
                 return true;
             }
             return false;
@@ -65,7 +69,7 @@ public class GlobalSearchActivity extends BaseActivity {
     }
 
     private void initUI() {
-        emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
+        View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         ImageView app_type = emptyView.findViewById(R.id.app_type);
@@ -82,20 +86,40 @@ public class GlobalSearchActivity extends BaseActivity {
             FriendInfoResponse user = mAdapter.getData().get(position);
             CommonUtils.resolveFriendList(GlobalSearchActivity.this, user.getId());
         });
+        mAdapter.setEnableLoadMore(true);
+        mAdapter.setLoadMoreView(new NewsLoadMoreView());
+        mAdapter.setOnLoadMoreListener(() -> searchCustomerInfo(keyWord, false), mRecyclerView);
     }
 
     //模糊搜索好友
-    public void searchCustomerInfo(String data) {
+    public void searchCustomerInfo(String data, boolean isSearch) {
         if (TextUtils.isEmpty(data)) {
             ToastUtils.showShort(R.string.input_empty);
             return;
         }
+        if (isSearch) currentPage = -1;
         KeyboardUtils.hideSoftInput(GlobalSearchActivity.this);
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .searchCustomerInfo(data)
+                .searchCustomerInfo(data, currentPage + 1 + "", pageSize)
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(GlobalSearchActivity.this, getString(R.string.searching))))
+                .compose(RxSchedulers.ioObserver(isSearch ? CommonUtils.initDialog(GlobalSearchActivity.this, getString(R.string.searching)) : null))
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(mAdapter::setNewData, this::handleApiError);
+                .subscribe(list -> {
+                    currentPage += 1;
+                    if (isSearch) {
+                        mAdapter.setNewData(list);
+                        mAdapter.disableLoadMoreIfNotFullPage();
+                    } else {
+                        mAdapter.addData(list);
+                        if (list.size() < Integer.parseInt(pageSize)) {
+                            mAdapter.loadMoreEnd();
+                        } else {
+                            mAdapter.loadMoreComplete();
+                        }
+                    }
+                }, t -> {
+                    handleApiError(t);
+                    mAdapter.loadMoreFail();
+                });
     }
 }

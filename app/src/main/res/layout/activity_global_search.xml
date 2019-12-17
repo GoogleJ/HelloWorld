@@ -7,7 +7,6 @@
 
     <include layout="@layout/layout_title_back" />
 
-
     <EditText
         android:id="@+id/m_search_edit"
         style="@style/SearchStyle" />
@@ -16,8 +15,6 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:paddingBottom="20dp" />
-
+        android:overScrollMode="never"/>
 
 </LinearLayout>

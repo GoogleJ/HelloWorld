@@ -26,6 +26,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.PhoneContactAdapter;
 import com.zxjk.duoduo.utils.CommonUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -75,12 +76,12 @@ public class PhoneContactActivity extends BaseActivity implements TextWatcher {
     @SuppressLint("CheckResult")
     public void getFriendListById() {
 //        if (Constant.friendsList == null) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getFriendListById()
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .compose(RxSchedulers.normalTrans())
-                    .subscribe(this::handleResult, this::handleApiError);
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getFriendListById()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(this::handleResult, this::handleApiError);
 //        } else {
 //            handleResult(Constant.friendsList);
 //        }
@@ -105,13 +106,13 @@ public class PhoneContactActivity extends BaseActivity implements TextWatcher {
                 return;
             }
             ServiceFactory.getInstance().getBaseService(Api.class)
-                    .searchCustomerInfo(list.get(position).getNumber())
+                    .searchCustomerInfo(list.get(position).getNumber(), "1", "10")
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(PhoneContactActivity.this)))
                     .subscribe(friendInfoResponses1 -> {
                         if (friendInfoResponses1.size() == 0) {
-                            sendSMS("您的好友在Hilamg给您留言了啦，赶快注册去查看吧。https://dibaqu.com/qae6", position);
+                            sendSMS("您的好友在Hilamg给您留言了啦，赶快注册去查看吧。" + Constant.APP_DOWNLOAD_URL, position);
                         } else {
                             CommonUtils.resolveFriendList(PhoneContactActivity.this, friendInfoResponses1.get(0).getId());
                         }

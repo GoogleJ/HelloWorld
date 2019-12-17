@@ -117,7 +117,8 @@ public interface Api {
 
     @POST("duoduo/friend/searchCustomer")
     @FormUrlEncoded
-    Observable<BaseResponse<List<FriendInfoResponse>>> searchCustomerInfo(@Field("data") String data);
+    Observable<BaseResponse<List<FriendInfoResponse>>> searchCustomerInfo(@Field("data") String data, @Field("pageNoStr") String pageNoStr,
+                                                                          @Field("pageSizeStr") String pageSizeStr);
 
     @POST("duoduo/friend/applyAddFriend")
     @FormUrlEncoded
