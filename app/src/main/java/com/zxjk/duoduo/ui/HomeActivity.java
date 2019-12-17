@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -501,7 +502,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                         NiceDialog.init().setLayoutId(R.layout.dialog_update).setConvertListener(new ViewConvertListener() {
                             @Override
                             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                                holder.setText(R.id.tv, data.getUpdateContent());
+                                TextView tv = holder.getView(R.id.tv);
+                                tv.setText(Html.fromHtml(data.getUpdateContent()));
                                 ((TextView) holder.getView(R.id.tv)).setMovementMethod(new ScrollingMovementMethod());
                                 TextView tvUpdate = holder.getView(R.id.tvUpdate);
                                 tvUpdate.setOnClickListener(v -> {
