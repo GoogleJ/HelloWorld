@@ -72,10 +72,6 @@ public class OwnerGroupManageActivity extends BaseActivity {
         tvGroupTips2 = findViewById(R.id.tvGroupTips2);
         tvGroupTips3 = findViewById(R.id.tvGroupTips3);
         llPublic = findViewById(R.id.llPublic);
-
-        if (getIntent().getBooleanExtra("fromSocial", false)) {
-            llPublic.setVisibility(View.VISIBLE);
-        }
     }
 
     @SuppressLint("CheckResult")

@@ -491,7 +491,7 @@ public class SocialHomeActivity extends BaseActivity {
                 if (ivToolBarEnd.getVisibility() == View.GONE) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
                     ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_white);
-                    ivToolBarStart.setImageResource(R.drawable.ico_back_white);
+                    ivToolBarStart.setImageResource(R.drawable.ic_social_back);
                     ivToolBarStart.setVisibility(View.VISIBLE);
                 }
 

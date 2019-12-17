@@ -402,12 +402,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         RecyclerView fileRecycler = helper.getView(R.id.recycler);
         fileRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
-        int dp64 = CommonUtils.dip2px(getContext(), 64);
         int dp56 = CommonUtils.dip2px(getContext(), 56);
+        int dp48 = CommonUtils.dip2px(getContext(), 48);
         int dp8 = CommonUtils.dip2px(getContext(), 8);
-        int recyclerWidth = ScreenUtils.getScreenWidth() - dp56;
+        int recyclerWidth = ScreenUtils.getScreenWidth() - dp48;
         boolean isNormalSize = true;
-        if (((recyclerWidth - dp64 * 4) / 4) < dp8) {
+        if (((recyclerWidth - dp56 * 4) / 4) < dp8) {
             isNormalSize = false;
         }
 
@@ -421,12 +421,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 if (!finalIsNormalSize) {
                     LinearLayout llContent = helper.getView(R.id.llContent);
                     ViewGroup.LayoutParams layoutParams = llContent.getLayoutParams();
-                    if (layoutParams.width != dp56) {
-                        layoutParams.width = dp56;
+                    if (layoutParams.width != dp48) {
+                        layoutParams.width = dp48;
                         llContent.setLayoutParams(layoutParams);
                         ViewGroup.LayoutParams layoutParams1 = ivAppIcon.getLayoutParams();
-                        layoutParams1.width = dp56;
-                        layoutParams1.height = dp56;
+                        layoutParams1.width = dp48;
+                        layoutParams1.height = dp48;
                         ivAppIcon.setLayoutParams(layoutParams1);
                     }
                 }
@@ -562,12 +562,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             tvTips.setVisibility(View.INVISIBLE);
         }
 
-        int dp64 = CommonUtils.dip2px(getContext(), 64);
         int dp56 = CommonUtils.dip2px(getContext(), 56);
+        int dp48 = CommonUtils.dip2px(getContext(), 48);
         int dp8 = CommonUtils.dip2px(getContext(), 8);
-        int recyclerWidth = ScreenUtils.getScreenWidth() - dp56;
+        int recyclerWidth = ScreenUtils.getScreenWidth() - dp48;
         boolean isNormalSize = true;
-        if (((recyclerWidth - dp64 * 4) / 4) < dp8) {
+        if (((recyclerWidth - dp56 * 4) / 4) < dp8) {
             isNormalSize = false;
         }
 
@@ -581,12 +581,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 if (!finalIsNormalSize) {
                     LinearLayout llContent = helper.getView(R.id.llContent);
                     ViewGroup.LayoutParams layoutParams = llContent.getLayoutParams();
-                    if (layoutParams.width != dp56) {
-                        layoutParams.width = dp56;
+                    if (layoutParams.width != dp48) {
+                        layoutParams.width = dp48;
                         llContent.setLayoutParams(layoutParams);
                         ViewGroup.LayoutParams layoutParams1 = ivAppIcon.getLayoutParams();
-                        layoutParams1.width = dp56;
-                        layoutParams1.height = dp56;
+                        layoutParams1.width = dp48;
+                        layoutParams1.height = dp48;
                         ivAppIcon.setLayoutParams(layoutParams1);
                     }
                 }
