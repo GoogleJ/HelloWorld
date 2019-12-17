@@ -192,8 +192,20 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         }, true);
     }
 
+    @SuppressLint("CheckResult")
     private void registerRongMsgReceiver() {
         RongIM.setOnReceiveMessageListener((message, i) -> {
+            if (message != null && RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId()) == null) {
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .getCustomerBasicInfoById(message.getSenderUserId())
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(user -> RongIM.getInstance().refreshUserInfoCache(new UserInfo(message.getSenderUserId(), user.getNick(), Uri.parse(user.getHeadPortrait()))),
+                                t -> {
+                                });
+            }
+
             Intent intent = new Intent(Constant.ACTION_BROADCAST2);
             intent.putExtra("msg", message);
             intent.putExtra("count", i);
