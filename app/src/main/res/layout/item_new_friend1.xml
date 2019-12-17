@@ -22,39 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/m_item_new_friend_icon"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/icon_header" />
-
-        <TextView
-            android:id="@+id/m_item_new_friend_user_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/m_item_new_friend_icon"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="12dp"
-            android:layout_toEndOf="@id/m_item_new_friend_icon"
-            android:textColor="@color/text_color3"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/m_item_new_friend_message_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/m_item_new_friend_icon"
-            android:layout_marginStart="12dp"
-            android:layout_marginBottom="3dp"
-            android:layout_toEndOf="@id/m_item_new_friend_icon"
-            android:ellipsize="end"
-            android:maxLength="15"
-            android:textSize="14sp" />
-
         <TextView
             android:id="@+id/m_item_new_friend_type_btn"
             android:layout_width="wrap_content"
@@ -70,6 +37,43 @@
             android:text="@string/add"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/m_item_new_friend_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/m_item_new_friend_user_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/m_item_new_friend_icon"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="12dp"
+            android:layout_toStartOf="@id/m_item_new_friend_type_btn"
+            android:layout_toEndOf="@id/m_item_new_friend_icon"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_color3"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/m_item_new_friend_message_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/m_item_new_friend_icon"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="12dp"
+            android:layout_toStartOf="@id/m_item_new_friend_type_btn"
+            android:layout_toEndOf="@id/m_item_new_friend_icon"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="13sp" />
 
         <View
             android:layout_width="match_parent"
