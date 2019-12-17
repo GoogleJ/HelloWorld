@@ -10,11 +10,9 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,9 +35,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-import com.github.ybq.android.spinkit.SpinKitView;
-import com.github.ybq.android.spinkit.SpriteFactory;
-import com.github.ybq.android.spinkit.Style;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shehuan.nicedialog.BaseNiceDialog;
@@ -167,14 +162,16 @@ public class EnlargeImageActivity extends BaseActivity {
                         String userId = uri.data;
                         CommonUtils.resolveFriendList(EnlargeImageActivity.this, userId);
                     } else if (action.equals("action3")) {
-                        BaseUri<GroupQRActivity.GroupQRData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<GroupQRActivity.GroupQRData>>() {
-                        }.getType());
-                        Intent intent = new Intent(EnlargeImageActivity.this, AgreeGroupChatActivity.class);
-                        intent.putExtra("inviterId", uri.data.inviterId);
-                        intent.putExtra("groupId", uri.data.groupId);
-                        intent.putExtra("groupName", uri.data.groupName);
-                        startActivity(intent);
-                        finish();
+//                        BaseUri<GroupQRActivity.GroupQRData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<GroupQRActivity.GroupQRData>>() {
+//                        }.getType());
+//                        Intent intent = new Intent(EnlargeImageActivity.this, AgreeGroupChatActivity.class);
+//                        intent.putExtra("inviterId", uri.data.inviterId);
+//                        intent.putExtra("groupId", uri.data.groupId);
+//                        intent.putExtra("groupName", uri.data.groupName);
+//                        startActivity(intent);
+//                        finish();
+                    } else if (action.equals("action4")) {
+
                     }
                 } catch (Exception e) {
                     ToastUtils.showShort(R.string.decode_qr_failure);

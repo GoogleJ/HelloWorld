@@ -358,12 +358,12 @@ public class GroupChatInformationActivity extends BaseActivity {
         startActivity(new Intent(this, SkinReportActivity.class));
     }
 
-    //群二维码
-    public void groupQR(View view) {
-        Intent intent = new Intent(this, GroupQRActivity.class);
-        intent.putExtra("data", group);
-        startActivity(intent);
-    }
+//    //群二维码
+//    public void groupQR(View view) {
+//        Intent intent = new Intent(this, GroupQRActivity.class);
+//        intent.putExtra("data", group);
+//        startActivity(intent);
+//    }
 
     //群主权限管理
     public void ownerAuthority(View view) {

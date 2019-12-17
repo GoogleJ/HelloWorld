@@ -26,6 +26,7 @@ import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.scanuri.Action1;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
+import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.TakePicUtil;
 
@@ -134,14 +135,16 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
 
                 CommonUtils.resolveFriendList(this, userId, true);
             } else if (action.equals("action3")) {
-                BaseUri<GroupQRActivity.GroupQRData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<GroupQRActivity.GroupQRData>>() {
-                }.getType());
-                Intent intent = new Intent(this, AgreeGroupChatActivity.class);
-                intent.putExtra("inviterId", uri.data.inviterId);
-                intent.putExtra("groupId", uri.data.groupId);
-                intent.putExtra("groupName", uri.data.groupName);
-                startActivity(intent);
-                finish();
+//                BaseUri<GroupQRActivity.GroupQRData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<GroupQRActivity.GroupQRData>>() {
+//                }.getType());
+//                Intent intent = new Intent(this, AgreeGroupChatActivity.class);
+//                intent.putExtra("inviterId", uri.data.inviterId);
+//                intent.putExtra("groupId", uri.data.groupId);
+//                intent.putExtra("groupName", uri.data.groupName);
+//                startActivity(intent);
+//                finish();
+            } else if (action.equals("action4")) {
+
             }
         } catch (Exception e) {
             ToastUtils.showShort(R.string.decode_qr_failure);
