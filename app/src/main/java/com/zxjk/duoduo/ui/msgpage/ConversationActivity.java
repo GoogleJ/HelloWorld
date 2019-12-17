@@ -689,6 +689,10 @@ public class ConversationActivity extends BaseActivity {
                             RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead)));
                         }
 //                        }
+                        for (GroupResponse.CustomersBean b : groupResponse.getCustomers()) {
+                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(b.getId(), TextUtils.isEmpty(b.getRemark()) ? b.getNick() : b.getRemark()
+                                    , Uri.parse(b.getHeadPortrait())));
+                        }
                     })
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
