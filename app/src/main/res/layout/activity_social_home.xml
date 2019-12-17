@@ -27,9 +27,11 @@
             app:scrimVisibleHeightTrigger="160dp"
             app:titleEnabled="false">
 
-            <FrameLayout
+            <com.gcssloop.widget.RCRelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:round_corner_bottom_left="28dp"
+                app:round_corner_bottom_right="28dp">
 
                 <ImageView
                     android:id="@+id/ivBg"
@@ -41,6 +43,7 @@
                     android:id="@+id/bgMask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:background="@drawable/gradient_video_title"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -50,7 +53,7 @@
                     android:textColor="@color/white"
                     android:textSize="13.5sp" />
 
-            </FrameLayout>
+            </com.gcssloop.widget.RCRelativeLayout>
 
             <LinearLayout
                 android:id="@+id/llTop"

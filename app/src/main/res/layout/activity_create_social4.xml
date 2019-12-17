@@ -11,14 +11,23 @@
     <FrameLayout
         android:id="@+id/flTop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/ivBackground"
+        <com.gcssloop.widget.RCRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bg_default_social" />
+            app:round_corner_bottom_left="28dp"
+            app:round_corner_bottom_right="28dp">
+
+            <ImageView
+                android:id="@+id/ivBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_default_social" />
+
+        </com.gcssloop.widget.RCRelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

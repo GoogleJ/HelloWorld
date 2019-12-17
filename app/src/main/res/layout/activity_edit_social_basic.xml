@@ -21,13 +21,22 @@
             app:scrimAnimationDuration="500"
             app:titleEnabled="false">
 
-            <ImageView
-                android:id="@+id/ivBg"
+            <com.gcssloop.widget.RCRelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
+                android:layout_height="wrap_content"
+                android:background="#F2F3F5"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.6" />
+                app:layout_collapseParallaxMultiplier="0.6"
+                app:round_corner_bottom_left="28dp"
+                app:round_corner_bottom_right="28dp">
+
+                <ImageView
+                    android:id="@+id/ivBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+            </com.gcssloop.widget.RCRelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,10 +186,10 @@
                     android:layout_marginBottom="24dp"
                     android:background="@drawable/shape_f3f3f3_5"
                     android:hint="@string/input_socialname1"
-                    android:maxLength="20"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:lines="1"
+                    android:maxLength="20"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
                     android:textColor="@color/black"
