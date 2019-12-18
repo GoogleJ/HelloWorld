@@ -611,7 +611,7 @@
     <string name="m_group_chat">群组</string>
     <string name="no_qunzu">暂无群组</string>
     <string name="quick_news">快讯</string>
-    <string name="less_min">红包金额不能小于0.01</string>
+    <string name="less_min">红包金额不能小于0.00001</string>
     <string name="rewardmot">活动奖励</string>
     <string name="rewardTotal">累计奖励：</string>
     <string name="sign2getReward">签到领取奖励</string>
