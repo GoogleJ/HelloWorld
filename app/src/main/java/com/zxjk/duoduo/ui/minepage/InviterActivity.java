@@ -154,16 +154,18 @@ public class InviterActivity extends BaseActivity {
             adapter = new BaseQuickAdapter<GetInviteInfoResponse.ListBean, BaseViewHolder>(R.layout.item_invite) {
                 @Override
                 protected void convert(BaseViewHolder helper, GetInviteInfoResponse.ListBean item) {
-                    helper.setVisible(R.id.ivSigned, item.getIsAuthentication().equals("1"))
-                            .setText(R.id.tvName, item.getNick())
+                    helper.setText(R.id.tvName, item.getNick())
                             .setText(R.id.tvTime, sdf.format(Long.parseLong(item.getInviteDate())));
+                    ImageView ivSigned = helper.getView(R.id.ivSigned);
                     TextView tv = helper.getView(R.id.tvReward);
                     if (!item.getIsAuthentication().equals("0")) {
                         tv.setTextColor(color1);
                         tv.setText("认证中");
+                        ivSigned.setVisibility(View.GONE);
                     } else {
                         tv.setTextColor(color2);
                         tv.setText(item.getBalance() + item.getSymbol());
+                        ivSigned.setVisibility(View.VISIBLE);
                     }
                     ImageView iv = helper.getView(R.id.ivHead);
                     GlideUtil.loadCircleImg(iv, item.getHeadPortrait());
