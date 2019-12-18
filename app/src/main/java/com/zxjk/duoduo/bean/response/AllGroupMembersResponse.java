@@ -40,6 +40,24 @@ public class AllGroupMembersResponse implements Serializable {
     private String updataTime;
     private String createTime;
     private String isDelete;
+    private String isAdmin;
+    private String firstLetter;
+
+    public String getFirstLetter() {
+        return firstLetter;
+    }
+
+    public void setFirstLetter(String firstLetter) {
+        this.firstLetter = firstLetter;
+    }
+
+    public String getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(String isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 
     public String getId() {
         return id;

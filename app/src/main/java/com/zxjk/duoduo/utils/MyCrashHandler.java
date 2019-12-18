@@ -68,15 +68,15 @@ public class MyCrashHandler implements Thread.UncaughtExceptionHandler {
         if (ex == null)
             return false;
 
-        new Thread(() -> {
-            Looper.prepare();
-            Toast.makeText(mcontext, "很抱歉，程序出现异常，即将退出", Toast.LENGTH_SHORT).show();
-            Looper.loop();
-        }).start();
+//        new Thread(() -> {
+//            Looper.prepare();
+//            Toast.makeText(mcontext, "很抱歉，程序出现异常，即将退出", Toast.LENGTH_SHORT).show();
+//            Looper.loop();
+//        }).start();
 
         //手机设备参数信息
-        collectDeviceInfo(mcontext);
-        saveCrashInfoToFile(ex);
+//        collectDeviceInfo(mcontext);
+//        saveCrashInfoToFile(ex);
         return true;
     }
 

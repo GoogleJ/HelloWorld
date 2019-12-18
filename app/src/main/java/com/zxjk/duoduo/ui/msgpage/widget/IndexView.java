@@ -30,7 +30,7 @@ public class IndexView extends View {
     private int GRAY = 0xFFe8e8e8;
     private int DEFAULT_TEXT_COLOR = 0xFF333333;
 
-    private static final String[] WORDS = new String[]{
+    private String[] WORDS = new String[]{
             "#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
             "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
             "X", "Y", "Z"
@@ -54,6 +54,14 @@ public class IndexView extends View {
         initPaint();
     }
 
+    public void initSocial() {
+        WORDS = new String[]{
+                "*", "#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+                "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
+                "X", "Y", "Z"
+        };
+        invalidate();
+    }
 
     public void setShowTextDialog(TextView textDialog) {
         this.mShowTextDialog = textDialog;

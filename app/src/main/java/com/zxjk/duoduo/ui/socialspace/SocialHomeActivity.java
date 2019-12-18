@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -427,6 +426,11 @@ public class SocialHomeActivity extends BaseActivity {
                                 ToastUtils.showShort(R.string.cantdone);
                                 return;
                             }
+                            Intent intent = new Intent(SocialHomeActivity.this, SocialAllMemberActivity.class);
+                            intent.putExtra("socialName", response.getName());
+                            intent.putExtra("groupId", groupId);
+                            intent.putExtra("ownerId", response.getOwnerId());
+                            startActivity(intent);
                         });
                     }
                 } else if (response.getIdentity().equals("1") || response.getIdentity().equals("2")) {
@@ -464,6 +468,11 @@ public class SocialHomeActivity extends BaseActivity {
                                 ToastUtils.showShort(R.string.cantdone);
                                 return;
                             }
+                            Intent intent = new Intent(SocialHomeActivity.this, SocialAllMemberActivity.class);
+                            intent.putExtra("socialName", response.getName());
+                            intent.putExtra("groupId", groupId);
+                            intent.putExtra("ownerId", response.getOwnerId());
+                            startActivity(intent);
                         });
                     }
                 } else {
@@ -473,6 +482,11 @@ public class SocialHomeActivity extends BaseActivity {
                             ToastUtils.showShort(R.string.cantdone);
                             return;
                         }
+                        Intent intent = new Intent(SocialHomeActivity.this, SocialAllMemberActivity.class);
+                        intent.putExtra("socialName", response.getName());
+                        intent.putExtra("groupId", groupId);
+                        intent.putExtra("ownerId", response.getOwnerId());
+                        startActivity(intent);
                     });
                 }
             }

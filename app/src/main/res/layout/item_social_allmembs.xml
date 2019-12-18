@@ -18,49 +18,54 @@
         android:textColor="#000000"
         android:visibility="gone" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/m_constants_header_icon"
+            android:id="@+id/ivHead"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="centerCrop" />
 
+        <TextView
+            android:id="@+id/tvSign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/shape_theme3"
+            android:paddingStart="8dp"
+            android:paddingTop="0.5dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="0.5dp"
+            android:text="群主"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="12dp"
-            android:layout_toEndOf="@id/m_constants_header_icon"
+            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingEnd="12dp">
 
             <TextView
-                android:id="@+id/m_user_name"
+                android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/textcolor1"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/m_singture_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:maxLength="15"
-                android:maxLines="1"
-                android:textColor="@color/text_color2" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

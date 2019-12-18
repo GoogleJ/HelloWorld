@@ -147,7 +147,7 @@ public class Application extends android.app.Application {
         UMConfigure.setProcessEvent(true);
         MobclickAgent.setCatchUncaughtExceptions(!BuildConfig.enableLog);
 
-        PlatformConfig.setWeixin("wxf387c6ba37a8efeb", "b49d0665065089a45c6424c58317f2bb");
+        PlatformConfig.setWeixin("wx022863eb70b07dcf", "ed5bd6099c398f443a1eadc9a8bda259");
         PlatformConfig.setQQZone("101838814", "2133a77b5e0abc441ca9646089399898");
     }
 
