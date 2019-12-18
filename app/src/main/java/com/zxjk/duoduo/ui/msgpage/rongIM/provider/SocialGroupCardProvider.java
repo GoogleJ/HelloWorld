@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SocialGroupCardMessage;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
@@ -46,7 +47,11 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
 
     @Override
     public Spannable getContentSummary(SocialGroupCardMessage groupCardMessage) {
-        return new SpannableString("[群名片]");
+        if (groupCardMessage.getInviterId().equals(Constant.userId)) {
+            return new SpannableString("[社群名片]");
+        } else {
+            return new SpannableString(groupCardMessage.getName() + "邀请你加入" + groupCardMessage.getGroupName());
+        }
     }
 
     @Override

@@ -399,8 +399,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         while (iterator.hasNext()) {
             if (iterator.next().getId().equals(Constant.userId)) {
                 iterator.remove();
-            }
-            if (iterator.next().getId().equals(groupResponse.getGroupInfo().getGroupOwnerId())) {
+            } else if (iterator.next().getId().equals(groupResponse.getGroupInfo().getGroupOwnerId())) {
                 iterator.remove();
             }
         }

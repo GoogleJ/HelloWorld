@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -181,6 +182,7 @@ public class SocialHomeActivity extends BaseActivity {
             app_bar.setExpanded(true, true);
             tvTitle.setText(response.getName());
             ivToolBarStart.setVisibility(View.VISIBLE);
+            tvSocialCode.setVisibility(View.VISIBLE);
             ivOpenConversation.animate().translationXBy(-ivOpenConversation.getWidth())
                     .setInterpolator(new OvershootInterpolator()).start();
         });
@@ -509,9 +511,9 @@ public class SocialHomeActivity extends BaseActivity {
                     tvSocialCode.setVisibility(View.INVISIBLE);
                 }
             } else if (absOffset == totalScrollRange) {
-                if (tvTitle.getVisibility() == View.INVISIBLE) {
+                if (tvTitle.getVisibility() != View.VISIBLE) {
                     tvTitle.setVisibility(View.VISIBLE);
-                    tvSocialCode.setVisibility(View.GONE);
+                    tvSocialCode.setVisibility(View.VISIBLE);
                 }
                 if (ivToolBarEnd.getVisibility() == View.GONE) {
                     ivToolBarStart.setVisibility(View.VISIBLE);
@@ -675,7 +677,7 @@ public class SocialHomeActivity extends BaseActivity {
         }
     }
 
-    public void QRCode(View View){
+    public void QRCode(View View) {
         if (!contentEnable || isInEditStatus) {
             ToastUtils.showShort(R.string.cantdone);
             return;
@@ -712,8 +714,8 @@ public class SocialHomeActivity extends BaseActivity {
                 .subscribe(r -> {
                     isInEditStatus = true;
                     ivToolBarEnd.setVisibility(View.GONE);
-//                    tvSocialId.setVisibility(View.GONE);
                     ivToolBarStart.setVisibility(View.GONE);
+                    tvSocialCode.setVisibility(View.GONE);
                     tvTitle.setText(R.string.edit_social_calture);
                     tvTitle.setVisibility(View.VISIBLE);
                     socialCalturePage.change2Edit(r);

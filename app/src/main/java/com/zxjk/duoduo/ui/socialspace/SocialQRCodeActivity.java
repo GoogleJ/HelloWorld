@@ -1,23 +1,16 @@
 package com.zxjk.duoduo.ui.socialspace;
 
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -35,19 +28,12 @@ import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
-import com.zxjk.duoduo.ui.msgpage.GroupQRActivity;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.SaveImageUtil;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +43,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
-
 public class SocialQRCodeActivity extends BaseActivity {
 
     private int minimumHeightForVisibleOverlappingContent = 0;
@@ -65,7 +50,6 @@ public class SocialQRCodeActivity extends BaseActivity {
     private int statusbarHeight = 0;
 
     private CommunityInfoResponse data;
-
 
     private AppBarLayout app_bar;
     private CollapsingToolbarLayout collapsingLayout;
@@ -77,7 +61,6 @@ public class SocialQRCodeActivity extends BaseActivity {
     private TextView tvSocialId;
     private TextView tvSocialName;
     private ImageView imgqrcode;
-
 
     private BaseUri uri = new BaseUri("action4");
     private String uri2Code;
@@ -102,10 +85,7 @@ public class SocialQRCodeActivity extends BaseActivity {
 
         setToolBarMarginTop();
 
-        banAppBarScroll(false);
-
         data = getIntent().getParcelableExtra("data");
-
 
         //QRcode
         tvTitle.setText(R.string.qrcodename);
@@ -114,7 +94,6 @@ public class SocialQRCodeActivity extends BaseActivity {
         tvSocialId.setText("社群号:" + data.getCode());
         GlideUtil.loadNormalImg(ivBg, data.getBgi());
         GlideUtil.loadNormalImg(ivHead, data.getLogo());
-
 
         uri.data = new QRCodeData();
         ((QRCodeData) uri.data).inviterId = data.getCode();
@@ -125,7 +104,6 @@ public class SocialQRCodeActivity extends BaseActivity {
         getCodeBitmap();
     }
 
-
     private void setToolBarMarginTop() {
         FrameLayout.LayoutParams layoutParams1 = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
         statusbarHeight = BarUtils.getStatusBarHeight();
@@ -133,27 +111,12 @@ public class SocialQRCodeActivity extends BaseActivity {
         toolbar.setLayoutParams(layoutParams1);
     }
 
-
     private void setSocialBackgroundHeight() {
         ViewGroup.LayoutParams layoutParams = app_bar.getLayoutParams();
         layoutParams.height = (int) (ScreenUtils.getScreenWidth() * 0.75);
         app_bar.setLayoutParams(layoutParams);
         ivBg.setImageResource(R.drawable.bg_default_social);
     }
-
-
-    private void banAppBarScroll(boolean isScroll) {
-        if (app_bar == null) return;
-        View mAppBarChildAt = app_bar.getChildAt(0);
-        AppBarLayout.LayoutParams mAppBarParams = (AppBarLayout.LayoutParams) mAppBarChildAt.getLayoutParams();
-        if (isScroll) {
-            mAppBarParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
-            mAppBarChildAt.setLayoutParams(mAppBarParams);
-        } else {
-            mAppBarParams.setScrollFlags(0);
-        }
-    }
-
 
     private void onAppBarScroll() {
         app_bar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
@@ -188,8 +151,6 @@ public class SocialQRCodeActivity extends BaseActivity {
         });
     }
 
-
-
     @SuppressLint("ClickableViewAccessibility")
     private void initView() {
         app_bar = findViewById(R.id.app_bar);
@@ -208,10 +169,8 @@ public class SocialQRCodeActivity extends BaseActivity {
         finish();
     }
 
-
     //保存二维码
     public void save(View view) {
-        Log.i("save", "点击了: ");
         getPermisson(findViewById(R.id.cardSave), g -> {
             //保存到手机
             if (bitmap == null) {
@@ -249,8 +208,6 @@ public class SocialQRCodeActivity extends BaseActivity {
         });
     }
 
-
-
     private Bitmap bitmap;
 
     //bitmap二维码
@@ -259,25 +216,22 @@ public class SocialQRCodeActivity extends BaseActivity {
         Observable.create((ObservableOnSubscribe<Bitmap>) e -> {
             bitmap2 = Glide.with(SocialQRCodeActivity.this)
                     .asBitmap()
+                    .circleCrop()
                     .load(data.getLogo())
-                    .submit(100, 100).get();
-            bitmap = QRCodeEncoder.syncEncodeQRCode(uri2Code, UIUtil.dip2px(this, 250), Color.BLACK ,bitmap2);
+                    .submit(UIUtil.dip2px(this, 48), UIUtil.dip2px(this, 48)).get();
+            bitmap = QRCodeEncoder.syncEncodeQRCode(uri2Code, UIUtil.dip2px(this, 240), Color.BLACK, bitmap2);
             e.onNext(bitmap);
         })
                 .compose(RxSchedulers.ioObserver())
                 .compose(bindToLifecycle())
                 .subscribe(b -> imgqrcode.setImageBitmap(b));
+
     }
-
-
-
-
 
     public static class QRCodeData {
         public String groupId;
         public String inviterId;
         public String groupName;
     }
-
 
 }

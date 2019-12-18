@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -108,16 +107,14 @@
 
                     </com.gcssloop.widget.RCRelativeLayout>
 
-
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="24dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/tvSocialName"
@@ -128,12 +125,14 @@
                             android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="17sp" />
+
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:onClick="QRCode"
                             android:padding="6dp"
                             android:src="@drawable/ic_qr_code" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -360,7 +359,7 @@
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/indicatorTop"
             android:layout_width="wrap_content"
-            android:layout_height="52dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal" />
 
     </com.google.android.material.appbar.AppBarLayout>
