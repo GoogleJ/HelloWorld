@@ -833,6 +833,8 @@
     <string name="input_socialname1">请输入社群名称</string>
     <string name="input_socialnotice">请输入社群公告</string>
     <string name="create_social_success">创建成功</string>
+    <string name="qrcodename">社群二维码</string>
+    <string name="social_qecodename">扫一扫，加入社群</string>
     <string name="social_notice">社群公告</string>
     <string name="social_calture">社群文化</string>
     <string name="social_act">社群动态</string>

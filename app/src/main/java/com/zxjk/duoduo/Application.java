@@ -221,6 +221,7 @@ public class Application extends android.app.Application {
         });
     }
 
+    
     private void registerConnectionStatusListener() {
         RongIMClient.setConnectionStatusListener(connectionStatus -> {
             if (connectionStatus == KICKED_OFFLINE_BY_OTHER_CLIENT) {

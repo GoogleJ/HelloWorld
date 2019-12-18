@@ -56,6 +56,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.socialspace.SocialQRCodeActivity"></activity>
         <activity
             android:name="com.tencent.smtt.sdk.VideoActivity"
             android:alwaysRetainTaskState="true"
@@ -64,6 +65,7 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.tencent.smtt.tbs.video.PLAY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

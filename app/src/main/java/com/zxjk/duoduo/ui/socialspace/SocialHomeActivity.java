@@ -511,7 +511,7 @@ public class SocialHomeActivity extends BaseActivity {
             } else if (absOffset == totalScrollRange) {
                 if (tvTitle.getVisibility() == View.INVISIBLE) {
                     tvTitle.setVisibility(View.VISIBLE);
-                    tvSocialCode.setVisibility(View.VISIBLE);
+                    tvSocialCode.setVisibility(View.GONE);
                 }
                 if (ivToolBarEnd.getVisibility() == View.GONE) {
                     ivToolBarStart.setVisibility(View.VISIBLE);
@@ -675,6 +675,17 @@ public class SocialHomeActivity extends BaseActivity {
         }
     }
 
+    public void QRCode(View View){
+        if (!contentEnable || isInEditStatus) {
+            ToastUtils.showShort(R.string.cantdone);
+            return;
+        }
+        Intent intent = new Intent(this, SocialQRCodeActivity.class);
+        intent.putExtra("type", "3");
+        intent.putExtra("data", response);
+        startActivityForResult(intent, REQUEST_NOTICE);
+    }
+
     public void openConversation(View view) {
         RongIM.getInstance().startGroupChat(this, response.getGroupId(), response.getName());
     }
@@ -701,7 +712,7 @@ public class SocialHomeActivity extends BaseActivity {
                 .subscribe(r -> {
                     isInEditStatus = true;
                     ivToolBarEnd.setVisibility(View.GONE);
-                    tvSocialId.setVisibility(View.GONE);
+//                    tvSocialId.setVisibility(View.GONE);
                     ivToolBarStart.setVisibility(View.GONE);
                     tvTitle.setText(R.string.edit_social_calture);
                     tvTitle.setVisibility(View.VISIBLE);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -107,18 +108,33 @@
 
                     </com.gcssloop.widget.RCRelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tvSocialName"
-                        android:layout_width="match_parent"
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="24dp"
-                        android:ellipsize="middle"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/tvSocialName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="middle"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="QRCode"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_qr_code" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
