@@ -6,9 +6,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.ImageUtil;
 
 import io.rong.imlib.model.Conversation;
@@ -26,7 +24,7 @@ public class ShareGroupQRAdapter extends BaseQuickAdapter<Conversation, BaseView
         ImageView iv = helper.getView(R.id.iv);
         TextView tv = helper.getView(R.id.tv);
 
-        tv.setText(item.getConversationTitle());
+        tv.setText(item.getConversationTitle().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
 
         if (item.getConversationType().equals(Conversation.ConversationType.GROUP)) {
             //群聊

@@ -30,8 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -115,7 +113,7 @@ public class ShareGroupQRActivity extends BaseActivity {
         ImageView app_type = emptyView.findViewById(R.id.app_type);
         TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
         app_type.setImageResource(R.drawable.ic_empty_nosearch);
-        app_prompt_text.setText(getString(R.string.no_search));
+        app_prompt_text.setText("暂无聊天记录");
 
         adapter = new ShareGroupQRAdapter();
         adapter.setNewData(data);
