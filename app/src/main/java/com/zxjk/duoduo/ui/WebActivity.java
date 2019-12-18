@@ -6,11 +6,19 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,12 +28,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.tencent.smtt.export.external.interfaces.SslError;
-import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.ProgressView;
@@ -38,7 +41,7 @@ public class WebActivity extends BaseActivity {
     String currentUrl;
 
     private WebSettings webSettings;
-    private com.tencent.smtt.sdk.WebView mWebView;
+    private WebView mWebView;
 
     private TextView tv_title;
 
@@ -159,11 +162,11 @@ public class WebActivity extends BaseActivity {
             }
 
             @Override
-            public void onReceivedError(WebView webView, int i, String s, String s1) {
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
                 if (TextUtils.isEmpty(type) || !type.equals("mall")) {
                     ToastUtils.showShort(R.string.loadurl_fail);
                 }
-                super.onReceivedError(webView, i, s, s1);
             }
 
             @Override
