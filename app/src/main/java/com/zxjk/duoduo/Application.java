@@ -89,8 +89,7 @@ public class Application extends android.app.Application {
         super.onCreate();
 
         if (BuildConfig.enableLog) {
-            MyCrashHandler mycrashHandler = new MyCrashHandler();
-            Thread.setDefaultUncaughtExceptionHandler(mycrashHandler);
+            Thread.setDefaultUncaughtExceptionHandler(MyCrashHandler.newInstance());
         }
 
         //init MMKV
@@ -149,7 +148,7 @@ public class Application extends android.app.Application {
         MobclickAgent.setCatchUncaughtExceptions(!BuildConfig.enableLog);
 
         PlatformConfig.setWeixin("wxf387c6ba37a8efeb", "b49d0665065089a45c6424c58317f2bb");
-        PlatformConfig.setQQZone("101784998", "b370d5b099d93b3dc9bc91286ca83e9b");
+        PlatformConfig.setQQZone("101838814", "2133a77b5e0abc441ca9646089399898");
     }
 
     private void actLifecycle() {

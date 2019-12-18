@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.jakewharton.rxbinding3.view.RxView;
@@ -27,6 +29,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -41,6 +44,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 import top.zibin.luban.Luban;
 
 @SuppressLint({"CheckResult", "Registered"})
@@ -55,6 +59,54 @@ public class BaseActivity extends RxAppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if (Constant.currentUser == null || TextUtils.isEmpty(Constant.token) || TextUtils.isEmpty(Constant.userId)) {
+            if (MMKVUtils.getInstance().decodeBool("isLogin")) {
+                long date2 = TimeUtils.getNowMills();
+                long date1 = MMKVUtils.getInstance().decodeLong("date1");
+                if ((date2 - date1) / (24 * 60 * 60 * 1000) < 7) {
+                    LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
+                    Constant.currentUser = login;
+                    Constant.token = login.getToken();
+                    Constant.userId = login.getId();
+                    if (RongIM.getInstance().getCurrentConnectionStatus()
+                            != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED || RongIM.getInstance().getCurrentConnectionStatus()
+                            != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
+                        RongIM.connect(login.getRongToken(), new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+                                MMKVUtils.getInstance().enCode("isLogin", false);
+                                Constant.clear();
+                                ToastUtils.showShort(getString(R.string.login_again));
+                                Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onSuccess(String userid) {
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                MMKVUtils.getInstance().enCode("isLogin", false);
+                                Constant.clear();
+                                ToastUtils.showShort(getString(R.string.login_again));
+                                Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    }
+                } else {
+                    ToastUtils.showShort(getString(R.string.login_again));
+                    MMKVUtils.getInstance().enCode("isLogin", false);
+                    startActivity(new Intent(this, NewLoginActivity.class));
+                    finish();
+                }
+            }
+        }
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
             fixOrientation();
         }
@@ -156,6 +208,7 @@ public class BaseActivity extends RxAppCompatActivity {
     }
 
     public void back2Login() {
+        if (getLocalClassName().equals("NewLoginActivity")) return;
         RongIM.getInstance().logout();
         Constant.clear();
         MMKVUtils.getInstance().enCode("isLogin", false);
