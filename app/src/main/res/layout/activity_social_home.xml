@@ -360,7 +360,7 @@
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/indicatorTop"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="52dp"
             android:layout_gravity="center_horizontal" />
 
     </com.google.android.material.appbar.AppBarLayout>

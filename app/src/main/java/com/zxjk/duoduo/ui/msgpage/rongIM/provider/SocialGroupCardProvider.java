@@ -60,6 +60,7 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
     public View newView(Context context, ViewGroup viewGroup) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_social, viewGroup, false);
         SocialGroupCardProvider.ViewHolder holder = new SocialGroupCardProvider.ViewHolder();
+        holder.socialCount = view.findViewById(R.id.socialCount);
         holder.ivHead = view.findViewById(R.id.ivHead);
         holder.ivPay = view.findViewById(R.id.ivPay);
         holder.tvTitle = view.findViewById(R.id.tvTitle);
@@ -68,6 +69,7 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
         holder.tvCount = view.findViewById(R.id.tvCount);
         holder.tvTitle.setVisibility(View.GONE);
         holder.tvOwner.setMaxLines(3);
+        holder.socialCount.setVisibility(View.GONE);
         ViewGroup.LayoutParams layoutParams = holder.llContent.getLayoutParams();
         layoutParams.width = itemSize;
         holder.llContent.setLayoutParams(layoutParams);
@@ -86,5 +88,6 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
         private TextView tvOwner;
         private TextView tvCount;
         private LinearLayout llContent;
+        private LinearLayout socialCount;
     }
 }

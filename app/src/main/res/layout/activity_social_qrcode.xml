@@ -23,6 +23,14 @@
             app:scrimAnimationDuration="500"
             app:titleEnabled="false">
 
+            <com.gcssloop.widget.RCRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F2F3F5"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.6"
+                app:round_corner_bottom_left="28dp"
+                app:round_corner_bottom_right="28dp">
             <ImageView
                 android:id="@+id/ivBg"
                 android:layout_width="match_parent"
@@ -30,6 +38,7 @@
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.6" />
+            </com.gcssloop.widget.RCRelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

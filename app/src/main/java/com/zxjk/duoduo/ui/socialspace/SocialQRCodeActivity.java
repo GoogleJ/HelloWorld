@@ -102,21 +102,9 @@ public class SocialQRCodeActivity extends BaseActivity {
 
         setToolBarMarginTop();
 
+        banAppBarScroll(false);
+
         data = getIntent().getParcelableExtra("data");
-
-
-//        new Thread() {
-//            public void run() {
-//                    try {
-//                        bitmap2 = Glide.with(SocialQRCodeActivity.this)
-//                                .asBitmap()
-//                                .load(data.getLogo())
-//                                .submit(100, 100).get();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//        }.start();
 
 
         //QRcode
@@ -151,6 +139,19 @@ public class SocialQRCodeActivity extends BaseActivity {
         layoutParams.height = (int) (ScreenUtils.getScreenWidth() * 0.75);
         app_bar.setLayoutParams(layoutParams);
         ivBg.setImageResource(R.drawable.bg_default_social);
+    }
+
+
+    private void banAppBarScroll(boolean isScroll) {
+        if (app_bar == null) return;
+        View mAppBarChildAt = app_bar.getChildAt(0);
+        AppBarLayout.LayoutParams mAppBarParams = (AppBarLayout.LayoutParams) mAppBarChildAt.getLayoutParams();
+        if (isScroll) {
+            mAppBarParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+            mAppBarChildAt.setLayoutParams(mAppBarParams);
+        } else {
+            mAppBarParams.setScrollFlags(0);
+        }
     }
 
 
