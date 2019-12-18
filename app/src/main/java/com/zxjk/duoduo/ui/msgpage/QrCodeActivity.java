@@ -147,10 +147,8 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
             } else if (action.equals("action4")) {
                 BaseUri<SocialQRCodeActivity.QRCodeData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<SocialQRCodeActivity.QRCodeData>>() {
                 }.getType());
-                Intent intent = new Intent(this, AgreeGroupChatActivity.class);
-                intent.putExtra("inviterId", uri.data.inviterId);
-                intent.putExtra("groupId", uri.data.groupId);
-                intent.putExtra("groupName", uri.data.groupName);
+                Intent intent = new Intent(this, SocialHomeActivity.class);
+                intent.putExtra("id", uri.data.groupId);
                 startActivity(intent);
                 finish();
             }
