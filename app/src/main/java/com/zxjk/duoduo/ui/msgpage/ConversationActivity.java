@@ -649,13 +649,13 @@ public class ConversationActivity extends BaseActivity {
                         conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
                         conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
 
-                        if (!targetId.equals(Constant.userId)) {
+//                        if (!targetId.equals(Constant.userId)) {
                             targetUserInfo = new UserInfo(targetId,
                                     TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
                                             response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
                                     Uri.parse(response.getCustomerForChat().getHeadPortrait()));
                             RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
-                        }
+//                        }
 
                         handlePrivate();
                     }, this::handleApiError);

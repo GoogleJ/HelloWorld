@@ -114,7 +114,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         eventType = getIntent().getIntExtra("eventType", -1);
         groupResponse = (GroupResponse) getIntent().getSerializableExtra("members");
 
-        if (eventType == EVENT_CREATEGROUP){
+        if (eventType == EVENT_CREATEGROUP) {
             tv_title.setText(getString(R.string.select_contacts));
             handleCreateGroup();
             return;
