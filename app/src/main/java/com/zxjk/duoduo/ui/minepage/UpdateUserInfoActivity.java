@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -78,16 +79,29 @@ public class UpdateUserInfoActivity extends BaseActivity {
         if (type == TYPE_SIGN) {
             tv_title.setText(R.string.sign);
             etChangeSign.setHint(R.string.hint_sign);
+            if (!TextUtils.isEmpty(Constant.currentUser.getSignature())) {
+                etChangeSign.setText(Constant.currentUser.getSignature());
+            }
         } else if (type == TYPE_NICK) {
             tv_title.setText(R.string.nick);
             etChangeSign.setHint(R.string.hint_nick);
+            if (!TextUtils.isEmpty(Constant.currentUser.getNick())) {
+                etChangeSign.setText(Constant.currentUser.getNick());
+            }
         } else if (type == TYPE_EMAIL) {
             tv_title.setText(R.string.email);
             etChangeSign.setHint(R.string.hint_email);
             etChangeSign.setInputType(TYPE_CLASS_TEXT | TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            if (!TextUtils.isEmpty(Constant.currentUser.getEmail())) {
+                etChangeSign.setText(Constant.currentUser.getEmail());
+            }
         } else if (type == TYPE_GROUP_TITLE) {
             tv_title.setText(R.string.changegroupname);
             etChangeSign.setHint(R.string.hint_groupname);
+            GroupResponse group = (GroupResponse) getIntent().getSerializableExtra("group");
+            if (group != null) {
+                etChangeSign.setText(group.getGroupInfo().getGroupNikeName());
+            }
         }
     }
 

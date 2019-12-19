@@ -150,6 +150,7 @@ public class SocialManageActivity extends BaseActivity {
             Intent intent = new Intent(this, UpdateUserInfoActivity.class);
             intent.putExtra("type", 4);
             intent.putExtra("groupId", group.getGroupInfo().getId());
+            intent.putExtra("group", group);
             intent.putExtra("fromSocial", true);
             startActivityForResult(intent, 1);
         } else {
