@@ -346,7 +346,8 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_socialhome_end_white" />
+                            android:src="@drawable/ic_socialhome_end_white"
+                            android:visibility="gone" />
 
                     </FrameLayout>
 

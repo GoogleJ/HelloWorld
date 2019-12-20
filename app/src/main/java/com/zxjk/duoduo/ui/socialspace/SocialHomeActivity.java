@@ -156,6 +156,8 @@ public class SocialHomeActivity extends BaseActivity {
         layoutParams1.height = (int) (ScreenUtils.getScreenWidth() * 0.75 * 0.5);
         bgMask.setLayoutParams(layoutParams1);
 
+        onAppBarScroll();
+
         initData();
 
         setToolBarMarginTop();
@@ -163,8 +165,6 @@ public class SocialHomeActivity extends BaseActivity {
         setSocialBackgroundHeight();
 
         setSupportActionBar(toolbar);
-
-        onAppBarScroll();
 
         initIndicator();
 
@@ -504,20 +504,23 @@ public class SocialHomeActivity extends BaseActivity {
             int absOffset = Math.abs(verticalOffset);
 
             if (absOffset <= minimumHeightForVisibleOverlappingContent) {
-                if (ivToolBarEnd.getVisibility() == View.GONE) {
+                if (ivToolBarEnd.getVisibility() == View.GONE && response != null && !response.getIdentity().equals("0")) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
                     ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_white);
+                }
+                if (ivToolBarStart.getVisibility() == View.GONE) {
                     ivToolBarStart.setImageResource(R.drawable.ic_social_back);
                     ivToolBarStart.setVisibility(View.VISIBLE);
                 }
-
                 if (tvTitle.getVisibility() == View.VISIBLE) {
                     tvTitle.setVisibility(View.INVISIBLE);
                     tvSocialCode.setVisibility(View.INVISIBLE);
                 }
             } else if (absOffset < totalScrollRange) {
-                if (ivToolBarEnd.getVisibility() == View.VISIBLE) {
+                if (ivToolBarEnd.getVisibility() == View.VISIBLE && response != null && !response.getIdentity().equals("0")) {
                     ivToolBarEnd.setVisibility(View.GONE);
+                }
+                if (ivToolBarStart.getVisibility() == View.VISIBLE) {
                     ivToolBarStart.setVisibility(View.GONE);
                 }
                 if (tvTitle.getVisibility() == View.VISIBLE) {
@@ -529,11 +532,13 @@ public class SocialHomeActivity extends BaseActivity {
                     tvTitle.setVisibility(View.VISIBLE);
                     tvSocialCode.setVisibility(View.VISIBLE);
                 }
-                if (ivToolBarEnd.getVisibility() == View.GONE) {
-                    ivToolBarStart.setVisibility(View.VISIBLE);
+                if (ivToolBarEnd.getVisibility() == View.GONE && response != null && !response.getIdentity().equals("0")) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
-                    ivToolBarStart.setImageResource(R.drawable.ico_back);
                     ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_black);
+                }
+                if (ivToolBarStart.getVisibility() == View.GONE) {
+                    ivToolBarStart.setVisibility(View.VISIBLE);
+                    ivToolBarStart.setImageResource(R.drawable.ico_back);
                 }
             }
         });
@@ -715,6 +720,10 @@ public class SocialHomeActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void menu(View view) {
+        if (ivToolBarEnd.getVisibility() != View.VISIBLE) {
+            return;
+        }
+        
         if (!contentEnable) {
             ToastUtils.showShort(R.string.cantdone);
             return;
