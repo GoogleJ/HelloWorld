@@ -53,24 +53,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
-            android:gravity="center_vertical|end">
+            android:gravity="center_vertical|end"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvMoney"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:lines="1"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tvSymbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvMoney"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:gravity="end"
-                android:lines="1"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvSymbol"
+                android:id="@+id/tvTips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="3dp"
+                android:textColor="#9EA0A4"
                 android:textSize="12sp" />
 
         </LinearLayout>

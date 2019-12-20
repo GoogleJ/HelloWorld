@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -64,6 +65,13 @@ public class DetailListActivity extends BaseActivity {
             @Override
             protected void convert(BaseViewHolder helper, GetSerialBean item) {
                 TextView tvDate = helper.getView(R.id.tvDate);
+                TextView tvTips = helper.getView(R.id.tvTips);
+                if (!TextUtils.isEmpty(item.getRemarks())) {
+                    tvTips.setVisibility(View.VISIBLE);
+                    tvTips.setText(item.getRemarks());
+                } else {
+                    tvTips.setVisibility(View.GONE);
+                }
                 if (helper.getAdapterPosition() == 0) {
                     tvDate.setVisibility(View.VISIBLE);
                 } else if (getData().get(helper.getAdapterPosition() - 1).getMonth().equals(item.getMonth())) {

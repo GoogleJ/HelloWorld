@@ -69,6 +69,15 @@ public class GetSymbolSerialResponse implements Parcelable {
         private String logo;
         private String income;
         private String expenditure;
+        private String remarks;
+
+        public String getRemarks() {
+            return remarks;
+        }
+
+        public void setRemarks(String remarks) {
+            this.remarks = remarks;
+        }
 
         public String getId() {
             return id;
@@ -166,6 +175,9 @@ public class GetSymbolSerialResponse implements Parcelable {
             this.expenditure = expenditure;
         }
 
+        public SymbolSerialDTOSBean() {
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -185,9 +197,7 @@ public class GetSymbolSerialResponse implements Parcelable {
             dest.writeString(this.logo);
             dest.writeString(this.income);
             dest.writeString(this.expenditure);
-        }
-
-        public SymbolSerialDTOSBean() {
+            dest.writeString(this.remarks);
         }
 
         protected SymbolSerialDTOSBean(Parcel in) {
@@ -203,6 +213,7 @@ public class GetSymbolSerialResponse implements Parcelable {
             this.logo = in.readString();
             this.income = in.readString();
             this.expenditure = in.readString();
+            this.remarks = in.readString();
         }
 
         public static final Creator<SymbolSerialDTOSBean> CREATOR = new Creator<SymbolSerialDTOSBean>() {

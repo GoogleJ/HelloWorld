@@ -102,6 +102,7 @@ public class BalanceDetailActivity extends BaseActivity {
             protected void convert(BaseViewHolder helper, GetSymbolSerialResponse.SymbolSerialDTOSBean item) {
                 ImageView ivIcon = helper.getView(R.id.ivIcon);
                 TextView tvMoney = helper.getView(R.id.tvMoney);
+                TextView tvTips = helper.getView(R.id.tvTips);
                 GlideUtil.loadNormalImg(ivIcon, item.getLogo());
                 helper.setText(R.id.tvTitle, item.getSerialTitle())
                         .setText(R.id.tvTime, sdf.format(Long.parseLong(item.getCreateTime())))
@@ -113,6 +114,13 @@ public class BalanceDetailActivity extends BaseActivity {
                 string.setSpan(new RelativeSizeSpan(0.70f), string.length() - item.getSymbol().length(), string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tvMoney.setText(string);
                 tvMoney.setTextColor(item.getSerialType().equals("0") ? colorRed : colorBlack);
+
+                if (!TextUtils.isEmpty(item.getRemarks())) {
+                    tvTips.setVisibility(View.VISIBLE);
+                    tvTips.setText(item.getRemarks());
+                } else {
+                    tvTips.setVisibility(View.GONE);
+                }
 
                 LinearLayout llHean = helper.getView(R.id.llHead);
                 if (helper.getAdapterPosition() == 0) {

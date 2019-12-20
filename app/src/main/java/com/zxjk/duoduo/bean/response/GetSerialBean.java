@@ -25,6 +25,19 @@ public class GetSerialBean implements Parcelable {
     private String serialNumber;
     private String month;
     private String logo;
+    private String remarks;
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public static Creator<GetSerialBean> getCREATOR() {
+        return CREATOR;
+    }
 
     public String getSerialNumber() {
         return serialNumber;
