@@ -135,7 +135,7 @@ public class UserInfoActivity extends BaseActivity {
         tv_nickname.setText(Constant.currentUser.getNick());
         tvUserInfoSex.setText(CommonUtils.getSex(Constant.currentUser.getSex()));
         tv_DuoDuoNumber.setText(Constant.currentUser.getDuoduoId());
-        tv_realName.setText(TextUtils.isEmpty(Constant.currentUser.getRealname()) ? "暂未认证" : Constant.currentUser.getRealname());
+        tv_realName.setText(TextUtils.isEmpty(Constant.currentUser.getRealname()) ? "未认证" : Constant.currentUser.getRealname());
         tv_phoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7, 11));
         tv_personalizedSignature.setText(TextUtils.isEmpty(Constant.currentUser.getSignature()) ? "暂无" : Constant.currentUser.getSignature());
         tv_email.setText(TextUtils.isEmpty(Constant.currentUser.getEmail()) ? "暂无" : Constant.currentUser.getEmail());

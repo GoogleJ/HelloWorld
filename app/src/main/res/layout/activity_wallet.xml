@@ -107,6 +107,7 @@
                     android:drawableTop="@drawable/ic_wallet_func1"
                     android:drawablePadding="6dp"
                     android:gravity="center"
+                    android:onClick="func1"
                     android:text="@string/moexchange"
                     android:textColor="@color/black" />
 
@@ -138,6 +139,7 @@
                     android:drawableTop="@drawable/ic_wallet_func5"
                     android:drawablePadding="6dp"
                     android:gravity="center"
+                    android:onClick="func2"
                     android:text="@string/mocoin"
                     android:textColor="@color/black" />
 
@@ -162,6 +164,7 @@
                     android:drawableTop="@drawable/ic_wallet_func4"
                     android:drawablePadding="6dp"
                     android:gravity="center"
+                    android:onClick="func3"
                     android:text="@string/mojiaofei"
                     android:textColor="@color/black" />
 
@@ -210,6 +213,7 @@
                     android:drawableTop="@drawable/ic_wallet_func6"
                     android:drawablePadding="6dp"
                     android:gravity="center"
+                    android:onClick="func4"
                     android:text="@string/buycoinonekey"
                     android:textColor="@color/black" />
 
@@ -225,6 +229,7 @@
                     android:drawableTop="@drawable/ic_wallet_func7"
                     android:drawablePadding="6dp"
                     android:gravity="center"
+                    android:onClick="func5"
                     android:text="@string/kuangji"
                     android:textColor="@color/black" />
 
@@ -240,6 +245,7 @@
                     android:drawableTop="@drawable/ic_wallet_func8"
                     android:drawablePadding="6dp"
                     android:gravity="center"
+                    android:onClick="func6"
                     android:text="@string/didichuxing"
                     android:textColor="@color/black" />
 
@@ -264,6 +270,7 @@
                     android:drawableTop="@drawable/ic_wallet_func9"
                     android:drawablePadding="6dp"
                     android:gravity="center"
+                    android:onClick="func7"
                     android:text="@string/mogame"
                     android:textColor="@color/black" />
 

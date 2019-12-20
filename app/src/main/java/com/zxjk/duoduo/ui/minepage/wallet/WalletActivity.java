@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -63,5 +64,33 @@ public class WalletActivity extends BaseActivity {
                     intent.putExtra("type", "mall");
                     startActivity(intent);
                 }, this::handleApiError);
+    }
+
+    public void func1(View view) {
+        ToastUtils.showShort(R.string.developing);
+    }
+
+    public void func2(View view) {
+        ToastUtils.showShort(R.string.developing);
+    }
+
+    public void func3(View view) {
+        ToastUtils.showShort(R.string.developing);
+    }
+
+    public void func4(View view) {
+        ToastUtils.showShort(R.string.developing);
+    }
+
+    public void func5(View view) {
+        ToastUtils.showShort(R.string.developing);
+    }
+
+    public void func6(View view) {
+        ToastUtils.showShort(R.string.developing);
+    }
+
+    public void func7(View view) {
+        ToastUtils.showShort(R.string.developing);
     }
 }
