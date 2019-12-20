@@ -723,7 +723,7 @@ public class SocialHomeActivity extends BaseActivity {
         if (ivToolBarEnd.getVisibility() != View.VISIBLE) {
             return;
         }
-        
+
         if (!contentEnable) {
             ToastUtils.showShort(R.string.cantdone);
             return;

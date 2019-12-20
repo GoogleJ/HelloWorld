@@ -61,13 +61,13 @@ public class SocialAllMemberActivity extends BaseActivity {
 
         index.initSocial();
         index.setOnTouchingLetterChangedListener(l -> {
+            if (l.equals("*")) {
+                    recycler.scrollToPosition(0);
+            }
             for (int i = 0; i < data.size(); i++) {
                 String letters = data.get(i).getFirstLetter();
                 if (letters.equals(l)) {
                     recycler.scrollToPosition(i);
-                    break;
-                } else if (letters.equals("!")) {
-                    recycler.scrollToPosition(0);
                     break;
                 }
             }
