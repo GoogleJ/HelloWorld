@@ -99,7 +99,10 @@ public class NewFriendActivity extends BaseActivity {
             View view = LayoutInflater.from(this).inflate(R.layout.view_app_null_type, null);
             mAdapter.setEmptyView(view);
         }
-        textView.setOnClickListener(v -> startActivity(new Intent(NewFriendActivity.this, GlobalSearchActivity.class)));
+        textView.setOnClickListener(v -> {
+            startActivity(new Intent(NewFriendActivity.this, GlobalSearchActivity.class));
+            overridePendingTransition(0, 0);
+        });
 
         getPermisson(findViewById(R.id.llPhoneContract), g -> {
             if (!g) return;

@@ -515,7 +515,7 @@
             android:name=".ui.msgpage.GlobalSearchActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity
             android:name=".ui.minepage.OnlineServiceActivity"
             android:launchMode="singleTop"

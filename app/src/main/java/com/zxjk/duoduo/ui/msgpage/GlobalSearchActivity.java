@@ -48,9 +48,6 @@ public class GlobalSearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_search);
         ButterKnife.bind(this);
-        TextView tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(getString(R.string.m_contact_search_label));
-        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         initData();
         initUI();
@@ -76,7 +73,6 @@ public class GlobalSearchActivity extends BaseActivity {
         TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
         app_type.setImageResource(R.drawable.ic_empty_nosearch);
         app_prompt_text.setText(getString(R.string.no_search));
-        app_prompt_text.setVisibility(View.GONE);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(manager);
         mAdapter = new GlobalSearchAdapter(this);
@@ -121,5 +117,15 @@ public class GlobalSearchActivity extends BaseActivity {
                     handleApiError(t);
                     mAdapter.loadMoreFail();
                 });
+    }
+
+    public void cancel(View view) {
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
     }
 }

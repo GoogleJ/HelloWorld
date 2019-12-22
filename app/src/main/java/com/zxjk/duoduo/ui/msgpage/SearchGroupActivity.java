@@ -160,8 +160,8 @@ public class SearchGroupActivity extends BaseActivity {
                         }, t -> {
                             handleApiError(t);
                             adapter.loadMoreFail();
-                        }),
-                recycler);
+                        })
+                , recycler);
 
         etSearch.requestFocus();
     }

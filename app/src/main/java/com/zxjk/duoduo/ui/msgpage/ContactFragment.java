@@ -97,7 +97,10 @@ public class ContactFragment extends BaseFragment {
 
         ButterKnife.bind(this, rootView);
 
-        textView.setOnClickListener(v -> startActivity(new Intent(getContext(), GlobalSearchActivity.class)));
+        textView.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), GlobalSearchActivity.class));
+            getActivity().overridePendingTransition(0, 0);
+        });
 
         initRecycler();
 
