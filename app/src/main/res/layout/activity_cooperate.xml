@@ -286,10 +286,10 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:onClick="confirm"
                 android:layout_margin="16dp"
                 android:background="@drawable/shape_circular_bead_btn1"
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:onClick="confirm"
                 android:text="点击申请商务合作"
                 android:textColor="@color/white"
                 android:textSize="18sp" />

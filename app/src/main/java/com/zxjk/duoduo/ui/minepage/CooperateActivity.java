@@ -1,5 +1,6 @@
 package com.zxjk.duoduo.ui.minepage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,7 +17,7 @@ public class CooperateActivity extends BaseActivity {
     }
 
     public void confirm(View view) {
-        ToastUtils.showShort(R.string.developing);
+        startActivity(new Intent(this, OnlineServiceActivity.class));
     }
 
     public void back(View view) {

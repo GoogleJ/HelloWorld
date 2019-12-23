@@ -34,7 +34,6 @@ public class SettingActivity extends BaseActivity {
     private TextView tv_perfection;
     private ImageView iv_authentication;
     private TextView tv_authentication;
-    private String otherIdCardType = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
