@@ -25,7 +25,5 @@ public class GlobalSearchAdapter extends BaseQuickAdapter<FriendInfoResponse, Ba
                 .addOnClickListener(R.id.m_item_search_layout);
         ImageView heardImage = helper.getView(R.id.m_item_search_icon);
         GlideUtil.loadCircleImg(heardImage, item.getHeadPortrait());
-
-
     }
 }

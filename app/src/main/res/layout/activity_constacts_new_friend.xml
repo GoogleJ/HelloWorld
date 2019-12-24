@@ -10,7 +10,7 @@
         android:layout_height="45dp"
         android:background="@color/white"
         android:gravity="center_vertical"
-        android:paddingStart="24dp"
+        android:paddingStart="16dp"
         android:paddingEnd="8dp"
         android:text="@string/address_list"
         android:textColor="@color/msgTitle"
@@ -22,11 +22,26 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
 
-        <TextView
-            android:id="@+id/m_contact_search_edit_1"
-            style="@style/SearchStyle"
-            android:gravity="center_vertical"
-            android:hint="@string/search" />
+        <LinearLayout
+            android:id="@+id/llSearch"
+            style="@style/SearchStyle3"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_search_view"
+                android:tint="#9e9e9e" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="@string/search"
+                android:textColor="#9E9E9E" />
+
+        </LinearLayout>
 
     </FrameLayout>
 

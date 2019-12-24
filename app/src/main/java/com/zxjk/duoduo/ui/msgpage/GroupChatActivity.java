@@ -1,6 +1,8 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +36,8 @@ public class GroupChatActivity extends BaseActivity implements TextWatcher {
     LinearLayout mGroupChatEdit;
     @BindView(R.id.m_group_chat_recycler_view)
     RecyclerView mGroupChatRecyclerView;
+    @BindView(R.id.tv_commit)
+    TextView tv_commit;
 
     GroupChatAdapter groupChatAdapter;
 
@@ -46,6 +50,16 @@ public class GroupChatActivity extends BaseActivity implements TextWatcher {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
         ButterKnife.bind(this);
+
+        tv_commit.setVisibility(View.VISIBLE);
+        tv_commit.setTextColor(Color.parseColor("#333333"));
+        tv_commit.setBackground(null);
+        tv_commit.setText("创建群聊");
+        tv_commit.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CreateGroupActivity.class);
+            intent.putExtra("eventType", 1);
+            startActivity(intent);
+        });
 
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.m_group_chat));

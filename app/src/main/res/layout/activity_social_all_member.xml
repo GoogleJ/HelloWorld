@@ -19,7 +19,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/shape_circular_bead2"
+            android:background="@drawable/shape_search_layout"
             android:padding="6dp">
 
             <EditText

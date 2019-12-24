@@ -101,17 +101,18 @@
     <!--搜索栏的样式-->
     <style name="SearchStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_height">35dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_margin">12dp</item>
-        <item name="android:background">@drawable/shape_circular_bead2</item>
+        <item name="android:background">@drawable/shape_search_layout</item>
         <item name="android:drawableStart">@drawable/icon_search_view</item>
         <item name="android:drawablePadding">10dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:paddingStart">20dp</item>
         <item name="android:paddingEnd">20dp</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColor3</item>
         <item name="android:inputType">text</item>
         <item name="android:hint">@string/search</item>
         <item name="android:imeOptions">actionSearch</item>
@@ -129,9 +130,20 @@
         <item name="android:paddingEnd">20dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor3</item>
         <item name="android:inputType">text</item>
         <item name="android:hint">@string/search</item>
         <item name="android:imeOptions">actionSearch</item>
+    </style>
+
+    <!--搜索栏的样式-->
+    <style name="SearchStyle3">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:background">@drawable/shape_search_layout</item>
     </style>
 
     <style name="CommentStyle" parent="@android:style/Theme.Dialog">

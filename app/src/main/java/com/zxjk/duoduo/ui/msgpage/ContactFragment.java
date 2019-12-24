@@ -54,8 +54,8 @@ public class ContactFragment extends BaseFragment {
     TextView constactsDialog;
     @BindView(R.id.layout_contract_head)
     View layout_contract_head;
-    @BindView(R.id.m_contact_search_edit_1)
-    TextView textView;
+    @BindView(R.id.llSearch)
+    LinearLayout llSearch;
 
     private BaseContactAdapter mAdapter;
     private View dotNewFriend;
@@ -97,7 +97,7 @@ public class ContactFragment extends BaseFragment {
 
         ButterKnife.bind(this, rootView);
 
-        textView.setOnClickListener(v -> {
+        llSearch.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), GlobalSearchActivity.class));
             getActivity().overridePendingTransition(0, 0);
         });
