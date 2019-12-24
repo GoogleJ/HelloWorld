@@ -2,11 +2,11 @@ package com.zxjk.duoduo.ui.minepage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.security.rp.RPSDK;
@@ -32,6 +32,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 
 @SuppressLint("CheckResult")
@@ -40,6 +41,8 @@ public class SettingActivity extends BaseActivity {
     private TextView tv_perfection;
     private ImageView iv_authentication;
     private TextView tv_authentication;
+    private Switch swGlobalMute;
+    private Switch swGlobalVibrate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,74 @@ public class SettingActivity extends BaseActivity {
         setContentView(R.layout.activity_setting);
         initView();
         isAuthentication();
+
+        setupRemind();
+
+        if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
+            swGlobalVibrate.setChecked(true);
+        } else {
+            swGlobalVibrate.setChecked(false);
+        }
+        swGlobalVibrate.setOnClickListener(v -> {
+            swGlobalVibrate.setEnabled(false);
+            if (swGlobalVibrate.isChecked()) {
+                MMKVUtils.getInstance().enCode("bottom_vibrate", true);
+            } else {
+                MMKVUtils.getInstance().enCode("bottom_vibrate", false);
+            }
+            swGlobalVibrate.setEnabled(true);
+        });
+
+    }
+
+    private void setupRemind() {
+        RongIM.getInstance().getNotificationQuietHours(new RongIMClient.GetNotificationQuietHoursCallback() {
+            @Override
+            public void onSuccess(String s, int i) {
+                if (i != 0) {
+                    swGlobalMute.setChecked(false);
+                } else {
+                    swGlobalMute.setChecked(true);
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+            }
+        });
+
+        swGlobalMute.setOnClickListener(v -> {
+            swGlobalMute.setEnabled(false);
+            if (!swGlobalMute.isChecked()) {
+                RongIM.getInstance().setNotificationQuietHours("00:00:00", 1439, new RongIMClient.OperationCallback() {
+                    @Override
+                    public void onSuccess() {
+                        swGlobalMute.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                        ToastUtils.showShort(R.string.function_fail);
+                        swGlobalMute.setEnabled(true);
+                        swGlobalMute.setChecked(!swGlobalMute.isChecked());
+                    }
+                });
+            } else {
+                RongIM.getInstance().removeNotificationQuietHours(new RongIMClient.OperationCallback() {
+                    @Override
+                    public void onSuccess() {
+                        swGlobalMute.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                        ToastUtils.showShort(R.string.function_fail);
+                        swGlobalMute.setEnabled(true);
+                        swGlobalMute.setChecked(!swGlobalMute.isChecked());
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -67,6 +138,8 @@ public class SettingActivity extends BaseActivity {
 
         tv_authentication = findViewById(R.id.tv_authentication);
         iv_authentication = findViewById(R.id.iv_authentication);
+        swGlobalMute = findViewById(R.id.swGlobalMute);
+        swGlobalVibrate = findViewById(R.id.swGlobalVibrate);
         boolean hasCompletePay = SPUtils.getInstance().getBoolean(Constant.currentUser.getId(), false);
         tv_perfection = findViewById(R.id.tv_perfection);
         tv_perfection.setText(hasCompletePay ? R.string.complete_payinfo : R.string.uncomplete_payinfo);
@@ -81,15 +154,6 @@ public class SettingActivity extends BaseActivity {
         //隐私
         findViewById(R.id.rl_privicy).setOnClickListener(v ->
                 startActivity(new Intent(SettingActivity.this, PrivicyActivity.class)));
-
-        //新消息通知
-        findViewById(R.id.rl_newMessage).setOnClickListener(v -> {
-            Intent mItent = new Intent();
-            mItent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-            mItent.setData(Uri.fromParts("package", getPackageName(), null));
-            mItent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(mItent);
-        });
 
         //实名认证
         findViewById(R.id.rl_realNameAuthentication).setOnClickListener(v -> {

@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/m_item_new_friend_icon"
-        android:layout_width="53dp"
-        android:layout_height="53dp"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp" />
@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/shape_circular_bead_btn2"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/shape_theme"
         android:paddingStart="16dp"
         android:paddingTop="4dp"
         android:paddingEnd="16dp"
@@ -35,13 +35,13 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/m_item_new_friend_icon"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="3dp"
         android:layout_toStartOf="@id/m_item_new_friend_type_btn"
         android:layout_toEndOf="@id/m_item_new_friend_icon"
         android:ellipsize="end"
         android:lines="1"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/m_item_new_friend_user_name_text"
@@ -56,7 +56,7 @@
         android:ellipsize="end"
         android:lines="1"
         android:textColor="@color/text_color3"
-        android:textSize="16sp" />
+        android:textSize="13.5sp" />
 
     <View
         android:layout_width="match_parent"

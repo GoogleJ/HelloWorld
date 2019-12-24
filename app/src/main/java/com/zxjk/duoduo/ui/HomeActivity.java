@@ -657,7 +657,9 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void switchFragment(Fragment fragment) {
-        VibrateUtils.vibrate(50);
+        if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
+            VibrateUtils.vibrate(50);
+        }
         if (mFragment != fragment) {
             if (!fragment.isAdded()) {
                 getSupportFragmentManager().beginTransaction().hide(mFragment)

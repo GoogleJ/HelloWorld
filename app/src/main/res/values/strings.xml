@@ -50,7 +50,7 @@
     <string name="male">男</string>
     <string name="female">女</string>
     <string name="authen_true">已认证</string>
-    <string name="authen_false">暂未认证</string>
+    <string name="authen_false">未认证</string>
     <string name="none">暂无</string>
     <string name="update_head_portrail">更新头像成功</string>
     <string name="input_empty">请输入内容</string>
