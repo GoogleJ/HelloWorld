@@ -902,4 +902,5 @@
     <string name="cantopenvideo">视频暂时无法加载，请稍后尝试</string>
     <string name="cantopenfile">暂时无法查看文档，请稍后再试</string>
     <string name="back">返回</string>
+    <string name="search1">搜索手机号/海浪号</string>
 </resources>

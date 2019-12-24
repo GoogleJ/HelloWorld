@@ -136,14 +136,7 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
 
                 CommonUtils.resolveFriendList(this, userId, true);
             } else if (action.equals("action3")) {
-//                BaseUri<GroupQRActivity.GroupQRData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<GroupQRActivity.GroupQRData>>() {
-//                }.getType());
-//                Intent intent = new Intent(this, AgreeGroupChatActivity.class);
-//                intent.putExtra("inviterId", uri.data.inviterId);
-//                intent.putExtra("groupId", uri.data.groupId);
-//                intent.putExtra("groupName", uri.data.groupName);
-//                startActivity(intent);
-//                finish();
+                ToastUtils.showShort("群组二维码已过期，请使用社群二维码");
             } else if (action.equals("action4")) {
                 BaseUri<SocialQRCodeActivity.QRCodeData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<SocialQRCodeActivity.QRCodeData>>() {
                 }.getType());

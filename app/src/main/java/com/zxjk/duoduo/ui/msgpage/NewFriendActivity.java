@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -45,11 +46,10 @@ import io.rong.message.InformationNotificationMessage;
  */
 @SuppressLint("CheckResult")
 public class NewFriendActivity extends BaseActivity {
-
-    @BindView(R.id.m_contact_search_edit_1)
-    TextView textView;
     @BindView(R.id.m_fragment_new_friend_recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.llSearch)
+    LinearLayout llSearch;
 
     NewFriendAdapter mAdapter;
     DeleteFriendInformationDialog dialog;
@@ -99,7 +99,7 @@ public class NewFriendActivity extends BaseActivity {
             View view = LayoutInflater.from(this).inflate(R.layout.view_app_null_type, null);
             mAdapter.setEmptyView(view);
         }
-        textView.setOnClickListener(v -> {
+        llSearch.setOnClickListener(v -> {
             startActivity(new Intent(NewFriendActivity.this, GlobalSearchActivity.class));
             overridePendingTransition(0, 0);
         });
