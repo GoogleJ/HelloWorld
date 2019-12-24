@@ -73,7 +73,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
 
     private void initView() {
         tvTitle = findViewById(R.id.tv_title);
-        tvTitle.setText(R.string.newpay);
+        tvTitle.setText(R.string.new_redpackage_manage);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         sw = findViewById(R.id.sw);

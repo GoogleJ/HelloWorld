@@ -584,7 +584,7 @@
     <string name="mute_all">全员禁言</string>
     <string name="mute_manage">禁言管理</string>
     <string name="new_enter_group">新人进群</string>
-    <string name="new_redpackage_manage">新人红包设置</string>
+    <string name="new_redpackage_manage">社群空投</string>
     <string name="pay_enter_group">付费进群</string>
     <string name="daily_manage">日常管理</string>
     <string name="cant_addfriend">禁止互加好友</string>
@@ -649,7 +649,6 @@
     <string name="allpay">总奖励数量</string>
     <string name="starttime">开始时间</string>
     <string name="endtime">结束时间</string>
-    <string name="newpay">新人红包设置</string>
     <string name="setupeach">设置每人奖励数量</string>
     <string name="setupall">设置总奖励金额</string>
     <string name="please_setall">请先设置金额以及时间</string>
