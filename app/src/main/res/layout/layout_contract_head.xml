@@ -6,6 +6,18 @@
     android:clipChildren="false"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tvContactHilamgId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableEnd="@drawable/ic_qr_contract"
+        android:drawablePadding="6dp"
+        android:gravity="center_vertical|bottom"
+        android:paddingTop="12dp"
+        android:textColor="#9E9E9E"
+        android:textSize="13sp" />
+1
     <LinearLayout
         android:id="@+id/ll_contract_top1"
         android:layout_width="match_parent"
@@ -47,7 +59,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/new_friend"
+            android:text="@string/invite_friends"
             android:textColor="@color/black"
             android:textSize="15.5sp" />
 
@@ -65,7 +77,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="12dp">
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -78,7 +93,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/mygroup"
+            android:text="@string/scan"
             android:textColor="@color/black"
             android:textSize="15.5sp" />
 
@@ -96,7 +111,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="12dp">
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -109,7 +127,41 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/collection_nearby"
+            android:text="@string/choosegroupchat"
+            android:textColor="@color/black"
+            android:textSize="15.5sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="#e5e5e5" />
+
+    <LinearLayout
+        android:id="@+id/ll_contract_top4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_contract_new_top4" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:text="@string/invite_friends1"
             android:textColor="@color/black"
             android:textSize="15.5sp" />
 

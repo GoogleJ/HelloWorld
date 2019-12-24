@@ -27,7 +27,7 @@
     <color name="search_def_gary">#EBEBEB</color>
     <color name="head_ok_pressed_bg">#F7C547</color>
     <color name="head_ok_normal_bg">#FFD464</color>
-    <color name="m_friend_search_view">#fff5f5f5</color>
+    <color name="m_friend_search_view">#fff2f3f5</color>
     <color name="m_add_friend_wechat_label_2">#999999</color>
     <color name="m_add_friend_line">#DDDDDD</color>
     <color name="personal_information">#9C9C9C</color>
@@ -88,7 +88,7 @@
     <color name="pop_color1">#4B4D5B</color>
     <color name="pop_color2">#999999</color>
     <color name="pop_color3">#D2D2D2</color>
-    <color name="background_color">#f4f4f4</color>
+    <color name="background_color">#f8f8f8</color>
     <color name="background_color1">#EDEDEE</color>
     <color name="background_color2">#EEEEEE</color>
     <color name="theme_color">#4B4D5B</color>

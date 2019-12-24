@@ -60,10 +60,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.llMineTop).setOnClickListener(this);
         view.findViewById(R.id.ivBlockWallet).setOnClickListener(this);
         view.findViewById(R.id.llMine2).setOnClickListener(this);
-        view.findViewById(R.id.llMine3).setOnClickListener(this);
         view.findViewById(R.id.llMine4).setOnClickListener(this);
         view.findViewById(R.id.llMine5).setOnClickListener(this);
-        view.findViewById(R.id.llMine6).setOnClickListener(this);
         view.findViewById(R.id.llMine7).setOnClickListener(this);
         view.findViewById(R.id.ivQR).setOnClickListener(this);
         view.findViewById(R.id.llMineInvite).setOnClickListener(this);
@@ -109,43 +107,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.llMineInvite:
                 startActivity(new Intent(getActivity(), InviterActivity.class));
                 break;
-            case R.id.llMine3:
-                ((HomeActivity) getActivity()).getVersion(true);
-                break;
             case R.id.llMine4:
                 startActivity(new Intent(getActivity(), OnlineServiceActivity.class));
                 break;
             case R.id.llMine5:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
-                break;
-            case R.id.llMine6:
-                NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
-                    @SuppressLint("CheckResult")
-                    @Override
-                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        holder.setText(R.id.tv_title, "提示");
-                        holder.setText(R.id.tv_content, "您将退出登录");
-                        holder.setText(R.id.tv_cancel, "取消");
-                        holder.setText(R.id.tv_notarize, "确认");
-                        holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
-                        holder.setOnClickListener(R.id.tv_notarize, v12 -> {
-                            dialog.dismiss();
-                            ServiceFactory.getInstance().getBaseService(Api.class)
-                                    .loginOut()
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(s -> {
-                                        RongIM.getInstance().logout();
-                                        MMKVUtils.getInstance().enCode("isLogin", false);
-                                        Constant.clear();
-                                        ToastUtils.showShort(R.string.login_out);
-                                        Intent intent = new Intent(getActivity(), NewLoginActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                    }, MineFragment.this::handleApiError);
-                        });
-                    }
-                }).setDimAmount(0.5f).setOutCancel(false).show(getChildFragmentManager());
                 break;
             case R.id.llMine7:
                 tvMot2Reward.setVisibility(View.GONE);

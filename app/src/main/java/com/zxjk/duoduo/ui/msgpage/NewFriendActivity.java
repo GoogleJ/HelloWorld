@@ -16,13 +16,17 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
 import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.NearByActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.NewFriendAdapter;
 import com.zxjk.duoduo.ui.msgpage.widget.dialog.DeleteFriendInformationDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -60,6 +64,29 @@ public class NewFriendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_friend);
         ButterKnife.bind(this);
+
+        getPermisson(findViewById(R.id.llPhoneNearBy), granted -> {
+            if (!granted) {
+                return;
+            }
+            AMapLocationClient mLocationClient = new AMapLocationClient(Utils.getApp());
+            AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
+            mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
+            mLocationClient.setLocationOption(mLocationOption);
+            mLocationClient.setLocationListener(location -> {
+                CommonUtils.destoryDialog();
+                if (location.getErrorCode() == 0) {
+                    Intent intent = new Intent(this, NearByActivity.class);
+                    intent.putExtra("location", location);
+                    startActivity(intent);
+                } else {
+                    ToastUtils.showShort(R.string.getlocation_fail);
+                }
+            });
+            CommonUtils.initDialog(this, getString(R.string.getlocation)).show();
+            mLocationClient.startLocation();
+        }, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
+
         initUI();
     }
 

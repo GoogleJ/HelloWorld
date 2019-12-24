@@ -8,10 +8,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.BulletSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -73,6 +76,7 @@ public class InviteForSocialActivity extends BaseActivity {
     private TextView tvInviteCount;
     private TextView tvCode;
     private TextView tvSocialName;
+    private TextView tvTips;
     private BaseQuickAdapter<GetInviteInfoResponse.ListBean, BaseViewHolder> adapter;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm");
@@ -99,6 +103,7 @@ public class InviteForSocialActivity extends BaseActivity {
         TextView tvtitle = findViewById(R.id.tv_title);
         tvCode = findViewById(R.id.tvCode);
         tvSocialName = findViewById(R.id.tvSocialName);
+        tvTips = findViewById(R.id.tvTips);
         tvtitle.setText(R.string.invite_friends1);
         ivQR = findViewById(R.id.ivQR);
 
@@ -112,6 +117,10 @@ public class InviteForSocialActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void bindData() {
+        SpannableString spannableString = new SpannableString("邀请好友成功注册可获得0.5USDT奖励");
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#4585F5")), 11, 18, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvTips.setText(spannableString);
+
         findViewById(R.id.rl_back).setOnClickListener(view -> finish());
 
         ServiceFactory.getInstance().getBaseService(Api.class)

@@ -170,7 +170,7 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
                                     intent.putExtra("eventType", 1);
                                     startActivity(intent);
                                 }, true)
-                                .withClick(R.id.invite_friends, child -> startActivity(new Intent(getActivity(), AddContactActivity.class)), true)
+                                .withClick(R.id.invite_friends, child -> startActivity(new Intent(getActivity(), NewFriendActivity.class)), true)
                                 .withClick(R.id.collection_and_payment, child -> startActivity(new Intent(getActivity(), RecipetQRActivity.class)), true))
                         .build();
 

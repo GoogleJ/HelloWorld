@@ -634,10 +634,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.AddContactActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.msgpage.MyQrCodeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

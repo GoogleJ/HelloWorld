@@ -9,13 +9,16 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <EditText
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/search_edit"
-        style="@style/SearchStyle2" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/search_edit"
+            style="@style/SearchStyle" />
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

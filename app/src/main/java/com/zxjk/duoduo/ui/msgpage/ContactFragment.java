@@ -17,10 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.blankj.utilcode.util.ToastUtils;
-import com.blankj.utilcode.util.Utils;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
@@ -28,10 +25,9 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
-import com.zxjk.duoduo.ui.minepage.NearByActivity;
+import com.zxjk.duoduo.ui.minepage.InviterActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.BaseContactAdapter;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
-import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.PinYinUtils;
 
@@ -45,7 +41,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ContactFragment extends BaseFragment {
-
     @BindView(R.id.m_contact_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.index_view)
@@ -73,27 +68,24 @@ public class ContactFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
 
-        getPermisson(rootView.findViewById(R.id.ll_contract_top3), granted -> {
-            if (!granted) {
-                return;
-            }
-            AMapLocationClient mLocationClient = new AMapLocationClient(Utils.getApp());
-            AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
-            mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
-            mLocationClient.setLocationOption(mLocationOption);
-            mLocationClient.setLocationListener(location -> {
-                CommonUtils.destoryDialog();
-                if (location.getErrorCode() == 0) {
-                    Intent intent = new Intent(getContext(), NearByActivity.class);
-                    intent.putExtra("location", location);
-                    startActivity(intent);
-                } else {
-                    ToastUtils.showShort(R.string.getlocation_fail);
-                }
-            });
-            CommonUtils.initDialog(getActivity(), getString(R.string.getlocation)).show();
-            mLocationClient.startLocation();
-        }, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
+        TextView tvContactHilamgId = rootView.findViewById(R.id.tvContactHilamgId);
+        tvContactHilamgId.setText("我的海浪号: " + Constant.currentUser.getDuoduoId());
+        tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyQrCodeActivity.class)));
+
+        rootView.findViewById(R.id.ll_contract_top1).setOnClickListener(v -> {
+            ((HomeActivity) getActivity()).badgeItem2.hide();
+            MMKVUtils.getInstance().enCode("newFriendCount", 0);
+            dotNewFriend.setVisibility(View.INVISIBLE);
+            startActivity(new Intent(getActivity(), NewFriendActivity.class));
+        });
+
+        getPermisson(rootView.findViewById(R.id.ll_contract_top2), granted -> {
+            if (granted) startActivity(new Intent(getActivity(), QrCodeActivity.class));
+        }, Manifest.permission.CAMERA);
+
+        rootView.findViewById(R.id.ll_contract_top3).setOnClickListener(v -> startActivity(new Intent(getActivity(), GroupChatActivity.class)));
+
+        rootView.findViewById(R.id.ll_contract_top4).setOnClickListener(v -> startActivity(new Intent(getActivity(), InviterActivity.class)));
 
         ButterKnife.bind(this, rootView);
 
@@ -116,7 +108,11 @@ public class ContactFragment extends BaseFragment {
             for (int i = 0; i < list.size(); i++) {
                 String letters = list.get(i).getSortLetters();
                 if (letters.equals(letter)) {
-                    mRecyclerView.scrollToPosition(i);
+                    if (layout_contract_head.getVisibility() == View.VISIBLE) {
+                        mRecyclerView.scrollToPosition(i);
+                    } else {
+                        mRecyclerView.scrollToPosition(i + 1);
+                    }
                     break;
                 }
             }
@@ -160,6 +156,8 @@ public class ContactFragment extends BaseFragment {
         LinearLayout ll_contract_top1;
         LinearLayout ll_contract_top2;
         LinearLayout ll_contract_top3;
+        LinearLayout ll_contract_top4;
+        TextView tvContactHilamgId;
         if (isEmpty) {
             layout_contract_head.setVisibility(View.VISIBLE);
             headView = layout_contract_head;
@@ -173,7 +171,12 @@ public class ContactFragment extends BaseFragment {
         ll_contract_top1 = headView.findViewById(R.id.ll_contract_top1);
         ll_contract_top2 = headView.findViewById(R.id.ll_contract_top2);
         ll_contract_top3 = headView.findViewById(R.id.ll_contract_top3);
+        ll_contract_top4 = headView.findViewById(R.id.ll_contract_top4);
+        tvContactHilamgId = headView.findViewById(R.id.tvContactHilamgId);
         dotNewFriend = headView.findViewById(R.id.dotNewFriend);
+
+        tvContactHilamgId.setText("我的海浪号: " + Constant.currentUser.getDuoduoId());
+        tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyQrCodeActivity.class)));
 
         if (MMKVUtils.getInstance().decodeLong("newFriendCount") != 0) {
             dotNewFriend.setVisibility(View.VISIBLE);
@@ -186,29 +189,13 @@ public class ContactFragment extends BaseFragment {
             startActivity(new Intent(getActivity(), NewFriendActivity.class));
         });
 
-        ll_contract_top2.setOnClickListener(v -> startActivity(new Intent(getActivity(), GroupChatActivity.class)));
+        getPermisson(ll_contract_top2, granted -> {
+            if (granted) startActivity(new Intent(getActivity(), QrCodeActivity.class));
+        }, Manifest.permission.CAMERA);
 
-        getPermisson(ll_contract_top3, granted -> {
-            if (!granted) {
-                return;
-            }
-            AMapLocationClient mLocationClient = new AMapLocationClient(Utils.getApp());
-            AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
-            mLocationOption.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.SignIn);
-            mLocationClient.setLocationOption(mLocationOption);
-            mLocationClient.setLocationListener(location -> {
-                CommonUtils.destoryDialog();
-                if (location.getErrorCode() == 0) {
-                    Intent intent = new Intent(getContext(), NearByActivity.class);
-                    intent.putExtra("location", location);
-                    startActivity(intent);
-                } else {
-                    ToastUtils.showShort(R.string.getlocation_fail);
-                }
-            });
-            CommonUtils.initDialog(getActivity(), getString(R.string.getlocation)).show();
-            mLocationClient.startLocation();
-        }, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION);
+        ll_contract_top3.setOnClickListener(v -> startActivity(new Intent(getActivity(), GroupChatActivity.class)));
+
+        ll_contract_top4.setOnClickListener(v -> startActivity(new Intent(getActivity(), InviterActivity.class)));
     }
 
     private void initFoot() {

@@ -186,7 +186,7 @@
                         android:paddingTop="2dp"
                         android:paddingEnd="10dp"
                         android:paddingBottom="2dp"
-                        android:text="查看"
+                        android:text="查看奖励"
                         android:textColor="@color/colorTheme"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -207,7 +207,6 @@
                     android:id="@+id/tvTips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="快分享给微信好友领取奖励吧"
                     android:textColor="@color/textColor6"
                     android:textSize="12.5sp" />
 

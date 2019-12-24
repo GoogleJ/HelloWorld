@@ -10,8 +10,8 @@
         android:id="@+id/tvFirstLetter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f8f8f8"
-        android:paddingStart="8dp"
+        android:background="#F2F3F5"
+        android:paddingStart="12dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:text="A"
@@ -28,8 +28,8 @@
 
         <ImageView
             android:id="@+id/ivHead"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:scaleType="centerCrop" />
 
         <TextView

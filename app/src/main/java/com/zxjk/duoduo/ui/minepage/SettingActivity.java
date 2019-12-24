@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.alibaba.security.rp.RPSDK;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.shehuan.nicedialog.BaseNiceDialog;
+import com.shehuan.nicedialog.NiceDialog;
+import com.shehuan.nicedialog.ViewConvertListener;
+import com.shehuan.nicedialog.ViewHolder;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
@@ -19,6 +23,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -26,6 +31,7 @@ import com.zxjk.duoduo.utils.MMKVUtils;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.rong.imkit.RongIM;
 
 
 @SuppressLint("CheckResult")
@@ -138,6 +144,36 @@ public class SettingActivity extends BaseActivity {
         findViewById(R.id.rl_languageSwitch).setOnClickListener(v -> {
 
         });
+    }
+
+    public void unLogin(View view) {
+        NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
+            @SuppressLint("CheckResult")
+            @Override
+            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                holder.setText(R.id.tv_title, "提示");
+                holder.setText(R.id.tv_content, "您将退出登录");
+                holder.setText(R.id.tv_cancel, "取消");
+                holder.setText(R.id.tv_notarize, "确认");
+                holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
+                holder.setOnClickListener(R.id.tv_notarize, v12 -> {
+                    dialog.dismiss();
+                    ServiceFactory.getInstance().getBaseService(Api.class)
+                            .loginOut()
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(SettingActivity.this)))
+                            .compose(RxSchedulers.normalTrans())
+                            .subscribe(s -> {
+                                RongIM.getInstance().logout();
+                                MMKVUtils.getInstance().enCode("isLogin", false);
+                                Constant.clear();
+                                ToastUtils.showShort(R.string.login_out);
+                                Intent intent = new Intent(SettingActivity.this, NewLoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }, SettingActivity.this::handleApiError);
+                });
+            }
+        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
     }
 
     public void paySetting(View view) {

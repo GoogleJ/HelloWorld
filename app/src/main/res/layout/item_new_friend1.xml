@@ -10,8 +10,8 @@
         android:id="@+id/tvFirstLetter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#eeeeee"
-        android:paddingStart="8dp"
+        android:background="#F2F3F5"
+        android:paddingStart="12dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:text="A"
@@ -40,8 +40,8 @@
 
         <ImageView
             android:id="@+id/m_item_new_friend_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
@@ -67,8 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/m_item_new_friend_icon"
             android:layout_marginStart="12dp"
-            android:layout_marginBottom="2dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginBottom="2dp"
             android:layout_toStartOf="@id/m_item_new_friend_type_btn"
             android:layout_toEndOf="@id/m_item_new_friend_icon"
             android:ellipsize="end"

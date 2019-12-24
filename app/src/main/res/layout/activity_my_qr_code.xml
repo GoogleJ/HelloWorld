@@ -1,19 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_wallet_qr"
+    android:background="#F2F3F5"
     android:clipChildren="false"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title_back" />
+    <RelativeLayout
+        android:id="@+id/rlTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:foreground="?selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ico_back" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_end"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/rl_end"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:visibility="invisible">
+
+            <ImageView
+                android:id="@+id/iv_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/icon_right_title" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_commit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/shape_theme"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:paddingStart="14dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="5dp"
+            android:text="@string/commit"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_toStartOf="@id/rl_end"
+            android:layout_toEndOf="@id/rl_back"
+            android:ellipsize="middle"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="72dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
         android:clipChildren="false">
 
@@ -25,11 +111,13 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivHead"
                 android:layout_width="88dp"
                 android:layout_height="88dp"
-                android:layout_marginTop="-44dp" />
+                android:layout_marginTop="-44dp"
+                app:civ_border_color="#f2f3f5"
+                app:civ_border_width="6dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -70,30 +158,72 @@
             <FrameLayout
                 android:layout_width="224dp"
                 android:layout_height="224dp"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/frame_qr" />
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_f2f3f5_8">
 
                 <ImageView
                     android:id="@+id/ivQRImg"
-                    android:layout_width="192dp"
-                    android:layout_height="192dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_gravity="center"
                     android:scaleType="fitXY" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivHeadQR"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="1.5dp" />
 
             </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
                 android:text="@string/myqr"
                 android:textColor="@color/textcolor3"
                 android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="56dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0.8dp"
+                    android:layout_weight="1"
+                    android:background="#D1D5E2" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/ic_myqr_hilamg" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/app_name"
+                    android:textColor="#D5DBE8"
+                    android:textSize="12.5sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0.8dp"
+                    android:layout_weight="1"
+                    android:background="#D1D5E2" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

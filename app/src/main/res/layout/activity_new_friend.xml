@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/layout_title_back" />
@@ -46,18 +46,89 @@
 
             <ImageView
                 android:id="@+id/iv"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_newfriend_phone" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
-                android:text="@string/add_phone_contract"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_phone_contract"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="添加通讯录中的朋友"
+                    android:textColor="@color/textColor9"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mine_rightarrow" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/llPhoneContract"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="#F2F3F4" />
+
+        <LinearLayout
+            android:id="@+id/llPhoneNearBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="12dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_newfriend_nearby" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/collection_nearby"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="添加附近的朋友"
+                    android:textColor="@color/textColor9"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -71,11 +142,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#F2F3F5"
         android:gravity="center_vertical"
         android:paddingStart="12dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="@string/m_fragment_new_friend_title_bar" />
+        android:text="@string/m_fragment_new_friend_title_bar"
+        android:textColor="@color/textColor6"
+        android:textSize="12.5sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/m_fragment_new_friend_recycler_view"

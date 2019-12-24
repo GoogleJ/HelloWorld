@@ -439,7 +439,7 @@
     <string name="input_wallet_address">请输入钱包地址</string>
     <string name="receiverBank">收款银行</string>
     <string name="address_list">通讯录</string>
-    <string name="new_friend">新的朋友</string>
+    <string name="new_friend">添加好友</string>
     <string name="real_name">真实姓名:</string>
     <string name="mobile_phone">手机</string>
     <string name="email">邮箱</string>
@@ -514,7 +514,7 @@
     <string name="cantverify">手机号身份信息不匹配，请提供正确的实名信息或手动实名申请</string>
     <string name="collection_nearby">附近的人</string>
     <string name="getlocation_fail">未能获取当前位置，请重试</string>
-    <string name="getlocation">正在获取当前位置</string>
+    <string name="getlocation">正在获取位置</string>
     <string name="loadurl_fail">若无法正常加载，请在浏览器中尝试</string>
     <string name="popnearby_onlygirl">只看女生</string>
     <string name="popnearby_onlyboy">只看男生</string>
@@ -903,4 +903,5 @@
     <string name="cantopenfile">暂时无法查看文档，请稍后再试</string>
     <string name="back">返回</string>
     <string name="search1">搜索手机号/海浪号</string>
+    <string name="choosegroupchat">选择群聊</string>
 </resources>

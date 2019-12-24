@@ -9,7 +9,9 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -29,6 +31,7 @@ import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialQRCodeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.TakePicUtil;
 
 import org.json.JSONObject;
@@ -36,6 +39,7 @@ import org.json.JSONObject;
 import java.util.concurrent.TimeUnit;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
+import cn.bingoogolapple.qrcode.core.ScanBoxView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,11 +52,14 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     private ZXingView zxingview;
     private TextView tv_end;
     private TextView tv_title;
+    private ImageView ivHead;
 
     protected void initUI() {
+        ivHead = findViewById(R.id.ivHead);
         tv_end = findViewById(R.id.tv_end);
         zxingview = findViewById(R.id.m_qr_code_zxing_view);
         zxingview.setDelegate(this);
+
         tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.m_add_friend_scan_it_label_1));
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
@@ -65,6 +72,7 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         findViewById(R.id.rlTitle).setBackgroundColor(ContextCompat.getColor(this, R.color.black));
         getPermisson(tv_end, granted -> TakePicUtil.albumPhoto(QrCodeActivity.this, false),
                 Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
     }
 
     @Override
@@ -76,6 +84,10 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         actionType = getIntent().getStringExtra("actionType");
 
         initUI();
+    }
+
+    public void myQR(View view) {
+        startActivity(new Intent(this, MyQrCodeActivity.class));
     }
 
     @Override
