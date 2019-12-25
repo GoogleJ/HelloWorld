@@ -3,14 +3,15 @@ package com.zxjk.duoduo.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.blankj.utilcode.util.AppUtils;
 import com.zxjk.duoduo.Constant;
+import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.NewsDetailActivity;
+import com.zxjk.duoduo.ui.walletpage.LoginAuthorizationActivity;
 
-public class BrowsableActivity extends AppCompatActivity {
+public class BrowsableActivity extends BaseActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +44,18 @@ public class BrowsableActivity extends AppCompatActivity {
                             startActivity(new Intent(this, WelcomeActivity.class));
                         }
                         break;
+
+                    case "paylogin":
+                        if (Constant.currentUser != null) {
+                            String appid = getIntent().getData().getQueryParameter("appId");
+                            Intent intent = new Intent(this, LoginAuthorizationActivity.class);
+                            intent.putExtra("appId",appid);
+                            startActivity(intent);
+                        }
+                        break;
                 }
             }
             finish();
         }
-
     }
 }

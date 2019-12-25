@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.walletpage.LoginAuthorizationActivity"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="5dp">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="申请使用"
+                android:id="@+id/Apply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"/>
+            <TextView
+                android:id="@+id/hilamg"
+                android:text="Hilamg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/Apply"
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"/>
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="4dp"
+                android:background="#EDEDED"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/Apply"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_hilamglogo3"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:text="您需要允许以下权限的使用"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="#333333"
+        android:layout_marginTop="27dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="20dp">
+        <ImageView
+            android:src="@drawable/ic_headportrait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:text="头像"
+            android:textColor="#333333"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="20dp">
+        <ImageView
+            android:src="@drawable/ic_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="昵称"
+            android:textColor="#333333"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="20dp">
+        <ImageView
+            android:src="@drawable/ic_region"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="地区"
+            android:textColor="#333333"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="20dp">
+        <ImageView
+            android:src="@drawable/ic_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="性别信息等"
+            android:textColor="#333333"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:text="你可选择使用不同的个人信息登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#999999"
+        android:textSize="13dp"
+        android:layout_marginTop="30dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:gravity="center_vertical">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_HeadPortrait"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+            <TextView
+                android:id="@+id/tv_Nick"
+                android:text="白日梦想家"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:maxEms="6"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+            <TextView
+                android:id="@+id/tv_Sign"
+                android:text="Hilamg个人信息"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="#999999"
+                android:maxEms="6"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/btn_switchid"
+            android:text="切换账号"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_theme5"
+            android:textColor="#999999"
+            android:textSize="13dp"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:stateListAnimator="@null"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:background="#DDDDDD" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="35dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp">
+
+        <Button
+            android:id="@+id/btn_agreedTo"
+            android:text="同意"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="#4585F5"
+            android:background="@drawable/shape_theme6"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:stateListAnimator="@null"/>
+        <Button
+            android:id="@+id/btn_refusedTo"
+            android:text="拒绝"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="#FF655C"
+            android:background="@drawable/shape_theme7"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:stateListAnimator="@null"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -13,6 +13,7 @@ import android.telephony.SmsMessage;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,6 @@ import androidx.transition.TransitionSet;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.RegexUtils;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
@@ -43,6 +43,9 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.walletpage.LoginAuthorizationActivity;
+import com.zxjk.duoduo.ui.walletpage.OrderPaymentActivity;
+import com.zxjk.duoduo.ui.walletpage.PayLoginActivity;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -96,7 +99,9 @@ public class NewLoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ScreenUtils.setFullScreen(this);
+        setTrasnferStatusBar(true);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_new_login);
 
         getPermisson(g -> {
@@ -230,7 +235,7 @@ public class NewLoginActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void getCode() {
         String phoneText = etPhone.getText().toString().trim();
-        if ("86".equals(tvContrary.getText().toString().substring(1))){
+        if ("86".equals(tvContrary.getText().toString().substring(1))) {
             isChinaPhone = "1";
             phone = phoneText;
         } else {

@@ -61,6 +61,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
+import com.zxjk.duoduo.ui.walletpage.PayLoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
 
@@ -667,4 +668,5 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             mFragment = fragment;
         }
     }
+
 }

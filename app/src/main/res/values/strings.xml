@@ -506,6 +506,10 @@
     <string name="shengming">声明</string>
     <string name="click_retry">点击重试</string>
     <string name="input_phone">请输入手机号码</string>
+    <string name="input_smscode">请输入验证码</string>
+    <string name="order_information">订单信息</string>
+    <string name="but_the">收款方</string>
+    <string name="payment">付款方式</string>
     <string name="notice_creategroup">创建了一个群组</string>
     <string name="new_friend1">已是好友，现在开始聊天吧</string>
     <string name="searching">搜索中...</string>
@@ -658,6 +662,7 @@
     <string name="each_more_all">单人奖励金不能大于总奖励金</string>
     <string name="starttime_less_end">开始时间不能大于结束时间</string>
     <string name="welcome">欢迎来到Hilamg</string>
+    <string name="welcometopay">欢迎登录Hilamg</string>
     <string name="login_verify">验证码登录</string>
     <string name="next">下一步</string>
     <string name="invite_friends1">邀请好友</string>

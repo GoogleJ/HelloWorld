@@ -122,7 +122,8 @@ public class PrivacyRedPacketActivity extends BaseActivity {
             ToastUtils.showShort(R.string.input_redmoney);
             return;
         }
-        if (Double.parseDouble(money) < 0.0001) {
+        if (Double.parseDouble(money) < 0.00001) {
+
             ToastUtils.showShort(R.string.less_min);
             return;
         }
