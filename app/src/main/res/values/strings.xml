@@ -152,7 +152,7 @@
     <string name="orders_mine">我的订单</string>
     <string name="cancel_order">取消订单</string>
     <string name="sale_cancel">订单已取消</string>
-    <string name="cointype">币种</string>
+    <string name="cointype">选择资产</string>
     <string name="count">数量</string>
     <string name="moneyCount">金额</string>
     <string name="buy">购买</string>
@@ -361,7 +361,7 @@
     <string name="tradeCancel">已取消</string>
     <string name="guadan">挂单中</string>
     <string name="wait_for_others_to_pay">对方支付中</string>
-    <string name="pinshouqi">手气红包</string>
+    <string name="pinshouqi">拼手气红包</string>
     <string name="red_packet1">普通红包</string>
     <string name="upload_done">已上传</string>
     <string name="wait_for_buy_to_pay">买家正在支付，请稍等</string>
@@ -635,7 +635,7 @@
     <string name="person">人</string>
     <string name="createTime">日期</string>
     <string name="user">用户</string>
-    <string name="money1">金额</string>
+    <string name="money1">单个金额</string>
     <string name="setmoneyfirst">请先设置付费金额</string>
     <string name="open_payenter_success">付费进群已开启</string>
     <string name="input_zhengshu">请输入金额</string>
@@ -782,11 +782,11 @@
     <string name="balanceleft1">余额钱包</string>
     <string name="balance2cny">总资产折合</string>
     <string name="unChoose">暂未选择</string>
-    <string name="bless">祝福</string>
+    <string name="bless">祝福语</string>
     <string name="red_packet_tips">未领取的红包超过24小时退回</string>
     <string name="trans_packet_tips">超过24小时未领取会退回到您的账户</string>
     <string name="select_cointype">请选择币种</string>
-    <string name="count1">个数</string>
+    <string name="count1">红包个数</string>
     <string name="choose2input">选填</string>
     <string name="retry">重试</string>
     <string name="group_member_manage">群成员管理</string>

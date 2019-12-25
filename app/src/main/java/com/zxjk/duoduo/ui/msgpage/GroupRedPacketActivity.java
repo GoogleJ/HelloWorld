@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,16 +57,22 @@ public class GroupRedPacketActivity extends BaseActivity {
     private GetPaymentListBean result;
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();
     private GroupResponse group;
+    private TextView redpaytobar;
 
     private ImageView ivCoinIcon;
+    private ImageView ivCoinIcon2;
     private TextView tvCoin;
+    private TextView tvCoin2;
     private EditText etMoney;
+    private EditText etMoney2;
     private EditText etCount;
     private EditText etBless;
     private TextView tvtop1;
     private TextView tvtop2;
     private ImageView ivtop1;
     private ImageView ivtop2;
+    private ImageView pin;
+    private TextView tvamount;
 
     private NumberFormat nf;
     private int color1;
@@ -76,18 +84,48 @@ public class GroupRedPacketActivity extends BaseActivity {
         setContentView(R.layout.activity_group_red_packet);
         setTrasnferStatusBar(true);
 
-        color1 = Color.parseColor("#CEE0FF");
-        color2 = Color.parseColor("#ffffff");
+        color1 = Color.parseColor("#FFFFFF");
+        color2 = Color.parseColor("#4585F5");
 
         ivCoinIcon = findViewById(R.id.ivCoinIcon);
+        ivCoinIcon2 = findViewById(R.id.ivCoinIcon2);
         tvCoin = findViewById(R.id.tvCoin);
+        tvCoin2 = findViewById(R.id.tvCoin2);
         etMoney = findViewById(R.id.etMoney);
+        etMoney2 = findViewById(R.id.etMoney2);
         etCount = findViewById(R.id.etCount);
         etBless = findViewById(R.id.etBless);
         tvtop1 = findViewById(R.id.tvtop1);
         tvtop2 = findViewById(R.id.tvtop2);
         ivtop1 = findViewById(R.id.ivtop1);
         ivtop2 = findViewById(R.id.ivtop2);
+        redpaytobar = findViewById(R.id.redpaytobar);
+        pin = findViewById(R.id.img_pin);
+        tvamount = findViewById(R.id.tv_amount);
+
+        etMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count == 0){
+                    etMoney2.setText("0.0000");
+                }else {
+                    etMoney2.setTextColor(Color.parseColor("#000000"));
+                    etMoney2.setText(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
 
         etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(2)});
 
@@ -98,20 +136,30 @@ public class GroupRedPacketActivity extends BaseActivity {
 
     }
 
+
+
     public void top1(View view) {
         redType = "1";
         tvtop1.setTextColor(color2);
-        ivtop1.setImageResource(R.drawable.bg_groupred_top2);
+        ivtop1.setWillNotDraw(true);
         tvtop2.setTextColor(color1);
-        ivtop2.setImageResource(R.drawable.bg_groupred_top1);
+        ivtop2.setWillNotDraw(false);
+        ivtop2.setImageResource(R.drawable.bg_groupred_top2);
+        redpaytobar.setText("拼手气红包");
+        tvamount.setText("总金额");
+        pin.setVisibility(View.VISIBLE);
     }
 
     public void top2(View view) {
         redType = "2";
         tvtop2.setTextColor(color2);
-        ivtop2.setImageResource(R.drawable.bg_groupred_top2);
+        ivtop2.setWillNotDraw(true);
         tvtop1.setTextColor(color1);
+        ivtop1.setWillNotDraw(false);
         ivtop1.setImageResource(R.drawable.bg_groupred_top1);
+        redpaytobar.setText("普通红包");
+        tvamount.setText("单个金额");
+        pin.setVisibility(View.GONE);
     }
 
     private void getGroupInfo(String groupId) {
@@ -132,7 +180,9 @@ public class GroupRedPacketActivity extends BaseActivity {
                     list.addAll(l);
                     result = list.get(0);
                     GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+                    GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
                     tvCoin.setText(result.getSymbol());
+                    tvCoin2.setText(result.getSymbol());
                 }, this::handleApiError);
     }
 
@@ -148,6 +198,8 @@ public class GroupRedPacketActivity extends BaseActivity {
         if (TextUtils.isEmpty(price)) {
             ToastUtils.showShort(R.string.input_money);
             return;
+        }else {
+            etMoney2.setText(etMoney.getText().toString().trim());
         }
 
         if (TextUtils.isEmpty(num)) {
@@ -236,6 +288,7 @@ public class GroupRedPacketActivity extends BaseActivity {
         if (requestCode == 1 && resultCode == 1) {
             result = data.getParcelableExtra("result");
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+            GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
             tvCoin.setText(result.getSymbol());
         }
     }

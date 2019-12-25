@@ -36,11 +36,12 @@
             </FrameLayout>
 
             <TextView
+                android:id="@+id/redpaytobar"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/red_packet"
+                android:text="普通红包"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -62,18 +63,29 @@
 
         </LinearLayout>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="-120dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/shape_white_16"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:paddingStart="32dp"
-            android:paddingEnd="32dp">
+            android:gravity="center">
 
             <FrameLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/fm1"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_weight="1.0"
                 android:onClick="top1">
 
                 <ImageView
@@ -87,50 +99,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="3dp"
+                    android:layout_marginEnd="3dp"
                     android:text="@string/pinshouqi"
-                    android:textColor="#CEE0FF"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp" />
 
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/fm2"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_weight="1.0"
                 android:onClick="top2">
-
                 <ImageView
                     android:id="@+id/ivtop2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/bg_groupred_top2" />
+                    android:src="@null" />
 
                 <TextView
                     android:id="@+id/tvtop2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="3dp"
+                    android:layout_marginEnd="3dp"
                     android:text="@string/red_packet1"
-                    android:textColor="@color/white"
+                    android:textColor="#4585F5"
                     android:textSize="16sp" />
 
             </FrameLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="-48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="56dp"
-        android:background="@drawable/shape_white_16"
-        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -183,12 +184,20 @@
             android:padding="20dp">
 
             <TextView
+                android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/money1"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
+            <ImageView
+                android:id="@+id/img_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pin"
+                android:layout_marginStart="3dp"
+                android:visibility="gone"/>
             <EditText
                 android:id="@+id/etMoney"
                 android:layout_width="0dp"
@@ -201,7 +210,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="numberDecimal"
                 android:maxLength="15"
-                android:textColor="#9EA0A4"
+                android:textColor="#000000"
                 android:textSize="15sp" />
 
         </LinearLayout>
@@ -290,10 +299,38 @@
             android:layout_height="0.5dp"
             android:background="#eeeeee" />
 
-        <View
-            android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp">
+            <EditText
+                android:id="@+id/etMoney2"
+                android:text="0.0000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#9E9E9E"
+                android:background="@null"
+                android:textSize="35sp"
+                android:focusable="false"/>
+            <ImageView
+                android:id="@+id/ivCoinIcon2"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="6dp"/>
+            <TextView
+                android:id="@+id/tvCoin2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/m_red_envelopes_commit_btn"
@@ -305,7 +342,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="40dp"
             android:gravity="center"
             android:text="@string/red_packet_tips"
             android:textColor="#9EA0A4"
