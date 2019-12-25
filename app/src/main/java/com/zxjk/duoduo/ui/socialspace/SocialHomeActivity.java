@@ -197,7 +197,7 @@ public class SocialHomeActivity extends BaseActivity {
                 .flatMap((Function<CommunityCultureResponse, ObservableSource<BaseResponse<CommunityInfoResponse>>>) r -> {
                     runOnUiThread(() -> {
                         if (!r.getType().equals("culture")) {
-                            banAppBarScroll(false);
+                            banAppBarScroll(true);
 
                             indicatorTop.setVisibility(View.GONE);
                             contentEnable = false;
@@ -213,7 +213,22 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.normalTrans())
                                                 .subscribe(s -> {
                                                     inflate.setVisibility(View.GONE);
-                                                    flushAfterEnter();
+
+                                                    banAppBarScroll(true);
+
+                                                    indicatorTop.setVisibility(View.VISIBLE);
+                                                    llSocialNotice.setVisibility(View.VISIBLE);
+                                                    pagerOut.setVisibility(View.VISIBLE);
+                                                    ivOpenConversation.setVisibility(View.VISIBLE);
+
+                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
+                                                            Constant.currentUser.getNick() + "\"加入了群组");
+                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
+                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+
+                                                    contentEnable = true;
+
+                                                    parseCaltureResult(s);
                                                 }, this::handleApiError));
                             } else if (r.getType().equals("pay")) {
                                 View inflate = viewStubPay.inflate();
@@ -227,10 +242,24 @@ public class SocialHomeActivity extends BaseActivity {
                                         api.payToGroup(groupId, "", MD5Utils.getMD5(pwd), r.getPay().getPayFee(), r.getPay().getPaySymbol())
                                                 .compose(bindToLifecycle())
                                                 .compose(RxSchedulers.normalTrans())
-                                                .compose(RxSchedulers.ioObserver())
+                                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .subscribe(s -> {
                                                     inflate.setVisibility(View.GONE);
-                                                    flushAfterEnter();
+
+                                                    banAppBarScroll(true);
+
+                                                    indicatorTop.setVisibility(View.VISIBLE);
+                                                    llSocialNotice.setVisibility(View.VISIBLE);
+                                                    pagerOut.setVisibility(View.VISIBLE);
+                                                    ivOpenConversation.setVisibility(View.VISIBLE);
+
+                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
+                                                            Constant.currentUser.getNick() + "\"加入了群组");
+                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
+                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+
+                                                    contentEnable = true;
+                                                    parseCaltureResult(s);
                                                 }, this::handleApiError)));
                             }
                         } else {
@@ -345,34 +374,6 @@ public class SocialHomeActivity extends BaseActivity {
         }
 
         socialCalturePage.bindCaltureData(caltures);
-    }
-
-    private void flushAfterEnter() {
-        appbarHeight = 0;
-        banAppBarScroll(true);
-        indicatorTop.setVisibility(View.VISIBLE);
-        llSocialNotice.setVisibility(View.VISIBLE);
-        pagerOut.setVisibility(View.VISIBLE);
-        ivOpenConversation.setVisibility(View.VISIBLE);
-        CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
-        membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
-        ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(response.getMembers());
-        list.add(membersBean);
-        response.setMembers(list);
-        response.setIdentity("0");
-        if (response.getMembers().size() >= maxMemVisiableItem) {
-            List<CommunityInfoResponse.MembersBean> membersBeans = list.subList(0, maxMemVisiableItem - 1);
-            membersBeans.add(new CommunityInfoResponse.MembersBean());
-            initAdapterForSocialMem(membersBeans);
-        } else {
-            list.add(new CommunityInfoResponse.MembersBean());
-            initAdapterForSocialMem(list);
-        }
-        contentEnable = true;
-        InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                Constant.currentUser.getNick() + "\"加入了群组");
-        Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
-        RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
     }
 
     private void banAppBarScroll(boolean isScroll) {

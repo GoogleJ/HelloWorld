@@ -266,7 +266,7 @@ public interface Api {
 
     @POST("duoduo/group/enterGroup")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> enterGroup(
+    Observable<BaseResponse<CommunityCultureResponse>> enterGroup(
             @Field("groupId") String groupId,
             @Field("inviterId") String inviterId,
             @Field("customerIds") String customerIds
@@ -490,7 +490,7 @@ public interface Api {
 
     @POST("duoduo/group/payToGroup")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> payToGroup(@Field("groupId") String groupId, @Field("toCustomerId") String toCustomerId, @Field("payPwd") String payPwd, @Field("mot") String mot,
+    Observable<BaseResponse<CommunityCultureResponse>> payToGroup(@Field("groupId") String groupId, @Field("toCustomerId") String toCustomerId, @Field("payPwd") String payPwd, @Field("mot") String mot,
                                                 @Field("symbol") String symbol);
 
     @POST("duoduo/group/getRedNewPersonInfo")

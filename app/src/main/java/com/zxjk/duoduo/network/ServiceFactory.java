@@ -2,6 +2,7 @@ package com.zxjk.duoduo.network;
 
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
@@ -62,7 +63,7 @@ public class ServiceFactory {
         retrofit = new Retrofit.Builder().baseUrl(Constant.BASE_URL)
                 .client(OkHttpClientUtil.getSSLClient(client, Utils.getApp(), "cacert.cer"))
                 .addConverterFactory(BasicConvertFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(GsonUtils.getGson(false)))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }

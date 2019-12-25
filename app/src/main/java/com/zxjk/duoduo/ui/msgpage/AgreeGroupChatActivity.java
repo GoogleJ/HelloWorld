@@ -20,6 +20,7 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.ImageUtil;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.model.Conversation;
@@ -27,7 +28,7 @@ import io.rong.imlib.model.Message;
 import io.rong.message.InformationNotificationMessage;
 
 public class AgreeGroupChatActivity extends BaseActivity {
-    ImageView groupHeader;
+    CircleImageView groupHeader;
     TextView tvGroupName;
     TextView pleaseJoinGroup;
     TextView joinGroupBtn;
@@ -67,17 +68,6 @@ public class AgreeGroupChatActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
-                    if (r.getGroupPayBean().getIsOpen().equals("1")) {
-                        Intent intent = new Intent(this, PayEnterGroupPayActivity.class);
-                        intent.putExtra("groupId", groupId);
-                        intent.putExtra("ownerId", r.getGroupInfo().getGroupOwnerId());
-                        intent.putExtra("payMoney", r.getGroupPayBean().getPayFee());
-                        intent.putExtra("groupName", r.getGroupInfo().getGroupNikeName());
-                        intent.putExtra("symbol", r.getGroupPayBean().getSymbol());
-                        startActivity(intent);
-                        finish();
-                        return;
-                    }
                     if (!TextUtils.isEmpty(r.getMaxNumber())) {
                         if (r.getCustomers().size() >= Integer.parseInt(r.getMaxNumber())) {
                             canJoin = true;
