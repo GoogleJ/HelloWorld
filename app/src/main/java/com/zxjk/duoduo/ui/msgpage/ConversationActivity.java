@@ -650,11 +650,11 @@ public class ConversationActivity extends BaseActivity {
                         conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
 
 //                        if (!targetId.equals(Constant.userId)) {
-                            targetUserInfo = new UserInfo(targetId,
-                                    TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
-                                            response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
-                                    Uri.parse(response.getCustomerForChat().getHeadPortrait()));
-                            RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
+                        targetUserInfo = new UserInfo(targetId,
+                                TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
+                                        response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
+                                Uri.parse(response.getCustomerForChat().getHeadPortrait()));
+                        RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
 //                        }
 
                         handlePrivate();
@@ -665,16 +665,6 @@ public class ConversationActivity extends BaseActivity {
                     .getGroupByGroupId(targetId)
                     .compose(RxSchedulers.normalTrans())
                     .doOnNext(groupResponse -> {
-                        String groupHead = "";
-                        StringBuffer sbf = new StringBuffer();
-                        for (int i = 0; i < groupResponse.getCustomers().size(); i++) {
-                            sbf.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
-                            if (i == groupResponse.getCustomers().size() - 1 || i == 8) {
-                                groupHead = sbf.substring(0, sbf.length() - 1);
-                                break;
-                            }
-                        }
-
                         Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupResponse.getGroupInfo().getId());
 
 //                        if (null == ronginfo ||
@@ -684,8 +674,17 @@ public class ConversationActivity extends BaseActivity {
 //                                !ronginfo.getPortraitUri().toString().equals(groupHead)) {
                         if (groupResponse.getGroupInfo().getGroupType().equals("1")) {
                             RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName() +
-                                    "おれは人间をやめるぞ！ジョジョ―――ッ!", Uri.parse(groupHead)));
+                                    "おれは人间をやめるぞ！ジョジョ―――ッ!", Uri.parse(groupResponse.getGroupInfo().getHeadPortrait())));
                         } else {
+                            String groupHead = "";
+                            StringBuffer sbf = new StringBuffer();
+                            for (int i = 0; i < groupResponse.getCustomers().size(); i++) {
+                                sbf.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
+                                if (i == groupResponse.getCustomers().size() - 1 || i == 8) {
+                                    groupHead = sbf.substring(0, sbf.length() - 1);
+                                    break;
+                                }
+                            }
                             RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead)));
                         }
 //                        }
