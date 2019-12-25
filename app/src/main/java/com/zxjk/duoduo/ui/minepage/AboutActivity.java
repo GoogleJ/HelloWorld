@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
@@ -20,6 +21,7 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        setTrasnferStatusBar(true);
         initView();
     }
 
@@ -27,6 +29,7 @@ public class AboutActivity extends BaseActivity {
         TextView tv_title = findViewById(R.id.tv_title);
         TextView tv_versionName = findViewById(R.id.tv_versionName);
         tv_versionName.setText(CommonUtils.getVersionName(this));
+        tv_title.setTextColor(ContextCompat.getColor(this, R.color.white));
         tv_title.setText(getString(R.string.about_duo_duo));
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }

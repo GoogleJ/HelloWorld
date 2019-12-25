@@ -3,16 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@drawable/ic_aboutbackground"
     android:orientation="vertical"
-    tools:ignore="all">
+    tools:ignore="all"
+    >
 
-    <include layout="@layout/layout_title_back" />
-
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#DEDEDE" />
+        android:layout_height="50dp"
+        android:layout_marginTop="28dp">
+
+        <FrameLayout
+            android:id="@+id/rl_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ico_back"
+                android:tint="#cacaca" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#cacaca"
+            android:textSize="18sp" />
+
+        <FrameLayout
+            android:id="@+id/rl_end"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:onClick="help">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+ />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +67,7 @@
             android:layout_height="72dp"
             android:layout_gravity="center"
             android:layout_marginTop="56dp"
-            android:src="@drawable/ic_newlogin" />
+            android:src="@drawable/about_logo_icon1" />
 
         <TextView
             android:layout_width="match_parent"
@@ -33,40 +75,46 @@
             android:layout_marginBottom="56dp"
             android:gravity="center"
             android:text="@string/mochat"
-            android:textColor="@color/textcolor1"
-            android:textSize="18sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="22dp"
+            android:textStyle="bold|italic" />
 
-        <RelativeLayout style="@style/RLayoutStyle">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-            <TextView
-                style="@style/textStyle"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
-                android:text="版本说明" />
-
-            <ImageView style="@style/ImageEnter" />
-        </RelativeLayout>
-
-        <include layout="@layout/layout_line" />
-
-        <RelativeLayout style="@style/RLayoutStyle">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="40dp">
 
             <TextView
                 style="@style/textStyle"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
-                android:text="版本号" />
+                android:text="版本号:V"
+                android:textColor="#FFFEFE"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tv_versionName"
                 style="@style/textStyle"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp" />
+                android:layout_marginEnd="15dp"
+                android:textColor="#FFFEFE"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <include layout="@layout/layout_line" />
+        <ImageView
+            android:src="@drawable/about_logo_icon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"/>
 
     </LinearLayout>
 
