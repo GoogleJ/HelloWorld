@@ -9,9 +9,8 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -39,7 +38,6 @@ import org.json.JSONObject;
 import java.util.concurrent.TimeUnit;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
-import cn.bingoogolapple.qrcode.core.ScanBoxView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,11 +51,13 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     private TextView tv_end;
     private TextView tv_title;
     private ImageView ivHead;
+    private LinearLayout llBottom;
 
     protected void initUI() {
         ivHead = findViewById(R.id.ivHead);
         tv_end = findViewById(R.id.tv_end);
         zxingview = findViewById(R.id.m_qr_code_zxing_view);
+        llBottom = findViewById(R.id.llBottom);
         zxingview.setDelegate(this);
 
         tv_title = findViewById(R.id.tv_title);
@@ -80,10 +80,15 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         super.onCreate(savedInstanceState);
         ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_qr_code);
+        
+        initUI();
 
         actionType = getIntent().getStringExtra("actionType");
-
-        initUI();
+        if (!TextUtils.isEmpty(actionType)) {
+            if (actionType.equals(ACTION_IMPORT_WALLET)) {
+                llBottom.setVisibility(View.GONE);
+            }
+        }
     }
 
     public void myQR(View view) {

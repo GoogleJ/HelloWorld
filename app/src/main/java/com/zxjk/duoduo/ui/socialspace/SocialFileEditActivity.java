@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
@@ -31,7 +32,9 @@ import com.zxjk.duoduo.ui.widget.dialog.LoadingDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.OssUtils;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -137,7 +140,9 @@ public class SocialFileEditActivity extends BaseActivity {
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        Observable.create((ObservableOnSubscribe<List<FileBean>>) emitter -> emitter.onNext(getFilesByType(TYPE_DOC)))
+        Observable.create((ObservableOnSubscribe<List<FileBean>>) emitter -> {
+            emitter.onNext(getFilesByType(TYPE_DOC));
+        })
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(adapter::setNewData, t -> {
@@ -240,30 +245,52 @@ public class SocialFileEditActivity extends BaseActivity {
     private List<FileBean> getFilesByType(int fileType) {
         List<FileBean> files = new ArrayList<>();
         Cursor c;
+        c = getContentResolver().query(MediaStore.Files.getContentUri("external"), new String[]{"_id", "_data", "_size", "title", "date_modified"},
+                MediaStore.Files.FileColumns.SIZE + "<=? and _data not like ?", new String[]{maxFileSize,
+                        "%" + Environment.getExternalStorageDirectory().getPath() + "/tencent/MicroMsg/Download%"}, null);
 
-        c = getContentResolver().query(MediaStore.Files.getContentUri("external"), new String[]{"_id", "_data", "_size", "title"}, MediaStore.Files.FileColumns.SIZE + "<=?", new String[]{maxFileSize}, null);
         if (c == null) {
             return new ArrayList<>();
         }
+
         int dataindex = c.getColumnIndex(MediaStore.Files.FileColumns.DATA);
         int sizeindex = c.getColumnIndex(MediaStore.Files.FileColumns.SIZE);
-        int titleindex = c.getColumnIndex(MediaStore.Files.FileColumns.TITLE);
+        int titleindex = c.getColumnIndex(MediaStore.MediaColumns.TITLE);
+        int dateIndex = c.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED);
 
         while (c.moveToNext()) {
             String path = c.getString(dataindex);
             long size = c.getLong(sizeindex);
             String title = c.getString(titleindex);
+            Integer date = c.getInt(dateIndex);
 
             if (getFileType(path) == fileType) {
                 if (!FileUtils.isFileExists(path)) {
                     continue;
                 }
                 if (size == 0) continue;
-                FileBean fileBean = new FileBean(path, Formatter.formatFileSize(SocialFileEditActivity.this, size), title, getFileFormat(path));
-                files.add(fileBean);
+                if (!getFileFormat(path).equals("unknown")) {
+                    FileBean fileBean = new FileBean(path, Formatter.formatFileSize(SocialFileEditActivity.this, size), title, getFileFormat(path), date);
+                    files.add(fileBean);
+                }
             }
         }
         c.close();
+
+        File wechatFile = new File(Environment.getExternalStorageDirectory().getPath() + "/tencent/MicroMsg/Download");
+        if (FileUtils.isFileExists(wechatFile)) {
+            File[] wechatFiles = wechatFile.listFiles();
+            if (wechatFiles != null) {
+                for (File file : wechatFiles) {
+                    if (!getFileFormat(file.getPath()).equals("unknown")) {
+                        FileBean fileBean = new FileBean(file.getPath(), FileUtils.getFileSize(file), file.getName(), getFileFormat(file.getPath()), FileUtils.getFileLastModified(file));
+                        files.add(0, fileBean);
+                    }
+                }
+            }
+        }
+
+        Collections.sort(files, (o1, o2) -> -Long.valueOf(o1.time).compareTo(o2.time));
 
         return files;
     }
@@ -308,7 +335,7 @@ public class SocialFileEditActivity extends BaseActivity {
         if (path.endsWith(".pdfx")) {
             return ".pdfx";
         }
-        return "unknow";
+        return "unknown";
     }
 
     static class FileBean {
@@ -325,6 +352,16 @@ public class SocialFileEditActivity extends BaseActivity {
 
         private boolean checked;
 
+        private long time;
+
+        public FileBean(String path, String size, String title, String format, long time) {
+            this.path = path;
+            this.size = size;
+            this.title = title;
+            this.format = format;
+            this.time = time;
+        }
+
         public boolean isChecked() {
             return checked;
         }
@@ -333,11 +370,5 @@ public class SocialFileEditActivity extends BaseActivity {
             this.checked = checked;
         }
 
-        public FileBean(String path, String size, String title, String format) {
-            this.path = path;
-            this.size = size;
-            this.title = title;
-            this.format = format;
-        }
     }
 }

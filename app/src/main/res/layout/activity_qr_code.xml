@@ -31,7 +31,7 @@
             app:qrcv_isShowTipBackground="false"
             app:qrcv_isShowTipTextAsSingleLine="false"
             app:qrcv_isTipTextBelowRect="true"
-            app:qrcv_maskColor="#000000"
+            app:qrcv_maskColor="#99000000"
             app:qrcv_qrCodeTipText="将二维码放入框内,即可自动扫描"
             app:qrcv_rectWidth="248dp"
             app:qrcv_scanLineColor="@color/colorTheme"
@@ -42,6 +42,7 @@
             app:qrcv_topOffset="72dp" />
 
         <LinearLayout
+            android:id="@+id/llBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
