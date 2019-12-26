@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,6 +74,8 @@ public class GroupRedPacketActivity extends BaseActivity {
     private ImageView ivtop2;
     private ImageView pin;
     private TextView tvamount;
+    private FrameLayout fm1;
+    private FrameLayout fm2;
 
     private NumberFormat nf;
     private int color1;
@@ -102,6 +105,8 @@ public class GroupRedPacketActivity extends BaseActivity {
         redpaytobar = findViewById(R.id.redpaytobar);
         pin = findViewById(R.id.img_pin);
         tvamount = findViewById(R.id.tv_amount);
+        fm1 = findViewById(R.id.fm1);
+        fm2 = findViewById(R.id.fm2);
 
         etMoney.addTextChangedListener(new TextWatcher() {
             @Override
@@ -141,10 +146,11 @@ public class GroupRedPacketActivity extends BaseActivity {
     public void top1(View view) {
         redType = "1";
         tvtop1.setTextColor(color2);
-        ivtop1.setWillNotDraw(true);
+//        ivtop1.setWillNotDraw(true);
         tvtop2.setTextColor(color1);
-        ivtop2.setWillNotDraw(false);
-        ivtop2.setImageResource(R.drawable.bg_groupred_top2);
+//        ivtop2.setWillNotDraw(false);
+        fm1.setBackground(getResources().getDrawable(R.drawable.shape_gray2));
+        fm2.setBackground(getResources().getDrawable(R.drawable.shape_gray1));
         redpaytobar.setText("拼手气红包");
         tvamount.setText("总金额");
         pin.setVisibility(View.VISIBLE);
@@ -156,7 +162,8 @@ public class GroupRedPacketActivity extends BaseActivity {
         ivtop2.setWillNotDraw(true);
         tvtop1.setTextColor(color1);
         ivtop1.setWillNotDraw(false);
-        ivtop1.setImageResource(R.drawable.bg_groupred_top1);
+        fm1.setBackground(getResources().getDrawable(R.drawable.shape_gray1));
+        fm2.setBackground(getResources().getDrawable(R.drawable.shape_gray2));
         redpaytobar.setText("普通红包");
         tvamount.setText("单个金额");
         pin.setVisibility(View.GONE);
