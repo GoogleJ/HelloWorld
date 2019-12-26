@@ -48,6 +48,8 @@ public class BrowsableActivity extends BaseActivity {
                     case "paylogin":
                         if (Constant.currentUser != null) {
                             String appid = getIntent().getData().getQueryParameter("appId");
+                            String randomStr = getIntent().getData().getQueryParameter("randomStr");
+                            String sign = getIntent().getData().getQueryParameter("sign");
                             Intent intent = new Intent(this, LoginAuthorizationActivity.class);
                             intent.putExtra("appId",appid);
                             startActivity(intent);

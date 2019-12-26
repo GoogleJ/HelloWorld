@@ -70,6 +70,7 @@
     <string name="paytype">支付方式</string>
     <string name="wechat">微信</string>
     <string name="alipay">支付宝</string>
+    <string name="hilamg">海浪</string>
     <string name="bankcard">银行卡</string>
     <string name="select_buytype_tips">请选择支付方式</string>
     <string name="select_saletype_tips">请选择至少一种收款方式</string>
@@ -873,6 +874,7 @@
     <string name="input_social_web_address">请输入官网地址</string>
     <string name="social_empty_tips">请联系管理员开放社群文化</string>
     <string name="copylink">复制链接</string>
+    <string name="saveposters">保存海报</string>
     <string name="authen_failure">认证失败</string>
     <string name="zixun1">资讯</string>
     <string name="video_manage1">视频管理</string>

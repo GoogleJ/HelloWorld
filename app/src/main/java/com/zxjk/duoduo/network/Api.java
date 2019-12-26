@@ -726,4 +726,8 @@ public interface Api {
     @POST("duoduo/customer/htmlLogin")
     @FormUrlEncoded
     Observable<BaseResponse<GetUserInfo>> htmlLogin(@Field("appId") String appid);
+
+    @POST("duoduo/customer/getAppVersionBysystemType")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> getAppVersionBysystemType(@Field("systemType") String systemType);
 }

@@ -1,17 +1,30 @@
 package com.zxjk.duoduo.ui.findpage;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,9 +37,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
@@ -34,14 +53,20 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
+import com.zxjk.duoduo.ui.socialspace.SocialQRCodeActivity;
 import com.zxjk.duoduo.ui.widget.CircleNavigator;
 import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.ui.widget.SlopScrollView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.QRCodeEncoder;
+import com.zxjk.duoduo.utils.SaveImageUtil;
+import com.zxjk.duoduo.utils.ShareUtil;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
@@ -51,13 +76,28 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
+import razerdp.widget.QuickPopup;
 
 @SuppressLint("CheckResult")
 public class NewsPager extends BaseFragment {
@@ -75,6 +115,10 @@ public class NewsPager extends BaseFragment {
     private TextView tvBanner;
     private int[] detailTitles = {R.string.boutique, R.string.quick_news, R.string.mochat_social, R.string.video};
     private boolean hasInitHeight;
+    private ImageView imgexit;
+    private LinearLayout popupDialogShare;
+    private QuickPopup invitePop;
+
 
     private int currentBannerIndex;
     private Disposable bannerIntervel;
@@ -85,6 +129,8 @@ public class NewsPager extends BaseFragment {
     private static final int COUNT_PER_PAGE = 15;
 
     private Api api;
+
+    private String description = "限时注册奖励，先注册先得";
 
     @Nullable
     @Override
@@ -233,6 +279,7 @@ public class NewsPager extends BaseFragment {
         flIndicatorDetail = rootView.findViewById(R.id.flIndicatorDetail);
         flIndicatorTop = rootView.findViewById(R.id.flIndicatorTop);
         tvBanner = rootView.findViewById(R.id.tvBanner);
+        imgexit = rootView.findViewById(R.id.img_exit);
     }
 
     private void initPager() {
@@ -529,7 +576,72 @@ public class NewsPager extends BaseFragment {
                         notifyItemChanged(helper.getAdapterPosition());
                     });
 
-                    helper.getView(R.id.iv_quick_new_share).setOnClickListener(v -> ToastUtils.showShort(R.string.developing));
+                    helper.getView(R.id.iv_quick_new_share).setOnClickListener(v -> {
+
+                        if (invitePop == null) {
+                            TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
+                            showAnimation.setDuration(350);
+                            TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
+                            dismissAnimation.setDuration(500);
+                            invitePop = QuickPopupBuilder.with(getActivity())
+                                    .contentView(R.layout.popup_newspager)
+                                    .config(new QuickPopupConfig()
+                                            .withShowAnimation(showAnimation)
+                                            .withDismissAnimation(dismissAnimation)
+                                            .withClick(R.id.tv1, view -> shareTo(1), true)
+                                            .withClick(R.id.tv2, view -> shareTo(2), true)
+                                            .withClick(R.id.tv3, view -> shareTo(3), true)
+                                            .withClick(R.id.tv4, view -> shareTo(4), true)
+                                            .withClick(R.id.tv5, view -> shareTo(5), true)
+                                            .withClick(R.id.img_exit, view -> shareTo(6), true)
+                                    )
+                                    .show();
+
+                            ImageView im = invitePop.findViewById(R.id.ivQRImg);
+                            ServiceFactory.getInstance().getBaseService(Api.class)
+                                    .getAppVersionBysystemType("1")
+                                    .compose(bindToLifecycle())
+                                    .compose(RxSchedulers.normalTrans())
+                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                                    .subscribe(r -> {
+
+                                        ImageView imageView = invitePop.findViewById(R.id.ivHeadQR);
+                                        imageView.setImageResource(R.drawable.ic_hilamglogo3);
+                                        Observable.create((ObservableOnSubscribe<Bitmap>) e ->
+                                                e.onNext(QRCodeEncoder.syncEncodeQRCode(r, UIUtil.dip2px(getActivity(), 80), Color.BLACK)))
+                                                .compose(RxSchedulers.ioObserver())
+                                                .compose(bindToLifecycle())
+                                                .subscribe(b -> im.setImageBitmap(b));
+                                    });
+
+                            ViewTreeObserver vto = invitePop.findViewById(R.id.popup_dialog_layout).getViewTreeObserver();
+                            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                @Override
+                                public void onGlobalLayout() {
+                                    invitePop.findViewById(R.id.popup_dialog_layout).getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                                    ScrollView scrollView = invitePop.findViewById(R.id.sv_newspagerpopup);
+                                    ScrollView.LayoutParams layoutParams = (ScrollView.LayoutParams)scrollView.getLayoutParams();
+                                    layoutParams.bottomMargin = invitePop.findViewById(R.id.popup_dialog_layout).getHeight() + 30;
+                                    scrollView.setLayoutParams(layoutParams);
+                                }
+                            });
+
+                            TextView content = invitePop.findViewById(R.id.tv_newspagercontent);
+                            content.setText(bean.getArticle());
+                            TextView title = invitePop.findViewById(R.id.tv_newspagertitle);
+                            title.setText(bean.getTitle());
+                            TextView time = invitePop.findViewById(R.id.tv_newspagertime);
+                            time.setText(bean.getNewsTime());
+                        } else {
+                            invitePop.showPopupWindow();
+                            TextView content = invitePop.findViewById(R.id.tv_newspagercontent);
+                            content.setText(bean.getArticle());
+                            TextView title = invitePop.findViewById(R.id.tv_newspagertitle);
+                            title.setText(bean.getTitle());
+                            TextView time = invitePop.findViewById(R.id.tv_newspagertime);
+                            time.setText(bean.getNewsTime());
+                        }
+                    });
 
                     helper.setImageResource(R.id.iv_quick_new_like, bean.getLike().equals("0") ? R.drawable.ic_quick_news_like_nor : R.drawable.ic_quick_news_like_checked)
                             .setImageResource(R.id.iv_quick_new_dislike, bean.getDisLike().equals("0") ? R.drawable.ic_quick_news_dislike_nor : R.drawable.ic_quick_news_dislike_checked);
@@ -542,5 +654,101 @@ public class NewsPager extends BaseFragment {
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         }
     }
+
+    private void shareTo(int plantform) {
+        Bitmap bitmap = getBitmapByView(invitePop.findViewById(R.id.sv_newspagerpopup));
+        final Bitmap bitmap2 = compressImage(bitmap);
+        UMImage link = new UMImage(getActivity(), bitmap2);
+
+        SHARE_MEDIA platform = null;
+        switch (plantform) {
+            case 1:
+                platform = SHARE_MEDIA.WEIXIN;
+                break;
+            case 2:
+                platform = SHARE_MEDIA.WEIXIN_CIRCLE;
+                break;
+            case 3:
+                platform = SHARE_MEDIA.QQ;
+                break;
+            case 4:
+                RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+                    @Override
+                    public void onSuccess(List<Conversation> conversations) {
+                        Constant.shareGroupQR = bitmap2;
+                        Intent intent = new Intent(getActivity(), ShareGroupQRActivity.class);
+                        intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+
+                    }
+                });
+
+                break;
+            case 5:
+
+                Observable.create((ObservableOnSubscribe<Boolean>)
+                        e -> SaveImageUtil.get().savePic(bitmap2,
+                                success -> {
+                                    if (success) e.onNext(true);
+                                    else e.onNext(false);
+                                })).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                        .subscribe(success -> {
+                                    if (success) {
+                                        ToastUtils.showShort(R.string.savesucceed);
+                                        return;
+                                    }
+                                    ToastUtils.showShort(R.string.savefailed);
+                                });
+                break;
+            case 6:
+                if(invitePop != null){
+                    invitePop.dismiss();
+                }
+
+
+                break;
+        }
+        new ShareAction(getActivity())
+                .setPlatform(platform)
+                .withMedia(link)
+                .setCallback(new ShareUtil.ShareListener())
+                .share();
+    }
+
+
+    public static Bitmap getBitmapByView(ScrollView scrollView) {
+        int h = 0;
+        Bitmap bitmap = null;
+        for (int i = 0; i < scrollView.getChildCount(); i++) {
+            h += scrollView.getChildAt(i).getHeight();
+            scrollView.getChildAt(i).setBackgroundColor(
+                    Color.parseColor("#ffffff"));
+        }
+        bitmap = Bitmap.createBitmap(scrollView.getWidth(), h,
+                Bitmap.Config.RGB_565);
+        final Canvas canvas = new Canvas(bitmap);
+        scrollView.draw(canvas);
+        return bitmap;
+    }
+
+
+    public static Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        int options = 100;
+        while (baos.toByteArray().length / 1024 > 100) {
+            baos.reset();
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
+            options -= 10;
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
+        return bitmap;
+    }
+
 
 }
