@@ -689,8 +689,10 @@ public class ConversationActivity extends BaseActivity {
                         }
 //                        }
                         for (GroupResponse.CustomersBean b : groupResponse.getCustomers()) {
-                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(b.getId(), TextUtils.isEmpty(b.getRemark()) ? b.getNick() : b.getRemark()
-                                    , Uri.parse(b.getHeadPortrait())));
+                            if (RongUserInfoManager.getInstance().getUserInfo(b.getId()) == null) {
+                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(b.getId(), TextUtils.isEmpty(b.getRemark()) ? b.getNick() : b.getRemark()
+                                        , Uri.parse(b.getHeadPortrait())));
+                            }
                         }
                     })
                     .compose(bindToLifecycle())
