@@ -5,16 +5,16 @@
     android:gravity="bottom"
     android:orientation="vertical">
 
-
     <ScrollView
         android:id="@+id/sv_newspagerpopup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="30dp"
-        android:scrollbars="none"
-        android:layout_gravity="bottom">
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +27,6 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/gb_newpager" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,7 +54,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="2019年。。。。。"
                         android:textColor="#333333"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -67,7 +65,6 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="13dp"
                     android:layout_marginEnd="12dp"
-                    android:text="WBF交易所即将上线CCN，构建医疗信息 的开放式服务平台"
                     android:textColor="#333333"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -80,7 +77,6 @@
                     android:layout_marginTop="18dp"
                     android:layout_marginEnd="12dp"
                     android:lineSpacingExtra="3dp"
-                    android:text="财政部发布通知称，有关城市结合自身实际情况，重点围绕农产品、快消品、药品、日用电子产品、汽车零部件、家电家具、纺织服装，以及餐饮、冷链、物流快递、电子商务等行业领域，加快推进现代供应链体系建设。要强化物流基础设施建设，发展智慧供应链，推动大数据、云计算、区块链、人工智能等技术与供应链融合，推广使用新能源物流车、仓储设施设备节能技术及绿色智能包装新材料。"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 
@@ -100,9 +96,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="12dp"
                     android:layout_marginBottom="12dp"
-                    android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -116,15 +112,16 @@
                             android:text="区块链社交，就在Hilamg"
                             android:textColor="#4585F5"
                             android:textSize="16dp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="长按识别二维码 \n下载HilamgApp"
                             android:layout_marginTop="10dp"
                             android:lineSpacingExtra="1dp"
-                            android:textColor="#999999"/>
+                            android:text="长按识别二维码 \n下载HilamgApp"
+                            android:textColor="#999999"
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <TextView
@@ -143,19 +140,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:scaleType="fitXY"/>
+                            android:scaleType="fitXY" />
 
                         <ImageView
                             android:id="@+id/ivHeadQR"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_hilamglogo3"
                             android:layout_gravity="center" />
 
                     </FrameLayout>
+
                 </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
     <LinearLayout
@@ -216,6 +217,7 @@
                 android:gravity="center"
                 android:text="@string/hilamg"
                 android:textColor="@color/textcolor3" />
+
             <TextView
                 android:id="@+id/tv1"
                 android:layout_width="0dp"
@@ -248,7 +250,6 @@
                 android:gravity="center"
                 android:text="@string/qq"
                 android:textColor="@color/textcolor3" />
-
 
             <TextView
                 android:id="@+id/tv5"

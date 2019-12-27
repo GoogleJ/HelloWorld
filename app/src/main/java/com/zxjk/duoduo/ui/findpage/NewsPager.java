@@ -1,29 +1,23 @@
 package com.zxjk.duoduo.ui.findpage;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -39,7 +33,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.umeng.socialize.ShareAction;
@@ -54,7 +47,6 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
-import com.zxjk.duoduo.ui.socialspace.SocialQRCodeActivity;
 import com.zxjk.duoduo.ui.widget.CircleNavigator;
 import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.ui.widget.SlopScrollView;
@@ -78,15 +70,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -113,7 +98,8 @@ public class NewsPager extends BaseFragment {
     private FrameLayout flIndicatorDetail;
     private FrameLayout flIndicatorTop;
     private TextView tvBanner;
-    private int[] detailTitles = {R.string.boutique, R.string.quick_news, R.string.mochat_social, R.string.video};
+    private int[] detailTitles = {R.string.boutique, R.string.quick_news};
+    //    private int[] detailTitles = {R.string.boutique, R.string.quick_news, R.string.mochat_social, R.string.video};
     private boolean hasInitHeight;
     private ImageView imgexit;
     private LinearLayout popupDialogShare;
@@ -577,7 +563,6 @@ public class NewsPager extends BaseFragment {
                     });
 
                     helper.getView(R.id.iv_quick_new_share).setOnClickListener(v -> {
-
                         if (invitePop == null) {
                             TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
                             showAnimation.setDuration(350);
@@ -593,7 +578,7 @@ public class NewsPager extends BaseFragment {
                                             .withClick(R.id.tv3, view -> shareTo(3), true)
                                             .withClick(R.id.tv4, view -> shareTo(4), true)
                                             .withClick(R.id.tv5, view -> shareTo(5), true)
-                                            .withClick(R.id.img_exit, view -> shareTo(6), true)
+                                            .withClick(R.id.img_exit, null, true)
                                     )
                                     .show();
 
@@ -603,16 +588,12 @@ public class NewsPager extends BaseFragment {
                                     .compose(bindToLifecycle())
                                     .compose(RxSchedulers.normalTrans())
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                                    .subscribe(r -> {
-
-                                        ImageView imageView = invitePop.findViewById(R.id.ivHeadQR);
-                                        imageView.setImageResource(R.drawable.ic_hilamglogo3);
-                                        Observable.create((ObservableOnSubscribe<Bitmap>) e ->
-                                                e.onNext(QRCodeEncoder.syncEncodeQRCode(r, UIUtil.dip2px(getActivity(), 80), Color.BLACK)))
-                                                .compose(RxSchedulers.ioObserver())
-                                                .compose(bindToLifecycle())
-                                                .subscribe(b -> im.setImageBitmap(b));
-                                    });
+                                    .subscribe(r ->
+                                            Observable.create((ObservableOnSubscribe<Bitmap>) e ->
+                                                    e.onNext(QRCodeEncoder.syncEncodeQRCode(r, UIUtil.dip2px(getActivity(), 80), Color.BLACK)))
+                                                    .compose(RxSchedulers.ioObserver())
+                                                    .compose(bindToLifecycle())
+                                                    .subscribe(im::setImageBitmap));
 
                             ViewTreeObserver vto = invitePop.findViewById(R.id.popup_dialog_layout).getViewTreeObserver();
                             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -620,7 +601,7 @@ public class NewsPager extends BaseFragment {
                                 public void onGlobalLayout() {
                                     invitePop.findViewById(R.id.popup_dialog_layout).getViewTreeObserver().removeGlobalOnLayoutListener(this);
                                     ScrollView scrollView = invitePop.findViewById(R.id.sv_newspagerpopup);
-                                    ScrollView.LayoutParams layoutParams = (ScrollView.LayoutParams)scrollView.getLayoutParams();
+                                    ScrollView.LayoutParams layoutParams = (ScrollView.LayoutParams) scrollView.getLayoutParams();
                                     layoutParams.bottomMargin = invitePop.findViewById(R.id.popup_dialog_layout).getHeight() + 30;
                                     scrollView.setLayoutParams(layoutParams);
                                 }
@@ -686,10 +667,8 @@ public class NewsPager extends BaseFragment {
 
                     }
                 });
-
                 break;
             case 5:
-
                 Observable.create((ObservableOnSubscribe<Boolean>)
                         e -> SaveImageUtil.get().savePic(bitmap2,
                                 success -> {
@@ -697,19 +676,17 @@ public class NewsPager extends BaseFragment {
                                     else e.onNext(false);
                                 })).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
                         .subscribe(success -> {
-                                    if (success) {
-                                        ToastUtils.showShort(R.string.savesucceed);
-                                        return;
-                                    }
-                                    ToastUtils.showShort(R.string.savefailed);
-                                });
+                            if (success) {
+                                ToastUtils.showShort(R.string.savesucceed);
+                                return;
+                            }
+                            ToastUtils.showShort(R.string.savefailed);
+                        });
                 break;
             case 6:
-                if(invitePop != null){
+                if (invitePop != null) {
                     invitePop.dismiss();
                 }
-
-
                 break;
         }
         new ShareAction(getActivity())

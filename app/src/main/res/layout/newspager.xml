@@ -126,7 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_newspager_more" />
+                android:src="@drawable/ic_newspager_more"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
@@ -137,8 +138,6 @@
             android:background="#E5E5E5" />
 
     </FrameLayout>
-
-
 
 
 </FrameLayout>
