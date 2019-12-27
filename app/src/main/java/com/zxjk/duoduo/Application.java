@@ -57,6 +57,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SystemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.TransferProvider;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.MyCrashHandler;
+import com.zxjk.duoduo.utils.WebDataUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -84,6 +85,8 @@ public class Application extends android.app.Application {
 
     private long conversationOpenTime;
 
+    private WebDataUtils WebDataUtils;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -91,6 +94,8 @@ public class Application extends android.app.Application {
         if (BuildConfig.enableLog) {
             Thread.setDefaultUncaughtExceptionHandler(MyCrashHandler.newInstance());
         }
+
+        WebDataUtils = new WebDataUtils();
 
         //init MMKV
         MMKV.initialize(this);
@@ -121,6 +126,10 @@ public class Application extends android.app.Application {
         initSmallVideo();
 
         QbSdk.initX5Environment(this, null);
+    }
+
+    public WebDataUtils GetWebDataUtils(){
+        return WebDataUtils;
     }
 
     public static void initSmallVideo() {

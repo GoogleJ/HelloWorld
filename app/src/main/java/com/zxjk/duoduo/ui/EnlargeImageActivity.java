@@ -23,6 +23,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ImageUtils;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -139,6 +140,14 @@ public class EnlargeImageActivity extends BaseActivity {
 
             @SuppressLint("CheckResult")
             private void parseResult(String result) {
+                String regexUrl = "^https?:/{2}\\w.+$";
+                if (RegexUtils.isMatch(regexUrl, result)) {
+                    Intent intent = new Intent(EnlargeImageActivity.this, WebActivity.class);
+                    intent.putExtra("url", result);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     Object schem = jsonObject.opt("schem");

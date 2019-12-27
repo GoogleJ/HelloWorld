@@ -4,19 +4,24 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
+import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -29,11 +34,13 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 
+import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.base.WebActivityToLogin;
 import com.zxjk.duoduo.ui.widget.ProgressView;
 
-public class WebActivity extends BaseActivity {
+public class WebActivity extends BaseActivity implements WebActivityToLogin {
 
     private FrameLayout fl_webview;
     private ProgressView pb_webview;
@@ -56,6 +63,8 @@ public class WebActivity extends BaseActivity {
         currentUrl = getIntent().getStringExtra("url");
         title = getIntent().getStringExtra("title");
         type = getIntent().getStringExtra("type");
+
+        ((Application)getApplication()).GetWebDataUtils().setWebActivityToLogin(this);
 
         initView();
 
@@ -176,10 +185,23 @@ public class WebActivity extends BaseActivity {
                 }
                 super.onReceivedSslError(webView, sslErrorHandler, sslError);
             }
-        });
 
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                Uri uri = Uri.parse(request.getUrl().toString());
+                if (uri.getScheme().equals("hilamg")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(request.getUrl().toString()));
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
         mWebView.loadUrl(currentUrl);
     }
+
+
+
 
     @Override
     protected void onDestroy() {
@@ -202,5 +224,21 @@ public class WebActivity extends BaseActivity {
                 super.onBackPressed();
             }
         }
+    }
+
+
+    @Override
+    public void webToLogin(String token) {
+        mWebView.clearCache(true);
+        mWebView.loadUrl(currentUrl+"?token="+token);
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                Log.i("tag", message);
+                return false;
+            }
+        });
+
     }
 }

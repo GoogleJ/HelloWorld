@@ -584,7 +584,7 @@ public class NewsPager extends BaseFragment {
 
                             ImageView im = invitePop.findViewById(R.id.ivQRImg);
                             ServiceFactory.getInstance().getBaseService(Api.class)
-                                    .getAppVersionBysystemType("1")
+                                    .getAppVersionBysystemType("0")
                                     .compose(bindToLifecycle())
                                     .compose(RxSchedulers.normalTrans())
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))

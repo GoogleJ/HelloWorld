@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,7 +34,11 @@ import com.zxjk.duoduo.ui.minepage.UpdateUserInfoActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.AllGroupMemebersAdapter;
 import com.zxjk.duoduo.ui.widget.dialog.ConfirmDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.RecyclerItemAverageDecoration;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -41,6 +46,9 @@ import io.rong.imlib.model.Conversation;
 
 @SuppressLint("CheckResult")
 public class GroupChatInformationActivity extends BaseActivity {
+
+    private static final int REQUEST_REMOVE = 7;
+    private ArrayList<String> selectedIds = new ArrayList<>();
 
     private TextView groupChatName;
     private TextView see_more_group_members;
@@ -165,7 +173,7 @@ public class GroupChatInformationActivity extends BaseActivity {
                 intent = new Intent(GroupChatInformationActivity.this, CreateGroupActivity.class);
                 intent.putExtra("eventType", 3);
                 intent.putExtra("members", group);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_REMOVE);
             });
         }
 
@@ -352,18 +360,38 @@ public class GroupChatInformationActivity extends BaseActivity {
             group = (GroupResponse) data.getSerializableExtra("group");
         }
 
+        if (data != null && resultCode == 7) {
+            switch (requestCode) {
+                case REQUEST_REMOVE:
+                    selectedIds = data.getStringArrayListExtra("deletemanagers");
+                    Iterator<GroupResponse.CustomersBean> it = group.getCustomers().iterator();
+                    Iterator<String> iterator = selectedIds.iterator();
+
+                    while (iterator.hasNext()) {
+                        String id = iterator.next();
+                        while (it.hasNext()) {
+                            String id1 = it.next().getId();
+                            if (id1 .equals(id)) {
+                                it.remove();
+                            }
+                        }
+                    }
+
+                    if (group.getCustomers().size() <= 15) {
+                        see_more_group_members.setVisibility(View.GONE);
+                        mAdapter.setNewData(group.getCustomers());
+                    } else {
+                        see_more_group_members.setVisibility(View.VISIBLE);
+                        mAdapter.setNewData(group.getCustomers().subList(0, 15));
+                    }
+                    break;
+            }
+        }
     }
 
     public void report(View view) {
         startActivity(new Intent(this, SkinReportActivity.class));
     }
-
-//    //群二维码
-//    public void groupQR(View view) {
-//        Intent intent = new Intent(this, GroupQRActivity.class);
-//        intent.putExtra("data", group);
-//        startActivity(intent);
-//    }
 
     //群主权限管理
     public void ownerAuthority(View view) {
@@ -410,4 +438,6 @@ public class GroupChatInformationActivity extends BaseActivity {
         }
         ToastUtils.showShort(R.string.developing);
     }
+
+
 }

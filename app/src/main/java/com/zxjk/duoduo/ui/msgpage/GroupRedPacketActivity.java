@@ -53,7 +53,7 @@ import io.rong.imlib.model.Message;
 @SuppressLint("CheckResult")
 public class GroupRedPacketActivity extends BaseActivity {
     // 红包类型：1.拼手气红包  2.普通红包
-    private String redType = "2";
+    private String redType = "1";
 
     private GetPaymentListBean result;
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();
@@ -116,11 +116,11 @@ public class GroupRedPacketActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count == 0){
+                if(start ==0 && count ==0){
                     etMoney2.setText("0.0000");
-                }else {
-                    etMoney2.setTextColor(Color.parseColor("#000000"));
-                    etMoney2.setText(s.toString());
+                } else {
+                        etMoney2.setTextColor(Color.parseColor("#000000"));
+                        etMoney2.setText(s.toString());
                 }
             }
 
@@ -146,9 +146,9 @@ public class GroupRedPacketActivity extends BaseActivity {
     public void top1(View view) {
         redType = "1";
         tvtop1.setTextColor(color2);
-//        ivtop1.setWillNotDraw(true);
+
         tvtop2.setTextColor(color1);
-//        ivtop2.setWillNotDraw(false);
+
         fm1.setBackground(getResources().getDrawable(R.drawable.shape_gray2));
         fm2.setBackground(getResources().getDrawable(R.drawable.shape_gray1));
         redpaytobar.setText("拼手气红包");

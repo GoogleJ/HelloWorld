@@ -3,7 +3,6 @@ package com.zxjk.duoduo.ui.walletpage;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +12,7 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
+import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
@@ -30,6 +30,9 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     private TextView tv_Nick;
     private ImageView img_HeadPortrait;
     private String appId = "";
+    private String randomStr = "";
+    private String sign = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +52,14 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
         findViewById(R.id.btn_agreedTo).setOnClickListener(this);
         findViewById(R.id.btn_refusedTo).setOnClickListener(this);
         findViewById(R.id.btn_switchid).setOnClickListener(this);
+
     }
 
 
     public void initDate(){
         appId = getIntent().getStringExtra("appId");
+        randomStr = getIntent().getStringExtra("randomStr");
+        sign = getIntent().getStringExtra("sign");
         Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(img_HeadPortrait);
         tv_Nick.setText(Constant.currentUser.getNick());
     }
@@ -119,17 +125,13 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     @SuppressLint("CheckResult")
     public void GetAuthorizationTokenResponse(){
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .htmlLogin(appId)
+                .htmlLogin(appId,randomStr,sign)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
                 .subscribe(s -> {
-                    Log.i("TAG", "getNick==="+s.getNick()
-                            +";getHeadPortrait==="+s.getHeadPortrait()
-                            +";getSymbol==="+s.getBalanceWallet().get(0).getSymbol()
-                            +";getWalletAddress==="+s.getBalanceWallet().get(0).getWalletAddress()
-                            +";getBalanceWalletListSize==="+s.getBalanceWallet());
+                    ((Application)getApplication()).GetWebDataUtils().webToLogin(s);
+                    finish();
                 }, this::handleApiError);
     }
-
 }

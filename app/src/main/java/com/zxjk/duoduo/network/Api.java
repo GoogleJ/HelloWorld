@@ -723,9 +723,9 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<GetUserInfo>> GetUserInfo(@Field("appId") String appid,@Field("accessToken") String accessToken ,@Field("hilamgId") String hilamgId);
 
-    @POST("duoduo/customer/htmlLogin")
+    @POST("duoduo/customer/thirdPartLogin")
     @FormUrlEncoded
-    Observable<BaseResponse<GetUserInfo>> htmlLogin(@Field("appId") String appid);
+    Observable<BaseResponse<String>> htmlLogin(@Field("appId") String appid,@Field("randomStr") String randomStr,@Field("sign") String sign);
 
     @POST("duoduo/customer/getAppVersionBysystemType")
     @FormUrlEncoded

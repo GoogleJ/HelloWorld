@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -282,6 +283,8 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 recycler1.smoothScrollToPosition(data3.size() - 1);
             }
             tv_commit.setText(confirmText + "(" + data3.size() + ")");
+
+            setResult(1);
         });
     }
 
@@ -627,11 +630,15 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                     if (getIntent().getBooleanExtra("fromSocial", false)) {
                         finish();
                     } else {
-                        Intent intent = new Intent(this, ConversationActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
+                        Intent intent = new Intent();
+                        for (int i =0 ; i <selectedIds.size(); i++){
+                            Log.i("TAG", "selectedIds: "+selectedIds.get(i));
+                        }
+                        intent.putStringArrayListExtra("deletemanagers", selectedIds);
 
+                        setResult(7, intent);
+                        finish();
+                    }
                 }, this::handleApiError);
     }
 
