@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
@@ -103,6 +104,7 @@ public class UpdateUserInfoActivity extends BaseActivity {
                 etChangeSign.setText(group.getGroupInfo().getGroupNikeName());
             }
         }
+        etChangeSign.setSelection(etChangeSign.getText().toString().length());
     }
 
     private void initView() {
