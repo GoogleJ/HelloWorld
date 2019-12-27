@@ -910,4 +910,5 @@
     <string name="back">返回</string>
     <string name="search1">搜索手机号/海浪号</string>
     <string name="choosegroupchat">选择群聊</string>
+    <string name="input_socialnintroduction">请输入社群简介</string>
 </resources>

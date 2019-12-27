@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.appbar.AppBarLayout;
@@ -114,6 +115,7 @@ public class EditSocialBasicActivity extends BaseActivity {
                 tvBottom.setText(R.string.done1);
                 llEt.setVisibility(View.VISIBLE);
                 etSocialName.setText(data.getName());
+                etSocialName.setSelection(data.getName().length());
 
                 if (type.equals("2")) {
                     //公告
@@ -123,9 +125,15 @@ public class EditSocialBasicActivity extends BaseActivity {
                     etSocialSlogan.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1000)});
                     etSocialSlogan.setHint(R.string.input_socialnotice);
                     etSocialSlogan.setText(data.getAnnouncement());
+
+                    etSocialSlogan.setSelection(data.getAnnouncement().length());
+                    etSocialSlogan.setFocusable(true);
+                    etSocialSlogan.setFocusableInTouchMode(true);
+                    etSocialSlogan.requestFocus();
                 } else {
                     etSocialSlogan.setText(data.getIntroduction());
                 }
+                KeyboardUtils.showSoftInput(this);
             } else {
                 //完成
                 EditCommunityRequest request = new EditCommunityRequest();
@@ -138,8 +146,14 @@ public class EditSocialBasicActivity extends BaseActivity {
                         ToastUtils.showShort(R.string.input_socialname1);
                         return;
                     }
+                    String socialIntroduction = etSocialSlogan.getText().toString().trim();
+                    if (TextUtils.isEmpty(socialIntroduction)) {
+                        ToastUtils.showShort(R.string.input_socialnintroduction);
+                        return;
+                    }
+                    
                     request.setName(socialName);
-                    request.setIntroduction(etSocialSlogan.getText().toString().trim());
+                    request.setIntroduction(socialIntroduction);
                 } else {
                     //公告
                     String notice = etSocialSlogan.getText().toString().trim();
