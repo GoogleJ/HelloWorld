@@ -132,6 +132,7 @@ public class SearchGroupActivity extends BaseActivity {
                     Intent intent = new Intent(SearchGroupActivity.this, SocialHomeActivity.class);
                     intent.putExtra("id", item.getGroupId());
                     startActivity(intent);
+                    finish();
                 });
             }
         };
