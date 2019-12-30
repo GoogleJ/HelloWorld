@@ -631,11 +631,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                         finish();
                     } else {
                         Intent intent = new Intent();
-                        for (int i =0 ; i <selectedIds.size(); i++){
-                            Log.i("TAG", "selectedIds: "+selectedIds.get(i));
-                        }
                         intent.putStringArrayListExtra("deletemanagers", selectedIds);
-
                         setResult(7, intent);
                         finish();
                     }

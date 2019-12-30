@@ -1129,12 +1129,12 @@ public class ConversationActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000 && resultCode == 1000) {
             if (groupInfo != null) {
+                groupInfo = (GroupResponse) data.getSerializableExtra("group");
                 if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
                     tvTitle.setText(data.getStringExtra("title"));
                 } else {
                     tvTitle.setText(data.getStringExtra("title") + "(" + groupInfo.getCustomers().size() + ")");
                 }
-                groupInfo = (GroupResponse) data.getSerializableExtra("group");
             }
         } else if (requestCode == 2000 && resultCode == 1000) {
             tvTitle.setText(data.getStringExtra("title"));

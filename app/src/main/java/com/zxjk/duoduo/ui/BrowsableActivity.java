@@ -62,7 +62,6 @@ public class BrowsableActivity extends BaseActivity {
                             }else {
                                 ToastUtils.showShort("参数错误！");
                             }
-
                         }
                         break;
                 }

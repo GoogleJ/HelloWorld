@@ -384,6 +384,7 @@ public class GroupChatInformationActivity extends BaseActivity {
                         see_more_group_members.setVisibility(View.VISIBLE);
                         mAdapter.setNewData(group.getCustomers().subList(0, 15));
                     }
+                    tv_title.setText(getString(R.string.chat_message) + "(" + group.getCustomers().size() + ")");
                     break;
             }
         }

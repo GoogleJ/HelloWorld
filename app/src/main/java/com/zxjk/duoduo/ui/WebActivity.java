@@ -64,6 +64,7 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
         title = getIntent().getStringExtra("title");
         type = getIntent().getStringExtra("type");
 
+
         ((Application)getApplication()).GetWebDataUtils().setWebActivityToLogin(this);
 
         initView();
@@ -193,8 +194,9 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
                 if (uri.getScheme().equals("hilamg")) {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(request.getUrl().toString()));
                     startActivity(intent);
+                    return true;
                 }
-                return true;
+                return false;
             }
         });
         mWebView.loadUrl(currentUrl);
@@ -231,14 +233,5 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
     public void webToLogin(String token) {
         mWebView.clearCache(true);
         mWebView.loadUrl(currentUrl+"?token="+token);
-
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                Log.i("tag", message);
-                return false;
-            }
-        });
-
     }
 }
