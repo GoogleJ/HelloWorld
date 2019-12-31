@@ -912,4 +912,17 @@
     <string name="search1">搜索手机号/海浪号</string>
     <string name="choosegroupchat">选择群聊</string>
     <string name="input_socialnintroduction">请输入社群简介</string>
+    <string name="login_describe">你可选择使用不同的个人信息登录</string>
+    <string name="login_describe2">您需要允许以下权限的使用</string>
+    <string name="login_gender">性别信息等</string>
+    <string name="login_region">地区</string>
+    <string name="login_nickname">昵称</string>
+    <string name="login_head_portrait">头像</string>
+    <string name="login_title1">申请使用</string>
+    <string name="login_title2">Hilamg</string>
+    <string name="login_id_introduction">Hilamg个人信息</string>
+    <string name="login_switch_id">切换账号</string>
+    <string name="login_agreed">同意</string>
+    <string name="login_refused">拒绝</string>
+
 </resources>

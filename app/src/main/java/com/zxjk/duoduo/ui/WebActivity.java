@@ -11,17 +11,14 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
-import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -33,7 +30,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
@@ -44,14 +40,10 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
 
     private FrameLayout fl_webview;
     private ProgressView pb_webview;
-
     String currentUrl;
-
     private WebSettings webSettings;
     private WebView mWebView;
-
     private TextView tv_title;
-
     private String title;
     private String type;
 
@@ -64,8 +56,7 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
         title = getIntent().getStringExtra("title");
         type = getIntent().getStringExtra("type");
 
-
-        ((Application)getApplication()).GetWebDataUtils().setWebActivityToLogin(this);
+        ((Application) getApplication()).GetWebDataUtils().setWebActivityToLogin(this);
 
         initView();
 
@@ -89,7 +80,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             findViewById(R.id.rl_back).setVisibility(View.INVISIBLE);
             findViewById(R.id.rl_end).setVisibility(View.VISIBLE);
             ImageView iv_end = findViewById(R.id.iv_end);
-
             Drawable up = ContextCompat.getDrawable(this, R.drawable.ic_delete_dialog);
             Drawable drawableUp = DrawableCompat.wrap(up);
             DrawableCompat.setTint(drawableUp, ContextCompat.getColor(this, R.color.black));
@@ -203,8 +193,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
     }
 
 
-
-
     @Override
     protected void onDestroy() {
         if (mWebView != null) {
@@ -232,6 +220,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
     @Override
     public void webToLogin(String token) {
         mWebView.clearCache(true);
-        mWebView.loadUrl(currentUrl+"?token="+token);
+        mWebView.loadUrl(currentUrl + "?token=" + token);
     }
 }

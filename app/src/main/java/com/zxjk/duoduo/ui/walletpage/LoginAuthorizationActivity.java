@@ -24,15 +24,13 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import io.rong.imkit.RongIM;
 
-public class LoginAuthorizationActivity extends BaseActivity implements View.OnClickListener{
+public class LoginAuthorizationActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView tv_Sign;
-    private TextView tv_Nick;
-    private ImageView img_HeadPortrait;
-    private String appId = "";
-    private String randomStr = "";
-    private String sign = "";
-
+    private TextView mNickTv;
+    private ImageView mLoginHeadPortrait;
+    private String mAppId = "";
+    private String mRandomStr = "";
+    private String mSign = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,34 +38,33 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
         setContentView(R.layout.activity_login_authorization);
 
         initView();
+
         initDate();
+
         getAuthorization();
     }
 
-
-    public void initView(){
-        tv_Nick = findViewById(R.id.tv_Nick);
-        tv_Sign = findViewById(R.id.tv_Sign);
-        img_HeadPortrait = findViewById(R.id.img_HeadPortrait);
-        findViewById(R.id.btn_agreedTo).setOnClickListener(this);
-        findViewById(R.id.btn_refusedTo).setOnClickListener(this);
-        findViewById(R.id.btn_switchid).setOnClickListener(this);
+    public void initView() {
+        mNickTv = findViewById(R.id.tv_login_rick);
+        mLoginHeadPortrait = findViewById(R.id.iv_login_head_portrait);
+        findViewById(R.id.btn_login_agreed).setOnClickListener(this);
+        findViewById(R.id.btn_login_refused).setOnClickListener(this);
+        findViewById(R.id.btn_login_switchid).setOnClickListener(this);
 
     }
 
-
-    public void initDate(){
-        appId = getIntent().getStringExtra("appId");
-        randomStr = getIntent().getStringExtra("randomStr");
-        sign = getIntent().getStringExtra("sign");
-        Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(img_HeadPortrait);
-        tv_Nick.setText(Constant.currentUser.getNick());
+    public void initDate() {
+        mAppId = getIntent().getStringExtra("appId");
+        mRandomStr = getIntent().getStringExtra("randomStr");
+        mSign = getIntent().getStringExtra("sign");
+        Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(mLoginHeadPortrait);
+        mNickTv.setText(Constant.currentUser.getNick());
     }
 
     @SuppressLint("CheckResult")
-    public void getAuthorization(){
+    public void getAuthorization() {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getAuthorization(appId)
+                .getAuthorization(mAppId)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
@@ -75,24 +72,22 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
                 }, this::handleApiError);
     }
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_agreedTo:
-                GetAuthorizationTokenResponse();
+        switch (v.getId()) {
+            case R.id.btn_login_agreed:
+                getAuthorizationTokenResponse();
                 break;
-            case R.id.btn_refusedTo:
+            case R.id.btn_login_refused:
                 finish();
                 break;
-            case R.id.btn_switchid:
-                SwitchId();
+            case R.id.btn_login_switchid:
+                switchId();
                 break;
         }
     }
 
-
-    public void SwitchId(){
+    public void switchId() {
         NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
             @SuppressLint("CheckResult")
             @Override
@@ -123,14 +118,14 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     }
 
     @SuppressLint("CheckResult")
-    public void GetAuthorizationTokenResponse(){
+    public void getAuthorizationTokenResponse() {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .htmlLogin(appId,randomStr,sign)
+                .htmlLogin(mAppId, mRandomStr, mSign)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
                 .subscribe(s -> {
-                    ((Application)getApplication()).GetWebDataUtils().webToLogin(s);
+                    ((Application) getApplication()).GetWebDataUtils().webToLogin(s);
                     finish();
                 }, this::handleApiError);
     }
