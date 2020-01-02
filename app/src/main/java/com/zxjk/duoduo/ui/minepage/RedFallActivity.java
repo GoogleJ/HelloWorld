@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.widget.RainView;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -23,8 +24,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class RedFallActivity extends BaseActivity {
-
-    private FrameLayout flContent;
+    private RainView rain;
 
     private ImageView ivStartCountDown;
     private int countDown = 4;
@@ -44,7 +44,6 @@ public class RedFallActivity extends BaseActivity {
     }
 
     private void initStartAnim() {
-        flContent = findViewById(R.id.flContent);
         ivRedFallTop = findViewById(R.id.ivRedFallTop);
         ivRedFallTips = findViewById(R.id.ivRedFallTips);
         flRedFallProgress = findViewById(R.id.flRedFallProgress);
@@ -126,7 +125,8 @@ public class RedFallActivity extends BaseActivity {
     }
 
     private void startRedFall() {
-
+        rain = findViewById(R.id.rain);
+        rain.start(true);
     }
 
 }
