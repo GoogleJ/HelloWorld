@@ -130,7 +130,7 @@ public class DownCoinActivity extends BaseActivity {
         divider.setVisibility(View.VISIBLE);
         tvAllIn.setVisibility(View.VISIBLE);
         tvBalance.setVisibility(View.VISIBLE);
-        tvBalance.setText("余额钱包可用数量" + data.getBalance() + data.getCoin());
+        tvBalance.setText("余额钱包可用数量" + data.getBalanceSum() + data.getCoin());
         String str = "交易手续费为：" + data.getRate() + data.getCoin();
         SpannableString string = new SpannableString(str);
         string.setSpan(new ForegroundColorSpan(Color.parseColor("#FC6660")), 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

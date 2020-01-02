@@ -71,6 +71,24 @@ public class GetBalanceInfoResponse {
         private String rate;
         private String parentSymbol;
         private String currencyLimit;
+        private String awardBalance;
+        private String balanceSum;
+
+        public String getAwardBalance() {
+            return awardBalance;
+        }
+
+        public void setAwardBalance(String awardBalance) {
+            this.awardBalance = awardBalance;
+        }
+
+        public String getBalanceSum() {
+            return balanceSum;
+        }
+
+        public void setBalanceSum(String balanceSum) {
+            this.balanceSum = balanceSum;
+        }
 
         public String getCurrencyLimit() {
             return currencyLimit;
@@ -221,6 +239,8 @@ public class GetBalanceInfoResponse {
             dest.writeString(this.rate);
             dest.writeString(this.parentSymbol);
             dest.writeString(this.currencyLimit);
+            dest.writeString(this.awardBalance);
+            dest.writeString(this.balanceSum);
         }
 
         protected BalanceListBean(Parcel in) {
@@ -239,6 +259,8 @@ public class GetBalanceInfoResponse {
             this.rate = in.readString();
             this.parentSymbol = in.readString();
             this.currencyLimit = in.readString();
+            this.awardBalance = in.readString();
+            this.balanceSum = in.readString();
         }
 
         public static final Creator<BalanceListBean> CREATOR = new Creator<BalanceListBean>() {

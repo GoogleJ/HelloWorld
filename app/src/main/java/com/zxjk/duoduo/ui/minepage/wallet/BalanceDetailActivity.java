@@ -51,6 +51,7 @@ public class BalanceDetailActivity extends BaseActivity {
     private ImageView ivIcon;
     private TextView tvBlance;
     private TextView tvBalance2CNY;
+    private TextView tvRewardCount;
     private TextView tvAddress;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView recycler;
@@ -200,6 +201,7 @@ public class BalanceDetailActivity extends BaseActivity {
 
         ivIcon = findViewById(R.id.ivIcon);
         tvBlance = findViewById(R.id.tvBlance);
+        tvRewardCount = findViewById(R.id.tvRewardCount);
         tvBalance2CNY = findViewById(R.id.tvBalance2CNY);
         tvAddress = findViewById(R.id.tvAddress);
         refreshLayout = findViewById(R.id.refreshLayout);
@@ -207,7 +209,8 @@ public class BalanceDetailActivity extends BaseActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
         GlideUtil.loadNormalImg(ivIcon, data.getLogo());
-        tvBlance.setText(data.getBalance());
+        tvBlance.setText(data.getBalanceSum());
+        tvRewardCount.setText("活动奖励: " + data.getAwardBalance() + " USDT");
 
         SpannableString string = new SpannableString("≈" + data.getPriceToCny() + "CNY");
         string.setSpan(new RelativeSizeSpan(0.75f), string.length() - 3, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

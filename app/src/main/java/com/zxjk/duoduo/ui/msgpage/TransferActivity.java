@@ -136,6 +136,7 @@ public class TransferActivity extends BaseActivity {
                             result = list.get(0);
                             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
                             tvCoin.setText(result.getSymbol());
+                            etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
                         }, t -> {
                             handleApiError(t);
                             finish();
@@ -249,6 +250,7 @@ public class TransferActivity extends BaseActivity {
             result = data.getParcelableExtra("result");
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             tvCoin.setText(result.getSymbol());
+            etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
         }
     }
 

@@ -29,15 +29,6 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/tvBalance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="end"
-            android:lines="1"
-            android:textColor="#9EA0A4" />
-
     </LinearLayout>
 
     <View

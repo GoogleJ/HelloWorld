@@ -111,7 +111,6 @@ public class GroupRedPacketActivity extends BaseActivity {
         etMoney.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -126,11 +125,8 @@ public class GroupRedPacketActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
-
-
 
         etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(2)});
 
@@ -140,8 +136,6 @@ public class GroupRedPacketActivity extends BaseActivity {
         getGroupInfo(groupId);
 
     }
-
-
 
     public void top1(View view) {
         redType = "1";
@@ -190,6 +184,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                     GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
                     tvCoin.setText(result.getSymbol());
                     tvCoin2.setText(result.getSymbol());
+                    etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
                 }, this::handleApiError);
     }
 
@@ -297,6 +292,7 @@ public class GroupRedPacketActivity extends BaseActivity {
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
             tvCoin.setText(result.getSymbol());
+            etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
         }
     }
 

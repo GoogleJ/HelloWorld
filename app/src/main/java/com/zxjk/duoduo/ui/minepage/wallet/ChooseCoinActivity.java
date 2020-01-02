@@ -44,8 +44,7 @@ public class ChooseCoinActivity extends BaseActivity {
             protected void convert(BaseViewHolder helper, GetPaymentListBean item) {
                 ImageView ivIcon = helper.getView(R.id.ivIcon);
                 GlideUtil.loadCircleImg(ivIcon,item.getLogo());
-                helper.setText(R.id.tvCoin, item.getSymbol())
-                        .setText(R.id.tvBalance, item.getBalance());
+                helper.setText(R.id.tvCoin, item.getSymbol());
             }
         };
         recycler.setAdapter(adapter);
