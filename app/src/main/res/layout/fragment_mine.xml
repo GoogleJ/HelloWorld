@@ -12,102 +12,151 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:background="@drawable/mine_topbg"
-            android:clipChildren="false"
-            android:orientation="vertical"
-            android:paddingTop="20dp"
-            android:paddingBottom="36dp">
-
-            <ImageView
-                android:id="@+id/ivQR"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:padding="6dp"
-                android:src="@drawable/mine_new_scan" />
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/llMineTop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/ivHead"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="1dp" />
-
-                    <ImageView
-                        android:id="@+id/ivMineAuthSign"
-                        android:layout_width="19dp"
-                        android:layout_height="19dp"
-                        android:layout_gravity="end|bottom"
-                        android:src="@drawable/mine_new_verified"
-                        android:visibility="invisible" />
-
-                </FrameLayout>
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="vertical">
+                    android:layout_height="240dp"
+                    android:background="@drawable/mine_topbg"
+                    android:clipChildren="false"
+                    android:orientation="vertical"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="36dp">
 
-                    <TextView
-                        android:id="@+id/tvNick"
+                    <ImageView
+                        android:id="@+id/ivQR"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="6dp"
+                        android:src="@drawable/mine_new_scan" />
+
+                    <LinearLayout
+                        android:id="@+id/llMineTop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:textColor="@color/white"
-                        android:textSize="19sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tvMochatID"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp">
 
-                    <TextView
-                        android:id="@+id/tvSign"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/ivHead"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                app:civ_border_color="@color/white"
+                                app:civ_border_width="1dp" />
+
+                            <ImageView
+                                android:id="@+id/ivMineAuthSign"
+                                android:layout_width="19dp"
+                                android:layout_height="19dp"
+                                android:layout_gravity="end|bottom"
+                                android:src="@drawable/mine_new_verified"
+                                android:visibility="invisible" />
+
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvNick"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textColor="@color/white"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvMochatID"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvSign"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/ivBlockWallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-88dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_blockwallet" />
+
             </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llRedFall"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="32dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:transformPivotX="32dp">
 
-        <ImageView
-            android:id="@+id/ivBlockWallet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-88dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bg_blockwallet" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="144dp"
+                    android:background="#EBC700" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-16dp"
+                    android:src="@drawable/ic_mine_redfall" />
+
+                <TextView
+                    android:id="@+id/tvMindRedCountDown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="-16dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="@drawable/shape_mine_redfall"
+                    android:gravity="center"
+                    android:text="Go"
+                    android:textColor="#FF4848"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/llMine7"
@@ -134,12 +183,12 @@
 
             <TextView
                 android:id="@+id/tvMot2Reward"
-                android:visibility="gone"
-                android:layout_marginEnd="12dp"
-                android:textColor="#FF7933"
-                android:text="当前您有10个Mot待领取"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:text="当前您有10个Mot待领取"
+                android:textColor="#FF7933"
+                android:visibility="gone" />
 
             <ImageView
                 android:layout_width="wrap_content"

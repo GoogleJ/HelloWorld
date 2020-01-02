@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.minepage;
 
-import android.annotation.SuppressLint;
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,32 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.shehuan.nicedialog.BaseNiceDialog;
-import com.shehuan.nicedialog.NiceDialog;
-import com.shehuan.nicedialog.ViewConvertListener;
-import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.HomeActivity;
-import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.minepage.wallet.WalletActivity;
 import com.zxjk.duoduo.ui.msgpage.MyQrCodeActivity;
-import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.MMKVUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.rong.imkit.RongIM;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
 
@@ -42,8 +31,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private TextView tvNick;
     private TextView tvMochatID;
     private TextView tvSign;
-
     private TextView tvMot2Reward;
+
+    private LinearLayout llRedFall;
+    private TextView tvMindRedCountDown;
 
     @Nullable
     @Override
@@ -56,6 +47,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         tvMochatID = view.findViewById(R.id.tvMochatID);
         tvSign = view.findViewById(R.id.tvSign);
         tvMot2Reward = view.findViewById(R.id.tvMot2Reward);
+        llRedFall = view.findViewById(R.id.llRedFall);
+        tvMindRedCountDown = view.findViewById(R.id.tvMindRedCountDown);
 
         view.findViewById(R.id.llMineTop).setOnClickListener(this);
         view.findViewById(R.id.ivBlockWallet).setOnClickListener(this);
@@ -66,7 +59,22 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.ivQR).setOnClickListener(this);
         view.findViewById(R.id.llMineInvite).setOnClickListener(this);
 
+        initRedFall();
+
         return view;
+    }
+
+    private void initRedFall() {
+        Animator animatorObject = AnimatorInflater.loadAnimator(getActivity(), R.animator.animator_swing_redfall);
+        animatorObject.setTarget(llRedFall);
+        animatorObject.start();
+
+        llRedFall.setOnClickListener(v -> {
+            if (tvMindRedCountDown.getText().toString().equals("Go")) {
+                startActivity(new Intent(getActivity(), RedFallActivity.class));
+                getActivity().overridePendingTransition(R.anim.redfall_enteranim, R.anim.redfall_exitanim);
+            }
+        });
     }
 
     @Override

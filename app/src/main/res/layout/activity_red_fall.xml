@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/flContent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_redfall"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivRedFallTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="48dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_top_redfall" />
+
+            <FrameLayout
+                android:id="@+id/flRedFallProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="64dp"
+                android:visibility="invisible">
+
+                <ProgressBar
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="40dp"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/layerlist_progress_redfall" />
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="#e5e5e5" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/ivRedFallTips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="120dp"
+            android:src="@drawable/ic_redfall_tip1"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivStartCountDown"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleX="1.8"
+        android:scaleY="1.8"
+        android:src="@drawable/ic_redfall_num3_large"
+        android:visibility="invisible" />
+
+</FrameLayout>

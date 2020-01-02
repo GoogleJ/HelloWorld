@@ -50,17 +50,19 @@
         android:name=".Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.walletpage.LoginAuthorizationActivity"
+        <activity android:name=".ui.minepage.RedFallActivity"></activity>
+        <activity
+            android:name=".ui.walletpage.LoginAuthorizationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.walletpage.OrderPaymentActivity"
             android:launchMode="singleTop"
@@ -697,7 +699,7 @@
 
                 <data
                     android:host="web"
-                    android:scheme="hilamg"/>
+                    android:scheme="hilamg" />
             </intent-filter>
         </activity>
         <activity
