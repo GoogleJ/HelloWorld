@@ -46,7 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="活动奖励:0 USDT"
         android:textColor="#9EA0A4" />
 
     <LinearLayout

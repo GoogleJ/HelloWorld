@@ -210,7 +210,7 @@ public class BalanceDetailActivity extends BaseActivity {
 
         GlideUtil.loadNormalImg(ivIcon, data.getLogo());
         tvBlance.setText(data.getBalanceSum());
-        tvRewardCount.setText("活动奖励: " + data.getAwardBalance() + " USDT");
+        tvRewardCount.setText("活动奖励: " + data.getAwardBalance() + " " + data.getCurrencyName());
 
         SpannableString string = new SpannableString("≈" + data.getPriceToCny() + "CNY");
         string.setSpan(new RelativeSizeSpan(0.75f), string.length() - 3, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

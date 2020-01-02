@@ -60,7 +60,7 @@ public class BalanceLeftActivity extends BaseActivity {
                 GlideUtil.loadNormalImg(ivIcon, item.getLogo());
 
                 helper.setText(R.id.tvCoin, item.getCurrencyName())
-                        .setText(R.id.tvMoney1, isShow ? item.getBalance() : hideStr2)
+                        .setText(R.id.tvMoney1, isShow ? item.getBalanceSum() : hideStr2)
                         .setText(R.id.tvMoney2, isShow ? ("≈" + item.getPriceToCny() + "CNY") : hideStr2);
             }
         };
