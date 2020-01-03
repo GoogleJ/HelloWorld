@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Region;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -14,11 +16,11 @@ import androidx.annotation.Nullable;
 import com.zxjk.duoduo.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 public class RainView extends View {
-
     private Paint paint;
     private Matrix matrix;
     private Random random;
@@ -26,6 +28,16 @@ public class RainView extends View {
     private List<ItemEmoje> bitmapList;
     private int[] imgResIds = new int[]{R.drawable.ic_redfall_redbtc, R.drawable.ic_redfall_redeth, R.drawable.ic_redfall_redeos,
             R.drawable.ic_redfall_redltc, R.drawable.ic_redfall_redltc, R.drawable.ic_redfall_redxrp};
+
+    private OnRedClicked onRedClicked;
+
+    public interface OnRedClicked {
+        void onClick();
+    }
+
+    public void setOnRedClicked(OnRedClicked onRedClicked) {
+        this.onRedClicked = onRedClicked;
+    }
 
     public RainView(Context context) {
         this(context, null);
@@ -48,7 +60,6 @@ public class RainView extends View {
         matrix = new Matrix();
         random = new Random();
         bitmapList = new ArrayList<>();
-
     }
 
     @Override
@@ -61,11 +72,6 @@ public class RainView extends View {
                 matrix.reset();
                 matrix.setScale(bean.scale, bean.scale);
                 bean.x = bean.x + bean.offsetX;
-                if (bean.x > getWidth()) {
-                    bean.x = (int) (getWidth() - (bean.bitmap.getWidth() * bean.scale));
-                } else if (bean.x < 0) {
-                    bean.x = 0;
-                }
                 bean.y = bean.y + bean.offsetY;
                 if (bean.y < getHeight()) {
                     isInScreen = true;
@@ -80,6 +86,34 @@ public class RainView extends View {
                 start(true);
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            float x = event.getX();
+            float y = event.getY();
+
+            Region region = new Region();
+            Iterator<ItemEmoje> iterator = bitmapList.iterator();
+
+            while (iterator.hasNext()) {
+                ItemEmoje itemEmoje = iterator.next();
+
+                region.set(itemEmoje.x, itemEmoje.y, itemEmoje.x + (int) (itemEmoje.bitmap.getWidth() * itemEmoje.scale), itemEmoje.y + (int) (itemEmoje.bitmap.getHeight() * itemEmoje.scale));
+                if (region.contains((int) x, (int) y)) {
+                    iterator.remove();
+                    if (onRedClicked != null) onRedClicked.onClick();
+//                    Log.e("click", "click");
+//                    ExplosionAnimator explosion = new ExplosionAnimator(this, itemEmoje.bitmap, region.getBounds());
+////                    explosion.setStartDelay(startDelay);
+//                    explosion.setDuration(100);
+//                    explosion.start();
+                    return true;
+                }
+            }
+        }
+        return super.onTouchEvent(event);
     }
 
     private void release() {
@@ -105,11 +139,10 @@ public class RainView extends View {
             ItemEmoje itemEmoje = new ItemEmoje();
             itemEmoje.bitmap = BitmapFactory.decodeResource(getResources(), imgResIds[random.nextInt(6)]);
             itemEmoje.x = random.nextInt(getWidth() - 200) + 100;
-            itemEmoje.y = -random.nextInt(getHeight() * 2);
-            itemEmoje.offsetX = random.nextInt(3) - 1;
-            itemEmoje.offsetY = 16 + random.nextInt(12);
-            itemEmoje.scale = (float) (random.nextInt(40) + 40) / 100f;
-            itemEmoje.degree = (float) (random.nextInt(361));
+            itemEmoje.y = -random.nextInt(getHeight());
+            itemEmoje.offsetX = random.nextInt(5) - 2;
+            itemEmoje.offsetY = 24;
+            itemEmoje.scale = 0.8f;
             bitmapList.add(itemEmoje);
         }
     }
@@ -120,7 +153,6 @@ public class RainView extends View {
         public int offsetX;
         public int offsetY;
         public float scale;
-        public float degree;
         public Bitmap bitmap;
     }
 

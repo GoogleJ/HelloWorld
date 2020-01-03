@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
@@ -42,9 +44,19 @@ public class RedFallActivity extends BaseActivity {
     private ImageView ivBottom;
     private ImageView ivOpen;
     private FrameLayout flOpen;
-
     private FrameLayout flMask;
-    private FrameLayout flContainer;
+
+    private ProgressBar pb;
+
+    private LinearLayout llCount;
+    private ImageView ivNum1;
+    private ImageView ivNum2;
+    private ImageView ivTail;
+    private int[] numImgIds = new int[]{R.drawable.ic_redfall_num0, R.drawable.ic_redfall_num1, R.drawable.ic_redfall_num2, R.drawable.ic_redfall_num3,
+            R.drawable.ic_redfall_num4, R.drawable.ic_redfall_num5, R.drawable.ic_redfall_num6,
+            R.drawable.ic_redfall_num7, R.drawable.ic_redfall_num8, R.drawable.ic_redfall_num9};
+
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,21 +67,60 @@ public class RedFallActivity extends BaseActivity {
 
         tvCountDown = findViewById(R.id.tvCountDown);
         flMask = findViewById(R.id.flMask);
-        flContainer = findViewById(R.id.flContainer);
-
         ivTop = findViewById(R.id.ivTop);
         ivBottom = findViewById(R.id.ivBottom);
         ivOpen = findViewById(R.id.ivOpen);
         flOpen = findViewById(R.id.flOpen);
+        pb = findViewById(R.id.pb);
+        ivRedFallTop = findViewById(R.id.ivRedFallTop);
+        ivRedFallTips = findViewById(R.id.ivRedFallTips);
+        flRedFallProgress = findViewById(R.id.flRedFallProgress);
+        ivStartCountDown = findViewById(R.id.ivStartCountDown);
+        rain = findViewById(R.id.rain);
+        llCount = findViewById(R.id.llCount);
+        ivNum1 = findViewById(R.id.ivNum1);
+        ivNum2 = findViewById(R.id.ivNum2);
+        ivTail = findViewById(R.id.ivTail);
+
+        rain.setOnRedClicked(() -> {
+            if (llCount.getVisibility() == View.GONE) llCount.setVisibility(View.VISIBLE);
+            count++;
+            if (count >= 10 && count < 20) {
+                if (ivNum1.getVisibility() == View.GONE) {
+                    ivNum1.setVisibility(View.VISIBLE);
+                    ivNum1.setImageResource(R.drawable.ic_redfall_num1);
+                }
+                ivNum2.setImageResource(numImgIds[count - 10]);
+            } else if (count >= 20 && count < 30) {
+                ivNum1.setImageResource(R.drawable.ic_redfall_num2);
+                ivNum2.setImageResource(numImgIds[count - 20]);
+            } else if (count >= 30 && count < 40) {
+                ivNum1.setImageResource(R.drawable.ic_redfall_num3);
+                ivNum2.setImageResource(numImgIds[count - 30]);
+            } else if (count >= 40 && count < 50) {
+                ivNum1.setImageResource(R.drawable.ic_redfall_num4);
+                ivNum2.setImageResource(numImgIds[count - 40]);
+            } else if (count >= 50 && count < 60) {
+                ivNum1.setImageResource(R.drawable.ic_redfall_num5);
+                ivNum2.setImageResource(numImgIds[count - 50]);
+            } else {
+                ivNum2.setImageResource(numImgIds[count]);
+            }
+
+            if (ivNum1.getVisibility() == View.VISIBLE) {
+                ObjectAnimator.ofFloat(ivNum1, "scaleX", 1.6f, 1f).setDuration(100).start();
+                ObjectAnimator.ofFloat(ivNum1, "scaleY", 1.6f, 1f).setDuration(100).start();
+            }
+            ObjectAnimator.ofFloat(ivNum2, "scaleX", 1.6f, 1f).setDuration(100).start();
+            ObjectAnimator.ofFloat(ivNum2, "scaleY", 1.6f, 1f).setDuration(100).start();
+            ObjectAnimator.ofFloat(ivTail, "scaleX", 1.6f, 1f).setDuration(100).start();
+            ObjectAnimator.ofFloat(ivTail, "scaleY", 1.6f, 1f).setDuration(100).start();
+        });
 
         initStartAnim();
     }
 
     private void initStartAnim() {
-        ivRedFallTop = findViewById(R.id.ivRedFallTop);
-        ivRedFallTips = findViewById(R.id.ivRedFallTips);
-        flRedFallProgress = findViewById(R.id.flRedFallProgress);
-
         ivRedFallTop.post(() -> {
             ObjectAnimator firstAnim = ObjectAnimator.ofFloat(ivRedFallTop, "translationY", -ivRedFallTop.getHeight(), 0f).setDuration(500);
             firstAnim.setStartDelay(300);
@@ -106,16 +157,18 @@ public class RedFallActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void startCountDown() {
-        ivStartCountDown = findViewById(R.id.ivStartCountDown);
-
         ObjectAnimator countDownDismissAnim = ObjectAnimator.ofFloat(ivStartCountDown, "alpha", 1f, 0f);
-        countDownDismissAnim.setStartDelay(300);
-        countDownDismissAnim.setDuration(200);
+        countDownDismissAnim.setStartDelay(150);
+        countDownDismissAnim.setDuration(100);
         countDownDismissAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                ivRedFallTips.setVisibility(View.GONE);
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 ivStartCountDown.setVisibility(View.GONE);
-                ivRedFallTips.setVisibility(View.GONE);
                 startRedFall();
             }
         });
@@ -149,7 +202,6 @@ public class RedFallActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void startRedFall() {
-        rain = findViewById(R.id.rain);
         rain.start(true);
 
         Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
@@ -179,6 +231,12 @@ public class RedFallActivity extends BaseActivity {
                         showOpenLayoutAnim.start();
                     }
                 });
+
+        Observable.interval(0, 10, TimeUnit.MILLISECONDS)
+                .take(1001)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver())
+                .subscribe(a -> pb.setProgress((int) (1000 - a)));
     }
 
     private void openRed() {
