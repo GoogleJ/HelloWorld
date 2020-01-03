@@ -20,14 +20,10 @@ import java.util.Random;
 public class RainView extends View {
 
     private Paint paint;
-    //图片处理
     private Matrix matrix;
     private Random random;
-    //判断是否运行的，默认没有
     private boolean isRun;
-    //表情包集合
     private List<ItemEmoje> bitmapList;
-    //表情图片
     private int[] imgResIds = new int[]{R.drawable.ic_redfall_redbtc, R.drawable.ic_redfall_redeth, R.drawable.ic_redfall_redeos,
             R.drawable.ic_redfall_redltc, R.drawable.ic_redfall_redltc, R.drawable.ic_redfall_redxrp};
 
@@ -52,28 +48,30 @@ public class RainView extends View {
         matrix = new Matrix();
         random = new Random();
         bitmapList = new ArrayList<>();
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (isRun) {
-            //用于判断表情下落结束，结束即不再进行重绘
             boolean isInScreen = false;
             for (int i = 0; i < bitmapList.size(); i++) {
+                ItemEmoje bean = bitmapList.get(i);
                 matrix.reset();
-                //缩放
-                matrix.setScale(bitmapList.get(i).scale, bitmapList.get(i).scale);
-                matrix.setRotate(bitmapList.get(i).degree, 0.5f, 0.5f);
-                //下落过程坐标
-                bitmapList.get(i).x = bitmapList.get(i).x + bitmapList.get(i).offsetX;
-                bitmapList.get(i).y = bitmapList.get(i).y + bitmapList.get(i).offsetY;
-                if (bitmapList.get(i).y < getHeight() - 10) {//当表情仍在视图内，则继续重绘
+                matrix.setScale(bean.scale, bean.scale);
+                bean.x = bean.x + bean.offsetX;
+                if (bean.x > getWidth()) {
+                    bean.x = (int) (getWidth() - (bean.bitmap.getWidth() * bean.scale));
+                } else if (bean.x < 0) {
+                    bean.x = 0;
+                }
+                bean.y = bean.y + bean.offsetY;
+                if (bean.y < getHeight()) {
                     isInScreen = true;
                 }
-                //位移
-                matrix.postTranslate(bitmapList.get(i).x, bitmapList.get(i).y);
-                canvas.drawBitmap(bitmapList.get(i).bitmap, matrix, paint);
+                matrix.postTranslate(bean.x, bean.y);
+                canvas.drawBitmap(bean.bitmap, matrix, paint);
             }
             if (isInScreen) {
                 postInvalidate();
@@ -84,9 +82,6 @@ public class RainView extends View {
         }
     }
 
-    /**
-     * 释放资源
-     */
     private void release() {
         if (bitmapList != null && bitmapList.size() > 0) {
             for (ItemEmoje itemEmoje : bitmapList) {
@@ -109,15 +104,10 @@ public class RainView extends View {
         for (int i = 0; i < 24; i++) {
             ItemEmoje itemEmoje = new ItemEmoje();
             itemEmoje.bitmap = BitmapFactory.decodeResource(getResources(), imgResIds[random.nextInt(6)]);
-            //起始横坐标在[100,getWidth()-100) 之间
             itemEmoje.x = random.nextInt(getWidth() - 200) + 100;
-            //起始纵坐标在(-getHeight(),0] 之间，即一开始位于屏幕上方以外
             itemEmoje.y = -random.nextInt(getHeight() * 2);
-            //横向偏移[-1,2) ，即左右摇摆区间
             itemEmoje.offsetX = random.nextInt(3) - 1;
-            //纵向固定下落12
             itemEmoje.offsetY = 16 + random.nextInt(12);
-            //缩放比例[0.4,0.8) 之间
             itemEmoje.scale = (float) (random.nextInt(40) + 40) / 100f;
             itemEmoje.degree = (float) (random.nextInt(361));
             bitmapList.add(itemEmoje);

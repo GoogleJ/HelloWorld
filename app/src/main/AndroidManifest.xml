@@ -57,7 +57,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.minepage.RedFallActivity"></activity>
+        <activity android:name=".ui.minepage.ConfirmRedFallActivity"></activity>
+        <activity android:name=".ui.minepage.RedFallActivity" />
         <activity
             android:name=".ui.walletpage.LoginAuthorizationActivity"
             android:launchMode="singleTop"
