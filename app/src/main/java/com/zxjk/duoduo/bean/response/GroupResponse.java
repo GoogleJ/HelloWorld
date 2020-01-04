@@ -18,6 +18,15 @@ public class GroupResponse implements Serializable {
     private PermissionBean groupPermission;
     private GroupPayBean groupPay;
     private RedPacketInfoBean redPacketInfo;
+    private String communityUpdateTime;
+
+    public String getCommunityUpdateTime() {
+        return communityUpdateTime;
+    }
+
+    public void setCommunityUpdateTime(String communityUpdateTime) {
+        this.communityUpdateTime = communityUpdateTime;
+    }
 
     public GroupPayBean getGroupPay() {
         return groupPay;

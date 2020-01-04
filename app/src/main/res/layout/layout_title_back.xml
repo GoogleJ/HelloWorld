@@ -75,13 +75,22 @@
         android:layout_centerInParent="true"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
-        android:layout_toStartOf="@id/rl_end"
-        android:layout_toEndOf="@id/rl_back"
         android:ellipsize="middle"
-        android:gravity="center"
+        android:maxEms="12"
         android:singleLine="true"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/dotSocialContentUpdate"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_above="@+id/tv_title"
+        android:layout_marginStart="-2dp"
+        android:layout_marginBottom="-6dp"
+        android:layout_toEndOf="@id/tv_title"
+        android:background="@drawable/shape_dot_red"
+        android:visibility="gone" />
 
 </RelativeLayout>

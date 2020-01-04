@@ -45,7 +45,7 @@ android {
         }
     }
     greendao {
-        schemaVersion 2
+        schemaVersion 3
         daoPackage 'com.zxjk.duoduo.bean'
     }
     allprojects {

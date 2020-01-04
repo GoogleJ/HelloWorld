@@ -7,6 +7,7 @@ import com.github.yuweiguocn.library.greendao.MigrationHelper;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.SlowModeLocalBeanDao;
+import com.zxjk.duoduo.bean.SocialLocalBeanDao;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -24,13 +25,13 @@ public class OpenHelper extends DaoMaster.OpenHelper {
         MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
             @Override
             public void onCreateAllTables(Database db, boolean ifNotExists) {
-                DaoMaster.createAllTables(db, ifNotExists);
+                DaoMaster.createAllTables(db, true);
             }
 
             @Override
             public void onDropAllTables(Database db, boolean ifExists) {
-                DaoMaster.dropAllTables(db, ifExists);
+                DaoMaster.dropAllTables(db, true);
             }
-        }, BurnAfterReadMessageLocalBeanDao.class, SlowModeLocalBeanDao.class);
+        }, BurnAfterReadMessageLocalBeanDao.class, SlowModeLocalBeanDao.class, SocialLocalBeanDao.class);
     }
 }
