@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import tyrantgit.explosionfield.ExplosionField;
 
 public class RedFallActivity extends BaseActivity {
     private RainView rain;
@@ -82,39 +83,45 @@ public class RedFallActivity extends BaseActivity {
         ivNum2 = findViewById(R.id.ivNum2);
         ivTail = findViewById(R.id.ivTail);
 
-        rain.setOnRedClicked(() -> {
-            if (llCount.getVisibility() == View.GONE) llCount.setVisibility(View.VISIBLE);
-            count++;
-            if (count >= 10 && count < 20) {
-                if (ivNum1.getVisibility() == View.GONE) {
-                    ivNum1.setVisibility(View.VISIBLE);
-                    ivNum1.setImageResource(R.drawable.ic_redfall_num1);
-                }
-                ivNum2.setImageResource(numImgIds[count - 10]);
-            } else if (count >= 20 && count < 30) {
-                ivNum1.setImageResource(R.drawable.ic_redfall_num2);
-                ivNum2.setImageResource(numImgIds[count - 20]);
-            } else if (count >= 30 && count < 40) {
-                ivNum1.setImageResource(R.drawable.ic_redfall_num3);
-                ivNum2.setImageResource(numImgIds[count - 30]);
-            } else if (count >= 40 && count < 50) {
-                ivNum1.setImageResource(R.drawable.ic_redfall_num4);
-                ivNum2.setImageResource(numImgIds[count - 40]);
-            } else if (count >= 50 && count < 60) {
-                ivNum1.setImageResource(R.drawable.ic_redfall_num5);
-                ivNum2.setImageResource(numImgIds[count - 50]);
-            } else {
-                ivNum2.setImageResource(numImgIds[count]);
-            }
+        ExplosionField explosionField = ExplosionField.attach2Window(this);
 
-            if (ivNum1.getVisibility() == View.VISIBLE) {
-                ObjectAnimator.ofFloat(ivNum1, "scaleX", 1.6f, 1f).setDuration(100).start();
-                ObjectAnimator.ofFloat(ivNum1, "scaleY", 1.6f, 1f).setDuration(100).start();
+        rain.setOnRedClicked((bitmap, bound) -> {
+            {
+                if (llCount.getVisibility() == View.GONE) llCount.setVisibility(View.VISIBLE);
+                count++;
+                if (count >= 10 && count < 20) {
+                    if (ivNum1.getVisibility() == View.GONE) {
+                        ivNum1.setVisibility(View.VISIBLE);
+                        ivNum1.setImageResource(R.drawable.ic_redfall_num1);
+                    }
+                    ivNum2.setImageResource(numImgIds[count - 10]);
+                } else if (count >= 20 && count < 30) {
+                    ivNum1.setImageResource(R.drawable.ic_redfall_num2);
+                    ivNum2.setImageResource(numImgIds[count - 20]);
+                } else if (count >= 30 && count < 40) {
+                    ivNum1.setImageResource(R.drawable.ic_redfall_num3);
+                    ivNum2.setImageResource(numImgIds[count - 30]);
+                } else if (count >= 40 && count < 50) {
+                    ivNum1.setImageResource(R.drawable.ic_redfall_num4);
+                    ivNum2.setImageResource(numImgIds[count - 40]);
+                } else if (count >= 50 && count < 60) {
+                    ivNum1.setImageResource(R.drawable.ic_redfall_num5);
+                    ivNum2.setImageResource(numImgIds[count - 50]);
+                } else {
+                    ivNum2.setImageResource(numImgIds[count]);
+                }
+
+                if (ivNum1.getVisibility() == View.VISIBLE) {
+                    ObjectAnimator.ofFloat(ivNum1, "scaleX", 1.6f, 1f).setDuration(100).start();
+                    ObjectAnimator.ofFloat(ivNum1, "scaleY", 1.6f, 1f).setDuration(100).start();
+                }
+                ObjectAnimator.ofFloat(ivNum2, "scaleX", 1.6f, 1f).setDuration(100).start();
+                ObjectAnimator.ofFloat(ivNum2, "scaleY", 1.6f, 1f).setDuration(100).start();
+                ObjectAnimator.ofFloat(ivTail, "scaleX", 1.6f, 1f).setDuration(100).start();
+                ObjectAnimator.ofFloat(ivTail, "scaleY", 1.6f, 1f).setDuration(100).start();
+
+                explosionField.explode(bitmap, bound, 0, 300);
             }
-            ObjectAnimator.ofFloat(ivNum2, "scaleX", 1.6f, 1f).setDuration(100).start();
-            ObjectAnimator.ofFloat(ivNum2, "scaleY", 1.6f, 1f).setDuration(100).start();
-            ObjectAnimator.ofFloat(ivTail, "scaleX", 1.6f, 1f).setDuration(100).start();
-            ObjectAnimator.ofFloat(ivTail, "scaleY", 1.6f, 1f).setDuration(100).start();
         });
 
         initStartAnim();
@@ -263,4 +270,9 @@ public class RedFallActivity extends BaseActivity {
                 .setDuration(150).start();
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.redfallconfirm_enteranim, R.anim.redfallconfirm_exitanim);
+    }
 }

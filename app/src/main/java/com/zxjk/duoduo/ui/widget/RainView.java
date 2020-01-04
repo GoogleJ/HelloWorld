@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Region;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -32,7 +33,7 @@ public class RainView extends View {
     private OnRedClicked onRedClicked;
 
     public interface OnRedClicked {
-        void onClick();
+        void onClick(Bitmap bitmap, Rect bound);
     }
 
     public void setOnRedClicked(OnRedClicked onRedClicked) {
@@ -103,12 +104,8 @@ public class RainView extends View {
                 region.set(itemEmoje.x, itemEmoje.y, itemEmoje.x + (int) (itemEmoje.bitmap.getWidth() * itemEmoje.scale), itemEmoje.y + (int) (itemEmoje.bitmap.getHeight() * itemEmoje.scale));
                 if (region.contains((int) x, (int) y)) {
                     iterator.remove();
-                    if (onRedClicked != null) onRedClicked.onClick();
-//                    Log.e("click", "click");
-//                    ExplosionAnimator explosion = new ExplosionAnimator(this, itemEmoje.bitmap, region.getBounds());
-////                    explosion.setStartDelay(startDelay);
-//                    explosion.setDuration(100);
-//                    explosion.start();
+                    if (onRedClicked != null)
+                        onRedClicked.onClick(itemEmoje.bitmap, region.getBounds());
                     return true;
                 }
             }

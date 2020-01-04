@@ -1,31 +1,74 @@
 package com.zxjk.duoduo.ui.minepage;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.transition.Slide;
+import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
 public class ConfirmRedFallActivity extends BaseActivity {
 
+    private LinearLayout llContent;
+    private LinearLayout llAnim1;
+    private LinearLayout llAnim2;
+    private LinearLayout llAnim3;
+    private LinearLayout llAnim4;
+    private TextView tvAnim5;
+
+
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_confirm_red_fall);
 
-        Slide slide = new Slide(Gravity.BOTTOM);
-        slide.setDuration(500);
-        slide.setStartDelay(300);
+        llContent = findViewById(R.id.llContent);
+        llAnim1 = findViewById(R.id.llAnim1);
+        llAnim2 = findViewById(R.id.llAnim2);
+        llAnim3 = findViewById(R.id.llAnim3);
+        llAnim4 = findViewById(R.id.llAnim4);
+        tvAnim5 = findViewById(R.id.tvAnim5);
 
-        getWindow().setEnterTransition(slide);
+
+
+        Observable.timer(250, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .compose(bindToLifecycle())
+                .subscribe(a -> {
+                    Slide slide = new Slide(Gravity.BOTTOM);
+                    slide.setInterpolator(new DecelerateInterpolator());
+                    slide.setDuration(700);
+                    TransitionManager.beginDelayedTransition(llContent, slide);
+
+                    llAnim1.setVisibility(View.VISIBLE);
+                    llAnim2.setVisibility(View.VISIBLE);
+                    llAnim3.setVisibility(View.VISIBLE);
+                    llAnim4.setVisibility(View.VISIBLE);
+                    tvAnim5.setVisibility(View.VISIBLE);
+                });
     }
 
     public void back(View view) {
+        finish();
+    }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.redfallconfirm_enteranim,R.anim.redfallconfirm_exitanim);
     }
 
     public void share(View view) {

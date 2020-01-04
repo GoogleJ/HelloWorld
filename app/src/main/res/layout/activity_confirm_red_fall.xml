@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_confirmredfall"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".ui.minepage.ConfirmRedFallActivity">
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llAnim1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <FrameLayout
             android:layout_width="48dp"
@@ -46,6 +47,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llAnim2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_confirmredfall1"
@@ -54,7 +56,8 @@
         android:paddingStart="40dp"
         android:paddingTop="56dp"
         android:paddingEnd="40dp"
-        android:paddingBottom="32dp">
+        android:paddingBottom="32dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -96,13 +99,15 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llAnim3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/shape_fbd9ad_6"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -124,6 +129,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llAnim4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -133,7 +139,8 @@
         android:background="@drawable/shape_fbd9ad_6"
         android:gravity="center"
         android:paddingTop="12dp"
-        android:paddingBottom="12dp">
+        android:paddingBottom="12dp"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -152,11 +159,13 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvAnim5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="注：成功分享至朋友圈，当日参与活动次数上限+1；\n活动解释权归海浪所有。"
         android:textColor="#FBD9AD"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 
 </LinearLayout>
