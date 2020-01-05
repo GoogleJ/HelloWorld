@@ -62,7 +62,7 @@ public class RedFallActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ScreenUtils.setFullScreen(this);
+        setTrasnferStatusBar(true);
         BarUtils.setNavBarVisibility(this, false);
         setContentView(R.layout.activity_red_fall);
 

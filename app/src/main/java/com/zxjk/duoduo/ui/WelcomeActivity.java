@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -46,6 +47,8 @@ public class WelcomeActivity extends BaseActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTrasnferStatusBar(true);
+        BarUtils.setNavBarVisibility(this, false);
         if (TextUtils.isEmpty(Constant.phoneUuid)) {
             Constant.phoneUuid = TextUtils.isEmpty(DeviceUtils.getMacAddress()) ? DeviceUtils.getAndroidID() : DeviceUtils.getMacAddress();
         }

@@ -8,15 +8,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -28,7 +25,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
@@ -162,28 +158,13 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             }
 
             @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                super.onReceivedError(view, request, error);
-                if (TextUtils.isEmpty(type) || !type.equals("mall")) {
-                    ToastUtils.showShort(R.string.loadurl_fail);
-                }
-            }
-
-            @Override
-            public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, SslError sslError) {
-                if (TextUtils.isEmpty(type) || !type.equals("mall")) {
-                    ToastUtils.showShort(R.string.loadurl_fail);
-                }
-                super.onReceivedSslError(webView, sslErrorHandler, sslError);
-            }
-
-
-            @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri uri = Uri.parse(request.getUrl().toString());
-                if (uri.getScheme().equals("hilamg")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(request.getUrl().toString()));
-                    startActivity(intent);
+                if (!TextUtils.isEmpty(uri.getScheme()) && !uri.getScheme().startsWith("http")) {
+                    if (uri.getScheme().equals("hilamg")) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(request.getUrl().toString()));
+                        startActivity(intent);
+                    }
                     return true;
                 }
                 return false;

@@ -6,7 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.transition.ArcMotion;
 import android.transition.ChangeBounds;
@@ -25,15 +24,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.vectordrawable.graphics.drawable.ArgbEvaluator;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.ui.base.BaseActivity;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class AppFirstLogin extends AppCompatActivity {
+public class AppFirstLogin extends BaseActivity {
 
     private FrameLayout flContent;
     private View viewContent;
@@ -52,7 +53,8 @@ public class AppFirstLogin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ScreenUtils.setFullScreen(this);
+        setTrasnferStatusBar(true);
+        BarUtils.setNavBarVisibility(this, false);
         setContentView(R.layout.activity_app_first_login);
 
         START_COLOR = ContextCompat.getColor(this, R.color.white);
@@ -162,7 +164,7 @@ public class AppFirstLogin extends AppCompatActivity {
         anim1.setDuration(1000);
 
         ValueAnimator anim2 = ValueAnimator.ofFloat(1f);
-        anim2.addUpdateListener(v -> 
+        anim2.addUpdateListener(v ->
                 viewContent.setBackgroundColor((Integer) argbEvaluator.evaluate(v.getAnimatedFraction(), START_COLOR, END_COLOR)));
         anim2.setDuration(1000);
 

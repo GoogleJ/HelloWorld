@@ -3,17 +3,14 @@ package com.zxjk.duoduo.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
-import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.NewsDetailActivity;
 import com.zxjk.duoduo.ui.walletpage.LoginAuthorizationActivity;
 
 public class BrowsableActivity extends BaseActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +49,14 @@ public class BrowsableActivity extends BaseActivity {
                             String appid = getIntent().getData().getQueryParameter("appId");
                             String randomStr = getIntent().getData().getQueryParameter("randomStr");
                             String sign = getIntent().getData().getQueryParameter("sign");
-                            if(!TextUtils.isEmpty(appid)&&!TextUtils.isEmpty(randomStr)&&!TextUtils.isEmpty(sign)){
+                            if (!TextUtils.isEmpty(appid) && !TextUtils.isEmpty(randomStr) && !TextUtils.isEmpty(sign)) {
                                 Intent intent = new Intent(this, LoginAuthorizationActivity.class);
-                                intent.putExtra("appId",appid);
-                                intent.putExtra("randomStr",randomStr);
-                                intent.putExtra("sign",sign);
+                                intent.putExtra("appId", appid);
+                                intent.putExtra("randomStr", randomStr);
+                                intent.putExtra("sign", sign);
 
                                 startActivity(intent);
-                            }else {
+                            } else {
                                 ToastUtils.showShort("参数错误！");
                             }
                         }
