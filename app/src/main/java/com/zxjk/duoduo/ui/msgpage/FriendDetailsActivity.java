@@ -192,7 +192,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                 intent5.putExtra("image", imageUrl);
                 startActivity(intent5,
                         ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                                ivHeadPortrait, "12").toBundle());
+                                ivHeadPortrait, "img").toBundle());
                 break;
             case R.id.tv_sendMessage:
                 Intent intent = new Intent(this, HomeActivity.class);

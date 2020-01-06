@@ -1,16 +1,18 @@
 package com.zxjk.duoduo.ui.minepage;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.BarUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 
@@ -28,12 +30,19 @@ public class ConfirmRedFallActivity extends BaseActivity {
     private LinearLayout llAnim4;
     private TextView tvAnim5;
 
-
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ScreenUtils.setFullScreen(this);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        BarUtils.setStatusBarVisibility(this, false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            getWindow().setAttributes(lp);
+        }
+
         setContentView(R.layout.activity_confirm_red_fall);
 
         llContent = findViewById(R.id.llContent);
@@ -42,8 +51,6 @@ public class ConfirmRedFallActivity extends BaseActivity {
         llAnim3 = findViewById(R.id.llAnim3);
         llAnim4 = findViewById(R.id.llAnim4);
         tvAnim5 = findViewById(R.id.tvAnim5);
-
-
 
         Observable.timer(250, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
@@ -68,7 +75,7 @@ public class ConfirmRedFallActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.redfallconfirm_enteranim,R.anim.redfallconfirm_exitanim);
+        overridePendingTransition(R.anim.redfallconfirm_enteranim, R.anim.redfallconfirm_exitanim);
     }
 
     public void share(View view) {

@@ -7,14 +7,15 @@
     <LinearLayout
         android:id="@+id/llTitle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="gone">
 
         <FrameLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:onClick="back">
 
             <ImageView
@@ -36,8 +37,8 @@
             android:textSize="17sp" />
 
         <FrameLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:onClick="func">
 
             <ImageView
@@ -56,6 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:transitionName="img" />
 
 </LinearLayout>

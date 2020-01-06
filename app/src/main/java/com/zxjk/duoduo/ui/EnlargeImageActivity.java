@@ -8,11 +8,13 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -63,10 +65,6 @@ import io.rong.imlib.model.Message;
 import io.rong.message.ImageMessage;
 
 public class EnlargeImageActivity extends BaseActivity {
-
-    @BindView(R.id.iv)
-    SubsamplingScaleImageView iv;
-
     @BindView(R.id.pager)
     ViewPager pager;
 
@@ -76,11 +74,21 @@ public class EnlargeImageActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enlarge_image);
-        setLightStatusBar(false);
-        getWindow().setStatusBarColor(Color.BLACK);
-        BarUtils.setNavBarColor(this, Color.BLACK);
+
+        BarUtils.setStatusBarVisibility(this, false);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setNavigationBarColor(0x00000000);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            getWindow().setAttributes(lp);
+        }
+
+        setContentView(R.layout.activity_enlarge_image);
+
         ButterKnife.bind(this);
 
         Bundle bundle = getIntent().getBundleExtra("images");

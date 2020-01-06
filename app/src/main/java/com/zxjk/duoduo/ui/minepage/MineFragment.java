@@ -34,6 +34,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private TextView tvMot2Reward;
 
     private LinearLayout llRedFall;
+    private ImageView ivRedFall;
     private TextView tvMindRedCountDown;
 
     @Nullable
@@ -48,6 +49,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         tvSign = view.findViewById(R.id.tvSign);
         tvMot2Reward = view.findViewById(R.id.tvMot2Reward);
         llRedFall = view.findViewById(R.id.llRedFall);
+        ivRedFall = view.findViewById(R.id.ivRedFall);
         tvMindRedCountDown = view.findViewById(R.id.tvMindRedCountDown);
 
         view.findViewById(R.id.llMineTop).setOnClickListener(this);
@@ -69,7 +71,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         animatorObject.setTarget(llRedFall);
         animatorObject.start();
 
-        llRedFall.setOnClickListener(v -> {
+        ivRedFall.setOnClickListener(v -> {
             if (tvMindRedCountDown.getText().toString().equals("Go")) {
                 startActivity(new Intent(getActivity(), RedFallActivity.class));
                 getActivity().overridePendingTransition(R.anim.redfall_enteranim, R.anim.redfall_exitanim);

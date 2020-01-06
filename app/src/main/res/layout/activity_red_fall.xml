@@ -23,7 +23,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/bg_top_redfall" />
+                android:src="@drawable/bg_top_redfall"
+                android:visibility="invisible" />
 
             <FrameLayout
                 android:id="@+id/flRedFallProgress"

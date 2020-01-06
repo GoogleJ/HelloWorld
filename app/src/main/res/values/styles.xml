@@ -30,8 +30,6 @@
 
     <style name="AppTheme.Theme_Splash" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 

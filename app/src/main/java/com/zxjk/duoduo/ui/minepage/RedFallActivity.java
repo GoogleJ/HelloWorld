@@ -6,8 +6,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -62,8 +64,14 @@ public class RedFallActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTrasnferStatusBar(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            getWindow().setAttributes(lp);
+        }
+        ScreenUtils.setFullScreen(this);
         BarUtils.setNavBarVisibility(this, false);
+
         setContentView(R.layout.activity_red_fall);
 
         tvCountDown = findViewById(R.id.tvCountDown);
@@ -134,6 +142,11 @@ public class RedFallActivity extends BaseActivity {
             firstAnim.setInterpolator(new OvershootInterpolator(2.5f));
             firstAnim.addListener(new AnimatorListenerAdapter() {
                 @Override
+                public void onAnimationStart(Animator animation) {
+                    ivRedFallTop.setVisibility(View.VISIBLE);
+                }
+
+                @Override
                 public void onAnimationEnd(Animator animation) {
                     ObjectAnimator middleAnim1 = ObjectAnimator.ofFloat(flRedFallProgress, "translationY", -flRedFallProgress.getHeight() - CommonUtils.dip2px(RedFallActivity.this, 16), 0f).setDuration(400);
                     middleAnim1.setInterpolator(new OvershootInterpolator(2.5f));
@@ -157,7 +170,6 @@ public class RedFallActivity extends BaseActivity {
                     });
                 }
             });
-
             firstAnim.start();
         });
     }

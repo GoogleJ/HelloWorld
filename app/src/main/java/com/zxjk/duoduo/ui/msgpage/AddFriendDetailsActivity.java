@@ -7,8 +7,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
+
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -17,6 +19,7 @@ import com.zxjk.duoduo.ui.ZoomActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -89,7 +92,7 @@ public class AddFriendDetailsActivity extends BaseActivity {
                 intent5.putExtra("image", imageUrl);
                 startActivity(intent5,
                         ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                                ivHeadPortrait, "12").toBundle());
+                                ivHeadPortrait, "img").toBundle());
                 break;
         }
     }
