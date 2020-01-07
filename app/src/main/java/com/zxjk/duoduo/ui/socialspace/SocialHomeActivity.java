@@ -111,6 +111,7 @@ public class SocialHomeActivity extends BaseActivity {
     private ImageView ivHead;
     private ImageView ivOpenConversation;
     private LinearLayout llSocialNotice;
+    private LinearLayout llRemoveMem;
     private View bgMask;
 
     private ViewStub viewStubPay;
@@ -274,7 +275,7 @@ public class SocialHomeActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
                     response = r;
-                    tvSlogan.setText("社群简介:" + r.getIntroduction());
+                    tvSlogan.setText(r.getIntroduction());
                     tvSocialId.setText("社群号:" + r.getCode());
                     tvSocialName.setText(r.getName());
                     GlideUtil.loadNormalImg(ivBg, r.getBgi());
@@ -282,6 +283,10 @@ public class SocialHomeActivity extends BaseActivity {
                     tvTitle.setText(r.getName());
                     tvSocialCode.setText("社群号:" + r.getCode());
                     tvNotice.setText(r.getAnnouncement());
+
+                    if (!r.getIdentity().equals("0")) {
+                        llRemoveMem.setVisibility(View.VISIBLE);
+                    }
 
                     ivHead.setOnClickListener(v -> {
                         Intent intent = new Intent(this, ZoomActivity.class);
@@ -423,12 +428,12 @@ public class SocialHomeActivity extends BaseActivity {
                 if (helper.getAdapterPosition() == 0 && data.size() == maxMemVisiableItem) {
                     tvNumLeft.setVisibility(View.VISIBLE);
                     ivMemberHead.setVisibility(View.GONE);
-                    tvNumLeft.setText("+" + numLeft);
+                    tvNumLeft.setText("+" + (numLeft > 999 ? 999 : numLeft));
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
                     params.setMarginStart(-CommonUtils.dip2px(ivMemberHead.getContext(), 5));
                     helper.itemView.setLayoutParams(params);
                 } else {
-                    Glide.with(ivMemberHead.getContext()).load(item.getHeadPortrait()).error(R.mipmap.ic_launcher)
+                    Glide.with(ivMemberHead.getContext()).load(item.getHeadPortrait()).error(R.drawable.errorimg_head)
                             .into(ivMemberHead);
                 }
             }
@@ -544,6 +549,7 @@ public class SocialHomeActivity extends BaseActivity {
         llTop = findViewById(R.id.llTop);
         llSecond = findViewById(R.id.llSecond);
         bgMask = findViewById(R.id.bgMask);
+        llRemoveMem = findViewById(R.id.llRemoveMem);
     }
 
     private void initPager() {
@@ -718,7 +724,7 @@ public class SocialHomeActivity extends BaseActivity {
                     response.setName(data.getStringExtra("name"));
                     response.setIntroduction(data.getStringExtra("slogan"));
                     tvSocialName.setText(response.getName());
-                    tvSlogan.setText("社群简介:" + response.getIntroduction());
+                    tvSlogan.setText(response.getIntroduction());
                     break;
                 case REQUEST_SOCIALNAME:
                     response.setName(data.getStringExtra("name"));

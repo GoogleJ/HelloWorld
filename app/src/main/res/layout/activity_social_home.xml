@@ -186,25 +186,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="48dp"
                         android:layout_marginTop="6dp"
-                        android:layout_marginEnd="48dp"
                         android:layout_marginBottom="16dp"
                         android:gravity="center">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="12dp"
-                            android:layout_weight="1"
                             android:background="@drawable/shape_theme4"
                             android:gravity="center"
-                            android:onClick="addSocialMem">
+                            android:onClick="addSocialMem"
+                            android:paddingStart="28dp"
+                            android:paddingEnd="28dp">
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="4dp"
+                                android:layout_marginEnd="6dp"
                                 android:src="@drawable/ic_social_addmem" />
 
                             <TextView
@@ -219,18 +217,21 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:id="@+id/llRemoveMem"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="1"
+                            android:layout_marginStart="24dp"
                             android:background="@drawable/shape_c9ddff_6"
                             android:gravity="center"
-                            android:onClick="removeSocialMem">
+                            android:onClick="removeSocialMem"
+                            android:paddingStart="28dp"
+                            android:paddingEnd="28dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="4dp"
+                                android:layout_marginEnd="6dp"
                                 android:src="@drawable/ic_social_removemem" />
 
                             <TextView

@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.socialspace;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +21,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.InviteForSocialActivity;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
@@ -57,17 +59,15 @@ public class SocialAllMemberActivity extends BaseActivity {
         index = findViewById(R.id.index);
         tvLetter = findViewById(R.id.tvLetter);
 
-        title.setText(getIntent().getStringExtra("socialName"));
-
         index.initSocial();
         index.setOnTouchingLetterChangedListener(l -> {
             if (l.equals("*")) {
-                    recycler.scrollToPosition(0);
+                recycler.scrollToPosition(1);
             }
             for (int i = 0; i < data.size(); i++) {
                 String letters = data.get(i).getFirstLetter();
                 if (letters.equals(l)) {
-                    recycler.scrollToPosition(i);
+                    recycler.scrollToPosition(i + 1);
                     break;
                 }
             }
@@ -89,8 +89,10 @@ public class SocialAllMemberActivity extends BaseActivity {
                 }
 
                 if (helper.getAdapterPosition() == 0) {
+                    tvFirstLetter.setVisibility(View.GONE);
+                } else if (helper.getAdapterPosition() == 1) {
                     tvFirstLetter.setVisibility(View.VISIBLE);
-                } else if (item.getFirstLetter().equals(getData().get(helper.getAdapterPosition() - 1).getFirstLetter()) || item.getFirstLetter().equals("!!")) {
+                } else if (item.getFirstLetter().equals(getData().get(helper.getAdapterPosition() - 2).getFirstLetter())) {
                     tvFirstLetter.setVisibility(View.GONE);
                 } else {
                     tvFirstLetter.setVisibility(View.VISIBLE);
@@ -113,6 +115,16 @@ public class SocialAllMemberActivity extends BaseActivity {
             }
         };
 
+        View inflate = View.inflate(this, R.layout.invitewechatfriend, null);
+        inflate.setOnClickListener(v -> {
+            Intent intent = new Intent(this, InviteForSocialActivity.class);
+            intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
+            intent.putExtra("groupName", getIntent().getStringExtra("socialName"));
+            startActivity(intent);
+            finish();
+        });
+        adapter.addHeaderView(inflate);
+
         recycler.setAdapter(adapter);
 
         adapter.setOnItemClickListener((adapter, view, position) -> CommonUtils.resolveFriendList(this, data.get(position).getId()));
@@ -131,6 +143,7 @@ public class SocialAllMemberActivity extends BaseActivity {
                 })
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(list -> {
+                    title.setText(getString(R.string.group_member) + "(" + list.size() + ")");
                     data.addAll(list);
                     adapter.setNewData(data);
                 }, this::handleApiError);
@@ -163,4 +176,5 @@ public class SocialAllMemberActivity extends BaseActivity {
             }
         });
     }
+
 }

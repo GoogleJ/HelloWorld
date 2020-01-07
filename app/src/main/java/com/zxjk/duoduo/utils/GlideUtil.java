@@ -58,17 +58,17 @@ public class GlideUtil {
     private static RequestOptions getRequestOptions(Context context, int mode, int radius) {
         switch (mode) {
             case LOAD_CIRCLE:
-                return RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.ic_launcher);
+                return RequestOptions.bitmapTransform(new CircleCrop()).error(R.drawable.errorimg_head);
             case LOAD_CORNER:
                 return new RequestOptions()
-                        .error(R.mipmap.ic_launcher)
+                        .error(R.drawable.errorimg_head)
                         .transform(new CenterCrop(), new RoundedCorners(CommonUtils.dip2px(context, radius)));
             case LOAD_SOURCE:
                 return new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                        .error(R.mipmap.ic_launcher);
+                        .error(R.drawable.errorimg_head);
             default:
                 return new RequestOptions()
-                        .error(R.mipmap.ic_launcher);
+                        .error(R.drawable.errorimg_head);
         }
     }
 }

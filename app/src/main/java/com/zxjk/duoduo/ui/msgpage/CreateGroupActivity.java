@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.InviteForSocialActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.CreateGroupAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.CreateGroupTopAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.GroupMemberAdapter;
@@ -141,8 +141,18 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         if (eventType == EVENT_ADDMENBER) {
             tv_title.setText(getString(R.string.select_contacts));
             handleAddMember();
+            adapter2.setFromSocial(getIntent().getBooleanExtra("fromSocial", false));
+            adapter2.setOnTitleClickListener(() -> {
+                Intent intent = new Intent(this, InviteForSocialActivity.class);
+                intent.putExtra("groupId", groupResponse.getGroupInfo().getId());
+                intent.putExtra("groupName", groupResponse.getGroupInfo().getGroupNikeName());
+                startActivity(intent);
+                finish();
+            });
         } else if (eventType == EVENT_DELETEMEMBER) {
             tv_title.setText(R.string.remove_from_group);
+            confirmText = "移除";
+            tv_commit.setBackgroundResource(R.drawable.shapeff655c_3);
             handleDeleteMember();
         } else if (eventType == EVENT_ADDMANAGER) {
             tv_title.setText(R.string.add_manager);
