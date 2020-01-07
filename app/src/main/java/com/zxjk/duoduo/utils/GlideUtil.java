@@ -58,7 +58,7 @@ public class GlideUtil {
     private static RequestOptions getRequestOptions(Context context, int mode, int radius) {
         switch (mode) {
             case LOAD_CIRCLE:
-                return RequestOptions.bitmapTransform(new CircleCrop());
+                return RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.ic_launcher);
             case LOAD_CORNER:
                 return new RequestOptions()
                         .error(R.mipmap.ic_launcher)

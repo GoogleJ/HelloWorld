@@ -78,13 +78,13 @@
                     android:orientation="vertical">
 
                     <com.gcssloop.widget.RCRelativeLayout
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="-44dp"
+                        android:layout_marginTop="-48dp"
                         app:round_as_circle="true"
                         app:stroke_color="@color/white"
-                        app:stroke_width="1.5dp">
+                        app:stroke_width="2dp">
 
                         <ImageView
                             android:id="@+id/ivHead"
@@ -124,7 +124,7 @@
                             android:gravity="center"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="17sp" />
+                            android:textSize="18sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -174,8 +174,8 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerGroupMember"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="12dp"
@@ -186,32 +186,112 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:onClick="socialSlogan"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="12dp">
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="48dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_theme4"
+                            android:gravity="center"
+                            android:onClick="addSocialMem">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="4dp"
+                                android:src="@drawable/ic_social_addmem" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="6dp"
+                                android:text="邀请好友"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_c9ddff_6"
+                            android:gravity="center"
+                            android:onClick="removeSocialMem">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="4dp"
+                                android:src="@drawable/ic_social_removemem" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="6dp"
+                                android:text="移除成员"
+                                android:textColor="@color/colorTheme"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/shape_white_8"
+                    android:onClick="socialSlogan"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_social_slogan"
+                            android:drawablePadding="4dp"
+                            android:text="@string/social_slogan"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tvSlogan"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            android:layout_weight="1"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="16dp"
                             android:ellipsize="end"
-                            android:gravity="center"
                             android:lineSpacingExtra="6dp"
-                            android:maxLines="2"
-                            android:textColor="@color/black" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_arrow_choosecoin_right"
-                            android:tint="#cfcfcf" />
+                            android:maxLines="3"
+                            android:textColor="@color/textColor9" />
 
                     </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_arrow_choosecoin_right"
+                        android:tint="#cfcfcf" />
 
                 </LinearLayout>
 

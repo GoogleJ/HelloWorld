@@ -23,7 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -63,6 +63,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -145,7 +146,7 @@ public class SocialHomeActivity extends BaseActivity {
 
         initFragment();
 
-        maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 64)) / CommonUtils.dip2px(this, 48);
+        maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 84)) / CommonUtils.dip2px(this, 25) + 1;
 
         ViewGroup.LayoutParams layoutParams = ivBg.getLayoutParams();
         layoutParams.height = (int) (ScreenUtils.getScreenWidth() * 0.75);
@@ -270,73 +271,57 @@ public class SocialHomeActivity extends BaseActivity {
                     return api.communityInfo(groupId);
                 })
                 .compose(RxSchedulers.normalTrans())
-                .map(r -> {
-                    runOnUiThread(() -> {
-                        response = r;
-                        tvSlogan.setText("社群简介:" + r.getIntroduction());
-                        tvSocialId.setText("社群号:" + r.getCode());
-                        tvSocialName.setText(r.getName());
-                        GlideUtil.loadNormalImg(ivBg, r.getBgi());
-                        GlideUtil.loadNormalImg(ivHead, r.getLogo());
-                        tvTitle.setText(r.getName());
-                        tvSocialCode.setText("社群号:" + r.getCode());
-                        tvNotice.setText(r.getAnnouncement());
-
-                        ivHead.setOnClickListener(v -> {
-                            Intent intent = new Intent(this, ZoomActivity.class);
-                            intent.putExtra("image", response.getLogo());
-                            intent.putExtra("fromSocialHomePage", true);
-                            if (!response.getIdentity().equals("0")) {
-                                intent.putExtra("id", response.getGroupId());
-                                intent.putExtra("type", 1);
-                            }
-                            startActivityForResult(intent, REQUEST_LOGO);
-                        });
-                        ivBg.setOnClickListener(v -> {
-                            Intent intent = new Intent(this, ZoomActivity.class);
-                            intent.putExtra("image", response.getBgi());
-                            intent.putExtra("fromSocialHomePage", true);
-                            if (!response.getIdentity().equals("0")) {
-                                intent.putExtra("id", response.getGroupId());
-                                intent.putExtra("type", 2);
-                            }
-                            startActivityForResult(intent, REQUEST_BG);
-                        });
-                    });
-                    if (r.getIdentity().equals("0")) {
-                        ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(r.getMembers());
-                        if (r.getMembers().size() >= maxMemVisiableItem) {
-                            List<CommunityInfoResponse.MembersBean> membersBeans = list.subList(0, maxMemVisiableItem - 1);
-                            membersBeans.add(new CommunityInfoResponse.MembersBean());
-                            return membersBeans;
-                        } else {
-                            list.add(new CommunityInfoResponse.MembersBean());
-                            return list;
-                        }
-                    } else if (r.getIdentity().equals("1") || r.getIdentity().equals("2")) {
-                        ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(r.getMembers());
-                        if (r.getMembers().size() >= maxMemVisiableItem - 1) {
-                            List<CommunityInfoResponse.MembersBean> membersBeans = list.subList(0, maxMemVisiableItem - 2);
-                            membersBeans.add(new CommunityInfoResponse.MembersBean());
-                            membersBeans.add(new CommunityInfoResponse.MembersBean());
-                            return membersBeans;
-                        } else {
-                            list.add(new CommunityInfoResponse.MembersBean());
-                            list.add(new CommunityInfoResponse.MembersBean());
-                            return list;
-                        }
-                    } else {
-                        ArrayList<CommunityInfoResponse.MembersBean> list = new ArrayList<>(r.getMembers());
-                        if (r.getMembers().size() > maxMemVisiableItem) {
-                            List<CommunityInfoResponse.MembersBean> membersBeans = list.subList(0, maxMemVisiableItem);
-                            return membersBeans;
-                        } else {
-                            return list;
-                        }
-                    }
-                })
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(this::initAdapterForSocialMem, t -> {
+                .subscribe(r -> {
+                    response = r;
+                    tvSlogan.setText("社群简介:" + r.getIntroduction());
+                    tvSocialId.setText("社群号:" + r.getCode());
+                    tvSocialName.setText(r.getName());
+                    GlideUtil.loadNormalImg(ivBg, r.getBgi());
+                    GlideUtil.loadNormalImg(ivHead, r.getLogo());
+                    tvTitle.setText(r.getName());
+                    tvSocialCode.setText("社群号:" + r.getCode());
+                    tvNotice.setText(r.getAnnouncement());
+
+                    ivHead.setOnClickListener(v -> {
+                        Intent intent = new Intent(this, ZoomActivity.class);
+                        intent.putExtra("image", response.getLogo());
+                        intent.putExtra("fromSocialHomePage", true);
+                        if (!response.getIdentity().equals("0")) {
+                            intent.putExtra("id", response.getGroupId());
+                            intent.putExtra("type", 1);
+                        }
+                        startActivityForResult(intent, REQUEST_LOGO);
+                    });
+
+                    ivBg.setOnClickListener(v -> {
+                        Intent intent = new Intent(this, ZoomActivity.class);
+                        intent.putExtra("image", response.getBgi());
+                        intent.putExtra("fromSocialHomePage", true);
+                        if (!response.getIdentity().equals("0")) {
+                            intent.putExtra("id", response.getGroupId());
+                            intent.putExtra("type", 2);
+                        }
+                        startActivityForResult(intent, REQUEST_BG);
+                    });
+
+                    if (r.getMembers().size() >= maxMemVisiableItem) {
+                        maxMemVisiableItem -= 1;
+                        List<CommunityInfoResponse.MembersBean> result = r.getMembers().subList(0, maxMemVisiableItem - 1);
+                        int numLeft = r.getMembers().size() - result.size();
+                        result.add(new CommunityInfoResponse.MembersBean());
+                        ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
+                        layoutParams2.width = CommonUtils.dip2px(this, 25) * (result.size() + 1) + CommonUtils.dip2px(this, 20);
+                        layoutParams2.setMarginEnd(CommonUtils.dip2px(this, 20));
+                        recyclerGroupMember.setLayoutParams(layoutParams2);
+                        initAdapterForSocialMem(result, numLeft);
+                    } else {
+                        ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
+                        layoutParams2.width = CommonUtils.dip2px(this, 25) * (r.getMembers().size()) + CommonUtils.dip2px(this, 20);
+                        recyclerGroupMember.setLayoutParams(layoutParams2);
+                        initAdapterForSocialMem(r.getMembers(), 0);
+                    }
+                }, t -> {
                     handleApiError(t);
                     finish();
                 });
@@ -388,110 +373,77 @@ public class SocialHomeActivity extends BaseActivity {
         }
     }
 
-    private void initAdapterForSocialMem(List<CommunityInfoResponse.MembersBean> data) {
-        recyclerGroupMember.setLayoutManager(new GridLayoutManager(this, data.size()));
+    public void addSocialMem(View view) {
+        if (!contentEnable || isInEditStatus) {
+            ToastUtils.showShort(R.string.cantdone);
+            return;
+        }
+        Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
+        intent.putExtra("eventType", 2);
+        intent.putExtra("groupId", response.getGroupId());
+        intent.putExtra("fromSocial", true);
+        intent.putExtra("socialLogo", response.getLogo());
+        startActivity(intent);
+    }
+
+    public void removeSocialMem(View view) {
+        if (!contentEnable || isInEditStatus) {
+            ToastUtils.showShort(R.string.cantdone);
+            return;
+        }
+        Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
+        intent.putExtra("eventType", 3);
+        intent.putExtra("groupId", response.getGroupId());
+        intent.putExtra("fromSocial", true);
+        startActivity(intent);
+    }
+
+    private void initAdapterForSocialMem(List<CommunityInfoResponse.MembersBean> data, int numLeft) {
+        Collections.reverse(data);
+        recyclerGroupMember.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, true));
         colorOwner = Color.parseColor("#ffc000");
+
         socialMemAdapter = new BaseQuickAdapter<CommunityInfoResponse.MembersBean, BaseViewHolder>(R.layout.item_social_membs) {
             @Override
             protected void convert(BaseViewHolder helper, CommunityInfoResponse.MembersBean item) {
                 CircleImageView ivMemberHead = helper.getView(R.id.ivMemberHead);
                 ImageView ivOwner = helper.getView(R.id.ivOwner);
+                TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
 
-                if (helper.getAdapterPosition() == 0) {
+                if (helper.getAdapterPosition() == data.size() - 1) {
                     ivOwner.setVisibility(View.VISIBLE);
                     ivMemberHead.setBorderColor(colorOwner);
+                    ivMemberHead.setBorderWidth(CommonUtils.dip2px(ivMemberHead.getContext(), 1));
                 } else {
                     ivOwner.setVisibility(View.GONE);
                     ivMemberHead.setBorderColor(Color.WHITE);
+                    ivMemberHead.setBorderWidth(1);
                 }
 
-                if (response.getIdentity().equals("0")) {
-                    if (helper.getAdapterPosition() == data.size() - 1) {
-                        ivMemberHead.setImageResource(R.drawable.ic_social_member_add);
-                        ivMemberHead.setOnClickListener(v -> {
-                            if (!contentEnable || isInEditStatus) {
-                                ToastUtils.showShort(R.string.cantdone);
-                                return;
-                            }
-                            Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
-                            intent.putExtra("eventType", 2);
-                            intent.putExtra("groupId", response.getGroupId());
-                            intent.putExtra("fromSocial", true);
-                            intent.putExtra("socialLogo", response.getLogo());
-                            startActivity(intent);
-                        });
-                    } else {
-                        Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
-                        ivMemberHead.setOnClickListener(v -> {
-                            if (!contentEnable || isInEditStatus) {
-                                ToastUtils.showShort(R.string.cantdone);
-                                return;
-                            }
-                            Intent intent = new Intent(SocialHomeActivity.this, SocialAllMemberActivity.class);
-                            intent.putExtra("socialName", response.getName());
-                            intent.putExtra("groupId", groupId);
-                            intent.putExtra("ownerId", response.getOwnerId());
-                            startActivity(intent);
-                        });
-                    }
-                } else if (response.getIdentity().equals("1") || response.getIdentity().equals("2")) {
-                    if (helper.getAdapterPosition() == data.size() - 1) {
-                        ivMemberHead.setImageResource(R.drawable.ic_social_member_remove);
-                        ivMemberHead.setOnClickListener(v -> {
-                            if (!contentEnable || isInEditStatus) {
-                                ToastUtils.showShort(R.string.cantdone);
-                                return;
-                            }
-                            Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
-                            intent.putExtra("eventType", 3);
-                            intent.putExtra("groupId", response.getGroupId());
-                            intent.putExtra("fromSocial", true);
-                            startActivity(intent);
-                        });
-                    } else if (helper.getAdapterPosition() == data.size() - 2) {
-                        ivMemberHead.setImageResource(R.drawable.ic_social_member_add);
-                        ivMemberHead.setOnClickListener(v -> {
-                            if (!contentEnable || isInEditStatus) {
-                                ToastUtils.showShort(R.string.cantdone);
-                                return;
-                            }
-                            Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
-                            intent.putExtra("eventType", 2);
-                            intent.putExtra("groupId", response.getGroupId());
-                            intent.putExtra("fromSocial", true);
-                            intent.putExtra("socialLogo", response.getLogo());
-                            startActivity(intent);
-                        });
-                    } else {
-                        Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
-                        ivMemberHead.setOnClickListener(v -> {
-                            if (!contentEnable || isInEditStatus) {
-                                ToastUtils.showShort(R.string.cantdone);
-                                return;
-                            }
-                            Intent intent = new Intent(SocialHomeActivity.this, SocialAllMemberActivity.class);
-                            intent.putExtra("socialName", response.getName());
-                            intent.putExtra("groupId", groupId);
-                            intent.putExtra("ownerId", response.getOwnerId());
-                            startActivity(intent);
-                        });
-                    }
+                if (helper.getAdapterPosition() == 0 && data.size() == maxMemVisiableItem) {
+                    tvNumLeft.setVisibility(View.VISIBLE);
+                    ivMemberHead.setVisibility(View.GONE);
+                    tvNumLeft.setText("+" + numLeft);
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
+                    params.setMarginStart(-CommonUtils.dip2px(ivMemberHead.getContext(), 5));
+                    helper.itemView.setLayoutParams(params);
                 } else {
-                    Glide.with(SocialHomeActivity.this).load(item.getHeadPortrait()).into(ivMemberHead);
-                    ivMemberHead.setOnClickListener(v -> {
-                        if (!contentEnable || isInEditStatus) {
-                            ToastUtils.showShort(R.string.cantdone);
-                            return;
-                        }
-                        Intent intent = new Intent(SocialHomeActivity.this, SocialAllMemberActivity.class);
-                        intent.putExtra("socialName", response.getName());
-                        intent.putExtra("groupId", groupId);
-                        intent.putExtra("ownerId", response.getOwnerId());
-                        startActivity(intent);
-                    });
+                    Glide.with(ivMemberHead.getContext()).load(item.getHeadPortrait()).error(R.mipmap.ic_launcher)
+                            .into(ivMemberHead);
                 }
             }
         };
+        socialMemAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (!contentEnable || isInEditStatus) {
+                ToastUtils.showShort(R.string.cantdone);
+                return;
+            }
+            Intent intent = new Intent(SocialHomeActivity.this, SocialAllMemberActivity.class);
+            intent.putExtra("socialName", response.getName());
+            intent.putExtra("groupId", groupId);
+            intent.putExtra("ownerId", response.getOwnerId());
+            startActivity(intent);
+        });
         recyclerGroupMember.setAdapter(socialMemAdapter);
         socialMemAdapter.setNewData(data);
     }

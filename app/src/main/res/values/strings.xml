@@ -924,5 +924,6 @@
     <string name="login_switch_id">切换账号</string>
     <string name="login_agreed">同意</string>
     <string name="login_refused">拒绝</string>
+    <string name="social_slogan">社群简介</string>
 
 </resources>
