@@ -3,6 +3,7 @@ package com.zxjk.duoduo.network;
 import com.zxjk.duoduo.bean.AuditCertificationBean;
 import com.zxjk.duoduo.bean.CardBackBean;
 import com.zxjk.duoduo.bean.CardFaceBean;
+import com.zxjk.duoduo.bean.response.AirdropInfoResponse;
 import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.AssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
@@ -53,6 +54,7 @@ import com.zxjk.duoduo.bean.response.PayInfoResponse;
 import com.zxjk.duoduo.bean.response.PermissionInfoBean;
 import com.zxjk.duoduo.bean.response.PersonalChatConfigResponse;
 import com.zxjk.duoduo.bean.response.PersonalRedPackageInfoResponse;
+import com.zxjk.duoduo.bean.response.ReceiveAirdropResponse;
 import com.zxjk.duoduo.bean.response.ReceiveGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReceivePersonalRedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReceivePointResponse;
@@ -491,7 +493,7 @@ public interface Api {
     @POST("duoduo/group/payToGroup")
     @FormUrlEncoded
     Observable<BaseResponse<CommunityCultureResponse>> payToGroup(@Field("groupId") String groupId, @Field("toCustomerId") String toCustomerId, @Field("payPwd") String payPwd, @Field("mot") String mot,
-                                                @Field("symbol") String symbol);
+                                                                  @Field("symbol") String symbol);
 
     @POST("duoduo/group/getRedNewPersonInfo")
     @FormUrlEncoded
@@ -717,17 +719,27 @@ public interface Api {
 
     @POST("duoduo/customer/authorizedAccessToken")
     @FormUrlEncoded
-    Observable<BaseResponse<GetAuthorizationTokenResponse>> getToken(@Field("appId") String appid,@Field("secret") String secret,@Field("code") String code);
+    Observable<BaseResponse<GetAuthorizationTokenResponse>> getToken(@Field("appId") String appid, @Field("secret") String secret, @Field("code") String code);
 
     @POST("duoduo/customer/userInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<GetUserInfo>> GetUserInfo(@Field("appId") String appid,@Field("accessToken") String accessToken ,@Field("hilamgId") String hilamgId);
+    Observable<BaseResponse<GetUserInfo>> GetUserInfo(@Field("appId") String appid, @Field("accessToken") String accessToken, @Field("hilamgId") String hilamgId);
 
     @POST("duoduo/customer/thirdPartLogin")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> htmlLogin(@Field("appId") String appid,@Field("randomStr") String randomStr,@Field("sign") String sign);
+    Observable<BaseResponse<String>> htmlLogin(@Field("appId") String appid, @Field("randomStr") String randomStr, @Field("sign") String sign);
 
     @POST("duoduo/customer/getAppVersionBysystemType")
     @FormUrlEncoded
     Observable<BaseResponse<String>> getAppVersionBysystemType(@Field("systemType") String systemType);
+
+    @POST("duoduo/airdrop/airdropInfo")
+    Observable<BaseResponse<AirdropInfoResponse>> airdropInfo();
+
+    @POST("duoduo/airdrop/receiveAirdrop")
+    @FormUrlEncoded
+    Observable<BaseResponse<ReceiveAirdropResponse>> receiveAirdrop(@Field("click") String click);
+
+    @POST("duoduo/airdrop/shareAirdrop")
+    Observable<BaseResponse<String>> shareAirdrop();
 }

@@ -128,7 +128,8 @@
                 android:layout_marginEnd="32dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:transformPivotX="32dp">
+                android:transformPivotX="32dp"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="1dp"

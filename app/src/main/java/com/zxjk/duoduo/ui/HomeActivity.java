@@ -42,10 +42,12 @@ import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.DaoMaster;
+import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
+import com.zxjk.duoduo.db.RedFallActivityLocalBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -61,7 +63,6 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
-import com.zxjk.duoduo.ui.walletpage.PayLoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
 
@@ -97,10 +98,12 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     private Fragment mFragment;
     public BadgeItem badgeItem2;
+    private BadgeItem badgeItem3;
     private MsgFragment msgFragment;
     private ContactFragment contactFragment;
     private FindFragment findFragment;
     private MineFragment mineFragment;
+    private RedFallActivityLocalBeanDao redFallActivityLocalBeanDao;
 
     //私聊数
     private int msgCount1;
@@ -156,6 +159,35 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         RongContext.getInstance().registerConversationTemplate(new GroupConversationProvider());
 
         initRongUserProvider();
+
+        redFallActivityLocalBeanDao.deleteAll();
+
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .airdropInfo()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver())
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(r -> {
+                    if (r.getReceive().equals("1")) {
+                        RedFallActivityLocalBean redFallActivityLocalBean = new RedFallActivityLocalBean();
+                        redFallActivityLocalBean.setLastPlayTime("0");
+                        redFallActivityLocalBeanDao.insert(redFallActivityLocalBean);
+                        badgeItem3.show(true);
+                    } else if (!TextUtils.isEmpty(r.getLastTime())) {
+                        RedFallActivityLocalBean redFallActivityLocalBean = new RedFallActivityLocalBean();
+                        redFallActivityLocalBean.setLastPlayTime(r.getLastTime());
+                        redFallActivityLocalBeanDao.insert(redFallActivityLocalBean);
+                    }
+
+                }, this::handleApiError);
+    }
+
+    public void showFourthBadge() {
+        if (badgeItem3 != null) badgeItem3.show(true);
+    }
+
+    public void hideFourthBadge() {
+        if (badgeItem3 != null) badgeItem3.hide(true);
     }
 
     @SuppressLint("CheckResult")
@@ -314,6 +346,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
         Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
         dao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
+        redFallActivityLocalBeanDao = Application.daoSession.getRedFallActivityLocalBeanDao();
     }
 
     private void initMessageLongClickAction() {
@@ -415,6 +448,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 .setBackgroundColorResource(R.color.red_eth_in)
                 .setBorderWidth(0);
 
+        badgeItem3 = new BadgeItem();
+        badgeItem3.setHideOnSelect(false)
+                .setBackgroundColorResource(R.color.red_eth_in)
+                .setBorderWidth(0);
+        badgeItem3.setText("1");
+        badgeItem3.hide();
+
         //设置Item选中颜色方法
         m_bottom_bar.setActiveColor(R.color.colorAccent)
                 //设置Item未选中颜色方法
@@ -435,7 +475,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 .addItem(new BottomNavigationItem(R.drawable.tab_icon_message_selected, "消息").setInactiveIconResource(R.drawable.tab_icon_message_unselected).setBadgeItem(badgeItem))
                 .addItem(new BottomNavigationItem(R.drawable.tab_icon_friend_selected, "通讯录").setInactiveIconResource(R.drawable.tab_icon_friend_unselected).setBadgeItem(badgeItem2))
                 .addItem(new BottomNavigationItem(R.drawable.tab_icon_find_selected, "发现").setInactiveIconResource(R.drawable.tab_icon_find_unselected))
-                .addItem(new BottomNavigationItem(R.drawable.tab_icon_my_selected, "我的").setInactiveIconResource(R.drawable.tab_icon_my_unselected))
+                .addItem(new BottomNavigationItem(R.drawable.tab_icon_my_selected, "我的").setInactiveIconResource(R.drawable.tab_icon_my_unselected).setBadgeItem(badgeItem3))
                 //设置默认选中位置
                 .setFirstSelectedPosition(0)
                 // 提交初始化（完成配置）

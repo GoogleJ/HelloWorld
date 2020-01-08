@@ -10,6 +10,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.zxjk.duoduo.R;
 
 public class ShareUtil {
 
@@ -37,6 +38,12 @@ public class ShareUtil {
     public static void shareLink(Activity activity, UMWeb link, ShareListener listener, SHARE_MEDIA... var1) {
         new ShareAction(activity).withMedia(link).setDisplayList(var1)
                 .setCallback(listener).open();
+    }
+
+    public static void share2WTimeline(Activity activity, ShareListener listener) {
+        UMImage umImage = new UMImage(activity, R.drawable.ic_redfall_share);
+        new ShareAction(activity).withText("sdasdasdasdasd").withMedia(umImage).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                .setCallback(listener).share();
     }
 
     public static class ShareListener implements UMShareListener {

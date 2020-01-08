@@ -19,12 +19,19 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
+import com.zxjk.duoduo.bean.response.ReceiveAirdropResponse;
+import com.zxjk.duoduo.db.RedFallActivityLocalBean;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.RainView;
 import com.zxjk.duoduo.utils.CommonUtils;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -61,6 +68,8 @@ public class RedFallActivity extends BaseActivity {
 
     private int count;
 
+    private RedFallActivityLocalBeanDao redFallActivityLocalBeanDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +82,8 @@ public class RedFallActivity extends BaseActivity {
         BarUtils.setNavBarVisibility(this, false);
 
         setContentView(R.layout.activity_red_fall);
+
+        redFallActivityLocalBeanDao = Application.daoSession.getRedFallActivityLocalBeanDao();
 
         tvCountDown = findViewById(R.id.tvCountDown);
         flMask = findViewById(R.id.flMask);
@@ -94,42 +105,40 @@ public class RedFallActivity extends BaseActivity {
         ExplosionField explosionField = ExplosionField.attach2Window(this);
 
         rain.setOnRedClicked((bitmap, bound) -> {
-            {
-                if (llCount.getVisibility() == View.GONE) llCount.setVisibility(View.VISIBLE);
-                count++;
-                if (count >= 10 && count < 20) {
-                    if (ivNum1.getVisibility() == View.GONE) {
-                        ivNum1.setVisibility(View.VISIBLE);
-                        ivNum1.setImageResource(R.drawable.ic_redfall_num1);
-                    }
-                    ivNum2.setImageResource(numImgIds[count - 10]);
-                } else if (count >= 20 && count < 30) {
-                    ivNum1.setImageResource(R.drawable.ic_redfall_num2);
-                    ivNum2.setImageResource(numImgIds[count - 20]);
-                } else if (count >= 30 && count < 40) {
-                    ivNum1.setImageResource(R.drawable.ic_redfall_num3);
-                    ivNum2.setImageResource(numImgIds[count - 30]);
-                } else if (count >= 40 && count < 50) {
-                    ivNum1.setImageResource(R.drawable.ic_redfall_num4);
-                    ivNum2.setImageResource(numImgIds[count - 40]);
-                } else if (count >= 50 && count < 60) {
-                    ivNum1.setImageResource(R.drawable.ic_redfall_num5);
-                    ivNum2.setImageResource(numImgIds[count - 50]);
-                } else {
-                    ivNum2.setImageResource(numImgIds[count]);
+            if (llCount.getVisibility() == View.GONE) llCount.setVisibility(View.VISIBLE);
+            count++;
+            if (count >= 10 && count < 20) {
+                if (ivNum1.getVisibility() == View.GONE) {
+                    ivNum1.setVisibility(View.VISIBLE);
+                    ivNum1.setImageResource(R.drawable.ic_redfall_num1);
                 }
-
-                if (ivNum1.getVisibility() == View.VISIBLE) {
-                    ObjectAnimator.ofFloat(ivNum1, "scaleX", 1.6f, 1f).setDuration(100).start();
-                    ObjectAnimator.ofFloat(ivNum1, "scaleY", 1.6f, 1f).setDuration(100).start();
-                }
-                ObjectAnimator.ofFloat(ivNum2, "scaleX", 1.6f, 1f).setDuration(100).start();
-                ObjectAnimator.ofFloat(ivNum2, "scaleY", 1.6f, 1f).setDuration(100).start();
-                ObjectAnimator.ofFloat(ivTail, "scaleX", 1.6f, 1f).setDuration(100).start();
-                ObjectAnimator.ofFloat(ivTail, "scaleY", 1.6f, 1f).setDuration(100).start();
-
-                explosionField.explode(bitmap, bound, 0, 300);
+                ivNum2.setImageResource(numImgIds[count - 10]);
+            } else if (count >= 20 && count < 30) {
+                ivNum1.setImageResource(R.drawable.ic_redfall_num2);
+                ivNum2.setImageResource(numImgIds[count - 20]);
+            } else if (count >= 30 && count < 40) {
+                ivNum1.setImageResource(R.drawable.ic_redfall_num3);
+                ivNum2.setImageResource(numImgIds[count - 30]);
+            } else if (count >= 40 && count < 50) {
+                ivNum1.setImageResource(R.drawable.ic_redfall_num4);
+                ivNum2.setImageResource(numImgIds[count - 40]);
+            } else if (count >= 50 && count < 60) {
+                ivNum1.setImageResource(R.drawable.ic_redfall_num5);
+                ivNum2.setImageResource(numImgIds[count - 50]);
+            } else {
+                ivNum2.setImageResource(numImgIds[count]);
             }
+
+            if (ivNum1.getVisibility() == View.VISIBLE) {
+                ObjectAnimator.ofFloat(ivNum1, "scaleX", 1.6f, 1f).setDuration(100).start();
+                ObjectAnimator.ofFloat(ivNum1, "scaleY", 1.6f, 1f).setDuration(100).start();
+            }
+            ObjectAnimator.ofFloat(ivNum2, "scaleX", 1.6f, 1f).setDuration(100).start();
+            ObjectAnimator.ofFloat(ivNum2, "scaleY", 1.6f, 1f).setDuration(100).start();
+            ObjectAnimator.ofFloat(ivTail, "scaleX", 1.6f, 1f).setDuration(100).start();
+            ObjectAnimator.ofFloat(ivTail, "scaleY", 1.6f, 1f).setDuration(100).start();
+
+            explosionField.explode(bitmap, bound, 0, 300);
         });
 
         initStartAnim();
@@ -239,7 +248,25 @@ public class RedFallActivity extends BaseActivity {
                             public void onAnimationStart(Animator animation) {
                                 flOpen.setVisibility(View.VISIBLE);
                                 flMask.setVisibility(View.VISIBLE);
-                                ivOpen.setOnClickListener(v -> openRed());
+                                ivOpen.setOnClickListener(v -> ServiceFactory.getInstance().getBaseService(Api.class)
+                                        .receiveAirdrop(String.valueOf(count))
+                                        .compose(bindToLifecycle())
+                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RedFallActivity.this)))
+                                        .compose(RxSchedulers.normalTrans())
+                                        .subscribe(r -> {
+                                            if (r.getNextReceive().equals("1")) {
+                                                List<RedFallActivityLocalBean> redFallActivityLocalBeans = redFallActivityLocalBeanDao.loadAll();
+                                                RedFallActivityLocalBean redFallActivityLocalBean = redFallActivityLocalBeans.get(0);
+                                                redFallActivityLocalBean.setLastPlayTime(String.valueOf(System.currentTimeMillis()));
+                                                redFallActivityLocalBeanDao.update(redFallActivityLocalBean);
+                                            } else {
+                                                redFallActivityLocalBeanDao.deleteAll();
+                                            }
+                                            openRed(r);
+                                        }, t -> {
+                                            handleApiError(t);
+                                            finish();
+                                        }));
                             }
 
                             @Override
@@ -258,7 +285,7 @@ public class RedFallActivity extends BaseActivity {
                 .subscribe(a -> pb.setProgress((int) (1000 - a)));
     }
 
-    private void openRed() {
+    private void openRed(ReceiveAirdropResponse r) {
         ivOpen.animate().alpha(0f)
                 .setDuration(150)
                 .setListener(new AnimatorListenerAdapter() {
@@ -269,6 +296,7 @@ public class RedFallActivity extends BaseActivity {
                                 .compose(bindToLifecycle())
                                 .subscribe(l -> {
                                     Intent intent = new Intent(RedFallActivity.this, ConfirmRedFallActivity.class);
+                                    intent.putExtra("data", r);
                                     startActivity(intent);
                                     overridePendingTransition(R.anim.redfallconfirm_enteranim, R.anim.redfallconfirm_exitanim);
                                     finish();

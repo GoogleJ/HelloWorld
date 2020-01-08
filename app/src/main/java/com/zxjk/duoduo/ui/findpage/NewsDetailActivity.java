@@ -87,7 +87,8 @@ public class NewsDetailActivity extends BaseActivity {
             link.setThumb(new UMImage(NewsDetailActivity.this, R.mipmap.ic_launcher));
             ShareUtil.shareLink(NewsDetailActivity.this, link, new ShareUtil.ShareListener() {
                 @Override
-                public void onResult(SHARE_MEDIA share_media) {
+                public void onStart(SHARE_MEDIA share_media) {
+                    super.onStart(share_media);
                     ServiceFactory.getInstance().getBaseService(Api.class)
                             .savePointInfo("4")
                             .compose(RxSchedulers.ioObserver())
