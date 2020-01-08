@@ -42,7 +42,11 @@ public class CusEmoteTabMessageProvider extends IContainerItemProvider.MessagePr
     private int[] tabIds = new int[]{io.rong.imkit.R.drawable.emoji1_1, io.rong.imkit.R.drawable.emoji1_2,
             io.rong.imkit.R.drawable.emoji1_3, io.rong.imkit.R.drawable.emoji1_4, io.rong.imkit.R.drawable.emoji1_5,
             io.rong.imkit.R.drawable.emoji1_6, io.rong.imkit.R.drawable.emoji1_7, io.rong.imkit.R.drawable.emoji1_8,
-            io.rong.imkit.R.drawable.emoji1_9, io.rong.imkit.R.drawable.emoji1_10};
+            io.rong.imkit.R.drawable.emoji1_9, io.rong.imkit.R.drawable.emoji1_10, io.rong.imkit.R.drawable.emoji2_1, io.rong.imkit.R.drawable.emoji2_2,
+            io.rong.imkit.R.drawable.emoji2_3, io.rong.imkit.R.drawable.emoji2_4, io.rong.imkit.R.drawable.emoji2_5,
+            io.rong.imkit.R.drawable.emoji2_6, io.rong.imkit.R.drawable.emoji2_7, io.rong.imkit.R.drawable.emoji2_8,
+            io.rong.imkit.R.drawable.emoji2_9, io.rong.imkit.R.drawable.emoji2_10, io.rong.imkit.R.drawable.emoji2_11,
+            io.rong.imkit.R.drawable.emoji2_12, io.rong.imkit.R.drawable.emoji2_13, io.rong.imkit.R.drawable.emoji2_14};
 
     @SuppressLint("CheckResult")
     @Override
