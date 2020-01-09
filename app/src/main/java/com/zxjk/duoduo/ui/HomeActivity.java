@@ -104,6 +104,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private FindFragment findFragment;
     private MineFragment mineFragment;
     private RedFallActivityLocalBeanDao redFallActivityLocalBeanDao;
+    private BottomNavigationBar m_bottom_bar;
 
     //私聊数
     private int msgCount1;
@@ -148,6 +149,12 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initFragment();
 
         initView();
+
+        int id = getIntent().getIntExtra("id",0);
+        if(id == 1){
+            switchFragment(findFragment);
+            m_bottom_bar.setFirstSelectedPosition(2).initialise();
+        }
 
         getNewFriendCount();
 
@@ -435,7 +442,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void initView() {
-        BottomNavigationBar m_bottom_bar = findViewById(R.id.m_bottom_bar);
+        m_bottom_bar = findViewById(R.id.m_bottom_bar);
 
         BadgeItem badgeItem = new BadgeItem();
         badgeItem.setHideOnSelect(false)

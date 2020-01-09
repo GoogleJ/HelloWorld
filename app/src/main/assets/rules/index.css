@@ -1,0 +1,400 @@
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+
+        background: url("./img/backgroud.png") no-repeat;
+
+        background-size: cover;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .header {
+        width: 92%;
+        height: 60px;
+        margin-top: 7%;
+        text-align: center;
+
+        margin-left: 4%;
+
+    }
+
+    .header img {
+        width: 100%;
+        height: 100%;
+
+
+    }
+
+    .titles {
+        background-color: #6BA0FE;
+        color: #fff;
+        width: 62%;
+        height: 35px;
+        line-height: 35px;
+        border-radius: 20px;
+        text-align: center;
+
+        font-size: 18px;
+        margin-left: 19.2%;
+
+        letter-spacing: 2px;
+        margin-top: 2%;
+
+
+
+    }
+
+    .titles img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .titles .left {
+        float: left;
+
+        margin-left: -16px;
+        margin-top: 4px;
+    }
+
+    .titles .right {
+        float: right;
+
+        margin-right: -16px;
+        margin-top: 4px;
+    }
+
+    .backgroud {
+        height: 300px;
+        width: 100%;
+        background: url("./img/insetPic.png") no-repeat;
+        background-size: contain;
+        margin-top: 3%;
+    }
+
+    .main {
+        margin-left: 5%;
+        width: 90%;
+        margin-top: -22%;
+    }
+
+    .main ul {
+        width: 100%;
+        float: left;
+    }
+
+    .main ul li {
+        width: 100%;
+
+        border-radius: 10px;
+        background-color: #fff;
+        margin-top: 20px;
+
+    }
+
+    .main ul li:first-child {
+        height: 300px;
+    }
+
+    .main ul li .header {
+        margin-left: 0;
+        height: 60px;
+        border-radius: 10px 10px 0 0;
+        background-color: #edf3fe;
+        width: 100%;
+        text-align: center;
+    }
+
+    .main ul li .header span {
+        float: left;
+        width: 40%;
+        margin-left: 30%;
+
+        height: 30px;
+        margin-top: 15px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #4988F2;
+        border-radius: 20px;
+        background-color: rgba(64, 139, 247, 0.1);
+        letter-spacing: 1px;
+        font-family: PingFang-SC-Bold;
+
+
+    }
+
+    .main ul li .header img {
+        width: 26px;
+        height: 24px;
+        margin-top: 4px;
+    }
+
+    .main ul li .header .left {
+
+        float: left;
+        margin-left: -15px;
+    }
+
+    .main ul li .header .right {
+        float: right;
+        margin-right: -15px;
+
+    }
+
+    .main ul li .conent {
+        padding: 20px;
+    }
+
+    .main ul li .conent .shiftLeft {
+        width: 43%;
+        float: left;
+    }
+
+    .main ul li .conent .shiftLeft img {
+
+        width: 33px;
+        height: 38px;
+    }
+
+    .shiftRight {
+        float: right !important;
+    }
+
+    .main ul li .conent .shiftLeft:nth-child(2) {
+        margin-left: 10%;
+    }
+
+    .main ul li .conent .shiftLeft img {
+        float: left;
+
+
+    }
+
+    .main ul li .conent .shiftLeft .text {
+        width: 50%;
+        float: left;
+
+        font-size: 16px;
+        font-weight: bold;
+        z-index: 999;
+
+        color: #4988F2;
+
+        font-family: PingFang-SC-Bold;
+
+        margin-left: -5%;
+        margin-top: 16%;
+
+    }
+
+    .main ul li .conent .shiftLeft .text span {
+        display: block;
+        width: 108px;
+    }
+
+    .signReward,
+    .signText {
+        float: left;
+        margin-top: 6%;
+
+    }
+
+    .signReward {
+        margin-left: 3%;
+    }
+
+    .signText {
+        margin-left: 18%;
+    }
+
+    .signReward img,
+    .signText img {
+        width: 120px;
+        height: 110px;
+    }
+
+    .main ul li:nth-child(2) .conent p {
+
+        margin: 0;
+        padding: 0;
+        letter-spacing: 1px;
+        color: #666;
+        line-height: 20px;
+        font-size: 14px;
+    }
+
+    .main ul li:nth-child(2) .conent span {
+        color: #4988F2;
+        line-height: 30px;
+        /* margin-bottom: 5px; */
+
+    }
+
+    .space {
+        line-height: 24px;
+        font-size: 14px;
+    }
+
+
+    .main ul li:nth-child(3) .title {
+        width: 96%;
+        height: 40px;
+        font-size: 16px;
+        font-family: PingFang;
+        font-weight: bold;
+        color: rgba(73, 136, 242, 1);
+        line-height: 40px;
+        margin-left: 4px;
+        /* float: left; */
+    }
+
+    .main ul li:nth-child(3) {
+        height: 495px;
+    }
+
+    .main ul li:nth-child(3) .table {
+        width: 100%;
+        float: left;
+        border-radius: 10px;
+        border: 1px solid #4988F2;
+        margin-top: 10px;
+    }
+
+    .main ul li:nth-child(3) .table div {
+
+        height: 40px;
+        line-height: 40px;
+        border-radius: 0;
+
+        margin-top: 0;
+        background-color: #edf3fe;
+    }
+
+    .table div:first-child {
+        border-radius: 10px 10px 0 0 !important;
+        background-color: #cadffe !important;
+        border-bottom: 1px solid #4988F2;
+
+    }
+
+    .table div:nth-child(n+2) {
+        border-bottom: 1px dashed #4988F2;
+    }
+
+    .table div:last-child {
+        border-radius: 0 0 10px 10px !important;
+        border-bottom: none;
+    }
+
+    .table div span {
+        float: left;
+        width: 34% !important;
+        height: 40px;
+        font-size: 14px;
+        text-align: center;
+
+    }
+
+    .table div span:nth-child(n+2) {
+        width: 30% !important;
+    }
+
+    .label {
+        float: left;
+        margin-top: 16px;
+        line-height: 20px;
+        letter-spacing: 1px;
+        color: #666666;
+        font-size: 14px;
+
+    }
+
+    .main ul li:nth-child(4) p {
+        margin: 0;
+        padding: 0;
+        line-height: 20px;
+        letter-spacing: 1px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .main ul li:nth-child(4) {
+        margin-bottom: 40px;
+    }
+
+    @media (max-width: 375px) {
+        .main {
+            margin-left: 5%;
+            margin-top: -32% !important;
+        }
+
+        .main ul li .conent .shiftLeft {
+            width: 45%;
+
+        }
+
+        .signReward img,
+        .signText img {
+            width: 100px;
+            height: 90px;
+
+        }
+
+        .main ul li:first-child {
+            height: 270px;
+        }
+
+        .signText {
+            margin-left: 22%;
+        }
+
+        .main ul li:nth-child(3) .title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .main ul li:nth-child(3) {
+            height: 492px;
+        }
+
+    }
+
+    @media (max-width: 360px) {
+
+        .main {
+
+            margin-top: -36% !important;
+        }
+
+
+    }
+
+    @media (max-width: 359px) {
+
+        .main {
+
+            margin-top: -36% !important;
+        }
+
+        .main ul li:nth-child(3) .table {
+            width: 100% !important;
+        }
+
+        .table div span {
+            width: 100px !important;
+            font-size: 14px !important;
+        }
+
+        .table div span:nth-child(n+2) {
+            width: 70px !important;
+        }
+
+
+    }

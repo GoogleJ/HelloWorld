@@ -645,23 +645,26 @@ public class NewsPager extends BaseFragment {
         switch (plantform) {
             case 1:
                 platform = SHARE_MEDIA.WEIXIN;
+                savePointInfo();
                 break;
             case 2:
                 platform = SHARE_MEDIA.WEIXIN_CIRCLE;
+                savePointInfo();
                 break;
             case 3:
                 platform = SHARE_MEDIA.QQ;
+                savePointInfo();
                 break;
             case 4:
                 RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
                     @Override
                     public void onSuccess(List<Conversation> conversations) {
+                        savePointInfo();
                         Constant.shareGroupQR = bitmap2;
                         Intent intent = new Intent(getActivity(), ShareGroupQRActivity.class);
                         intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
                         startActivity(intent);
                     }
-
                     @Override
                     public void onError(RongIMClient.ErrorCode errorCode) {
 
@@ -725,6 +728,15 @@ public class NewsPager extends BaseFragment {
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
         return bitmap;
+    }
+
+    private void savePointInfo(){
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .savePointInfo("4")
+                .compose(RxSchedulers.ioObserver())
+                .subscribe(s -> {
+                }, t -> {
+                });
     }
 
 

@@ -25,6 +25,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.RecyclerItemAverageDecoration;
@@ -36,6 +37,7 @@ public class SocialAppActivity extends BaseActivity {
 
     private RecyclerView recyclerApp1;
     private RecyclerView recyclerApp2;
+    private TextView mCustomerService;
 
     private BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder> adapter1;
     private BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder> adapter2;
@@ -59,6 +61,10 @@ public class SocialAppActivity extends BaseActivity {
 
         recyclerApp1 = findViewById(R.id.recyclerApp1);
         recyclerApp2 = findViewById(R.id.recyclerApp2);
+        mCustomerService = findViewById(R.id.tv_customer_service);
+        mCustomerService.setOnClickListener(v-> {
+            startActivity(new Intent(this, OnlineServiceActivity.class));
+        });
 
         adapter1 = new BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder>(R.layout.item_social_app_list, null) {
             @Override

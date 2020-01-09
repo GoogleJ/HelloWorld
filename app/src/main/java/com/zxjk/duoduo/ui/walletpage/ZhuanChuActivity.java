@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
     private TextView tv_currency;
     private EditText etWalletAddress;
     private EditText etCount;
+    private TextView mTvZhuanChuAll;
 
     private MoneyValueFilter moneyValueFilter;
 
@@ -50,6 +52,7 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
     private String balance;
     private String tokenDecimal;
     private String contractAddress;
+    private String sum;
 
     private float gasMax;
     private float gasMin;
@@ -66,6 +69,9 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         balance = getIntent().getStringExtra("balance");
         tokenDecimal = getIntent().getStringExtra("tokenDecimal");
         contractAddress = getIntent().getStringExtra("contractAddress");
+        sum = getIntent().getStringExtra("sum");
+
+
 
         initView();
 
@@ -86,10 +92,15 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         seekZhuanchu = findViewById(R.id.seekZhuanchu);
         etCount = findViewById(R.id.etCount);
         moneyValueFilter.setDigits(5);
+        etCount.setHint("可转出数量"+sum+symbol);
         etCount.setFilters(new InputFilter[]{moneyValueFilter});
         etWalletAddress = findViewById(R.id.etWalletAddress);
         tv_currency = findViewById(R.id.tv_currency);
         tvKuanggongPrice = findViewById(R.id.tvKuanggongPrice);
+        mTvZhuanChuAll = findViewById(R.id.tv_zhuanchu_all);
+        mTvZhuanChuAll.setOnClickListener(v-> {
+            etCount.setText(sum);
+        });
         tvGwei = findViewById(R.id.tvGwei);
         seekZhuanchu.setMax(1000);
         seekZhuanchu.setOnSeekBarChangeListener(this);
@@ -102,11 +113,10 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.zhuanchu));
 
-        View rlend = findViewById(R.id.rl_end);
-        rlend.setVisibility(View.VISIBLE);
-        ImageView ivend = findViewById(R.id.iv_end);
+        ImageView ivend = findViewById(R.id.img_code);
+
         ivend.setImageResource(R.drawable.ic_import_wallet_scan);
-        rlend.setOnClickListener(v -> {
+        ivend.setOnClickListener(v -> {
             Intent intent = new Intent(this, QrCodeActivity.class);
             intent.putExtra("actionType", QrCodeActivity.ACTION_IMPORT_WALLET);
             startActivityForResult(intent, 1);
@@ -119,12 +129,6 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         tv_currency.setText(symbol);
     }
 
-    //选择联系人
-    public void addressList(View view) {
-        Intent intent = new Intent(this, SelectContactActivity.class);
-        intent.putExtra("fromZhuanChu", true);
-        startActivityForResult(intent, 1);
-    }
 
     private String walletAddress;
     private String count;

@@ -57,6 +57,7 @@ public class GetSignListResponse {
          * activityDesc : 用户实名验证审核通过能获得100MoT
          * rewardAmount : 100.0
          * number : 0
+         * icon : ""
          */
 
         private String receiveStatus;
@@ -65,6 +66,24 @@ public class GetSignListResponse {
         private String activity;
         private String activityDesc;
         private int number;
+        private String icon;
+        private String points;
+
+        public String getPoints() {
+            return points;
+        }
+
+        public void setPoints(String points) {
+            this.points = points;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
 
         public String getReceiveStatus() {
             return receiveStatus;

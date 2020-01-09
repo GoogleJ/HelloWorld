@@ -153,6 +153,7 @@ public class WalletTradeActivity extends BaseActivity {
         intent.putExtra("parentSymbol", parentSymbol);
         intent.putExtra("tokenDecimal", tokenDecimal);
         intent.putExtra("contractAddress", contractAddress);
+        intent.putExtra("sum",sum);
         startActivity(intent);
     }
 

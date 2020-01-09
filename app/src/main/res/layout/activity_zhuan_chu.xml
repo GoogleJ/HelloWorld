@@ -54,37 +54,42 @@
             android:textColor="@color/theme_color"
             android:textSize="16sp" />
 
-        <RelativeLayout style="@style/RLayoutStyle">
 
-            <EditText
-                android:id="@+id/etWalletAddress"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_toStartOf="@+id/iv_address_list"
-                android:background="@null"
-                android:ellipsize="end"
-                android:hint="@string/input_wallet_address"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:lines="2"
-                android:singleLine="true"
-                android:textSize="16sp" />
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_address_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
-                android:onClick="addressList"
-                android:src="@drawable/ic_block_zhuanchu_address"
-                android:tint="@color/colorTheme"
-                android:visibility="invisible" />
+                <EditText
+                    android:id="@+id/etWalletAddress"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="@string/input_wallet_address"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:lines="2"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
 
-        </RelativeLayout>
+                <View
+                    android:background="@color/m_add_friend_line"
+                    android:layout_width="1dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="12dp"/>
+                <ImageView
+                    android:id="@+id/img_code"
+                    android:src="@drawable/ic_import_wallet_scan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -115,24 +120,44 @@
             android:textColor="@color/themecolor"
             android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/etCount"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@null"
-            android:hint="@string/inputZhuanChuCount"
-            android:inputType="numberDecimal"
-            android:lines="1"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:singleLine="true"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <EditText
+                android:id="@+id/etCount"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:inputType="numberDecimal"
+                android:lines="1"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:layout_marginEnd="15dp"/>
+            <View
+                android:background="@color/m_add_friend_line"
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="8dp"/>
+            <TextView
+                android:id="@+id/tv_zhuanchu_all"
+                android:text="全部"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorTheme"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginTop="16dp"
             android:background="@color/m_add_friend_line" />
 
     </LinearLayout>

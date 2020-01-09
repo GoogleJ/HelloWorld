@@ -110,21 +110,36 @@
         android:textColor="@color/black"
         android:textSize="15sp" />
 
-    <EditText
-        android:id="@+id/etInput"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="152dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/shape_delete_wallet"
-        android:gravity="top"
-        android:hint="@string/input_words"
-        android:imeOptions="actionDone"
-        android:inputType="textMultiLine"
-        android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="#CACACA"
-        android:textSize="15sp" />
+        android:layout_marginEnd="12dp">
+
+        <EditText
+            android:id="@+id/etInput"
+            android:layout_width="match_parent"
+            android:layout_height="152dp"
+            android:background="@drawable/shape_delete_wallet"
+            android:gravity="top"
+            android:hint="@string/input_words"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="#CACACA"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/img_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_import_wallet_scan"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/llKeystoreTips"

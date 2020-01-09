@@ -78,6 +78,7 @@ public class NewLoginActivity extends BaseActivity {
     private TextView tvContrary;
     private EditText etPhone;
     private Button btnConfirm;
+    private TextView mNewLoginText;
 
     private TransitionSet anim;
     private boolean isAniming;
@@ -131,6 +132,7 @@ public class NewLoginActivity extends BaseActivity {
             vf.showNext();
             tvTips.setVisibility(View.GONE);
             ivBack.setVisibility(View.INVISIBLE);
+            mNewLoginText.setVisibility(View.VISIBLE);
 //            tvChangeLanguage.setVisibility(View.VISIBLE);
             ppivVerify.setVisibility(View.GONE);
             llPhone.setVisibility(View.VISIBLE);
@@ -143,6 +145,7 @@ public class NewLoginActivity extends BaseActivity {
         tvTips.setVisibility(View.VISIBLE);
         ivBack.setVisibility(View.VISIBLE);
 //        tvChangeLanguage.setVisibility(View.INVISIBLE);
+        mNewLoginText.setVisibility(View.GONE);
         ppivVerify.setVisibility(View.VISIBLE);
         llPhone.setVisibility(View.GONE);
         btnConfirm.setText(R.string.login);
@@ -293,7 +296,7 @@ public class NewLoginActivity extends BaseActivity {
         tvChangeLanguage = findViewById(R.id.tvChangeLanguage);
         tvTips = findViewById(R.id.tvTips);
         vf = findViewById(R.id.vf);
-
+        mNewLoginText = findViewById(R.id.tv_new_login_text);
         ppivVerify = findViewById(R.id.ppivVerify);
 
         llPhone = findViewById(R.id.llPhone);

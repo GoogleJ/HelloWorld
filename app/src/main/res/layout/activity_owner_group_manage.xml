@@ -52,16 +52,49 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_groupmanage1"
-                    android:drawablePadding="4dp"
                     android:gravity="center_vertical"
-                    android:text="@string/new_redpackage_manage"
-                    android:textColor="@color/textcolor1"
-                    android:textSize="16sp" />
+                    android:onClick="payEnterGroup"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="64dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_groupmanage1"
+                            android:drawablePadding="4dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/new_redpackage_manage"
+                            android:textColor="@color/textcolor1"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/groupmanage_tips5"
+                            android:textColor="@color/textColor9"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_mine_rightarrow" />
+
+                </LinearLayout>
+
+
+
 
                 <ImageView
                     android:layout_width="wrap_content"

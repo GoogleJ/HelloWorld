@@ -1,34 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="40dp"
+    android:layout_width="match_parent"
     android:id="@+id/llContent"
     android:background="@drawable/shape_sign_item_nor"
     android:gravity="center_horizontal"
-    android:layout_height="60dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
 
-    <FrameLayout
-        android:id="@+id/fl"
-        android:layout_margin="6dp"
-        android:layout_width="28dp"
-        android:layout_height="28dp">
-
+    <LinearLayout
+        android:id="@+id/ll_other_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone">
         <TextView
             android:id="@+id/tvCoins"
-            android:textColor="#FF8900"
-            android:textSize="10sp"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:drawableBottom="@drawable/ic_signinusdt"/>
+        <TextView
+            android:id="@+id/tvTime"
+            android:text="@string/reward_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"/>
+    </LinearLayout>
 
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/tvTime"
-        android:textColor="@color/textcolor3"
-        android:textSize="10sp"
+    <LinearLayout
+        android:id="@+id/ll_sign_seven"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+        <LinearLayout
+            android:id="@+id/ll_reward_sign2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_sign_seven_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/tv_sign_seven_usdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <ImageView
+            android:src="@drawable/ic_signinusdt2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
 
 </LinearLayout>

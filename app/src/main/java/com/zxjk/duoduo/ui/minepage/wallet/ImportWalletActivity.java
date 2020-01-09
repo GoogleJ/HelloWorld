@@ -40,6 +40,7 @@ public class ImportWalletActivity extends BaseActivity {
 
     private RelativeLayout rlend;
     private ImageView ivRight;
+    private ImageView mIvCode;
     private TextView tvWords;
     private TextView tvKey;
     private TextView tvKeystore;
@@ -78,11 +79,7 @@ public class ImportWalletActivity extends BaseActivity {
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.importwallet);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-        findViewById(R.id.rl_end).setOnClickListener(v -> {
-            Intent intent = new Intent(this, QrCodeActivity.class);
-            intent.putExtra("actionType", QrCodeActivity.ACTION_IMPORT_WALLET);
-            startActivityForResult(intent, 1);
-        });
+
 
         rlend = findViewById(R.id.rl_end);
         ivRight = findViewById(R.id.iv_end);
@@ -98,8 +95,14 @@ public class ImportWalletActivity extends BaseActivity {
         llKeystoreTips = findViewById(R.id.llKeystoreTips);
         cb = findViewById(R.id.cb);
         btnImport = findViewById(R.id.btnImport);
+        mIvCode = findViewById(R.id.img_code);
+        mIvCode.setOnClickListener( v-> {
+            Intent intent = new Intent(this, QrCodeActivity.class);
+            intent.putExtra("actionType", QrCodeActivity.ACTION_IMPORT_WALLET);
+            startActivityForResult(intent, 1);
+        });
 
-        ivRight.setImageResource(R.drawable.ic_import_wallet_scan);
+        ivRight.setVisibility(View.GONE);
 
         etInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -176,6 +179,7 @@ public class ImportWalletActivity extends BaseActivity {
         etKeystorePwd.setText("");
         rlend.setVisibility(View.INVISIBLE);
         tvWords.setTextColor(colorTheme);
+        mIvCode.setVisibility(View.GONE);
         tvKey.setTextColor(colorBlack);
         tvKeystore.setTextColor(colorBlack);
         line1.setVisibility(View.VISIBLE);
@@ -192,6 +196,7 @@ public class ImportWalletActivity extends BaseActivity {
         etInput.setText("");
         etKeystorePwd.setText("");
         rlend.setVisibility(View.INVISIBLE);
+        mIvCode.setVisibility(View.GONE);
         tvWords.setTextColor(colorBlack);
         tvKey.setTextColor(colorTheme);
         tvKeystore.setTextColor(colorBlack);
@@ -208,7 +213,8 @@ public class ImportWalletActivity extends BaseActivity {
         cb.setChecked(false);
         etInput.setText("");
         etKeystorePwd.setText("");
-        rlend.setVisibility(View.VISIBLE);
+        rlend.setVisibility(View.INVISIBLE);
+        mIvCode.setVisibility(View.VISIBLE);
         tvWords.setTextColor(colorBlack);
         tvKey.setTextColor(colorBlack);
         tvKeystore.setTextColor(colorTheme);

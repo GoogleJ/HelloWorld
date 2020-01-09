@@ -2,6 +2,7 @@ package com.zxjk.duoduo.ui.minepage;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
@@ -23,6 +24,18 @@ public class FeedbackActivity extends BaseActivity {
         TextView tv_title = findViewById(R.id.tv_title);
         TextView tv_commit = findViewById(R.id.tv_commit);
         feedbackEdit = findViewById(R.id.feedback_edit);
+
+
+        feedbackEdit.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                feedbackEdit.requestFocus();
+                InputMethodManager manager = ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE));
+                if (manager != null) manager.showSoftInput(feedbackEdit, 0);
+            }
+        }, 200);
+
+
         tv_commit.setVisibility(View.VISIBLE);
         tv_commit.setText(getString(R.string.commit));
         tv_title.setText(getString(R.string.feedback_title));
@@ -35,8 +48,5 @@ public class FeedbackActivity extends BaseActivity {
                 finish();
             }
         });
-
     }
-
-
 }

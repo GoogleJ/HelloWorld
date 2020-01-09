@@ -618,19 +618,7 @@
     <string name="quick_news">快讯</string>
     <string name="less_min">红包金额不能小于0.00001</string>
     <string name="rewardmot">活动奖励</string>
-    <string name="rewardTotal">累计奖励：</string>
-    <string name="sign2getReward">签到领取奖励</string>
-    <string name="signed">已签到</string>
-    <string name="signtip1">累计签到</string>
-    <string name="day">天</string>
-    <string name="earn_coins">赚积分</string>
-    <string name="mission_tip1">实名验证</string>
-    <string name="mission_tip3">注册</string>
-    <string name="mission_tip5">加入群聊</string>
-    <string name="mission_tip7">群活跃</string>
-    <string name="mission_tip9">分享资讯</string>
     <string name="sign_success">签到成功</string>
-    <string name="signed1">已签到</string>
     <string name="pay_money">付费金额</string>
     <string name="payrecord">付费记录</string>
     <string name="person">人</string>
@@ -793,6 +781,7 @@
     <string name="retry">重试</string>
     <string name="group_member_manage">群成员管理</string>
     <string name="groupmanage_tips1">群主设置加群金额,成员支付后即可入群</string>
+    <string name="groupmanage_tips5">设置后新成员进群即可获得红包空投</string>
     <string name="m_group_add_my_way">加群方式</string>
     <string name="groupmanage_tips2">开启后,只有群主和管理员可以发言</string>
     <string name="groupmanage_tips3">限制群成员发消息间隔时间</string>
@@ -924,6 +913,7 @@
     <string name="login_switch_id">切换账号</string>
     <string name="login_agreed">同意</string>
     <string name="login_refused">拒绝</string>
+    <string name="reward_sign">已签到</string>
     <string name="social_slogan">社群简介</string>
 
 </resources>

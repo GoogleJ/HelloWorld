@@ -32,7 +32,8 @@
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_share_action_right" />
+            android:src="@drawable/ic_share_action_right"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
