@@ -24,9 +24,9 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.minepage.InviteForSocialActivity;
 import com.zxjk.duoduo.ui.minepage.UpdateUserInfoActivity;
 import com.zxjk.duoduo.ui.msgpage.ChooseNewOwnerActivity;
+import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
 import com.zxjk.duoduo.ui.msgpage.MuteManageActivity;
 import com.zxjk.duoduo.ui.msgpage.OwnerGroupAuthorityActivity;
 import com.zxjk.duoduo.ui.msgpage.OwnerGroupManageActivity;
@@ -159,9 +159,11 @@ public class SocialManageActivity extends BaseActivity {
     }
 
     public void inviteWechat(View view) {
-        Intent intent = new Intent(this, InviteForSocialActivity.class);
+        Intent intent = new Intent(this, CreateGroupActivity.class);
+        intent.putExtra("eventType", 2);
         intent.putExtra("groupId", group.getGroupInfo().getId());
-        intent.putExtra("groupName", group.getGroupInfo().getGroupNikeName());
+        intent.putExtra("fromSocial", true);
+        intent.putExtra("socialLogo", group.getGroupInfo().getHeadPortrait());
         startActivity(intent);
     }
 

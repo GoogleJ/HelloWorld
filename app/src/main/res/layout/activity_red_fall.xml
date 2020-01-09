@@ -5,6 +5,50 @@
     android:background="@drawable/bg_redfall"
     android:clipChildren="false">
 
+    <LinearLayout
+        android:id="@+id/llCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivNum1"
+                android:layout_width="48dp"
+                android:layout_height="86dp"
+                android:src="@drawable/ic_redfall_num1"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/ivNum2"
+                android:layout_width="48dp"
+                android:layout_height="86dp"
+                android:src="@drawable/ic_redfall_num0" />
+
+            <ImageView
+                android:id="@+id/ivTail"
+                android:layout_width="123dp"
+                android:layout_height="64.5dp"
+                android:src="@drawable/ic_redfall_bounce" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="连刷越高，红包金额越大"
+            android:textColor="#FBE9A9"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
     <com.zxjk.duoduo.ui.widget.RainView
         android:id="@+id/rain"
         android:layout_width="match_parent"
@@ -78,49 +122,6 @@
             </FrameLayout>
 
         </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/llCount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/ivNum1"
-                    android:layout_width="48dp"
-                    android:layout_height="86dp"
-                    android:src="@drawable/ic_redfall_num1"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/ivNum2"
-                    android:layout_width="48dp"
-                    android:layout_height="86dp"
-                    android:src="@drawable/ic_redfall_num0" />
-
-                <ImageView
-                    android:id="@+id/ivTail"
-                    android:layout_width="123dp"
-                    android:layout_height="64.5dp"
-                    android:src="@drawable/ic_redfall_bounce" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="连刷越高，红包金额越大"
-                android:textColor="#FBE9A9"
-                android:textSize="15sp" />
-
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

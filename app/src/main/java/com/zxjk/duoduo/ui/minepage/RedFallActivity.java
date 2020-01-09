@@ -144,6 +144,10 @@ public class RedFallActivity extends BaseActivity {
         initStartAnim();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private void initStartAnim() {
         ivRedFallTop.post(() -> {
             ObjectAnimator firstAnim = ObjectAnimator.ofFloat(ivRedFallTop, "translationY", -ivRedFallTop.getHeight(), 0f).setDuration(500);
