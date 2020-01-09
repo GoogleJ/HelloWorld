@@ -344,18 +344,6 @@
 
                 </LinearLayout>
 
-                <ViewStub
-                    android:id="@+id/viewStubPay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout="@layout/stub_social_pay" />
-
-                <ViewStub
-                    android:id="@+id/viewStubFree"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout="@layout/stub_social_free" />
-
             </LinearLayout>
 
             <androidx.appcompat.widget.Toolbar
@@ -445,6 +433,22 @@
             android:layout_gravity="center_horizontal" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <ViewStub
+        android:id="@+id/viewStubPay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout="@layout/stub_social_pay"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    <ViewStub
+        android:id="@+id/viewStubFree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout="@layout/stub_social_free"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pagerOut"
