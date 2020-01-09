@@ -100,8 +100,9 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                             tv_redEnvelope.setText(response.getCustomerInfo().get(i).getMoney() + " " + response.getRedPackageInfo().getSymbol());
                                         }
                                     }
+                                    String text = " (已领取" + response.getRedPackageInfo().getReceiveCount() + "/" + response.getRedPackageInfo().getNumber() + "个)";
                                     int number = response.getRedPackageInfo().getNumber();
-                                    tips.setText(number + "个红包，共" + response.getRedPackageInfo().getMoney() + response.getRedPackageInfo().getSymbol());
+                                    tips.setText(number + "个红包，共" + response.getRedPackageInfo().getMoney() + response.getRedPackageInfo().getSymbol() + text);
                                     adapter.setSymbol(response.getRedPackageInfo().getSymbol());
                                     adapter.setData(response.getCustomerInfo());
                                 }, this::handleApiError);
