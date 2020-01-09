@@ -181,9 +181,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.llMine7:
                 tvMot2Reward.setVisibility(View.GONE);
-                Intent intent = new Intent(getContext(),RewardMotActivity.class);
-                intent.putExtra("head",Constant.currentUser.getHeadPortrait());
-                startActivity(intent);
+                Intent intent = new Intent(getContext(), RewardMotActivity.class);
+                getActivity().startActivityForResult(intent, HomeActivity.REQUEST_REWARD);
                 break;
             case R.id.ivQR:
                 startActivity(new Intent(getActivity(), MyQrCodeActivity.class));

@@ -343,6 +343,7 @@ public class GroupChatInformationActivity extends BaseActivity {
             Intent intent = new Intent(this, UpdateUserInfoActivity.class);
             intent.putExtra("type", 4);
             intent.putExtra("data", group);
+            intent.putExtra("groupId",group.getGroupInfo().getId());
             startActivityForResult(intent, 1);
         } else {
             ToastUtils.showShort(getString(R.string.no_update_nick));

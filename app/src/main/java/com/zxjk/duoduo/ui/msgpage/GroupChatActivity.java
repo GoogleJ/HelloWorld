@@ -81,7 +81,8 @@ public class GroupChatActivity extends BaseActivity implements TextWatcher {
         groupChatAdapter.setEmptyView(emptyView);
         mGroupChatRecyclerView.setAdapter(groupChatAdapter);
 
-        groupChatAdapter.setOnItemChildClickListener((adapter, view, position) -> RongIM.getInstance().startGroupChat(this, groupChatAdapter.getData().get(position).getId(), groupChatAdapter.getData().get(position).getGroupNikeName()));
+        groupChatAdapter.setOnItemChildClickListener((adapter, view, position) ->
+                RongIM.getInstance().startGroupChat(this, groupChatAdapter.getData().get(position).getId(), groupChatAdapter.getData().get(position).getGroupNikeName()));
     }
 
     @SuppressLint("CheckResult")
@@ -154,4 +155,9 @@ public class GroupChatActivity extends BaseActivity implements TextWatcher {
         return filterList;
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getMyGroupChat(Constant.userId);
+    }
 }

@@ -62,6 +62,7 @@ import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
 import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
+import com.zxjk.duoduo.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
 
 import java.util.List;
@@ -285,7 +286,7 @@ public interface Api {
 
     @POST("duoduo/group/updateGroupInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> updateGroupInfo(@Field("groupInfo") String groupInfo);
+    Observable<BaseResponse<UpdateGroupInfoResponse>> updateGroupInfo(@Field("groupInfo") String groupInfo);
 
     @POST("duoduo/group/disBandGroup")
     @FormUrlEncoded

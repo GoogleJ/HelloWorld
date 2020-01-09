@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -96,6 +98,8 @@ import static com.ashokvarma.bottomnavigation.BottomNavigationBar.BACKGROUND_STY
 
 public class HomeActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
+    public static final int REQUEST_REWARD = 1001;
+
     private Fragment mFragment;
     public BadgeItem badgeItem2;
     private BadgeItem badgeItem3;
@@ -150,8 +154,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initView();
 
-        int id = getIntent().getIntExtra("id",0);
-        if(id == 1){
+        int id = getIntent().getIntExtra("id", 0);
+        if (id == 1) {
             switchFragment(findFragment);
             m_bottom_bar.setFirstSelectedPosition(2).initialise();
         }
@@ -695,12 +699,10 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabUnselected(int position) {
-
     }
 
     @Override
     public void onTabReselected(int position) {
-
     }
 
     private void switchFragment(Fragment fragment) {
@@ -715,6 +717,31 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 getSupportFragmentManager().beginTransaction().hide(mFragment).show(fragment).commit();
             }
             mFragment = fragment;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_REWARD:
+                if (resultCode != 1) {
+                    return;
+                }
+                if (data.getBooleanExtra("fromReward", false)) {
+                    String action = data.getStringExtra("action");
+                    switch (action) {
+                        case "shareNews":
+                            m_bottom_bar.selectTab(2, true);
+                            break;
+                        case "social":
+                            m_bottom_bar.selectTab(0, true);
+                            msgFragment.msgFragmentSelect();
+                            break;
+                    }
+                }
+                break;
         }
     }
 

@@ -70,6 +70,7 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         initIndicator();
 
         ViewPagerHelper.bind(indicator, pagerMsg);
+
     }
 
     private void initPager() {
@@ -186,4 +187,9 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
             getActivity().overridePendingTransition(0, 0);
         }
     }
+
+    public void msgFragmentSelect(){
+        pagerMsg.setCurrentItem(1);
+    }
+
 }
