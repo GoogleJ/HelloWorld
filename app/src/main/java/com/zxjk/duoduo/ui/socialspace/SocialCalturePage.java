@@ -198,7 +198,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                                         }, true))
                                 .show();
                         TextView tv = show.findViewById(R.id.tvTips);
-                        //tv.setText(bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle());
                         tv.setText(Html.fromHtml(
                                 " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
                                         "&nbsp;<font color='black'><b>" + bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle() + "</b></font>" +
@@ -513,9 +512,9 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                             if (response != null && response.isSuccessful()) {
                                 boolean toDisk;
                                 if (filesListBean.getFileFormat().contains(".")) {
-                                    toDisk = writeResponseBodyToDisk(response.body(), url + filesListBean.getFileFormat());
+                                    toDisk = writeResponseBodyToDisk(response.body());
                                 } else {
-                                    toDisk = writeResponseBodyToDisk(response.body(), url);
+                                    toDisk = writeResponseBodyToDisk(response.body());
                                 }
                                 if (toDisk && futureStudioIconFile != null && futureStudioIconFile.exists()) {
                                     if (!filesListBean.getFileFormat().contains("pdf")) {
@@ -939,7 +938,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
     private File futureStudioIconFile;
 
-    private boolean writeResponseBodyToDisk(ResponseBody body, String name) {
+    private boolean writeResponseBodyToDisk(ResponseBody body) {
         try {
             FileUtils.createOrExistsFile(futureStudioIconFile);
             //初始化输入流
@@ -947,10 +946,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             //初始化输出流
             OutputStream outputStream = null;
             try {
-                //设置每次读写的字节
                 byte[] fileReader = new byte[4096];
-                long fileSize = body.contentLength();
-                long fileSizeDownloaded = 0;
                 inputStream = body.byteStream();
                 outputStream = new FileOutputStream(futureStudioIconFile);
                 while (true) {
@@ -959,7 +955,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                         break;
                     }
                     outputStream.write(fileReader, 0, read);
-                    fileSizeDownloaded += read;
                 }
 
                 outputStream.flush();

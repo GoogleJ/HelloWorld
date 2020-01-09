@@ -642,7 +642,6 @@ public class ConversationActivity extends BaseActivity {
         targetId = getIntent().getData().getQueryParameter("targetId");
 
         if (conversationType.equals("private")) {
-            // 私聊
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .personalChatConfig(targetId)
                     .compose(RxSchedulers.normalTrans())
@@ -653,50 +652,46 @@ public class ConversationActivity extends BaseActivity {
                         conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
                         conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
 
-//                        if (!targetId.equals(Constant.userId)) {
-                        targetUserInfo = new UserInfo(targetId,
-                                TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
-                                        response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
-                                Uri.parse(response.getCustomerForChat().getHeadPortrait()));
-                        RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
-//                        }
-
+                        if (!targetId.equals(Constant.userId)) {
+                            RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
+                            targetUserInfo = new UserInfo(targetId,
+                                    TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
+                                            response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
+                                    Uri.parse(response.getCustomerForChat().getHeadPortrait()));
+                        }
                         handlePrivate();
                     }, this::handleApiError);
         } else if (conversationType.equals("group")) {
-            // 群聊必须每次请求
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getGroupByGroupId(targetId)
                     .compose(RxSchedulers.normalTrans())
                     .doOnNext(groupResponse -> {
+                        //refresh local cache when serve logic change
                         Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupResponse.getGroupInfo().getId());
+                        if (ronginfo == null) return;
 
-//                        if (null == ronginfo ||
-//                                ronginfo.getPortraitUri() == null ||
-//                                TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
-//                                !ronginfo.getName().equals(groupResponse.getGroupInfo().getGroupNikeName()) ||
-//                                !ronginfo.getPortraitUri().toString().equals(groupHead)) {
+                        String tempName = groupResponse.getGroupInfo().getGroupNikeName();
                         if (groupResponse.getGroupInfo().getGroupType().equals("1")) {
-                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName() +
-                                    "おれは人间をやめるぞ！ジョジョ―――ッ!", Uri.parse(groupResponse.getGroupInfo().getHeadPortrait())));
-                        } else {
-                            String groupHead = "";
+                            tempName = tempName + "おれは人间をやめるぞ！ジョジョ―――ッ! ";
+                        }
+                        String tempGroupHead = groupResponse.getGroupInfo().getHeadPortrait();
+                        if (!groupResponse.getGroupInfo().getGroupType().equals("1")) {
                             StringBuffer sbf = new StringBuffer();
                             for (int i = 0; i < groupResponse.getCustomers().size(); i++) {
                                 sbf.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
                                 if (i == groupResponse.getCustomers().size() - 1 || i == 8) {
-                                    groupHead = sbf.substring(0, sbf.length() - 1);
+                                    tempGroupHead = sbf.substring(0, sbf.length() - 1);
                                     break;
                                 }
                             }
-                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupHead)));
                         }
-//                        }
-                        for (GroupResponse.CustomersBean b : groupResponse.getCustomers()) {
-                            if (RongUserInfoManager.getInstance().getUserInfo(b.getId()) == null) {
-                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(b.getId(), TextUtils.isEmpty(b.getRemark()) ? b.getNick() : b.getRemark()
-                                        , Uri.parse(b.getHeadPortrait())));
-                            }
+                        //refresh local cache when serve logic change
+                        if (ronginfo.getPortraitUri() == null ||
+                                TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
+                                TextUtils.isEmpty(ronginfo.getName()) ||
+                                !ronginfo.getName().equals(tempName) ||
+                                !ronginfo.getPortraitUri().toString().equals(tempGroupHead)) {
+                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), tempName, Uri.parse(tempGroupHead)));
                         }
                     })
                     .compose(bindToLifecycle())
@@ -711,6 +706,16 @@ public class ConversationActivity extends BaseActivity {
                         handleGroupOwnerInit();
 
                         initView();
+
+                        Observable.fromIterable(groupInfo.getCustomers())
+                                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                                .subscribeOn(Schedulers.io())
+                                .subscribe(b -> {
+                                    if (RongUserInfoManager.getInstance().getUserInfo(b.getId()) == null) {
+                                        RongIM.getInstance().refreshUserInfoCache(new UserInfo(b.getId(), TextUtils.isEmpty(b.getRemark()) ? b.getNick() : b.getRemark()
+                                                , Uri.parse(b.getHeadPortrait())));
+                                    }
+                                });
                     }, t -> {
                         extension.removeAllViews();
                         handleApiError(t);
@@ -1107,8 +1112,17 @@ public class ConversationActivity extends BaseActivity {
         rl_end.setOnClickListener(v -> detail());
         View dotSocialContentUpdate = findViewById(R.id.dotSocialContentUpdate);
 
-        tvTitle.setText(targetUserInfo == null ? (groupInfo == null ? (Constant.currentUser.getNick()) : (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getCustomers().size() + ")")) : targetUserInfo.getName());
+        tvTitle.setText(targetUserInfo == null ?
+                (groupInfo == null ? (Constant.currentUser.getNick())
+                        : (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getCustomers().size() + ")"))
+                : targetUserInfo.getName());
 
+        //private logic
+        if (targetId.equals(Constant.userId)) {
+            rl_end.setVisibility(View.GONE);
+        }
+
+        //group logic
         if (groupInfo != null && groupInfo.getGroupInfo().getGroupType().equals("1")) {
             tvTitle.setTextColor(Color.parseColor("#EC7A00"));
             ImageView iv_end = findViewById(R.id.iv_end);
@@ -1121,8 +1135,10 @@ public class ConversationActivity extends BaseActivity {
             tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
             tvTitle.setOnClickListener(v -> {
                 dotSocialContentUpdate.setVisibility(View.GONE);
-                socialLocalBean.setContentLastModifyTime(groupInfo.getCommunityUpdateTime());
-                socialLocalBeanDao.update(socialLocalBean);
+                if (socialLocalBean != null) {
+                    socialLocalBean.setContentLastModifyTime(groupInfo.getCommunityUpdateTime());
+                    socialLocalBeanDao.update(socialLocalBean);
+                }
 
                 Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("id", groupInfo.getGroupInfo().getId());
@@ -1140,7 +1156,7 @@ public class ConversationActivity extends BaseActivity {
                 }
             } else {
                 dotSocialContentUpdate.setVisibility(View.VISIBLE);
-                socialLocalBean = new SocialLocalBean(targetId, groupInfo.getCommunityUpdateTime());
+                socialLocalBean = new SocialLocalBean(targetId, "0");
                 socialLocalBeanDao.insert(socialLocalBean);
             }
         }

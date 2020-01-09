@@ -1,28 +1,20 @@
 package com.zxjk.duoduo.ui.msgpage.rongIM;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.res.Resources;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.utils.ImageUtil;
 
-import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.adapter.ConversationListAdapter;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Group;
-import io.rong.imlib.model.UserInfo;
 
 public class CusConversationListAdapter extends ConversationListAdapter {
 
@@ -77,22 +69,14 @@ public class CusConversationListAdapter extends ConversationListAdapter {
             return;
         }
 
-        groupHead.setVisibility(View.VISIBLE);
-
         Group groupInfo = RongUserInfoManager.getInstance().getGroupInfo(data.getConversationTargetId());
-        if (groupInfo != null && !TextUtils.isEmpty(groupInfo.getPortraitUri().toString())) {
+        if (groupInfo != null && !TextUtils.isEmpty(groupInfo.getPortraitUri().toString())
+                && !groupInfo.getName().contains("おれは人间をやめるぞ！ジョジョ―――ッ!")) {
+            groupHead.setVisibility(View.VISIBLE);
             ImageUtil.loadGroupPortrait(groupHead, groupInfo.getPortraitUri().toString());
         } else {
-
+            groupHead.setVisibility(View.GONE);
+            v.findViewById(R.id.rc_left).setVisibility(View.VISIBLE);
         }
-    }
-
-    private Uri getUriFromDrawableRes(Context context, int id) {
-        Resources resources = context.getResources();
-        String path = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + resources.getResourcePackageName(id) + "/"
-                + resources.getResourceTypeName(id) + "/"
-                + resources.getResourceEntryName(id);
-        return Uri.parse(path);
     }
 }
