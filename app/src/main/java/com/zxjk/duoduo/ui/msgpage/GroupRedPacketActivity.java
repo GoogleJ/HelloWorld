@@ -171,7 +171,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                 .flatMap((Function<GroupResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) r -> {
                     runOnUiThread(() -> {
                         group = r;
-                        etCount.setHint("本群共" + group.getCustomers().size() + "人");
+                        etCount.setHint("本群共" + group.getGroupInfo().getCustomerNumber() + "人");
                     });
                     return api.getPaymentList();
                 })

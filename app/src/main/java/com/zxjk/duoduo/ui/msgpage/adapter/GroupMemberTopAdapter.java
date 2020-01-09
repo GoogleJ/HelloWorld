@@ -5,21 +5,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GroupResponse;
+import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class GroupMemberTopAdapter extends RecyclerView.Adapter<GroupMemberTopAdapter.ViewHolder> {
 
-    private List<GroupResponse.CustomersBean> data = new ArrayList<>();
+    private List<AllGroupMembersResponse> data = new ArrayList<>();
 
-    public void setData(List<GroupResponse.CustomersBean> data) {
+    public void setData(List<AllGroupMembersResponse> data) {
         this.data = data;
         notifyDataSetChanged();
     }
@@ -42,6 +42,7 @@ public class GroupMemberTopAdapter extends RecyclerView.Adapter<GroupMemberTopAd
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView item_header;
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             item_header = itemView.findViewById(R.id.item_header);

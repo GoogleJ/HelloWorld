@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,6 +11,9 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
+import com.zxjk.duoduo.bean.response.BaseResponse;
+import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -20,7 +22,11 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.ImageUtil;
 
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.model.Conversation;
@@ -28,14 +34,12 @@ import io.rong.imlib.model.Message;
 import io.rong.message.InformationNotificationMessage;
 
 public class AgreeGroupChatActivity extends BaseActivity {
-    CircleImageView groupHeader;
-    TextView tvGroupName;
-    TextView pleaseJoinGroup;
-    TextView joinGroupBtn;
+    private CircleImageView groupHeader;
+    private TextView tvGroupName;
+    private TextView joinGroupBtn;
 
     private String groupName;
-
-    //游戏群是否人数已满
+    private GroupResponse groupResponse;
     private boolean canJoin;
 
     @SuppressLint("CheckResult")
@@ -49,7 +53,6 @@ public class AgreeGroupChatActivity extends BaseActivity {
 
         groupHeader = findViewById(R.id.group_headers);
         tvGroupName = findViewById(R.id.group_chat_name);
-        pleaseJoinGroup = findViewById(R.id.invite_to_group_chat);
         joinGroupBtn = findViewById(R.id.join_a_group_chat);
         String inviterId = getIntent().getStringExtra("inviterId");
         String groupId = getIntent().getStringExtra("groupId");
@@ -66,25 +69,32 @@ public class AgreeGroupChatActivity extends BaseActivity {
                 .getGroupByGroupIdForQr(groupId, "invite")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
+                .flatMap((Function<GroupResponse, ObservableSource<BaseResponse<List<AllGroupMembersResponse>>>>)
+                        groupResponse -> {
+                            this.groupResponse = groupResponse;
+                            return ServiceFactory.getInstance().getBaseService(Api.class)
+                                    .getGroupMemByGroupId(groupResponse.getGroupInfo().getId());
+                        })
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(r -> {
-                    if (!TextUtils.isEmpty(r.getMaxNumber())) {
-                        if (r.getCustomers().size() >= Integer.parseInt(r.getMaxNumber())) {
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(list -> {
+                    if (!TextUtils.isEmpty(groupResponse.getMaxNumber())) {
+                        if (list.size() >= Integer.parseInt(groupResponse.getMaxNumber())) {
                             canJoin = true;
                         }
                     }
                     String s = "";
                     StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < r.getCustomers().size(); i++) {
-                        stringBuilder.append(r.getCustomers().get(i).getHeadPortrait() + ",");
-                        if (i == r.getCustomers().size() - 1 || i == 8) {
+                    for (int i = 0; i < list.size(); i++) {
+                        stringBuilder.append(list.get(i).getHeadPortrait() + ",");
+                        if (i == list.size() - 1 || i == 8) {
                             s = stringBuilder.substring(0, stringBuilder.length() - 1);
                             break;
                         }
                     }
 
                     ImageUtil.loadGroupPortrait(groupHeader, s, 80, 2);
-                    tvGroupName.setText(groupName + "(" + r.getCustomers().size() + "人)");
+                    tvGroupName.setText(groupName + "(" + list.size() + "人)");
                     joinGroupBtn.setOnClickListener(v -> {
                         if (canJoin) {
                             ToastUtils.showShort(getString(R.string.group_max_number));

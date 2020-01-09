@@ -6,16 +6,19 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GroupResponse;
-import com.zxjk.duoduo.utils.GlideUtil;
-import java.util.ArrayList;
-import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
+import com.zxjk.duoduo.utils.GlideUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.ViewHolder> {
-    private List<GroupResponse.CustomersBean> data = new ArrayList<>();
+    private List<AllGroupMembersResponse> data = new ArrayList<>();
 
     private OnClickListener onClickListener;
 
@@ -23,13 +26,13 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         this.onClickListener = onClickListener;
     }
 
-    public void setData(List<GroupResponse.CustomersBean> data) {
+    public void setData(List<AllGroupMembersResponse> data) {
         this.data = data;
         notifyDataSetChanged();
     }
 
     public interface OnClickListener {
-        void onclick(GroupResponse.CustomersBean item, boolean check, int position);
+        void onclick(AllGroupMembersResponse item, boolean check, int position);
     }
 
     @NonNull
@@ -40,7 +43,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull GroupMemberAdapter.ViewHolder holder, int position) {
-        GroupResponse.CustomersBean bean = data.get(position);
+        AllGroupMembersResponse bean = data.get(position);
 
         holder.bindData(bean);
         holder.itemView.setOnClickListener(v -> {
@@ -79,7 +82,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
             tvLetter = itemView.findViewById(R.id.tvLetter);
         }
 
-        private void bindData(GroupResponse.CustomersBean bean) {
+        private void bindData(AllGroupMembersResponse bean) {
             GlideUtil.loadCircleImg(remove_headers, bean.getHeadPortrait());
             user_name.setText(bean.getNick());
             selected_delete.setChecked(bean.isChecked());

@@ -34,6 +34,7 @@ import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.SendUrlAndsendImgBean;
 import com.zxjk.duoduo.bean.SlowModeLocalBeanDao;
 import com.zxjk.duoduo.bean.SocialLocalBeanDao;
+import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
@@ -653,11 +654,11 @@ public class ConversationActivity extends BaseActivity {
                         conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
 
                         if (!targetId.equals(Constant.userId)) {
-                            RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
                             targetUserInfo = new UserInfo(targetId,
                                     TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
                                             response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
                                     Uri.parse(response.getCustomerForChat().getHeadPortrait()));
+                            RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
                         }
                         handlePrivate();
                     }, this::handleApiError);
@@ -672,19 +673,9 @@ public class ConversationActivity extends BaseActivity {
 
                         String tempName = groupResponse.getGroupInfo().getGroupNikeName();
                         if (groupResponse.getGroupInfo().getGroupType().equals("1")) {
-                            tempName = tempName + "おれは人间をやめるぞ！ジョジョ―――ッ! ";
+                            tempName = tempName + "おれは人间をやめるぞ！ジョジョ―――ッ!";
                         }
                         String tempGroupHead = groupResponse.getGroupInfo().getHeadPortrait();
-                        if (!groupResponse.getGroupInfo().getGroupType().equals("1")) {
-                            StringBuffer sbf = new StringBuffer();
-                            for (int i = 0; i < groupResponse.getCustomers().size(); i++) {
-                                sbf.append(groupResponse.getCustomers().get(i).getHeadPortrait() + ",");
-                                if (i == groupResponse.getCustomers().size() - 1 || i == 8) {
-                                    tempGroupHead = sbf.substring(0, sbf.length() - 1);
-                                    break;
-                                }
-                            }
-                        }
                         //refresh local cache when serve logic change
                         if (ronginfo.getPortraitUri() == null ||
                                 TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
@@ -707,13 +698,17 @@ public class ConversationActivity extends BaseActivity {
 
                         initView();
 
-                        Observable.fromIterable(groupInfo.getCustomers())
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .getGroupMemByGroupId(targetId)
                                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
                                 .subscribeOn(Schedulers.io())
-                                .subscribe(b -> {
-                                    if (RongUserInfoManager.getInstance().getUserInfo(b.getId()) == null) {
-                                        RongIM.getInstance().refreshUserInfoCache(new UserInfo(b.getId(), TextUtils.isEmpty(b.getRemark()) ? b.getNick() : b.getRemark()
-                                                , Uri.parse(b.getHeadPortrait())));
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(groupMemberList -> {
+                                    for (AllGroupMembersResponse b : groupMemberList) {
+                                        if (RongUserInfoManager.getInstance().getUserInfo(b.getId()) == null) {
+                                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(b.getId(), TextUtils.isEmpty(b.getRemark()) ? b.getNick() : b.getRemark()
+                                                    , Uri.parse(b.getHeadPortrait())));
+                                        }
                                     }
                                 });
                     }, t -> {
@@ -797,8 +792,8 @@ public class ConversationActivity extends BaseActivity {
                                 }
                             },
                             ConversationActivity.this::handleApiError));
-            GroupResponse.CustomersBean owner = groupInfo.getCustomers().get(0);
-            newRedDialog.show(owner.getHeadPortrait(), owner.getNick(), getString(R.string.newredtip));
+            newRedDialog.show(groupInfo.getGroupInfo().getOwnerHeadPortrait(),
+                    groupInfo.getGroupInfo().getGroupOwnerNick(), getString(R.string.newredtip));
         }
     }
 
@@ -1114,7 +1109,7 @@ public class ConversationActivity extends BaseActivity {
 
         tvTitle.setText(targetUserInfo == null ?
                 (groupInfo == null ? (Constant.currentUser.getNick())
-                        : (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getCustomers().size() + ")"))
+                        : (groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")"))
                 : targetUserInfo.getName());
 
         //private logic
@@ -1174,7 +1169,7 @@ public class ConversationActivity extends BaseActivity {
                 if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
                     tvTitle.setText(data.getStringExtra("title"));
                 } else {
-                    tvTitle.setText(data.getStringExtra("title") + "(" + groupInfo.getCustomers().size() + ")");
+                    tvTitle.setText(data.getStringExtra("title") + "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
                 }
             }
         } else if (requestCode == 2000 && resultCode == 1000) {

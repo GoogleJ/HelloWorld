@@ -133,15 +133,7 @@ public class UpdateUserInfoActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(UpdateUserInfoActivity.this)))
                     .compose(RxSchedulers.normalTrans())
-                    .subscribe(groupResponse -> {
-                        if (getIntent().getBooleanExtra("fromSocial", false)) {
-                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getId(), groupResponse.getGroupNikeName() + "おれは人间をやめるぞ！ジョジョ―――ッ!",
-                                    Uri.parse(groupResponse.getHeadPortrait())));
-                        } else {
-                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getId(), groupResponse.getGroupNikeName(),
-                                    Uri.parse(groupResponse.getHeadPortrait())));
-                        }
-
+                    .subscribe(s -> {
                         Intent intent = new Intent();
                         intent.putExtra("result", sign);
                         setResult(2, intent);

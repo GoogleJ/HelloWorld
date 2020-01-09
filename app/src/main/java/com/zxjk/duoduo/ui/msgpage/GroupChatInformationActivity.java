@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +23,7 @@ import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -34,11 +34,11 @@ import com.zxjk.duoduo.ui.minepage.UpdateUserInfoActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.AllGroupMemebersAdapter;
 import com.zxjk.duoduo.ui.widget.dialog.ConfirmDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.RecyclerItemAverageDecoration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -67,6 +67,7 @@ public class GroupChatInformationActivity extends BaseActivity {
     private Intent intent;
     private TextView tv_title;
     private GroupResponse group;
+    private List<AllGroupMembersResponse> allGroupMembersResponseList;
 
     private Switch switch1;
     private Switch switch2;
@@ -89,7 +90,18 @@ public class GroupChatInformationActivity extends BaseActivity {
 
         group = (GroupResponse) getIntent().getSerializableExtra("group");
 
-        initView();
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getGroupMemByGroupId(group.getGroupInfo().getId())
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(allGroupMembersResponseList -> {
+                    this.allGroupMembersResponseList = allGroupMembersResponseList;
+                    initView();
+                }, t -> {
+                    handleApiError(t);
+                    finish();
+                });
     }
 
     private void initView() {
@@ -129,7 +141,7 @@ public class GroupChatInformationActivity extends BaseActivity {
             }
         });
         switch1.setOnCheckedChangeListener((buttonView, isChecked) -> RongIM.getInstance().setConversationToTop(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), isChecked, null));
-        tv_title.setText(getString(R.string.chat_message) + "(" + group.getCustomers().size() + ")");
+        tv_title.setText(getString(R.string.chat_message) + "(" + allGroupMembersResponseList.size() + ")");
         groupChatName = findViewById(R.id.group_chat_name);
         groupChatRecyclerView = findViewById(R.id.group_chat_recycler_view);
 
@@ -140,14 +152,14 @@ public class GroupChatInformationActivity extends BaseActivity {
         mAdapter = new AllGroupMemebersAdapter();
         groupChatRecyclerView.addItemDecoration(new RecyclerItemAverageDecoration(0, 0, 5));
         groupChatRecyclerView.setAdapter(mAdapter);
-        if (group.getCustomers().size() <= 15) {
+        if (allGroupMembersResponseList.size() <= 15) {
             see_more_group_members.setVisibility(View.GONE);
-            mAdapter.setNewData(group.getCustomers());
+            mAdapter.setNewData(allGroupMembersResponseList);
         } else {
             see_more_group_members.setVisibility(View.VISIBLE);
-            mAdapter.setNewData(group.getCustomers().subList(0, 15));
+            mAdapter.setNewData(allGroupMembersResponseList.subList(0, 15));
         }
-        mAdapter.setOnItemClickListener((adapter, view, position) -> CommonUtils.resolveFriendList(this, group.getCustomers().get(position).getId(), group.getGroupInfo().getId()));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> CommonUtils.resolveFriendList(this, allGroupMembersResponseList.get(position).getId(), group.getGroupInfo().getId()));
 
         initFooterView();
 
@@ -172,21 +184,21 @@ public class GroupChatInformationActivity extends BaseActivity {
             delMembers.setOnClickListener(v -> {
                 intent = new Intent(GroupChatInformationActivity.this, CreateGroupActivity.class);
                 intent.putExtra("eventType", 3);
-                intent.putExtra("members", group);
+                intent.putExtra("groupId", group.getGroupInfo().getId());
                 startActivityForResult(intent, REQUEST_REMOVE);
             });
         }
 
         addMembers.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(group.getMaxNumber())) {
-                if (group.getCustomers().size() >= Integer.parseInt(group.getMaxNumber())) {
+                if (allGroupMembersResponseList.size() >= Integer.parseInt(group.getMaxNumber())) {
                     ToastUtils.showShort(getString(R.string.group_max_number));
                     return;
                 }
             }
             intent = new Intent(GroupChatInformationActivity.this, CreateGroupActivity.class);
             intent.putExtra("eventType", 2);
-            intent.putExtra("members", group);
+            intent.putExtra("groupId", group.getGroupInfo().getId());
             startActivity(intent);
         });
         mAdapter.addFooterView(footerView);
@@ -361,31 +373,27 @@ public class GroupChatInformationActivity extends BaseActivity {
         }
 
         if (data != null && resultCode == 7) {
-            switch (requestCode) {
-                case REQUEST_REMOVE:
-                    selectedIds = data.getStringArrayListExtra("deletemanagers");
-                    Iterator<GroupResponse.CustomersBean> it = group.getCustomers().iterator();
-                    Iterator<String> iterator = selectedIds.iterator();
+            if (requestCode == REQUEST_REMOVE) {
+                selectedIds = data.getStringArrayListExtra("deletemanagers");
+                Iterator<AllGroupMembersResponse> it = allGroupMembersResponseList.iterator();
 
-                    while (iterator.hasNext()) {
-                        String id = iterator.next();
-                        while (it.hasNext()) {
-                            String id1 = it.next().getId();
-                            if (id1 .equals(id)) {
-                                it.remove();
-                            }
+                for (String id : selectedIds) {
+                    while (it.hasNext()) {
+                        String id1 = it.next().getId();
+                        if (id1.equals(id)) {
+                            it.remove();
                         }
                     }
+                }
 
-                    if (group.getCustomers().size() <= 15) {
-                        see_more_group_members.setVisibility(View.GONE);
-                        mAdapter.setNewData(group.getCustomers());
-                    } else {
-                        see_more_group_members.setVisibility(View.VISIBLE);
-                        mAdapter.setNewData(group.getCustomers().subList(0, 15));
-                    }
-                    tv_title.setText(getString(R.string.chat_message) + "(" + group.getCustomers().size() + ")");
-                    break;
+                if (allGroupMembersResponseList.size() <= 15) {
+                    see_more_group_members.setVisibility(View.GONE);
+                    mAdapter.setNewData(allGroupMembersResponseList);
+                } else {
+                    see_more_group_members.setVisibility(View.VISIBLE);
+                    mAdapter.setNewData(allGroupMembersResponseList.subList(0, 15));
+                }
+                tv_title.setText(getString(R.string.chat_message) + "(" + allGroupMembersResponseList.size() + ")");
             }
         }
     }
@@ -439,6 +447,5 @@ public class GroupChatInformationActivity extends BaseActivity {
         }
         ToastUtils.showShort(R.string.developing);
     }
-
 
 }

@@ -3,7 +3,6 @@ package com.zxjk.duoduo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -28,7 +27,6 @@ import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.zxjk.duoduo.bean.ConversationTimeBean;
 import com.zxjk.duoduo.bean.DaoSession;
-import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.ui.NewLoginActivity;
@@ -60,17 +58,14 @@ import com.zxjk.duoduo.utils.MyCrashHandler;
 import com.zxjk.duoduo.utils.WebDataUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.DefaultExtensionModule;
 import io.rong.imkit.IExtensionModule;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.widget.provider.SightMessageItemProvider;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.UserInfo;
 import io.rong.message.SightMessage;
 import io.rong.push.RongPushClient;
 import io.rong.push.pushconfig.PushConfig;
@@ -128,7 +123,7 @@ public class Application extends android.app.Application {
         QbSdk.initX5Environment(this, null);
     }
 
-    public WebDataUtils GetWebDataUtils(){
+    public WebDataUtils GetWebDataUtils() {
         return WebDataUtils;
     }
 
@@ -229,7 +224,7 @@ public class Application extends android.app.Application {
         });
     }
 
-    
+
     private void registerConnectionStatusListener() {
         RongIMClient.setConnectionStatusListener(connectionStatus -> {
             if (connectionStatus == KICKED_OFFLINE_BY_OTHER_CLIENT) {
@@ -283,18 +278,6 @@ public class Application extends android.app.Application {
         RongIM.getInstance().enableNewComingMessageIcon(true);//显示新消息提醒
         RongIM.getInstance().enableUnreadMessageIcon(true);//显示未读消息数目
         setMyExtensionModule();
-        RongIM.getInstance().setGroupMembersProvider((groupId, callback) -> ServiceFactory.getInstance().getBaseService(Api.class)
-                .getGroupByGroupId(groupId)
-                .subscribeOn(Schedulers.io())
-                .subscribe(r -> {
-                    ArrayList<UserInfo> strings = new ArrayList<>(r.data.getCustomers().size());
-                    for (GroupResponse.CustomersBean b : r.data.getCustomers()) {
-                        UserInfo userInfo = new UserInfo(b.getId(), b.getNick(), Uri.parse(b.getHeadPortrait()));
-                        strings.add(userInfo);
-                    }
-                    callback.onGetGroupMembersResult(strings);
-                }, t -> {
-                }));
     }
 
     //初始化阿里云OSS上传服务

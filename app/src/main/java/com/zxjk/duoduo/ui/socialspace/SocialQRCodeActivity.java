@@ -102,6 +102,23 @@ public class SocialQRCodeActivity extends BaseActivity {
         uri2Code = new Gson().toJson(uri);
 
         getCodeBitmap();
+
+        getPermisson(findViewById(R.id.img_saveqrcode), g -> {
+            //保存到手机
+            if (bitmap == null) {
+                return;
+            }
+
+            imgqrcode.buildDrawingCache();
+
+            SaveImageUtil.get().savePic(imgqrcode.getDrawingCache(), success -> {
+                if (success) {
+                    ToastUtils.showShort(R.string.savesucceed);
+                    return;
+                }
+                ToastUtils.showShort(R.string.savefailed);
+            });
+        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
     private void setToolBarMarginTop() {
@@ -169,26 +186,6 @@ public class SocialQRCodeActivity extends BaseActivity {
         finish();
     }
 
-    //保存二维码
-    public void save(View view) {
-        getPermisson(findViewById(R.id.cardSave), g -> {
-            //保存到手机
-            if (bitmap == null) {
-                return;
-            }
-
-            imgqrcode.buildDrawingCache();
-
-            SaveImageUtil.get().savePic(imgqrcode.getDrawingCache(), success -> {
-                if (success) {
-                    ToastUtils.showShort(R.string.savesucceed);
-                    return;
-                }
-                ToastUtils.showShort(R.string.savefailed);
-            });
-        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
-    }
-
     //分享二维码
     public void share(View view) {
         RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
@@ -203,7 +200,6 @@ public class SocialQRCodeActivity extends BaseActivity {
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-
             }
         });
     }

@@ -52,16 +52,13 @@ public class GroupAnnouncementActivity extends BaseActivity {
         announcementEdit = findViewById(R.id.announcement_edit);
     }
 
-
-    public void updateGroupInfo(String groupInfo) {
+    private void updateGroupInfo(String groupInfo) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .updateGroupInfo(groupInfo)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(groupResponse -> {
-                    RongUserInfoManager.getInstance().setGroupInfo(new Group(groupResponse.getId(),
-                            groupResponse.getGroupNikeName(), Uri.parse(groupResponse.getHeadPortrait())));
+                .subscribe(s -> {
                     ToastUtils.showShort(GroupAnnouncementActivity.this.getString(R.string.announcement_edit_successful));
                     Intent intent = new Intent();
                     intent.putExtra("result", announcementEdit.getText().toString().trim());

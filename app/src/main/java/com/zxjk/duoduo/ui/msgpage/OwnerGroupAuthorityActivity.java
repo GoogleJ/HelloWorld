@@ -146,7 +146,7 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
                     ivFunc.setOnClickListener(v -> {
                         Intent intent = new Intent(OwnerGroupAuthorityActivity.this, CreateGroupActivity.class);
                         intent.putExtra("eventType", 4);
-                        intent.putExtra("members", group);
+                        intent.putExtra("groupId", group.getGroupInfo().getId());
                         intent.putParcelableArrayListExtra("managers", (ArrayList<? extends Parcelable>) adapter.getData());
                         startActivityForResult(intent, 1);
                     });
@@ -160,7 +160,7 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
                         Intent intent = new Intent(OwnerGroupAuthorityActivity.this, CreateGroupActivity.class);
                         intent.putExtra("eventType", 5);
                         intent.putParcelableArrayListExtra("managers", (ArrayList<? extends Parcelable>) adapter.getData());
-                        intent.putExtra("members", group);
+                        intent.putExtra("groupId", group.getGroupInfo().getId());
                         startActivityForResult(intent, 1);
                     });
                 } else {
@@ -219,7 +219,7 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
         emptyView.setOnClickListener(v -> {
             Intent intent = new Intent(OwnerGroupAuthorityActivity.this, CreateGroupActivity.class);
             intent.putExtra("eventType", 4);
-            intent.putExtra("members", group);
+            intent.putExtra("groupId", group.getGroupInfo().getId());
             startActivityForResult(intent, 1);
         });
     }

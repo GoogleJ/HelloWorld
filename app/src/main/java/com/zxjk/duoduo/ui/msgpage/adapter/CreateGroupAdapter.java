@@ -14,8 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
-import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class CreateGroupAdapter extends RecyclerView.Adapter<CreateGroupAdapter.
     //好友列表
     private List<FriendInfoResponse> data = new ArrayList<>();
     //当前群成员
-    private List<GroupResponse.CustomersBean> data1 = new ArrayList<>();
+    private List<AllGroupMembersResponse> data1 = new ArrayList<>();
 
     private OnClickListener onClickListener;
     private OnTitleClickListener onTitleClickListener;
@@ -45,7 +45,7 @@ public class CreateGroupAdapter extends RecyclerView.Adapter<CreateGroupAdapter.
         this.fromSocial = fromSocial;
     }
 
-    public void setData1(List<GroupResponse.CustomersBean> data1) {
+    public void setData1(List<AllGroupMembersResponse> data1) {
         this.data1 = data1;
     }
 
@@ -62,7 +62,7 @@ public class CreateGroupAdapter extends RecyclerView.Adapter<CreateGroupAdapter.
         if (data1.size() != 0) {
             flag:
             for (FriendInfoResponse f : data) {
-                for (GroupResponse.CustomersBean c : data1) {
+                for (AllGroupMembersResponse c : data1) {
                     if (f.getId().equals(c.getId())) {
                         f.setCanCheck(false);
                         continue flag;

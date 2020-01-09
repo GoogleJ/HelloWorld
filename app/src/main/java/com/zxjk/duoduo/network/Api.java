@@ -20,7 +20,6 @@ import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
-import com.zxjk.duoduo.bean.response.GetAuthorizationTokenResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
 import com.zxjk.duoduo.bean.response.GetCustomerBasicInfoByIdResponse;
@@ -43,7 +42,6 @@ import com.zxjk.duoduo.bean.response.GetSymbolSerialResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetUInvitationUrlBean;
 import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
-import com.zxjk.duoduo.bean.response.GetUserInfo;
 import com.zxjk.duoduo.bean.response.GetVicinityResponse;
 import com.zxjk.duoduo.bean.response.GroupChatResponse;
 import com.zxjk.duoduo.bean.response.GroupManagementInfoBean;
@@ -287,7 +285,7 @@ public interface Api {
 
     @POST("duoduo/group/updateGroupInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<GroupResponse.GroupInfoBean>> updateGroupInfo(@Field("groupInfo") String groupInfo);
+    Observable<BaseResponse<String>> updateGroupInfo(@Field("groupInfo") String groupInfo);
 
     @POST("duoduo/group/disBandGroup")
     @FormUrlEncoded
@@ -716,14 +714,6 @@ public interface Api {
     @POST("duoduo/customer/authorizedLogin")
     @FormUrlEncoded
     Observable<BaseResponse<String>> getAuthorization(@Field("appId") String appid);
-
-    @POST("duoduo/customer/authorizedAccessToken")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetAuthorizationTokenResponse>> getToken(@Field("appId") String appid, @Field("secret") String secret, @Field("code") String code);
-
-    @POST("duoduo/customer/userInfo")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetUserInfo>> GetUserInfo(@Field("appId") String appid, @Field("accessToken") String accessToken, @Field("hilamgId") String hilamgId);
 
     @POST("duoduo/customer/thirdPartLogin")
     @FormUrlEncoded
