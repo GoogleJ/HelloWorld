@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -112,6 +113,7 @@ public class SocialHomeActivity extends BaseActivity {
     private ImageView ivOpenConversation;
     private LinearLayout llSocialNotice;
     private LinearLayout llRemoveMem;
+    private LinearLayout llInviteOrRemove;
     private View bgMask;
 
     private ViewStub viewStubPay;
@@ -205,6 +207,7 @@ public class SocialHomeActivity extends BaseActivity {
                             contentEnable = false;
                             llSocialNotice.setVisibility(View.GONE);
                             pagerOut.setVisibility(View.GONE);
+                            llInviteOrRemove.setVisibility(View.GONE);
                             ivOpenConversation.setVisibility(View.GONE);
                             if (r.getType().equals("free")) {
                                 View inflate = viewStubFree.inflate();
@@ -221,6 +224,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     indicatorTop.setVisibility(View.VISIBLE);
                                                     llSocialNotice.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
+                                                    llInviteOrRemove.setVisibility(View.VISIBLE);
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
 
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
@@ -253,6 +257,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     indicatorTop.setVisibility(View.VISIBLE);
                                                     llSocialNotice.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
+                                                    llInviteOrRemove.setVisibility(View.VISIBLE);
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
 
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
@@ -284,7 +289,7 @@ public class SocialHomeActivity extends BaseActivity {
                     tvSocialCode.setText("社群号:" + r.getCode());
                     tvNotice.setText(r.getAnnouncement());
 
-                    if (!r.getIdentity().equals("0")) {
+                    if (!TextUtils.isEmpty(r.getIdentity()) && !r.getIdentity().equals("0")) {
                         llRemoveMem.setVisibility(View.VISIBLE);
                     }
 
@@ -550,6 +555,7 @@ public class SocialHomeActivity extends BaseActivity {
         llSecond = findViewById(R.id.llSecond);
         bgMask = findViewById(R.id.bgMask);
         llRemoveMem = findViewById(R.id.llRemoveMem);
+        llInviteOrRemove = findViewById(R.id.llInviteOrRemove);
     }
 
     private void initPager() {
