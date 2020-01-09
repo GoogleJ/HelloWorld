@@ -9,12 +9,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
@@ -29,6 +29,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.RainView;
+import com.zxjk.duoduo.ui.widget.RoundCornerImageView;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.util.List;
@@ -55,8 +56,7 @@ public class RedFallActivity extends BaseActivity {
     private ImageView ivOpen;
     private FrameLayout flOpen;
     private FrameLayout flMask;
-
-    private ProgressBar pb;
+    private RoundCornerImageView ivProgress;
 
     private LinearLayout llCount;
     private ImageView ivNum1;
@@ -86,12 +86,12 @@ public class RedFallActivity extends BaseActivity {
         redFallActivityLocalBeanDao = Application.daoSession.getRedFallActivityLocalBeanDao();
 
         tvCountDown = findViewById(R.id.tvCountDown);
+        ivProgress = findViewById(R.id.ivProgress);
         flMask = findViewById(R.id.flMask);
         ivTop = findViewById(R.id.ivTop);
         ivBottom = findViewById(R.id.ivBottom);
         ivOpen = findViewById(R.id.ivOpen);
         flOpen = findViewById(R.id.flOpen);
-        pb = findViewById(R.id.pb);
         ivRedFallTop = findViewById(R.id.ivRedFallTop);
         ivRedFallTips = findViewById(R.id.ivRedFallTips);
         flRedFallProgress = findViewById(R.id.flRedFallProgress);
@@ -282,8 +282,21 @@ public class RedFallActivity extends BaseActivity {
                 .take(1001)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver())
-                .subscribe(a -> pb.setProgress((int) (1000 - a)));
+                .subscribe(a -> {
+                    if (progressWidth == 0) {
+                        progressWidth = ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 172);
+                        minProgressWidth = CommonUtils.dip2px(this, 12);
+                    }
+
+                    ViewGroup.LayoutParams layoutParams = ivProgress.getLayoutParams();
+                    int width = (int) ((1 - (a / 1000f)) * progressWidth);
+                    layoutParams.width = minProgressWidth + width;
+                    ivProgress.setLayoutParams(layoutParams);
+                });
     }
+
+    private int progressWidth;
+    private int minProgressWidth;
 
     private void openRed(ReceiveAirdropResponse r) {
         ivOpen.animate().alpha(0f)

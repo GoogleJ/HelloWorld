@@ -132,7 +132,7 @@ public class RainView extends View {
 
     private void initData() {
         release();
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 20; i++) {
             ItemEmoje itemEmoje = new ItemEmoje();
             itemEmoje.bitmap = BitmapFactory.decodeResource(getResources(), imgResIds[random.nextInt(6)]);
             itemEmoje.x = random.nextInt(getWidth() - 200) + 100;
