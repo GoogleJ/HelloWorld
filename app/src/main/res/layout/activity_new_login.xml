@@ -74,16 +74,15 @@
 
     </ViewFlipper>
 
-
     <TextView
         android:id="@+id/tv_new_login_text"
-        android:text="未注册的手机号码验证后自动注册"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
         android:gravity="center"
-        />
+        android:text="未注册的手机号码验证后自动注册" />
+
     <TextView
         android:id="@+id/tvTips"
         android:layout_width="wrap_content"

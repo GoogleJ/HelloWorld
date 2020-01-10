@@ -9,6 +9,9 @@ import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.NewsDetailActivity;
 import com.zxjk.duoduo.ui.walletpage.LoginAuthorizationActivity;
+import com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity;
+
+import static com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
 
 public class BrowsableActivity extends BaseActivity {
 
@@ -43,23 +46,29 @@ public class BrowsableActivity extends BaseActivity {
                             startActivity(new Intent(this, WelcomeActivity.class));
                         }
                         break;
-
                     case "paylogin":
-                        if (Constant.currentUser != null) {
-                            String appid = getIntent().getData().getQueryParameter("appId");
-                            String randomStr = getIntent().getData().getQueryParameter("randomStr");
-                            String sign = getIntent().getData().getQueryParameter("sign");
-                            if (!TextUtils.isEmpty(appid) && !TextUtils.isEmpty(randomStr) && !TextUtils.isEmpty(sign)) {
+                        String appid = getIntent().getData().getQueryParameter("appId");
+                        String randomStr = getIntent().getData().getQueryParameter("randomStr");
+                        String sign = getIntent().getData().getQueryParameter("sign");
+                        if (!TextUtils.isEmpty(appid) && !TextUtils.isEmpty(randomStr) && !TextUtils.isEmpty(sign)) {
+                            if (Constant.currentUser == null) {
+                                Intent intent = new Intent(this, ThirdPartLoginActivity.class);
+                                intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
+                                intent.putExtra("appId", appid);
+                                intent.putExtra("randomStr", randomStr);
+                                intent.putExtra("sign", sign);
+                                startActivity(intent);
+                            } else {
                                 Intent intent = new Intent(this, LoginAuthorizationActivity.class);
                                 intent.putExtra("appId", appid);
                                 intent.putExtra("randomStr", randomStr);
                                 intent.putExtra("sign", sign);
-
                                 startActivity(intent);
-                            } else {
-                                ToastUtils.showShort("参数错误！");
                             }
+                        } else {
+                            ToastUtils.showShort("参数错误！");
                         }
+
                         break;
                 }
             }

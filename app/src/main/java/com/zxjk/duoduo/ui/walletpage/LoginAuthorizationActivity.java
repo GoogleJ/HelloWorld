@@ -24,8 +24,9 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import io.rong.imkit.RongIM;
 
-public class LoginAuthorizationActivity extends BaseActivity implements View.OnClickListener {
+import static com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
 
+public class LoginAuthorizationActivity extends BaseActivity implements View.OnClickListener {
     private TextView mNickTv;
     private ImageView mLoginHeadPortrait;
     private String mAppId = "";
@@ -39,9 +40,7 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
 
         initView();
 
-        initDate();
-
-        getAuthorization();
+        initData();
     }
 
     public void initView() {
@@ -50,26 +49,14 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
         findViewById(R.id.btn_login_agreed).setOnClickListener(this);
         findViewById(R.id.btn_login_refused).setOnClickListener(this);
         findViewById(R.id.btn_login_switchid).setOnClickListener(this);
-
     }
 
-    public void initDate() {
+    public void initData() {
         mAppId = getIntent().getStringExtra("appId");
         mRandomStr = getIntent().getStringExtra("randomStr");
         mSign = getIntent().getStringExtra("sign");
         Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(mLoginHeadPortrait);
         mNickTv.setText(Constant.currentUser.getNick());
-    }
-
-    @SuppressLint("CheckResult")
-    public void getAuthorization() {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getAuthorization(mAppId)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
-                .subscribe(s -> {
-                }, this::handleApiError);
     }
 
     @Override
@@ -88,33 +75,13 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     }
 
     public void switchId() {
-        NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
-            @SuppressLint("CheckResult")
-            @Override
-            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                holder.setText(R.id.tv_title, "提示");
-                holder.setText(R.id.tv_content, "您将退出登录");
-                holder.setText(R.id.tv_cancel, "取消");
-                holder.setText(R.id.tv_notarize, "确认");
-                holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
-                holder.setOnClickListener(R.id.tv_notarize, v12 -> {
-                    dialog.dismiss();
-                    ServiceFactory.getInstance().getBaseService(Api.class)
-                            .loginOut()
-                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
-                            .compose(RxSchedulers.normalTrans())
-                            .subscribe(s -> {
-                                RongIM.getInstance().logout();
-                                MMKVUtils.getInstance().enCode("isLogin", false);
-                                Constant.clear();
-                                ToastUtils.showShort(R.string.login_out);
-                                Intent intent = new Intent(LoginAuthorizationActivity.this, NewLoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }, LoginAuthorizationActivity.this::handleApiError);
-                });
-            }
-        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
+        Intent intent = new Intent(this, ThirdPartLoginActivity.class);
+        intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
+        intent.putExtra("appId", mAppId);
+        intent.putExtra("randomStr", mRandomStr);
+        intent.putExtra("sign", mSign);
+        startActivity(intent);
+        finish();
     }
 
     @SuppressLint("CheckResult")

@@ -78,7 +78,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.walletpage.PayLoginActivity"
+            android:name=".ui.walletpage.ThirdPartLoginActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
