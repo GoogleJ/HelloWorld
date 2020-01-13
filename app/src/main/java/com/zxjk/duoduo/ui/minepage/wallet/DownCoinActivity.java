@@ -140,7 +140,7 @@ public class DownCoinActivity extends BaseActivity {
 
         tvAllIn.setOnClickListener(v -> {
             if (balance2block) {
-                double result = subtract(Double.parseDouble(data.getBalance()), Double.parseDouble(data.getRate()));
+                double result = subtract(Double.parseDouble(data.getBalanceSum()), Double.parseDouble(data.getRate()));
                 if (result < 0) {
                     ToastUtils.showShort(R.string.balance_not_enough);
                     return;
