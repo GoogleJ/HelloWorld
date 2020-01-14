@@ -164,12 +164,14 @@ public class NewLoginActivity extends BaseActivity {
         slideIn.excludeTarget(R.id.tvTips, true);
         slideIn.excludeTarget(R.id.ivBack, true);
         slideIn.excludeTarget(R.id.tvChangeLanguage, true);
+        slideIn.excludeTarget(R.id.tv_new_login_text, true);
 
         Slide slideOut = new Slide(Gravity.START);
         slideOut.excludeTarget(R.id.ppivVerify, true);
         slideOut.excludeTarget(R.id.tvTips, true);
         slideOut.excludeTarget(R.id.ivBack, true);
         slideOut.excludeTarget(R.id.tvChangeLanguage, true);
+        slideOut.excludeTarget(R.id.tv_new_login_text, true);
 
         TransitionSet set = new TransitionSet();
         set.addTransition(fadeIn);
@@ -254,7 +256,6 @@ public class NewLoginActivity extends BaseActivity {
             return;
         }
         ServiceFactory.getInstance().getBaseService(Api.class)
-//                .getCode(tvContrary.getText().toString().substring(1) + "-" + phone, "0")
                 .getCode(phone, isChinaPhone)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())

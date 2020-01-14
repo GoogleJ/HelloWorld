@@ -55,6 +55,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.FindFragment;
+import com.zxjk.duoduo.ui.minepage.ConfirmRedFallActivity;
 import com.zxjk.duoduo.ui.minepage.MineFragment;
 import com.zxjk.duoduo.ui.msgpage.ContactFragment;
 import com.zxjk.duoduo.ui.msgpage.MsgFragment;
@@ -165,6 +166,12 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initRongUserProvider();
 
+        initRedfallData();
+
+    }
+
+    @SuppressLint("CheckResult")
+    private void initRedfallData() {
         redFallActivityLocalBeanDao.deleteAll();
 
         ServiceFactory.getInstance().getBaseService(Api.class)
