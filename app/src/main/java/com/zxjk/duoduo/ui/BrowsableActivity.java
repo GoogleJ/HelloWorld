@@ -46,12 +46,12 @@ public class BrowsableActivity extends BaseActivity {
                             startActivity(new Intent(this, WelcomeActivity.class));
                         }
                         break;
-                    case "paylogin":
+                    case "authorizationloginlogin":
                         String appid = getIntent().getData().getQueryParameter("appId");
                         String randomStr = getIntent().getData().getQueryParameter("randomStr");
                         String sign = getIntent().getData().getQueryParameter("sign");
                         if (!TextUtils.isEmpty(appid) && !TextUtils.isEmpty(randomStr) && !TextUtils.isEmpty(sign)) {
-                            if (Constant.currentUser == null) {
+                            if (Constant.currentUser.getId() == null) {
                                 Intent intent = new Intent(this, ThirdPartLoginActivity.class);
                                 intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
                                 intent.putExtra("appId", appid);
@@ -60,6 +60,7 @@ public class BrowsableActivity extends BaseActivity {
                                 startActivity(intent);
                             } else {
                                 Intent intent = new Intent(this, LoginAuthorizationActivity.class);
+                                intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
                                 intent.putExtra("appId", appid);
                                 intent.putExtra("randomStr", randomStr);
                                 intent.putExtra("sign", sign);

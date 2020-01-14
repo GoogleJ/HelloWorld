@@ -154,12 +154,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initView();
 
-        int id = getIntent().getIntExtra("id", 0);
-        if (id == 1) {
-            switchFragment(findFragment);
-            m_bottom_bar.setFirstSelectedPosition(2).initialise();
-        }
-
         getNewFriendCount();
 
         //checkPermission(); 检测是否开启自启动和通知

@@ -8,57 +8,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-5dp"
-        android:layout_marginEnd="-2dp"
         android:background="@drawable/reward_sign_backgroud"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="24dp">
-
-            <RelativeLayout
-                android:id="@+id/rlBack"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:clickable="true"
-                android:foreground="?selectableItemBackgroundBorderless">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ico_back_white" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/rewardmot"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_rules_web"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:text="规则说明"
-                android:textColor="@color/white" />
-
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
             android:orientation="horizontal">
 
@@ -170,6 +127,7 @@
             android:paddingBottom="8dp">
 
             <TextView
+                android:id="@+id/tv_reward_task_title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -190,6 +148,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/tv_reward_task_title2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

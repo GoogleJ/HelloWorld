@@ -34,14 +34,15 @@ import com.zxjk.duoduo.ui.widget.ProgressView;
 
 public class WebActivity extends BaseActivity implements WebActivityToLogin {
 
+    String currentUrl;
     private FrameLayout fl_webview;
     private ProgressView pb_webview;
-    String currentUrl;
     private WebSettings webSettings;
     private WebView mWebView;
     private TextView tv_title;
     private String title;
     private String type;
+    private ValueAnimator pbAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +86,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         }
     }
-
-    private ValueAnimator pbAnim;
 
     private void initAnimtor() {
         pbAnim = ValueAnimator.ofFloat(0f, 70f);

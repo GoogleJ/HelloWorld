@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.shehuan.nicedialog.BaseNiceDialog;
@@ -18,12 +19,13 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
+
 import io.rong.imkit.RongIM;
 
+import static com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity.ACTION_LOGINAUTHORIZATIONSWICH;
 import static com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
 
 public class LoginAuthorizationActivity extends BaseActivity implements View.OnClickListener {
@@ -32,6 +34,7 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     private String mAppId = "";
     private String mRandomStr = "";
     private String mSign = "";
+    private String action = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     }
 
     public void initData() {
+        action = getIntent().getStringExtra("action");
         mAppId = getIntent().getStringExtra("appId");
         mRandomStr = getIntent().getStringExtra("randomStr");
         mSign = getIntent().getStringExtra("sign");
@@ -75,13 +79,38 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     }
 
     public void switchId() {
-        Intent intent = new Intent(this, ThirdPartLoginActivity.class);
-        intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
-        intent.putExtra("appId", mAppId);
-        intent.putExtra("randomStr", mRandomStr);
-        intent.putExtra("sign", mSign);
-        startActivity(intent);
-        finish();
+        NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
+            @SuppressLint("CheckResult")
+            @Override
+            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                holder.setText(R.id.tv_title, "提示");
+                holder.setText(R.id.tv_content, "您将退出登录");
+                holder.setText(R.id.tv_cancel, "取消");
+                holder.setText(R.id.tv_notarize, "确认");
+                holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
+                holder.setOnClickListener(R.id.tv_notarize, v12 -> {
+                    dialog.dismiss();
+                    ServiceFactory.getInstance().getBaseService(Api.class)
+                            .loginOut()
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
+                            .compose(RxSchedulers.normalTrans())
+                            .subscribe(s -> {
+                                RongIM.getInstance().logout();
+                                MMKVUtils.getInstance().enCode("isLogin", false);
+                                Constant.clear();
+                                ToastUtils.showShort(R.string.login_out);
+                                Intent intent = new Intent(LoginAuthorizationActivity.this, ThirdPartLoginActivity.class);
+                                intent.putExtra("action", ACTION_LOGINAUTHORIZATIONSWICH);
+                                intent.putExtra("appId", mAppId);
+                                intent.putExtra("randomStr", mRandomStr);
+                                intent.putExtra("sign", mSign);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }, LoginAuthorizationActivity.this::handleApiError);
+                });
+            }
+        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
     }
 
     @SuppressLint("CheckResult")
@@ -92,7 +121,11 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
                 .subscribe(s -> {
-                    ((Application) getApplication()).GetWebDataUtils().webToLogin(s);
+                    ToastUtils.showShort("授权成功！");
+                    switch (action){
+                        case ACTION_THIRDPARTLOGINACCESS:
+                            ((Application) getApplication()).GetWebDataUtils().webToLogin(s);
+                    }
                     finish();
                 }, this::handleApiError);
     }

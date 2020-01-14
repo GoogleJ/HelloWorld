@@ -2,10 +2,13 @@ package com.zxjk.duoduo.ui.minepage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -28,6 +31,7 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.dialog.RewardDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +42,7 @@ public class RewardMotActivity extends BaseActivity {
     private ImageView mIvHead;
     private RecyclerView recyclerSign;
     private RecyclerView mRecyclerSignTesk;
+    private RelativeLayout mRlRewardrlNavigationBar;
 
     private String headPortrait;
     private String rewardUSDT;
@@ -48,6 +53,12 @@ public class RewardMotActivity extends BaseActivity {
     private BaseQuickAdapter<GetSignListResponse.PointsListBean, BaseViewHolder> adapter2;
 
     private GetSignListResponse signListResponse;
+
+    private int mDistanceY;
+
+
+    private int height = 640;// 滑动开始变色的高,真实项目中此高度是由广告轮播或其他首页view高度决定
+    private int overallXScroll = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +79,20 @@ public class RewardMotActivity extends BaseActivity {
 
     private void initView() {
         mRecyclerSignTesk = findViewById(R.id.recycler_sign_task);
+        mRlRewardrlNavigationBar = findViewById(R.id.rl_reward_navigation_bar);
+        findViewById(R.id.rlBack).setOnClickListener(v -> finish());
+        findViewById(R.id.tv_rules_web).setOnClickListener(v -> {
+            Intent intent = new Intent(RewardMotActivity.this, WebActivity.class);
+            intent.putExtra("title", "活动规则");
+            intent.putExtra("url", "file:///android_asset/rules/index.html");
+            startActivity(intent);
+        });
     }
 
     @SuppressLint("CheckResult")
     private void initData() {
+
+
         adapter2 = new BaseQuickAdapter<GetSignListResponse.PointsListBean, BaseViewHolder>(R.layout.linearlayout_reward_sign_tesk) {
             @Override
             protected void convert(BaseViewHolder helper, GetSignListResponse.PointsListBean p) {
@@ -83,6 +104,7 @@ public class RewardMotActivity extends BaseActivity {
                 TextView mRewardReceiveTack2 = helper.getView(R.id.ic_reward_receive_tack2);
                 TextView mTvRewardTaskGo = helper.getView(R.id.tv_reward_task_go);
                 ImageView mImgRewardTaskIc = helper.getView(R.id.img_reward_task_ic);
+
                 mTvRewardTaskTitle.setText(p.getActivity());
                 mTvRewardTaskContent.setText(p.getActivityDesc());
 
@@ -184,19 +206,14 @@ public class RewardMotActivity extends BaseActivity {
         mRecyclerSignTesk.setItemAnimator(new DefaultItemAnimator());
         mRecyclerSignTesk.setLayoutManager(new LinearLayoutManager(this));
 
-        headerView.findViewById(R.id.rlBack).setOnClickListener(v -> finish());
-        headerView.findViewById(R.id.tv_rules_web).setOnClickListener(v -> {
-            Intent intent = new Intent(RewardMotActivity.this, WebActivity.class);
-            intent.putExtra("title", "活动规则");
-            intent.putExtra("url", "file:///android_asset/rules/index.html");
-            startActivity(intent);
-        });
+
 
         tvTotalReward = headerView.findViewById(R.id.tvTotalReward);
         tvSignDays = headerView.findViewById(R.id.tvSignDays);
         recyclerSign = headerView.findViewById(R.id.recyclerSign);
         mIvHead = headerView.findViewById(R.id.iv_head_reward);
         Glide.with(this).load(headPortrait).into(mIvHead);
+
 
         adapter1 = new BaseQuickAdapter<GetSignListResponse.CustomerSignBean, BaseViewHolder>(R.layout.item_sign) {
             @Override
@@ -232,6 +249,7 @@ public class RewardMotActivity extends BaseActivity {
                     mSignSevenUsdt.setTextColor(ContextCompat.getColor(RewardMotActivity.this, R.color.list_item_bg_press));
                     mSignSevenUsdt.setText(R.string.reward_sign);
                 } else if (b.getSignStatus().equals("0")) {
+                    helper.getView(R.id.llContent).setAlpha((float) 1);
                     helper.getView(R.id.llContent).setBackgroundResource(R.drawable.shape_reward_sign);
                     tvCoins.setTextColor(ContextCompat.getColor(RewardMotActivity.this, R.color.black));
                     tvTime.setTextColor(ContextCompat.getColor(RewardMotActivity.this, R.color.text_click_normal));
@@ -281,6 +299,15 @@ public class RewardMotActivity extends BaseActivity {
             }
         };
 
+        List<GetSignListResponse.CustomerSignBean> customerSignBean1 = new ArrayList<>();
+        GetSignListResponse.CustomerSignBean customerSignBean2= new GetSignListResponse.CustomerSignBean();
+        customerSignBean2.setSignStatus("1");
+        customerSignBean2.setRepay("1.00");
+        for (int i = 0;i < 7;i++){
+            customerSignBean1.add(customerSignBean2);
+        }
+        adapter1.setNewData(customerSignBean1);
+
         recyclerSign.setAdapter(adapter1);
         GridLayoutManager gl = new GridLayoutManager(this, 4);
         gl.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -293,6 +320,41 @@ public class RewardMotActivity extends BaseActivity {
             }
         });
         recyclerSign.setLayoutManager(gl);
+
+        mRecyclerSignTesk.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                mDistanceY += dy;
+
+                int toolbarHeight = 50;
+
+                if (mDistanceY <= toolbarHeight) {
+                    float scale = (float) mDistanceY / toolbarHeight;
+                    float alpha = scale * 255;
+                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb((int) alpha, 0, 0, 0));
+                } else {
+                    mRlRewardrlNavigationBar.setBackgroundResource(R.color.colorPrimary);
+                }
+
+                overallXScroll = overallXScroll + dy;
+                if (overallXScroll <= 0) {
+                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb(0, 30, 144, 255));
+                } else if (overallXScroll > 0 && overallXScroll <= height) {
+                    float scale = (float) overallXScroll / height;
+                    float alpha = (255 * scale);
+                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb((int) alpha, 30, 144, 255));
+                } else {
+                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb( 255, 30, 144, 255));
+                }
+            }
+        });
 
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getSignList()
