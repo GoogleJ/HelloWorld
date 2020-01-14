@@ -915,5 +915,6 @@
     <string name="login_refused">拒绝</string>
     <string name="reward_sign">已签到</string>
     <string name="social_slogan">社群简介</string>
+    <string name="update1">更新说明</string>
 
 </resources>
