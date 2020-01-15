@@ -1181,6 +1181,13 @@ public class ConversationActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (fragment == null || !fragment.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         if (rongMsgReceiver != null) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(rongMsgReceiver);

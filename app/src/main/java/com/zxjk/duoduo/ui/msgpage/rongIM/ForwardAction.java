@@ -14,11 +14,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +23,6 @@ import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.message.VoiceMessage;
 
 public class ForwardAction implements IClickActions {
 
@@ -42,12 +36,9 @@ public class ForwardAction implements IClickActions {
         for (Message msg : messages) {
             String objectName = msg.getObjectName();
 
-            boolean cantForward = objectName.equals("MRedPackageMsg") ||
-                    objectName.equals("app:transfer") ||
-                    objectName.equals("duoduo:Msg") ||
-                    objectName.equals("duoduo:system:system") ||
-                    objectName.equals("RC:VcMsg") ||
-                    objectName.equals("MGroupCardMsg");
+            boolean cantForward = !objectName.equals("RC:TxtMsg") &&
+                    !objectName.equals("RC:ImgMsg") && !objectName.equals("RC:FileMsg") &&
+                    !objectName.equals("RC:VcMsg") && !objectName.equals("RC:HQVCMsg");
             if (!TextUtils.isEmpty(msg.getExtra())) {
                 try {
                     ConversationInfo j = GsonUtils.fromJson(msg.getExtra(), ConversationInfo.class);
@@ -76,7 +67,6 @@ public class ForwardAction implements IClickActions {
 
                 @Override
                 public void onError(RongIMClient.ErrorCode errorCode) {
-
                 }
             });
         }

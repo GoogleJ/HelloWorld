@@ -541,7 +541,7 @@
     <string name="transfermessagefail">转发失败</string>
     <string name="forwarding">转发中</string>
     <string name="forward_success">转发成功</string>
-    <string name="cant_forward">无法转发语音、红包、转账、群名片、系统等消息</string>
+    <string name="cant_forward">无法转发特殊消息类型</string>
     <string name="update_success">更新成功</string>
     <string name="chat">消息</string>
     <string name="news">社群</string>
