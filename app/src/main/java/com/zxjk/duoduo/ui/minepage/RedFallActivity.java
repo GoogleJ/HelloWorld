@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
@@ -258,15 +259,21 @@ public class RedFallActivity extends BaseActivity {
                                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RedFallActivity.this)))
                                         .compose(RxSchedulers.normalTrans())
                                         .subscribe(r -> {
-                                            if (r.getNextReceive().equals("1")) {
-                                                List<RedFallActivityLocalBean> redFallActivityLocalBeans = redFallActivityLocalBeanDao.loadAll();
-                                                RedFallActivityLocalBean redFallActivityLocalBean = redFallActivityLocalBeans.get(0);
-                                                redFallActivityLocalBean.setLastPlayTime(String.valueOf(System.currentTimeMillis()));
-                                                redFallActivityLocalBeanDao.update(redFallActivityLocalBean);
-                                            } else {
+                                            if (r.getReceive().equals("0")) {
                                                 redFallActivityLocalBeanDao.deleteAll();
+                                                ToastUtils.showShort(R.string.noredfalldata);
+                                                finish();
+                                            } else {
+                                                if (r.getNextReceive().equals("1")) {
+                                                    List<RedFallActivityLocalBean> redFallActivityLocalBeans = redFallActivityLocalBeanDao.loadAll();
+                                                    RedFallActivityLocalBean redFallActivityLocalBean = redFallActivityLocalBeans.get(0);
+                                                    redFallActivityLocalBean.setLastPlayTime(String.valueOf(System.currentTimeMillis()));
+                                                    redFallActivityLocalBeanDao.update(redFallActivityLocalBean);
+                                                } else {
+                                                    redFallActivityLocalBeanDao.deleteAll();
+                                                }
+                                                openRed(r);
                                             }
-                                            openRed(r);
                                         }, t -> {
                                             handleApiError(t);
                                             finish();

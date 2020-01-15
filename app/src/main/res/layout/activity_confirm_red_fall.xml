@@ -42,10 +42,16 @@
 
                 </FrameLayout>
 
-                <View
+                <TextView
+                    android:id="@+id/tvTips"
                     android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/redfall_tips_noshareyet"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
 
                 <FrameLayout
                     android:layout_width="48dp"

@@ -28,6 +28,33 @@ public class ReceiveAirdropResponse implements Parcelable {
     private String reward;
     private String lastTime;
     private String nextReceive;
+    private String receive;
+    private String lastReceive;
+    private int shareCount;
+
+    public int getShareCount() {
+        return shareCount;
+    }
+
+    public void setShareCount(int shareCount) {
+        this.shareCount = shareCount;
+    }
+
+    public String getLastReceive() {
+        return lastReceive;
+    }
+
+    public void setLastReceive(String lastReceive) {
+        this.lastReceive = lastReceive;
+    }
+
+    public String getReceive() {
+        return receive;
+    }
+
+    public void setReceive(String receive) {
+        this.receive = receive;
+    }
 
     public String getId() {
         return id;
@@ -109,6 +136,9 @@ public class ReceiveAirdropResponse implements Parcelable {
         this.nextReceive = nextReceive;
     }
 
+    public ReceiveAirdropResponse() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -126,9 +156,9 @@ public class ReceiveAirdropResponse implements Parcelable {
         dest.writeString(this.reward);
         dest.writeString(this.lastTime);
         dest.writeString(this.nextReceive);
-    }
-
-    public ReceiveAirdropResponse() {
+        dest.writeString(this.receive);
+        dest.writeString(this.lastReceive);
+        dest.writeInt(this.shareCount);
     }
 
     protected ReceiveAirdropResponse(Parcel in) {
@@ -142,9 +172,12 @@ public class ReceiveAirdropResponse implements Parcelable {
         this.reward = in.readString();
         this.lastTime = in.readString();
         this.nextReceive = in.readString();
+        this.receive = in.readString();
+        this.lastReceive = in.readString();
+        this.shareCount = in.readInt();
     }
 
-    public static final Parcelable.Creator<ReceiveAirdropResponse> CREATOR = new Parcelable.Creator<ReceiveAirdropResponse>() {
+    public static final Creator<ReceiveAirdropResponse> CREATOR = new Creator<ReceiveAirdropResponse>() {
         @Override
         public ReceiveAirdropResponse createFromParcel(Parcel source) {
             return new ReceiveAirdropResponse(source);

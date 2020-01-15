@@ -916,5 +916,8 @@
     <string name="reward_sign">已签到</string>
     <string name="social_slogan">社群简介</string>
     <string name="update1">更新说明</string>
+    <string name="noredfalldata">暂无红包雨数据</string>
+    <string name="redfall_tips_noshareyet">您今天还未分享</string>
+    <string name="redfall_tips_shared">您今天已分享过</string>
 
 </resources>
