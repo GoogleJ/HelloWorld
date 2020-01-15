@@ -734,10 +734,6 @@ public class ConversationActivity extends BaseActivity {
                 iterator.remove();
                 break;
             }
-            if (next.getTitle(this).equals("转发")) {
-                iterator.remove();
-                break;
-            }
         }
 
         if (isOwner || groupInfo.getGroupPermission() != null && groupInfo.getGroupPermission().getForceRecall().equals("1")) {
@@ -840,10 +836,6 @@ public class ConversationActivity extends BaseActivity {
         while (iterator.hasNext()) {
             MessageItemLongClickAction next = iterator.next();
             if (next.getTitle(this).equals("强制撤回")) {
-                iterator.remove();
-                break;
-            }
-            if (next.getTitle(this).equals("转发")) {
                 iterator.remove();
                 break;
             }

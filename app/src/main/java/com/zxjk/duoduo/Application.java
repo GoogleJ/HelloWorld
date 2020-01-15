@@ -33,25 +33,19 @@ import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.BasePluginExtensionModule;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.CusEmoteTabMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SocialGroupCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnImageMessageItemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnTextMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnVoiceMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BusinessCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.CusEmoteTabMessageProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.DuoDuoMessageProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GameResultMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GroupCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.MInfoNotificationMsgItemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.RedPacketProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SocialGroupCardProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SystemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.TransferProvider;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.MyCrashHandler;
@@ -255,10 +249,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageType(BusinessCardMessage.class);
         RongIM.registerMessageType(TransferMessage.class);
         RongIM.registerMessageType(GroupCardMessage.class);
-        RongIM.registerMessageType(SystemMessage.class);
         RongIM.registerMessageType(SightMessage.class);
-        RongIM.registerMessageType(GameResultMessage.class);
-        RongIM.registerMessageType(DuoDuoMessage.class);
         RongIM.registerMessageType(CusEmoteTabMessage.class);
         RongIM.registerMessageType(SocialGroupCardMessage.class);
         RongIM.registerMessageTemplate(new MInfoNotificationMsgItemProvider());
@@ -268,15 +259,12 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new TransferProvider());
         RongIM.registerMessageTemplate(new BusinessCardProvider());
         RongIM.registerMessageTemplate(new GroupCardProvider());
-        RongIM.registerMessageTemplate(new SystemProvider());
-        RongIM.registerMessageTemplate(new GameResultMessageProvider());
-        RongIM.registerMessageTemplate(new DuoDuoMessageProvider());
         RongIM.registerMessageTemplate(new BurnTextMessageProvider());
         RongIM.registerMessageTemplate(new BurnImageMessageItemProvider());
         RongIM.registerMessageTemplate(new CusEmoteTabMessageProvider());
         RongIM.registerMessageTemplate(new SocialGroupCardProvider());
-        RongIM.getInstance().enableNewComingMessageIcon(true);//显示新消息提醒
-        RongIM.getInstance().enableUnreadMessageIcon(true);//显示未读消息数目
+        RongIM.getInstance().enableNewComingMessageIcon(true);
+        RongIM.getInstance().enableUnreadMessageIcon(true);
         setMyExtensionModule();
     }
 

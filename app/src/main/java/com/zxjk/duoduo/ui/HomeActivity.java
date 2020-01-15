@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,6 +27,7 @@ import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.blankj.utilcode.util.VibrateUtils;
@@ -43,6 +43,7 @@ import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
+import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
@@ -55,17 +56,11 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.FindFragment;
-import com.zxjk.duoduo.ui.minepage.ConfirmRedFallActivity;
 import com.zxjk.duoduo.ui.minepage.MineFragment;
 import com.zxjk.duoduo.ui.msgpage.ContactFragment;
 import com.zxjk.duoduo.ui.msgpage.MsgFragment;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.GroupConversationProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.DuoDuoMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.GameResultMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
 
@@ -87,10 +82,10 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Group;
 import io.rong.imlib.model.Message;
-import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.CommandMessage;
-import io.rong.message.NotificationMessage;
+import io.rong.message.ImageMessage;
+import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 import io.rong.pushperm.ResultCallback;
 import io.rong.pushperm.RongPushPremissionsCheckHelper;
@@ -365,17 +360,35 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         MessageItemLongClickAction action1 = new MessageItemLongClickAction.Builder()
                 .title("转发")
                 .showFilter(message -> {
-                    MessageContent messageContent = message.getContent();
-                    return !(messageContent instanceof NotificationMessage)
-                            && !(messageContent instanceof VoiceMessage)
-                            && !(messageContent instanceof RedPacketMessage)
-                            && !(messageContent instanceof TransferMessage)
-                            && !(messageContent instanceof SystemMessage)
-                            && !(messageContent instanceof GameResultMessage)
-                            && !(messageContent instanceof DuoDuoMessage)
-                            && message.getSentStatus() != Message.SentStatus.FAILED
-                            && message.getSentStatus() != Message.SentStatus.CANCELED;
-                })
+                            boolean b = message.getSentStatus() == Message.SentStatus.SENT &&
+                                    (message.getObjectName().equals("RC:TxtMsg") ||
+                                            message.getObjectName().equals("RC:ImgMsg") ||
+                                            message.getObjectName().equals("RC:FileMsg") ||
+                                            message.getObjectName().equals("RC:VcMsg") ||
+                                            message.getObjectName().equals("RC:HQVCMsg"));
+
+                            String extra = "";
+                            if (message.getContent() instanceof TextMessage) {
+                                TextMessage textMessage = (TextMessage) message.getContent();
+                                extra = textMessage.getExtra();
+                            } else if (message.getContent() instanceof ImageMessage) {
+                                ImageMessage imageMessage = (ImageMessage) message.getContent();
+                                extra = imageMessage.getExtra();
+                            } else if (message.getContent() instanceof VoiceMessage) {
+                                VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
+                                extra = voiceMessage.getExtra();
+                            }
+                            try {
+                                ConversationInfo info = GsonUtils.fromJson(extra, ConversationInfo.class);
+                                if (info.getMessageBurnTime() != -1) {
+                                    b = false;
+                                }
+                            } catch (Exception e) {
+                            }
+
+                            return b;
+                        }
+                )
                 .actionListener((context, message) -> {
                     RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
                         @Override
@@ -392,8 +405,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                         }
                     });
                     return true;
-                })
-                .build();
+                }).build();
 
         RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(action1);
     }

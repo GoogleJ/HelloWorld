@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -23,6 +22,9 @@ import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.ImageMessage;
+import io.rong.message.TextMessage;
+import io.rong.message.VoiceMessage;
 
 public class ForwardAction implements IClickActions {
 
@@ -36,18 +38,29 @@ public class ForwardAction implements IClickActions {
         for (Message msg : messages) {
             String objectName = msg.getObjectName();
 
-            boolean cantForward = !objectName.equals("RC:TxtMsg") &&
+            boolean cantForward = msg.getSentStatus() != Message.SentStatus.SENT || (!objectName.equals("RC:TxtMsg") &&
                     !objectName.equals("RC:ImgMsg") && !objectName.equals("RC:FileMsg") &&
-                    !objectName.equals("RC:VcMsg") && !objectName.equals("RC:HQVCMsg");
-            if (!TextUtils.isEmpty(msg.getExtra())) {
-                try {
-                    ConversationInfo j = GsonUtils.fromJson(msg.getExtra(), ConversationInfo.class);
-                    if (j.getMessageBurnTime() != -1) {
-                        cantForward = true;
-                    }
-                } catch (Exception e) {
-                }
+                    !objectName.equals("RC:VcMsg") && !objectName.equals("RC:HQVCMsg"));
+
+            String extra = "";
+            if (msg.getContent() instanceof TextMessage) {
+                TextMessage textMessage = (TextMessage) msg.getContent();
+                extra = textMessage.getExtra();
+            } else if (msg.getContent() instanceof ImageMessage) {
+                ImageMessage imageMessage = (ImageMessage) msg.getContent();
+                extra = imageMessage.getExtra();
+            } else if (msg.getContent() instanceof VoiceMessage) {
+                VoiceMessage voiceMessage = (VoiceMessage) msg.getContent();
+                extra = voiceMessage.getExtra();
             }
+            try {
+                ConversationInfo info = GsonUtils.fromJson(extra, ConversationInfo.class);
+                if (info.getMessageBurnTime() != -1) {
+                    cantForward = true;
+                }
+            } catch (Exception e) {
+            }
+
             if (cantForward) {
                 ToastUtils.showShort(R.string.cant_forward);
                 return;
