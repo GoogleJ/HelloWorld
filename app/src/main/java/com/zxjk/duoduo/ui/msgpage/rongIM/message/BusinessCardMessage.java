@@ -13,34 +13,18 @@ import io.rong.common.ParcelUtils;
 import io.rong.imlib.MessageTag;
 import io.rong.imlib.model.MessageContent;
 
-
 @SuppressLint("ParcelCreator")
 @MessageTag(value = "MMyCardMsg", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
 public class BusinessCardMessage extends MessageContent {
-
-    /**
-     * //显示的内容  ios
-     * @property (nonatomic, strong) NSString *icon;
-     * @property (nonatomic, strong) NSString *name;
-     * @property (nonatomic, strong) NSString *duoduo;
-     * //附件消息
-     * @property(nonatomic, strong) NSString *extra;
-     *
-     * @property (nonatomic, strong) NSString *userId;
-     */
-
-
     private String icon;
     private String name;
     private String duoduo;
-    //这里是userId或者friendId
     private String extra;
     private String userId;
-
-
+    private String senderName;
+    private String senderId;
 
     public BusinessCardMessage() {
-
     }
 
     @Override
@@ -48,10 +32,12 @@ public class BusinessCardMessage extends MessageContent {
         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("icon", getIcon());
-            jsonObj.put("name",getName());
-            jsonObj.put("duoduo",getDuoduo());
-            jsonObj.put("extra",getExtra());
-            jsonObj.put("userId",getUserId());
+            jsonObj.put("name", getName());
+            jsonObj.put("duoduo", getDuoduo());
+            jsonObj.put("extra", getExtra());
+            jsonObj.put("userId", getUserId());
+            jsonObj.put("senderName", getSenderName());
+            jsonObj.put("senderId", getSenderId());
         } catch (JSONException e) {
             Log.e("JSONException", e.getMessage());
         }
@@ -62,6 +48,7 @@ public class BusinessCardMessage extends MessageContent {
         }
         return null;
     }
+
     public BusinessCardMessage(byte[] data) {
         String jsonStr = null;
 
@@ -85,7 +72,8 @@ public class BusinessCardMessage extends MessageContent {
             if (jsonObj.has("duoduo")) {
                 setDuoduo(jsonObj.optString("duoduo"));
             }
-            if (jsonObj.has("extra")){
+
+            if (jsonObj.has("extra")) {
                 setExtra(jsonObj.optString("extra"));
             }
 
@@ -93,10 +81,19 @@ public class BusinessCardMessage extends MessageContent {
                 setUserId(jsonObj.optString("userId"));
             }
 
+            if (jsonObj.has("senderName")) {
+                setSenderName(jsonObj.optString("senderName"));
+            }
+
+            if (jsonObj.has("senderId")) {
+                setSenderId(jsonObj.optString("senderId"));
+            }
+
         } catch (JSONException e) {
             Log.d("JSONException", e.getMessage());
         }
     }
+
     @Override
     public int describeContents() {
         return 0;
@@ -104,11 +101,13 @@ public class BusinessCardMessage extends MessageContent {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        ParcelUtils.writeToParcel(dest,icon);
-        ParcelUtils.writeToParcel(dest,name);
-        ParcelUtils.writeToParcel(dest,duoduo);
-        ParcelUtils.writeToParcel(dest,extra);
-        ParcelUtils.writeToParcel(dest,userId);
+        ParcelUtils.writeToParcel(dest, icon);
+        ParcelUtils.writeToParcel(dest, name);
+        ParcelUtils.writeToParcel(dest, duoduo);
+        ParcelUtils.writeToParcel(dest, extra);
+        ParcelUtils.writeToParcel(dest, userId);
+        ParcelUtils.writeToParcel(dest, senderName);
+        ParcelUtils.writeToParcel(dest, senderId);
     }
 
     //给消息赋值。
@@ -119,7 +118,10 @@ public class BusinessCardMessage extends MessageContent {
         setDuoduo(ParcelUtils.readFromParcel(in));
         setExtra(ParcelUtils.readFromParcel(in));
         setUserId(ParcelUtils.readFromParcel(in));
+        setSenderName(ParcelUtils.readFromParcel(in));
+        setSenderId(ParcelUtils.readFromParcel(in));
     }
+
     /**
      * 读取接口，目的是要从Parcel中构造一个实现了Parcelable的类的实例处理。
      */
@@ -135,6 +137,7 @@ public class BusinessCardMessage extends MessageContent {
             return new BusinessCardMessage[size];
         }
     };
+
     public String getIcon() {
         return icon;
     }
@@ -175,4 +178,19 @@ public class BusinessCardMessage extends MessageContent {
         this.userId = userId;
     }
 
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
 }

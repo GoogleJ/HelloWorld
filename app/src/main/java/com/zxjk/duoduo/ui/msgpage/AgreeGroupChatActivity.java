@@ -121,7 +121,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
 
                     //发送进群灰条
                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                            Constant.currentUser.getNick() + "\"加入了群组");
+                            Constant.currentUser.getNick() + "\"加入了讨论组");
                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 

@@ -127,6 +127,16 @@ public class OwnerGroupManageActivity extends BaseActivity {
                         Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP,
                                 commandMessage);
                         RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+
+                        String text;
+                        if (switchSendPic.isChecked()) {
+                            text = "禁止发图片已开启";
+                        } else {
+                            text = "禁止发图片已关闭";
+                        }
+                        InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
+                        Message message1 = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, notificationMessage);
+                        RongIM.getInstance().sendMessage(message1, "", "", (IRongCallback.ISendMessageCallback) null);
                     }, t -> {
                         switchSendPic.setChecked(!switchSendPic.isChecked());
                         handleApiError(t);
@@ -149,6 +159,16 @@ public class OwnerGroupManageActivity extends BaseActivity {
                         Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP,
                                 commandMessage);
                         RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+
+                        String text;
+                        if (switchSendUrl.isChecked()) {
+                            text = "禁止发链接已开启";
+                        } else {
+                            text = "禁止发链接已关闭";
+                        }
+                        InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
+                        Message message1 = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, notificationMessage);
+                        RongIM.getInstance().sendMessage(message1, "", "", (IRongCallback.ISendMessageCallback) null);
                     }, t -> {
                         switchSendUrl.setChecked(!switchSendUrl.isChecked());
                         handleApiError(t);
@@ -164,7 +184,18 @@ public class OwnerGroupManageActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(s -> group.getGroupInfo().setBanFriend(switchAddFriend.isChecked() ? "1" : "0"), t -> {
+                    .subscribe(s -> {
+                        group.getGroupInfo().setBanFriend(switchAddFriend.isChecked() ? "1" : "0");
+                        String text;
+                        if (switchAddFriend.isChecked()) {
+                            text = "禁止互加好友已开启";
+                        } else {
+                            text = "禁止互加好友已关闭";
+                        }
+                        InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
+                        Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, notificationMessage);
+                        RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                    }, t -> {
                         switchAddFriend.setChecked(!switchAddFriend.isChecked());
                         handleApiError(t);
                     }));
@@ -179,7 +210,18 @@ public class OwnerGroupManageActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(s -> group.getGroupInfo().setIsBanned(switchMuteAll.isChecked() ? "1" : "0"), t -> {
+                    .subscribe(s -> {
+                        group.getGroupInfo().setIsBanned(switchMuteAll.isChecked() ? "1" : "0");
+                        String text;
+                        if (switchMuteAll.isChecked()) {
+                            text = "群员禁言已开启";
+                        } else {
+                            text = "群员禁言已关闭";
+                        }
+                        InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
+                        Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, notificationMessage);
+                        RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                    }, t -> {
                         switchMuteAll.setChecked(!switchMuteAll.isChecked());
                         handleApiError(t);
                     }));
@@ -188,7 +230,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
         });
 
         switchGroupPublic.setOnClickListener(v -> {
-            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "群公开", "是否确定操作群公开功能");
+            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "社群公开", "是否确定操作社群公开功能");
             dialog.setOnCommitListener(() -> switchGroupPublic.setChecked(!switchGroupPublic.isChecked()));
             dialog.setOnCancelListener(() -> api.groupOperation(group.getGroupInfo().getId(), switchGroupPublic.isChecked() ? "1" : "0", "3")
                     .compose(bindToLifecycle())

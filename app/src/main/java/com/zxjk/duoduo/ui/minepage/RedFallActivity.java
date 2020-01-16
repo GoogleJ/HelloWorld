@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
@@ -239,7 +240,7 @@ public class RedFallActivity extends BaseActivity {
 
         Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
                 .take(11)
-                .compose(bindToLifecycle())
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .compose(RxSchedulers.ioObserver())
                 .subscribe(a -> {
                     tvCountDown.setText((10 - a) + "");
@@ -291,7 +292,7 @@ public class RedFallActivity extends BaseActivity {
 
         Observable.interval(0, 10, TimeUnit.MILLISECONDS)
                 .take(1001)
-                .compose(bindToLifecycle())
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .compose(RxSchedulers.ioObserver())
                 .subscribe(a -> {
                     if (progressWidth == 0) {

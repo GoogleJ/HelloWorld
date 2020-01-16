@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.msgpage.rongIM.provider;
 import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.utils.GlideUtil;
@@ -46,6 +48,11 @@ public class BusinessCardProvider extends IContainerItemProvider.MessageProvider
 
     @Override
     public Spannable getContentSummary(BusinessCardMessage businessCardMessage) {
+        if (!TextUtils.isEmpty(businessCardMessage.getSenderName()) &&
+                !TextUtils.isEmpty(businessCardMessage.getSenderId()) &&
+                !businessCardMessage.getSenderId().equals(Constant.userId)) {
+            return new SpannableString(businessCardMessage.getSenderName() + "向你推荐了【" + businessCardMessage.getName() + "】");
+        }
         return new SpannableString("[名片]");
     }
 

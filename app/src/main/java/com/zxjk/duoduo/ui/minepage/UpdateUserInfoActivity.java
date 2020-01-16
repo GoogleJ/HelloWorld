@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
@@ -27,8 +26,11 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
 import io.rong.imkit.RongIM;
-import io.rong.imlib.model.Group;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
+import io.rong.message.InformationNotificationMessage;
 
 import static android.text.InputType.TYPE_CLASS_TEXT;
 import static android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
@@ -134,6 +136,11 @@ public class UpdateUserInfoActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(UpdateUserInfoActivity.this)))
                     .compose(RxSchedulers.normalTrans())
                     .subscribe(s -> {
+                        if (getIntent().getBooleanExtra("fromSocial", false)) {
+                            InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("社群改名为" + sign);
+                            Message message = Message.obtain(getIntent().getStringExtra("groupId"), Conversation.ConversationType.GROUP, notificationMessage);
+                            RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                        }
                         Intent intent = new Intent();
                         intent.putExtra("result", sign);
                         setResult(2, intent);

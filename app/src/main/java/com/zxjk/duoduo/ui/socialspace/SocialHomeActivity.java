@@ -228,7 +228,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
 
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"加入了群组");
+                                                            Constant.currentUser.getNick() + "\"加入了社群");
                                                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
                                                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 
@@ -261,7 +261,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
 
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"加入了群组");
+                                                            Constant.currentUser.getNick() + "\"加入了社群");
                                                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
                                                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 

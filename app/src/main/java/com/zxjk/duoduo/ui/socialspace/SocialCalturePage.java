@@ -67,6 +67,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.InformationNotificationMessage;
 import okhttp3.ResponseBody;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
@@ -727,7 +732,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 }
             });
 
-
             pagerVideo.setVisibility(View.VISIBLE);
             indicatorVideo.setVisibility(View.VISIBLE);
             llVideoEmpty.setVisibility(View.GONE);
@@ -883,6 +887,10 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             }
             doneAction.done(adapter.getData());
             llBottom.setVisibility(View.GONE);
+
+            InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("社群文化已更新");
+            Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
+            RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
         }
     }
 

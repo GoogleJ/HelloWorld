@@ -22,6 +22,12 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.ChooseNewOwnerAdapter;
 import com.zxjk.duoduo.utils.CommonUtils;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.InformationNotificationMessage;
+
 @SuppressLint("CheckResult")
 public class ChooseNewOwnerActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
@@ -53,7 +59,7 @@ public class ChooseNewOwnerActivity extends BaseActivity {
                 holder.setText(R.id.tv_notarize, "确定");
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_notarize, v -> {
-                    updateGroupOwner(groupId, mAdapter.getData().get(position).getId());
+                    updateGroupOwner(groupId, mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getNick());
                     dialog.dismiss();
                 });
 
@@ -61,12 +67,7 @@ public class ChooseNewOwnerActivity extends BaseActivity {
         }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager()));
     }
 
-    /**
-     * 查询群成员
-     *
-     * @param groupId
-     */
-    public void getGroupMemByGroupId(String groupId) {
+    private void getGroupMemByGroupId(String groupId) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getGroupMemByGroupId(groupId)
                 .compose(bindToLifecycle())
@@ -78,13 +79,7 @@ public class ChooseNewOwnerActivity extends BaseActivity {
                 }, this::handleApiError);
     }
 
-    /**
-     * 准让群主
-     *
-     * @param groupId
-     * @param customerId
-     */
-    public void updateGroupOwner(String groupId, String customerId) {
+    private void updateGroupOwner(String groupId, String customerId, String newOwnerNick) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .updateGroupOwner(groupId, customerId)
                 .compose(bindToLifecycle())
@@ -92,6 +87,11 @@ public class ChooseNewOwnerActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
                     ToastUtils.showShort(ChooseNewOwnerActivity.this.getString(R.string.transfer_group_successful));
+
+                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(newOwnerNick + "成为了新的群主");
+                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
+                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+
                     if (fromSocial) {
                         finish();
                         return;

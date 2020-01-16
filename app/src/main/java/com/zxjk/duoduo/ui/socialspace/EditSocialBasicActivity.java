@@ -36,6 +36,12 @@ import com.zxjk.duoduo.utils.GlideUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.InformationNotificationMessage;
+
 public class EditSocialBasicActivity extends BaseActivity {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd  HH:mm");
@@ -151,7 +157,7 @@ public class EditSocialBasicActivity extends BaseActivity {
                         ToastUtils.showShort(R.string.input_socialnintroduction);
                         return;
                     }
-                    
+
                     request.setName(socialName);
                     request.setIntroduction(socialIntroduction);
                 } else {
@@ -175,7 +181,25 @@ public class EditSocialBasicActivity extends BaseActivity {
                             if (type.equals("1")) {
                                 intent.putExtra("name", etSocialName.getText().toString().trim());
                                 intent.putExtra("slogan", etSocialSlogan.getText().toString().trim());
+
+                                if (!etSocialName.getText().toString().trim().equals(data.getName())) {
+                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("社群改名为" + etSocialName.getText().toString().trim());
+                                    Message message = Message.obtain(data.getGroupId(), Conversation.ConversationType.GROUP, notificationMessage);
+                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                                }
+
+                                if (etSocialSlogan.getText().toString().trim().equals(data.getIntroduction())) {
+                                    InformationNotificationMessage notificationMessage1 = InformationNotificationMessage.obtain("社群简介已更新");
+                                    Message message1 = Message.obtain(data.getGroupId(), Conversation.ConversationType.GROUP, notificationMessage1);
+                                    RongIM.getInstance().sendMessage(message1, "", "", (IRongCallback.ISendMessageCallback) null);
+                                }
+
                             } else {
+                                if (!etSocialSlogan.getText().toString().trim().equals(data.getAnnouncement())) {
+                                    InformationNotificationMessage notificationMessage1 = InformationNotificationMessage.obtain("社群公告已更新");
+                                    Message message1 = Message.obtain(data.getGroupId(), Conversation.ConversationType.GROUP, notificationMessage1);
+                                    RongIM.getInstance().sendMessage(message1, "", "", (IRongCallback.ISendMessageCallback) null);
+                                }
                                 intent.putExtra("notice", etSocialSlogan.getText().toString().trim());
                             }
                             setResult(1, intent);

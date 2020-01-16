@@ -37,6 +37,11 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.InformationNotificationMessage;
 
 public class PayEnterGroupActivity extends BaseActivity {
     private GetPaymentListBean result;
@@ -103,11 +108,17 @@ public class PayEnterGroupActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(PayEnterGroupActivity.this)))
                     .compose(RxSchedulers.normalTrans())
                     .subscribe(s -> {
+                                String text;
                                 if (switchOpen.isChecked()) {
                                     ToastUtils.showShort(R.string.open_payenter_success);
+                                    text = getString(R.string.open_payenter_success);
                                 } else {
                                     ToastUtils.showShort(R.string.close_payenter_success);
+                                    text = getString(R.string.close_payenter_success);
                                 }
+                                InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
+                                Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
+                                RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
                             },
                             t -> {
                                 handleApiError(t);

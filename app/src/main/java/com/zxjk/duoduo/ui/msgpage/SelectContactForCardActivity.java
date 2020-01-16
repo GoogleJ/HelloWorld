@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -125,7 +124,6 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
         RongIM.getInstance().sendMessage(message, "", "", new IRongCallback.ISendMessageCallback() {
             @Override
             public void onAttached(Message message) {
-
             }
 
             @Override
@@ -209,74 +207,72 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(c -> {
-                    NiceDialog.init().setLayoutId(R.layout.layout_general_dialog4).setConvertListener(new ViewConvertListener() {
-                        @Override
-                        protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                            holder.setText(R.id.tv_content, getString(R.string.share_business_card));
-                            holder.setText(R.id.tv_cancel, getString(R.string.cancel));
-                            holder.setText(R.id.tv_notarize, getString(R.string.ok));
-                            holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
-                            holder.setOnClickListener(R.id.tv_notarize, v -> {
-                                dialog.dismiss();
-                                FriendInfoResponse listBean = mAdapter.getData().get(position);
+                .subscribe(c -> NiceDialog.init().setLayoutId(R.layout.layout_general_dialog4).setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                        holder.setText(R.id.tv_content, getString(R.string.share_business_card));
+                        holder.setText(R.id.tv_cancel, getString(R.string.cancel));
+                        holder.setText(R.id.tv_notarize, getString(R.string.ok));
+                        holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
+                        holder.setOnClickListener(R.id.tv_notarize, v -> {
+                            dialog.dismiss();
+                            FriendInfoResponse listBean = mAdapter.getData().get(position);
 
-                                String toId;
-                                String cardUserId;
-                                String cardUserNick;
-                                String cardUserDuoDuoId;
-                                String cardUserPortrait;
+                            String toId;
+                            String cardUserId;
+                            String cardUserNick;
+                            String cardUserDuoDuoId;
+                            String cardUserPortrait;
 
-                                if (fromPulgin) {
-                                    toId = c.getId();
-                                    cardUserId = listBean.getId();
-                                    cardUserNick = listBean.getNick();
-                                    cardUserDuoDuoId = listBean.getDuoduoId();
-                                    cardUserPortrait = listBean.getHeadPortrait();
-                                } else {
-                                    toId = listBean.getId();
-                                    cardUserId = c.getId();
-                                    cardUserNick = c.getNick();
-                                    cardUserDuoDuoId = c.getDuoduoId();
-                                    cardUserPortrait = c.getHeadPortrait();
+                            if (fromPulgin) {
+                                toId = c.getId();
+                                cardUserId = listBean.getId();
+                                cardUserNick = listBean.getNick();
+                                cardUserDuoDuoId = listBean.getDuoduoId();
+                                cardUserPortrait = listBean.getHeadPortrait();
+                            } else {
+                                toId = listBean.getId();
+                                cardUserId = c.getId();
+                                cardUserNick = c.getNick();
+                                cardUserDuoDuoId = c.getDuoduoId();
+                                cardUserPortrait = c.getHeadPortrait();
+                            }
+
+                            BusinessCardMessage message = new BusinessCardMessage();
+                            message.setUserId(cardUserId);
+                            message.setDuoduo(cardUserDuoDuoId);
+                            message.setIcon(cardUserPortrait);
+                            message.setName(cardUserNick);
+                            message.setSenderName(Constant.currentUser.getNick());
+                            message.setSenderId(Constant.userId);
+
+                            Message message1 = Message.obtain(toId, Conversation.ConversationType.PRIVATE, message);
+                            RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
+                                @Override
+                                public void onAttached(Message message) {
                                 }
 
-                                BusinessCardMessage message = new BusinessCardMessage();
-                                message.setUserId(cardUserId);
-                                message.setDuoduo(cardUserDuoDuoId);
-                                message.setIcon(cardUserPortrait);
-                                message.setName(cardUserNick);
+                                @Override
+                                public void onSuccess(Message message) {
+                                    if (fromPulgin) finish();
+                                    ToastUtils.showShort(R.string.has_bean_sent);
+                                }
 
-                                Message message1 = Message.obtain(toId, Conversation.ConversationType.PRIVATE, message);
-                                RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
-                                    @Override
-                                    public void onAttached(Message message) {
-                                    }
-
-                                    @Override
-                                    public void onSuccess(Message message) {
-                                        if (fromPulgin) finish();
-                                        ToastUtils.showShort(R.string.has_bean_sent);
-                                    }
-
-                                    @Override
-                                    public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                                    }
-                                });
+                                @Override
+                                public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                                }
                             });
-                        }
-                    }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
-                }, this::handleApiError);
+                        });
+                    }
+                }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager()), this::handleApiError);
     }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
     }
 
     @Override
@@ -286,15 +282,9 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
         mAdapter.setNewData(groupnamelist);
     }
 
-    /**
-     * 模糊查询
-     *
-     * @param str
-     * @return
-     */
     private List<FriendInfoResponse> search(String str) {
-        List<FriendInfoResponse> filterList = new ArrayList<>();// 过滤后的list
-        if (str.matches("^([0-9]|[/+]).*")) {// 正则表达式 匹配以数字或者加号开头的字符串(包括了带空格及-分割的号码)
+        List<FriendInfoResponse> filterList = new ArrayList<>();
+        if (str.matches("^([0-9]|[/+]).*")) {
             String simpleStr = str.replaceAll("\\-|\\s", "");
             for (FriendInfoResponse contact : list) {
                 if (contact.getNick() != null) {
@@ -308,7 +298,6 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
         } else {
             for (FriendInfoResponse contact : list) {
                 if (contact.getNick() != null) {
-                    //姓名全匹配,姓名首字母简拼匹配,姓名全字母匹配
                     boolean isNameContains = contact.getNick().toLowerCase(Locale.CHINESE)
                             .contains(str.toLowerCase(Locale.CHINESE));
                     if (isNameContains) {
