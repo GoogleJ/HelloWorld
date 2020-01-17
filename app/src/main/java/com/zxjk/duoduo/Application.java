@@ -140,7 +140,7 @@ public class Application extends android.app.Application {
     }
 
     private void initUmeng() {
-        UMConfigure.init(this, "5d749f223fc1958bf7000854", "Fir", UMConfigure.DEVICE_TYPE_PHONE, null);
+        UMConfigure.init(this, "5e215672cb23d2eb7f0000dc", "Hilamg_official", UMConfigure.DEVICE_TYPE_PHONE, null);
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         UMConfigure.setProcessEvent(true);
         MobclickAgent.setCatchUncaughtExceptions(!BuildConfig.enableLog);

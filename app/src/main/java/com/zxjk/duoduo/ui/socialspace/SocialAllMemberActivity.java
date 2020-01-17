@@ -127,7 +127,7 @@ public class SocialAllMemberActivity extends BaseActivity {
 
         recycler.setAdapter(adapter);
 
-        adapter.setOnItemClickListener((adapter, view, position) -> CommonUtils.resolveFriendList(this, data.get(position).getId()));
+        adapter.setOnItemClickListener((adapter, view, position) -> CommonUtils.resolveFriendList(this, ((AllGroupMembersResponse) adapter.getData().get(position)).getId()));
 
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getGroupMemByGroupId(getIntent().getStringExtra("groupId"))

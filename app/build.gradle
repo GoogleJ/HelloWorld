@@ -48,13 +48,6 @@ android {
         schemaVersion 3
         daoPackage 'com.zxjk.duoduo.bean'
     }
-    allprojects {
-        repositories {
-            jcenter()
-            google()
-            maven { url "https://jitpack.io" }
-        }
-    }
 
     sourceSets {
         main {
