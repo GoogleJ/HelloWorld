@@ -920,4 +920,7 @@
     <string name="redfall_tips_noshareyet">您今天还未分享</string>
     <string name="redfall_tips_shared">您今天已分享过</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

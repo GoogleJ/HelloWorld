@@ -28,7 +28,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView;
 
 public class WalletTradeActivity extends BaseActivity {
     private int[] mTitleDataList = new int[]{R.string.all, R.string.zhuanchu, R.string.collection_and_payment, R.string.huazhuan};
@@ -81,6 +81,7 @@ public class WalletTradeActivity extends BaseActivity {
         GlideUtil.loadNormalImg(ivLogo, logo);
         tvHead1.setText(tvHead1.getText() + "(" + symbol + ")");
 
+
         CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
@@ -91,19 +92,47 @@ public class WalletTradeActivity extends BaseActivity {
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                ColorTransitionPagerTitleView colorTransitionPagerTitleView = new ColorTransitionPagerTitleView(context);
-                colorTransitionPagerTitleView.setNormalColor(Color.BLACK);
-                colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.colorTheme));
-                colorTransitionPagerTitleView.setText(mTitleDataList[index]);
-                colorTransitionPagerTitleView.setOnClickListener(view -> pager.setCurrentItem(index));
-                return colorTransitionPagerTitleView;
+
+                CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(context);
+                commonPagerTitleView.setContentView(R.layout.pager_title_view);
+                final ImageView titleImg = commonPagerTitleView.findViewById(R.id.title_img);
+                titleImg.setImageResource(R.drawable.ic_hilamglogo2);
+                final TextView titleText = commonPagerTitleView.findViewById(R.id.title_text);
+                titleText.setText(mTitleDataList[index]);
+                commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
+                    @Override
+                    public void onSelected(int index, int totalCount) {
+                        titleText.setTextColor(ContextCompat.getColor(context,R.color.colorTheme));
+                    }
+
+                    @Override
+                    public void onDeselected(int index, int totalCount) {
+                        titleText.setTextColor(Color.BLACK);
+                    }
+
+                    @Override
+                    public void onLeave(int index, int totalCount, float leavePercent, boolean leftToRight) {
+
+                    }
+
+                    @Override
+                    public void onEnter(int index, int totalCount, float enterPercent, boolean leftToRight) {
+
+                    }
+                });
+
+                commonPagerTitleView.setOnClickListener(view -> pager.setCurrentItem(index));
+
+
+                return commonPagerTitleView;
             }
 
             @Override
             public IPagerIndicator getIndicator(Context context) {
+
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setColors(ContextCompat.getColor(context, R.color.colorTheme));
-                indicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                indicator.setMode(LinePagerIndicator.MODE_MATCH_EDGE);
                 return indicator;
             }
         });

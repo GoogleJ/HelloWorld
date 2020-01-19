@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -61,6 +62,8 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     private TextView tvCoin;
     private TextView tvUnit1;
     private TextView tvUnit2;
+    private TextView mRecord;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         setContentView(R.layout.activity_enter_group_get_red);
 
         initView();
+
         initData();
     }
 
@@ -75,6 +79,9 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         tvTitle = findViewById(R.id.tv_title);
         tvTitle.setText(R.string.new_redpackage_manage);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        mRecord = findViewById(R.id.tv_end);
+        mRecord.setVisibility(View.VISIBLE);
+        mRecord.setText("空投记录");
 
         sw = findViewById(R.id.sw);
         tvStartTime = findViewById(R.id.tvStartTime);
@@ -91,7 +98,9 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void initData() {
         groupId = getIntent().getStringExtra("groupId");
-
+        Intent intent = new Intent(EnterGroupGetRedActivity.this,DropRedRecordActivity.class);
+        intent.putExtra("groupId",groupId);
+        mRecord.setOnClickListener(v -> startActivity(intent));
         Api api = ServiceFactory.getInstance().getBaseService(Api.class);
         sw.setOnClickListener(v -> {
             GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();

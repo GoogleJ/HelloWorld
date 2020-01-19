@@ -58,6 +58,8 @@ import com.zxjk.duoduo.bean.response.ReceivePersonalRedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReceivePointResponse;
 import com.zxjk.duoduo.bean.response.RedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
+import com.zxjk.duoduo.bean.response.ReleaseRecord;
+import com.zxjk.duoduo.bean.response.ReleaseRecordDetails;
 import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
 import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
@@ -733,4 +735,12 @@ public interface Api {
 
     @POST("duoduo/airdrop/shareAirdrop")
     Observable<BaseResponse<String>> shareAirdrop();
+
+    @FormUrlEncoded
+    @POST("duoduo/group/getReleaseRecord")
+    Observable<BaseResponse<List<ReleaseRecord>>> releaseRecord(@Field("groupId") String groupId);
+
+    @FormUrlEncoded
+    @POST("duoduo/group/getReleaseRecordDetails")
+    Observable<BaseResponse<ReleaseRecordDetails>> releaseRecordDetails(@Field("groupId") String groupId, @Field("symbol") String symbol, @Field("page") String page, @Field("offset") String offset);
 }
