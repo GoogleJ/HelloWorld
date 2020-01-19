@@ -46,7 +46,7 @@ public class BrowsableActivity extends BaseActivity {
                             startActivity(new Intent(this, WelcomeActivity.class));
                         }
                         break;
-                    case "authorizationloginlogin":
+                    case "authorizationLogin":
                         String appid = getIntent().getData().getQueryParameter("appId");
                         String randomStr = getIntent().getData().getQueryParameter("randomStr");
                         String sign = getIntent().getData().getQueryParameter("sign");

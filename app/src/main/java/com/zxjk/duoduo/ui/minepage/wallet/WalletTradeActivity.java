@@ -1,37 +1,33 @@
 package com.zxjk.duoduo.ui.minepage.wallet;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.walletpage.OrdersFragment;
 import com.zxjk.duoduo.ui.walletpage.ZhuanChuActivity;
+import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.GlideUtil;
 
-import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView;
+import java.text.SimpleDateFormat;
 
 public class WalletTradeActivity extends BaseActivity {
-    private int[] mTitleDataList = new int[]{R.string.all, R.string.zhuanchu, R.string.collection_and_payment, R.string.huazhuan};
 
     private String walletAddress;
     private String money;
@@ -43,12 +39,16 @@ public class WalletTradeActivity extends BaseActivity {
     private String tokenDecimal;
     private String contractAddress;
 
+    private int page = 1;
+    private int numsPerPage = 10;
+
     private ImageView ivLogo;
     private TextView tvBalance;
     private TextView tvBalanceToCny;
-    private TextView tvHead1;
-    private MagicIndicator indicator;
-    private ViewPager pager;
+    private RecyclerView mRcWalletTrade;
+    private SwipeRefreshLayout refreshLayout;
+
+    private BaseQuickAdapter<GetTransferAllResponse.ListBean, BaseViewHolder> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,112 +65,35 @@ public class WalletTradeActivity extends BaseActivity {
         tokenDecimal = getIntent().getStringExtra("tokenDecimal");
         contractAddress = getIntent().getStringExtra("contractAddress");
 
+
+        initView();
+
+        initAdapter();
+        refreshLayout.setRefreshing(true);
+
+        initData();
+    }
+
+    private void initView() {
         TextView title = findViewById(R.id.tv_title);
         title.setText(symbol);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-
         ivLogo = findViewById(R.id.ivLogo);
         tvBalance = findViewById(R.id.tvBalance);
         tvBalanceToCny = findViewById(R.id.tvBalanceToCny);
-        tvHead1 = findViewById(R.id.tvHead1);
-        indicator = findViewById(R.id.indicator);
-        pager = findViewById(R.id.pager);
+        mRcWalletTrade = findViewById(R.id.rc_wallet_trade);
+        mRcWalletTrade.setLayoutManager(new LinearLayoutManager(this));
+        refreshLayout = findViewById(R.id.refreshLayout);
+
+        refreshLayout.setOnRefreshListener(() -> {
+            page = 1;
+            initData();
+        });
+        refreshLayout.setColorSchemeResources(R.color.colorTheme);
 
         tvBalanceToCny.setText(money.equals("-") ? "-" : ("≈¥" + money));
         tvBalance.setText(sum);
         GlideUtil.loadNormalImg(ivLogo, logo);
-        tvHead1.setText(tvHead1.getText() + "(" + symbol + ")");
-
-
-        CommonNavigator commonNavigator = new CommonNavigator(this);
-        commonNavigator.setAdjustMode(true);
-        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return mTitleDataList == null ? 0 : mTitleDataList.length;
-            }
-
-            @Override
-            public IPagerTitleView getTitleView(Context context, final int index) {
-
-                CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(context);
-                commonPagerTitleView.setContentView(R.layout.pager_title_view);
-                final ImageView titleImg = commonPagerTitleView.findViewById(R.id.title_img);
-                titleImg.setImageResource(R.drawable.ic_hilamglogo2);
-                final TextView titleText = commonPagerTitleView.findViewById(R.id.title_text);
-                titleText.setText(mTitleDataList[index]);
-                commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
-                    @Override
-                    public void onSelected(int index, int totalCount) {
-                        titleText.setTextColor(ContextCompat.getColor(context,R.color.colorTheme));
-                    }
-
-                    @Override
-                    public void onDeselected(int index, int totalCount) {
-                        titleText.setTextColor(Color.BLACK);
-                    }
-
-                    @Override
-                    public void onLeave(int index, int totalCount, float leavePercent, boolean leftToRight) {
-
-                    }
-
-                    @Override
-                    public void onEnter(int index, int totalCount, float enterPercent, boolean leftToRight) {
-
-                    }
-                });
-
-                commonPagerTitleView.setOnClickListener(view -> pager.setCurrentItem(index));
-
-
-                return commonPagerTitleView;
-            }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-
-                LinePagerIndicator indicator = new LinePagerIndicator(context);
-                indicator.setColors(ContextCompat.getColor(context, R.color.colorTheme));
-                indicator.setMode(LinePagerIndicator.MODE_MATCH_EDGE);
-                return indicator;
-            }
-        });
-
-        indicator.setNavigator(commonNavigator);
-
-        pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-
-            @Override
-            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            }
-
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                OrdersFragment fragment = new OrdersFragment();
-                fragment.address = walletAddress;
-                fragment.symbol = symbol;
-
-                if (position == 0) {
-                    fragment.type = "1";
-                } else if (position == 1) {
-                    fragment.type = "2";
-                } else if (position == 2) {
-                    fragment.type = "3";
-                } else if (position == 3) {
-                    fragment.type = "4";
-                }
-                return fragment;
-            }
-
-            @Override
-            public int getCount() {
-                return 4;
-            }
-        });
-
-        ViewPagerHelper.bind(indicator, pager);
     }
 
     public void tradeOut(View view) {
@@ -182,7 +105,7 @@ public class WalletTradeActivity extends BaseActivity {
         intent.putExtra("parentSymbol", parentSymbol);
         intent.putExtra("tokenDecimal", tokenDecimal);
         intent.putExtra("contractAddress", contractAddress);
-        intent.putExtra("sum",sum);
+        intent.putExtra("sum", sum);
         startActivity(intent);
     }
 
@@ -192,5 +115,98 @@ public class WalletTradeActivity extends BaseActivity {
         intent.putExtra("address", walletAddress);
         intent.putExtra("logo", logo);
         startActivity(intent);
+    }
+
+
+    private void initAdapter() {
+        adapter = new BaseQuickAdapter<GetTransferAllResponse.ListBean, BaseViewHolder>(R.layout.recycler_wallet_trade) {
+            @Override
+            protected void convert(BaseViewHolder helper, GetTransferAllResponse.ListBean item) {
+                TextView mTvWalletCount = helper.getView(R.id.tv_wallet_count);
+                TextView mTvWalletTime = helper.getView(R.id.tv_wallet_time);
+                TextView mTvRewardBalance = helper.getView(R.id.tv_reward_balance);
+                TextView mTvRewardTokenSymbol = helper.getView(R.id.tv_reward_tokenSymbol);
+                ImageView mImgTradeIc = helper.getView(R.id.img_trade_ic);
+
+                helper.setText(R.id.tv_reward_month, item.getMonth())
+                        .setText(R.id.tv_reward_income, "收入:" + item.getIncome() + "\u0020ETH")
+                        .setText(R.id.tv_reward_expenditure, "支出:" + item.getExpenditure() + "\u0020ETH");
+
+                mTvWalletTime.setText(new SimpleDateFormat("yyyy.MM.dd HH:mm").format(Long.parseLong(item.getCreateTime())));
+                if (item.getSerialType().equals(0)) {
+                    if (item.getInOrOut().equals("0")) {
+                        mTvWalletCount.setText("转入");
+                        mTvRewardBalance.setTextColor(getResources().getColor(R.color.count_down));
+                        mTvRewardBalance.setText("+" + item.getBalance());
+                        mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.count_down));
+                        mTvRewardTokenSymbol.setText(symbol);
+                        mImgTradeIc.setImageDrawable(getResources().getDrawable(R.drawable.ic_income));
+                    } else {
+                        mTvRewardBalance.setTextColor(getResources().getColor(R.color.black));
+                        mTvRewardBalance.setText("-" + item.getBalance());
+                        mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.black));
+                        mTvRewardTokenSymbol.setText(symbol);
+                        mTvWalletCount.setText("转出");
+                        mImgTradeIc.setImageDrawable(getResources().getDrawable(R.drawable.ic_spending));
+                    }
+                } else {
+                    mTvWalletCount.setText("划转");
+                    mTvRewardBalance.setTextColor(getResources().getColor(R.color.count_down));
+                    mTvRewardBalance.setText("+" + item.getBalance());
+                    mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.count_down));
+                    mTvRewardTokenSymbol.setText(symbol);
+                    mImgTradeIc.setImageDrawable(getResources().getDrawable(R.drawable.ic_transfer));
+                }
+
+                LinearLayout llHean = helper.getView(R.id.ll_reward_head);
+                if (helper.getAdapterPosition() == 0) {
+                    llHean.setVisibility(View.VISIBLE);
+                } else if (getData().get(helper.getAdapterPosition() - 1).getMonth().equals(item.getMonth())) {
+                    llHean.setVisibility(View.GONE);
+                } else {
+                    llHean.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+
+        View inflate = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
+        TextView tv = inflate.findViewById(R.id.tv);
+        ImageView iv = inflate.findViewById(R.id.iv);
+        tv.setText(R.string.emptylist3);
+        iv.setImageResource(R.drawable.ic_empty_orders);
+        adapter.setEmptyView(inflate);
+
+        adapter.setLoadMoreView(new NewsLoadMoreView());
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(this::initData, mRcWalletTrade);
+        mRcWalletTrade.setAdapter(adapter);
+    }
+
+    @SuppressLint("CheckResult")
+    private void initData() {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getTransferAll(walletAddress, String.valueOf(page), String.valueOf(numsPerPage), symbol)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver())
+                .doOnTerminate(() -> (refreshLayout).setRefreshing(false))
+                .subscribe(response -> {
+                            page += 1;
+                            if (page == 2) {
+                                adapter.setNewData(response.getList());
+                                adapter.disableLoadMoreIfNotFullPage();
+                            } else {
+                                adapter.addData(response.getList());
+                                if (response.getList().size() >= numsPerPage) {
+                                    adapter.loadMoreComplete();
+                                } else {
+                                    adapter.loadMoreEnd(false);
+                                }
+                            }
+                        }, t -> {
+                            if (page != 1) adapter.loadMoreFail();
+                            handleApiError(t);
+                        }
+                );
     }
 }

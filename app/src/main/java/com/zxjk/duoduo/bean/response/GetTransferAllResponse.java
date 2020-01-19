@@ -190,6 +190,7 @@ public class GetTransferAllResponse {
     }
 
     public static class ListBean implements Serializable {
+
         /**
          * id :
          * customerId :
@@ -216,6 +217,9 @@ public class GetTransferAllResponse {
          * inOrOut : 2
          */
 
+        private String month;
+        private String expenditure;
+        private String income;
         private String id;
         private String customerId;
         private String duoduoId;
@@ -239,6 +243,30 @@ public class GetTransferAllResponse {
         private String tokenDecimal;
         private String serialType;
         private String inOrOut;
+
+        public String getMonth() {
+            return month;
+        }
+
+        public void setMonth(String month) {
+            this.month = month;
+        }
+
+        public String getExpenditure() {
+            return expenditure;
+        }
+
+        public void setExpenditure(String expenditure) {
+            this.expenditure = expenditure;
+        }
+
+        public String getIncome() {
+            return income;
+        }
+
+        public void setIncome(String income) {
+            this.income = income;
+        }
 
         public String getId() {
             return id;

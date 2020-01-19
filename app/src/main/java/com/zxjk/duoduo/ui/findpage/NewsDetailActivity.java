@@ -81,6 +81,7 @@ public class NewsDetailActivity extends BaseActivity {
         ImageView imageView = findViewById(R.id.iv_end);
         imageView.setImageResource(R.drawable.ic_share_action_right);
         imageView.setOnClickListener(v -> {
+            currentUrl = currentUrl+"&share=share";
             UMWeb link = new UMWeb(currentUrl);
             link.setTitle("Hilamg新闻");
             link.setDescription(title);

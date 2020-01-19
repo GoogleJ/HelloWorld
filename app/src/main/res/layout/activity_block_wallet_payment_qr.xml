@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
+    android:background="@color/white"
     tools:context=".ui.minepage.wallet.BlockWalletPaymentQRActivity">
 
     <include layout="@layout/layout_title_back" />
@@ -11,71 +13,110 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_wallet_qr"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+            <TextView
+                android:id="@+id/iv_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_block_Qr"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_marginTop="40dp"/>
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="保存图片"
+                android:textColor="@color/colorDBGreen" />
+
+            <Button
+                android:id="@+id/tv_save_qr"
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:alpha="0.2"
+                android:background="@drawable/shape_blockwallet_copy_qr"
+                android:onClick="saveQR" />
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="32dp"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="复制地址"
+                android:textColor="@color/colorPrimary" />
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="24dp"
+                android:alpha="0.5"
+                android:background="@drawable/shape_theme4"
+                android:onClick="copyAddress" />
+        </FrameLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/shape_white_8"
-            android:gravity="center_horizontal"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingTop="32dp"
-            android:paddingBottom="32dp">
-
-            <ImageView
-                android:id="@+id/ivLogo"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="24dp" />
-
-            <ImageView
-                android:id="@+id/ivQr"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:layout_marginBottom="24dp" />
-
-            <LinearLayout
+            android:gravity="bottom">
+            <TextView
+                android:id="@+id/tvTips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tvAddress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="middle"
-                    android:singleLine="true"
-                    android:textColor="@color/black" />
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="6dp"
-                    android:onClick="copyAddress"
-                    android:src="@drawable/ic_copy_gray" />
-
-            </LinearLayout>
-
+                android:textColor="@color/business_card_duoduo_id"
+                android:textSize="13sp"
+                android:layout_marginBottom="12dp"/>
+            <TextView
+                android:text="造成的财产损失，将由您自己承担。"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/business_card_duoduo_id"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvTips"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="24dp"
-            android:layout_weight="1"
-            android:gravity="bottom|center_horizontal"
-            android:textColor="@color/white"
-            android:textSize="13sp" />
-
     </LinearLayout>
+
 
 </LinearLayout>
