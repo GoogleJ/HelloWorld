@@ -633,7 +633,7 @@
     <string name="pay_enter_group_tip1">本群设置了付费进群，支付后即可入群</string>
     <string name="paying">支付中</string>
     <string name="pay_fail">支付失败</string>
-    <string name="close_payenter_first">请先关闭付费进群功能</string>
+    <string name="close_payenter_first">请先关闭进群付费币种</string>
     <string name="eachpay">每人奖励数量</string>
     <string name="func_status">功能状态</string>
     <string name="allpay">总奖励数量</string>

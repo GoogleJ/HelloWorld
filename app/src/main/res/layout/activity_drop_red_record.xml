@@ -67,7 +67,7 @@
                         android:text="剩余数量:"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"/>
+                        android:textColor="#4A494A"/>
                     <TextView
                         android:text="0.00"
                         android:id="@+id/tv_drop_record_laveCount"
@@ -100,7 +100,7 @@
                         android:text="空投人数:"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"/>
+                        android:textColor="#4A494A"/>
                     <TextView
                         android:text="0"
                         android:id="@+id/tv_drop_record_airdrops"

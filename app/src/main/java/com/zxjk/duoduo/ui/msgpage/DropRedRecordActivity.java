@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -85,7 +84,6 @@ public class DropRedRecordActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
-                    Log.i("tag", s.size()+"");
                     if (!s.isEmpty()) {
                         mLlDropRecord.setVisibility(View.VISIBLE);
                         mFlDropNoRecord.setVisibility(View.GONE);
@@ -100,7 +98,8 @@ public class DropRedRecordActivity extends BaseActivity {
 
     private void onMagicIndicator(List<ReleaseRecord> releaseRecords) {
         CommonNavigator commonNavigator = new CommonNavigator(this);
-        commonNavigator.setAdjustMode(true);
+        commonNavigator.setAdjustMode(false);
+        commonNavigator.setFollowTouch(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {

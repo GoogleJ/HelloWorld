@@ -32,8 +32,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:maxEms="7"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textColor="#4A494A"
+                android:textSize="16sp" />
             <TextView
                 android:id="@+id/tv_item_release_create_time"
                 android:layout_width="wrap_content"
