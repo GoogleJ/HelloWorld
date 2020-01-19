@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ import com.zxjk.duoduo.utils.MMKVUtils;
 
 @SuppressLint("CheckResult")
 public class BalanceLeftActivity extends BaseActivity {
+    private final int REQUEST_ADD = 2;
 
     private TextView tvBalance;
     private TextView tvBalance2CNY;
@@ -128,4 +130,18 @@ public class BalanceLeftActivity extends BaseActivity {
         startActivity(new Intent(this, DetailListActivity.class));
     }
 
+    public void add(View view) {
+        startActivityForResult(new Intent(this, BalanceShowItemActivity.class), REQUEST_ADD);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ADD) {
+            if (resultCode == 1) {
+                response = null;
+                initData();
+            }
+        }
+    }
 }

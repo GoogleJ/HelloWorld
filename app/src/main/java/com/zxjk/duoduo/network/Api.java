@@ -66,6 +66,7 @@ import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
+import com.zxjk.duoduo.bean.response.BalanceAssetManageBean;
 
 import java.util.List;
 
@@ -743,4 +744,12 @@ public interface Api {
     @FormUrlEncoded
     @POST("duoduo/group/getReleaseRecordDetails")
     Observable<BaseResponse<ReleaseRecordDetails>> releaseRecordDetails(@Field("groupId") String groupId, @Field("symbol") String symbol, @Field("page") String page, @Field("offset") String offset);
+
+    @FormUrlEncoded
+    @POST("duoduo/walletBalance/balanceManage")
+    Observable<BaseResponse<String>> balanceManage(@Field("currencyName") String currencyName, @Field("isClose") String isClose);
+
+
+    @POST("duoduo/walletBalance/balanceAssetManage")
+    Observable<BaseResponse<List<BalanceAssetManageBean>>> balanceAssetManage();
 }

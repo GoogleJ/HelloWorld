@@ -5,7 +5,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,6 +47,8 @@ public class DropRedRecordActivity extends BaseActivity {
     private TextView mTvDropRecordAirdrops;
     private TextView mTvDropRecordStatus;
     private TextView mTvTitle;
+    private LinearLayout mLlDropRecord;
+    private FrameLayout mFlDropNoRecord;
 
     private String groupId;
 
@@ -57,7 +62,7 @@ public class DropRedRecordActivity extends BaseActivity {
         initData();
     }
 
-    private void initView(){
+    private void initView() {
         mDropRedMagicIndicator = findViewById(R.id.drop_red_indicator);
         mDropRedViewPager = findViewById(R.id.drop_red_pager);
         mTvDropRecordLaveCount = findViewById(R.id.tv_drop_record_laveCount);
@@ -65,10 +70,12 @@ public class DropRedRecordActivity extends BaseActivity {
         mTvDropRecordAirdrops = findViewById(R.id.tv_drop_record_airdrops);
         mTvDropRecordStatus = findViewById(R.id.tv_drop_record_status);
         mTvTitle = findViewById(R.id.tv_title);
+        mLlDropRecord = findViewById(R.id.ll_drop_record);
+        mFlDropNoRecord = findViewById(R.id.fl_drop_no_record);
     }
 
     @SuppressLint("CheckResult")
-    private void initData(){
+    private void initData() {
         mTvTitle.setText("空投记录");
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         groupId = getIntent().getStringExtra("groupId");
@@ -78,16 +85,20 @@ public class DropRedRecordActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
-                    onMagicIndicator(s);
-                    setmDropRedViewPager(s);
+                    Log.i("tag", s.size()+"");
+                    if (!s.isEmpty()) {
+                        mLlDropRecord.setVisibility(View.VISIBLE);
+                        mFlDropNoRecord.setVisibility(View.GONE);
+                        onMagicIndicator(s);
+                    } else {
+                        mLlDropRecord.setVisibility(View.GONE);
+                        mFlDropNoRecord.setVisibility(View.VISIBLE);
+                    }
                 }, this::handleApiError);
     }
 
-    private void setmDropRedViewPager(List<ReleaseRecord> releaseRecord){
 
-    }
-
-    private void onMagicIndicator(List<ReleaseRecord> releaseRecords){
+    private void onMagicIndicator(List<ReleaseRecord> releaseRecords) {
         CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
@@ -107,20 +118,20 @@ public class DropRedRecordActivity extends BaseActivity {
                 commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
                     @Override
                     public void onSelected(int index, int totalCount) {
-                        titleText.setTextColor(ContextCompat.getColor(context,R.color.colorTheme));
+                        titleText.setTextColor(ContextCompat.getColor(context, R.color.colorTheme));
                         mTvDropRecordLaveCount.setText(releaseRecords.get(index).getLaveCount());
                         mTvDropRecordCurrency.setText(releaseRecords.get(index).getSymbol());
                         mTvDropRecordAirdrops.setText(releaseRecords.get(index).getAirdrops());
-                        if(releaseRecords.get(index).getStatus().equals("0")){
+                        if (releaseRecords.get(index).getStatus().equals("0")) {
                             mTvDropRecordStatus.setText("未开始");
                             mTvDropRecordStatus.setTextColor(getResources().getColor(R.color.count_down));
-                        }else if(releaseRecords.get(index).getStatus().equals("1")){
+                        } else if (releaseRecords.get(index).getStatus().equals("1")) {
                             mTvDropRecordStatus.setText("进行中");
                             mTvDropRecordStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        }else if(releaseRecords.get(index).getStatus().equals("2")){
+                        } else if (releaseRecords.get(index).getStatus().equals("2")) {
                             mTvDropRecordStatus.setText("已结束");
                             mTvDropRecordStatus.setTextColor(getResources().getColor(R.color.text_select_color));
-                        }else if(releaseRecords.get(index).getStatus().equals("3")){
+                        } else if (releaseRecords.get(index).getStatus().equals("3")) {
                             mTvDropRecordStatus.setText("已退回");
                             mTvDropRecordStatus.setTextColor(getResources().getColor(R.color.text_select_color));
                         }
@@ -175,6 +186,6 @@ public class DropRedRecordActivity extends BaseActivity {
             }
         });
 
-        ViewPagerHelper.bind(mDropRedMagicIndicator,mDropRedViewPager);
+        ViewPagerHelper.bind(mDropRedMagicIndicator, mDropRedViewPager);
     }
 }

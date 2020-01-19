@@ -9,92 +9,118 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/drop_red_indicator"
+    <FrameLayout
+        android:id="@+id/fl_drop_no_record"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="start" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/confirm_sale_line"
-        android:layout_marginBottom="8dp"/>
-
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:src="@drawable/ic_empty_orders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="72dp"/>
+        <TextView
+            android:text="暂无空投记录！"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"/>
+    </FrameLayout>
     <LinearLayout
+        android:id="@+id/ll_drop_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@color/background_color">
+        android:orientation="vertical"
+        android:visibility="visible">
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/drop_red_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_gravity="start" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/confirm_sale_line"
+            android:layout_marginBottom="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/background_color">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:text="剩余数量:"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"/>
-                <TextView
-                    android:text="0.00"
-                    android:id="@+id/tv_drop_record_laveCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:layout_marginStart="4dp"/>
-                <TextView
-                    android:text="USDT"
-                    android:id="@+id/tv_drop_record_currency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="4dp"/>
-
-                <TextView
-                    android:id="@+id/tv_drop_record_status"
+                android:orientation="vertical"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:text="剩余数量:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:text="0.00"
+                        android:id="@+id/tv_drop_record_laveCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:layout_marginStart="4dp"/>
+                    <TextView
+                        android:text="USDT"
+                        android:id="@+id/tv_drop_record_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_drop_record_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:text="空投人数:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:text="0"
+                        android:id="@+id/tv_drop_record_airdrops"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:layout_marginStart="4dp"/>
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:text="空投人数:"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"/>
-                <TextView
-                    android:text="0"
-                    android:id="@+id/tv_drop_record_airdrops"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:layout_marginStart="4dp"/>
-            </LinearLayout>
+
         </LinearLayout>
-
-
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/drop_red_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never" />
     </LinearLayout>
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/drop_red_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:overScrollMode="never" />
+
 </LinearLayout>
