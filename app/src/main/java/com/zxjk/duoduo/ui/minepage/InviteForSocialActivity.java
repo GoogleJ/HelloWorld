@@ -141,6 +141,7 @@ public class InviteForSocialActivity extends BaseActivity {
     }
 
     public void showList(View view) {
+        page = 1;
         if (popup == null) {
             TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
             showAnimation.setDuration(250);
@@ -200,7 +201,7 @@ public class InviteForSocialActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void initData() {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getInviteInfo(0)
+                .getInviteInfo(page)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
