@@ -64,6 +64,12 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     private TextView tvUnit2;
     private TextView mRecord;
 
+    private ImageView imgIc1;
+    private ImageView imgIc2;
+    private ImageView imgIc3;
+    private ImageView imgIc4;
+    private ImageView imgIc5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +99,12 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         tvCoin = findViewById(R.id.tvCoin);
         tvUnit1 = findViewById(R.id.tvUnit1);
         tvUnit2 = findViewById(R.id.tvUnit2);
+
+        imgIc1 = findViewById(R.id.img_ic1);
+        imgIc2 = findViewById(R.id.img_ic2);
+        imgIc3 = findViewById(R.id.img_ic3);
+        imgIc4 = findViewById(R.id.img_ic4);
+        imgIc5 = findViewById(R.id.img_ic5);
     }
 
     @SuppressLint("CheckResult")
@@ -106,6 +118,11 @@ public class EnterGroupGetRedActivity extends BaseActivity {
             GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
             request.setGroupId(groupId);
             if (sw.isChecked()) {
+                imgIc1.setVisibility(View.GONE);
+                imgIc2.setVisibility(View.GONE);
+                imgIc3.setVisibility(View.GONE);
+                imgIc4.setVisibility(View.GONE);
+                imgIc5.setVisibility(View.GONE);
                 if (result == null) {
                     ToastUtils.showShort(R.string.select_cointype);
                     return;
@@ -136,6 +153,11 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                 //close
                 request.setSymbol(result.getSymbol());
                 request.setRedNewPersonStatus("0");
+                imgIc1.setVisibility(View.VISIBLE);
+                imgIc2.setVisibility(View.VISIBLE);
+                imgIc3.setVisibility(View.VISIBLE);
+                imgIc4.setVisibility(View.VISIBLE);
+                imgIc5.setVisibility(View.VISIBLE);
             }
             api.upRedNewPersonInfo(GsonUtils.toJson(request, false))
                     .compose(bindToLifecycle())
@@ -166,6 +188,19 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                         } else {
                             sw.setChecked(false);
                         }
+                        if(sw.isChecked()){
+                            imgIc1.setVisibility(View.GONE);
+                            imgIc2.setVisibility(View.GONE);
+                            imgIc3.setVisibility(View.GONE);
+                            imgIc4.setVisibility(View.GONE);
+                            imgIc5.setVisibility(View.GONE);
+                        }else {
+                            imgIc1.setVisibility(View.VISIBLE);
+                            imgIc2.setVisibility(View.VISIBLE);
+                            imgIc3.setVisibility(View.VISIBLE);
+                            imgIc4.setVisibility(View.VISIBLE);
+                            imgIc5.setVisibility(View.VISIBLE);
+                        }
                     });
                     return api.getPaymentList();
                 })
@@ -188,151 +223,171 @@ public class EnterGroupGetRedActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void setupEach(View view) {
-        PayEnterDialog payEnterDialog = new PayEnterDialog(this);
-        payEnterDialog.setOnCommitClick(str -> {
-            payEnterDialog.dismiss();
-            if (Float.parseFloat(str) == 0) {
-                ToastUtils.showShort(R.string.input_money1);
-                return;
-            }
+        if(!sw.isChecked()){
+            PayEnterDialog payEnterDialog = new PayEnterDialog(this);
+            payEnterDialog.setOnCommitClick(str -> {
+                payEnterDialog.dismiss();
+                if (Float.parseFloat(str) == 0) {
+                    ToastUtils.showShort(R.string.input_money1);
+                    return;
+                }
 
-            if (Float.parseFloat(tvAll.getText().toString()) != 0 && Float.parseFloat(str) > Float.parseFloat(tvAll.getText().toString())) {
-                ToastUtils.showShort(R.string.each_more_all);
-                return;
-            }
+                if (Float.parseFloat(tvAll.getText().toString()) != 0 && Float.parseFloat(str) > Float.parseFloat(tvAll.getText().toString())) {
+                    ToastUtils.showShort(R.string.each_more_all);
+                    return;
+                }
 
-            if (sw.isChecked()) {
-                GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
-                request.setGroupId(groupId);
-                request.setEveryoneAwardCount(str);
-                request.setSymbol(result.getSymbol());
-                ServiceFactory.getInstance().getBaseService(Api.class)
-                        .upRedNewPersonInfo(GsonUtils.toJson(request))
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .subscribe(s -> {
-                            tvEach.setText(str);
-                            ToastUtils.showShort(R.string.update_success);
-                        }, this::handleApiError);
-                return;
-            }
-            tvEach.setText(str);
-        });
-        payEnterDialog.show(getString(R.string.setupeach));
+                if (sw.isChecked()) {
+                    GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
+                    request.setGroupId(groupId);
+                    request.setEveryoneAwardCount(str);
+                    request.setSymbol(result.getSymbol());
+                    ServiceFactory.getInstance().getBaseService(Api.class)
+                            .upRedNewPersonInfo(GsonUtils.toJson(request))
+                            .compose(bindToLifecycle())
+                            .compose(RxSchedulers.normalTrans())
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                            .subscribe(s -> {
+                                tvEach.setText(str);
+                                ToastUtils.showShort(R.string.update_success);
+                            }, this::handleApiError);
+                    return;
+                }
+                tvEach.setText(str);
+            });
+            payEnterDialog.show(getString(R.string.setupeach));
+        }else {
+            ToastUtils.showShort(R.string.close_payenter_first);
+            return;
+        }
     }
 
     @SuppressLint("CheckResult")
     public void setupAll(View view) {
-        PayEnterDialog payEnterDialog = new PayEnterDialog(this);
-        payEnterDialog.setOnCommitClick(str -> {
-            payEnterDialog.dismiss();
-            if (Float.parseFloat(str) == 0) {
-                ToastUtils.showShort(R.string.input_money1);
-                return;
-            }
-            if (Float.parseFloat(str) < Float.parseFloat(tvEach.getText().toString())) {
-                ToastUtils.showShort(R.string.all_less_each);
-                return;
-            }
+        if(!sw.isChecked()){
+            PayEnterDialog payEnterDialog = new PayEnterDialog(this);
+            payEnterDialog.setOnCommitClick(str -> {
+                payEnterDialog.dismiss();
+                if (Float.parseFloat(str) == 0) {
+                    ToastUtils.showShort(R.string.input_money1);
+                    return;
+                }
+                if (Float.parseFloat(str) < Float.parseFloat(tvEach.getText().toString())) {
+                    ToastUtils.showShort(R.string.all_less_each);
+                    return;
+                }
 
-            if (sw.isChecked()) {
-                GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
-                request.setGroupId(groupId);
-                request.setAwardSum(str);
-                request.setSymbol(result.getSymbol());
-                ServiceFactory.getInstance().getBaseService(Api.class)
-                        .upRedNewPersonInfo(GsonUtils.toJson(request))
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .subscribe(s -> {
-                            tvAll.setText(str);
-                            ToastUtils.showShort(R.string.update_success);
-                        }, this::handleApiError);
-                return;
-            }
-            tvAll.setText(str);
-        });
-        payEnterDialog.show(getString(R.string.setupall));
+                if (sw.isChecked()) {
+                    GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
+                    request.setGroupId(groupId);
+                    request.setAwardSum(str);
+                    request.setSymbol(result.getSymbol());
+                    ServiceFactory.getInstance().getBaseService(Api.class)
+                            .upRedNewPersonInfo(GsonUtils.toJson(request))
+                            .compose(bindToLifecycle())
+                            .compose(RxSchedulers.normalTrans())
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                            .subscribe(s -> {
+                                tvAll.setText(str);
+                                ToastUtils.showShort(R.string.update_success);
+                            }, this::handleApiError);
+                    return;
+                }
+                tvAll.setText(str);
+            });
+            payEnterDialog.show(getString(R.string.setupall));
+        }else {
+            ToastUtils.showShort(R.string.close_payenter_first);
+            return;
+        }
     }
 
     @SuppressLint("CheckResult")
     public void setupStart(View view) {
-        DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
-        datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day)
-                -> {
-            String[] endTime = tvEndTime.getText().toString().split("-");
-            if (!tvEndTime.getText().toString().equals("请设置") &&
-                    (Integer.parseInt(year + month + day))
-                            > (Integer.parseInt(endTime[0] + endTime[1] + endTime[2]))) {
-                ToastUtils.showShort(R.string.starttime_less_end);
-                return;
-            }
-            if (sw.isChecked()) {
-                GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
-                request.setGroupId(groupId);
-                request.setSymbol(result.getSymbol());
-                try {
-                    request.setRedNewPersonStartTime(String.valueOf(df.parse(year + "-" + month + "-" + day).getTime()));
-                } catch (Exception e) {
+        if(!sw.isChecked()){
+            DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
+            datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day)
+                    -> {
+                String[] endTime = tvEndTime.getText().toString().split("-");
+                if (!tvEndTime.getText().toString().equals("请设置") &&
+                        (Integer.parseInt(year + month + day))
+                                > (Integer.parseInt(endTime[0] + endTime[1] + endTime[2]))) {
+                    ToastUtils.showShort(R.string.starttime_less_end);
+                    return;
                 }
-                ServiceFactory.getInstance().getBaseService(Api.class)
-                        .upRedNewPersonInfo(GsonUtils.toJson(request))
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .subscribe(s -> {
-                            tvStartTime.setText(year + "-" + month + "-" + day);
-                            ToastUtils.showShort(R.string.update_success);
-                        }, this::handleApiError);
-                return;
-            }
-            tvStartTime.setText(year + "-" + month + "-" + day);
-        });
-        String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
-        datePicker.setRangeStart(Integer.parseInt(nowString[0]),
-                Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
-        datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
-        initPicker(datePicker);
-        datePicker.show();
+                if (sw.isChecked()) {
+                    GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
+                    request.setGroupId(groupId);
+                    request.setSymbol(result.getSymbol());
+                    try {
+                        request.setRedNewPersonStartTime(String.valueOf(df.parse(year + "-" + month + "-" + day).getTime()));
+                    } catch (Exception e) {
+                    }
+                    ServiceFactory.getInstance().getBaseService(Api.class)
+                            .upRedNewPersonInfo(GsonUtils.toJson(request))
+                            .compose(bindToLifecycle())
+                            .compose(RxSchedulers.normalTrans())
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                            .subscribe(s -> {
+                                tvStartTime.setText(year + "-" + month + "-" + day);
+                                ToastUtils.showShort(R.string.update_success);
+                            }, this::handleApiError);
+                    return;
+                }
+                tvStartTime.setText(year + "-" + month + "-" + day);
+            });
+            String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
+            datePicker.setRangeStart(Integer.parseInt(nowString[0]),
+                    Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
+            datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
+            initPicker(datePicker);
+            datePicker.show();
+        }else {
+            ToastUtils.showShort(R.string.close_payenter_first);
+            return;
+        }
     }
 
     @SuppressLint("CheckResult")
     public void setupEnd(View view) {
-        if (tvStartTime.getText().equals("请设置")) {
-            ToastUtils.showShort(R.string.please_set_start_time);
-            return;
-        }
-        DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
-        datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day) -> {
-            if (sw.isChecked()) {
-                GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
-                request.setGroupId(groupId);
-                request.setSymbol(result.getSymbol());
-                try {
-                    request.setRedNewPersonEndTime(String.valueOf(df1.parse(year + "-" + month + "-" + day + " 23:59:59").getTime()));
-                } catch (Exception e) {
-                }
-                ServiceFactory.getInstance().getBaseService(Api.class)
-                        .upRedNewPersonInfo(GsonUtils.toJson(request))
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .subscribe(s -> {
-                            tvEndTime.setText(year + "-" + month + "-" + day);
-                            ToastUtils.showShort(R.string.update_success);
-                        }, this::handleApiError);
+        if(!sw.isChecked()){
+            if (tvStartTime.getText().equals("请设置")) {
+                ToastUtils.showShort(R.string.please_set_start_time);
                 return;
             }
-            tvEndTime.setText(year + "-" + month + "-" + day);
-        });
-        String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
-        datePicker.setRangeStart(Integer.parseInt(nowString[0]),
-                Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
-        datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
-        initPicker(datePicker);
-        datePicker.show();
+            DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
+            datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day) -> {
+                if (sw.isChecked()) {
+                    GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
+                    request.setGroupId(groupId);
+                    request.setSymbol(result.getSymbol());
+                    try {
+                        request.setRedNewPersonEndTime(String.valueOf(df1.parse(year + "-" + month + "-" + day + " 23:59:59").getTime()));
+                    } catch (Exception e) {
+                    }
+                    ServiceFactory.getInstance().getBaseService(Api.class)
+                            .upRedNewPersonInfo(GsonUtils.toJson(request))
+                            .compose(bindToLifecycle())
+                            .compose(RxSchedulers.normalTrans())
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                            .subscribe(s -> {
+                                tvEndTime.setText(year + "-" + month + "-" + day);
+                                ToastUtils.showShort(R.string.update_success);
+                            }, this::handleApiError);
+                    return;
+                }
+                tvEndTime.setText(year + "-" + month + "-" + day);
+            });
+            String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
+            datePicker.setRangeStart(Integer.parseInt(nowString[0]),
+                    Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
+            datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
+            initPicker(datePicker);
+            datePicker.show();
+        }else {
+            ToastUtils.showShort(R.string.close_payenter_first);
+            return;
+        }
     }
 
     private void initPicker(DatePicker datePicker) {
@@ -375,5 +430,4 @@ public class EnterGroupGetRedActivity extends BaseActivity {
             tvUnit2.setText(result.getSymbol());
         }
     }
-
 }

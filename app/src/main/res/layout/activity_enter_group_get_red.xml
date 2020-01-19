@@ -76,6 +76,7 @@
             android:textSize="15sp" />
 
         <ImageView
+            android:id="@+id/img_ic1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_mine_rightarrow" />
@@ -121,6 +122,7 @@
             android:textColor="@color/textcolor1" />
 
         <ImageView
+            android:id="@+id/img_ic2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_mine_rightarrow" />
@@ -165,6 +167,7 @@
             android:textColor="@color/textcolor1" />
 
         <ImageView
+            android:id="@+id/img_ic3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_mine_rightarrow" />
@@ -203,6 +206,7 @@
             android:textColor="#9EA0A4" />
 
         <ImageView
+            android:id="@+id/img_ic4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_mine_rightarrow" />
@@ -240,6 +244,7 @@
             android:textColor="#9EA0A4" />
 
         <ImageView
+            android:id="@+id/img_ic5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_mine_rightarrow" />
