@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -68,8 +67,6 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     private LinearLayout mLlGroupTab;
     private Button mBtnGroupSave;
 
-    private boolean isOpen;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,10 +109,6 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         mRecord.setOnClickListener(v -> startActivity(intent));
         Api api = ServiceFactory.getInstance().getBaseService(Api.class);
         mBtnGroupSave.setOnClickListener(v -> {
-            if (isOpen) {
-                ToastUtils.showShort(R.string.close_payenter_first);
-                return;
-            }
             if (result == null) {
                 ToastUtils.showShort(R.string.select_cointype);
                 return;
@@ -124,12 +117,9 @@ public class EnterGroupGetRedActivity extends BaseActivity {
             if (tvAll.getText().equals("0") || tvEach.getText().equals("0") ||
                     tvEndTime.getText().equals("请设置") || tvStartTime.getText().equals("请设置")) {
                 ToastUtils.showShort(R.string.please_setall);
-                return;
             } else if (Float.parseFloat(tvAll.getText().toString()) < Float.parseFloat(tvEach.getText().toString())) {
                 ToastUtils.showShort(R.string.all_less_each);
-                return;
             } else {
-                //open
                 try {
                     request.setRedNewPersonStartTime(String.valueOf(df.parse(tvStartTime.getText().toString()).getTime()));
                     request.setRedNewPersonEndTime(String.valueOf(df1.parse(tvEndTime.getText().toString() + " 23:59:59").getTime()));
@@ -144,29 +134,9 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .compose(RxSchedulers.normalTrans())
                         .subscribe(s -> {
+                            mBtnGroupSave.setVisibility(View.GONE);
                             ToastUtils.showShort(R.string.update_success);
-                            isOpen = true;
-                        }, t -> {
-                            handleApiError(t);
-                            sw.setChecked(!sw.isChecked());
-                            isOpen = false;
-                        });
-            }
-        });
-
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mLlGroupTab.setVisibility(View.VISIBLE);
-                    mBtnGroupSave.setVisibility(View.VISIBLE);
-                } else {
-                    request.setSymbol(result.getSymbol());
-                    request.setRedNewPersonStatus("0");
-                    mLlGroupTab.setVisibility(View.GONE);
-                    mBtnGroupSave.setVisibility(View.GONE);
-                    isOpen = false;
-                }
+                        }, this::handleApiError);
             }
         });
 
@@ -176,22 +146,25 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                 mLlGroupTab.setVisibility(View.VISIBLE);
                 mBtnGroupSave.setVisibility(View.VISIBLE);
             } else {
-                //close
-                request.setSymbol(result.getSymbol());
-                request.setRedNewPersonStatus("0");
-                mLlGroupTab.setVisibility(View.GONE);
-                mBtnGroupSave.setVisibility(View.GONE);
-                api.upRedNewPersonInfo(GsonUtils.toJson(request, false))
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(EnterGroupGetRedActivity.this)))
-                        .compose(RxSchedulers.normalTrans())
-                        .subscribe(s -> {
-                            ToastUtils.showShort(R.string.update_success);
-                            isOpen = false;
-                        }, t -> {
-                            handleApiError(t);
-                            sw.setChecked(!sw.isChecked());
-                        });
+                if (mBtnGroupSave.getVisibility() == View.VISIBLE) {
+                    mLlGroupTab.setVisibility(View.GONE);
+                    mBtnGroupSave.setVisibility(View.GONE);
+                } else {
+                    request.setSymbol(result.getSymbol());
+                    request.setRedNewPersonStatus("0");
+                    api.upRedNewPersonInfo(GsonUtils.toJson(request, false))
+                            .compose(bindToLifecycle())
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(EnterGroupGetRedActivity.this)))
+                            .compose(RxSchedulers.normalTrans())
+                            .subscribe(s -> {
+                                ToastUtils.showShort(R.string.update_success);
+                                mLlGroupTab.setVisibility(View.GONE);
+                                mBtnGroupSave.setVisibility(View.GONE);
+                            }, t -> {
+                                handleApiError(t);
+                                sw.setChecked(!sw.isChecked());
+                            });
+                }
             }
         });
 
@@ -200,25 +173,21 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .flatMap((Function<GetRedNewPersonInfoResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) r -> {
                     runOnUiThread(() -> {
-                        if (!TextUtils.isEmpty(r.getSymbol())) {
-                            result = new GetPaymentListBean();
-                            result.setSymbol(r.getSymbol());
-                            result.setLogo(r.getLogo());
-                        }
                         if (r.getRedNewPersonStatus().equals("1")) {
+                            if (!TextUtils.isEmpty(r.getSymbol())) {
+                                result = new GetPaymentListBean();
+                                result.setSymbol(r.getSymbol());
+                                result.setLogo(r.getLogo());
+                            }
                             tvStartTime.setText(df.format(Long.parseLong(r.getRedNewPersonStartTime())));
                             tvEndTime.setText(df.format(Long.parseLong(r.getRedNewPersonEndTime())));
                             tvEach.setText(r.getEveryoneAwardCount());
                             tvAll.setText(r.getAwardSum());
                             sw.setChecked(true);
-                            isOpen = true;
                             mLlGroupTab.setVisibility(View.VISIBLE);
-                            mBtnGroupSave.setVisibility(View.VISIBLE);
                         } else {
                             sw.setChecked(false);
-                            isOpen = false;
                             mLlGroupTab.setVisibility(View.GONE);
-                            mBtnGroupSave.setVisibility(View.GONE);
                         }
                     });
                     return api.getPaymentList();
@@ -242,118 +211,94 @@ public class EnterGroupGetRedActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void setupEach(View view) {
-        if (isOpen) {
-            ToastUtils.showShort(R.string.close_payenter_first);
+        if (mBtnGroupSave.getVisibility() != View.VISIBLE) {
             return;
-        } else {
-            PayEnterDialog payEnterDialog = new PayEnterDialog(this);
-            payEnterDialog.setOnCommitClick(str -> {
-                payEnterDialog.dismiss();
-                if (Float.parseFloat(str) == 0) {
-                    ToastUtils.showShort(R.string.input_money1);
-                    return;
-                }
-
-                if (Float.parseFloat(tvAll.getText().toString()) != 0 && Float.parseFloat(str) > Float.parseFloat(tvAll.getText().toString())) {
-                    ToastUtils.showShort(R.string.each_more_all);
-                    return;
-                }
-//                if (sw.isChecked()) {
-//                    GetRedNewPersonInfoResponse request = new GetRedNewPersonInfoResponse();
-//                    request.setGroupId(groupId);
-//                    request.setEveryoneAwardCount(str);
-//                    request.setSymbol(result.getSymbol());
-//                    ServiceFactory.getInstance().getBaseService(Api.class)
-//                            .upRedNewPersonInfo(GsonUtils.toJson(request))
-//                            .compose(bindToLifecycle())
-//                            .compose(RxSchedulers.normalTrans())
-//                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-//                            .subscribe(s -> {
-//                                tvEach.setText(str);
-//                                ToastUtils.showShort(R.string.update_success);
-//                            }, this::handleApiError);
-//                    return;
-//                }
-                tvEach.setText(str);
-            });
-            payEnterDialog.show(getString(R.string.setupeach));
         }
+        PayEnterDialog payEnterDialog = new PayEnterDialog(this);
+        payEnterDialog.setOnCommitClick(str -> {
+            payEnterDialog.dismiss();
+            if (Float.parseFloat(str) == 0) {
+                ToastUtils.showShort(R.string.input_money1);
+                return;
+            }
+
+            if (Float.parseFloat(tvAll.getText().toString()) != 0 && Float.parseFloat(str) > Float.parseFloat(tvAll.getText().toString())) {
+                ToastUtils.showShort(R.string.each_more_all);
+                return;
+            }
+            tvEach.setText(str);
+        });
+        payEnterDialog.show(getString(R.string.setupeach));
     }
 
     @SuppressLint("CheckResult")
     public void setupAll(View view) {
-        if (isOpen) {
-            ToastUtils.showShort(R.string.close_payenter_first);
+        if (mBtnGroupSave.getVisibility() != View.VISIBLE) {
             return;
-        } else {
-            PayEnterDialog payEnterDialog = new PayEnterDialog(this);
-            payEnterDialog.setOnCommitClick(str -> {
-                payEnterDialog.dismiss();
-                if (Float.parseFloat(str) == 0) {
-                    ToastUtils.showShort(R.string.input_money1);
-                    return;
-                }
-                if (Float.parseFloat(str) < Float.parseFloat(tvEach.getText().toString())) {
-                    ToastUtils.showShort(R.string.all_less_each);
-                    return;
-                }
-
-                tvAll.setText(str);
-            });
-            payEnterDialog.show(getString(R.string.setupall));
         }
+        PayEnterDialog payEnterDialog = new PayEnterDialog(this);
+        payEnterDialog.setOnCommitClick(str -> {
+            payEnterDialog.dismiss();
+            if (Float.parseFloat(str) == 0) {
+                ToastUtils.showShort(R.string.input_money1);
+                return;
+            }
+            if (Float.parseFloat(str) < Float.parseFloat(tvEach.getText().toString())) {
+                ToastUtils.showShort(R.string.all_less_each);
+                return;
+            }
+
+            tvAll.setText(str);
+        });
+        payEnterDialog.show(getString(R.string.setupall));
     }
 
     @SuppressLint("CheckResult")
     public void setupStart(View view) {
-        if (isOpen) {
-            ToastUtils.showShort(R.string.close_payenter_first);
+        if (mBtnGroupSave.getVisibility() != View.VISIBLE) {
             return;
-        } else {
-            DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
-            datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day)
-                    -> {
-                String[] endTime = tvEndTime.getText().toString().split("-");
-                if (!tvEndTime.getText().toString().equals("请设置") &&
-                        (Integer.parseInt(year + month + day))
-                                > (Integer.parseInt(endTime[0] + endTime[1] + endTime[2]))) {
-                    ToastUtils.showShort(R.string.starttime_less_end);
-                    return;
-                }
-
-                tvStartTime.setText(year + "-" + month + "-" + day);
-            });
-            String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
-            datePicker.setRangeStart(Integer.parseInt(nowString[0]),
-                    Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
-            datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
-            initPicker(datePicker);
-            datePicker.show();
         }
+        DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
+        datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day)
+                -> {
+            String[] endTime = tvEndTime.getText().toString().split("-");
+            if (!tvEndTime.getText().toString().equals("请设置") &&
+                    (Integer.parseInt(year + month + day))
+                            > (Integer.parseInt(endTime[0] + endTime[1] + endTime[2]))) {
+                ToastUtils.showShort(R.string.starttime_less_end);
+                return;
+            }
+
+            tvStartTime.setText(year + "-" + month + "-" + day);
+        });
+        String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
+        datePicker.setRangeStart(Integer.parseInt(nowString[0]),
+                Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
+        datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
+        initPicker(datePicker);
+        datePicker.show();
     }
 
     @SuppressLint("CheckResult")
     public void setupEnd(View view) {
-        if (isOpen) {
-            ToastUtils.showShort(R.string.close_payenter_first);
+        if (mBtnGroupSave.getVisibility() != View.VISIBLE) {
             return;
-        } else {
-            if (tvStartTime.getText().equals("请设置")) {
-                ToastUtils.showShort(R.string.please_set_start_time);
-                return;
-            }
-            DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
-            datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day) -> {
-
-                tvEndTime.setText(year + "-" + month + "-" + day);
-            });
-            String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
-            datePicker.setRangeStart(Integer.parseInt(nowString[0]),
-                    Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
-            datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
-            initPicker(datePicker);
-            datePicker.show();
         }
+        if (tvStartTime.getText().equals("请设置")) {
+            ToastUtils.showShort(R.string.please_set_start_time);
+            return;
+        }
+        DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
+        datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day) -> {
+
+            tvEndTime.setText(year + "-" + month + "-" + day);
+        });
+        String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
+        datePicker.setRangeStart(Integer.parseInt(nowString[0]),
+                Integer.parseInt(nowString[1]), Integer.parseInt(nowString[2]));
+        datePicker.setRangeEnd(Integer.parseInt(nowString[0]) + 3, Integer.parseInt(nowString[1]), 1);
+        initPicker(datePicker);
+        datePicker.show();
     }
 
     private void initPicker(DatePicker datePicker) {
@@ -375,8 +320,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     }
 
     public void chooseCoin(View view) {
-        if (isOpen) {
-            ToastUtils.showShort(R.string.close_payenter_first);
+        if (mBtnGroupSave.getVisibility() != View.VISIBLE) {
             return;
         }
         Intent intent = new Intent(this, ChooseCoinActivity.class);
