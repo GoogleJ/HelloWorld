@@ -1,11 +1,13 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +20,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.ChooseNewOwnerAdapter;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -93,7 +96,9 @@ public class ChooseNewOwnerActivity extends BaseActivity {
                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 
                     if (fromSocial) {
-                        finish();
+                        Intent back2Home = new Intent(this, HomeActivity.class);
+                        back2Home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(back2Home);
                         return;
                     }
                     Intent intent = new Intent(ChooseNewOwnerActivity.this, ConversationActivity.class);
