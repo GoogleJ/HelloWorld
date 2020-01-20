@@ -161,7 +161,20 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
                 Uri uri = Uri.parse(request.getUrl().toString());
                 if (!TextUtils.isEmpty(uri.getScheme()) && !uri.getScheme().startsWith("http")) {
                     if (uri.getScheme().equals("hilamg")) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(request.getUrl().toString()));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Uri uri = Uri.parse(url);
+                if (!TextUtils.isEmpty(uri.getScheme()) && !uri.getScheme().startsWith("http")) {
+                    if (uri.getScheme().equals("hilamg")) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
                     }
                     return true;
