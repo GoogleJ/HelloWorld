@@ -102,31 +102,42 @@ public class EnlargeImageActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 currentBitmap = null;
-                String sMessage;
-                Message message = images.get(position);
-                if (((ImageMessage) message.getContent()).getLocalUri() == null) {
-                    sMessage = ((ImageMessage) message.getContent()).getMediaUrl().toString();
-                } else {
-                    sMessage = ((ImageMessage) message.getContent()).getLocalUri().toString();
-                }
-                Glide.with(EnlargeImageActivity.this)
-                        .asBitmap()
-                        .load(sMessage)
-                        .listener(new RequestListener<Bitmap>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                                currentBitmap = resource;
-                                return false;
-                            }
-                        }).submit();
+                getNowSelectedImgBitmap(position);
             }
         });
-        pager.setCurrentItem(getIntent().getIntExtra("index", 0));
+        int index = getIntent().getIntExtra("index", 0);
+        pager.setCurrentItem(index);
+        if (index == 0) {
+            getNowSelectedImgBitmap(0);
+        }
+    }
+
+    private void getNowSelectedImgBitmap(int position) {
+        if (images.size() == 0) {
+            return;
+        }
+        String sMessage;
+        Message message = images.get(position);
+        if (((ImageMessage) message.getContent()).getLocalUri() == null) {
+            sMessage = ((ImageMessage) message.getContent()).getMediaUrl().toString();
+        } else {
+            sMessage = ((ImageMessage) message.getContent()).getLocalUri().toString();
+        }
+        Glide.with(EnlargeImageActivity.this)
+                .asBitmap()
+                .load(sMessage)
+                .listener(new RequestListener<Bitmap>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                        currentBitmap = resource;
+                        return false;
+                    }
+                }).submit();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -289,7 +300,6 @@ public class EnlargeImageActivity extends BaseActivity {
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
 //                        progressBar.setVisibility(View.GONE);
                         Bitmap bitmap = ImageUtils.drawable2Bitmap(resource);
-                        currentBitmap = bitmap;
                         float initImageScale = getInitImageScale(bitmap);
                         imageView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CUSTOM);
                         imageView.setMinScale(initImageScale);//最小显示比例
@@ -366,4 +376,5 @@ public class EnlargeImageActivity extends BaseActivity {
             return layout;
         }
     }
+
 }

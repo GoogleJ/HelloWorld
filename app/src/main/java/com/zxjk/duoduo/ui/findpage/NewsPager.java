@@ -665,9 +665,9 @@ public class NewsPager extends BaseFragment {
                         intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
                         startActivity(intent);
                     }
+
                     @Override
                     public void onError(RongIMClient.ErrorCode errorCode) {
-
                     }
                 });
                 break;
@@ -699,10 +699,9 @@ public class NewsPager extends BaseFragment {
                 .share();
     }
 
-
-    public static Bitmap getBitmapByView(ScrollView scrollView) {
+    private Bitmap getBitmapByView(ScrollView scrollView) {
         int h = 0;
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         for (int i = 0; i < scrollView.getChildCount(); i++) {
             h += scrollView.getChildAt(i).getHeight();
             scrollView.getChildAt(i).setBackgroundColor(
@@ -715,8 +714,7 @@ public class NewsPager extends BaseFragment {
         return bitmap;
     }
 
-
-    public static Bitmap compressImage(Bitmap image) {
+    private Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         int options = 100;
@@ -730,7 +728,7 @@ public class NewsPager extends BaseFragment {
         return bitmap;
     }
 
-    private void savePointInfo(){
+    private void savePointInfo() {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .savePointInfo("4")
                 .compose(RxSchedulers.ioObserver())
@@ -738,6 +736,5 @@ public class NewsPager extends BaseFragment {
                 }, t -> {
                 });
     }
-
 
 }
