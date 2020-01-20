@@ -29,32 +29,8 @@ public class ReceiveAirdropResponse implements Parcelable {
     private String lastTime;
     private String nextReceive;
     private String receive;
-    private String lastReceive;
     private int shareCount;
-
-    public int getShareCount() {
-        return shareCount;
-    }
-
-    public void setShareCount(int shareCount) {
-        this.shareCount = shareCount;
-    }
-
-    public String getLastReceive() {
-        return lastReceive;
-    }
-
-    public void setLastReceive(String lastReceive) {
-        this.lastReceive = lastReceive;
-    }
-
-    public String getReceive() {
-        return receive;
-    }
-
-    public void setReceive(String receive) {
-        this.receive = receive;
-    }
+    private int receiveCount;
 
     public String getId() {
         return id;
@@ -136,7 +112,28 @@ public class ReceiveAirdropResponse implements Parcelable {
         this.nextReceive = nextReceive;
     }
 
-    public ReceiveAirdropResponse() {
+    public String getReceive() {
+        return receive;
+    }
+
+    public void setReceive(String receive) {
+        this.receive = receive;
+    }
+
+    public int getShareCount() {
+        return shareCount;
+    }
+
+    public void setShareCount(int shareCount) {
+        this.shareCount = shareCount;
+    }
+
+    public int getReceiveCount() {
+        return receiveCount;
+    }
+
+    public void setReceiveCount(int receiveCount) {
+        this.receiveCount = receiveCount;
     }
 
     @Override
@@ -157,8 +154,11 @@ public class ReceiveAirdropResponse implements Parcelable {
         dest.writeString(this.lastTime);
         dest.writeString(this.nextReceive);
         dest.writeString(this.receive);
-        dest.writeString(this.lastReceive);
         dest.writeInt(this.shareCount);
+        dest.writeInt(this.receiveCount);
+    }
+
+    public ReceiveAirdropResponse() {
     }
 
     protected ReceiveAirdropResponse(Parcel in) {
@@ -173,8 +173,8 @@ public class ReceiveAirdropResponse implements Parcelable {
         this.lastTime = in.readString();
         this.nextReceive = in.readString();
         this.receive = in.readString();
-        this.lastReceive = in.readString();
         this.shareCount = in.readInt();
+        this.receiveCount = in.readInt();
     }
 
     public static final Creator<ReceiveAirdropResponse> CREATOR = new Creator<ReceiveAirdropResponse>() {

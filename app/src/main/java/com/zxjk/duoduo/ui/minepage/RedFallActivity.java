@@ -265,7 +265,7 @@ public class RedFallActivity extends BaseActivity {
                                                 ToastUtils.showShort(R.string.noredfalldata);
                                                 finish();
                                             } else {
-                                                if (r.getNextReceive().equals("1")) {
+                                                if (r.getNextReceive().equals("1") && r.getReceiveCount() != 0) {
                                                     List<RedFallActivityLocalBean> redFallActivityLocalBeans = redFallActivityLocalBeanDao.loadAll();
                                                     RedFallActivityLocalBean redFallActivityLocalBean = redFallActivityLocalBeans.get(0);
                                                     redFallActivityLocalBean.setLastPlayTime(String.valueOf(System.currentTimeMillis()));

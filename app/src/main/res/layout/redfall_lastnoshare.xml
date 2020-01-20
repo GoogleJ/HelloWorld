@@ -32,9 +32,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
         android:src="@drawable/ic_redfall_pop2" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="56dp"
+        android:src="@drawable/ic_redfall_pop4" />
 
     <ImageView
         android:id="@+id/iv"

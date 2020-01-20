@@ -104,7 +104,7 @@ public class ConfirmRedFallActivity extends BaseActivity {
 
         if (data.getShareCount() == 0) {
             tvTips.setText(R.string.redfall_tips_noshareyet);
-            if (data.getLastReceive().equals("1")) {
+            if (data.getReceiveCount() == 0) {
                 QuickPopupBuilder.with(this)
                         .contentView(R.layout.redfall_lastnoshare)
                         .config(new QuickPopupConfig()
