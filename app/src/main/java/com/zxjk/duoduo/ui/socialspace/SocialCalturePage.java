@@ -784,6 +784,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 }
             });
         } else {
+
             pagerVideo.setVisibility(View.GONE);
             indicatorVideo.setVisibility(View.GONE);
             llVideoEmpty.setVisibility(View.VISIBLE);
