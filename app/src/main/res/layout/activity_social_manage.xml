@@ -298,6 +298,11 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#DDDDDD" />
+
             <LinearLayout
                 android:id="@+id/ll_groupmanager"
                 android:layout_width="match_parent"
@@ -371,11 +376,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#DDDDDD" />
 
             <LinearLayout
                 android:id="@+id/llNewOwner"
