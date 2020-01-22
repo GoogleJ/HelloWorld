@@ -471,10 +471,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.RedPackageListActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.msgpage.TransferSuccessActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

@@ -46,6 +46,7 @@ import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
+import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
@@ -71,11 +72,13 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
+import io.rong.imkit.mention.RongMentionManager;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.provider.MessageItemLongClickAction;
 import io.rong.imlib.RongIMClient;
@@ -163,6 +166,21 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initRedfallData();
 
+        RongMentionManager.getInstance().setGroupMembersProvider((s, callBack) ->
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .getGroupMemByGroupId(s)
+                        .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                        .compose(RxSchedulers.ioObserver())
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribe(list -> {
+                            ArrayList<UserInfo> result = new ArrayList<>(list.size());
+                            for (AllGroupMembersResponse r : list) {
+                                UserInfo member = new UserInfo(r.getId(), r.getNick(), Uri.parse(r.getHeadPortrait()));
+                                result.add(member);
+                            }
+                            callBack.onGetGroupMembersResult(result);
+                        }, t -> ToastUtils.showShort("暂时无法获取用户列表"))
+        );
     }
 
     @SuppressLint("CheckResult")
@@ -349,11 +367,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void initGreenDaoSession() {
-        OpenHelper open = new
-                OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
-        Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
-        dao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
-        redFallActivityLocalBeanDao = Application.daoSession.getRedFallActivityLocalBeanDao();
+        if (Application.daoSession == null) {
+            OpenHelper open = new
+                    OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
+            Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
+            dao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
+            redFallActivityLocalBeanDao = Application.daoSession.getRedFallActivityLocalBeanDao();
+        }
     }
 
     private void initMessageLongClickAction() {

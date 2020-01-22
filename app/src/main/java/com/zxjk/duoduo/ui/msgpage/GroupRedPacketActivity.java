@@ -293,6 +293,7 @@ public class GroupRedPacketActivity extends BaseActivity {
             GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
             tvCoin.setText(result.getSymbol());
             etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
+            tvCoin2.setText(result.getSymbol());
         }
     }
 

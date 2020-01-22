@@ -28,9 +28,12 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
+import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.response.LoginResponse;
+import com.zxjk.duoduo.db.OpenHelper;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -107,6 +110,11 @@ public class BaseActivity extends RxAppCompatActivity {
                     finish();
                 }
             }
+        }
+        if (Application.daoSession == null) {
+            OpenHelper open = new
+                    OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
+            Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
         }
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
             fixOrientation();
