@@ -19,21 +19,14 @@
     <string name="en_us">English</string>
     <!--actionbar title ===================================未翻译-->
     <string name="de_actionbar_sub_group">"社群"</string>
-    <string name="m_add_friend_search_edit">输入手机号/Hilamg号</string>
-    <string name="m_add_friend_label_qr_code">我的二维码名片</string>
     <string name="m_add_friend_contact_label_1">手机联系人</string>
     <string name="m_add_friend_scan_it_label_1">扫一扫</string>
     <string name="m_personal_information_signature_text">添加到通讯录</string>
     <string name="m_verification_title_bar">验证申请</string>
     <string name="m_verification_send_btn">发送</string>
     <string name="m_item_contact_type_text">已添加</string>
-    <string name="m_contact_search_label">搜索</string>
     <string name="m_fragment_new_friend_title_bar">新的朋友</string>
-    <string name="m_edit_information_title_bar">编辑个人信息</string>
     <string name="m_edit_information_area_label">地区</string>
-    <string name="m_edit_information_name_edit">例如：小明</string>
-    <string name="m_edit_information_area_edit">完善您的位置信息</string>
-    <string name="m_edit_information_name_label">昵称</string>
     <string name="m_edit_information_btn">完成</string>
     <string name="code_label">验证码已经发送，请注意查收</string>
     <string name="m_delete_popup">删除</string>
@@ -215,26 +208,15 @@
     <string name="you_have_left_the_group_chat">您已退出群聊</string>
     <string name="slow">慢</string>
     <string name="fast">快</string>
-    <string name="balance">余额</string>
-    <string name="inputhuazhuancount">请输入划转数量</string>
-    <string name="huazhuanAll">全部划转</string>
-    <string name="receiveBalance">获得余额</string>
     <string name="transfer_group_successful">转让成功</string>
     <string name="send_verification">发送验证</string>
     <string name="verifyfirstpls">请先完成实名认证</string>
     <string name="verifying_pleasewait">正在实名认证中，请等待认证结果</string>
-    <string name="time">时间</string>
     <string name="receiptAddress">收款地址</string>
     <string name="tradeOrder">交易号</string>
     <string name="block">区块</string>
     <string name="zhuanru">转入</string>
-    <string name="wronginput">您填写的参数有误，请重新输入</string>
     <string name="zhuanchusuccess">转账成功</string>
-    <string name="poundage">手续费</string>
-    <string name="receive">获得</string>
-    <string name="inputGasPrice">请设置矿工费用</string>
-    <string name="huazhuancommit">确定划转</string>
-    <string name="huazhuansuccess">划转成功</string>
     <string name="please_set_paypass">请设置支付密码</string>
     <string name="please_input_paypass">请设置支付密码</string>
     <string name="please_set_paypass_twtice">请再次填写以确认</string>
@@ -242,7 +224,6 @@
     <string name="successfully_modified">修改成功</string>
     <string name="please_set_paypass1">请重新设置支付密码</string>
     <string name="please_set_paypass2">点击完成结束设置</string>
-    <string name="input_search_edit">请输入搜索内容</string>
     <string name="add_friend_successful">添加好友成功</string>
     <string name="app_prompt_text">还没有好友,赶快去添加吧</string>
     <string name="pay_type_successful">该信息已完善</string>
@@ -272,10 +253,6 @@
     <string name="set_pay_pwd">设置支付密码</string>
     <string name="input_redmoney">请输入红包金额</string>
     <string name="userinfo">个人资料</string>
-    <string name="red_packet_list">红包记录</string>
-    <string name="red_packet_tips1">个红包</string>
-    <string name="shouru">收入</string>
-    <string name="zhichu">支出</string>
     <string name="redrecord">红包记录</string>
     <string name="red_tips">未领取的红包，将于24小时后退款</string>
     <string name="exchange_list_successful">已完成</string>
@@ -301,9 +278,6 @@
     <string name="has_bean_sent">发送成功</string>
     <string name="regain_verification_code">重新获取</string>
     <string name="regain_after_seconds">秒后重新获取</string>
-    <string name="please_upload_an_avatar">请上传头像</string>
-    <string name="username_can_not_be_blank">昵称不能为空</string>
-    <string name="area_can_not_be_empty">地区不能为空</string>
     <string name="the_friend_has_been_deleted">该好友已删除</string>
     <string name="please_enter_phone_number">请输入手机号</string>
     <string name="please_enter_verification_code">请输入验证码</string>
@@ -394,9 +368,7 @@
     <string name="ge">个</string>
     <string name="input_money">请输入金额</string>
     <string name="input_num">请输入红包个数</string>
-    <string name="type">类型:</string>
     <string name="keFu">客服</string>
-    <string name="set">设置</string>
     <string name="clear_money">清除金额</string>
     <string name="set_money">设置金额</string>
     <string name="please_set_money">请设置金额</string>
@@ -434,7 +406,6 @@
     <string name="qr_code">我的二维码</string>
     <string name="personal_details">个人信息</string>
     <string name="lqxx">聊天信息</string>
-    <string name="please_money">请输入金额</string>
     <string name="currency_option">币种选择</string>
     <string name="collection_wallet">收款钱包</string>
     <string name="input_wallet_address">请输入钱包地址</string>
@@ -449,8 +420,6 @@
     <string name="input_outrate">不可超过总售出额，请重新输入</string>
     <string name="group_invitation">群聊邀请</string>
     <string name="group_qr">群二维码</string>
-    <string name="savetophone">保存到手机</string>
-    <string name="sharecode">分享二维码</string>
     <string name="head_portrait">头像</string>
     <string name="chat_message">聊天信息</string>
     <string name="savefailed">保存失败,请稍后重试</string>
@@ -467,12 +436,7 @@
     <string name="add_buddy">加好友</string>
     <string name="contact_him">联系他</string>
     <string name="verifying_application">你需要发送验证申请,等待对方通过</string>
-    <string name="wechat_friend">微信好友</string>
-    <string name="add_wechat_friend">添加微信中的联系人</string>
-    <string name="add_phone_friend">添加通讯录中的联系人</string>
     <string name="phone_friend">手机联系人</string>
-    <string name="scan_code">扫一扫二维码名片</string>
-    <string name="add_contacts">添加联系人</string>
     <string name="not_perfect">收款信息未完善</string>
     <string name="login_again">登录已过期，请重新登录</string>
     <string name="select_contact">选择联系人</string>
@@ -526,7 +490,6 @@
     <string name="popnearby_all">查看全部</string>
     <string name="popnearby_clear">清除位置并退出</string>
     <string name="audio_video_sight">小视频</string>
-    <string name="paynow">立即支付</string>
     <string name="real_name1">真实姓名:已隐藏</string>
     <string name="popmap_map1">腾讯地图</string>
     <string name="popmap_map2">高德地图</string>
@@ -544,12 +507,9 @@
     <string name="cant_forward">无法转发特殊消息类型</string>
     <string name="update_success">更新成功</string>
     <string name="chat">消息</string>
-    <string name="news">社群</string>
     <string name="conjuncture">行情</string>
     <string name="boutique">精选</string>
-    <string name="activity">活动专区</string>
     <string name="cooperate">商务合作</string>
-    <string name="update">版本更新</string>
     <string name="safesetting">安全设置</string>
     <string name="logout1">退出登录</string>
     <string name="sign1">个性签名：</string>
@@ -569,7 +529,6 @@
     <string name="shoukuanbizhong">收款币种</string>
     <string name="shoukuanjine">收款金额</string>
     <string name="please_set_money1">收款金额不能为0</string>
-    <string name="groupqr">扫一扫二维码加入群聊</string>
     <string name="myqr">扫一扫二维码，加我好友</string>
     <string name="duplicated_login">账号在其他设备登录，请重新登录</string>
     <string name="openburn">开启了</string>
@@ -581,7 +540,6 @@
     <string name="open_capturescreen_success">截屏通知已开启</string>
     <string name="authory_manage">权限管理</string>
     <string name="groupmanage">群管理</string>
-    <string name="mute">禁言</string>
     <string name="mute_all">全员禁言</string>
     <string name="mute_manage">禁言管理</string>
     <string name="new_enter_group">新人进群</string>
@@ -611,14 +569,12 @@
     <string name="nopermisson">暂无操作权限</string>
     <string name="open_permission_reason">需要相关权限以确保正常运行，请打开权限</string>
     <string name="open_permission_reason1">需要相关权限以确保正常运行，请在设置中手动打开</string>
-    <string name="mygroup">我的群聊</string>
     <string name="enter_group_chat">输入群名称</string>
     <string name="m_group_chat">群组</string>
     <string name="no_qunzu">暂无群组</string>
     <string name="quick_news">快讯</string>
     <string name="less_min">红包金额不能小于0.00001</string>
     <string name="rewardmot">活动奖励</string>
-    <string name="sign_success">签到成功</string>
     <string name="pay_money">付费金额</string>
     <string name="payrecord">付费记录</string>
     <string name="person">人</string>
@@ -630,9 +586,6 @@
     <string name="open_payenter_success">付费进群已开启</string>
     <string name="input_zhengshu">请输入金额</string>
     <string name="close_payenter_success">付费进群已关闭</string>
-    <string name="pay_enter_group_tip1">本群设置了付费进群，支付后即可入群</string>
-    <string name="paying">支付中</string>
-    <string name="pay_fail">支付失败</string>
     <string name="close_payenter_first">请先关闭进群付费币种</string>
     <string name="eachpay">每人奖励数量</string>
     <string name="func_status">功能状态</string>
@@ -655,25 +608,15 @@
     <string name="login_verify">验证码登录</string>
     <string name="next">下一步</string>
     <string name="invite_friends1">邀请好友</string>
-    <string name="invite_tips">邀请好友注册成功，即可领取奖励</string>
-    <string name="yourinvitecode">您的邀请码</string>
-    <string name="invite_tips1">邀请好友数</string>
-    <string name="invite_tips2">获得奖励</string>
-    <string name="invite_now">马上邀请</string>
     <string name="shareto">分享到</string>
     <string name="zone">朋友圈</string>
     <string name="qq">qq</string>
     <string name="qzone">qq空间</string>
-    <string name="invite_tips3">填写邀请码奖励1USDT</string>
     <string name="url_forbidden">本会话禁止发送链接</string>
     <string name="picture_forbidden">本会话禁止发送图片</string>
     <string name="cant_sendPic">禁止发图片</string>
     <string name="cant_sendUrl">禁止发链接</string>
-    <string name="mochat_social">海浪社区</string>
-    <string name="video">视频</string>
     <string name="slowmode">慢速模式</string>
-    <string name="msgfilter">消息过滤</string>
-    <string name="grouppublic">群公开</string>
     <string name="selectPerson">请先选择要操作的管理员</string>
     <string name="update_group_limit">升级群人数</string>
     <string name="update_group_limit_tips1">此群是</string>
@@ -685,7 +628,6 @@
     <string name="inpu_search_group">请输入社群关键字</string>
     <string name="emptylist">什么也没找到</string>
     <string name="join">加入</string>
-    <string name="joined">已加入</string>
     <string name="blockwallet_empty_tips">多币种钱包</string>
     <string name="blockwallet_empty_tips1">一键添加和管理您的数字资产</string>
     <string name="createwallet">创建钱包</string>
@@ -755,7 +697,6 @@
     <string name="importwallet_tips5">直接复制粘贴官方钱包的keystore内容至文本框,或通过生成keystore内容的二维码,扫码录入</string>
     <string name="importwallet_tips6">keystore文本内容</string>
     <string name="importwallet_success">导入成功</string>
-    <string name="status">状态</string>
     <string name="emptylist1">暂无记录</string>
     <string name="wronginput1">转出数量不能大于余额</string>
     <string name="zhuanchusuccess1">已发起交易</string>
@@ -799,7 +740,6 @@
     <string name="input_down_count">请输入提币数量</string>
     <string name="up_count_less_zero">充币数量不能小于0</string>
     <string name="down_count_less_zero">提币数量不能小于0</string>
-    <string name="down_coin_success">提币成功</string>
     <string name="choose_block_address">选择数字钱包地址</string>
     <string name="select_walletaddress">请选择钱包地址</string>
     <string name="success1">操作成功</string>
@@ -808,7 +748,6 @@
     <string name="back2walletlist">返回钱包首页</string>
     <string name="address_same">钱包地址不能相同</string>
     <string name="tips_downcoin2">请选择您的数字钱包地址</string>
-    <string name="verify_success">认证成功</string>
     <string name="number_overlimit">请手动输入</string>
     <string name="no_social">太低调了,你还没有加入任何社群！</string>
     <string name="read_and_agree">我已阅读并同意</string>
@@ -833,9 +772,7 @@
     <string name="social_notice">社群公告</string>
     <string name="social_calture">社群文化</string>
     <string name="social_act">社群动态</string>
-    <string name="ic_social_end_pop1">发布动态</string>
     <string name="ic_social_end_pop2">社群管理</string>
-    <string name="ic_social_end_pop3">社群文化</string>
     <string name="social_remark">我在本社群昵称</string>
     <string name="invite_wechat">邀请微信好友</string>
     <string name="close_social">解散社群</string>
@@ -865,7 +802,6 @@
     <string name="social_empty_tips">请联系管理员开放社群文化</string>
     <string name="copylink">复制链接</string>
     <string name="saveposters">保存海报</string>
-    <string name="authen_failure">认证失败</string>
     <string name="zixun1">资讯</string>
     <string name="video_manage1">视频管理</string>
     <string name="selectVideos">请选择要上传的视频</string>
@@ -921,6 +857,5 @@
     <string name="redfall_tips_shared">您今天已分享过</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
