@@ -131,7 +131,6 @@ dependencies {
     implementation project(':CallLib')
     implementation project(':CallKit')
     implementation project(':Sight')
-    implementation project(':android-push-settings')
 
     //视频压缩
     implementation 'com.mabeijianxi:small-video-record2:2.0.3@aar'

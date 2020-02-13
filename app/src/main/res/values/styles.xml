@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -41,16 +40,6 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="AnimDown" parent="@android:style/Animation">
-        <item name="android:windowEnterAnimation">@anim/push_scale_in</item>
-        <item name="android:windowExitAnimation">@anim/push_scale_out</item>
-    </style>
-
-    <style name="dialog_style" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/dialog_enter_psd</item>
-        <item name="android:windowExitAnimation">@anim/dialog_exit_psd</item>
-    </style>
-
     <style name="ImageEnter">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -82,14 +71,6 @@
         <item name="android:textColor">@color/color9</item>
     </style>
 
-    <style name="textStyle4">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">21sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/color39</item>
-    </style>
-
     <style name="RLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
@@ -113,24 +94,6 @@
         <item name="android:paddingEnd">20dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/textColor3</item>
-        <item name="android:inputType">text</item>
-        <item name="android:hint">@string/search</item>
-        <item name="android:imeOptions">actionSearch</item>
-    </style>
-
-    <style name="SearchStyle2">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">45dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@drawable/shape_search_edittext</item>
-        <item name="android:drawableStart">@drawable/icon_search_view</item>
-        <item name="android:drawablePadding">10dp</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:paddingStart">20dp</item>
-        <item name="android:paddingEnd">20dp</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/textColor3</item>
         <item name="android:inputType">text</item>
         <item name="android:hint">@string/search</item>
@@ -164,12 +127,6 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="NoTitleTranslucent80Theme" parent="AppTheme">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="tab">

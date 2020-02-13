@@ -72,7 +72,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongContext;
@@ -90,8 +89,6 @@ import io.rong.message.CommandMessage;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
-import io.rong.pushperm.ResultCallback;
-import io.rong.pushperm.RongPushPremissionsCheckHelper;
 
 import static com.ashokvarma.bottomnavigation.BottomNavigationBar.BACKGROUND_STYLE_STATIC;
 
@@ -452,30 +449,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private void cleanBadge() {
         Constant.messageCount = 0;
         BadgeNumberManager.from(this).setBadgeNumber(0);
-    }
-
-    private void checkPermission() {
-        RongPushPremissionsCheckHelper.checkPermissionsAndShowDialog(this, new ResultCallback() {
-            @Override
-            public void onAreadlyOpened(String value) {
-
-            }
-
-            @Override
-            public boolean onBeforeShowDialog(String value) {
-                return false;
-            }
-
-            @Override
-            public void onGoToSetting(String value) {
-
-            }
-
-            @Override
-            public void onFailed(String value, FailedType type) {
-
-            }
-        });
     }
 
     private void initView() {
