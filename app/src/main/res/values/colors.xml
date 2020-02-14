@@ -9,11 +9,9 @@
     <color name="colorAccent">#4585F5</color>
     <color name="login_bg">#4B4D5B</color>
     <color name="text_click_normal">#636466</color>
-    <color name="contact_letter_idx_bg">#00746262</color>
     <color name="list_item_bg_press">#F1EDED</color>
     <color name="text_select_color">#8b8888</color>
     <color name="main_list_divider">#C7C6C6</color>
-    <color name="contacts_letters_color">#80807c</color>
     <color name="text_white_def">#c9ccd0</color>
     <color name="home_tab_gray">#A5A1A1</color>
     <color name="m_friend_search_view">#fff2f3f5</color>
@@ -22,7 +20,6 @@
     <color name="personal_information_1">#F8F8F8</color>
     <color name="m_verification_send_btn">#4B4D5B</color>
     <color name="m_contact_edit_back">#EEEEEE</color>
-    <color name="m_item_msg_message_number">#EA2222</color>
     <color name="textcolor1">#333333</color>
     <color name="textcolor2">#666666</color>
     <color name="textcolor3">#999999</color>
@@ -35,14 +32,12 @@
     <color name="red_eth_in">#F43532</color>
     <color name="count_down">#EB1D1C</color>
     <color name="confirm_sale_line">#eeeeee</color>
-    <color name="exchange_line">#dddddd</color>
     <color name="tvChangeSign">#BCBDC7</color>
     <color name="choosesex_line">#D2D2D2</color>
     <color name="grey">#D3D3D3</color>
     <color name="pop_color1">#4B4D5B</color>
     <color name="pop_color3">#D2D2D2</color>
     <color name="background_color">#f8f8f8</color>
-    <color name="background_color1">#EDEDEE</color>
     <color name="theme_color">#4B4D5B</color>
     <color name="text_color2">#999999</color>
     <color name="text_color3">#333333</color>
@@ -53,7 +48,6 @@
     <color name="colorE">#EEEEEE</color>
     <color name="colorD">#DDDDDD</color>
     <color name="colorTheme">#4585F5</color>
-    <color name="colorB">#BBBBBB</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="color6">#666666</color>
     <color name="color9">#999999</color>
