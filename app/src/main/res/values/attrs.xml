@@ -19,7 +19,6 @@
         </attr>
     </declare-styleable>
 
-    //PwdEditText
     <declare-styleable name="PwdEditText">
         <attr name="space" format="dimension" />
         <attr name="strokeWidth" format="dimension" />
@@ -36,19 +35,11 @@
         <attr name="isWaitInput" format="boolean" />
     </declare-styleable>
 
-
     <declare-styleable name="PswView">
         <attr name="psw_size" format="dimension" />
         <attr name="psw_color" format="color" />
         <attr name="psw_count" format="integer" />
         <attr name="border_color" format="color" />
-    </declare-styleable>
-
-    <declare-styleable name="IndicatorView">
-        <attr name="indicatorColor" format="color" />
-        <attr name="indicatorColorSelected" format="color" />
-        <attr name="indicatorWidth" format="integer" />
-        <attr name="gravity" format="integer" />
     </declare-styleable>
 
 </resources>

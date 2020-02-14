@@ -57,7 +57,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.minepage.wallet.BalanceShowItemActivity"></activity>
+        <activity
+            android:name=".ui.minepage.wallet.BalanceShowItemActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.msgpage.DropRedRecordActivity"
             android:launchMode="singleTop"
@@ -300,7 +304,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".ui.AppFirstLogin" />
+        <activity
+            android:name=".ui.AppFirstLogin"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.minepage.InviterActivity"
             android:launchMode="singleTop"
@@ -397,15 +405,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.ProofComplaintActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.msgpage.AuthenticationActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.OrderComplaintActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -423,30 +423,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msgpage.SkinReportActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ShenSuActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ExchangeOrderFailedActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ExchangeOrderCancelActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ExchangeOrderSuccessActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.OverOrderActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.WaitForPayOverActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -496,34 +472,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.walletpage.WaitForJudgeActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ConfirmSaleActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ConfirmBuyActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.CancelOrderActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ExchangeListActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ExchangeActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.minepage.ChangePwdActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.minepage.ChangePhoneActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
@@ -538,10 +486,6 @@
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity
             android:name=".ui.minepage.OnlineServiceActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.minepage.VerifiedActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -617,10 +561,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/RedPackageTheme" />
         <activity
-            android:name=".ui.walletpage.ExchangeListTypeActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.msgpage.ModifyNotesActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
@@ -685,18 +625,7 @@
             android:name=".ui.minepage.FeedbackActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.minepage.BillingMessageActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.minepage.ReceiptTypeActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.CommitSuccessfulActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" /> <!-- 启动页 -->
+        <!-- 启动页 -->
         <activity android:name=".ui.BrowsableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

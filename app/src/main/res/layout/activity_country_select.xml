@@ -18,7 +18,7 @@
             android:layout_toStartOf="@id/liv_index"
             android:scrollbars="none" />
 
-        <com.zxjk.duoduo.ui.widget.LetterIndexView
+        <com.zxjk.duoduo.ui.msgpage.widget.IndexView
             android:id="@+id/liv_index"
             android:layout_width="24dp"
             android:layout_height="match_parent"

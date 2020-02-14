@@ -55,40 +55,41 @@
             android:textSize="16sp" />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/etWalletAddress"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@null"
-                    android:ellipsize="end"
-                    android:hint="@string/input_wallet_address"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:lines="2"
-                    android:singleLine="true"
-                    android:textSize="16sp" />
+            <EditText
+                android:id="@+id/etWalletAddress"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ellipsize="end"
+                android:hint="@string/input_wallet_address"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="2"
+                android:singleLine="true"
+                android:textSize="16sp" />
 
-                <View
-                    android:background="@color/m_add_friend_line"
-                    android:layout_width="1dp"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginEnd="12dp"/>
-                <ImageView
-                    android:id="@+id/img_code"
-                    android:src="@drawable/ic_import_wallet_scan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/m_add_friend_line" />
+
+            <ImageView
+                android:id="@+id/img_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_import_wallet_scan" />
+        </LinearLayout>
 
 
         <View
@@ -123,34 +124,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/etCount"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:inputType="numberDecimal"
                 android:lines="1"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="true"
-                android:textSize="16sp"
-                android:layout_marginEnd="15dp"/>
+                android:textSize="16sp" />
+
             <View
-                android:background="@color/m_add_friend_line"
                 android:layout_width="1dp"
                 android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="8dp"/>
+                android:background="@color/m_add_friend_line" />
+
             <TextView
                 android:id="@+id/tv_zhuanchu_all"
-                android:text="全部"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorTheme"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:text="全部"
+                android:textColor="@color/colorTheme" />
 
         </LinearLayout>
 

@@ -35,7 +35,6 @@ public class RetrievePayPwdActivity extends BaseActivity implements View.OnClick
     TextView commitBtn;
     boolean isTrue = true;
 
-
     //短信验证
     String messagfeCode;
 

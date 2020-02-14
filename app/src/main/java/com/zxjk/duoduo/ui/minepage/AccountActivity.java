@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
+
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-
 
 public class AccountActivity extends BaseActivity {
 
@@ -31,8 +31,5 @@ public class AccountActivity extends BaseActivity {
         //更换手机号1
         findViewById(R.id.rl_changePhoneNumber).setOnClickListener(v ->
                 startActivity(new Intent(AccountActivity.this, ChangePhoneActivity.class)));
-        //修改密码
-        findViewById(R.id.rl_changePassword).setOnClickListener(v ->
-                startActivity(new Intent(AccountActivity.this, ChangePwdActivity.class)));
     }
 }

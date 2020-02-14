@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.CountryEntity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.widget.LetterIndexView;
+import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
 import com.zxjk.duoduo.ui.widget.SelectContryAdapter;
 import com.zxjk.duoduo.utils.PinYinUtils;
 
@@ -21,17 +21,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class CountrySelectActivity extends BaseActivity {
 
-    RecyclerView lv_list;
-    ArrayList<CountryEntity> allCountryCodeList;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
+    private RecyclerView lv_list;
+    private ArrayList<CountryEntity> allCountryCodeList;
+    private TextView tvTitle;
 
     public static void start(Activity activity, int requestCode) {
         Intent intent = new Intent(activity, CountrySelectActivity.class);
@@ -43,10 +40,13 @@ public class CountrySelectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_country_select);
-        ButterKnife.bind(this);
-        tvTitle.setText(getString(R.string.selectcountries));
+        tvTitle = findViewById(R.id.tv_title);
         lv_list = findViewById(R.id.lv_list);
+
+        tvTitle.setText(getString(R.string.selectcountries));
+
         initList();
+
         buildLitterIdx();
     }
 
@@ -61,26 +61,19 @@ public class CountrySelectActivity extends BaseActivity {
         lv_list.setLayoutManager(new LinearLayoutManager(this));
         lv_list.setAdapter(selectContryAdapter);
         allCountryCodeList = (ArrayList<CountryEntity>) getCountry();
-        Collections.sort(allCountryCodeList, comparator);//排序
+        Collections.sort(allCountryCodeList, comparator);
         selectContryAdapter.setData(allCountryCodeList);
     }
 
     private void buildLitterIdx() {
-        LetterIndexView livIndex = findViewById(R.id.liv_index);
-        livIndex.setNormalColor(getResources().getColor(R.color.contacts_letters_color));
+        IndexView livIndex = findViewById(R.id.liv_index);
         TextView litterHit = findViewById(R.id.tv_hit_letter);
-        livIndex.setOnTouchingLetterChangedListener(new LetterIndexView.OnTouchingLetterChangedListener() {
-            @Override
-            public void onHit(String letter) {
-                lv_list.scrollToPosition(getScrollPosition(letter));
-                litterHit.setVisibility(View.VISIBLE);
-                litterHit.setText(letter);
-            }
 
-            @Override
-            public void onCancel() {
-                litterHit.setVisibility(View.GONE);
-            }
+        livIndex.setShowTextDialog(litterHit);
+        livIndex.setOnTouchingLetterChangedListener(letter -> {
+            lv_list.scrollToPosition(getScrollPosition(letter));
+            litterHit.setVisibility(View.VISIBLE);
+            litterHit.setText(letter);
         });
     }
 
