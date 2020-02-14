@@ -53,7 +53,7 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
         title = getIntent().getStringExtra("title");
         type = getIntent().getStringExtra("type");
 
-        ((Application) getApplication()).GetWebDataUtils().setWebActivityToLogin(this);
+        ((Application) getApplication()).getWebDataUtils().setWebActivityToLogin(this);
 
         initView();
 
@@ -188,6 +188,7 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
 
     @Override
     protected void onDestroy() {
+        ((Application) getApplication()).getWebDataUtils().setWebActivityToLogin(null);
         if (mWebView != null) {
             mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebView.clearHistory();

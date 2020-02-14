@@ -74,7 +74,7 @@ public class Application extends android.app.Application {
 
     private long conversationOpenTime;
 
-    private WebDataUtils WebDataUtils;
+    private WebDataUtils webDataUtils;
 
     @Override
     public void onCreate() {
@@ -84,7 +84,7 @@ public class Application extends android.app.Application {
             Thread.setDefaultUncaughtExceptionHandler(MyCrashHandler.newInstance());
         }
 
-        WebDataUtils = new WebDataUtils();
+        webDataUtils = new WebDataUtils();
 
         //init MMKV
         MMKV.initialize(this);
@@ -117,8 +117,8 @@ public class Application extends android.app.Application {
         QbSdk.initX5Environment(this, null);
     }
 
-    public WebDataUtils GetWebDataUtils() {
-        return WebDataUtils;
+    public WebDataUtils getWebDataUtils() {
+        return webDataUtils;
     }
 
     public static void initSmallVideo() {

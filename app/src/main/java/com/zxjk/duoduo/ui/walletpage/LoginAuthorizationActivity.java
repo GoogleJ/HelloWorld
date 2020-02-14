@@ -122,9 +122,9 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
                 .subscribe(s -> {
                     ToastUtils.showShort("授权成功！");
-                    switch (action){
+                    switch (action) {
                         case ACTION_THIRDPARTLOGINACCESS:
-                            ((Application) getApplication()).GetWebDataUtils().webToLogin(s);
+                            ((Application) getApplication()).getWebDataUtils().webToLogin(s);
                     }
                     finish();
                 }, this::handleApiError);
