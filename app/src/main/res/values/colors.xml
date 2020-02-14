@@ -21,21 +21,14 @@
     <color name="m_add_friend_line">#DDDDDD</color>
     <color name="personal_information_1">#F8F8F8</color>
     <color name="m_verification_send_btn">#4B4D5B</color>
-
     <color name="m_contact_edit_back">#EEEEEE</color>
     <color name="m_item_msg_message_number">#EA2222</color>
-
     <color name="textcolor1">#333333</color>
     <color name="textcolor2">#666666</color>
     <color name="textcolor3">#999999</color>
-    //红包相关
     <color name="m_red_envelopes_unit_text">#666666</color>
     <color name="m_people_red_envelopes_title_bar">#E74E42</color>
-
-    //关于嘟嘟页面相关
-    //实名认证里头的图片颜色
     <color name="background">#ededee</color>
-    //安全键盘
     <color name="divider">#E5E5E5</color>
     <color name="click_bg_dark">#BFBFBF</color>
     <color name="click_bg_dark_light">#E0E0E0</color>
@@ -46,7 +39,6 @@
     <color name="tvChangeSign">#BCBDC7</color>
     <color name="choosesex_line">#D2D2D2</color>
     <color name="grey">#D3D3D3</color>
-    <!---->
     <color name="pop_color1">#4B4D5B</color>
     <color name="pop_color3">#D2D2D2</color>
     <color name="background_color">#f8f8f8</color>
@@ -58,24 +50,15 @@
     <color name="textColor3">#333333</color>
     <color name="textColor6">#666666</color>
     <color name="textColor9">#999999</color>
-    <!--颜色值EEEEEE-->
     <color name="colorE">#EEEEEE</color>
     <color name="colorD">#DDDDDD</color>
-    <!--新的主题色-->
     <color name="colorTheme">#4585F5</color>
-    <!--取消按钮文字的颜色-->
     <color name="colorB">#BBBBBB</color>
-    <!--白色-->
     <color name="colorWhite">#FFFFFF</color>
-    <!--颜色值333333-->
-    <!--颜色值666666-->
     <color name="color6">#666666</color>
-    <!--颜色值999999-->
     <color name="color9">#999999</color>
-    <!--颜色值393939-->
     <color name="color39">#393939</color>
     <color name="colorDBGreen">#11BE11</color>
-
     <color name="msgTitle">#020818</color>
     <color name="backupwordUnable">#83B0FF</color>
 </resources>
