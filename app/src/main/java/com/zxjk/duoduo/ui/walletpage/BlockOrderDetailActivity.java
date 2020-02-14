@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.text.SimpleDateFormat;
 
@@ -45,7 +46,6 @@ public class BlockOrderDetailActivity extends BaseActivity {
             llItemTop.setVisibility(View.GONE);
             llHuaZhuan.setVisibility(View.VISIBLE);
             tvType.setText(R.string.huazhuan);
-            ivType.setImageResource(R.drawable.ic_blockwallet_detail_type_trans);
             if (data.getInOrOut().equals("1")) {
                 tvHuaZhuanType.setText(R.string.block2balance);
             } else if (data.getInOrOut().equals("0")) {
@@ -54,15 +54,13 @@ public class BlockOrderDetailActivity extends BaseActivity {
         } else if (data.getSerialType().equals("0")) {
             if (data.getInOrOut().equals("0")) {
                 tvType.setText(R.string.zhuanru);
-                ivType.setImageResource(R.drawable.ic_blockwallet_detail_type_in);
             } else {
                 tvType.setText(R.string.zhuanchu);
-                ivType.setImageResource(R.drawable.ic_blockwallet_detail_type_out);
             }
             tvPayAddress.setText(data.getFromAddress());
             tvReceiptAddress.setText(data.getToAddress());
         }
-
+        GlideUtil.loadNormalImg(ivType, data.getLogo());
         tvTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(data.getCreateTime())));
         tvBlock.setText(data.getBlockNumber());
         tvTradeOrder.setText(data.getTransactionHash());

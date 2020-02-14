@@ -6,6 +6,7 @@ import com.zxjk.duoduo.bean.CardFaceBean;
 import com.zxjk.duoduo.bean.response.AirdropInfoResponse;
 import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.AssetManageBean;
+import com.zxjk.duoduo.bean.response.BalanceAssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
 import com.zxjk.duoduo.bean.response.CommunityApplicationListResponse;
@@ -66,7 +67,6 @@ import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
-import com.zxjk.duoduo.bean.response.BalanceAssetManageBean;
 
 import java.util.List;
 
@@ -587,18 +587,6 @@ public interface Api {
     @POST("duoduo/wallet/getTransferAll")
     @FormUrlEncoded
     Observable<BaseResponse<GetTransferAllResponse>> getTransferAll(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
-
-    @POST("duoduo/wallet/getTransferOut")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferAllResponse>> getTransferOut(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
-
-    @POST("duoduo/wallet/getTransferIn")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferAllResponse>> getTransferIn(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
-
-    @POST("duoduo/wallet/getTransfer")
-    @FormUrlEncoded
-    Observable<BaseResponse<GetTransferAllResponse>> getTransfer(@Field("address") String address, @Field("page") String page, @Field("offset") String offset, @Field("symbol") String symbol);
 
     @POST("duoduo/wallet/assetManage")
     Observable<BaseResponse<List<AssetManageBean>>> assetManage();

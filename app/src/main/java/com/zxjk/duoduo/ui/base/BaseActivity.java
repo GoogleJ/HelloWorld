@@ -111,11 +111,11 @@ public class BaseActivity extends RxAppCompatActivity {
                 }
             }
         }
-        if (Application.daoSession == null) {
-            OpenHelper open = new
-                    OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
-            Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
-        }
+//        if (Application.daoSession == null) {
+//            OpenHelper open = new
+//                    OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
+//            Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
+//        }
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
             fixOrientation();
         }

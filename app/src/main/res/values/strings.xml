@@ -215,7 +215,7 @@
     <string name="receiptAddress">收款地址</string>
     <string name="tradeOrder">交易号</string>
     <string name="block">区块</string>
-    <string name="zhuanru">转入</string>
+    <string name="zhuanru">收款</string>
     <string name="zhuanchusuccess">转账成功</string>
     <string name="please_set_paypass">请设置支付密码</string>
     <string name="please_input_paypass">请设置支付密码</string>

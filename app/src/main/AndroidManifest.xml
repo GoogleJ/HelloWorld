@@ -451,10 +451,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.walletpage.BlockWalletOrdersActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.walletpage.BlockOrderDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

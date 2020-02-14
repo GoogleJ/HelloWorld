@@ -191,38 +191,51 @@ public class GetTransferAllResponse {
 
     public static class ListBean implements Serializable {
 
+
         /**
-         * id :
+         * month : 2019.10
+         * income : 295.24604999999997
+         * expenditure : 0
+         * id : 50
          * customerId :
-         * duoduoId :
-         * blockNumber :
-         * createTime : 1552911912
-         * transactionHash : 0x84f5a2ee32212ca29fa6e420faf235fd579803d1009e9d2ab1cf1cc2807ca15d
+         * ordId :
+         * blockNumber : 14345480
+         * createTime : 1571903658755
+         * transactionHash : 0xb0667632a7f5733454d9564889a9b455644e445d9b03aed779543d8d6ec9367d
          * nonce :
          * blockHash :
-         * fromAddress : 0x51F027C78d4bF6bf622E5A02EfBdB395850beD84
-         * toAddress : 0x93E996F6199ADb4aE66Accbe99Ff3876571B0909
-         * balance : 100000000000000000
+         * fromAddress : 0xe95a36a72030acaabc780d7575a22501fe9ece20
+         * toAddress : 0x35d1b08fb4e57aa4bfd1ddce67c664db69d38aaa
+         * balance : 0.01
          * gas :
          * gasPrice :
          * isError :
-         * txreceiptStatus : 2
+         * txreceiptStatus : 1
          * contractAddress :
-         * gasUsed : 0.000021004
+         * gasUsed : 0.000105000
          * isDelete :
          * tokenName :
-         * tokenSymbol : HKB
+         * tokenSymbol : ETH
          * tokenDecimal :
-         * serialType : 1
-         * inOrOut : 2
+         * serialType : 0
+         * rawTransaction :
+         * inOrOut : 1
+         * isTimeout :
+         * transType :
+         * rate :
+         * importMethod :
+         * processResult :
+         * memo :
+         * title : 转出
+         * logo : http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1579404602434.png?Expires=1894764593&OSSAccessKeyId=LTAI3V54BzteDdTi&Signature=2TI4ToRR4szOcYk7XGNYQL7HIPE%3D
          */
 
         private String month;
-        private String expenditure;
         private String income;
+        private String expenditure;
         private String id;
         private String customerId;
-        private String duoduoId;
+        private String ordId;
         private String blockNumber;
         private String createTime;
         private String transactionHash;
@@ -242,7 +255,16 @@ public class GetTransferAllResponse {
         private String tokenSymbol;
         private String tokenDecimal;
         private String serialType;
+        private String rawTransaction;
         private String inOrOut;
+        private String isTimeout;
+        private String transType;
+        private String rate;
+        private String importMethod;
+        private String processResult;
+        private String memo;
+        private String title;
+        private String logo;
 
         public String getMonth() {
             return month;
@@ -252,20 +274,20 @@ public class GetTransferAllResponse {
             this.month = month;
         }
 
-        public String getExpenditure() {
-            return expenditure;
-        }
-
-        public void setExpenditure(String expenditure) {
-            this.expenditure = expenditure;
-        }
-
         public String getIncome() {
             return income;
         }
 
         public void setIncome(String income) {
             this.income = income;
+        }
+
+        public String getExpenditure() {
+            return expenditure;
+        }
+
+        public void setExpenditure(String expenditure) {
+            this.expenditure = expenditure;
         }
 
         public String getId() {
@@ -284,12 +306,12 @@ public class GetTransferAllResponse {
             this.customerId = customerId;
         }
 
-        public String getDuoduoId() {
-            return duoduoId;
+        public String getOrdId() {
+            return ordId;
         }
 
-        public void setDuoduoId(String duoduoId) {
-            this.duoduoId = duoduoId;
+        public void setOrdId(String ordId) {
+            this.ordId = ordId;
         }
 
         public String getBlockNumber() {
@@ -444,12 +466,84 @@ public class GetTransferAllResponse {
             this.serialType = serialType;
         }
 
+        public String getRawTransaction() {
+            return rawTransaction;
+        }
+
+        public void setRawTransaction(String rawTransaction) {
+            this.rawTransaction = rawTransaction;
+        }
+
         public String getInOrOut() {
             return inOrOut;
         }
 
         public void setInOrOut(String inOrOut) {
             this.inOrOut = inOrOut;
+        }
+
+        public String getIsTimeout() {
+            return isTimeout;
+        }
+
+        public void setIsTimeout(String isTimeout) {
+            this.isTimeout = isTimeout;
+        }
+
+        public String getTransType() {
+            return transType;
+        }
+
+        public void setTransType(String transType) {
+            this.transType = transType;
+        }
+
+        public String getRate() {
+            return rate;
+        }
+
+        public void setRate(String rate) {
+            this.rate = rate;
+        }
+
+        public String getImportMethod() {
+            return importMethod;
+        }
+
+        public void setImportMethod(String importMethod) {
+            this.importMethod = importMethod;
+        }
+
+        public String getProcessResult() {
+            return processResult;
+        }
+
+        public void setProcessResult(String processResult) {
+            this.processResult = processResult;
+        }
+
+        public String getMemo() {
+            return memo;
+        }
+
+        public void setMemo(String memo) {
+            this.memo = memo;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getLogo() {
+            return logo;
+        }
+
+        public void setLogo(String logo) {
+            this.logo = logo;
         }
     }
 }

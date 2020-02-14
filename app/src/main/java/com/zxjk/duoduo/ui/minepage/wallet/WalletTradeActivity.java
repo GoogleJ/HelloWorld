@@ -21,6 +21,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.walletpage.BlockOrderDetailActivity;
 import com.zxjk.duoduo.ui.walletpage.ZhuanChuActivity;
 import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.GlideUtil;
@@ -65,7 +66,6 @@ public class WalletTradeActivity extends BaseActivity {
         tokenDecimal = getIntent().getStringExtra("tokenDecimal");
         contractAddress = getIntent().getStringExtra("contractAddress");
 
-
         initView();
 
         initAdapter();
@@ -91,7 +91,7 @@ public class WalletTradeActivity extends BaseActivity {
         });
         refreshLayout.setColorSchemeResources(R.color.colorTheme);
 
-        tvBalanceToCny.setText(money.equals("-") ? "-" : ("≈¥" + money));
+        tvBalanceToCny.setText(money.equals("-") ? "-" : ("≈" + money + "\u0020CNY"));
         tvBalance.setText(sum);
         GlideUtil.loadNormalImg(ivLogo, logo);
     }
@@ -122,6 +122,11 @@ public class WalletTradeActivity extends BaseActivity {
         adapter = new BaseQuickAdapter<GetTransferAllResponse.ListBean, BaseViewHolder>(R.layout.recycler_wallet_trade) {
             @Override
             protected void convert(BaseViewHolder helper, GetTransferAllResponse.ListBean item) {
+                helper.itemView.setOnClickListener(v -> {
+                    Intent intent = new Intent(WalletTradeActivity.this, BlockOrderDetailActivity.class);
+                    intent.putExtra("data", item);
+                    startActivity(intent);
+                });
                 TextView mTvWalletCount = helper.getView(R.id.tv_wallet_count);
                 TextView mTvWalletTime = helper.getView(R.id.tv_wallet_time);
                 TextView mTvRewardBalance = helper.getView(R.id.tv_reward_balance);
@@ -131,31 +136,24 @@ public class WalletTradeActivity extends BaseActivity {
                 helper.setText(R.id.tv_reward_month, item.getMonth())
                         .setText(R.id.tv_reward_income, "收入:" + item.getIncome() + "\u0020ETH")
                         .setText(R.id.tv_reward_expenditure, "支出:" + item.getExpenditure() + "\u0020ETH");
-
+                mTvWalletCount.setText(item.getTitle());
                 mTvWalletTime.setText(new SimpleDateFormat("yyyy.MM.dd HH:mm").format(Long.parseLong(item.getCreateTime())));
-                if (item.getSerialType().equals(0)) {
+                mTvRewardTokenSymbol.setText(symbol);
+                GlideUtil.loadNormalImg(mImgTradeIc, item.getLogo());
+                if (item.getSerialType().equals("0")) {
                     if (item.getInOrOut().equals("0")) {
-                        mTvWalletCount.setText("转入");
                         mTvRewardBalance.setTextColor(getResources().getColor(R.color.count_down));
                         mTvRewardBalance.setText("+" + item.getBalance());
                         mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.count_down));
-                        mTvRewardTokenSymbol.setText(symbol);
-                        mImgTradeIc.setImageDrawable(getResources().getDrawable(R.drawable.ic_income));
                     } else {
                         mTvRewardBalance.setTextColor(getResources().getColor(R.color.black));
                         mTvRewardBalance.setText("-" + item.getBalance());
                         mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.black));
-                        mTvRewardTokenSymbol.setText(symbol);
-                        mTvWalletCount.setText("转出");
-                        mImgTradeIc.setImageDrawable(getResources().getDrawable(R.drawable.ic_spending));
                     }
                 } else {
-                    mTvWalletCount.setText("划转");
                     mTvRewardBalance.setTextColor(getResources().getColor(R.color.count_down));
                     mTvRewardBalance.setText("+" + item.getBalance());
                     mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.count_down));
-                    mTvRewardTokenSymbol.setText(symbol);
-                    mImgTradeIc.setImageDrawable(getResources().getDrawable(R.drawable.ic_transfer));
                 }
 
                 LinearLayout llHean = helper.getView(R.id.ll_reward_head);
@@ -168,6 +166,7 @@ public class WalletTradeActivity extends BaseActivity {
                 }
             }
         };
+
 
         View inflate = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
         TextView tv = inflate.findViewById(R.id.tv);

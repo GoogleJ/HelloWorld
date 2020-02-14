@@ -28,7 +28,7 @@
         android:gravity="center"
         android:lines="1"
         android:textColor="@color/black"
-        android:textSize="22sp" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/tvBalanceToCny"
@@ -42,6 +42,10 @@
         android:lines="1"
         android:textColor="@color/textcolor3" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#eee" />
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -64,7 +68,7 @@
             android:layout_height="48dp"
             android:layout_marginEnd="14dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_theme1"
+            android:background="@drawable/shape_3dcc9c_5"
             android:clickable="true"
             android:foreground="?selectableItemBackgroundBorderless"
             android:gravity="center"
@@ -90,7 +94,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="14dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_theme1"
+            android:background="@drawable/shape_4182f9_5"
             android:clickable="true"
             android:foreground="?selectableItemBackgroundBorderless"
             android:gravity="center"
