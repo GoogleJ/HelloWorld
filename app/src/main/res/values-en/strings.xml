@@ -14,9 +14,9 @@
     <string name="scan">扫一扫</string>
     <string name="collection_and_payment">收款</string>
     <string name="select_contacts">选择联系人</string>
-    <string name="change_language">切换语言</string>
-    <string name="zh_cn">简体中文</string>
-    <string name="zh_tw">繁体中文</string>
+    <string name="change_language">Language</string>
+    <string name="zh_cn">chinese</string>
+    <string name="zh_tw">chinesss</string>
     <string name="en_us">English</string>
     <string name="de_actionbar_sub_group">"社群"</string>
     <string name="m_add_friend_contact_label_1">手机联系人</string>
@@ -132,7 +132,7 @@
     <string name="receiptAddress">收款地址</string>
     <string name="tradeOrder">交易号</string>
     <string name="block">区块</string>
-    <string name="zhuanru">收款</string>
+    <string name="zhuanru">转入</string>
     <string name="zhuanchusuccess">转账成功</string>
     <string name="please_set_paypass">请设置支付密码</string>
     <string name="please_input_paypass">请设置支付密码</string>
@@ -307,7 +307,7 @@
     <string name="unknowerror">无法识别，请重新上传</string>
     <string name="shengming">声明</string>
     <string name="click_retry">点击重试</string>
-    <string name="input_phone">请输入手机号码</string>
+    <string name="input_phone">Phone number</string>
     <string name="input_smscode">请输入验证码</string>
     <string name="order_information">订单信息</string>
     <string name="but_the">收款方</string>
@@ -438,7 +438,7 @@
     <string name="close">关闭</string>
     <string name="each_more_all">单人奖励金不能大于总奖励金</string>
     <string name="starttime_less_end">开始时间不能大于结束时间</string>
-    <string name="welcome">欢迎来到Hilamg</string>
+    <string name="welcome">Wellcome</string>
     <string name="welcometopay">欢迎登录Hilamg</string>
     <string name="login_verify">验证码登录</string>
     <string name="next">下一步</string>
@@ -690,7 +690,7 @@
     <string name="noredfalldata">暂无红包雨数据</string>
     <string name="redfall_tips_noshareyet">您今天还未分享</string>
     <string name="redfall_tips_shared">您今天已分享过</string>
-    <string name="phonelogin_autoregister">未注册的手机号码验证后自动注册</string>
+    <string name="phonelogin_autoregister">Your account will auto register if have not done</string>
     <string name="detail">详情</string>
     <string name="upcointips1">请勿向上述地址充值任何非</string>
     <string name="upcointips2">资产，否则资产将不可找回。</string>

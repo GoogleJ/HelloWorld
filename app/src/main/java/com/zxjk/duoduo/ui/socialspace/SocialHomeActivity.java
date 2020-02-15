@@ -228,7 +228,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
 
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"加入了社群");
+                                                            Constant.currentUser.getNick() + "\"" + getString(R.string.enterSocial));
                                                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
                                                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 
@@ -261,7 +261,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     ivOpenConversation.setVisibility(View.VISIBLE);
 
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"加入了社群");
+                                                            Constant.currentUser.getNick() + "\"" + getString(R.string.enterSocial));
                                                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
                                                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 
@@ -281,12 +281,12 @@ public class SocialHomeActivity extends BaseActivity {
                 .subscribe(r -> {
                     response = r;
                     tvSlogan.setText(r.getIntroduction());
-                    tvSocialId.setText("社群号:" + r.getCode());
+                    tvSocialId.setText(getString(R.string.social_code) + r.getCode());
                     tvSocialName.setText(r.getName());
                     GlideUtil.loadNormalImg(ivBg, r.getBgi());
                     GlideUtil.loadNormalImg(ivHead, r.getLogo());
                     tvTitle.setText(r.getName());
-                    tvSocialCode.setText("社群号:" + r.getCode());
+                    tvSocialCode.setText(getString(R.string.social_code) + r.getCode());
                     tvNotice.setText(r.getAnnouncement());
 
                     if (!TextUtils.isEmpty(r.getIdentity()) && !r.getIdentity().equals("0")) {

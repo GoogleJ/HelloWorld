@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -36,6 +35,7 @@ import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.db.OpenHelper;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.NewLoginActivity;
+import com.zxjk.duoduo.utils.LanguageUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.TakePicUtil;
 
@@ -283,5 +283,10 @@ public class BaseActivity extends RxAppCompatActivity {
                     && event.getY() > top && event.getY() < bottom);
         }
         return false;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageUtil.getInstance(newBase).setLocal(newBase));
     }
 }

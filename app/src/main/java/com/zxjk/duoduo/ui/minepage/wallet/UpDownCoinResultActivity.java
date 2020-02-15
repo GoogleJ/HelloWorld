@@ -23,7 +23,7 @@ public class UpDownCoinResultActivity extends BaseActivity {
         String logo = getIntent().getStringExtra("logo");
 
         TextView title = findViewById(R.id.tv_title);
-        title.setText(type + "详情");
+        title.setText(type + getString(R.string.detail));
         findViewById(R.id.rl_back).setOnClickListener(v -> back2Detail(null));
 
         switch (logo) {

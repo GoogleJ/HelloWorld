@@ -151,7 +151,7 @@ public class SocialVideoEditActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void deleteVideo(int position) {
-        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消", "确认", "提示", "是否确定删除此视频？");
+        MuteRemoveDialog dialog = new MuteRemoveDialog(this, getString(R.string.cancel), getString(R.string.m_transfer_info_commit_btn), getString(R.string.hint), getString(R.string.confirm_delete_video));
         dialog.setOnCommitListener(() -> {
             EditCommunityVideoRequest request = new EditCommunityVideoRequest();
             request.setGroupId(getIntent().getStringExtra("id"));
@@ -179,7 +179,7 @@ public class SocialVideoEditActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
                     maxCount = Integer.parseInt(r.getVideoCreate());
-                    tvMaxCount.setText("最多上传" + maxCount + "份企业宣传视频，请上传体验");
+                    tvMaxCount.setText(getString(R.string.maxUpload) + maxCount + getString(R.string.maxUploadVideo));
                     madapter.setNewData(r.getVideo());
                     if (r.getVideo() == null || r.getVideo().size() == 0) {
                         bean.getVideo().setVideoList(new ArrayList<>());

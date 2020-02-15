@@ -36,7 +36,6 @@ import androidx.transition.TransitionSet;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.RegexUtils;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
@@ -48,6 +47,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.LanguageUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -133,7 +133,7 @@ public class NewLoginActivity extends BaseActivity {
             tvTips.setVisibility(View.GONE);
             ivBack.setVisibility(View.INVISIBLE);
             mNewLoginText.setVisibility(View.VISIBLE);
-//            tvChangeLanguage.setVisibility(View.VISIBLE);
+            tvChangeLanguage.setVisibility(View.VISIBLE);
             ppivVerify.setVisibility(View.GONE);
             llPhone.setVisibility(View.VISIBLE);
             btnConfirm.setText(R.string.next);
@@ -144,7 +144,7 @@ public class NewLoginActivity extends BaseActivity {
         vf.showPrevious();
         tvTips.setVisibility(View.VISIBLE);
         ivBack.setVisibility(View.VISIBLE);
-//        tvChangeLanguage.setVisibility(View.INVISIBLE);
+        tvChangeLanguage.setVisibility(View.INVISIBLE);
         mNewLoginText.setVisibility(View.GONE);
         ppivVerify.setVisibility(View.VISIBLE);
         llPhone.setVisibility(View.GONE);
@@ -203,7 +203,15 @@ public class NewLoginActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void initData() {
-        tvChangeLanguage.setOnClickListener(v -> ToastUtils.showShort(R.string.developing));
+        tvChangeLanguage.setOnClickListener(v -> {
+            if ("english".equals(LanguageUtil.getInstance(this).getCurrentLanguage())) {
+                LanguageUtil.getInstance(this).changeLanguage(LanguageUtil.CHINESE);
+            } else {
+                LanguageUtil.getInstance(this).changeLanguage(LanguageUtil.ENGLISH);
+            }
+            finish();
+            startActivity(new Intent(this, NewLoginActivity.class));
+        });
 
         llContrary.setOnClickListener(v -> startActivityForResult(new Intent(this, CountrySelectActivity.class), 200));
 

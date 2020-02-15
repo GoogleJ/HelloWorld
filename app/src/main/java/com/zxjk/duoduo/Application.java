@@ -2,6 +2,7 @@ package com.zxjk.duoduo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,6 +48,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.provider.MInfoNotificationMsgItemProvid
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.RedPacketProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SocialGroupCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.TransferProvider;
+import com.zxjk.duoduo.utils.LanguageUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.MyCrashHandler;
 import com.zxjk.duoduo.utils.WebDataUtils;
@@ -297,6 +299,11 @@ public class Application extends android.app.Application {
             RongExtensionManager.getInstance().unregisterExtensionModule(defaultModule);
             RongExtensionManager.getInstance().registerExtensionModule(new BasePluginExtensionModule());
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LanguageUtil.getInstance(base).setLocal(base));
     }
 
     @Override

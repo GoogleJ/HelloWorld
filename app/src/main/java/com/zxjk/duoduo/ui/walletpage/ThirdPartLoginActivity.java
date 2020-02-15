@@ -115,7 +115,6 @@ public class ThirdPartLoginActivity extends BaseActivity {
         });
     }
 
-
     private void initData() {
         action = getIntent().getStringExtra("action");
         appId = getIntent().getStringExtra("appId");
@@ -129,12 +128,10 @@ public class ThirdPartLoginActivity extends BaseActivity {
         mEtVerificationCode.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 if (!mEtThirdPartPhone.getText().toString().equals("")) {
                     if (count > 0) {
                         mBtnToLogin.setBackground(getResources().getDrawable(R.drawable.shape_theme6));
@@ -148,14 +145,12 @@ public class ThirdPartLoginActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
         mEtThirdPartPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -173,20 +168,16 @@ public class ThirdPartLoginActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
         mImgBack.setOnClickListener(v -> {
                 finish();
-
         });
     }
 
-
     @SuppressLint("CheckResult")
     public void login(View view) {
-
         String phoneText = mEtThirdPartPhone.getText().toString().trim();
         if ("86".equals(mTvThirdPartContrary.getText().toString().substring(1))) {
             isChinaPhone = "1";
@@ -196,7 +187,7 @@ public class ThirdPartLoginActivity extends BaseActivity {
             phone = mTvThirdPartContrary.getText().toString().substring(1) + phoneText;
         }
         if (TextUtils.isEmpty(mEtThirdPartPhone.getText())) {
-            ToastUtils.showShort("请输入手机号");
+            ToastUtils.showShort(R.string.please_enter_phone_number);
             return;
         } else {
             if ("1".equals(isChinaPhone) && !RegexUtils.isMobileExact(phone)) {
@@ -249,33 +240,28 @@ public class ThirdPartLoginActivity extends BaseActivity {
                 .subscribe(o -> {
                     String head = phone.substring(0, 3);
                     String tail = phone.substring(phone.length() - 4);
-                    ToastUtils.showShort("验证码已发送至" + mTvThirdPartContrary.getText().toString() + " " + head + "****" + tail);
-
+                    ToastUtils.showShort(getString(R.string.verCodeSendTo) + mTvThirdPartContrary.getText().toString() + " " + head + "****" + tail);
 
                     //点击后置为不可点击状态
                     mBtnThirdVerificationCode.setEnabled(false);
                     //从0开始发射11个数字为：0-10依次输出，延时0s执行，每1s发射一次。
-                    mdDisposable = Flowable.intervalRange(0, 61, 0, 1, TimeUnit.SECONDS)
+                    mdDisposable = Observable.intervalRange(0, 61, 0, 1, TimeUnit.SECONDS)
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnNext(l -> {
-
                                 mBtnThirdVerificationCode.setTextColor(getResources().getColor(R.color.white));
                                 mBtnThirdVerificationCode.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
                                 mBtnThirdVerificationCode.setBackground(getResources().getDrawable(R.drawable.shape_theme4));
-                                mBtnThirdVerificationCode.setText("重新获取(" + (60 - l) + ")");
+                                mBtnThirdVerificationCode.setText(getString(R.string.reGet)+"("+ (60 - l) + ")");
                             }).doOnComplete(() -> {
                                 mBtnThirdVerificationCode.setEnabled(true);
-
                                 mBtnThirdVerificationCode.setTextColor(getResources().getColor(R.color.business_card_duoduo_id));
                                 mBtnThirdVerificationCode.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                                 mBtnThirdVerificationCode.setBackground(getResources().getDrawable(R.drawable.shape_theme5));
-                                mBtnThirdVerificationCode.setText("获取验证码");
+                                mBtnThirdVerificationCode.setText(getString(R.string.getVerGode));
                             })
                             .subscribe();
-
                 }, this::handleApiError);
     }
-
 
     @SuppressLint("CheckResult")
     private void connect(String token, boolean equals) {
@@ -350,7 +336,6 @@ public class ThirdPartLoginActivity extends BaseActivity {
             }
         });
     }
-
 
     @Override
     protected void onDestroy() {

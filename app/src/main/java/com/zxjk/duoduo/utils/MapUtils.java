@@ -30,7 +30,6 @@ public class MapUtils {
     private static MapUtils instance;
 
     private MapUtils() {
-
     }
 
     public static MapUtils locate(Double latitude, Double longitude) {
