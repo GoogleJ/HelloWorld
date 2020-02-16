@@ -718,4 +718,13 @@
     <string name="uploading_thumb">正在上传封面</string>
     <string name="social_code">社群号:</string>
     <string name="enterSocial">加入了社群</string>
+    <string name="parse_data_wrong">解析数据失败！</string>
+    <string name="please_select">请选择</string>
+    <string name="xxx_red">%1$s的红包</string>
+    <string name="late">来晚了！</string>
+    <string name="red_invidate">非常抱歉，当前红包已过期</string>
+    <string name="no_red_left">非常抱歉，当前红包已领取完</string>
+    <string name="num_can_be_trans">可转出数量%1$d</string>
+    <string name="groupowner_or_manager">群主/管理员</string>
+    <string name="manager">管理</string>
 </resources>

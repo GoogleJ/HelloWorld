@@ -83,7 +83,7 @@ public class SocialAllMemberActivity extends BaseActivity {
 
                 TextView tvFirstLetter = helper.getView(R.id.tvFirstLetter);
                 if (item.getFirstLetter().contains("!")) {
-                    tvFirstLetter.setText("群主/管理员");
+                    tvFirstLetter.setText(R.string.groupowner_or_manager);
                 } else {
                     tvFirstLetter.setText(item.getFirstLetter());
                 }
@@ -103,11 +103,11 @@ public class SocialAllMemberActivity extends BaseActivity {
                 TextView tvSign = helper.getView(R.id.tvSign);
                 if (item.getId().equals(ownerId)) {
                     tvSign.setVisibility(View.VISIBLE);
-                    tvSign.setText("群主");
+                    tvSign.setText(R.string.group_owner);
                     tvSign.setBackgroundResource(R.drawable.shapef7b230_3);
                 } else if (item.getIsAdmin().equals("1")) {
                     tvSign.setVisibility(View.VISIBLE);
-                    tvSign.setText("管理");
+                    tvSign.setText(R.string.manager);
                     tvSign.setBackgroundResource(R.drawable.shape_theme3);
                 } else {
                     tvSign.setVisibility(View.GONE);

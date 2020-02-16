@@ -150,7 +150,7 @@ public class NewRedDialog extends Dialog {
 
     public void show(String headUrl, String nick, String note) {
         GlideUtil.loadCircleImg(ivHead, headUrl);
-        tvNick.setText(nick + "的红包");
+        tvNick.setText(getContext().getString(R.string.xxx_red, nick));
         tvNote.setText(note);
         show();
     }
@@ -164,7 +164,7 @@ public class NewRedDialog extends Dialog {
     }
 
     public void showExpired1() {
-        show("", "来晚了！", "非常抱歉，当前红包已过期", "");
+        show("", getContext().getString(R.string.late), getContext().getString(R.string.red_invidate), "");
     }
 
     public void showExpired2(String redId) {
@@ -176,10 +176,10 @@ public class NewRedDialog extends Dialog {
             intent1.putExtra("isShow", false);
             context.startActivity(intent1);
         });
-        show("", "来晚了！", "非常抱歉，当前红包已领取完", "");
+        show("", getContext().getString(R.string.late), getContext().getString(R.string.no_red_left), "");
     }
 
     public void showReceived(String money, String symbol) {
-        show(money, "领取成功", "已转入钱包余额，请查收！", symbol);
+        show(money, getContext().getString(R.string.receive_success), getContext().getString(R.string.redtip3), symbol);
     }
 }

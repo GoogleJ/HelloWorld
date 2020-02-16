@@ -175,7 +175,7 @@ public class JDCityPicker {
                 ProvinceBean provinceBean = mProvinceAdapter.getItem(position);
                 if (provinceBean != null) {
                     mProTv.setText("" + provinceBean.getName());
-                    mCityTv.setText("请选择");
+                    mCityTv.setText(R.string.please_select);
                     mProvinceAdapter.updateSelectedPosition(position);
                     mProvinceAdapter.notifyDataSetChanged();
                     mCityAdapter = new CityAdapter(context, provinceBean.getCityList());
@@ -187,7 +187,7 @@ public class JDCityPicker {
                 CityBean cityBean = mCityAdapter.getItem(position);
                 if (cityBean != null) {
                     mCityTv.setText("" + cityBean.getName());
-                    mAreaTv.setText("请选择");
+                    mAreaTv.setText(R.string.please_select);
                     mCityAdapter.updateSelectedPosition(position);
                     mCityAdapter.notifyDataSetChanged();
                     mAreaAdapter = new AreaAdapter(context, cityBean.getCityList());
@@ -214,12 +214,12 @@ public class JDCityPicker {
             mProvinceAdapter = new ProvinceAdapter(context, provinceList);
             mCityListView.setAdapter(mProvinceAdapter);
         } else {
-            ToastUtils.showShort("解析本地城市数据失败！");
+            ToastUtils.showShort(R.string.parse_data_wrong);
         }
     }
 
     /**
-     * 初始化，默认解析城市数据，提交加载速度
+     * 初始化，默认解析城市数据
      */
     public void init(Context context) {
         this.context = context;
