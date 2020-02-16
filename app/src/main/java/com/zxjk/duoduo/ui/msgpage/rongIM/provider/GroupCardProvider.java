@@ -30,7 +30,6 @@ import io.rong.imlib.model.Message;
 public class GroupCardProvider extends IContainerItemProvider.MessageProvider<GroupCardMessage> {
 
     public GroupCardProvider() {
-
     }
 
     @Override
@@ -45,8 +44,8 @@ public class GroupCardProvider extends IContainerItemProvider.MessageProvider<Gr
 
         List<String> headUrls = Arrays.asList(groupCardMessage.getIcon().split(","));
 
-        holder.content.setText(groupCardMessage.getName() + "邀请你加入群聊" + groupCardMessage.getGroupName()
-                + ",点击查看");
+        holder.content.setText(view.getContext().getString(R.string.invite_you_into_group_check, groupCardMessage.getName(), groupCardMessage.getGroupName()));
+
         if (headUrls.size() == 0) {
             return;
         }
@@ -56,7 +55,12 @@ public class GroupCardProvider extends IContainerItemProvider.MessageProvider<Gr
 
     @Override
     public Spannable getContentSummary(GroupCardMessage groupCardMessage) {
-        return new SpannableString("[群名片]");
+        return null;
+    }
+
+    @Override
+    public Spannable getContentSummary(Context context, GroupCardMessage data) {
+        return new SpannableString(context.getString(R.string.group_card));
     }
 
     @Override

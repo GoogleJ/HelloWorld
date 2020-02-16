@@ -98,7 +98,7 @@ public class SocialVideoAddActivity extends BaseActivity {
         if (maxCount == 0) {
             tvCurrentCount.setText(getString(R.string.hitMaxUploadCount));
         } else {
-            tvCurrentCount.setText(getString(R.string.selected) + " (0" + "/" + maxCount + ")");
+            tvCurrentCount.setText(getString(R.string.current_selected, 0, maxCount));
         }
         recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
@@ -124,15 +124,14 @@ public class SocialVideoAddActivity extends BaseActivity {
                 b.setChecked(true);
                 selectedVideos.add(((MediaBean) adapter.getData().get(position)));
                 currentCount += 1;
-                tvCurrentCount.setText(getString(R.string.selected) + " (" + currentCount + "/" + maxCount + ")");
                 adapter.notifyItemChanged(position);
             } else {
                 b.setChecked(false);
                 selectedVideos.remove(adapter.getData().get(position));
                 currentCount -= 1;
-                tvCurrentCount.setText(getString(R.string.selected) + " (" + currentCount + "/" + maxCount + ")");
                 adapter.notifyItemChanged(position);
             }
+            tvCurrentCount.setText(getString(R.string.current_selected, currentCount, maxCount));
         });
 
         View emptyview = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
@@ -352,7 +351,7 @@ public class SocialVideoAddActivity extends BaseActivity {
                                     }
                                 }
                             }
-                        }, progress -> runOnUiThread(() -> uploadLoading.setText(getString(R.string.uploading) + "," + (int) (progress * 100) + "%")));
+                        }, progress -> runOnUiThread(() -> uploadLoading.setText(getString(R.string.uploading_progress, (int) (progress * 100)))));
                     } else {
                         Observable.error(new Exception());
                     }

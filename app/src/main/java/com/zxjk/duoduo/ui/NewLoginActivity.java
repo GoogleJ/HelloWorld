@@ -271,7 +271,7 @@ public class NewLoginActivity extends BaseActivity {
                 .subscribe(o -> {
                     String head = phone.substring(0, 3);
                     String tail = phone.substring(phone.length() - 4);
-                    tvTips.setText("验证码已发送至" + tvContrary.getText().toString() + " " + head + "****" + tail);
+                    tvTips.setText(getString(R.string.send_sms_to, tvContrary.getText().toString() + " " + head + "****" + tail));
                     changeState();
                 }, this::handleApiError);
     }

@@ -108,8 +108,8 @@ public class BalanceDetailActivity extends BaseActivity {
                 helper.setText(R.id.tvTitle, item.getSerialTitle())
                         .setText(R.id.tvTime, sdf.format(Long.parseLong(item.getCreateTime())))
                         .setText(R.id.tvDate, item.getMonth())
-                        .setText(R.id.tvIn, "收入:" + item.getIncome() + data.getCurrencyName())
-                        .setText(R.id.tvOut, "支出:" + item.getExpenditure() + data.getCurrencyName());
+                        .setText(R.id.tvIn, getString(R.string.income, item.getIncome(), data.getCurrencyName()))
+                        .setText(R.id.tvOut, getString(R.string.outgoing, item.getExpenditure(), data.getCurrencyName()));
 
                 SpannableString string = new SpannableString((item.getSerialType().equals("0") ? "+" : "-") + item.getAmount() + " " + item.getSymbol());
                 string.setSpan(new RelativeSizeSpan(0.70f), string.length() - item.getSymbol().length(), string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -210,7 +210,7 @@ public class BalanceDetailActivity extends BaseActivity {
 
         GlideUtil.loadNormalImg(ivIcon, data.getLogo());
         tvBlance.setText(data.getBalanceSum());
-        tvRewardCount.setText("活动奖励: " + data.getAwardBalance() + " " + data.getCurrencyName());
+        tvRewardCount.setText(getString(R.string.activity_reward, data.getAwardBalance(), data.getCurrencyName()));
 
         SpannableString string = new SpannableString("≈" + data.getPriceToCny() + "CNY");
         string.setSpan(new RelativeSizeSpan(0.75f), string.length() - 3, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

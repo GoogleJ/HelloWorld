@@ -403,7 +403,7 @@ public class NewsPager extends BaseFragment {
 
             TextView emptyView = new TextView(getContext());
             emptyView.setGravity(Gravity.CENTER);
-            emptyView.setText("暂无数据源，敬请期待");
+            emptyView.setText(R.string.nodata_pleasewait_upgrade);
             emptyView.setTextSize(15);
             emptyView.setTextColor(ContextCompat.getColor(getContext(), R.color.textcolor2));
             adapter.setEmptyView(emptyView);

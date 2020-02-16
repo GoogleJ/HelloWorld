@@ -50,7 +50,7 @@ public class BlockWalletPaymentQRActivity extends BaseActivity {
         initData();
     }
 
-    private void initView(){
+    private void initView() {
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.receiptCode);
 
@@ -60,28 +60,30 @@ public class BlockWalletPaymentQRActivity extends BaseActivity {
         tvTips = findViewById(R.id.tvTips);
         mTvCurrency = findViewById(R.id.iv_currency);
     }
+
     private Bitmap bitmap;
-    private void initData(){
+
+    private void initData() {
         symbol = getIntent().getStringExtra("symbol");
         address = getIntent().getStringExtra("address");
         logo = getIntent().getStringExtra("logo");
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-        tvTips.setText("该地址仅用于" + symbol + "钱包收款，请勿用于其他币种，否则 资产将不可找回。");
+        tvTips.setText(getString(R.string.tips_blockwallet_qr, symbol));
         GlideUtil.loadNormalImg(ivLogo, logo);
         tvAddress.setText(address);
         mTvCurrency.setText(symbol);
-
 
         Observable.create((ObservableOnSubscribe<Bitmap>) e ->
                 e.onNext(QRCodeEncoder.syncEncodeQRCode(address, UIUtil.dip2px(this, 160), Color.BLACK)))
                 .compose(RxSchedulers.ioObserver())
                 .compose(bindToLifecycle())
-                .subscribe(b ->{
+                .subscribe(b -> {
                     bitmap = b;
-                    ivQr.setImageBitmap(b);});
+                    ivQr.setImageBitmap(b);
+                });
 
         getPermisson(findViewById(R.id.tv_save_qr), g -> {
-            if(bitmap == null){
+            if (bitmap == null) {
                 return;
             }
             ivQr.buildDrawingCache();

@@ -38,19 +38,23 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
         GlideUtil.loadNormalImg(holder.ivHead, groupCardMessage.getIcon());
         holder.ivPay.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(groupCardMessage.getMemberNum()) && Integer.parseInt(groupCardMessage.getMemberNum()) != 0) {
-            holder.tvOwner.setText("我和" + groupCardMessage.getMemberNum() + "个小伙伴在【" + groupCardMessage.getGroupName()
-                    + "】,等待你加入！");
+            holder.tvOwner.setText(view.getContext().getString(R.string.me_and_x_nums_friend_wait_for_you_at, groupCardMessage.getMemberNum(), groupCardMessage.getGroupName()));
         } else {
-            holder.tvOwner.setText("我在【" + groupCardMessage.getGroupName() + "】,等待你加入！");
+            holder.tvOwner.setText(view.getContext().getString(R.string.me_wait_for_you_at, groupCardMessage.getGroupName()));
         }
     }
 
     @Override
     public Spannable getContentSummary(SocialGroupCardMessage groupCardMessage) {
-        if (groupCardMessage.getInviterId().equals(Constant.userId)) {
-            return new SpannableString("[社群名片]");
+        return null;
+    }
+
+    @Override
+    public Spannable getContentSummary(Context context, SocialGroupCardMessage data) {
+        if (data.getInviterId().equals(Constant.userId)) {
+            return new SpannableString(context.getString(R.string.social_card));
         } else {
-            return new SpannableString(groupCardMessage.getName() + "邀请你加入" + groupCardMessage.getGroupName());
+            return new SpannableString(context.getString(R.string.xx_invite_join, data.getName(), data.getGroupName()));
         }
     }
 

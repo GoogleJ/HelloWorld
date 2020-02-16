@@ -51,7 +51,7 @@ public class SocialVideoEditActivity extends BaseActivity {
 
     private SocialCaltureListBean bean;
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm上传");
+    private SimpleDateFormat sdf;
 
     private int maxCount;
 
@@ -63,6 +63,8 @@ public class SocialVideoEditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_video_edit);
+
+        sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm" + getString(R.string.upload));
 
         mFormatBuilder = new StringBuilder();
         timeFormatter = new java.util.Formatter(mFormatBuilder, Locale.ENGLISH);
@@ -151,7 +153,7 @@ public class SocialVideoEditActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void deleteVideo(int position) {
-        MuteRemoveDialog dialog = new MuteRemoveDialog(this, getString(R.string.cancel), getString(R.string.m_transfer_info_commit_btn), getString(R.string.hint), getString(R.string.confirm_delete_video));
+        MuteRemoveDialog dialog = new MuteRemoveDialog(this, getString(R.string.cancel), getString(R.string.m_transfer_info_commit_btn), getString(R.string.hinttext), getString(R.string.confirm_delete_video));
         dialog.setOnCommitListener(() -> {
             EditCommunityVideoRequest request = new EditCommunityVideoRequest();
             request.setGroupId(getIntent().getStringExtra("id"));
@@ -179,7 +181,7 @@ public class SocialVideoEditActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
                     maxCount = Integer.parseInt(r.getVideoCreate());
-                    tvMaxCount.setText(getString(R.string.maxUpload) + maxCount + getString(R.string.maxUploadVideo));
+                    tvMaxCount.setText(getString(R.string.maxUploadVideo, maxCount));
                     madapter.setNewData(r.getVideo());
                     if (r.getVideo() == null || r.getVideo().size() == 0) {
                         bean.getVideo().setVideoList(new ArrayList<>());

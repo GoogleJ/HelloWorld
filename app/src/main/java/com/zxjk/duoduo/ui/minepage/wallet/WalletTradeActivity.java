@@ -117,7 +117,6 @@ public class WalletTradeActivity extends BaseActivity {
         startActivity(intent);
     }
 
-
     private void initAdapter() {
         adapter = new BaseQuickAdapter<GetTransferAllResponse.ListBean, BaseViewHolder>(R.layout.recycler_wallet_trade) {
             @Override
@@ -134,8 +133,8 @@ public class WalletTradeActivity extends BaseActivity {
                 ImageView mImgTradeIc = helper.getView(R.id.img_trade_ic);
 
                 helper.setText(R.id.tv_reward_month, item.getMonth())
-                        .setText(R.id.tv_reward_income, "收入:" + item.getIncome() + "\u0020ETH")
-                        .setText(R.id.tv_reward_expenditure, "支出:" + item.getExpenditure() + "\u0020ETH");
+                        .setText(R.id.tv_reward_income, getString(R.string.income, item.getIncome(), symbol))
+                        .setText(R.id.tv_reward_expenditure, getString(R.string.outgoing, item.getExpenditure(), symbol));
                 mTvWalletCount.setText(item.getTitle());
                 mTvWalletTime.setText(new SimpleDateFormat("yyyy.MM.dd HH:mm").format(Long.parseLong(item.getCreateTime())));
                 mTvRewardTokenSymbol.setText(symbol);
@@ -166,7 +165,6 @@ public class WalletTradeActivity extends BaseActivity {
                 }
             }
         };
-
 
         View inflate = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
         TextView tv = inflate.findViewById(R.id.tv);

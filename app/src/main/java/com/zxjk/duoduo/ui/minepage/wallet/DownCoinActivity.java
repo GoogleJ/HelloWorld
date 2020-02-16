@@ -101,7 +101,7 @@ public class DownCoinActivity extends BaseActivity {
 
     private void initView() {
         TextView title = findViewById(R.id.tv_title);
-        title.setText(data.getCurrencyName() + "交易");
+        title.setText(getString(R.string.xx_trade, data.getCurrencyName()));
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         llBalanceWallet = findViewById(R.id.llBalanceWallet);
@@ -122,16 +122,16 @@ public class DownCoinActivity extends BaseActivity {
         ivScan = findViewById(R.id.ivScan);
 
         tvBlanceAddress.setText(data.getBalanceAddress());
-        tvTips.setText("提币数量");
-        etCount.setHint("请输入提币数量");
+        tvTips.setText(R.string.tibi_tip);
+        etCount.setHint(R.string.tibi_num_tip);
         etCount.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(Integer.parseInt(data.getDecimals()))});
         tvGasPrice.setVisibility(View.VISIBLE);
         llBlock2Balance.setVisibility(View.GONE);
         divider.setVisibility(View.VISIBLE);
         tvAllIn.setVisibility(View.VISIBLE);
         tvBalance.setVisibility(View.VISIBLE);
-        tvBalance.setText("余额钱包可用数量" + data.getBalanceSum() + data.getCoin());
-        String str = "交易手续费为：" + data.getRate() + data.getCoin();
+        tvBalance.setText(getString(R.string.balancewallet_nums, data.getBalanceSum(), data.getCoin()));
+        String str = getString(R.string.trade_commission, data.getRate(), data.getCoin());
         SpannableString string = new SpannableString(str);
         string.setSpan(new ForegroundColorSpan(Color.parseColor("#FC6660")), 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         string.setSpan(new RelativeSizeSpan(0.8f), str.length() - data.getCurrencyName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -242,7 +242,7 @@ public class DownCoinActivity extends BaseActivity {
                                                 divider.setVisibility(View.VISIBLE);
                                                 tvAllIn.setVisibility(View.VISIBLE);
                                                 tvBalance.setVisibility(View.VISIBLE);
-                                                tvBalance.setText("数字钱包可用数量" + blockMoney + data.getCoin());
+                                                tvBalance.setText(getString(R.string.blockwallet_nums, blockMoney, data.getCoin()));
                                             }, DownCoinActivity.this::handleApiError);
                                 } else {
                                     etBlockAddress.setText(bean.getWalletAddress());
@@ -295,7 +295,8 @@ public class DownCoinActivity extends BaseActivity {
                             addressAdapter.setNewData(list);
                             chooseAddressPop.showPopupWindow();
                         } else {
-                            MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消", "去创建", "提示", "您还未创建数字钱包，请创建后再进行划转。");
+                            MuteRemoveDialog dialog = new MuteRemoveDialog(this, getString(R.string.cancel), getString(R.string.create),
+                                    getString(R.string.hinttext), getString(R.string.downcoin_tips));
                             dialog.setOnCommitListener(() -> startActivity(new Intent(this, CreateWalletActivity.class)));
                             dialog.show();
                         }
@@ -345,7 +346,7 @@ public class DownCoinActivity extends BaseActivity {
             double limitNum = Double.parseDouble(limit);
             if (balance2block) {
                 if (Double.parseDouble(count) < limitNum) {
-                    ToastUtils.showShort("当前提币数量不得小于" + limitNum);
+                    ToastUtils.showShort(getString(R.string.current_downcoin_nums_cant_less_than, limitNum));
                     return;
                 }
             }
@@ -371,7 +372,7 @@ public class DownCoinActivity extends BaseActivity {
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                     .subscribe(s -> {
                                         Intent intent = new Intent(this, UpDownCoinResultActivity.class);
-                                        intent.putExtra("type", balance2block ? "提币" : "充币");
+                                        intent.putExtra("type", balance2block ? getString(R.string.tibi) : getString(R.string.chongbi));
                                         intent.putExtra("logo", data.getCoin());
                                         startActivity(intent);
                                         finish();
@@ -396,7 +397,7 @@ public class DownCoinActivity extends BaseActivity {
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                 .subscribe(s -> {
                                     Intent intent = new Intent(this, UpDownCoinResultActivity.class);
-                                    intent.putExtra("type", balance2block ? "提币" : "充币");
+                                    intent.putExtra("type", balance2block ? getString(R.string.tibi) : getString(R.string.chongbi));
                                     intent.putExtra("logo", data.getLogo());
                                     startActivity(intent);
                                     finish();
@@ -419,15 +420,15 @@ public class DownCoinActivity extends BaseActivity {
                         etBlockAddress.setText("");
                         etCount.setText("");
                         if (balance2block) {
-                            tvTips.setText("提币数量");
-                            etCount.setHint("请输入提币数量");
+                            tvTips.setText(R.string.upcoin_nums);
+                            etCount.setHint(R.string.input_upcoin_nums);
                             tvGasPrice.setVisibility(View.VISIBLE);
                             llBlock2Balance.setVisibility(View.GONE);
                             divider.setVisibility(View.VISIBLE);
                             tvAllIn.setVisibility(View.VISIBLE);
                             tvBalance.setVisibility(View.VISIBLE);
-                            tvBalance.setText("余额钱包可用数量" + data.getBalance() + data.getCoin());
-                            String str = "交易手续费为：" + data.getRate() + data.getCoin();
+                            tvBalance.setText(getString(R.string.balancewallet_nums, data.getBalance(), data.getCoin()));
+                            String str = getString(R.string.trade_commission, data.getRate(), data.getCoin());
                             SpannableString string = new SpannableString(str);
                             string.setSpan(new ForegroundColorSpan(Color.parseColor("#FC6660")), 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             string.setSpan(new RelativeSizeSpan(0.8f), str.length() - data.getCurrencyName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -436,8 +437,8 @@ public class DownCoinActivity extends BaseActivity {
                             etBlockAddress.setEnabled(true);
                             etBlockAddress.setHint(R.string.tips_downcoin);
                         } else {
-                            tvTips.setText("充币数量");
-                            etCount.setHint("请输入充币数量");
+                            tvTips.setText(R.string.downcoin_nums);
+                            etCount.setHint(R.string.input_downcoin_nums);
                             tvGasPrice.setVisibility(View.GONE);
                             llBlock2Balance.setVisibility(View.VISIBLE);
                             divider.setVisibility(View.GONE);

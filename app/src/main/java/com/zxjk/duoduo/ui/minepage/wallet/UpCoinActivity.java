@@ -62,7 +62,7 @@ public class UpCoinActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver())
                 .subscribe(ivQR::setImageBitmap);
 
-        tvTips.setText(getString(R.string.upcointips1) + data.getCurrencyName() + getString(R.string.upcointips2));
+        tvTips.setText(getString(R.string.tips_upcoin, data.getCurrencyName()));
     }
 
     public void copyAddress(View view) {
