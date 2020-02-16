@@ -41,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="普通红包"
+                android:text="@string/red_packet1"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 

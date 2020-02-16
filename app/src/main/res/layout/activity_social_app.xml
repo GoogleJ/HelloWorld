@@ -24,14 +24,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="第三方应用"
+            android:text="@string/social_app_1"
             android:textColor="@color/black"
             android:textSize="17sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" (请联系客服关闭或开通更多应用)"
+            android:text="@string/social_app_2"
             android:textColor="@color/textColor9"
             android:textSize="13.5sp" />
 
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:text="客服" />
+            android:text="@string/keFu" />
     </FrameLayout>
 
     <TextView
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
-        android:text="自定义应用"
+        android:text="@string/customer_app"
         android:textColor="@color/black"
         android:textSize="17sp" />
 
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="仅可删除本人创建，群主不受限制"
+            android:text="@string/social_app_3"
             android:textColor="@color/textColor9"
             android:textSize="13sp" />
 

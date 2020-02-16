@@ -405,10 +405,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.AuthenticationActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.EnlargeImageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

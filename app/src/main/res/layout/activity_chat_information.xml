@@ -84,7 +84,7 @@
                     android:layout_marginStart="15dp"
                     android:drawableStart="@drawable/information_icon_add_defualt"
                     android:drawablePadding="6dp"
-                    android:text="添加新成员"
+                    android:text="@string/add_new_member"
                     android:textColor="@color/theme_color"
                     android:textSize="16sp" />
 
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:text="置顶聊天"
+                    android:text="@string/set_conversation_top"
                     android:textColor="@color/theme_color"
                     android:textSize="16sp" />
 
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:text="消息免打扰"
+                    android:text="@string/msg_not_disturb"
                     android:textColor="@color/theme_color"
                     android:textSize="16sp" />
 
@@ -161,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="阅后即焚"
+                        android:text="@string/burn_after_read"
                         android:textColor="@color/theme_color"
                         android:textSize="16sp" />
 
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="2dp"
-                        android:text="开启后，对话中消息将在设定的时间销毁"
+                        android:text="@string/tips_burn_after_read"
                         android:textColor="@color/textcolor3"
                         android:textSize="13sp" />
 
@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:text="截屏通知"
+                    android:text="@string/screen_capture_detect"
                     android:textColor="@color/theme_color"
                     android:textSize="16sp" />
 
@@ -232,7 +232,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:text="清空聊天记录"
+                    android:text="@string/clear_msg_history"
                     android:textColor="@color/theme_color"
                     android:textSize="16sp" />
 
@@ -251,7 +251,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:text="举报"
+                    android:text="@string/report"
                     android:textColor="@color/theme_color"
                     android:textSize="16sp" />
 

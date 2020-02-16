@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="确认付款 "
+                    android:text="@string/confirm_pay"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
 
@@ -252,7 +252,7 @@
         android:background="@drawable/shape_theme6"
         android:foreground="?selectableItemBackgroundBorderless"
         android:stateListAnimator="@null"
-        android:text="立即付款"
+        android:text="@string/pay_confirm_now"
         android:textColor="@color/colorPrimary"
         android:textSize="15sp"
         android:textStyle="bold" />

@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:text="置顶聊天"
+                    android:text="@string/set_conversation_top"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -159,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:text="消息免打扰"
+                    android:text="@string/msg_not_disturb"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -286,7 +286,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:text="清空聊天记录"
+                    android:text="@string/clear_msg_history"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -391,7 +391,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:text="社群转让"
+                    android:text="@string/community_transfer"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 

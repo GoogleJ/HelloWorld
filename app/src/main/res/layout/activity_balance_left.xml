@@ -116,18 +116,19 @@
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:src="@drawable/bg_balanceleft" />
+
         <TextView
-            android:text="资产管理"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:onClick="add"
-            android:drawableEnd="@drawable/ic_balanceadd"
-            android:drawablePadding="8dp"
             android:layout_gravity="end"
             android:layout_marginTop="-56dp"
             android:layout_marginEnd="24dp"
-            android:gravity="center"/>
+            android:drawableEnd="@drawable/ic_balanceadd"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:onClick="add"
+            android:text="@string/propertyManage"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 

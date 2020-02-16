@@ -183,15 +183,6 @@
                 android:textColor="#4A494A"
                 android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/tvMot2Reward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:text="当前您有10个Mot待领取"
-                android:textColor="#FF7933"
-                android:visibility="gone" />
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -42,7 +42,7 @@
                 android:layout_marginTop="24dp"
                 android:background="@drawable/shape_reward_btn"
                 android:stateListAnimator="@null"
-                android:text="好的"
+                android:text="@string/ok1"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
         </LinearLayout>

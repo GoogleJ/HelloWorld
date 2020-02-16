@@ -42,7 +42,7 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:layout_marginEnd="12dp"
-            android:text="禁言"
+            android:text="@string/mute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -56,7 +56,7 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:layout_marginEnd="12dp"
-            android:text="踢出"
+            android:text="@string/kickout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

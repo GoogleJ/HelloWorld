@@ -87,7 +87,7 @@
             <TextView
                 style="@style/textStyle"
                 android:layout_marginStart="15dp"
-                android:text="版本号:V"
+                android:text="@string/versionV"
                 android:textColor="#FFFEFE"
                 android:textStyle="bold" />
 

@@ -111,7 +111,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
                 break;
         }
         tvGroupTips2.setText(tips);
-        tvGroupTips3.setText("当前限制" + group.getGroupInfo().getLimitNumber() + "人");
+        tvGroupTips3.setText(getString(R.string.current_limit_xx_person, group.getGroupInfo().getLimitNumber()));
 
         switchSendPic.setOnClickListener(v -> {
             MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止发图片确认", "是否确定操作禁止发送图片功能");

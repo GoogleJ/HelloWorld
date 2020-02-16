@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="所在地区"
+                android:text="@string/area"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
@@ -48,7 +48,7 @@
                 <TextView
                     android:id="@+id/province_tv"
                     style="@style/tab"
-                    android:text="请选择" />
+                    android:text="@string/please_choice" />
 
                 <TextView
                     android:id="@+id/city_tv"

@@ -22,7 +22,7 @@
             android:background="@drawable/ic_dialog_invite_help"
             android:gravity="center_vertical"
             android:paddingStart="24dp"
-            android:text="推广好友说明"
+            android:text="@string/invite_desc"
             android:textColor="@color/white"
             android:textSize="19sp" />
 

@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="24dp"
-                android:text="我的个人二维码"
+                android:text="@string/personal_code"
                 android:textColor="@color/textColor6" />
 
         </LinearLayout>
