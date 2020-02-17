@@ -15,6 +15,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle3.components.support.RxFragment;
 import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Constant;
+import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -42,7 +43,7 @@ public class BaseFragment extends RxFragment {
             RxView.clicks(view)
                     .compose(rxPermissions.ensureEachCombined(permissions))
                     .subscribe(permission -> {
-                        if (!permission.granted) ToastUtils.showShort("请开启相关权限");
+                        if (!permission.granted) ToastUtils.showShort(R.string.open_related_permission);
 
                         if (null != result) result.onResult(permission.granted);
                     });
@@ -50,7 +51,7 @@ public class BaseFragment extends RxFragment {
         }
         rxPermissions.requestEachCombined(permissions)
                 .subscribe(permission -> {
-                    if (!permission.granted) ToastUtils.showShort("请开启相关权限");
+                    if (!permission.granted) ToastUtils.showShort(R.string.open_related_permission);
 
                     if (null != result) result.onResult(permission.granted);
                 });

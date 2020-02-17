@@ -158,7 +158,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             });
         } else if (eventType == EVENT_DELETEMEMBER) {
             tv_title.setText(R.string.remove_from_group);
-            confirmText = "移除";
+            confirmText = getString(R.string.remove_from_group);
             tv_commit.setBackgroundResource(R.drawable.shapeff655c_3);
             handleDeleteMember();
         } else if (eventType == EVENT_ADDMANAGER) {
@@ -211,7 +211,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 adapter3.notifyItemInserted(data3.size() - 1);
                 recycler1.smoothScrollToPosition(data3.size() - 1);
             }
-            tv_commit.setText(confirmText + "(" + data3.size() + ")");
+            tv_commit.setText(getString(R.string.groupname_num, confirmText, String.valueOf(data3.size())));
         });
     }
 
@@ -253,7 +253,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 adapter3.notifyItemInserted(data3.size() - 1);
                 recycler1.smoothScrollToPosition(data3.size() - 1);
             }
-            tv_commit.setText(confirmText + "(" + data3.size() + ")");
+            tv_commit.setText(getString(R.string.groupname_num, confirmText, String.valueOf(data3.size())));
         });
 
         initData4();
@@ -299,7 +299,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 adapter3.notifyItemInserted(data3.size() - 1);
                 recycler1.smoothScrollToPosition(data3.size() - 1);
             }
-            tv_commit.setText(confirmText + "(" + data3.size() + ")");
+            tv_commit.setText(getString(R.string.groupname_num, confirmText, String.valueOf(data3.size())));
         });
     }
 
@@ -344,7 +344,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 recycler1.smoothScrollToPosition(data1.size() - 1);
             }
 
-            tv_commit.setText(confirmText + "(" + data1.size() + ")");
+            tv_commit.setText(getString(R.string.groupname_num, confirmText, String.valueOf(data1.size())));
         });
 
         adapter2.setData1(data2);
@@ -390,7 +390,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 recycler1.smoothScrollToPosition(data1.size() - 1);
             }
 
-            tv_commit.setText(confirmText + "(" + data1.size() + ")");
+            tv_commit.setText(getString(R.string.groupname_num, confirmText, String.valueOf(data1.size())));
         });
 
         initData();

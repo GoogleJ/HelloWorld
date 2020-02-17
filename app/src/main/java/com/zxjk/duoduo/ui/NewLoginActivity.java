@@ -393,7 +393,7 @@ public class NewLoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 200 && resultCode == Activity.RESULT_OK && data != null) {
             CountryEntity countryEntity = (CountryEntity) data.getSerializableExtra("country");
-            tvContrary.setText("+" + (countryEntity != null ? countryEntity.countryCode : "86"));
+            tvContrary.setText(getString(R.string.country_phone, (countryEntity != null ? countryEntity.countryCode : "86")));
             if (countryEntity != null) {
                 Constant.HEAD_LOCATION = countryEntity.countryCode;
             }

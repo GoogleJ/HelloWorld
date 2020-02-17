@@ -113,7 +113,7 @@ public class ShareGroupQRActivity extends BaseActivity {
         ImageView app_type = emptyView.findViewById(R.id.app_type);
         TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
         app_type.setImageResource(R.drawable.ic_empty_nosearch);
-        app_prompt_text.setText("暂无聊天记录");
+        app_prompt_text.setText(R.string.noChatHistory);
 
         adapter = new ShareGroupQRAdapter();
         adapter.setNewData(data);

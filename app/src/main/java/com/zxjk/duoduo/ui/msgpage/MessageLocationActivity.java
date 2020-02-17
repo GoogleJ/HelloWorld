@@ -26,7 +26,7 @@ public class MessageLocationActivity extends AMapPreviewActivity implements View
 
         TextView tvLocation = findViewById(R.id.tvLocation);
         locationMessage = getIntent().getParcelableExtra("location");
-        tvLocation.setText(locationMessage != null ? locationMessage.getPoi() : "未获取到位置信息");
+        tvLocation.setText(locationMessage != null ? locationMessage.getPoi() : getString(R.string.cant_load_position));
     }
 
     @Override

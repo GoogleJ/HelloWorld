@@ -41,7 +41,6 @@ import io.rong.message.InformationNotificationMessage;
 
 @SuppressLint("CheckResult")
 public class ChatInformationActivity extends BaseActivity {
-
     private TextView tv_qm;
     private UserInfo userInfo;
     private Switch switch1;
@@ -106,8 +105,8 @@ public class ChatInformationActivity extends BaseActivity {
                     .compose(RxSchedulers.normalTrans())
                     .flatMap((Function<String, ObservableSource<String>>) s -> Observable.create(e -> {
                         conversationInfo.setCaptureScreenEnabled(switch3.isChecked() ? 1 : 0);
-                        InformationNotificationMessage message = InformationNotificationMessage.obtain("您"
-                                + (switch3.isChecked() ? "开启了截屏通知" : "关闭了截屏通知"));
+                        InformationNotificationMessage message = InformationNotificationMessage.obtain(getString(R.string.you)
+                                + (switch3.isChecked() ? getString(R.string.screen_capture_open) : getString(R.string.screen_capture_close)));
                         message.setExtra(message.getMessage());
                         RongIM.getInstance().insertOutgoingMessage(
                                 Conversation.ConversationType.PRIVATE,
@@ -187,10 +186,10 @@ public class ChatInformationActivity extends BaseActivity {
                 NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        holder.setText(R.id.tv_title, "提示");
-                        holder.setText(R.id.tv_content, "确定要清空当前聊天记录吗？");
-                        holder.setText(R.id.tv_cancel, "取消");
-                        holder.setText(R.id.tv_notarize, "确认");
+                        holder.setText(R.id.tv_title, getString(R.string.hinttext));
+                        holder.setText(R.id.tv_content, getString(R.string.is_clear_conversation_history));
+                        holder.setText(R.id.tv_cancel, getString(R.string.cancel));
+                        holder.setText(R.id.tv_notarize, getString(R.string.queding));
                         holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
                         holder.setOnClickListener(R.id.tv_notarize, v12 -> RongIM.getInstance().clearMessages(Conversation.ConversationType.PRIVATE
                                 , userInfo.getUserId(), new RongIMClient.ResultCallback<Boolean>() {
@@ -232,8 +231,8 @@ public class ChatInformationActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .flatMap((Function<String, ObservableSource<String>>) s -> Observable.create(e -> {
                             conversationInfo.setMessageBurnTime(parseStr(str));
-                            String tip = str.equals("关闭") ? getString(R.string.closeburn) : (getString(R.string.openburn) + (str.equals("即刻焚烧") ? "" : str) + getString(R.string.openburn1));
-                            InformationNotificationMessage message = InformationNotificationMessage.obtain("您" + tip);
+                            String tip = str.equals(getString(R.string.close)) ? getString(R.string.closeburn) : (getString(R.string.openburn) + (str.equals(getString(R.string.burn_now)) ? "" : str) + getString(R.string.openburn1));
+                            InformationNotificationMessage message = InformationNotificationMessage.obtain(getString(R.string.you) + tip);
                             message.setExtra(tip);
                             RongIM.getInstance().insertOutgoingMessage(
                                     Conversation.ConversationType.PRIVATE,
@@ -241,7 +240,7 @@ public class ChatInformationActivity extends BaseActivity {
                                         @Override
                                         public void onSuccess(Message message) {
                                             tvBurnTime.setText(str);
-                                            if (str.equals("关闭")) {
+                                            if (str.equals(getString(R.string.close))) {
                                                 ToastUtils.showShort(R.string.close_burn_success);
                                                 return;
                                             }
@@ -285,51 +284,48 @@ public class ChatInformationActivity extends BaseActivity {
     private String parseTime(int second) {
         if (conversationInfo == null) return null;
 
-        if (second == 0) return "即刻焚烧";
+        if (second == 0) return getString(R.string.burn_now);
 
-        if (second == 10) return "10秒";
+        if (second == 10) return "10" + getString(R.string.second);
 
-        if (second == 300) return "5分钟";
+        if (second == 300) return "5" + getString(R.string.minute);
 
-        if (second == 3600) return "1小时";
+        if (second == 3600) return "1" + getString(R.string.hour);
 
-        if (second == 86400) return "24小时";
+        if (second == 86400) return "24" + getString(R.string.hour);
 
-        return "关闭";
+        return getString(R.string.close);
     }
 
     private int parseStr(String str) {
         if (conversationInfo == null) return -1;
-        switch (str) {
-            case "即刻焚烧":
-                return 0;
-            case "10秒":
-                return 10;
-            case "5分钟":
-                return 300;
-            case "1小时":
-                return 3600;
-            case "24小时":
-                return 86400;
-        }
+
+        if (str.equals(getString(R.string.burn_now))) return 0;
+
+        if (str.equals("10" + getString(R.string.second))) return 10;
+
+        if (str.equals("5" + getString(R.string.minute))) return 300;
+
+        if (str.equals("1" + getString(R.string.hour))) return 3600;
+
+        if (str.equals("24" + getString(R.string.hour))) return 86400;
+
         return -1;
     }
 
     private int parseIndex(String str) {
-        switch (str) {
-            case "":
-                return 0;
-            case "即刻焚烧":
-                return 1;
-            case "10秒":
-                return 2;
-            case "5分钟":
-                return 3;
-            case "1小时":
-                return 4;
-            case "24小时":
-                return 5;
-        }
+        if (str.equals("")) return 0;
+
+        if (str.equals(getString(R.string.burn_now))) return 1;
+
+        if (str.equals("10" + getString(R.string.second))) return 2;
+
+        if (str.equals("5" + getString(R.string.minute))) return 3;
+
+        if (str.equals("1" + getString(R.string.hour))) return 4;
+
+        if (str.equals("24" + getString(R.string.hour))) return 5;
+
         return 0;
     }
 }

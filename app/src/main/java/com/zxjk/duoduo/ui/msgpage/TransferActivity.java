@@ -107,7 +107,7 @@ public class TransferActivity extends BaseActivity {
                         runOnUiThread(() -> {
                             targetUser = new UserInfo(userInfo.getId(), userInfo.getNick(), Uri.parse(userInfo.getHeadPortrait()));
                             Glide.with(TransferActivity.this).load(targetUser.getPortraitUri().toString()).into(ivHead);
-                            tvName.setText(getString(R.string.transTo) + targetUser.getName());
+                            tvName.setText(getString(R.string.transTo, targetUser.getName()));
                         });
                         return api.getPaymentList();
                     })
@@ -144,7 +144,7 @@ public class TransferActivity extends BaseActivity {
             }
 
             Glide.with(this).load(targetUser.getPortraitUri().toString()).into(ivHead);
-            tvName.setText(getString(R.string.transTo) + targetUser.getName());
+            tvName.setText(getString(R.string.transTo, targetUser.getName()));
         }
     }
 
@@ -165,7 +165,7 @@ public class TransferActivity extends BaseActivity {
         KeyboardUtils.hideSoftInput(this);
         new NewPayBoard(this).show(psw -> {
             String zhuanzhangInfo = etNote.getText().toString().trim();
-            String remarks = TextUtils.isEmpty(zhuanzhangInfo) ? (getString(R.string.transTo) + targetUser.getName()) : zhuanzhangInfo;
+            String remarks = TextUtils.isEmpty(zhuanzhangInfo) ? getString(R.string.transTo, targetUser.getName()) : zhuanzhangInfo;
             String payPsd = MD5Utils.getMD5(psw);
             String money = etMoney.getText().toString().trim();
             String toId = targetUser.getUserId();

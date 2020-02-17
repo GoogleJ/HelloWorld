@@ -34,14 +34,11 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
-import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.reactivex.functions.Consumer;
 
 public class SearchGroupActivity extends BaseActivity {
 
@@ -100,15 +97,15 @@ public class SearchGroupActivity extends BaseActivity {
             protected void convert(BaseViewHolder helper, SearchCommunityResponse.ListBean item) {
                 if (item.getCommunityName().contains(searchWord)) {
                     helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), searchWord))
-                            .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
+                            .setText(R.id.tvGroupOwnerName, item.getOwnerNick())
                             .setText(R.id.tvCount, item.getMembers());
                 } else if (item.getCode().contains(searchWord)) {
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
-                            .setText(R.id.tvGroupOnwerName,  matcherSearchText(Color.parseColor("#4486ff"), "社群号:" + item.getCode(), searchWord))
+                            .setText(R.id.tvGroupOwnerName,  matcherSearchText(Color.parseColor("#4486ff"), getString(R.string.social_code) + item.getCode(), searchWord))
                             .setText(R.id.tvCount, item.getMembers());
                 } else if (item.getOwnerNick().contains(searchWord)) {
                     helper.setText(R.id.tvGroupName, item.getCommunityName())
-                            .setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), searchWord))
+                            .setText(R.id.tvGroupOwnerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), searchWord))
                             .setText(R.id.tvCount, item.getMembers());
                 }
 

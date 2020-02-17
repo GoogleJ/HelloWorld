@@ -13,11 +13,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.CommunityApplicationListResponse;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
@@ -28,7 +26,6 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
-import com.zxjk.duoduo.utils.RecyclerItemAverageDecoration;
 
 public class SocialAppActivity extends BaseActivity {
 
@@ -62,7 +59,7 @@ public class SocialAppActivity extends BaseActivity {
         recyclerApp1 = findViewById(R.id.recyclerApp1);
         recyclerApp2 = findViewById(R.id.recyclerApp2);
         mCustomerService = findViewById(R.id.tv_customer_service);
-        mCustomerService.setOnClickListener(v-> {
+        mCustomerService.setOnClickListener(v -> {
             startActivity(new Intent(this, OnlineServiceActivity.class));
         });
 
@@ -124,14 +121,14 @@ public class SocialAppActivity extends BaseActivity {
 
         TextView emptyView1 = new TextView(this);
         emptyView1.setGravity(Gravity.CENTER);
-        emptyView1.setText("暂无第三方应用，敬请期待开放");
+        emptyView1.setText(R.string.no_thirdpart_application);
         emptyView1.setTextSize(15);
         emptyView1.setTextColor(ContextCompat.getColor(this, R.color.textcolor2));
         adapter1.setEmptyView(emptyView1);
 
         TextView emptyView2 = new TextView(this);
         emptyView2.setGravity(Gravity.CENTER);
-        emptyView2.setText("暂无自定义应用，请添加应用");
+        emptyView2.setText(R.string.no_cust_application);
         emptyView2.setTextSize(15);
         emptyView2.setTextColor(ContextCompat.getColor(this, R.color.textcolor2));
         adapter2.setEmptyView(emptyView2);

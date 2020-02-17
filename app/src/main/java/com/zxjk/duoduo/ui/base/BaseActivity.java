@@ -192,7 +192,7 @@ public class BaseActivity extends RxAppCompatActivity {
             RxView.clicks(view)
                     .compose(rxPermissions.ensureEachCombined(permissions))
                     .subscribe(permission -> {
-                        if (!permission.granted) ToastUtils.showShort("请开启相关权限");
+                        if (!permission.granted) ToastUtils.showShort(R.string.open_related_permission);
 
                         if (null != result) result.onResult(permission.granted);
                     });
@@ -200,7 +200,7 @@ public class BaseActivity extends RxAppCompatActivity {
         }
         rxPermissions.requestEachCombined(permissions)
                 .subscribe(granted -> {
-                    if (!granted.granted) ToastUtils.showShort("请开启相关权限");
+                    if (!granted.granted) ToastUtils.showShort(R.string.open_related_permission);
 
                     if (null != result) result.onResult(granted.granted);
                 });

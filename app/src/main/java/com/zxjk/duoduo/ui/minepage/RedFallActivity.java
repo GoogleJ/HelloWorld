@@ -243,7 +243,7 @@ public class RedFallActivity extends BaseActivity {
                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .compose(RxSchedulers.ioObserver())
                 .subscribe(a -> {
-                    tvCountDown.setText((10 - a) + "");
+                    tvCountDown.setText(String.valueOf(10 - a));
                     if (a == 10) {
                         ObjectAnimator showOpenLayoutAnim = ObjectAnimator.ofFloat(flOpen, "translationY", -flOpen.getHeight(), (ScreenUtils.getScreenHeight() - flOpen.getHeight()) / 2f);
                         showOpenLayoutAnim.setDuration(600);

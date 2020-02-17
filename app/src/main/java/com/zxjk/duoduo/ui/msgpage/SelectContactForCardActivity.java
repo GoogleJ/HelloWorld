@@ -150,7 +150,6 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
         RongIM.getInstance().sendImageMessage(obtain1, null, null, new RongIMClient.SendImageMessageCallback() {
             @Override
             public void onAttached(Message message) {
-
             }
 
             @Override
@@ -168,7 +167,6 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
 
             @Override
             public void onProgress(Message message, int i) {
-
             }
         });
     }

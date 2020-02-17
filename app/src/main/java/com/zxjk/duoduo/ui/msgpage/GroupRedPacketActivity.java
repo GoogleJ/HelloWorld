@@ -115,11 +115,11 @@ public class GroupRedPacketActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(start ==0 && count ==0){
-                    etMoney2.setText("0.0000");
+                if (start == 0 && count == 0) {
+                    etMoney2.setText(getString(R.string.zero_value));
                 } else {
-                        etMoney2.setTextColor(Color.parseColor("#000000"));
-                        etMoney2.setText(s.toString());
+                    etMoney2.setTextColor(Color.parseColor("#000000"));
+                    etMoney2.setText(s.toString());
                 }
             }
 
@@ -145,8 +145,8 @@ public class GroupRedPacketActivity extends BaseActivity {
 
         fm1.setBackground(getResources().getDrawable(R.drawable.shape_gray2));
         fm2.setBackground(getResources().getDrawable(R.drawable.shape_gray1));
-        redpaytobar.setText("拼手气红包");
-        tvamount.setText("总金额");
+        redpaytobar.setText(R.string.pinshouqi);
+        tvamount.setText(R.string.money2);
         pin.setVisibility(View.VISIBLE);
     }
 
@@ -158,8 +158,8 @@ public class GroupRedPacketActivity extends BaseActivity {
         ivtop1.setWillNotDraw(false);
         fm1.setBackground(getResources().getDrawable(R.drawable.shape_gray1));
         fm2.setBackground(getResources().getDrawable(R.drawable.shape_gray2));
-        redpaytobar.setText("普通红包");
-        tvamount.setText("单个金额");
+        redpaytobar.setText(R.string.red_packet1);
+        tvamount.setText(R.string.money1);
         pin.setVisibility(View.GONE);
     }
 
@@ -171,7 +171,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                 .flatMap((Function<GroupResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) r -> {
                     runOnUiThread(() -> {
                         group = r;
-                        etCount.setHint("本群共" + group.getGroupInfo().getCustomerNumber() + "人");
+                        etCount.setHint(getString(R.string.group_total_member_count, group.getGroupInfo().getCustomerNumber()));
                     });
                     return api.getPaymentList();
                 })
@@ -184,7 +184,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                     GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
                     tvCoin.setText(result.getSymbol());
                     tvCoin2.setText(result.getSymbol());
-                    etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
+                    etMoney.setHint(getString(R.string.can_user_value_symbol, result.getBalance(), result.getSymbol()));
                 }, this::handleApiError);
     }
 
@@ -200,7 +200,7 @@ public class GroupRedPacketActivity extends BaseActivity {
         if (TextUtils.isEmpty(price)) {
             ToastUtils.showShort(R.string.input_money);
             return;
-        }else {
+        } else {
             etMoney2.setText(etMoney.getText().toString().trim());
         }
 
@@ -292,7 +292,7 @@ public class GroupRedPacketActivity extends BaseActivity {
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
             tvCoin.setText(result.getSymbol());
-            etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
+            etMoney.setHint(getString(R.string.can_user_value_symbol, result.getBalance(), result.getSymbol()));
             tvCoin2.setText(result.getSymbol());
         }
     }

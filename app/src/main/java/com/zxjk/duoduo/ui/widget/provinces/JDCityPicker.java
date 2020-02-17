@@ -93,7 +93,6 @@ public class JDCityPicker {
         }
 
         if (parseHelper.getProvinceBeanArrayList().isEmpty()) {
-            ToastUtils.showShort("请调用init方法进行初始化相关操作");
             return;
         }
 
@@ -174,7 +173,7 @@ public class JDCityPicker {
             case INDEX_TAB_PROVINCE:
                 ProvinceBean provinceBean = mProvinceAdapter.getItem(position);
                 if (provinceBean != null) {
-                    mProTv.setText("" + provinceBean.getName());
+                    mProTv.setText(provinceBean.getName());
                     mCityTv.setText(R.string.please_select);
                     mProvinceAdapter.updateSelectedPosition(position);
                     mProvinceAdapter.notifyDataSetChanged();
@@ -186,7 +185,7 @@ public class JDCityPicker {
             case INDEX_TAB_CITY:
                 CityBean cityBean = mCityAdapter.getItem(position);
                 if (cityBean != null) {
-                    mCityTv.setText("" + cityBean.getName());
+                    mCityTv.setText(cityBean.getName());
                     mAreaTv.setText(R.string.please_select);
                     mCityAdapter.updateSelectedPosition(position);
                     mCityAdapter.notifyDataSetChanged();

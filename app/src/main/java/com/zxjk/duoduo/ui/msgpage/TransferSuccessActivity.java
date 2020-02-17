@@ -24,8 +24,9 @@ public class TransferSuccessActivity extends BaseActivity {
         tvTitle.setText(getString(R.string.m_successful_transfer_title_bar));
         TextView tvTransferSuccessFriend = findViewById(R.id.tvTransferSuccessFriend);
         TextView tvTransferSuccessMoney = findViewById(R.id.tvTransferSuccessMoney);
-        tvTransferSuccessFriend.setText(getString(R.string.waitFriend) + getIntent().getStringExtra("name") + getString(R.string.confirmMoney));
-        tvTransferSuccessMoney.setText(getIntent().getStringExtra("betMoney") + getIntent().getStringExtra("symbol"));
+        tvTransferSuccessFriend.setText(getString(R.string.wait_for_xxx_confirm_receive, getIntent().getStringExtra("name")));
+        String money = getIntent().getStringExtra("betMoney") + getIntent().getStringExtra("symbol");
+        tvTransferSuccessMoney.setText(money);
     }
 
     public void submit(View view) {

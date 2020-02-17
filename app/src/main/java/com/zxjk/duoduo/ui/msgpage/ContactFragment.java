@@ -69,7 +69,7 @@ public class ContactFragment extends BaseFragment {
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
 
         TextView tvContactHilamgId = rootView.findViewById(R.id.tvContactHilamgId);
-        tvContactHilamgId.setText("我的海浪号: " + Constant.currentUser.getDuoduoId());
+        tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
         tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyQrCodeActivity.class)));
 
         rootView.findViewById(R.id.ll_contract_top1).setOnClickListener(v -> {
@@ -175,7 +175,7 @@ public class ContactFragment extends BaseFragment {
         tvContactHilamgId = headView.findViewById(R.id.tvContactHilamgId);
         dotNewFriend = headView.findViewById(R.id.dotNewFriend);
 
-        tvContactHilamgId.setText("我的海浪号: " + Constant.currentUser.getDuoduoId());
+        tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
         tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyQrCodeActivity.class)));
 
         if (MMKVUtils.getInstance().decodeLong("newFriendCount") != 0) {
@@ -206,7 +206,7 @@ public class ContactFragment extends BaseFragment {
         } else {
             footview = mAdapter.getFooterLayout().findViewById(R.id.tv);
         }
-        footview.setText("共 " + list.size() + " 位联系人");
+        footview.setText(getString(R.string.total_xx_contact, String.valueOf(list.size())));
     }
 
     /**

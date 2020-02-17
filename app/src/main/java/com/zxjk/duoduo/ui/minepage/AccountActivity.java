@@ -22,9 +22,9 @@ public class AccountActivity extends BaseActivity {
         TextView tv_title = findViewById(R.id.tv_title);
         TextView tv_DuoDuoNumber = findViewById(R.id.tv_DuoDuoNumber);
         TextView tv_phone = findViewById(R.id.tv_phone);
-        tv_title.setText("账号");
+        tv_title.setText(R.string.account);
         tv_DuoDuoNumber.setText(TextUtils.isEmpty(Constant.currentUser.getDuoduoId())
-                ? "暂未设置" : Constant.currentUser.getDuoduoId());
+                ? "" : Constant.currentUser.getDuoduoId());
         tv_phone.setText(Constant.currentUser.getMobile());
         //返回
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());

@@ -48,7 +48,7 @@ public class DynamicsPage extends BaseFragment {
         ImageView iv = emptyView.findViewById(R.id.iv);
         TextView tv = emptyView.findViewById(R.id.tv);
         iv.setImageResource(R.drawable.ic_emptyview_nofriend);
-        tv.setText("社群动态暂未开放，敬请期待！");
+        tv.setText(R.string.noSocialDynamics);
 
         adapter.setEmptyView(emptyView);
         recycler.setAdapter(adapter);

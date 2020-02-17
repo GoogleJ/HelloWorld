@@ -127,7 +127,7 @@ public class SettingActivity extends BaseActivity {
 
     private void initView() {
         TextView tv_title = findViewById(R.id.tv_title);
-        tv_title.setText("设置");
+        tv_title.setText(R.string.setting);
         RelativeLayout rl_back = findViewById(R.id.rl_back);
 
         tv_authentication = findViewById(R.id.tv_authentication);
@@ -195,10 +195,10 @@ public class SettingActivity extends BaseActivity {
             @SuppressLint("CheckResult")
             @Override
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                holder.setText(R.id.tv_title, "提示");
-                holder.setText(R.id.tv_content, "您将退出登录");
-                holder.setText(R.id.tv_cancel, "取消");
-                holder.setText(R.id.tv_notarize, "确认");
+                holder.setText(R.id.tv_title, R.string.hinttext);
+                holder.setText(R.id.tv_content, R.string.your_will_unlogin);
+                holder.setText(R.id.tv_cancel, R.string.cancel);
+                holder.setText(R.id.tv_notarize, R.string.queding);
                 holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_notarize, v12 -> {
                     dialog.dismiss();
@@ -236,22 +236,22 @@ public class SettingActivity extends BaseActivity {
                         MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                         switch (s) {
                             case "0":
-                                tv_authentication.setText("已认证");
+                                tv_authentication.setText(R.string.authen_true);
 
                                 iv_authentication.setVisibility(View.VISIBLE);
                                 break;
                             case "2":
-                                tv_authentication.setText("认证审核中");
+                                tv_authentication.setText(R.string.authening);
 
                                 iv_authentication.setVisibility(View.GONE);
                                 break;
                             case "1":
-                                tv_authentication.setText("认证未通过");
+                                tv_authentication.setText(R.string.authenfail);
 
                                 iv_authentication.setVisibility(View.GONE);
                                 break;
                             default:
-                                tv_authentication.setText("未认证");
+                                tv_authentication.setText(R.string.authen_false);
 
                                 iv_authentication.setVisibility(View.GONE);
                                 break;

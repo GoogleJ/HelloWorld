@@ -50,7 +50,7 @@ public class PeopleRedEnvelopesActivity extends BaseActivity {
         m_people_red_envelopes_unit_text.setText(symbol);
         RedPacketMessage redPacketMessage = (RedPacketMessage) message.getContent();
         UserInfo sender = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
-        m_people_red_envelopes_user_name_text.setText(sender.getName() + "的红包");
+        m_people_red_envelopes_user_name_text.setText(getString(R.string.xxx_red, sender.getName()));
         GlideUtil.loadCircleImg(m_people_red_envelopes_header, sender.getPortraitUri().toString());
         m_people_red_envelopes_signature_text.setText(redPacketMessage.getRemark());
 

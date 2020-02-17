@@ -167,11 +167,11 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                                 .withClick(R.id.delete_friend, child -> NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
                                     @Override
                                     protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                                        holder.setText(R.id.tv_title, "删除联系人");
+                                        holder.setText(R.id.tv_title, R.string.delete_contact);
                                         TextView textView = holder.getView(R.id.tv_content);
                                         textView.setText(String.format(getResources().getString(R.string.m_delete_friend_label), friendInfoResponse.getNick()));
-                                        holder.setText(R.id.tv_cancel, "取消");
-                                        holder.setText(R.id.tv_notarize, "删除");
+                                        holder.setText(R.id.tv_cancel, R.string.cancel);
+                                        holder.setText(R.id.tv_notarize, R.string.delete);
                                         holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
                                         holder.setOnClickListener(R.id.tv_notarize, v12 -> deleteFriend(friendInfoResponse.getId(), dialog));
                                     }
