@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,7 @@ import com.zxjk.duoduo.bean.response.GetCarouselMap;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.widget.CircleNavigator;
@@ -168,6 +170,13 @@ public class NewsPager extends BaseFragment {
                 ImageView imageView = new ImageView(getContext());
 
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setOnClickListener(v -> {
+                    if(!list.get(position).getLinkUrl().equals("")){
+                        Intent intent = new Intent(getActivity(), WebActivity.class);
+                        intent.putExtra("url", list.get(position).getLinkUrl());
+                        startActivity(intent);
+                    }
+                });
 
                 GlideUtil.loadNormalImg(imageView, list.get(realIndex).getImgUrl());
 
