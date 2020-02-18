@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.request.PayPhoneRequest;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 public class WalletActivity extends BaseActivity {
@@ -75,7 +79,14 @@ public class WalletActivity extends BaseActivity {
     }
 
     public void func3(View view) {
-        ToastUtils.showShort(R.string.developing);
+        String data = AesUtil.getInstance().encrypt(GsonUtils.toJson(new PayPhoneRequest(Constant.token, Constant.userId)));
+
+        String url = "www.baidu.com?obj=" + data;
+
+        Intent intent = new Intent(this, WebActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("title", getString(R.string.payPhone));
+        startActivity(new Intent(this, WebActivity.class));
     }
 
     public void func4(View view) {

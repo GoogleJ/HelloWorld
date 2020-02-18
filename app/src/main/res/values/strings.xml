@@ -855,6 +855,9 @@
     <string name="noredfalldata">暂无红包雨数据</string>
     <string name="redfall_tips_noshareyet">您今天还未分享</string>
     <string name="redfall_tips_shared">您今天已分享过</string>
+    <string name="payPhone">话费充值</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="file_send_wechat">微信文件</string>
     <string name="file_send_phone">手机文件</string>
     <string name="phonefilenum">文件: %1$d</string>
