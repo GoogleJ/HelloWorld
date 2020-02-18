@@ -34,14 +34,11 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
-import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.reactivex.functions.Consumer;
 
 public class SearchGroupActivity extends BaseActivity {
 
@@ -98,18 +95,16 @@ public class SearchGroupActivity extends BaseActivity {
         adapter = new BaseQuickAdapter<SearchCommunityResponse.ListBean, BaseViewHolder>(R.layout.item_publicgroup) {
             @Override
             protected void convert(BaseViewHolder helper, SearchCommunityResponse.ListBean item) {
+                helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), searchWord))
+                        .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
+                        .setText(R.id.tvCount, item.getMembers());
+
                 if (item.getCommunityName().contains(searchWord)) {
-                    helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), searchWord))
-                            .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
-                            .setText(R.id.tvCount, item.getMembers());
+                    helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), searchWord));
                 } else if (item.getCode().contains(searchWord)) {
-                    helper.setText(R.id.tvGroupName, item.getCommunityName())
-                            .setText(R.id.tvGroupOnwerName,  matcherSearchText(Color.parseColor("#4486ff"), "社群号:" + item.getCode(), searchWord))
-                            .setText(R.id.tvCount, item.getMembers());
+                    helper.setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), "社群号:" + item.getCode(), searchWord));
                 } else if (item.getOwnerNick().contains(searchWord)) {
-                    helper.setText(R.id.tvGroupName, item.getCommunityName())
-                            .setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), searchWord))
-                            .setText(R.id.tvCount, item.getMembers());
+                    helper.setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), searchWord));
                 }
 
                 FrameLayout fl = helper.getView(R.id.fl);
