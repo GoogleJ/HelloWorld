@@ -57,6 +57,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.msgpage.FileSendActivity"></activity>
         <activity
             android:name=".ui.minepage.wallet.BalanceShowItemActivity"
             android:launchMode="singleTop"
@@ -620,8 +621,7 @@
         <activity
             android:name=".ui.minepage.FeedbackActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <!-- 启动页 -->
+            android:screenOrientation="portrait" /> <!-- 启动页 -->
         <activity android:name=".ui.BrowsableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

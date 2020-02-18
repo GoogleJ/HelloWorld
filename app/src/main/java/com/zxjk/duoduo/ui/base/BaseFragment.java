@@ -97,4 +97,5 @@ public class BaseFragment extends RxFragment {
         super.onResume();
         MobclickAgent.onPageStart(getClass().getSimpleName());
     }
+
 }

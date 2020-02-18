@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phonefilenum">文件: %1$d</string>
+    <string name="phonefile_nofile">暂时无法读取本地文件，请联系客服</string>
+    <string name="phonefile_selectedfile">已选(%1$d/%2$d)</string>
+    <string name="phonefilexml_selectedfile">已选: (0/5)</string>
+    <string name="file_filesending">正在发送,请稍等</string>
+    <string name="no_file">暂无文件</string>
+    <string name="file">文件</string>
+    <string name="select_file">请选择发送文件!</string>
+</resources>
