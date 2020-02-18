@@ -157,27 +157,17 @@ public class ConversationActivity extends BaseActivity {
 
         extension = findViewById(io.rong.imkit.R.id.rc_extension);
 
-        //系统消息UI调整
-//        if (conversationType.equals("system")) {
-//            tvTitle = findViewById(R.id.tv_title);
-//            targetId = getIntent().getData().getQueryParameter("targetId");
-//            switch (targetId) {
-//                case "147":
-//                    tvTitle.setText("支付凭证");
-//                    break;
-//                case "349":
-//                    tvTitle.setText("对局结果");
-//                    break;
-//                case "355":
-//                    tvTitle.setText("多多官方");
-//                    break;
-//                default:
-//                    tvTitle.setText("系统消息");
-//                    break;
-//            }
-//            extension.removeAllViews();
-//            return;
-//        }
+        if (conversationType.equals("system")) {
+            tvTitle = findViewById(R.id.tv_title);
+            targetId = getIntent().getData().getQueryParameter("targetId");
+            switch (targetId) {
+                case "38":
+                    tvTitle.setText(R.string.hilamg_official);
+                    break;
+            }
+            extension.removeAllViews();
+            return;
+        }
 
         registerMsgReceiver();
 

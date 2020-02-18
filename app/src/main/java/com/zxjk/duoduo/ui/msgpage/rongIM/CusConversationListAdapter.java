@@ -15,6 +15,7 @@ import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.adapter.ConversationListAdapter;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Group;
+import io.rong.imlib.model.UserInfo;
 
 public class CusConversationListAdapter extends ConversationListAdapter {
 
@@ -33,35 +34,6 @@ public class CusConversationListAdapter extends ConversationListAdapter {
         super.bindView(v, position, data);
         v.findViewById(R.id.rc_left).setVisibility(View.GONE);
         ImageView groupHead = v.findViewById(R.id.rc_mask);
-
-//        if (data.getConversationTargetId().equals("147")) {
-//            groupHead.setVisibility(View.VISIBLE);
-//            groupHead.setImageResource(R.drawable.ic_portrait_payment);
-//            UserInfo u = RongUserInfoManager.getInstance().getUserInfo(data.getConversationTargetId());
-//            if (u == null) {
-//                RongUserInfoManager.getInstance().setUserInfo(new UserInfo(data.getConversationTargetId(), "支付凭证",
-//                        getUriFromDrawableRes(v.getContext(), R.drawable.ic_portrait_payment)));
-//            }
-//            return;
-//        } else if (data.getConversationTargetId().equals("349")) {
-//            groupHead.setVisibility(View.VISIBLE);
-//            groupHead.setImageResource(R.drawable.ic_portrait_notice);
-//            UserInfo u = RongUserInfoManager.getInstance().getUserInfo(data.getConversationTargetId());
-//            if (u == null) {
-//                RongUserInfoManager.getInstance().setUserInfo(new UserInfo(data.getConversationTargetId(), "对局结果",
-//                        getUriFromDrawableRes(v.getContext(), R.drawable.ic_portrait_notice)));
-//            }
-//            return;
-//        } else if (data.getConversationTargetId().equals("355")) {
-//            groupHead.setVisibility(View.VISIBLE);
-//            groupHead.setImageResource(R.drawable.ic_portrait_system);
-//            UserInfo u = RongUserInfoManager.getInstance().getUserInfo(data.getConversationTargetId());
-//            if (u == null) {
-//                RongUserInfoManager.getInstance().setUserInfo(new UserInfo(data.getConversationTargetId(), "多多官方",
-//                        getUriFromDrawableRes(v.getContext(), R.drawable.ic_portrait_system)));
-//            }
-//            return;
-//        }
 
         if (data.getConversationType() != Conversation.ConversationType.GROUP) {
             v.findViewById(R.id.rc_left).setVisibility(View.VISIBLE);
