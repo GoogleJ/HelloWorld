@@ -800,7 +800,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="101784998" />
+                <data android:scheme="101838814" />
             </intent-filter>
         </activity> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
         <activity
