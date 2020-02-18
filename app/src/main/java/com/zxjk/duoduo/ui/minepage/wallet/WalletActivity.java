@@ -80,13 +80,12 @@ public class WalletActivity extends BaseActivity {
 
     public void func3(View view) {
         String data = AesUtil.getInstance().encrypt(GsonUtils.toJson(new PayPhoneRequest(Constant.token, Constant.userId)));
-
-        String url = "www.baidu.com?obj=" + data;
+        String url = "http://tellus-admin.huijin.fun/?obj=" + data;
 
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("url", url);
         intent.putExtra("title", getString(R.string.payPhone));
-        startActivity(new Intent(this, WebActivity.class));
+        startActivity(intent);
     }
 
     public void func4(View view) {
