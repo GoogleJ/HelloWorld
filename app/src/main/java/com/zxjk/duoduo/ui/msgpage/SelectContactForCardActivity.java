@@ -27,6 +27,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.SelectForCardAdapter;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.io.BufferedOutputStream;
@@ -58,11 +59,17 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
     private boolean fromPulgin;
 
     private List<FriendInfoResponse> list = new ArrayList<>();
+    private ArrayList<Conversation> data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_contact_for_card);
+
+        data = getIntent().getParcelableArrayListExtra("data");
+        if (data == null) {
+            data = new ArrayList<>();
+        }
 
         initView();
 
@@ -92,7 +99,8 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                     handleShareQR(position);
                 }
             } else {
-                shareCard(position);
+                    shareCard(position);
+
             }
         });
     }
@@ -266,6 +274,7 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                     }
                 }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager()), this::handleApiError);
     }
+
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

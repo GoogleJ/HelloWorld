@@ -18,11 +18,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.shehuan.nicedialog.BaseNiceDialog;
+import com.shehuan.nicedialog.NiceDialog;
+import com.shehuan.nicedialog.ViewConvertListener;
+import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.ShareGroupQRAdapter;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -127,7 +133,12 @@ public class ShareGroupQRActivity extends BaseActivity {
                 handleTransfer(position);
             } else {
                 //分享(群名片、游戏群名片)
-                handleShare(position);
+                boolean fromShareNews = getIntent().getBooleanExtra("fromShareNews", false);
+                if(fromShareNews){
+                    shareNews(position);
+                }else {
+                    handleShare(position);
+                }
             }
         });
     }
@@ -247,4 +258,43 @@ public class ShareGroupQRActivity extends BaseActivity {
         }
     }
 
+
+    private void shareNews(int position) {
+        NewsCardMessage message = new NewsCardMessage();
+        message.setUrl(getIntent().getStringExtra("url"));
+        message.setContent(getIntent().getStringExtra("article"));
+        message.setIcon(getIntent().getStringExtra("icon"));
+        message.setTitle(getIntent().getStringExtra("title"));
+        message.setPlatform(getIntent().getStringExtra("platform"));
+        NiceDialog.init().setLayoutId(R.layout.layout_card_dialog).setConvertListener(new ViewConvertListener() {
+            @Override
+            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                GlideUtil.loadCircleImg(holder.getView(R.id.img_card_icon), data.get(position).getPortraitUrl());
+                holder.setText(R.id.tv_card_name, data.get(position).getConversationTitle().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
+                holder.setText(R.id.tv_card_content, getIntent().getStringExtra("platform")+"\u0020|\u0020"+getIntent().getStringExtra("title"));
+                holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
+                holder.setOnClickListener(R.id.tv_ok, v -> {
+                    dialog.dismiss();
+                    Message message1 = Message.obtain(data.get(position).getTargetId(), data.get(position).getConversationType(), message);
+                    RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
+
+                        @Override
+                        public void onAttached(Message message) {
+                        }
+
+                        @Override
+                        public void onSuccess(Message message) {
+                            CommonUtils.destoryDialog();
+                            ToastUtils.showShort(R.string.share_success);
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                        }
+                    });
+                });
+            }
+        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
+    }
 }

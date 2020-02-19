@@ -134,8 +134,8 @@ public class WalletTradeActivity extends BaseActivity {
                 ImageView mImgTradeIc = helper.getView(R.id.img_trade_ic);
 
                 helper.setText(R.id.tv_reward_month, item.getMonth())
-                        .setText(R.id.tv_reward_income, "收入:" + item.getIncome() + "\u0020ETH")
-                        .setText(R.id.tv_reward_expenditure, "支出:" + item.getExpenditure() + "\u0020ETH");
+                        .setText(R.id.tv_reward_income, getResources().getString(R.string.wallet_income,item.getIncome(),symbol))
+                        .setText(R.id.tv_reward_expenditure, getResources().getString(R.string.wallet_spending, item.getExpenditure(),symbol));
                 mTvWalletCount.setText(item.getTitle());
                 mTvWalletTime.setText(new SimpleDateFormat("yyyy.MM.dd HH:mm").format(Long.parseLong(item.getCreateTime())));
                 mTvRewardTokenSymbol.setText(symbol);
@@ -144,6 +144,7 @@ public class WalletTradeActivity extends BaseActivity {
                     if (item.getInOrOut().equals("0")) {
                         mTvRewardBalance.setTextColor(getResources().getColor(R.color.count_down));
                         mTvRewardBalance.setText("+" + item.getBalance());
+                        mTvWalletCount.setText(R.string.collection_and_payment);
                         mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.count_down));
                     } else {
                         mTvRewardBalance.setTextColor(getResources().getColor(R.color.black));
@@ -151,9 +152,16 @@ public class WalletTradeActivity extends BaseActivity {
                         mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.black));
                     }
                 } else {
-                    mTvRewardBalance.setTextColor(getResources().getColor(R.color.count_down));
-                    mTvRewardBalance.setText("+" + item.getBalance());
-                    mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.count_down));
+                    if(item.getInOrOut().equals("0")){
+                        mTvRewardBalance.setTextColor(getResources().getColor(R.color.count_down));
+                        mTvRewardBalance.setText("+" + item.getBalance());
+                        mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.count_down));
+                    }else {
+                        mTvRewardBalance.setTextColor(getResources().getColor(R.color.black));
+                        mTvRewardBalance.setText("-" + item.getBalance());
+                        mTvRewardTokenSymbol.setTextColor(getResources().getColor(R.color.black));
+                    }
+
                 }
 
                 LinearLayout llHean = helper.getView(R.id.ll_reward_head);

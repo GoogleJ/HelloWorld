@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -171,9 +170,9 @@ public class NewsPager extends BaseFragment {
 
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setOnClickListener(v -> {
-                    if(!list.get(position).getLinkUrl().equals("")){
+                    if(!list.get(realIndex).getLinkUrl().equals("")){
                         Intent intent = new Intent(getActivity(), WebActivity.class);
-                        intent.putExtra("url", list.get(position).getLinkUrl());
+                        intent.putExtra("url", list.get(realIndex).getLinkUrl());
                         startActivity(intent);
                     }
                 });
@@ -493,6 +492,9 @@ public class NewsPager extends BaseFragment {
                 intent.putExtra("id", o.getId());
                 intent.putExtra("url", o.getHtmlUrl());
                 intent.putExtra("title", o.getTitle());
+                intent.putExtra("icon", o.getThumPic());
+                intent.putExtra("article",o.getArticle());
+                intent.putExtra("platform",o.getArticleSource());
                 startActivity(intent);
             });
             return adapter;
@@ -590,7 +592,6 @@ public class NewsPager extends BaseFragment {
                                             .withClick(R.id.img_exit, null, true)
                                     )
                                     .show();
-
                             ImageView im = invitePop.findViewById(R.id.ivQRImg);
                             ServiceFactory.getInstance().getBaseService(Api.class)
                                     .getAppVersionBysystemType("0")

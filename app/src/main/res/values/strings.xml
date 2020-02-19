@@ -871,5 +871,13 @@
     <string name="no_file">暂无文件</string>
     <string name="file">文件</string>
     <string name="select_file">请选择发送文件!</string>
+    <string name="wallet_income">收入:%1$s %2$s</string>
+    <string name="wallet_spending">支出:%1$s %2$s</string>
+    <string name="news_pager_pop_text">快讯来源：海浪之声</string>
+    <string name="news_pager_pop_text1">区块链社交，就在Hilamg</string>
+    <string name="news_pager_pop_text2">长按识别二维码  下载HilamgApp</string>
+    <string name="hilamg_consulting">海浪咨询</string>
+    <string name="share_news_card">[海浪咨询]</string>
+    <string name="send_to">发送给:</string>
 
 </resources>

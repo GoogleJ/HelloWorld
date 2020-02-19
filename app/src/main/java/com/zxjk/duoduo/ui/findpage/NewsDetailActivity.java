@@ -4,12 +4,17 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -21,18 +26,28 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.widget.ProgressView;
 import com.zxjk.duoduo.utils.ShareUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
+import razerdp.widget.QuickPopup;
 
 public class NewsDetailActivity extends BaseActivity {
 
@@ -45,8 +60,10 @@ public class NewsDetailActivity extends BaseActivity {
     private WebView mWebView;
 
     private TextView tv_title;
-
     private String title;
+
+    private QuickPopup invitePop;
+    private ValueAnimator pbAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,27 +98,82 @@ public class NewsDetailActivity extends BaseActivity {
         ImageView imageView = findViewById(R.id.iv_end);
         imageView.setImageResource(R.drawable.ic_share_action_right);
         imageView.setOnClickListener(v -> {
-            currentUrl = currentUrl+"&share=share";
-            UMWeb link = new UMWeb(currentUrl);
-            link.setTitle("Hilamg新闻");
-            link.setDescription(title);
-            link.setThumb(new UMImage(NewsDetailActivity.this, R.mipmap.ic_launcher));
-            ShareUtil.shareLink(NewsDetailActivity.this, link, new ShareUtil.ShareListener() {
-                @Override
-                public void onStart(SHARE_MEDIA share_media) {
-                    super.onStart(share_media);
-                    ServiceFactory.getInstance().getBaseService(Api.class)
-                            .savePointInfo("4")
-                            .compose(RxSchedulers.ioObserver())
-                            .subscribe(s -> {
-                            }, t -> {
-                            });
-                }
-            });
+            if (invitePop == null) {
+                TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
+                showAnimation.setDuration(350);
+                TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
+                dismissAnimation.setDuration(500);
+                invitePop = QuickPopupBuilder.with(this)
+                        .contentView(R.layout.popup_news_card)
+                        .config(new QuickPopupConfig()
+                                .withShowAnimation(showAnimation)
+                                .withDismissAnimation(dismissAnimation)
+                                .withClick(R.id.tv1, view -> shareTo(1), true)
+                                .withClick(R.id.tv2, view -> shareTo(2), true)
+                                .withClick(R.id.tv3, view -> shareTo(3), true)
+                                .withClick(R.id.tv4, view -> shareTo(4), true)
+                                .withClick(R.id.tv5, view -> {
+                                    ToastUtils.showShort(R.string.duplicated_to_clipboard);
+                                    ClipboardManager cm = (ClipboardManager) Utils.getApp().getSystemService(Context.CLIPBOARD_SERVICE);
+                                    if (cm != null) {
+                                        cm.setPrimaryClip(ClipData.newPlainText("text", getIntent().getStringExtra("url")));
+                                    }
+                                }, true)
+
+                        )
+                        .show();
+            } else {
+                invitePop.showPopupWindow();
+            }
         });
     }
 
-    private ValueAnimator pbAnim;
+    private void shareTo(int plantform) {
+        currentUrl = currentUrl + "&share=share";
+        UMWeb link = new UMWeb(currentUrl);
+        link.setTitle("Hilamg新闻");
+        link.setDescription(title);
+
+        SHARE_MEDIA platform = null;
+        switch (plantform) {
+            case 1:
+                platform = SHARE_MEDIA.WEIXIN;
+                break;
+            case 2:
+                platform = SHARE_MEDIA.WEIXIN_CIRCLE;
+                break;
+            case 3:
+                platform = SHARE_MEDIA.QQ;
+                break;
+            case 4:
+                RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+                    @Override
+                    public void onSuccess(List<Conversation> conversations) {
+                        Intent intent = new Intent(NewsDetailActivity.this, ShareGroupQRActivity.class);
+                        intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
+                        intent.putExtra("fromShareNews", true);
+                        intent.putExtra("id", getIntent().getStringExtra("id"));
+                        intent.putExtra("url", getIntent().getStringExtra("url"));
+                        intent.putExtra("title", getIntent().getStringExtra("title"));
+                        intent.putExtra("icon", getIntent().getStringExtra("icon"));
+                        intent.putExtra("article", getIntent().getStringExtra("article"));
+                        intent.putExtra("platform", getIntent().getStringExtra("platform"));
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                    }
+                });
+                break;
+        }
+        new ShareAction(this)
+                .setPlatform(platform)
+                .withMedia(link)
+                .setCallback(new ShareUtil.ShareListener())
+                .share();
+    }
 
     private void initAnimtor() {
         pbAnim = ValueAnimator.ofFloat(0f, 70f);
