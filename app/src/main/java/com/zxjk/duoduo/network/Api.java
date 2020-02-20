@@ -68,6 +68,7 @@ import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -740,6 +741,8 @@ public interface Api {
     @POST("duoduo/walletBalance/balanceAssetManage")
     Observable<BaseResponse<List<BalanceAssetManageBean>>> balanceAssetManage();
 
-    @POST("duoduo/blockchain/getOutbreakSwitch")
-    Observable<BaseResponse<List<BalanceAssetManageBean>>> getOutbreakSwitch();
+    @FormUrlEncoded
+    @POST("duoduo/group/getMemberIdByGroupId")
+    Observable<BaseResponse<ArrayList<String>>> getMemberIdByGroupId(@Field("groupId") String groupId);
+
 }

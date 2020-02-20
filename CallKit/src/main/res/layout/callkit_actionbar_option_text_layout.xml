@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ico_back" />
+            android:src="@drawable/ico_back"
+            android:tint="@android:color/white" />
 
     </RelativeLayout>
 

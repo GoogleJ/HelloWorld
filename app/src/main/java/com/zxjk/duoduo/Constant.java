@@ -43,8 +43,6 @@ public class Constant {
 
     public static int messageCount = 0;
 
-    public static CreateWalletResponse walletResponse;
-    //    public static List<FriendInfoResponse> friendsList;
     public static Message tempMsg;
 
     //分享群二维码
@@ -59,8 +57,6 @@ public class Constant {
         Constant.userId = "";
         Constant.phoneUuid = "";
         currentUser = null;
-        walletResponse = null;
-//        friendsList = null;
         tempMsg = null;
         shareGroupQR = null;
     }
