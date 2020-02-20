@@ -45,7 +45,6 @@ public class SocialFileEditActivity extends BaseActivity {
     //20M
     private final String maxFileSize = "20971520";
 
-    private String id;
     private int currentCount;
     private int currentMax;
     private int maxCount;
@@ -73,7 +72,6 @@ public class SocialFileEditActivity extends BaseActivity {
         title.setText(R.string.addfile);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
-        id = getIntent().getStringExtra("id");
         currentMax = getIntent().getIntExtra("currentMax", 0);
         maxCount = getIntent().getIntExtra("maxCount", 4);
 
@@ -89,7 +87,7 @@ public class SocialFileEditActivity extends BaseActivity {
             protected void convert(BaseViewHolder helper, FileBean item) {
                 ImageView ivHead = helper.getView(R.id.ivHead);
                 helper.setText(R.id.tvTitle, item.title)
-                        .setText(R.id.tvSize, item.size).setChecked(R.id.cbSelectVideo, item.isChecked());
+                        .setText(R.id.tv_size, item.size).setChecked(R.id.cbSelectVideo, item.isChecked());
 
                 if (item.format.contains("doc") || item.format.contains("docx")) {
                     Glide.with(SocialFileEditActivity.this).load(R.drawable.ic_social_file_word).into(ivHead);
