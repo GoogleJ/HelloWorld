@@ -134,9 +134,9 @@ public class ShareGroupQRActivity extends BaseActivity {
             } else {
                 //分享(群名片、游戏群名片)
                 boolean fromShareNews = getIntent().getBooleanExtra("fromShareNews", false);
-                if(fromShareNews){
+                if (fromShareNews) {
                     shareNews(position);
-                }else {
+                } else {
                     handleShare(position);
                 }
             }
@@ -197,7 +197,6 @@ public class ShareGroupQRActivity extends BaseActivity {
         RongIM.getInstance().sendImageMessage(obtain1, null, null, new RongIMClient.SendImageMessageCallback() {
             @Override
             public void onAttached(Message message) {
-
             }
 
             @Override
@@ -215,7 +214,6 @@ public class ShareGroupQRActivity extends BaseActivity {
 
             @Override
             public void onProgress(Message message, int i) {
-
             }
         });
     }
@@ -271,7 +269,7 @@ public class ShareGroupQRActivity extends BaseActivity {
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
                 GlideUtil.loadCircleImg(holder.getView(R.id.img_card_icon), data.get(position).getPortraitUrl());
                 holder.setText(R.id.tv_card_name, data.get(position).getConversationTitle().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
-                holder.setText(R.id.tv_card_content, getIntent().getStringExtra("articleSource")+"\u0020|\u0020"+getIntent().getStringExtra("title"));
+                holder.setText(R.id.tv_card_content, getIntent().getStringExtra("articleSource") + "\u0020|\u0020" + getIntent().getStringExtra("title"));
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_ok, v -> {
                     dialog.dismiss();

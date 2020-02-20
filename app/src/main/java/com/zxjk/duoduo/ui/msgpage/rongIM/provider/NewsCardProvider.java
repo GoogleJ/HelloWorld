@@ -22,9 +22,8 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 
-
 @ProviderTag(messageContent = NewsCardMessage.class)
-public class NewsCardProvider extends IContainerItemProvider.MessageProvider<NewsCardMessage>{
+public class NewsCardProvider extends IContainerItemProvider.MessageProvider<NewsCardMessage> {
 
     class ViewHolder {
         TextView title;
@@ -33,19 +32,20 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
         LinearLayout llHilamg;
         LinearLayout sendLayout;
     }
+
     @Override
     public void bindView(View view, int i, NewsCardMessage newsCardMessage, UIMessage uiMessage) {
         ViewHolder holder = (ViewHolder) view.getTag();
 
-        if (uiMessage.getMessageDirection() == Message.MessageDirection.SEND) {
-            holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_user);
+        if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {
+            holder.sendLayout.setBackgroundResource(io.rong.imkit.R.drawable.shape_rc_bubble_left);
             holder.llHilamg.setGravity(Gravity.START);
         } else {
-            holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_friend);
+            holder.sendLayout.setBackgroundResource(io.rong.imkit.R.drawable.shape_rc_bubble_right_white);
             holder.llHilamg.setGravity(Gravity.END);
         }
 
-        holder.title.setText(newsCardMessage.getArticleSource() +"\u0020|\u0020"+ newsCardMessage.getTitle());
+        holder.title.setText(newsCardMessage.getArticleSource() + "\u0020|\u0020" + newsCardMessage.getTitle());
         holder.content.setText(newsCardMessage.getContent());
         GlideUtil.loadCornerImg(holder.icon, newsCardMessage.getIcon(), 1);
         holder.content.setText(newsCardMessage.getContent());
@@ -64,11 +64,11 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
     @Override
     public void onItemClick(View view, int i, NewsCardMessage newsCardMessage, UIMessage uiMessage) {
         Intent intent = new Intent(view.getContext(), NewsDetailActivity.class);
-        intent.putExtra("title",newsCardMessage.getTitle());
+        intent.putExtra("title", newsCardMessage.getTitle());
         intent.putExtra("url", newsCardMessage.getUrl());
         intent.putExtra("icon", newsCardMessage.getIcon());
-        intent.putExtra("article",newsCardMessage.getContent());
-        intent.putExtra("articleSource",newsCardMessage.getArticleSource());
+        intent.putExtra("article", newsCardMessage.getContent());
+        intent.putExtra("articleSource", newsCardMessage.getArticleSource());
         view.getContext().startActivity(intent);
     }
 
