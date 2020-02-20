@@ -157,7 +157,7 @@ public class NewsDetailActivity extends BaseActivity {
                         intent.putExtra("title", getIntent().getStringExtra("title"));
                         intent.putExtra("icon", getIntent().getStringExtra("icon"));
                         intent.putExtra("article", getIntent().getStringExtra("article"));
-                        intent.putExtra("platform", getIntent().getStringExtra("platform"));
+                        intent.putExtra("articleSource", getIntent().getStringExtra("articleSource"));
                         startActivity(intent);
                         finish();
                     }

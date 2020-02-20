@@ -21,7 +21,7 @@ public class NewsCardMessage extends MessageContent {
     private String content;
     private String icon;
     private String url;
-    private String platform;
+    private String articleSource;
 
 
 
@@ -59,12 +59,12 @@ public class NewsCardMessage extends MessageContent {
         this.url = url;
     }
 
-    public String getPlatform() {
-        return platform;
+    public String getArticleSource() {
+        return articleSource;
     }
 
-    public void setPlatform(String platform) {
-        this.platform = platform;
+    public void setArticleSource(String articleSource) {
+        this.articleSource = articleSource;
     }
 
 
@@ -76,7 +76,7 @@ public class NewsCardMessage extends MessageContent {
             jsonObj.put("content", getContent());
             jsonObj.put("icon", getIcon());
             jsonObj.put("url", getUrl());
-            jsonObj.put("platform", getPlatform());
+            jsonObj.put("articleSource", getArticleSource());
         } catch (JSONException e) {
             Log.e("JSONException", e.getMessage());
         }
@@ -117,8 +117,8 @@ public class NewsCardMessage extends MessageContent {
                 setUrl(jsonObj.optString("url"));
             }
 
-            if (jsonObj.has("platform")) {
-                setPlatform(jsonObj.optString("platform"));
+            if (jsonObj.has("articleSource")) {
+                setArticleSource(jsonObj.optString("articleSource"));
             }
 
         } catch (JSONException e) {
@@ -137,7 +137,7 @@ public class NewsCardMessage extends MessageContent {
         ParcelUtils.writeToParcel(dest, content);
         ParcelUtils.writeToParcel(dest, icon);
         ParcelUtils.writeToParcel(dest, url);
-        ParcelUtils.writeToParcel(dest, platform);
+        ParcelUtils.writeToParcel(dest, articleSource);
     }
 
 
@@ -147,7 +147,7 @@ public class NewsCardMessage extends MessageContent {
         setContent(ParcelUtils.readFromParcel(in));
         setIcon(ParcelUtils.readFromParcel(in));
         setUrl(ParcelUtils.readFromParcel(in));
-        setPlatform(ParcelUtils.readFromParcel(in));
+        setArticleSource(ParcelUtils.readFromParcel(in));
     }
 
 

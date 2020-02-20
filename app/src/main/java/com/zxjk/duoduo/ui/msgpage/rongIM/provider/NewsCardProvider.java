@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
         TextView title;
         TextView content;
         ImageView icon;
+        LinearLayout llHilamg;
         LinearLayout sendLayout;
     }
     @Override
@@ -37,11 +39,13 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
 
         if (uiMessage.getMessageDirection() == Message.MessageDirection.SEND) {
             holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_user);
+            holder.llHilamg.setGravity(Gravity.START);
         } else {
             holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_friend);
+            holder.llHilamg.setGravity(Gravity.END);
         }
 
-        holder.title.setText(newsCardMessage.getPlatform() +"\u0020|\u0020"+ newsCardMessage.getTitle());
+        holder.title.setText(newsCardMessage.getArticleSource() +"\u0020|\u0020"+ newsCardMessage.getTitle());
         holder.content.setText(newsCardMessage.getContent());
         GlideUtil.loadCornerImg(holder.icon, newsCardMessage.getIcon(), 1);
         holder.content.setText(newsCardMessage.getContent());
@@ -64,7 +68,7 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
         intent.putExtra("url", newsCardMessage.getUrl());
         intent.putExtra("icon", newsCardMessage.getIcon());
         intent.putExtra("article",newsCardMessage.getContent());
-        intent.putExtra("platform",newsCardMessage.getPlatform());
+        intent.putExtra("articleSource",newsCardMessage.getArticleSource());
         view.getContext().startActivity(intent);
     }
 
@@ -76,6 +80,7 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
         holder.content = view.findViewById(R.id.news_card_content);
         holder.icon = view.findViewById(R.id.news_card_icon);
         holder.sendLayout = view.findViewById(R.id.news_card_send_layout);
+        holder.llHilamg = view.findViewById(R.id.ll_hilamg);
         view.setTag(holder);
         return view;
     }

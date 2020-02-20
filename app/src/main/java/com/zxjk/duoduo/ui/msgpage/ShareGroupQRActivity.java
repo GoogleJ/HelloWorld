@@ -265,13 +265,13 @@ public class ShareGroupQRActivity extends BaseActivity {
         message.setContent(getIntent().getStringExtra("article"));
         message.setIcon(getIntent().getStringExtra("icon"));
         message.setTitle(getIntent().getStringExtra("title"));
-        message.setPlatform(getIntent().getStringExtra("platform"));
+        message.setArticleSource(getIntent().getStringExtra("articleSource"));
         NiceDialog.init().setLayoutId(R.layout.layout_card_dialog).setConvertListener(new ViewConvertListener() {
             @Override
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
                 GlideUtil.loadCircleImg(holder.getView(R.id.img_card_icon), data.get(position).getPortraitUrl());
                 holder.setText(R.id.tv_card_name, data.get(position).getConversationTitle().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
-                holder.setText(R.id.tv_card_content, getIntent().getStringExtra("platform")+"\u0020|\u0020"+getIntent().getStringExtra("title"));
+                holder.setText(R.id.tv_card_content, getIntent().getStringExtra("articleSource")+"\u0020|\u0020"+getIntent().getStringExtra("title"));
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_ok, v -> {
                     dialog.dismiss();

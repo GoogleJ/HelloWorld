@@ -484,8 +484,8 @@ public class NewsPager extends BaseFragment {
                 intent.putExtra("url", o.getHtmlUrl());
                 intent.putExtra("title", o.getTitle());
                 intent.putExtra("icon", o.getThumPic());
-                intent.putExtra("article", o.getArticle());
-                intent.putExtra("platform", o.getArticleSource());
+                intent.putExtra("article",o.getArticle());
+                intent.putExtra("articleSource",o.getArticleSource());
                 startActivity(intent);
             });
             return adapter;

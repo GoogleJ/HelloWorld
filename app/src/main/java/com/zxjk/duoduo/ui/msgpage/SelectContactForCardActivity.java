@@ -27,7 +27,6 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.SelectForCardAdapter;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.io.BufferedOutputStream;

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,7 +13,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -172,6 +170,7 @@ public class FileSendActivity extends BaseActivity implements PhoneFileFragment.
 
         if (phoneFileFragment == null || !phoneFileFragment.onBackPressed()) {
             super.onBackPressed();
+            finish();
         }
     }
 }

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.format.Formatter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,40 +146,44 @@ public class PhoneFileFragment extends BaseFragment {
         adapter.setOnItemClickListener((adap, view, position) -> {
             CheckBox checkBox = view.findViewById(R.id.cbSelectVideo);
             FileInfo b = (FileInfo) adap.getData().get(position);
-            if (!b.isChecked() && currentCount == currentMax) {
-                return;
-            }
-            file = new File(b.getFilePath());
+
             if (b.isDir()) {
                 Observable.create((ObservableOnSubscribe<List<FileInfo>>) emitter ->
-                        emitter.onNext(init(file))
+                        emitter.onNext(init(b.getFilePath()))
                 )
                         .compose(bindToLifecycle())
                         .subscribe(adapter::setNewData, t -> {
                             ToastUtils.showShort(R.string.phonefile_nofile);
                         });
-            } else {
-                if (!b.isChecked()) {
-                    b.setChecked(true);
-                    selectedFiles.add(adapter.getData().get(position));
-                    currentCount += 1;
-                    tvCurrentCount.setText(String.format(getResources().getString(R.string.phonefile_selectedfile), currentCount, currentMax));
-                    checkBox.setChecked(true);
-                } else {
-                    b.setChecked(false);
+            }
+            else {
+                if (!b.isChecked() && currentCount == currentMax) {
+                    ToastUtils.showShort(getString(R.string.file_remind));
+                    return;
+                }else {
+                    if (!b.isChecked()) {
+                        b.setChecked(true);
+                        selectedFiles.add(adapter.getData().get(position));
+                        currentCount += 1;
+                        tvCurrentCount.setText(String.format(getString(R.string.phonefile_selectedfile), currentCount, currentMax));
+                        checkBox.setChecked(true);
+                    } else {
+                        b.setChecked(false);
 
-                    Iterator<FileInfo> fileInfoIterator = selectedFiles.iterator();
-                    while (fileInfoIterator.hasNext()) {
-                        FileInfo file = fileInfoIterator.next();
-                        if (file.getFilePath().equals(b.getFilePath())) {
-                            fileInfoIterator.remove();
+                        Iterator<FileInfo> fileInfoIterator = selectedFiles.iterator();
+                        while (fileInfoIterator.hasNext()) {
+                            FileInfo fileInfo = fileInfoIterator.next();
+                            if (fileInfo.getFilePath().equals(b.getFilePath())) {
+                                fileInfoIterator.remove();
+                            }
                         }
-                    }
 
-                    currentCount -= 1;
-                    tvCurrentCount.setText(String.format(getResources().getString(R.string.phonefile_selectedfile), currentCount, currentMax));
-                    checkBox.setChecked(false);
+                        currentCount -= 1;
+                        tvCurrentCount.setText(String.format(getResources().getString(R.string.phonefile_selectedfile), currentCount, currentMax));
+                        checkBox.setChecked(false);
+                    }
                 }
+
             }
         });
 
@@ -186,7 +191,7 @@ public class PhoneFileFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         Observable.create((ObservableOnSubscribe<List<FileInfo>>) emitter -> {
-            emitter.onNext(init(Environment.getExternalStorageDirectory()));
+            emitter.onNext(init(Environment.getExternalStorageDirectory().getPath()));
         })
                 .compose(bindToLifecycle())
                 .subscribe(adapter::setNewData, t -> {
@@ -197,13 +202,13 @@ public class PhoneFileFragment extends BaseFragment {
                 sendFile());
     }
 
-    private List<FileInfo> init(File f) {
+    private List<FileInfo> init(String f) {
         fileInfo.clear();
 
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {
-            file = new File(f.getPath());
-            File[] files = f.listFiles();
+            file = new File(f);
+            File[] files = file.listFiles();
             if (files != null) {
                 List<File> fileList = Arrays.asList(files);
                 Collections.sort(fileList, (o1, o2) -> {
@@ -257,9 +262,8 @@ public class PhoneFileFragment extends BaseFragment {
 
     public boolean onBackPressed() {
         if (!file.equals(Environment.getExternalStorageDirectory())) {
-            File file1 = new File(file.getParent());
             Observable.create((ObservableOnSubscribe<List<FileInfo>>) emitter -> {
-                emitter.onNext(init(file1));
+                emitter.onNext(init(file.getParent()));
             })
                     .compose(bindToLifecycle())
                     .subscribe(adapter::setNewData, t ->

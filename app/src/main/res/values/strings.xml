@@ -880,5 +880,6 @@
     <string name="share_news_card">[海浪咨询]</string>
     <string name="send_to">发送给:</string>
     <string name="sickness">疫情快讯</string>
+    <string name="file_remind">海浪:您最多只能选择5个文件</string>
 
 </resources>

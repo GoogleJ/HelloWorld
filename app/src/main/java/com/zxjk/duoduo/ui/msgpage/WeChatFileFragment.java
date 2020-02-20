@@ -108,6 +108,7 @@ public class WeChatFileFragment extends BaseFragment {
             FileBean b = (FileBean) adapter.getData().get(position);
 
             if (!b.isChecked() && currentCount == currentMax) {
+                ToastUtils.showShort(getString(R.string.file_remind));
                 return;
             }
             if (!b.isChecked()) {

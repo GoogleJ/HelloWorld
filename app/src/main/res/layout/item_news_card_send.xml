@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="220dp"
     android:layout_height="wrap_content"
     android:id="@+id/news_card_send_layout"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,28 +8,35 @@
     tools:ignore="MissingConstraints"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/news_card_title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/black"
-        android:ellipsize="end"
-        android:lines="2"
-        android:textStyle="bold"/>
+        android:layout_height="wrap_content"
+>
+        <TextView
+            android:id="@+id/news_card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:ellipsize="end"
+            android:lines="2"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"/>
+
     <LinearLayout
+        android:id="@+id/ll1_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/news_card_title"
+        android:layout_marginStart="8dp">
 
         <ImageView
             android:id="@+id/news_card_icon"
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="10dp" />
+            android:layout_height="48dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,30 +57,34 @@
         </LinearLayout>
     </LinearLayout>
     <View
+        android:id="@+id/vv"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:background="@color/divider" />
+        android:background="@color/divider"
+        android:layout_below="@+id/ll1_card"/>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/ll_hilamg"
+        android:layout_below="@+id/vv"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="4dp">
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical">
         <ImageView
             android:src="@drawable/ic_myqr_hilamg"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_gravity="center"/>
+            android:layout_height="wrap_content"/>
         <TextView
             android:text="@string/hilamg_consulting"
             android:textColor="@color/m_add_friend_wechat_label_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="10dp"
+            android:textSize="12sp"
             android:layout_marginStart="3dp"/>
     </LinearLayout>
-
+    </RelativeLayout>
 </LinearLayout>
