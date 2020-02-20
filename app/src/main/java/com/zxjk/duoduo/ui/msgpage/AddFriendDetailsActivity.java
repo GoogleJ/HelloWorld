@@ -2,6 +2,7 @@ package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.zxjk.duoduo.utils.GlideUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 @SuppressLint("CheckResult")
 public class AddFriendDetailsActivity extends BaseActivity {
@@ -59,19 +62,21 @@ public class AddFriendDetailsActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(response -> {
-                    tvNickname.setText(response.getNick());
-                    tvDuoDuoNumber.setText(getString(R.string.duoduo_acount) + " " + response.getDuoduoId());
-                    tvDistrict.setText(getString(R.string.district) + " " + response.getAddress());
-                    tvSignature.setText(TextUtils.isEmpty(response.getSignature()) ? getString(R.string.none) : response.getSignature());
-                    imageUrl = response.getHeadPortrait();
-                    GlideUtil.loadCircleImg(ivHeadPortrait, response.getHeadPortrait());
+                .subscribe(r -> {
+                    tvNickname.setText(r.getNick());
+                    tvDuoDuoNumber.setText(getString(R.string.duoduo_acount) + " " + r.getDuoduoId());
+                    tvDistrict.setText(getString(R.string.district) + " " + r.getAddress());
+                    tvSignature.setText(TextUtils.isEmpty(r.getSignature()) ? getString(R.string.none) : r.getSignature());
+                    imageUrl = r.getHeadPortrait();
+                    GlideUtil.loadCircleImg(ivHeadPortrait, r.getHeadPortrait());
 
-                    if ("0".equals(response.getSex())) {
+                    if ("0".equals(r.getSex())) {
                         ivGender.setImageDrawable(getDrawable(R.drawable.icon_gender_man));
                     } else {
                         ivGender.setImageDrawable(getDrawable(R.drawable.icon_gender_woman));
                     }
+
+                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(r.getId(), r.getNick(), Uri.parse(r.getHeadPortrait())));
                 }, this::handleApiError);
     }
 

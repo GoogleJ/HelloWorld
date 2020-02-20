@@ -122,7 +122,7 @@ public class ContactFragment extends BaseFragment {
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             FriendInfoResponse friendInfoResponse = mAdapter.getData().get(position);
             Intent intent = new Intent(getActivity(), FriendDetailsActivity.class);
-            intent.putExtra("friendResponse", friendInfoResponse);
+            intent.putExtra("friendId", friendInfoResponse.getId());
             startActivity(intent);
         });
         if (mAdapter.getData().size() == 0) {

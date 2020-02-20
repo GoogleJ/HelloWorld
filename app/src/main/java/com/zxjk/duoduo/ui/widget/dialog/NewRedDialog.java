@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -150,7 +151,11 @@ public class NewRedDialog extends Dialog {
 
     public void show(String headUrl, String nick, String note) {
         GlideUtil.loadCircleImg(ivHead, headUrl);
-        tvNick.setText(nick + "的红包");
+        if (TextUtils.isEmpty(nick)) {
+            tvNick.setText(R.string.red_packet);
+        } else {
+            tvNick.setText(nick + "的红包");
+        }
         tvNote.setText(note);
         show();
     }

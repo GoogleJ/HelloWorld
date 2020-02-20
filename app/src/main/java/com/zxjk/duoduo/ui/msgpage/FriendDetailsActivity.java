@@ -1,9 +1,8 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -43,6 +42,7 @@ import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.imlib.model.UserInfo;
 import io.rong.message.CommandMessage;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
@@ -88,22 +88,27 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initFriendIntent() {
-        friendInfoResponse = (FriendInfoResponse) getIntent().getSerializableExtra("friendResponse");
-        if (friendInfoResponse == null) {
-            String friendId = getIntent().getStringExtra("friendId");
-
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getFriendInfoById(friendId)
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .compose(RxSchedulers.normalTrans())
-                    .subscribe(r -> {
-                        friendInfoResponse = r;
-                        handleData();
-                    }, this::handleApiError);
-        } else {
-            handleData();
+        String friendId = getIntent().getStringExtra("friendId");
+        if (TextUtils.isEmpty(friendId)) {
+            finish();
+            return;
         }
+
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getFriendInfoById(friendId)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(r -> {
+                    friendInfoResponse = r;
+
+                    if (!friendId.equals(Constant.userId)) {
+                        RongIM.getInstance().refreshUserInfoCache(new UserInfo(friendId, TextUtils.isEmpty(r.getRemark()) ?
+                                r.getNick() : r.getRemark(), Uri.parse(r.getHeadPortrait())));
+                    }
+
+                    handleData();
+                }, this::handleApiError);
     }
 
     @SuppressLint("SetTextI18n")

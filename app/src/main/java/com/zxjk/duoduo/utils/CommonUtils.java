@@ -164,7 +164,7 @@ public class CommonUtils {
             activity.finish();
         }
         if (userId.equals(Constant.userId)) {
-            //扫到了自己
+            //自己
             Intent intent = new Intent(activity, FriendDetailsActivity.class);
             intent.putExtra("friendId", userId);
             activity.startActivity(intent);
@@ -172,9 +172,9 @@ public class CommonUtils {
         }
         for (FriendInfoResponse f : friendInfoResponses) {
             if (f.getId().equals(userId)) {
-                //自己的好友，进入详情页（可聊天）
+                //好友，进入详情页（可聊天）
                 Intent intent = new Intent(activity, FriendDetailsActivity.class);
-                intent.putExtra("friendResponse", f);
+                intent.putExtra("friendId", userId);
                 activity.startActivity(intent);
                 return;
             }

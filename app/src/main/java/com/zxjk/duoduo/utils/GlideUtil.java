@@ -2,6 +2,7 @@ package com.zxjk.duoduo.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -46,6 +47,11 @@ public class GlideUtil {
 
     //加载图片实现方法 Glide 可设置加载回调返回bitmap
     private static void loadImage(ImageView iv, String url, int mode, int radius, RequestListener<Bitmap> listener) {
+        if (TextUtils.isEmpty(url)) {
+            iv.setImageResource(R.drawable.errorimg_head);
+            return;
+        }
+
         RequestManager manager = Glide.with(iv.getContext());
         if (listener != null) {
             manager.asBitmap().listener(listener)

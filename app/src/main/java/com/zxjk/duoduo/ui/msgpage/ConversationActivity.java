@@ -687,20 +687,6 @@ public class ConversationActivity extends BaseActivity {
                         handleGroupOwnerInit();
 
                         initView();
-
-                        ServiceFactory.getInstance().getBaseService(Api.class)
-                                .getGroupMemByGroupId(targetId)
-                                .compose(bindUntilEvent(ActivityEvent.DESTROY))
-                                .subscribeOn(Schedulers.io())
-                                .compose(RxSchedulers.normalTrans())
-                                .subscribe(groupMemberList -> {
-                                    for (AllGroupMembersResponse b : groupMemberList) {
-                                        if (RongUserInfoManager.getInstance().getUserInfo(b.getId()) == null) {
-                                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(b.getId(), TextUtils.isEmpty(b.getRemark()) ? b.getNick() : b.getRemark()
-                                                    , Uri.parse(b.getHeadPortrait())));
-                                        }
-                                    }
-                                });
                     }, t -> {
                         extension.removeAllViews();
                         handleApiError(t);
@@ -995,7 +981,11 @@ public class ConversationActivity extends BaseActivity {
                                                     }, ConversationActivity.this::handleApiError));
 
                                             UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
-                                            newRedDialog.show(userInfo.getPortraitUri().toString(), userInfo.getName(), redPacketMessage.getRemark());
+                                            if (userInfo == null) {
+                                                newRedDialog.show("", "", redPacketMessage.getRemark());
+                                            } else {
+                                                newRedDialog.show(userInfo.getPortraitUri().toString(), userInfo.getName(), redPacketMessage.getRemark());
+                                            }
                                         } else {
                                             newRedDialog.setOpenListener(() -> ServiceFactory.getInstance().getBaseService(Api.class)
                                                     .receivePersonalRedPackage(redPacketMessage.getRedId())
@@ -1015,7 +1005,11 @@ public class ConversationActivity extends BaseActivity {
                                                     }, ConversationActivity.this::handleApiError));
 
                                             UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
-                                            newRedDialog.show(userInfo.getPortraitUri().toString(), userInfo.getName(), redPacketMessage.getRemark());
+                                            if (userInfo == null) {
+                                                newRedDialog.show("", "", redPacketMessage.getRemark());
+                                            } else {
+                                                newRedDialog.show(userInfo.getPortraitUri().toString(), userInfo.getName(), redPacketMessage.getRemark());
+                                            }
                                         }
                                     }
                                 }, t -> ToastUtils.showShort(RxException.getMessage(t)));
