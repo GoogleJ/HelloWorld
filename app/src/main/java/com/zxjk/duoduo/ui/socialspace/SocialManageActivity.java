@@ -180,6 +180,9 @@ public class SocialManageActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Boolean aBoolean) {
                         dialog.dismiss();
+                        Intent intent = new Intent(SocialManageActivity.this, HomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }
 
                     @Override

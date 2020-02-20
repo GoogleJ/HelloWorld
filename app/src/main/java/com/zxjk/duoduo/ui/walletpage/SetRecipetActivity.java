@@ -30,7 +30,7 @@ public class SetRecipetActivity extends BaseActivity {
         tvUnit.setText(getIntent().getStringExtra("symbol"));
 
         etMoney = findViewById(R.id.etMoney);
-        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5)});
+        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter(),new InputFilter.LengthFilter(10)});
     }
 
     public void commit(View view) {
