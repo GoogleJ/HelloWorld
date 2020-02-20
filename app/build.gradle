@@ -116,7 +116,7 @@ dependencies {
     implementation 'com.aliyun.dpa:oss-android-sdk:2.9.2'
 
     //Utils
-    implementation 'com.blankj:utilcodex:1.23.7'
+    implementation 'com.blankj:utilcodex:1.26.0'
 
     //Loading
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'

@@ -699,8 +699,9 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         List<FriendInfoResponse> filterList = new ArrayList<>(data.size());
 
         for (FriendInfoResponse contact : data) {
-            boolean isNameContains = contact.getMobile().contains(str) || contact.getNick()
-                    .contains(str) || contact.getRemark().contains(str);
+            boolean isNameContains = (!TextUtils.isEmpty(contact.getMobile()) && contact.getMobile().contains(str)) ||
+                    (!TextUtils.isEmpty(contact.getNick()) && contact.getNick().contains(str)) ||
+                    (!TextUtils.isEmpty(contact.getRemark()) && contact.getRemark().contains(str));
             if (isNameContains) {
                 if (!filterList.contains(contact)) {
                     filterList.add(contact);
@@ -716,8 +717,9 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         List<AllGroupMembersResponse> filterList = new ArrayList<>(data2.size());
 
         for (AllGroupMembersResponse contact : data2) {
-            boolean isNameContains = contact.getMobile().contains(str) || contact.getNick()
-                    .contains(str) || contact.getRemark().contains(str);
+            boolean isNameContains = (!TextUtils.isEmpty(contact.getMobile()) && contact.getMobile().contains(str)) ||
+                    (!TextUtils.isEmpty(contact.getNick()) && contact.getNick().contains(str)) ||
+                    (!TextUtils.isEmpty(contact.getRemark()) && contact.getRemark().contains(str));
             if (isNameContains) {
                 if (!filterList.contains(contact)) {
                     filterList.add(contact);

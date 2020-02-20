@@ -315,7 +315,7 @@ public class SocialVideoAddActivity extends BaseActivity {
                                 if (!TextUtils.isEmpty(onlyCompressOverBean.getVideoPath())) {
                                     File file = new File(onlyCompressOverBean.getVideoPath());
                                     try {
-                                        FileUtils.deleteDir(file.getParentFile());
+                                        FileUtils.delete(file.getParentFile());
                                     } catch (Exception e) {
                                     }
                                 }
@@ -332,7 +332,7 @@ public class SocialVideoAddActivity extends BaseActivity {
                                 if (!TextUtils.isEmpty(onlyCompressOverBean.getVideoPath())) {
                                     File file = new File(onlyCompressOverBean.getVideoPath());
                                     try {
-                                        FileUtils.deleteDir(file.getParentFile());
+                                        FileUtils.delete(file.getParentFile());
                                     } catch (Exception e) {
                                     }
                                 }
@@ -349,7 +349,7 @@ public class SocialVideoAddActivity extends BaseActivity {
                         if (!TextUtils.isEmpty(onlyCompressOverBean.getVideoPath())) {
                             File file = new File(onlyCompressOverBean.getVideoPath());
                             try {
-                                FileUtils.deleteDir(file.getParentFile());
+                                FileUtils.delete(file.getParentFile());
                             } catch (Exception e) {
                             }
                         }

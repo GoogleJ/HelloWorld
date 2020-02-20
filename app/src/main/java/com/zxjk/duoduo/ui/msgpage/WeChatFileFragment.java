@@ -160,7 +160,7 @@ public class WeChatFileFragment extends BaseFragment {
             if (wechatFiles != null) {
                 for (File file : wechatFiles) {
                     if (!getFileFormat(file.getPath()).equals("unknown")) {
-                        FileBean fileBean = new FileBean(file.getPath(), FileUtils.getFileSize(file), file.getName(), getFileFormat(file.getPath()), FileUtils.getFileLastModified(file));
+                        FileBean fileBean = new FileBean(file.getPath(), FileUtils.getSize(file), file.getName(), getFileFormat(file.getPath()), FileUtils.getFileLastModified(file));
                         files.add(0, fileBean);
                     }
                 }
