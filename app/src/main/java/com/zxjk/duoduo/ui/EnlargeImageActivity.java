@@ -119,9 +119,13 @@ public class EnlargeImageActivity extends BaseActivity {
         String sMessage;
         Message message = images.get(position);
         if (((ImageMessage) message.getContent()).getLocalUri() == null) {
-            sMessage = ((ImageMessage) message.getContent()).getMediaUrl().toString();
+            if (((ImageMessage) message.getContent()).getMediaUrl() == null) {
+                sMessage = ((ImageMessage) message.getContent()).getThumUri().toString();
+            } else {
+                sMessage = ((ImageMessage) message.getContent()).getMediaUrl().toString();
+            }
         } else {
-            sMessage = ((ImageMessage) message.getContent()).getLocalUri().toString();
+            sMessage = "";
         }
         Glide.with(EnlargeImageActivity.this)
                 .asBitmap()
@@ -285,10 +289,15 @@ public class EnlargeImageActivity extends BaseActivity {
                 String sMessage;
                 Message message = images.get(position);
                 if (((ImageMessage) message.getContent()).getLocalUri() == null) {
-                    sMessage = ((ImageMessage) message.getContent()).getMediaUrl().toString();
+                    if (((ImageMessage) message.getContent()).getMediaUrl() == null) {
+                        sMessage = ((ImageMessage) message.getContent()).getThumUri().toString();
+                    } else {
+                        sMessage = ((ImageMessage) message.getContent()).getMediaUrl().toString();
+                    }
                 } else {
-                    sMessage = ((ImageMessage) message.getContent()).getLocalUri().toString();
+                    sMessage = "";
                 }
+
                 Glide.with(EnlargeImageActivity.this).load(sMessage).into(new CustomViewTarget<SubsamplingScaleImageView, Drawable>(imageView) {
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
