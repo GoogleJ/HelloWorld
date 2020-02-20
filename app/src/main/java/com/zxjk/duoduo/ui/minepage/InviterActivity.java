@@ -108,7 +108,7 @@ public class InviterActivity extends BaseActivity {
         tvTips = findViewById(R.id.tvTips);
         tvtitle.setText(R.string.invite_friends1);
         ivQR = findViewById(R.id.ivQR);
-        SpannableString spannableString = new SpannableString("邀请好友成功注册可获得0.5USDT奖励");
+        SpannableString spannableString = new SpannableString(getString(R.string.Invite_rewards));
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#4585F5")), 11, 18, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvTips.setText(spannableString);
 

@@ -876,10 +876,13 @@
     <string name="news_pager_pop_text">快讯来源：海浪之声</string>
     <string name="news_pager_pop_text1">区块链社交，就在Hilamg</string>
     <string name="news_pager_pop_text2">长按识别二维码  下载HilamgApp</string>
-    <string name="hilamg_consulting">海浪咨询</string>
-    <string name="share_news_card">[海浪咨询]</string>
+    <string name="hilamg_consulting">Hilamg资讯</string>
+    <string name="share_news_card">[Hilamg资讯]</string>
     <string name="send_to">发送给:</string>
     <string name="sickness">疫情快讯</string>
-    <string name="file_remind">海浪:您最多只能选择5个文件</string>
+    <string name="file_remind">Hilamg:您最多只能选择5个文件</string>
+    <string name="group_number">本群共%1$s人</string>
+    <string name="balanceof">可用%1$s%2$s</string>
+    <string name="Invite_rewards">邀请好友成功注册可获得0.1USDT奖励</string>
 
 </resources>
