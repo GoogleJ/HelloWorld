@@ -167,6 +167,9 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                                 .withClick(R.id.recommend_to_friend, child -> {
                                     Intent intentCard = new Intent(FriendDetailsActivity.this, SelectContactForCardActivity.class);
                                     intentCard.putExtra("userId", friendInfoResponse.getId());
+                                    intentCard.putExtra("nick", friendInfoResponse.getNick());
+                                    intentCard.putExtra("headPortrait", friendInfoResponse.getHeadPortrait());
+                                    intentCard.putExtra("duoduoId", friendInfoResponse.getDuoduoId());
                                     startActivity(intentCard);
                                 }, true)
                                 .withClick(R.id.delete_friend, child -> NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
@@ -224,14 +227,6 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                 .compose(RxSchedulers.normalTrans())
                 .compose(bindToLifecycle())
                 .subscribe(s -> {
-//                    Iterator<FriendInfoResponse> iterator = Constant.friendsList.iterator();
-//                    while (iterator.hasNext()) {
-//                        FriendInfoResponse next = iterator.next();
-//                        if (next.getId().equals(friendId)) {
-//                            iterator.remove();
-//                            break;
-//                        }
-//                    }
                     dialog.dismiss();
                     ToastUtils.showShort(getString(R.string.the_friend_has_been_deleted));
                     RongIM.getInstance().clearMessages(Conversation.ConversationType.PRIVATE,

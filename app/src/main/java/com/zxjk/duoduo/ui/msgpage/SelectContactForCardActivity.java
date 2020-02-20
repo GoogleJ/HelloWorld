@@ -98,8 +98,7 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                     handleShareQR(position);
                 }
             } else {
-                    shareCard(position);
-
+                shareCard(position);
             }
         });
     }
@@ -209,69 +208,65 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
      * @param position
      */
     private void shareCard(int position) {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getCustomerInfoById(userId)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(c -> NiceDialog.init().setLayoutId(R.layout.layout_general_dialog4).setConvertListener(new ViewConvertListener() {
-                    @Override
-                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        holder.setText(R.id.tv_content, getString(R.string.share_business_card));
-                        holder.setText(R.id.tv_cancel, getString(R.string.cancel));
-                        holder.setText(R.id.tv_notarize, getString(R.string.ok));
-                        holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
-                        holder.setOnClickListener(R.id.tv_notarize, v -> {
-                            dialog.dismiss();
-                            FriendInfoResponse listBean = mAdapter.getData().get(position);
+        NiceDialog.init().setLayoutId(R.layout.layout_general_dialog4).setConvertListener(new ViewConvertListener() {
+            @Override
+            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                holder.setText(R.id.tv_content, getString(R.string.share_business_card));
+                holder.setText(R.id.tv_cancel, getString(R.string.cancel));
+                holder.setText(R.id.tv_notarize, getString(R.string.ok));
+                holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
+                holder.setOnClickListener(R.id.tv_notarize, v -> {
+                    dialog.dismiss();
+                    FriendInfoResponse listBean = mAdapter.getData().get(position);
 
-                            String toId;
-                            String cardUserId;
-                            String cardUserNick;
-                            String cardUserDuoDuoId;
-                            String cardUserPortrait;
+                    String toId;
+                    String cardUserId;
+                    String cardUserNick;
+                    String cardUserDuoDuoId;
+                    String cardUserPortrait;
 
-                            if (fromPulgin) {
-                                toId = c.getId();
-                                cardUserId = listBean.getId();
-                                cardUserNick = listBean.getNick();
-                                cardUserDuoDuoId = listBean.getDuoduoId();
-                                cardUserPortrait = listBean.getHeadPortrait();
-                            } else {
-                                toId = listBean.getId();
-                                cardUserId = c.getId();
-                                cardUserNick = c.getNick();
-                                cardUserDuoDuoId = c.getDuoduoId();
-                                cardUserPortrait = c.getHeadPortrait();
-                            }
-
-                            BusinessCardMessage message = new BusinessCardMessage();
-                            message.setUserId(cardUserId);
-                            message.setDuoduo(cardUserDuoDuoId);
-                            message.setIcon(cardUserPortrait);
-                            message.setName(cardUserNick);
-                            message.setSenderName(Constant.currentUser.getNick());
-                            message.setSenderId(Constant.userId);
-
-                            Message message1 = Message.obtain(toId, Conversation.ConversationType.PRIVATE, message);
-                            RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
-                                @Override
-                                public void onAttached(Message message) {
-                                }
-
-                                @Override
-                                public void onSuccess(Message message) {
-                                    if (fromPulgin) finish();
-                                    ToastUtils.showShort(R.string.has_bean_sent);
-                                }
-
-                                @Override
-                                public void onError(Message message, RongIMClient.ErrorCode errorCode) {
-                                }
-                            });
-                        });
+                    if (fromPulgin) {
+                        toId = userId;
+                        cardUserId = listBean.getId();
+                        cardUserNick = listBean.getNick();
+                        cardUserDuoDuoId = listBean.getDuoduoId();
+                        cardUserPortrait = listBean.getHeadPortrait();
+                    } else {
+                        toId = listBean.getId();
+                        cardUserId = userId;
+                        cardUserNick = getIntent().getStringExtra("nick");
+                        cardUserDuoDuoId = getIntent().getStringExtra("duoduoId");
+                        cardUserPortrait = getIntent().getStringExtra("headPortrait");
                     }
-                }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager()), this::handleApiError);
+
+                    BusinessCardMessage message = new BusinessCardMessage();
+                    message.setUserId(cardUserId);
+                    message.setDuoduo(cardUserDuoDuoId);
+                    message.setIcon(cardUserPortrait);
+                    message.setName(cardUserNick);
+                    message.setSenderName(Constant.currentUser.getNick());
+                    message.setSenderId(Constant.userId);
+
+                    Message message1 = Message.obtain(toId, Conversation.ConversationType.PRIVATE, message);
+                    RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
+                        @Override
+                        public void onAttached(Message message) {
+                        }
+
+                        @Override
+                        public void onSuccess(Message message) {
+                            if (fromPulgin) finish();
+                            else finish();
+                            ToastUtils.showShort(R.string.has_bean_sent);
+                        }
+
+                        @Override
+                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                        }
+                    });
+                });
+            }
+        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
     }
 
 
