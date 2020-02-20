@@ -303,7 +303,6 @@ public class NewsPager extends BaseFragment {
         });
 
         CommonNavigator navigator2 = new CommonNavigator(getContext());
-//        navigator2.setAdjustMode(true);
         navigator2.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -376,6 +375,9 @@ public class NewsPager extends BaseFragment {
                 case 1:
                     type = "quickNews";
                     break;
+                case 2:
+                    type = "sickness";
+                    break;
                 default:
             }
             SwipeRefreshLayout swipeRefreshLayout = new SwipeRefreshLayout(getContext());
@@ -391,7 +393,6 @@ public class NewsPager extends BaseFragment {
                     //快讯
                     adapter = initQuickNewsAdapter();
                 } else {
-                    //其他
                     adapter = initNewsAdapter();
                 }
 
@@ -420,7 +421,7 @@ public class NewsPager extends BaseFragment {
             swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
 
             swipeRefreshLayout.setEnabled(false);
-            if (position == 0 || position == 1) {
+            if (position == 0 || position == 1 || position == 2) {
                 swipeRefreshLayout.setEnabled(true);
                 api.blockChainNews(type, "0", String.valueOf(COUNT_PER_PAGE))
                         .compose(bindToLifecycle())
@@ -464,13 +465,13 @@ public class NewsPager extends BaseFragment {
         }
 
         @NotNull
-        public BaseQuickAdapter<BlockChainNewsBean, BaseViewHolder> initNewsAdapter() {
+        private BaseQuickAdapter<BlockChainNewsBean, BaseViewHolder> initNewsAdapter() {
             BaseQuickAdapter<BlockChainNewsBean, BaseViewHolder> adapter;
             adapter = new BaseQuickAdapter<BlockChainNewsBean, BaseViewHolder>(R.layout.item_find_newsdetail, null) {
                 @Override
                 protected void convert(BaseViewHolder helper, BlockChainNewsBean bean) {
                     helper.setText(R.id.tvTitle, bean.getTitle())
-                            .setText(R.id.tvTime, (bean.getNewsTime()))
+                            .setText(R.id.tvTime, bean.getNewsTime())
                             .setText(R.id.tvSource, bean.getArticleSource())
                             .setText(R.id.tvTag, bean.getTag());
                     GlideUtil.loadCornerImg(helper.getView(R.id.ivContent), bean.getThumPic(), 5);
@@ -484,15 +485,15 @@ public class NewsPager extends BaseFragment {
                 intent.putExtra("url", o.getHtmlUrl());
                 intent.putExtra("title", o.getTitle());
                 intent.putExtra("icon", o.getThumPic());
-                intent.putExtra("article",o.getArticle());
-                intent.putExtra("articleSource",o.getArticleSource());
+                intent.putExtra("article", o.getArticle());
+                intent.putExtra("articleSource", o.getArticleSource());
                 startActivity(intent);
             });
             return adapter;
         }
 
         @NotNull
-        public BaseQuickAdapter<BlockChainNewsBean, BaseViewHolder> initQuickNewsAdapter() {
+        private BaseQuickAdapter<BlockChainNewsBean, BaseViewHolder> initQuickNewsAdapter() {
             BaseQuickAdapter<BlockChainNewsBean, BaseViewHolder> adapter;
             adapter = new BaseQuickAdapter<BlockChainNewsBean, BaseViewHolder>(R.layout.item_find_newsdetail_quick_news, null) {
                 @Override
@@ -590,8 +591,8 @@ public class NewsPager extends BaseFragment {
                                     .compose(RxSchedulers.normalTrans())
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
                                     .subscribe(r ->
-                                            Observable.create((ObservableOnSubscribe<Bitmap>) e ->
-                                                    e.onNext(QRCodeEncoder.syncEncodeQRCode(r, UIUtil.dip2px(getActivity(), 80), Color.BLACK)))
+                                            Observable.create((ObservableOnSubscribe<Bitmap>)
+                                                    e -> e.onNext(QRCodeEncoder.syncEncodeQRCode(r, UIUtil.dip2px(getActivity(), 80), Color.BLACK)))
                                                     .compose(RxSchedulers.ioObserver())
                                                     .compose(bindToLifecycle())
                                                     .subscribe(im::setImageBitmap));

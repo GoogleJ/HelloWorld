@@ -134,6 +134,7 @@ public class SocialPage extends BaseFragment {
             Intent intent = new Intent(getContext(), SocialHomeActivity.class);
             CommunityListBean b = (CommunityListBean) adapter.getData().get(position);
             intent.putExtra("id", b.getGroupId());
+            intent.putExtra("memCount", b.getMembers());
             startActivity(intent);
         });
 

@@ -737,7 +737,9 @@ public interface Api {
     @POST("duoduo/walletBalance/balanceManage")
     Observable<BaseResponse<String>> balanceManage(@Field("currencyName") String currencyName, @Field("isClose") String isClose);
 
-
     @POST("duoduo/walletBalance/balanceAssetManage")
     Observable<BaseResponse<List<BalanceAssetManageBean>>> balanceAssetManage();
+
+    @POST("duoduo/blockchain/getOutbreakSwitch")
+    Observable<BaseResponse<List<BalanceAssetManageBean>>> getOutbreakSwitch();
 }

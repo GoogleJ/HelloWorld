@@ -315,10 +315,18 @@ public class SocialHomeActivity extends BaseActivity {
                         startActivityForResult(intent, REQUEST_BG);
                     });
 
-                    if (r.getMembers().size() >= maxMemVisiableItem) {
+                    String memCount = getIntent().getStringExtra("memCount");
+                    int realCount = -1;
+                    if (!TextUtils.isEmpty(memCount)) {
+                        try {
+                            realCount = Integer.parseInt(memCount);
+                        } catch (Exception e) {
+                        }
+                    }
+                    if (realCount != -1 && realCount >= maxMemVisiableItem) {
                         maxMemVisiableItem -= 1;
                         List<CommunityInfoResponse.MembersBean> result = r.getMembers().subList(0, maxMemVisiableItem - 1);
-                        int numLeft = r.getMembers().size() - result.size();
+                        int numLeft = realCount - result.size();
                         result.add(new CommunityInfoResponse.MembersBean());
                         ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
                         layoutParams2.width = CommonUtils.dip2px(this, 25) * (result.size() + 1) + CommonUtils.dip2px(this, 20);
