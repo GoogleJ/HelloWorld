@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llContent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
     android:background="@drawable/shape_white_8"
+    android:foreground="?selectableItemBackgroundBorderless"
+    android:gravity="start"
     android:orientation="vertical"
     android:padding="16dp">
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:lines="1"
@@ -19,8 +22,9 @@
 
     <TextView
         android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitle"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="12dp"
         android:textColor="@color/textColor9"
@@ -28,8 +32,9 @@
 
     <TextView
         android:id="@+id/tvContent"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvDate"
         android:lineSpacingExtra="8dp"
         android:textColor="@color/black"
         android:textSize="15.5sp" />
@@ -38,6 +43,7 @@
         android:id="@+id/llBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvContent"
         android:orientation="vertical">
 
         <View
@@ -47,26 +53,27 @@
             android:layout_marginBottom="16dp"
             android:background="#DDDDDD" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_centerVertical="true"
                 android:text="@string/detail_forward"
                 android:textColor="@color/black" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_teskrightarrow"
                 android:tint="@color/textColor9" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

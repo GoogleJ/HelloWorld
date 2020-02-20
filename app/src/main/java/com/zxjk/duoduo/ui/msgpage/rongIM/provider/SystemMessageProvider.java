@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxjk.duoduo.R;
@@ -23,7 +24,9 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 
 @ProviderTag(messageContent = SystemMessage.class,
-        centerInHorizontal = true, showPortrait = false)
+        centerInHorizontal = true,
+        showPortrait = false,
+        showSummaryWithName = false)
 public class SystemMessageProvider extends IContainerItemProvider.MessageProvider<SystemMessage> {
     private SimpleDateFormat sdf;
 
@@ -99,7 +102,7 @@ public class SystemMessageProvider extends IContainerItemProvider.MessageProvide
         private TextView tvTitle;
         private TextView tvDate;
         private TextView tvContent;
-        private LinearLayout llContent;
+        private RelativeLayout llContent;
         private LinearLayout llBottom;
     }
 }
