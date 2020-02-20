@@ -16,8 +16,8 @@ import io.rong.imlib.model.MessageContent;
 @SuppressLint("ParcelCreator")
 @MessageTag(value = "HL:system", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
 public class SystemMessage extends MessageContent {
-    //0：不可点击  1：跳转web链接
-    private String type;
+    //1：跳转web链接
+    private String action;
     //跳转链接
     private String url;
     //内容
@@ -26,6 +26,8 @@ public class SystemMessage extends MessageContent {
     private String title;
     //日期
     private String date;
+    //是否显示底部详情，1显示 0不显示
+    private String showDetail;
 
     public SystemMessage() {
     }
@@ -34,11 +36,12 @@ public class SystemMessage extends MessageContent {
     public byte[] encode() {
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("type", getType());
+            jsonObj.put("action", getAction());
             jsonObj.put("url", getUrl());
             jsonObj.put("content", getContent());
             jsonObj.put("title", getTitle());
             jsonObj.put("date", getDate());
+            jsonObj.put("showDetail", getShowDetail());
         } catch (JSONException e) {
             Log.e("JSONException", e.getMessage());
         }
@@ -62,8 +65,8 @@ public class SystemMessage extends MessageContent {
         try {
             JSONObject jsonObj = new JSONObject(jsonStr);
 
-            if (jsonObj.has("type")) {
-                setType(jsonObj.optString("type"));
+            if (jsonObj.has("action")) {
+                setAction(jsonObj.optString("action"));
             }
 
             if (jsonObj.has("url")) {
@@ -82,6 +85,10 @@ public class SystemMessage extends MessageContent {
                 setDate(jsonObj.optString("date"));
             }
 
+            if (jsonObj.has("showDetail")) {
+                setShowDetail(jsonObj.optString("showDetail"));
+            }
+
         } catch (JSONException e) {
             Log.d("JSONException", e.getMessage());
         }
@@ -94,19 +101,21 @@ public class SystemMessage extends MessageContent {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        ParcelUtils.writeToParcel(dest, type);
+        ParcelUtils.writeToParcel(dest, action);
         ParcelUtils.writeToParcel(dest, url);
         ParcelUtils.writeToParcel(dest, content);
         ParcelUtils.writeToParcel(dest, title);
         ParcelUtils.writeToParcel(dest, date);
+        ParcelUtils.writeToParcel(dest, showDetail);
     }
 
     public SystemMessage(Parcel in) {
-        setType(ParcelUtils.readFromParcel(in));
+        setAction(ParcelUtils.readFromParcel(in));
         setUrl(ParcelUtils.readFromParcel(in));
         setContent(ParcelUtils.readFromParcel(in));
         setTitle(ParcelUtils.readFromParcel(in));
         setDate(ParcelUtils.readFromParcel(in));
+        setShowDetail(ParcelUtils.readFromParcel(in));
     }
 
     /**
@@ -125,12 +134,12 @@ public class SystemMessage extends MessageContent {
         }
     };
 
-    public String getType() {
-        return type;
+    public String getAction() {
+        return action;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public String getUrl() {
@@ -163,5 +172,13 @@ public class SystemMessage extends MessageContent {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getShowDetail() {
+        return showDetail;
+    }
+
+    public void setShowDetail(String showDetail) {
+        this.showDetail = showDetail;
     }
 }

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zxjk.duoduo.R;
@@ -49,18 +48,11 @@ public class SystemMessageProvider extends IContainerItemProvider.MessageProvide
             }
         }
 
-        if (!TextUtils.isEmpty(systemMessage.getType())) {
-            holder.llBottom.setVisibility(systemMessage.getType().equals("0") ? View.GONE : View.VISIBLE);
+        if (!TextUtils.isEmpty(systemMessage.getShowDetail()) && systemMessage.getShowDetail().equals("1")) {
+            holder.llBottom.setVisibility(View.VISIBLE);
         } else {
             holder.llBottom.setVisibility(View.GONE);
         }
-
-        holder.llContent.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), WebActivity.class);
-            intent.putExtra("url", systemMessage.getUrl());
-            intent.putExtra("title", v.getContext().getString(R.string.hilamg_official));
-            v.getContext().startActivity(intent);
-        });
     }
 
     @Override
@@ -75,11 +67,19 @@ public class SystemMessageProvider extends IContainerItemProvider.MessageProvide
 
     @Override
     public void onItemClick(View view, int i, SystemMessage systemMessage, UIMessage uiMessage) {
-        if (!TextUtils.isEmpty(systemMessage.getType()) && systemMessage.getType().equals("1")) {
-            Intent intent = new Intent(view.getContext(), WebActivity.class);
-            intent.putExtra("title", view.getContext().getString(R.string.hilamg_official));
-            intent.putExtra("url", systemMessage.getUrl());
-            view.getContext().startActivity(intent);
+        if (TextUtils.isEmpty(systemMessage.getAction())) {
+            return;
+        }
+
+        switch (systemMessage.getAction()) {
+            case "1":
+                if (!TextUtils.isEmpty(systemMessage.getUrl())) {
+                    Intent intent = new Intent(view.getContext(), WebActivity.class);
+                    intent.putExtra("title", view.getContext().getString(R.string.hilamg_official));
+                    intent.putExtra("url", systemMessage.getUrl());
+                    view.getContext().startActivity(intent);
+                }
+                break;
         }
     }
 
@@ -91,7 +91,6 @@ public class SystemMessageProvider extends IContainerItemProvider.MessageProvide
         holder.tvTitle = view.findViewById(R.id.tvTitle);
         holder.tvDate = view.findViewById(R.id.tvDate);
         holder.tvContent = view.findViewById(R.id.tvContent);
-        holder.llContent = view.findViewById(R.id.llContent);
         holder.llBottom = view.findViewById(R.id.llBottom);
 
         view.setTag(holder);
@@ -102,7 +101,6 @@ public class SystemMessageProvider extends IContainerItemProvider.MessageProvide
         private TextView tvTitle;
         private TextView tvDate;
         private TextView tvContent;
-        private RelativeLayout llContent;
         private LinearLayout llBottom;
     }
 }

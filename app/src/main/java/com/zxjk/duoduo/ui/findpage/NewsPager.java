@@ -17,7 +17,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -99,13 +98,9 @@ public class NewsPager extends BaseFragment {
     private FrameLayout flIndicatorDetail;
     private FrameLayout flIndicatorTop;
     private TextView tvBanner;
-    private int[] detailTitles = {R.string.boutique, R.string.quick_news};
-    //    private int[] detailTitles = {R.string.boutique, R.string.quick_news, R.string.mochat_social, R.string.video};
+    private int[] detailTitles = {R.string.boutique, R.string.quick_news, R.string.sickness};
     private boolean hasInitHeight;
-    private ImageView imgexit;
-    private LinearLayout popupDialogShare;
     private QuickPopup invitePop;
-
 
     private int currentBannerIndex;
     private Disposable bannerIntervel;
@@ -116,8 +111,6 @@ public class NewsPager extends BaseFragment {
     private static final int COUNT_PER_PAGE = 15;
 
     private Api api;
-
-    private String description = "限时注册奖励，先注册先得";
 
     @Nullable
     @Override
@@ -170,7 +163,7 @@ public class NewsPager extends BaseFragment {
 
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setOnClickListener(v -> {
-                    if(!list.get(realIndex).getLinkUrl().equals("")){
+                    if (!list.get(realIndex).getLinkUrl().equals("")) {
                         Intent intent = new Intent(getActivity(), WebActivity.class);
                         intent.putExtra("url", list.get(realIndex).getLinkUrl());
                         startActivity(intent);
@@ -273,7 +266,6 @@ public class NewsPager extends BaseFragment {
         flIndicatorDetail = rootView.findViewById(R.id.flIndicatorDetail);
         flIndicatorTop = rootView.findViewById(R.id.flIndicatorTop);
         tvBanner = rootView.findViewById(R.id.tvBanner);
-        imgexit = rootView.findViewById(R.id.img_exit);
     }
 
     private void initPager() {
@@ -284,7 +276,6 @@ public class NewsPager extends BaseFragment {
 
     private void initIndicator() {
         CommonNavigator navigator1 = new CommonNavigator(getContext());
-//        navigator1.setAdjustMode(true);
         navigator1.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -493,8 +484,8 @@ public class NewsPager extends BaseFragment {
                 intent.putExtra("url", o.getHtmlUrl());
                 intent.putExtra("title", o.getTitle());
                 intent.putExtra("icon", o.getThumPic());
-                intent.putExtra("article",o.getArticle());
-                intent.putExtra("platform",o.getArticleSource());
+                intent.putExtra("article", o.getArticle());
+                intent.putExtra("platform", o.getArticleSource());
                 startActivity(intent);
             });
             return adapter;
