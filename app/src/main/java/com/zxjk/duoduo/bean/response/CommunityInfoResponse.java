@@ -43,6 +43,15 @@ public class CommunityInfoResponse implements Parcelable {
     private GroupPermissionBean groupPermission;
     private String ownerId;
     private List<MembersBean> members;
+    private String membersCount;
+
+    public String getMembersCount() {
+        return membersCount;
+    }
+
+    public void setMembersCount(String membersCount) {
+        this.membersCount = membersCount;
+    }
 
     public String getId() {
         return id;

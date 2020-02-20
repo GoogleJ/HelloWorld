@@ -319,7 +319,7 @@ public class SocialHomeActivity extends BaseActivity {
                         startActivityForResult(intent, REQUEST_BG);
                     });
 
-                    String memCount = getIntent().getStringExtra("memCount");
+                    String memCount = r.getMembersCount();
                     int realCount = -1;
                     if (!TextUtils.isEmpty(memCount)) {
                         try {
