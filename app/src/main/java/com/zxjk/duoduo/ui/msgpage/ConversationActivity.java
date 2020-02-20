@@ -34,7 +34,6 @@ import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.SendUrlAndsendImgBean;
 import com.zxjk.duoduo.bean.SlowModeLocalBeanDao;
 import com.zxjk.duoduo.bean.SocialLocalBeanDao;
-import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
@@ -49,6 +48,8 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.CusConversationFragment;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.CusEmoteTabMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
@@ -92,9 +93,11 @@ import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.imlib.typingmessage.TypingStatus;
 import io.rong.message.CommandMessage;
+import io.rong.message.FileMessage;
 import io.rong.message.ImageMessage;
 import io.rong.message.InformationNotificationMessage;
 import io.rong.message.LocationMessage;
+import io.rong.message.SightMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 
@@ -723,7 +726,11 @@ public class ConversationActivity extends BaseActivity {
 
                         MessageContent messageContent = uiMessage.getContent();
 
-                        return (messageContent instanceof TextMessage || messageContent instanceof VoiceMessage || messageContent instanceof ImageMessage) &&
+                        return (messageContent instanceof TextMessage || messageContent instanceof VoiceMessage || messageContent instanceof ImageMessage
+                                || messageContent instanceof CusEmoteTabMessage || messageContent instanceof BusinessCardMessage ||
+                                messageContent instanceof NewsCardMessage || messageContent instanceof GroupCardMessage ||
+                                messageContent instanceof LocationMessage || messageContent instanceof SightMessage || messageContent instanceof FileMessage
+                        ) &&
                                 !senderUserId.equals(Constant.userId) && !senderUserId.equals(groupInfo.getGroupInfo().getGroupOwnerId());
                     })
                     .actionListener((context, uiMessage) -> {
