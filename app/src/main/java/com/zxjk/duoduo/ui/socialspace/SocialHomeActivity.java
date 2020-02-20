@@ -176,8 +176,12 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     private void initFragment() {
-        socialCalturePage = new SocialCalturePage(groupId);
-        dynamicsPage = new DynamicsPage(groupId);
+        socialCalturePage = new SocialCalturePage();
+        dynamicsPage = new DynamicsPage();
+
+        Bundle args = new Bundle();
+        args.putString("groupId", groupId);
+        socialCalturePage.setArguments(args);
 
         socialCalturePage.setDoneAction(l -> {
             isInEditStatus = false;

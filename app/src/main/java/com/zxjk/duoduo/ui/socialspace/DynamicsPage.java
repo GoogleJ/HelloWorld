@@ -19,15 +19,9 @@ import com.zxjk.duoduo.ui.base.BaseFragment;
 
 public class DynamicsPage extends BaseFragment {
 
-    private String groupId;
-
     private RecyclerView recycler;
 
     private BaseQuickAdapter<String, BaseViewHolder> adapter;
-
-    public DynamicsPage(String groupId) {
-        this.groupId = groupId;
-    }
 
     @Nullable
     @Override

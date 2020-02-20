@@ -102,14 +102,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         this.doneAction = doneAction;
     }
 
-    public SocialCalturePage(String groupId) {
-        this.groupId = groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
     private int dp56;
 
     private java.util.Formatter timeFormatter;
@@ -119,6 +111,9 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        groupId = getArguments().getString("groupId");
+
         mFormatBuilder = new StringBuilder();
         timeFormatter = new java.util.Formatter(mFormatBuilder, Locale.ENGLISH);
 
