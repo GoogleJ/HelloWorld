@@ -21,7 +21,6 @@ public class NewsCardMessage extends MessageContent {
     private String content;
     private String icon;
     private String url;
-    private String articleSource;
 
 
 
@@ -59,13 +58,6 @@ public class NewsCardMessage extends MessageContent {
         this.url = url;
     }
 
-    public String getArticleSource() {
-        return articleSource;
-    }
-
-    public void setArticleSource(String articleSource) {
-        this.articleSource = articleSource;
-    }
 
 
     @Override
@@ -76,7 +68,6 @@ public class NewsCardMessage extends MessageContent {
             jsonObj.put("content", getContent());
             jsonObj.put("icon", getIcon());
             jsonObj.put("url", getUrl());
-            jsonObj.put("articleSource", getArticleSource());
         } catch (JSONException e) {
             Log.e("JSONException", e.getMessage());
         }
@@ -117,9 +108,6 @@ public class NewsCardMessage extends MessageContent {
                 setUrl(jsonObj.optString("url"));
             }
 
-            if (jsonObj.has("articleSource")) {
-                setArticleSource(jsonObj.optString("articleSource"));
-            }
 
         } catch (JSONException e) {
             Log.d("JSONException", e.getMessage());
@@ -137,7 +125,6 @@ public class NewsCardMessage extends MessageContent {
         ParcelUtils.writeToParcel(dest, content);
         ParcelUtils.writeToParcel(dest, icon);
         ParcelUtils.writeToParcel(dest, url);
-        ParcelUtils.writeToParcel(dest, articleSource);
     }
 
 
@@ -147,7 +134,6 @@ public class NewsCardMessage extends MessageContent {
         setContent(ParcelUtils.readFromParcel(in));
         setIcon(ParcelUtils.readFromParcel(in));
         setUrl(ParcelUtils.readFromParcel(in));
-        setArticleSource(ParcelUtils.readFromParcel(in));
     }
 
 

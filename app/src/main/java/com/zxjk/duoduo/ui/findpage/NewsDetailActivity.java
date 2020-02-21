@@ -35,6 +35,7 @@ import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.widget.ProgressView;
@@ -138,12 +139,15 @@ public class NewsDetailActivity extends BaseActivity {
         switch (plantform) {
             case 1:
                 platform = SHARE_MEDIA.WEIXIN;
+                savePointInfo();
                 break;
             case 2:
                 platform = SHARE_MEDIA.WEIXIN_CIRCLE;
+                savePointInfo();
                 break;
             case 3:
                 platform = SHARE_MEDIA.QQ;
+                savePointInfo();
                 break;
             case 4:
                 RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
@@ -152,13 +156,12 @@ public class NewsDetailActivity extends BaseActivity {
                         Intent intent = new Intent(NewsDetailActivity.this, ShareGroupQRActivity.class);
                         intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
                         intent.putExtra("fromShareNews", true);
-                        intent.putExtra("id", getIntent().getStringExtra("id"));
                         intent.putExtra("url", getIntent().getStringExtra("url"));
                         intent.putExtra("title", getIntent().getStringExtra("title"));
                         intent.putExtra("icon", getIntent().getStringExtra("icon"));
                         intent.putExtra("article", getIntent().getStringExtra("article"));
-                        intent.putExtra("articleSource", getIntent().getStringExtra("articleSource"));
                         startActivity(intent);
+                        savePointInfo();
                         finish();
                     }
 
@@ -173,6 +176,16 @@ public class NewsDetailActivity extends BaseActivity {
                 .withMedia(link)
                 .setCallback(new ShareUtil.ShareListener())
                 .share();
+    }
+
+    @SuppressLint("CheckResult")
+    private void savePointInfo() {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .savePointInfo("4")
+                .compose(RxSchedulers.ioObserver())
+                .subscribe(s -> {
+                }, t -> {
+                });
     }
 
     private void initAnimtor() {

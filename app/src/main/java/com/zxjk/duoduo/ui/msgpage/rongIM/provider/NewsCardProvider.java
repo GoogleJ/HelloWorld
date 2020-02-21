@@ -45,7 +45,7 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
             holder.llHilamg.setGravity(Gravity.END);
         }
 
-        holder.title.setText(newsCardMessage.getArticleSource() + "\u0020|\u0020" + newsCardMessage.getTitle());
+        holder.title.setText(newsCardMessage.getTitle());
         holder.content.setText(newsCardMessage.getContent());
         GlideUtil.loadCornerImg(holder.icon, newsCardMessage.getIcon(), 1);
         holder.content.setText(newsCardMessage.getContent());
@@ -68,7 +68,6 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
         intent.putExtra("url", newsCardMessage.getUrl());
         intent.putExtra("icon", newsCardMessage.getIcon());
         intent.putExtra("article", newsCardMessage.getContent());
-        intent.putExtra("articleSource", newsCardMessage.getArticleSource());
         view.getContext().startActivity(intent);
     }
 

@@ -481,12 +481,10 @@ public class NewsPager extends BaseFragment {
             adapter.setOnItemClickListener((adapter1, view, position1) -> {
                 BlockChainNewsBean o = (BlockChainNewsBean) adapter1.getData().get(position1);
                 Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-                intent.putExtra("id", o.getId());
                 intent.putExtra("url", o.getHtmlUrl());
                 intent.putExtra("title", o.getTitle());
                 intent.putExtra("icon", o.getThumPic());
                 intent.putExtra("article", o.getArticle());
-                intent.putExtra("articleSource", o.getArticleSource());
                 startActivity(intent);
             });
             return adapter;
