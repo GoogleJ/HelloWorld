@@ -156,7 +156,7 @@ public class ConfirmRedFallActivity extends BaseActivity {
     public void share(View view) {
         String text = "【Hilamg APP---专注于区块链+社交】\n" +
                 "我在Hilamg抢到了" + data.getReward() + data.getSymbol() + "，你也来试试吧~"
-                + "http://mochat-register.ztoken.cn/red/redPage.html?id=" + Constant.userId + "点击领取奖励";
+                + "http://hilamg-register.ztoken.cn/red/redPage.html?id=" + Constant.userId + "点击领取奖励";
         ClipboardManager cm = (ClipboardManager) Utils.getApp().getSystemService(Context.CLIPBOARD_SERVICE);
         if (cm != null) {
             cm.setPrimaryClip(ClipData.newPlainText("text", text));
