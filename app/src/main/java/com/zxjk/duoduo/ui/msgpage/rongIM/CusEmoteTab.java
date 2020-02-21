@@ -31,13 +31,24 @@ public class CusEmoteTab implements IEmoticonTab {
     private int[] tabIds = new int[]{io.rong.imkit.R.drawable.emoji1_1, io.rong.imkit.R.drawable.emoji1_2,
             io.rong.imkit.R.drawable.emoji1_3, io.rong.imkit.R.drawable.emoji1_4, io.rong.imkit.R.drawable.emoji1_5,
             io.rong.imkit.R.drawable.emoji1_6, io.rong.imkit.R.drawable.emoji1_7, io.rong.imkit.R.drawable.emoji1_8,
-            io.rong.imkit.R.drawable.emoji1_9, io.rong.imkit.R.drawable.emoji1_10};
+            io.rong.imkit.R.drawable.emoji1_9, io.rong.imkit.R.drawable.emoji1_10, io.rong.imkit.R.drawable.emoji1_11,
+            io.rong.imkit.R.drawable.emoji1_12, io.rong.imkit.R.drawable.emoji1_13, io.rong.imkit.R.drawable.emoji1_14,
+            io.rong.imkit.R.drawable.emoji1_15, io.rong.imkit.R.drawable.emoji1_16, io.rong.imkit.R.drawable.emoji1_17,
+            io.rong.imkit.R.drawable.emoji1_18, io.rong.imkit.R.drawable.emoji1_19, io.rong.imkit.R.drawable.emoji1_20,
+            io.rong.imkit.R.drawable.emoji1_21, io.rong.imkit.R.drawable.emoji1_22, io.rong.imkit.R.drawable.emoji1_23,
+            io.rong.imkit.R.drawable.emoji1_24, io.rong.imkit.R.drawable.emoji1_25, io.rong.imkit.R.drawable.emoji1_26,
+            io.rong.imkit.R.drawable.emoji1_27, io.rong.imkit.R.drawable.emoji1_28, io.rong.imkit.R.drawable.emoji1_29,
+            io.rong.imkit.R.drawable.emoji1_30, io.rong.imkit.R.drawable.emoji1_31};
+
+    private String[] msgIds = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "25", "26", "27"
+            , "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45"};
+
     private LayoutInflater mLayoutInflater;
     private LinearLayout mIndicator;
     private int selected = 0;
     private String mUserId;
     private int mEmojiCountPerPage = 8;
-    private int mEmojiCount = 10;
+    private int mEmojiCount = 31;
     private int width;
 
     private String targetId;
@@ -178,8 +189,11 @@ public class CusEmoteTab implements IEmoticonTab {
                 int index = position1 + selected * mEmojiCountPerPage;
 
                 CusEmoteTabMessage msgContent = new CusEmoteTabMessage();
-                msgContent.setId(String.valueOf(index + 1));
-                if (index == 0 || index == 1 || index == 3 || index == 4 || index == 6 || index == 7 || index == 8 || index == 9) {
+                msgContent.setId(msgIds[index]);
+                if (index == 0 || index == 1 || index == 3 || index == 4 || index == 6 || index == 7 || index == 8 || index == 9
+                        || index == 11 || index == 12 || index == 13 || index == 16 || index == 17 || index == 18
+                        || index == 19 || index == 20 || index == 22 || index == 23 || index == 24 || index == 25 || index == 26 || index == 27
+                        || index == 29) {
                     msgContent.setIsGif("1");
                 } else {
                     msgContent.setIsGif("0");

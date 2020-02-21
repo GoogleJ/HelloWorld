@@ -38,7 +38,7 @@ public class CusEmoteTab2 implements IEmoticonTab {
     private int selected = 0;
     private String mUserId;
     private int mEmojiCountPerPage = 8;
-    private int mEmojiCount = 10;
+    private int mEmojiCount = 14;
     private int width;
 
     private String targetId;

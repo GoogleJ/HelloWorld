@@ -46,7 +46,15 @@ public class CusEmoteTabMessageProvider extends IContainerItemProvider.MessagePr
             io.rong.imkit.R.drawable.emoji2_3, io.rong.imkit.R.drawable.emoji2_4, io.rong.imkit.R.drawable.emoji2_5,
             io.rong.imkit.R.drawable.emoji2_6, io.rong.imkit.R.drawable.emoji2_7, io.rong.imkit.R.drawable.emoji2_8,
             io.rong.imkit.R.drawable.emoji2_9, io.rong.imkit.R.drawable.emoji2_10, io.rong.imkit.R.drawable.emoji2_11,
-            io.rong.imkit.R.drawable.emoji2_12, io.rong.imkit.R.drawable.emoji2_13, io.rong.imkit.R.drawable.emoji2_14};
+            io.rong.imkit.R.drawable.emoji2_12, io.rong.imkit.R.drawable.emoji2_13, io.rong.imkit.R.drawable.emoji2_14,
+            io.rong.imkit.R.drawable.emoji1_11,io.rong.imkit.R.drawable.emoji1_12,io.rong.imkit.R.drawable.emoji1_13,
+            io.rong.imkit.R.drawable.emoji1_14,io.rong.imkit.R.drawable.emoji1_15,io.rong.imkit.R.drawable.emoji1_16,
+            io.rong.imkit.R.drawable.emoji1_17,io.rong.imkit.R.drawable.emoji1_18,io.rong.imkit.R.drawable.emoji1_19,
+            io.rong.imkit.R.drawable.emoji1_20,io.rong.imkit.R.drawable.emoji1_21,io.rong.imkit.R.drawable.emoji1_22,
+            io.rong.imkit.R.drawable.emoji1_23,io.rong.imkit.R.drawable.emoji1_24,io.rong.imkit.R.drawable.emoji1_25,
+            io.rong.imkit.R.drawable.emoji1_26,io.rong.imkit.R.drawable.emoji1_27,io.rong.imkit.R.drawable.emoji1_28,
+            io.rong.imkit.R.drawable.emoji1_29,io.rong.imkit.R.drawable.emoji1_30,io.rong.imkit.R.drawable.emoji1_31
+    };
 
     @SuppressLint("CheckResult")
     @Override
