@@ -35,6 +35,7 @@ public class FileSendActivity extends BaseActivity implements PhoneFileFragment.
 
     private String groupId;
     private String uId;
+    private int pageItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +88,11 @@ public class FileSendActivity extends BaseActivity implements PhoneFileFragment.
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
+                        pageItem = 0;
                         weChatFileButton();
                         break;
                     case 1:
+                        pageItem = 1;
                         phoneFileButton();
                         break;
                 }
@@ -171,6 +174,10 @@ public class FileSendActivity extends BaseActivity implements PhoneFileFragment.
         if (phoneFileFragment == null || !phoneFileFragment.onBackPressed()) {
             super.onBackPressed();
             finish();
+        }else {
+            if(pageItem == 0){
+                finish();
+            }
         }
     }
 }
