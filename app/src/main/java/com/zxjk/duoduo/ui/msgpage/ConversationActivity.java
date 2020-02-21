@@ -557,6 +557,10 @@ public class ConversationActivity extends BaseActivity {
                             VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
                             extra = voiceMessage.getExtra();
                             break;
+                        case "MCusEmoteTabMsg":
+                            CusEmoteTabMessage cusEmoteTabMessage = (CusEmoteTabMessage) message.getContent();
+                            extra = cusEmoteTabMessage.getExtra();
+                            break;
                     }
 
                     if (TextUtils.isEmpty(extra)) return;

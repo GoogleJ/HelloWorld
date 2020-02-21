@@ -47,6 +47,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.rong.imkit.RongIM;
 
 public class SocialPage extends BaseFragment {
 
@@ -131,10 +132,8 @@ public class SocialPage extends BaseFragment {
         });
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            Intent intent = new Intent(getContext(), SocialHomeActivity.class);
             CommunityListBean b = (CommunityListBean) adapter.getData().get(position);
-            intent.putExtra("id", b.getGroupId());
-            startActivity(intent);
+            RongIM.getInstance().startGroupChat(getContext(),b.getGroupId(),"");
         });
 
         recycler.setAdapter(adapter);
