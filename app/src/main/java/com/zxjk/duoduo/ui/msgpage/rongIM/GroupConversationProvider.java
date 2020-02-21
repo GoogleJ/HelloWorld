@@ -15,7 +15,7 @@ import io.rong.imkit.widget.provider.IContainerItemProvider;
 @ConversationProviderTag(
         conversationType = "group"
 )
-public class GroupConversationProvider extends io.rong.imkit.widget.provider.GroupConversationProvider implements IContainerItemProvider.ConversationProvider<UIConversation> {
+public class GroupConversationProvider extends io.rong.imkit.widget.provider.GroupConversationProvider {
 
     private int colorSocialSign;
     private int colorText;

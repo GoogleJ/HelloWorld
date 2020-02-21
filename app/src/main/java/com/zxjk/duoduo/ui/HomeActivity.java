@@ -62,6 +62,7 @@ import com.zxjk.duoduo.ui.msgpage.ContactFragment;
 import com.zxjk.duoduo.ui.msgpage.MsgFragment;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.GroupConversationProvider;
+import com.zxjk.duoduo.ui.msgpage.rongIM.PrivateConversationProvider;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
 
@@ -157,6 +158,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initGreenDaoSession();
 
+        RongContext.getInstance().registerConversationTemplate(new PrivateConversationProvider());
         RongContext.getInstance().registerConversationTemplate(new GroupConversationProvider());
 
         initRongUserProvider();
@@ -241,7 +243,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(user -> RongIM.getInstance().refreshUserInfoCache(new UserInfo(id, user.getNick(), Uri.parse(user.getHeadPortrait()))),
+                    .subscribe(user -> {
+                                UserInfo userInfo = new UserInfo(id, user.getNick(), Uri.parse(user.getHeadPortrait()));
+                                if (!TextUtils.isEmpty(user.getIsSystem()) && user.getIsSystem().equals("1")) {
+                                    userInfo.setExtra("system");
+                                }
+                                RongIM.getInstance().refreshUserInfoCache(userInfo);
+                            },
                             t -> {
                             });
             return null;

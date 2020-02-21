@@ -11,6 +11,15 @@ public class GetCustomerBasicInfoByIdResponse {
     private String nick;
     private int id;
     private String headPortrait;
+    private String isSystems;
+
+    public String getIsSystem() {
+        return isSystems;
+    }
+
+    public void setIsSystem(String isSystem) {
+        this.isSystems = isSystem;
+    }
 
     public String getNick() {
         return nick;
