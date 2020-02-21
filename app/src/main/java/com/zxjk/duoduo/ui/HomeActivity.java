@@ -365,13 +365,11 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void initGreenDaoSession() {
-        if (Application.daoSession == null) {
-            OpenHelper open = new
-                    OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
-            Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
-            dao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
-            redFallActivityLocalBeanDao = Application.daoSession.getRedFallActivityLocalBeanDao();
-        }
+        OpenHelper open = new
+                OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
+        Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
+        dao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
+        redFallActivityLocalBeanDao = Application.daoSession.getRedFallActivityLocalBeanDao();
     }
 
     private void initMessageLongClickAction() {
