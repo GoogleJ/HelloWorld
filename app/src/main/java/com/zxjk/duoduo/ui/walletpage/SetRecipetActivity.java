@@ -2,8 +2,12 @@ package com.zxjk.duoduo.ui.walletpage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,7 +15,10 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.utils.DecimalInputTextWatcher;
 import com.zxjk.duoduo.utils.MoneyValueFilter;
+
+import kotlin.text.Regex;
 
 public class SetRecipetActivity extends BaseActivity {
     private EditText etMoney;
@@ -30,7 +37,10 @@ public class SetRecipetActivity extends BaseActivity {
         tvUnit.setText(getIntent().getStringExtra("symbol"));
 
         etMoney = findViewById(R.id.etMoney);
-        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter(),new InputFilter.LengthFilter(10)});
+
+
+        etMoney.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        etMoney.addTextChangedListener(new DecimalInputTextWatcher(etMoney,10,5));
     }
 
     public void commit(View view) {

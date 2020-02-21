@@ -89,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="明日签到可获得  USDT"
-                        android:textColor="@color/text_white_def" />
+                        android:textColor="#80FFFFFF" />
 
                     <View
                         android:layout_width="0dp"
@@ -100,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="已获得(USDT)"
-                        android:textColor="@color/text_white_def" />
+                        android:textColor="#80FFFFFF" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

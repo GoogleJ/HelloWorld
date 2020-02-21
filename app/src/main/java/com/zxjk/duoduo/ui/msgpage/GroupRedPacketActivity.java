@@ -115,11 +115,11 @@ public class GroupRedPacketActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(start ==0 && count ==0){
+                if (start == 0 && count == 0) {
                     etMoney2.setText("0.0000");
                 } else {
-                        etMoney2.setTextColor(Color.parseColor("#000000"));
-                        etMoney2.setText(s.toString());
+                    etMoney2.setTextColor(Color.parseColor("#000000"));
+                    etMoney2.setText(s.toString());
                 }
             }
 
@@ -128,7 +128,8 @@ public class GroupRedPacketActivity extends BaseActivity {
             }
         });
 
-        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(2)});
+
+        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5), new InputFilter.LengthFilter(10)});
 
         nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(2);
@@ -171,7 +172,28 @@ public class GroupRedPacketActivity extends BaseActivity {
                 .flatMap((Function<GroupResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) r -> {
                     runOnUiThread(() -> {
                         group = r;
-                        etCount.setHint(getString(R.string.group_number,group.getGroupInfo().getCustomerNumber()));
+                        etCount.setHint(getString(R.string.group_number, group.getGroupInfo().getCustomerNumber()));
+                        etCount.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                if (!s.toString().equals("")) {
+                                    if (Integer.parseInt(s.toString()) > Integer.parseInt(group.getGroupInfo().getCustomerNumber())) {
+                                        ToastUtils.showShort("红包个数不能大于群人数");
+                                        etCount.setText(group.getGroupInfo().getCustomerNumber());
+                                    }
+                                }
+                            }
+                        });
                     });
                     return api.getPaymentList();
                 })
@@ -184,7 +206,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                     GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
                     tvCoin.setText(result.getSymbol());
                     tvCoin2.setText(result.getSymbol());
-                    etMoney.setHint(getString(R.string.balanceof,result.getBalance(),result.getSymbol()));
+                    etMoney.setHint(getString(R.string.balanceof, result.getBalance(), result.getSymbol()));
                 }, this::handleApiError);
     }
 
@@ -200,7 +222,7 @@ public class GroupRedPacketActivity extends BaseActivity {
         if (TextUtils.isEmpty(price)) {
             ToastUtils.showShort(R.string.input_money);
             return;
-        }else {
+        } else {
             etMoney2.setText(etMoney.getText().toString().trim());
         }
 
@@ -292,7 +314,7 @@ public class GroupRedPacketActivity extends BaseActivity {
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
             tvCoin.setText(result.getSymbol());
-            etMoney.setHint(getString(R.string.balanceof,result.getBalance(),result.getSymbol()));
+            etMoney.setHint(getString(R.string.balanceof, result.getBalance(), result.getSymbol()));
             tvCoin2.setText(result.getSymbol());
         }
     }

@@ -77,23 +77,28 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/shape_gray"
             android:gravity="center">
 
             <FrameLayout
                 android:id="@+id/fm1"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:background="@drawable/shape_gray2"
                 android:onClick="top1">
 
                 <ImageView
                     android:id="@+id/ivtop1"
                     android:layout_width="wrap_content"
-                    android:layout_height="55dp" />
+                    android:layout_height="match_parent" />
 
                 <TextView
                     android:id="@+id/tvtop1"
@@ -109,16 +114,16 @@
 
             <FrameLayout
                 android:id="@+id/fm2"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:background="@drawable/shape_gray1"
                 android:onClick="top2">
 
                 <ImageView
                     android:id="@+id/ivtop2"
                     android:layout_width="wrap_content"
-                    android:layout_height="55dp" />
+                    android:layout_height="match_parent" />
 
                 <TextView
                     android:id="@+id/tvtop2"
@@ -135,220 +140,245 @@
         </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:onClick="chooseCoin"
-            android:orientation="horizontal"
-            android:padding="20dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#eeeeee" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:gravity="center_vertical"
+                android:onClick="chooseCoin"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cointype"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cointype"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
 
-            <ImageView
-                android:id="@+id/ivCoinIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp" />
+                <ImageView
+                    android:id="@+id/ivCoinIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
 
-            <TextView
-                android:id="@+id/tvCoin"
+                <TextView
+                    android:id="@+id/tvCoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/unChoose"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mine_rightarrow" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#eeeeee" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/tv_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/money2"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/img_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:src="@drawable/pin"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/etMoney"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:hint="@string/input_money"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:maxLength="15"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#eeeeee" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/count1"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ge"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#eeeeee" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bless"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etBless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:hint="@string/m_red_envelopes_label"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:textColor="#9EA0A4"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#eeeeee" />
+
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="6dp"
-                android:text="@string/unChoose"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_mine_rightarrow" />
+                <EditText
+                    android:id="@+id/etMoney2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:text="0.0000"
+                    android:textColor="#9E9E9E"
+                    android:textSize="35sp"
+                    android:gravity="bottom"/>
 
+                <ImageView
+                    android:src="@drawable/ic_hilamglogo2"
+                    android:id="@+id/ivCoinIcon2"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_gravity=""/>
+
+                <TextView
+                    android:id="@+id/tvCoin2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#eeeeee" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="20dp">
-
-            <TextView
-                android:id="@+id/tv_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/money2"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/img_pin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:src="@drawable/pin"
-                android:visibility="visible" />
-
-            <EditText
-                android:id="@+id/etMoney"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="end"
-                android:hint="@string/input_money"
-                android:imeOptions="actionNext"
-                android:inputType="numberDecimal"
-                android:maxLength="15"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#eeeeee" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/count1"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/etCount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="end"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:lines="1"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ge"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#eeeeee" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bless"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/etBless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:gravity="end"
-                android:hint="@string/m_red_envelopes_label"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:lines="1"
-                android:textColor="#9EA0A4"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#eeeeee" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/etMoney2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:focusable="false"
-                android:text="0.0000"
-                android:textColor="#9E9E9E"
-                android:textSize="35sp" />
-
-            <ImageView
-                android:id="@+id/ivCoinIcon2"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="6dp" />
-
-            <TextView
-                android:id="@+id/tvCoin2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="20sp" />
-
-        </LinearLayout>
 
         <Button
             android:id="@+id/m_red_envelopes_commit_btn"
-            style="@style/BtnStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_circular_bead_btn"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/white"
             android:onClick="sendRed"
             android:text="@string/m_red_envelopes_commit_btn" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"
             android:text="@string/red_packet_tips"
             android:textColor="#9EA0A4"
             android:textSize="13sp" />
