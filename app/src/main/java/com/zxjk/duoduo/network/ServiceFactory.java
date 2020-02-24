@@ -137,7 +137,7 @@ public class ServiceFactory {
         downloadFile(url, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                downloadListener.onFailure();
             }
 
             @Override

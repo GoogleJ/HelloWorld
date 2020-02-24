@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -69,6 +68,7 @@ import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -573,52 +573,9 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                 tv.setText(Html.fromHtml(data.getUpdateContent()));
                                 ((TextView) holder.getView(R.id.tv)).setMovementMethod(new ScrollingMovementMethod());
                                 TextView tvUpdate = holder.getView(R.id.tvUpdate);
-                                FrameLayout llUpdate = holder.getView(R.id.ll_update);
-                                llUpdate.setOnClickListener(v -> {
-                                    //后台下载APK并更新
-                                    ServiceFactory.downloadFile(data.getVersion(), data.getUpdateAddress(), new ServiceFactory.DownloadListener() {
-                                        @Override
-                                        public void onStart(long max) {
-                                            runOnUiThread(() -> llUpdate.setClickable(false));
-                                            max1 = max;
-                                            ToastUtils.showShort(R.string.update_start);
-                                        }
+                                FrameLayout flUpgrade = holder.getView(R.id.flUpgrade);
 
-                                        @Override
-                                        public void onProgress(long progress) {
-                                            runOnUiThread(() -> tvUpdate.setText((int) ((float) progress / max1 * 100) + "%"));
-                                        }
-
-                                        @Override
-                                        public void onSuccess() {
-                                            runOnUiThread(() -> {
-                                                llUpdate.setClickable(true);
-                                                tvUpdate.setText(R.string.dianjianzhuang);
-                                                llUpdate.setOnClickListener(v1 -> {
-                                                    File file = new File(Utils.getApp().getCacheDir(), data.getVersion() + ".apk");// 设置路径
-                                                    Intent intent = installIntent(file.getPath());
-                                                    if (intent != null) {
-                                                        startActivity(intent);
-                                                    }
-                                                });
-                                                llUpdate.performClick();
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onFailure() {
-                                            runOnUiThread(() -> {
-                                                File file = new File(Utils.getApp().getCacheDir(), data.getVersion() + ".apk");
-                                                if (file.exists()) {
-                                                    file.delete();
-                                                }
-                                                llUpdate.setClickable(true);
-                                                tvUpdate.setText(R.string.dianjichongshi);
-                                            });
-                                            ToastUtils.showShort(R.string.update_failure);
-                                        }
-                                    });
-                                });
+                                downloadOrInstall(tvUpdate, flUpgrade, data);
                             }
                         }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
                     } else if (showTip) {
@@ -626,6 +583,62 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     }
                 }, t -> {
                 });
+    }
+
+    private void downloadOrInstall(TextView tvUpdate, FrameLayout flUpgrade, GetAppVersionResponse data) {
+        flUpgrade.setOnClickListener(v -> {
+            //后台下载APK并更新
+            flUpgrade.setClickable(false);
+            ServiceFactory.downloadFile(data.getVersion(), data.getUpdateAddress(), new ServiceFactory.DownloadListener() {
+                @Override
+                public void onStart(long max) {
+                    max1 = max;
+                    ToastUtils.showShort(R.string.update_start);
+                }
+
+                @Override
+                public void onProgress(long progress) {
+                    runOnUiThread(() -> tvUpdate.setText((int) ((float) progress / max1 * 100) + "%"));
+                }
+
+                @Override
+                public void onSuccess() {
+                    runOnUiThread(() -> {
+                        flUpgrade.setClickable(true);
+                        tvUpdate.setText(R.string.dianjianzhuang);
+                        flUpgrade.setOnClickListener(v1 -> {
+                            File file = new File(Utils.getApp().getCacheDir(), data.getVersion() + ".apk");// 设置路径
+                            String[] command = {"chmod", "777", file.getPath()};
+                            ProcessBuilder builder = new ProcessBuilder(command);
+                            try {
+                                builder.start();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            Intent intent = installIntent(file.getPath());
+                            if (intent != null) {
+                                startActivity(intent);
+                            }
+                        });
+                        flUpgrade.performClick();
+                    });
+                }
+
+                @Override
+                public void onFailure() {
+                    runOnUiThread(() -> {
+                        File file = new File(Utils.getApp().getCacheDir(), data.getVersion() + ".apk");
+                        if (file.exists()) {
+                            file.delete();
+                        }
+                        downloadOrInstall(tvUpdate, flUpgrade, data);
+                        flUpgrade.setClickable(true);
+                        tvUpdate.setText(R.string.dianjichongshi);
+                    });
+                    ToastUtils.showShort(R.string.update_failure);
+                }
+            });
+        });
     }
 
     private Intent installIntent(String path) {
