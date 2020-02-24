@@ -148,8 +148,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             getVersion(false);
         }
 
-        initFriendList();
-
         initFragment();
 
         initView();
@@ -666,28 +664,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         home.addCategory(Intent.CATEGORY_HOME);
         startActivity(home);
-    }
-
-    @SuppressLint("CheckResult")
-    private void initFriendList() {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getFriendListById()
-                .compose(bindUntilEvent(ActivityEvent.DESTROY))
-                .compose(RxSchedulers.ioObserver())
-                .subscribe(response -> {
-//                    Constant.friendsList = response.data;
-                    for (FriendInfoResponse f : response.data) {
-                        RongUserInfoManager.getInstance().setUserInfo(new UserInfo(f.getId(), TextUtils.isEmpty(f.getRemark()) ? f.getNick() : f.getRemark(), Uri.parse(f.getHeadPortrait())));
-                    }
-                }, t -> {
-//                    //重复登录不再递归，避免过多请求
-//                    if (t.getCause() instanceof RxException.DuplicateLoginExcepiton ||
-//                            t instanceof RxException.DuplicateLoginExcepiton) {
-//                        return;
-//                    }
-//                    Observable.timer(10, TimeUnit.SECONDS)
-//                            .subscribe(aLong -> initFriendList());
-                });
     }
 
     private void initFragment() {

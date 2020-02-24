@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.text.TextUtils;
 
 import androidx.lifecycle.Lifecycle;
@@ -28,9 +27,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
-import io.rong.imlib.model.UserInfo;
 
 @SuppressLint("CheckResult")
 public class CommonUtils {
@@ -87,33 +83,6 @@ public class CommonUtils {
         return authenticate.equals("0") ? R.string.authen_true : ((authenticate.equals("1") ? R.string.authen_false : R.string.verifing));
     }
 
-    public static String timeStamp2Date(String time) {
-        Long timeLong = Long.parseLong(time);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//要转换的时间格式
-        Date date;
-        try {
-            date = sdf.parse(sdf.format(timeLong));
-            return sdf.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * double乘法
-     *
-     * @param value1
-     * @param value2
-     * @return
-     */
-    public static double mul(double value1, double value2) {
-        BigDecimal b1 = new BigDecimal(String.valueOf(value1));
-        BigDecimal b2 = new BigDecimal(String.valueOf(value2));
-        return b1.multiply(b2).doubleValue();
-    }
-
-
     public static String getVersionName(Context context) {
         String name = "";
         try {
@@ -126,25 +95,14 @@ public class CommonUtils {
     }
 
     public static void resolveFriendList(BaseActivity activity, String friendId, String groupId, boolean finish) {
-//        if (Constant.friendsList == null) {
         LifecycleProvider<Lifecycle.Event> provider = AndroidLifecycle.createLifecycleProvider(activity);
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getFriendListById()
                 .compose(provider.bindUntilEvent(Lifecycle.Event.ON_DESTROY))
                 .compose(RxSchedulers.normalTrans())
-                .doOnNext(friendInfoResponses -> {
-                    for (FriendInfoResponse f : friendInfoResponses) {
-                        RongUserInfoManager.getInstance().setUserInfo(new UserInfo(f.getId(), TextUtils.isEmpty(f.getRemark()) ? f.getNick() : f.getRemark(), Uri.parse(f.getHeadPortrait())));
-                    }
-                })
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(activity)))
-                .subscribe(friendInfoResponses -> {
-//                        Constant.friendsList = friendInfoResponses;
-                    handleFriendList(friendInfoResponses, activity, friendId, groupId, finish);
-                }, activity::handleApiError);
-//        } else {
-//            handleFriendList(activity, friendId, groupId, finish);
-//        }
+                .subscribe(r -> handleFriendList(r, activity, friendId, groupId, finish),
+                        activity::handleApiError);
     }
 
     public static void resolveFriendList(BaseActivity activity, String friendId, boolean finish) {
