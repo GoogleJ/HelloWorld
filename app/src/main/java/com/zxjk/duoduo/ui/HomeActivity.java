@@ -15,6 +15,8 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -571,12 +573,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                 tv.setText(Html.fromHtml(data.getUpdateContent()));
                                 ((TextView) holder.getView(R.id.tv)).setMovementMethod(new ScrollingMovementMethod());
                                 TextView tvUpdate = holder.getView(R.id.tvUpdate);
-                                tvUpdate.setOnClickListener(v -> {
+                                FrameLayout llUpdate = holder.getView(R.id.ll_update);
+                                llUpdate.setOnClickListener(v -> {
                                     //后台下载APK并更新
                                     ServiceFactory.downloadFile(data.getVersion(), data.getUpdateAddress(), new ServiceFactory.DownloadListener() {
                                         @Override
                                         public void onStart(long max) {
-                                            runOnUiThread(() -> tvUpdate.setClickable(false));
+                                            runOnUiThread(() -> llUpdate.setClickable(false));
                                             max1 = max;
                                             ToastUtils.showShort(R.string.update_start);
                                         }
@@ -589,16 +592,16 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                         @Override
                                         public void onSuccess() {
                                             runOnUiThread(() -> {
-                                                tvUpdate.setClickable(true);
+                                                llUpdate.setClickable(true);
                                                 tvUpdate.setText(R.string.dianjianzhuang);
-                                                tvUpdate.setOnClickListener(v1 -> {
+                                                llUpdate.setOnClickListener(v1 -> {
                                                     File file = new File(Utils.getApp().getCacheDir(), data.getVersion() + ".apk");// 设置路径
                                                     Intent intent = installIntent(file.getPath());
                                                     if (intent != null) {
                                                         startActivity(intent);
                                                     }
                                                 });
-                                                tvUpdate.performClick();
+                                                llUpdate.performClick();
                                             });
                                         }
 
@@ -609,7 +612,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                                 if (file.exists()) {
                                                     file.delete();
                                                 }
-                                                tvUpdate.setClickable(true);
+                                                llUpdate.setClickable(true);
                                                 tvUpdate.setText(R.string.dianjichongshi);
                                             });
                                             ToastUtils.showShort(R.string.update_failure);

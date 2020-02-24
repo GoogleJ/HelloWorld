@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.DeviceUtils;
-import com.zxjk.duoduo.bean.response.CreateWalletResponse;
 import com.zxjk.duoduo.bean.response.LoginResponse;
 
 import java.util.Locale;
@@ -20,6 +19,7 @@ public class Constant {
 //    public static final String OSS_URL = "https://zhongxingjike1.oss-cn-beijing.aliyuncs.com/upload/"; //debug
 //    public static final String BASE_URL = "https://192.168.1.21:8085/";  //26g  74w  191h
 //    public static final String BASE_URL = "http://47.111.164.191:8085/"; //test
+
     public static final String APP_CODE = "fb0e95b069f74f29a2f972f9454d7d1a";
     public static final String APP_DOWNLOAD_URL = "https://dibaqu.com/qae6";
 
@@ -28,29 +28,22 @@ public class Constant {
     public static final int CODE_UNLOGIN = 601;
 
     public static final String FLAG_FIRSTLOGIN = "0";
+    public static final String LOCAL_CHANNEL_ID = "rc_notification_id";
+    public static final String ACTION_BROADCAST1 = "Action:Broadcast:blockWalletCreated";
+    public static final String ACTION_BROADCAST2 = "Action:Broadcast:rongMsgArrive";
+    public static final String regUrl = "(([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[\\-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9\\.\\-]+|(?:www\\.|[\\-;:&=\\+\\$,\\w]+@)[A-Za-z0-9\\.\\-]+)((?:\\/[\\+~%\\/\\.\\w\\-_]*)?\\??(?:[\\-\\+=&;%@\\.\\w_]*)#?(?:[\\.\\!\\/\\\\\\w]*))?";
     public static String HEAD_LOCATION = "86";
     public static String userId = "";
     public static String token = "";
     public static String phoneUuid =
             TextUtils.isEmpty(DeviceUtils.getMacAddress()) ? DeviceUtils.getAndroidID() : DeviceUtils.getMacAddress();
     public static String language = Locale.getDefault().toString().replace("_", "-");
-
     public static String authentication = "";
-
     public static LoginResponse currentUser = new LoginResponse();
-
-    public static final String LOCAL_CHANNEL_ID = "rc_notification_id";
-
     public static int messageCount = 0;
-
     public static Message tempMsg;
-
     //分享群二维码
     public static Bitmap shareGroupQR;
-    public static final String ACTION_BROADCAST1 = "Action:Broadcast:blockWalletCreated";
-    public static final String ACTION_BROADCAST2 = "Action:Broadcast:rongMsgArrive";
-
-    public static final String regUrl = "(([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[\\-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9\\.\\-]+|(?:www\\.|[\\-;:&=\\+\\$,\\w]+@)[A-Za-z0-9\\.\\-]+)((?:\\/[\\+~%\\/\\.\\w\\-_]*)?\\??(?:[\\-\\+=&;%@\\.\\w_]*)#?(?:[\\.\\!\\/\\\\\\w]*))?";
 
     public static void clear() {
         Constant.token = "";
