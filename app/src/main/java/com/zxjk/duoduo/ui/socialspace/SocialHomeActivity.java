@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -221,6 +222,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .compose(RxSchedulers.normalTrans())
                                                 .subscribe(s -> {
+//                                                    initData();
                                                     inflate.setVisibility(View.GONE);
 
                                                     banAppBarScroll(true);
@@ -239,6 +241,14 @@ public class SocialHomeActivity extends BaseActivity {
                                                     contentEnable = true;
 
                                                     parseCaltureResult(s);
+
+                                                    CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
+                                                    membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
+                                                    membersBean.setIdentity("0");
+                                                    response.setIdentity("0");
+                                                    response.getMembers().add(membersBean);
+                                                    initAdapter(response);
+
                                                 }, this::handleApiError));
                             } else if (r.getType().equals("pay")) {
                                 View inflate = viewStubPay.inflate();
@@ -271,6 +281,13 @@ public class SocialHomeActivity extends BaseActivity {
 
                                                     contentEnable = true;
                                                     parseCaltureResult(s);
+
+                                                    CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
+                                                    membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
+                                                    membersBean.setIdentity("0");
+                                                    response.setIdentity("0");
+                                                    response.getMembers().add(membersBean);
+                                                    initAdapter(response);
                                                 }, this::handleApiError)));
                             }
                         } else {
@@ -319,34 +336,38 @@ public class SocialHomeActivity extends BaseActivity {
                         startActivityForResult(intent, REQUEST_BG);
                     });
 
-                    String memCount = r.getMembersCount();
-                    int realCount = -1;
-                    if (!TextUtils.isEmpty(memCount)) {
-                        try {
-                            realCount = Integer.parseInt(memCount);
-                        } catch (Exception e) {
-                        }
-                    }
-                    if (realCount != -1 && realCount >= maxMemVisiableItem) {
-                        maxMemVisiableItem -= 1;
-                        List<CommunityInfoResponse.MembersBean> result = r.getMembers().subList(0, maxMemVisiableItem - 1);
-                        int numLeft = realCount - result.size();
-                        result.add(new CommunityInfoResponse.MembersBean());
-                        ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
-                        layoutParams2.width = CommonUtils.dip2px(this, 25) * (result.size() + 1) + CommonUtils.dip2px(this, 20);
-                        layoutParams2.setMarginEnd(CommonUtils.dip2px(this, 20));
-                        recyclerGroupMember.setLayoutParams(layoutParams2);
-                        initAdapterForSocialMem(result, numLeft);
-                    } else {
-                        ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
-                        layoutParams2.width = CommonUtils.dip2px(this, 25) * (r.getMembers().size()) + CommonUtils.dip2px(this, 20);
-                        recyclerGroupMember.setLayoutParams(layoutParams2);
-                        initAdapterForSocialMem(r.getMembers(), 0);
-                    }
+                    initAdapter(response);
                 }, t -> {
                     handleApiError(t);
                     finish();
                 });
+    }
+
+    private void initAdapter(CommunityInfoResponse r){
+        String memCount = r.getMembersCount();
+        int realCount = -1;
+        if (!TextUtils.isEmpty(memCount)) {
+            try {
+                realCount = Integer.parseInt(memCount);
+            } catch (Exception e) {
+            }
+        }
+        if (realCount != -1 && realCount >= maxMemVisiableItem) {
+            maxMemVisiableItem -= 1;
+            List<CommunityInfoResponse.MembersBean> result = r.getMembers().subList(0, maxMemVisiableItem - 1);
+            int numLeft = realCount - result.size();
+            result.add(new CommunityInfoResponse.MembersBean());
+            ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
+            layoutParams2.width = CommonUtils.dip2px(this, 25) * (result.size() + 1) + CommonUtils.dip2px(this, 20);
+            layoutParams2.setMarginEnd(CommonUtils.dip2px(this, 20));
+            recyclerGroupMember.setLayoutParams(layoutParams2);
+            initAdapterForSocialMem(result, numLeft);
+        } else {
+            ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
+            layoutParams2.width = CommonUtils.dip2px(this, 25) * (r.getMembers().size()) + CommonUtils.dip2px(this, 20);
+            recyclerGroupMember.setLayoutParams(layoutParams2);
+            initAdapterForSocialMem(r.getMembers(), 0);
+        }
     }
 
     //解析社群文化为多类型data
