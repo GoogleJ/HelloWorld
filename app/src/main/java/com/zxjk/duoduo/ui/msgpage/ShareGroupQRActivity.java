@@ -230,6 +230,7 @@ public class ShareGroupQRActivity extends BaseActivity {
 
     //创建新聊天
     public void createNewChat(View view) {
+        boolean fromShareNews = getIntent().getBooleanExtra("fromShareNews", false);
         Intent intent = new Intent(this, SelectContactForCardActivity.class);
         intent.putExtra("fromShare", true);
         if (isTransfer) {
@@ -239,6 +240,13 @@ public class ShareGroupQRActivity extends BaseActivity {
             } else {
                 intent.putParcelableArrayListExtra("messagelist", getIntent().getParcelableArrayListExtra("messagelist"));
             }
+        }else if(fromShareNews){
+            intent.putParcelableArrayListExtra("data", data);
+            intent.putExtra("fromShareNews", true);
+            intent.putExtra("url", getIntent().getStringExtra("url"));
+            intent.putExtra("title", getIntent().getStringExtra("title"));
+            intent.putExtra("icon", getIntent().getStringExtra("icon"));
+            intent.putExtra("article", getIntent().getStringExtra("article"));
         }
         startActivity(intent);
         finish();

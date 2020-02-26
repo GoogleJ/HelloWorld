@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,7 +28,9 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.SelectForCardAdapter;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -94,8 +97,13 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                     //消息转发
                     handleTransfer(position);
                 } else {
-                    //分享群二维码
-                    handleShareQR(position);
+                    boolean fromShareNews = getIntent().getBooleanExtra("fromShareNews", false);
+                    if(fromShareNews){
+                        shareNews(position);
+                    }else {
+                        //分享群二维码
+                        handleShareQR(position);
+                    }
                 }
             } else {
                 shareCard(position);
@@ -145,6 +153,47 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
             }
         });
     }
+
+    private void shareNews(int position) {
+        NewsCardMessage message = new NewsCardMessage();
+        message.setUrl(getIntent().getStringExtra("url"));
+        message.setContent(getIntent().getStringExtra("article"));
+        message.setIcon(getIntent().getStringExtra("icon"));
+        message.setTitle(getIntent().getStringExtra("title"));
+        NiceDialog.init().setLayoutId(R.layout.layout_card_dialog).setConvertListener(new ViewConvertListener() {
+            @Override
+            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                FriendInfoResponse listBean = mAdapter.getData().get(position);
+                GlideUtil.loadCircleImg(holder.getView(R.id.img_card_icon), listBean.getHeadPortrait());
+                holder.setText(R.id.tv_card_name, TextUtils.isEmpty(listBean.getRemark()) ? listBean.getNick() : listBean.getRemark().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
+                holder.setText(R.id.tv_card_content, getIntent().getStringExtra("title"));
+                holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
+                holder.setOnClickListener(R.id.tv_ok, v -> {
+                    dialog.dismiss();
+                    Message message1 = Message.obtain(listBean.getId(), data.get(position).getConversationType(), message);
+                    RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
+
+                        @Override
+                        public void onAttached(Message message) {
+                        }
+
+                        @Override
+                        public void onSuccess(Message message) {
+                            CommonUtils.destoryDialog();
+                            ToastUtils.showShort(R.string.share_success);
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                        }
+                    });
+                });
+            }
+        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
+    }
+
+
 
     private void handleShareQR(int position) {
         CommonUtils.initDialog(this).show();
