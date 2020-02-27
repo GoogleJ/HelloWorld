@@ -17,10 +17,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_margin="10dp"
         android:background="@drawable/shape_search_layout"
         android:padding="6dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_search_view"
+            android:tint="#9e9e9e"
+            android:layout_marginStart="8dp"/>
 
         <com.zxjk.duoduo.ui.widget.MaxWidthRecyclerView
             android:id="@+id/recycler1"
@@ -59,7 +67,7 @@
             android:id="@+id/indexCreateGroup"
             android:layout_width="24dp"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/tv_hit_letter"
