@@ -1,8 +1,6 @@
 package com.zxjk.duoduo.ui.msgpage.rongIM.provider;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -11,18 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.ConversationInfo;
 
-import io.rong.imkit.RongContext;
-import io.rong.imkit.RongIM;
 import io.rong.imkit.emoticon.AndroidEmoji;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
-import io.rong.imkit.widget.AutoLinkTextView;
-import io.rong.imkit.widget.LinkTextViewMovementMethod;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 import io.rong.message.TextMessage;
@@ -97,7 +92,7 @@ public class BurnTextMessageProvider extends IContainerItemProvider.MessageProvi
             }
         }
 
-        final AutoLinkTextView textView = holder.message;
+        final TextView textView = holder.message;
         if (data.getTextMessageContent() != null) {
             int len = data.getTextMessageContent().length();
             if (v.getHandler() != null && len > 500) {
@@ -107,36 +102,11 @@ public class BurnTextMessageProvider extends IContainerItemProvider.MessageProvi
             }
         }
 
-//        holder.message.setMovementMethod(new LinkTextViewMovementMethod(link -> {
-//            String str = link.toLowerCase();
-//            if (str.startsWith("http") || str.startsWith("https")) {
-//                Intent intent = new Intent("io.rong.imkit.intent.action.webview");
-//                intent.setPackage(v.getContext().getPackageName());
-//                intent.putExtra("url", link);
-//                v.getContext().startActivity(intent);
-//                return true;
-//            }
-//
-//            return false;
-//        }));
-        holder.content.setOnLongClickListener(view -> {
-            RongIM.ConversationBehaviorListener listener = RongContext.getInstance().getConversationBehaviorListener();
-            RongIM.ConversationClickListener clickListener = RongContext.getInstance().getConversationClickListener();
-
-            boolean result = false;
-            if (listener != null) {
-                result = listener.onMessageLongClick(v.getContext(), holder.content, data.getMessage());
-            } else if (clickListener != null) {
-                result = clickListener.onMessageLongClick(v.getContext(), holder.content, data.getMessage());
-            }
-
-            return result;
-        });
-        textView.stripUnderlines();
+//        textView.stripUnderlines();
     }
 
     private static class ViewHolder {
-        AutoLinkTextView message;
+        TextView message;
         ImageView ivFireLeft;
         ImageView ivFireRight;
         FrameLayout content;

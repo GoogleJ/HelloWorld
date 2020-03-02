@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <io.rong.imkit.widget.AutoLinkTextView
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="#000000"
+    <TextView
         android:id="@android:id/text1"
         style="@style/RCTheme.Message.TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="web|email|phone"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center_vertical|left"
-        android:textColorLink="#1a8cff"
-        app:RCMaxWidth="223dp" />
+        android:textColor="#000000"
+        android:textColorLink="#1a8cff" />
 
     <ImageView
         android:id="@+id/ivFireLeft"
