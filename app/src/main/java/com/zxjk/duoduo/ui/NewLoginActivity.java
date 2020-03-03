@@ -324,7 +324,6 @@ public class NewLoginActivity extends BaseActivity {
             public void onSuccess(String userid) {
                 CommonUtils.destoryDialog();
 
-                MMKVUtils.getInstance().enCode("date1", TimeUtils.getNowMills());
                 MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                 MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
                 MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());

@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
@@ -75,10 +74,8 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     private void goLoginByServer() {
-        long date2 = TimeUtils.getNowMills();
-        long date1 = MMKVUtils.getInstance().decodeLong("date1");
-        if ((date2 - date1) / (24 * 60 * 60 * 1000) < 7) {
-            LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
+        LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
+        if (login != null) {
             Constant.currentUser = login;
             Constant.token = login.getToken();
             Constant.userId = login.getId();

@@ -20,7 +20,6 @@ import android.widget.TextView;
 import androidx.core.app.ActivityOptionsCompat;
 
 import com.blankj.utilcode.util.RegexUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
@@ -46,7 +45,6 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
 public class ThirdPartLoginActivity extends BaseActivity {
-
     public static final String ACTION_THIRDPARTLOGINACCESS = "ThirdPartLoginAccess";
     public static final String ACTION_LOGINAUTHORIZATIONSWICH = "SwichLoginAccess";
 
@@ -93,7 +91,7 @@ public class ThirdPartLoginActivity extends BaseActivity {
         mTvThirdCodeText = findViewById(R.id.tv_third_code_text);
         mBtnToLogin = findViewById(R.id.btn_to_login);
         mImgBack = findViewById(R.id.img_back);
-        if(Constant.currentUser.getId() == null){
+        if (Constant.currentUser.getId() == null) {
             mImgBack.setVisibility(View.INVISIBLE);
         }
 
@@ -114,7 +112,6 @@ public class ThirdPartLoginActivity extends BaseActivity {
             }
         });
     }
-
 
     private void initData() {
         action = getIntent().getStringExtra("action");
@@ -178,11 +175,10 @@ public class ThirdPartLoginActivity extends BaseActivity {
         });
 
         mImgBack.setOnClickListener(v -> {
-                finish();
+            finish();
 
         });
     }
-
 
     @SuppressLint("CheckResult")
     public void login(View view) {
@@ -225,7 +221,6 @@ public class ThirdPartLoginActivity extends BaseActivity {
                     connect(l.getRongToken(), l.getIsFirstLogin().equals(Constant.FLAG_FIRSTLOGIN));
                 }, this::handleApiError);
     }
-
 
     @SuppressLint("CheckResult")
     public void getThirdVerificationCode(View view) {
@@ -276,7 +271,6 @@ public class ThirdPartLoginActivity extends BaseActivity {
                 }, this::handleApiError);
     }
 
-
     @SuppressLint("CheckResult")
     private void connect(String token, boolean equals) {
         Observable.timer(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
@@ -293,7 +287,6 @@ public class ThirdPartLoginActivity extends BaseActivity {
             public void onSuccess(String userid) {
                 CommonUtils.destoryDialog();
 
-                MMKVUtils.getInstance().enCode("date1", TimeUtils.getNowMills());
                 MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                 MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
                 MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
@@ -350,7 +343,6 @@ public class ThirdPartLoginActivity extends BaseActivity {
             }
         });
     }
-
 
     @Override
     protected void onDestroy() {
