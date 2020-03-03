@@ -354,7 +354,7 @@
     <string name="buycoinonekey">一键购币</string>
     <string name="kuangji">硬件矿机</string>
     <string name="didichuxing">滴滴出行</string>
-    <string name="mogame">APP游戏</string>
+    <string name="mogame">DAPP游戏</string>
     <string name="prompt_logo_red">Hilamg红包</string>
     <string name="shoukuanbizhong">收款币种</string>
     <string name="shoukuanjine">收款金额</string>
@@ -971,4 +971,5 @@
     <string name="progress">%1$s%</string>
     <string name="country_phone">+%1$s</string>
     <string name="no_enter_red_data">暂无付费入群信息</string>
+    <string name="unknown">未知</string>
 </resources>

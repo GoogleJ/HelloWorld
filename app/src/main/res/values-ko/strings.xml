@@ -971,4 +971,5 @@
     <string name="progress">%1$s%</string>
     <string name="country_phone">+%1$s</string>
     <string name="no_enter_red_data">暂无付费入群信息</string>
+    <string name="unknown">unknown</string>
 </resources>
