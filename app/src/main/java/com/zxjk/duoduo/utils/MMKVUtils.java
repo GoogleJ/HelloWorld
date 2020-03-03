@@ -51,7 +51,7 @@ public class MMKVUtils {
     }
 
     public LoginResponse decodeParcelable(String key) {
-        return mmkv.decodeParcelable(key, LoginResponse.class);
+        return mmkv.decodeParcelable(key, LoginResponse.class, null);
     }
 
 }

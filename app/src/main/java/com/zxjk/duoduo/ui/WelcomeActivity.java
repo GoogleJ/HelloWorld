@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
@@ -49,7 +48,10 @@ public class WelcomeActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        setEnableCheckConstant(false);
+
         super.onCreate(savedInstanceState);
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         BarUtils.setStatusBarVisibility(this, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

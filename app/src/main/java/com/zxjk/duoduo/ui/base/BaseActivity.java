@@ -49,6 +49,7 @@ import top.zibin.luban.Luban;
 @SuppressLint({"CheckResult", "Registered"})
 public class BaseActivity extends RxAppCompatActivity {
     private boolean enableTouchHideKeyBoard = true;
+    private boolean enableCheckConstant = true;
     public RxPermissions rxPermissions = new RxPermissions(this);
     public File corpFile;
 
@@ -58,49 +59,51 @@ public class BaseActivity extends RxAppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if (Constant.currentUser == null || TextUtils.isEmpty(Constant.token) || TextUtils.isEmpty(Constant.userId)) {
-            LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
-            if (login != null) {
-                Constant.currentUser = login;
-                Constant.token = login.getToken();
-                Constant.userId = login.getId();
-                if (RongIM.getInstance().getCurrentConnectionStatus()
-                        != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED || RongIM.getInstance().getCurrentConnectionStatus()
-                        != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
-                    RongIM.connect(login.getRongToken(), new RongIMClient.ConnectCallback() {
-                        @Override
-                        public void onTokenIncorrect() {
-                            MMKVUtils.getInstance().enCode("isLogin", false);
-                            Constant.clear();
-                            ToastUtils.showShort(getString(R.string.login_again));
-                            Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
-                        }
+        if (enableCheckConstant && (Constant.currentUser == null || TextUtils.isEmpty(Constant.token) || TextUtils.isEmpty(Constant.userId))) {
+            if (MMKVUtils.getInstance().decodeBool("isLogin")) {
+                LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
+                if (login != null) {
+                    Constant.currentUser = login;
+                    Constant.token = login.getToken();
+                    Constant.userId = login.getId();
+                    if (RongIM.getInstance().getCurrentConnectionStatus()
+                            != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED || RongIM.getInstance().getCurrentConnectionStatus()
+                            != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
+                        RongIM.connect(login.getRongToken(), new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+                                MMKVUtils.getInstance().enCode("isLogin", false);
+                                Constant.clear();
+                                ToastUtils.showShort(getString(R.string.login_again));
+                                Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
 
-                        @Override
-                        public void onSuccess(String userid) {
-                        }
+                            @Override
+                            public void onSuccess(String userid) {
+                            }
 
-                        @Override
-                        public void onError(RongIMClient.ErrorCode errorCode) {
-                            MobclickAgent.reportError(Utils.getApp(), new Exception("login expired!Msg:" + errorCode.getMessage()) + "code:" + errorCode.getValue());
-                            MMKVUtils.getInstance().enCode("isLogin", false);
-                            Constant.clear();
-                            ToastUtils.showShort(getString(R.string.login_again));
-                            Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                MobclickAgent.reportError(Utils.getApp(), new Exception("login expired!Msg:" + errorCode.getMessage()) + "code:" + errorCode.getValue());
+                                MMKVUtils.getInstance().enCode("isLogin", false);
+                                Constant.clear();
+                                ToastUtils.showShort(getString(R.string.login_again));
+                                Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    }
+                } else {
+                    ToastUtils.showShort(getString(R.string.login_again));
+                    MMKVUtils.getInstance().enCode("isLogin", false);
+                    startActivity(new Intent(this, NewLoginActivity.class));
+                    finish();
                 }
-            } else {
-                ToastUtils.showShort(getString(R.string.login_again));
-                MMKVUtils.getInstance().enCode("isLogin", false);
-                startActivity(new Intent(this, NewLoginActivity.class));
-                finish();
             }
         }
 
@@ -113,6 +116,10 @@ public class BaseActivity extends RxAppCompatActivity {
 
     public void setEnableTouchHideKeyBoard(boolean enableTouchHideKeyBoard) {
         this.enableTouchHideKeyBoard = enableTouchHideKeyBoard;
+    }
+
+    public void setEnableCheckConstant(boolean enableCheckConstant) {
+        this.enableCheckConstant = enableCheckConstant;
     }
 
     private boolean isTranslucentOrFloating() {
