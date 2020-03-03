@@ -34,6 +34,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.trello.rxlifecycle3.android.FragmentEvent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -198,20 +199,31 @@ public class NewsPager extends BaseFragment {
                 indicatorBanner.onPageScrollStateChanged(state);
                 switch (state) {
                     case ViewPager.SCROLL_STATE_IDLE:
-                        if (bannerIntervel.isDisposed()) {
-                            bannerIntervel = Observable.interval(BANNER_INTERVEL, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                                    .subscribe(a -> pagerBanner.setCurrentItem(currentBannerIndex + 1, true));
-                        }
+                        startBannerIntervel();
                         break;
                     case ViewPager.SCROLL_STATE_DRAGGING:
-                        if (!bannerIntervel.isDisposed())
+                        if (bannerIntervel != null && !bannerIntervel.isDisposed())
                             bannerIntervel.dispose();
                         break;
                 }
             }
         });
 
+        startBannerIntervel();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startBannerIntervel();
+    }
+
+    private void startBannerIntervel() {
+        if (bannerIntervel != null && !bannerIntervel.isDisposed()) {
+            bannerIntervel.dispose();
+        }
         bannerIntervel = Observable.interval(BANNER_INTERVEL, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                .compose(bindUntilEvent(FragmentEvent.PAUSE))
                 .subscribe(a -> pagerBanner.setCurrentItem(currentBannerIndex + 1, true));
     }
 
