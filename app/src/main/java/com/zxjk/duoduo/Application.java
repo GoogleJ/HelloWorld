@@ -1,21 +1,13 @@
 package com.zxjk.duoduo;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Environment;
-import android.text.TextUtils;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.alibaba.security.rp.RPSDK;
-import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.mabeijianxi.smallvideorecord2.DeviceUtils;
@@ -25,10 +17,7 @@ import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
-import com.zxjk.duoduo.bean.ConversationTimeBean;
 import com.zxjk.duoduo.bean.DaoSession;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.BasePluginExtensionModule;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
@@ -71,12 +60,9 @@ import io.rong.push.pushconfig.PushConfig;
 import static io.rong.imlib.RongIMClient.ConnectionStatusListener.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT;
 
 public class Application extends android.app.Application {
-
     public static OSS oss;
 
     public static DaoSession daoSession;
-
-    private long conversationOpenTime;
 
     private WebDataUtils webDataUtils;
 
@@ -107,9 +93,6 @@ public class Application extends android.app.Application {
 
         //监听融云连接状态变化
         registerConnectionStatusListener();
-
-        //监听act lifecycle
-        actLifecycle();
 
         //Umeng
         initUmeng();
@@ -152,76 +135,6 @@ public class Application extends android.app.Application {
         PlatformConfig.setWeixin("wx022863eb70b07dcf", "ed5bd6099c398f443a1eadc9a8bda259");
         PlatformConfig.setQQZone("101838814", "2133a77b5e0abc441ca9646089399898");
     }
-
-    private void actLifecycle() {
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
-                if (activity.getClass().getSimpleName().equals("ConversationActivity")) {
-                    conversationOpenTime = System.currentTimeMillis();
-                }
-            }
-
-            @Override
-            public void onActivityStarted(@NonNull Activity activity) {
-            }
-
-            @Override
-            public void onActivityResumed(@NonNull Activity activity) {
-            }
-
-            @Override
-            public void onActivityPaused(@NonNull Activity activity) {
-            }
-
-            @Override
-            public void onActivityStopped(@NonNull Activity activity) {
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
-            }
-
-            @SuppressLint("CheckResult")
-            @Override
-            public void onActivityDestroyed(@NonNull Activity activity) {
-                if (activity.getClass().getSimpleName().equals("ConversationActivity")) {
-                    ConversationTimeBean b = new ConversationTimeBean();
-                    b.setDayTimeMills(System.currentTimeMillis());
-
-                    String json = MMKVUtils.getInstance().decodeString("conversationTimeBean");
-                    if (!TextUtils.isEmpty(json)) {
-                        b = GsonUtils.fromJson(json, ConversationTimeBean.class);
-                        if (b.isHasComplete()) return;
-                    }
-
-                    long conversationTime = b.getTotalMills();
-                    if (!TimeUtils.isToday(b.getDayTimeMills())) {
-                        b.setHasComplete(false);
-                        b.setDayTimeMills(System.currentTimeMillis());
-                        conversationTime = 0;
-                    }
-
-                    long l = conversationTime + System.currentTimeMillis() - conversationOpenTime;
-
-                    ConversationTimeBean finalB = b;
-                    if ((l >= 1200000)) {
-                        ServiceFactory.getInstance().getBaseService(Api.class)
-                                .savePointInfo("3")
-                                .subscribe(s -> {
-                                    finalB.setHasComplete(true);
-                                    MMKVUtils.getInstance().enCode("conversationTimeBean", GsonUtils.toJson(finalB));
-                                }, t -> {
-                                });
-                    } else {
-                        finalB.setTotalMills(l);
-                        MMKVUtils.getInstance().enCode("conversationTimeBean", GsonUtils.toJson(finalB));
-                    }
-                }
-            }
-        });
-    }
-
 
     private void registerConnectionStatusListener() {
         RongIMClient.setConnectionStatusListener(connectionStatus -> {
@@ -276,7 +189,6 @@ public class Application extends android.app.Application {
         setMyExtensionModule();
     }
 
-    //初始化阿里云OSS上传服务
     private void initOSS() {
         String AK = "LTAI3V54BzteDdTi";
         String SK = "h59RLWudf6XMXO4bSqSOwsK3nBHXSK";
