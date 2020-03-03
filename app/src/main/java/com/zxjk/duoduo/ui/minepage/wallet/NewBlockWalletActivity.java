@@ -96,7 +96,6 @@ public class NewBlockWalletActivity extends BaseActivity {
                     NewBlockWalletActivity.this.response = response;
                     tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
                     isShow = MMKVUtils.getInstance().decodeBool("bahaviour1_showWalletBalance");
-                    isShow = !isShow;
                     showOrHideMoney();
                 })
                 .observeOn(Schedulers.io())

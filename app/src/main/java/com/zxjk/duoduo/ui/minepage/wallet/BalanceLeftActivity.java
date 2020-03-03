@@ -73,7 +73,7 @@ public class BalanceLeftActivity extends BaseActivity {
         });
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
-        isShow = !MMKVUtils.getInstance().decodeBool("bahaviour2_showWalletBalance");
+        isShow = MMKVUtils.getInstance().decodeBool("bahaviour2_showWalletBalance");
 
         initData();
     }
