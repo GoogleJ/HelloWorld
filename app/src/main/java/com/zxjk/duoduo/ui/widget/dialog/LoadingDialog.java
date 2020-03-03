@@ -5,9 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+
 import com.zxjk.duoduo.R;
+
 import java.lang.ref.WeakReference;
 
 public class LoadingDialog extends Dialog {
@@ -35,7 +39,10 @@ public class LoadingDialog extends Dialog {
         getWindow().setDimAmount(0f);
         tips = findViewById(R.id.tv_dialog_content);
         if (!TextUtils.isEmpty(loadText)) {
+            tips.setVisibility(View.VISIBLE);
             tips.setText(loadText);
+        } else {
+            tips.setVisibility(View.GONE);
         }
     }
 
