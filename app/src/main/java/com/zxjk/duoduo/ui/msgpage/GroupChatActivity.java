@@ -11,20 +11,24 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.GroupChatResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.bean.response.GroupChatResponse;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.GroupChatAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.rong.imkit.RongIM;
@@ -81,8 +85,10 @@ public class GroupChatActivity extends BaseActivity implements TextWatcher {
         groupChatAdapter.setEmptyView(emptyView);
         mGroupChatRecyclerView.setAdapter(groupChatAdapter);
 
-        groupChatAdapter.setOnItemChildClickListener((adapter, view, position) ->
-                RongIM.getInstance().startGroupChat(this, groupChatAdapter.getData().get(position).getId(), groupChatAdapter.getData().get(position).getGroupNikeName()));
+        groupChatAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            RongIM.getInstance().startGroupChat(this, groupChatAdapter.getData().get(position).getId(), groupChatAdapter.getData().get(position).getGroupNikeName());
+            finish();
+        });
     }
 
     @SuppressLint("CheckResult")

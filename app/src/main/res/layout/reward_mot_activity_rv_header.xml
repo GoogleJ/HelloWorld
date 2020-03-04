@@ -19,20 +19,14 @@
             android:layout_marginEnd="12dp"
             android:orientation="horizontal">
 
-            <com.gcssloop.widget.RCRelativeLayout
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_head_reward"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                app:round_as_circle="true"
-                app:stroke_color="@color/white"
-                app:stroke_width="1dp">
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp" />
 
-                <ImageView
-                    android:id="@+id/iv_head_reward"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp" />
-
-            </com.gcssloop.widget.RCRelativeLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

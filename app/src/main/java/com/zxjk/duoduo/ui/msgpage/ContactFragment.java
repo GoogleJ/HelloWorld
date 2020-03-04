@@ -39,6 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.functions.Function;
 
 public class ContactFragment extends BaseFragment {
     @BindView(R.id.m_contact_recycler_view)
@@ -217,12 +218,18 @@ public class ContactFragment extends BaseFragment {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getFriendListById()
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(data -> {
-                    list = data;
+                .map(friendInfoResponses -> {
+
+                    list = friendInfoResponses;
 
                     mapList(list);
+
+                    return list;
+                })
+                .compose(RxSchedulers.ioObserver())
+
+                .subscribe(data -> {
 
                     mAdapter.setNewData(list);
 

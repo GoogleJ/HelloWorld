@@ -48,7 +48,7 @@ public class GlobalSearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_search);
         ButterKnife.bind(this);
-
+        searchEdit.requestFocus();
         initData();
         initUI();
     }

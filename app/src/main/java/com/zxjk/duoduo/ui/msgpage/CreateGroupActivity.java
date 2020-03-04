@@ -333,17 +333,17 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         adapter2.setOnClickListener((item, check, position) -> {
             item.setChecked(!item.isChecked());
             adapter2.notifyItemChanged(position);
-            if (data1.contains(item)) {
-                selectedIds.remove(item.getId());
-                data1.remove(item);
-                adapter1.notifyDataSetChanged();
-            } else {
-                selectedIds.add(item.getId());
-                data1.add(item);
-                adapter1.notifyItemInserted(data1.size() - 1);
-                recycler1.smoothScrollToPosition(data1.size() - 1);
-            }
-
+                etSearch.setText("");
+                if (data1.contains(item)) {
+                    selectedIds.remove(item.getId());
+                    data1.remove(item);
+                    adapter1.notifyDataSetChanged();
+                } else {
+                    selectedIds.add(item.getId());
+                    data1.add(item);
+                    adapter1.notifyItemInserted(data1.size() - 1);
+                    recycler1.smoothScrollToPosition(data1.size() - 1);
+                }
             tv_commit.setText(confirmText + "(" + data1.size() + ")");
         });
 
