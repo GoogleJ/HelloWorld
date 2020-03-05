@@ -22,6 +22,7 @@ import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
+import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.bean.response.PermissionInfoBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -353,6 +354,8 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
 
     //创建群逻辑
     private void handleCreateGroup() {
+
+
         recycler1.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false) {
             @Override
             public void smoothScrollToPosition(RecyclerView recyclerView,
@@ -393,6 +396,11 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             tv_commit.setText(confirmText + "(" + data1.size() + ")");
         });
 
+        if(getIntent().getParcelableExtra("loginResponse") != null){
+            LoginResponse loginResponse = getIntent().getParcelableExtra("loginResponse");
+            selectedIds.add(loginResponse.getId());
+        }
+
         initData();
     }
 
@@ -405,6 +413,15 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 .subscribe(response -> {
                     addFirstLetterForFriendList(response);
                     data = response;
+
+                    if(getIntent().getParcelableExtra("loginResponse") != null){
+                        LoginResponse loginResponse = getIntent().getParcelableExtra("loginResponse");
+                        for (int i = 0; i < data.size(); i++){
+                            if(data.get(i).getId().equals(loginResponse.getId())){
+                                data.remove(i);
+                            }
+                        }
+                    }
                     adapter2.setData(data);
                     adapter1.setData(data1);
                 }, this::handleApiError);
@@ -699,9 +716,9 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         List<FriendInfoResponse> filterList = new ArrayList<>(data.size());
 
         for (FriendInfoResponse contact : data) {
-            boolean isNameContains = (!TextUtils.isEmpty(contact.getMobile()) && contact.getMobile().contains(str)) ||
-                    (!TextUtils.isEmpty(contact.getNick()) && contact.getNick().contains(str)) ||
-                    (!TextUtils.isEmpty(contact.getRemark()) && contact.getRemark().contains(str));
+            boolean isNameContains = (!TextUtils.isEmpty(contact.getMobile()) && contact.getMobile().toLowerCase().contains(str.toLowerCase())) ||
+                    (!TextUtils.isEmpty(contact.getNick()) && contact.getNick().toLowerCase().contains(str.toLowerCase())) ||
+                    (!TextUtils.isEmpty(contact.getRemark()) && contact.getRemark().toLowerCase().contains(str.toLowerCase()));
             if (isNameContains) {
                 if (!filterList.contains(contact)) {
                     filterList.add(contact);
@@ -717,9 +734,9 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
         List<AllGroupMembersResponse> filterList = new ArrayList<>(data2.size());
 
         for (AllGroupMembersResponse contact : data2) {
-            boolean isNameContains = (!TextUtils.isEmpty(contact.getMobile()) && contact.getMobile().contains(str)) ||
-                    (!TextUtils.isEmpty(contact.getNick()) && contact.getNick().contains(str)) ||
-                    (!TextUtils.isEmpty(contact.getRemark()) && contact.getRemark().contains(str));
+            boolean isNameContains = (!TextUtils.isEmpty(contact.getMobile()) && contact.getMobile().toLowerCase().contains(str.toLowerCase())) ||
+                    (!TextUtils.isEmpty(contact.getNick()) && contact.getNick().toLowerCase().contains(str.toLowerCase())) ||
+                    (!TextUtils.isEmpty(contact.getRemark()) && contact.getRemark().toLowerCase().contains(str.toLowerCase()));
             if (isNameContains) {
                 if (!filterList.contains(contact)) {
                     filterList.add(contact);

@@ -18,6 +18,7 @@ import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.request.UpdateChatConfigRequest;
+import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -51,6 +52,8 @@ public class ChatInformationActivity extends BaseActivity {
     private TextView tvBurnTime;
 
     private ConversationInfo conversationInfo;
+
+    private LoginResponse loginResponse;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -169,7 +172,10 @@ public class ChatInformationActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(response -> tv_qm.setText(response.getSignature()), this::handleApiError);
+                .subscribe(response -> {
+                    tv_qm.setText(response.getSignature());
+                    loginResponse = response;
+                }, this::handleApiError);
 
         findViewById(R.id.rl_info).setOnClickListener(v -> {
             Intent intent = new Intent(ChatInformationActivity.this, FriendDetailsActivity.class);
@@ -180,6 +186,7 @@ public class ChatInformationActivity extends BaseActivity {
         findViewById(R.id.rl_add).setOnClickListener(v -> {
             Intent intent = new Intent(ChatInformationActivity.this, CreateGroupActivity.class);
             intent.putExtra("eventType", 1);
+            intent.putExtra("loginResponse",loginResponse);
             startActivity(intent);
         });
 
