@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hilamg</string>
+    <string name="app_name" translatable="false">Hilamg</string>
     <string name="login">登录</string>
     <string name="edit_code_tip">请输入正确的验证码</string>
     <string name="text_get_code">获取验证码</string>
@@ -17,7 +17,7 @@
     <string name="change_language">切换语言</string>
     <string name="zh_cn">简体中文</string>
     <string name="zh_tw">繁体中文</string>
-    <string name="en_us">English</string>
+    <string name="en_us" translatable="false">English</string>
     <string name="de_actionbar_sub_group">"社群"</string>
     <string name="m_add_friend_contact_label_1">手机联系人</string>
     <string name="m_add_friend_scan_it_label_1">扫一扫</string>
@@ -50,7 +50,7 @@
     <string name="wechat">微信</string>
     <string name="hilamg">海浪</string>
     <string name="m_red_envelopes_label">鸿运当头，大吉大利</string>
-    <string name="m_red_envelopes_money_text">0.00</string>
+    <string name="m_red_envelopes_money_text" translatable="false">0.00</string>
     <string name="m_red_envelopes_commit_btn">塞进红包</string>
     <string name="m_transfer_commit_btn">确认转账</string>
     <string name="m_successful_transfer_title_bar">转账详情</string>
@@ -233,7 +233,7 @@
     <string name="please_set_money">请设置金额</string>
     <string name="duoduo_id">Hilamg号:</string>
     <string name="no_search">暂无搜索记录</string>
-    <string name="helper_tips">人工服务时间：工作日9:00-18:00</string>
+    <string name="helper_tips">人工服务时间：工作日9:00–18:00</string>
     <string name="zixun">立即咨询</string>
     <string name="helper_tips1">Hilamg是什么平台？</string>
     <string name="helper_tips2">Hilamg是一款“区块链+社交+金融”的APP应用，为区块链生态打造真正应用场景落地的项目，通过区块链技术解决支付问题；</string>
@@ -310,7 +310,7 @@
     <string name="payment">付款方式</string>
     <string name="notice_creategroup">创建了一个群组</string>
     <string name="new_friend1">已是好友，现在开始聊天吧</string>
-    <string name="searching">搜索中...</string>
+    <string name="searching">搜索中…</string>
     <string name="mochat">Hilamg</string>
     <string name="collection_nearby">附近的人</string>
     <string name="getlocation_fail">未能获取当前位置，请重试</string>
@@ -464,7 +464,7 @@
     <string name="importwallet">导入钱包</string>
     <string name="createwallet_tips1">选择您想创建的钱包币种</string>
     <string name="createwallet_coinunable">该币种暂不可用</string>
-    <string name="createwallet_tips2">ETH钱包正在创建中...</string>
+    <string name="createwallet_tips2">ETH钱包正在创建中…</string>
     <string name="createwallet_tips3">创建完成</string>
     <string name="createwallet_success_tips1">请备份钱包</string>
     <string name="createwallet_success_tips2">区块链钱包不同于传统网站账户,它是基于密码学的去中心化账户系统。\n您必须保管好钱包的私钥和交易密码,任何意外将会导致资产账户丢失</string>
@@ -674,7 +674,7 @@
     <string name="login_nickname">昵称</string>
     <string name="login_head_portrait">头像</string>
     <string name="login_title1">申请使用</string>
-    <string name="login_title2">Hilamg</string>
+    <string name="login_title2" translatable="false">Hilamg</string>
     <string name="login_id_introduction">Hilamg个人信息</string>
     <string name="login_switch_id">切换账号</string>
     <string name="login_agreed">同意</string>
@@ -701,7 +701,7 @@
     <string name="confirm_delete_video">是否确定删除此视频？</string>
     <string name="maxUploadVideo">最多上传%1$d份企业宣传视频，请上传体验</string>
     <string name="uploading">上传中</string>
-    <string name="tips_uploadSocialVideo">视频压缩时间根据机型不同，需用时3-8分钟，请耐心等待</string>
+    <string name="tips_uploadSocialVideo">视频压缩时间根据机型不同，需用时3–8分钟，请耐心等待</string>
     <string name="hitMaxUploadCount">目前已达上传上限</string>
     <string name="ziping_pleaseWait">正在压缩，请耐心等待</string>
     <string name="uploading_thumb">正在上传封面</string>
@@ -828,7 +828,7 @@
     <string name="num_can_be_trans">可转出数量%1$d</string>
     <string name="groupowner_or_manager">群主/管理员</string>
     <string name="manager">管理</string>
-    <string name="danger_tips"><![CDATA[<p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由&nbsp;<font color=\'black\'><b>%1$s</b></font>&nbsp;直接并单独向您承担责任。</p>]]></string>
+    <string name="danger_tips" translatable="false"><![CDATA[<p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由&nbsp;<font color=\'black\'><b>%1$s</b></font>&nbsp;直接并单独向您承担责任。</p>]]></string>
     <string name="nums_left_upload_social_files">(还可上传%1$d份资料)</string>
     <string name="downloading">下载中，请稍后</string>
     <string name="social_calture_update">社群文化已更新</string>
@@ -843,7 +843,7 @@
     <string name="group_card">[群名片]</string>
     <string name="invite_you_into_group_check">%1$s邀请你加入群聊%2$s,点击查看</string>
     <string name="me_and_x_nums_friend_wait_for_you_at">我和%1$s个小伙伴在【%2$s】,等待你加入！</string>
-    <string name="me_wait_for_you_at">我在【%1$】,等待你加入！</string>
+    <string name="me_wait_for_you_at">我在【%1$s】,等待你加入！</string>
     <string name="xx_invite_join">%1$s邀请你加入%2$s</string>
     <string name="social_card">[社群名片]</string>
     <string name="transfer">[转账]</string>
@@ -881,22 +881,22 @@
     <string name="xx_day1">%1$s 天</string>
     <string name="rewardtips4">明日签到可获得 %1$s USDT</string>
     <string name="only_once_done">仅可完成一次</string>
-    <string name="value_format">%1$s%2$s</string>
+    <string name="value_format" translatable="false">%1$s%2$s</string>
     <string name="change_socialname_to">社群改名为%1$s</string>
     <string name="authenfail">认证未通过</string>
     <string name="xxx_join_dissection">\"%1$s\"加入了讨论组</string>
-    <string name="groupname_num">%1$s(%2$s)</string>
+    <string name="groupname_num" translatable="false">%1$s(%2$s)</string>
     <string name="my_hilamg_code">我的海浪号:%1$s</string>
     <string name="total_xx_contact">共 %1$s 位联系人</string>
     <string name="xx_receive_xx_red">%1$s领取了%2$s的红包</string>
     <string name="you">你</string>
     <string name="drop_record">空投记录</string>
     <string name="choose_time">选择时间</string>
-    <string name="value_value_value">%1$s-%2$s-%3$s</string>
+    <string name="value_value_value" translatable="false">%1$s-%2$s-%3$s</string>
     <string name="is_confirm_delete_group">是否确定解散该群</string>
     <string name="is_confirm_exit_group">是否确定退出该群</string>
     <string name="is_clear_conversation_history">确定要清空当前聊天记录吗？</string>
-    <string name="zero_value">0.0000</string>
+    <string name="zero_value" translatable="false">0.0000</string>
     <string name="group_total_member_count">本群共%1$s人</string>
     <string name="can_user_value_symbol">可用%1$s%2$s</string>
     <string name="slowMode_time">发言间隔:%1$s%2$s</string>
@@ -968,8 +968,8 @@
     <string name="cant_load_position">未获取到位置信息</string>
     <string name="no_thirdpart_application">暂无第三方应用，敬请期待开放</string>
     <string name="no_cust_application">暂无自定义应用，请添加应用</string>
-    <string name="progress">%1$s%</string>
-    <string name="country_phone">+%1$s</string>
+    <string name="progress" translatable="false">%1$s%</string>
+    <string name="country_phone" translatable="false">+%1$s</string>
     <string name="no_enter_red_data">暂无付费入群信息</string>
     <string name="unknown">未知</string>
 </resources>

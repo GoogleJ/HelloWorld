@@ -9,6 +9,8 @@ import android.os.LocaleList;
 
 import androidx.annotation.StringDef;
 
+import com.zxjk.duoduo.Constant;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Locale;
@@ -61,6 +63,7 @@ public class LanguageUtil {
 
     private Context updateResources(Context context, Locale locale) {
         Locale.setDefault(locale);
+        Constant.language = locale.toString().replace("_", "-");
         Resources res = context.getResources();
         Configuration config = new Configuration(res.getConfiguration());
         config.setLocale(locale);
