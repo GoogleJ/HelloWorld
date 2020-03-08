@@ -959,7 +959,6 @@
     <string name="cant_load_position">위치 획득 되지 못했습니다</string>
     <string name="no_thirdpart_application">제3자 애플리케이션에 대한 없음,개방하기에 기대해 주십시오</string>
     <string name="no_cust_application">자체 정의 애플리케이션이 없으므로 수가하십시오</string>
-    <string name="    no_enter_red_data">요금을 지불하고 가입할 정보는 당분간 없습니다</string>
     <string name="unknown">불명</string>
     <string name="no_enter_red_data">" 지불 기록이 없습니다"</string>
 </resources>
