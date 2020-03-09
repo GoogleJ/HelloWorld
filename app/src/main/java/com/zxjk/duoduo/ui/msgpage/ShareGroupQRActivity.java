@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -100,18 +102,6 @@ public class ShareGroupQRActivity extends BaseActivity {
 
         recycler = findViewById(R.id.recycler);
         search_edit = findViewById(R.id.search_edit);
-        search_edit.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                //按下搜索
-                if (TextUtils.isEmpty(search_edit.getText().toString().trim())) {
-                    adapter.setNewData(data);
-                } else {
-                    doSearch(data);
-                }
-                return true;
-            }
-            return false;
-        });
 
         View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -139,6 +129,23 @@ public class ShareGroupQRActivity extends BaseActivity {
                 } else {
                     handleShare(position);
                 }
+            }
+        });
+
+        search_edit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                doSearch(data);
             }
         });
     }
@@ -221,7 +228,7 @@ public class ShareGroupQRActivity extends BaseActivity {
     private void doSearch(ArrayList<Conversation> data) {
         ArrayList<Conversation> conversations = new ArrayList<>();
         for (Conversation c : data) {
-            if (c.getConversationTitle().equals(search_edit.getText().toString().trim())) {
+            if (c.getConversationTitle().contains(search_edit.getText().toString().trim())) {
                 conversations.add(c);
             }
         }
