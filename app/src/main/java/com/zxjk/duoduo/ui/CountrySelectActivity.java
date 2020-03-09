@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,6 +44,9 @@ public class CountrySelectActivity extends BaseActivity {
         tvTitle = findViewById(R.id.tv_title);
         lv_list = findViewById(R.id.lv_list);
 
+        findViewById(R.id.rl_back).setOnClickListener(v -> {
+            finish();
+        });
         tvTitle.setText(getString(R.string.selectcountries));
 
         initList();
@@ -101,9 +105,5 @@ public class CountrySelectActivity extends BaseActivity {
         }
         return entities;
     }
-
-    @OnClick(R.id.rl_back)
-    public void onClick() {
-        finish();
-    }
+    
 }
