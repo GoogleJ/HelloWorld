@@ -101,9 +101,9 @@ public class SocialPage extends BaseFragment {
                 if (item.getIsInGroup().equals("1")) {
                     btnJoin.setVisibility(View.VISIBLE);
                     if (item.getIsPay().equals("1")) {
-                        btnJoin.setText("付费");
+                        btnJoin.setText(R.string.pay);
                     } else {
-                        btnJoin.setText("进入");
+                        btnJoin.setText(R.string.enter);
                     }
                 } else {
                     btnJoin.setVisibility(View.GONE);

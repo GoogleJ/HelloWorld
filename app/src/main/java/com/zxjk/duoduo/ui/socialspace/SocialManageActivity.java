@@ -171,10 +171,10 @@ public class SocialManageActivity extends BaseActivity {
         NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
             @Override
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                holder.setText(R.id.tv_title, "提示");
-                holder.setText(R.id.tv_content, "确定要清空当前聊天记录吗？");
-                holder.setText(R.id.tv_cancel, "取消");
-                holder.setText(R.id.tv_notarize, "确认");
+                holder.setText(R.id.tv_title, getString(R.string.hinttext));
+                holder.setText(R.id.tv_content, getString(R.string.is_clear_conversation_history));
+                holder.setText(R.id.tv_cancel, getString(R.string.cancel));
+                holder.setText(R.id.tv_notarize, getString(R.string.queding));
                 holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_notarize, v1 -> RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), new RongIMClient.ResultCallback<Boolean>() {
                     @Override

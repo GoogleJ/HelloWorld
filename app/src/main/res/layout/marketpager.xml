@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="币种/流通市值"
+            android:text="@string/market_1"
             android:textColor="@color/textcolor3" />
 
         <TextView
@@ -25,13 +25,13 @@
             android:layout_marginEnd="32dp"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="最新价(¥)"
+            android:text="@string/market_2"
             android:textColor="@color/textcolor3" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="24H涨幅"
+            android:text="@string/market_3"
             android:textColor="@color/textcolor3" />
 
     </LinearLayout>
@@ -61,6 +61,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="本行情由 ixx.com 提供"/>
+            android:text="@string/market_4"/>
     </LinearLayout>
 </LinearLayout>

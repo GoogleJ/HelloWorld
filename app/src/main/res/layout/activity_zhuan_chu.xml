@@ -153,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="全部"
+                android:text="@string/all"
                 android:textColor="@color/colorTheme" />
 
         </LinearLayout>

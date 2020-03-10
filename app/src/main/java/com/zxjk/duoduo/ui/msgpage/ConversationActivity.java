@@ -212,8 +212,8 @@ public class ConversationActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Conversation conversation) {
                         if (conversation == null || conversation.getLatestMessage() == null) {
-                            InformationNotificationMessage message = InformationNotificationMessage.obtain("本次会话已开启端对端加密");
-                            message.setExtra("本次会话已开启端对端加密");
+                            InformationNotificationMessage message = InformationNotificationMessage.obtain(getString(R.string.current_conversation_secret));
+                            message.setExtra(getString(R.string.current_conversation_secret));
                             RongIM.getInstance().insertIncomingMessage(
                                     Conversation.ConversationType.PRIVATE,
                                     targetId, Constant.userId, new Message.ReceivedStatus(1), message, null
@@ -377,8 +377,8 @@ public class ConversationActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(s -> {
                         InformationNotificationMessage m = InformationNotificationMessage
-                                .obtain("对方截取了屏幕");
-                        m.setExtra("对方截取了屏幕");
+                                .obtain(getString(R.string.theOther_capture_screen));
+                        m.setExtra(getString(R.string.theOther_capture_screen));
 
                         Message message = Message.obtain(targetId, conversationType.equals("private")
                                 ? Conversation.ConversationType.PRIVATE : Conversation.ConversationType.GROUP, m);
@@ -715,7 +715,7 @@ public class ConversationActivity extends BaseActivity {
         Iterator<MessageItemLongClickAction> iterator = actionList.iterator();
         while (iterator.hasNext()) {
             MessageItemLongClickAction next = iterator.next();
-            if (next.getTitle(this).equals("强制撤回")) {
+            if (next.getTitle(this).equals(getString(R.string.force_recall))) {
                 iterator.remove();
                 break;
             }
@@ -723,7 +723,7 @@ public class ConversationActivity extends BaseActivity {
 
         if (isOwner || groupInfo.getGroupPermission() != null && groupInfo.getGroupPermission().getForceRecall().equals("1")) {
             MessageItemLongClickAction forceRecallAction = new MessageItemLongClickAction.Builder()
-                    .title("强制撤回")
+                    .title(getString(R.string.force_recall))
                     .showFilter(uiMessage -> {
 
                         String senderUserId = uiMessage.getSenderUserId();
@@ -824,7 +824,7 @@ public class ConversationActivity extends BaseActivity {
         Iterator<MessageItemLongClickAction> iterator = actionList.iterator();
         while (iterator.hasNext()) {
             MessageItemLongClickAction next = iterator.next();
-            if (next.getTitle(this).equals("强制撤回")) {
+            if (next.getTitle(this).equals(getString(R.string.force_recall))) {
                 iterator.remove();
                 break;
             }
@@ -976,12 +976,14 @@ public class ConversationActivity extends BaseActivity {
                                                         }
 
                                                         if (!message.getSenderUserId().equals(Constant.userId)) {
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(Constant.currentUser.getNick() + "领取了"
-                                                                    + s2.getSendCustomerInfo().getUsernick() + "的红包");
+
+                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
+                                                                    getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
+                                                            );
                                                             RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP, groupInfo.getGroupInfo().getId(), message1, new String[]{message.getSenderUserId()}
                                                                     , null, null, null);
                                                         } else {
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain("你领取了你的红包");
+                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, R.string.you, R.string.you));
                                                             RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP, groupInfo.getGroupInfo().getId(), message1, new String[]{Constant.userId}
                                                                     , null, null, null);
                                                         }
@@ -1006,8 +1008,10 @@ public class ConversationActivity extends BaseActivity {
                                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConversationActivity.this)))
                                                     .compose(RxSchedulers.normalTrans())
                                                     .subscribe(s1 -> {
-                                                        InformationNotificationMessage message1 = InformationNotificationMessage.obtain(Constant.currentUser.getNick() + "领取了" +
-                                                                s1.getSendUserInfo().getUsernick() + "的红包");
+
+                                                        InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
+                                                                getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s1.getSendUserInfo().getUsernick())
+                                                        );
                                                         RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.PRIVATE, targetId, message1, new String[]{targetId}
                                                                 , null, null, null);
 
@@ -1158,7 +1162,7 @@ public class ConversationActivity extends BaseActivity {
                 if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
                     tvTitle.setText(data.getStringExtra("title"));
                 } else {
-                    tvTitle.setText(data.getStringExtra("title") + "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
+                    tvTitle.setText(getString(R.string.groupname_num, data.getStringExtra("title"), groupInfo.getGroupInfo().getCustomerNumber()));
                 }
             }
         } else if (requestCode == 2000 && resultCode == 1000) {

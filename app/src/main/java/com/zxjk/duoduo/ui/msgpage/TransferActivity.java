@@ -107,7 +107,7 @@ public class TransferActivity extends BaseActivity {
                         runOnUiThread(() -> {
                             targetUser = new UserInfo(userInfo.getId(), userInfo.getNick(), Uri.parse(userInfo.getHeadPortrait()));
                             Glide.with(TransferActivity.this).load(targetUser.getPortraitUri().toString()).into(ivHead);
-                            tvName.setText("转账给" + targetUser.getName());
+                            tvName.setText(getString(R.string.transTo, targetUser.getName()));
                         });
                         return api.getPaymentList();
                     })
@@ -136,7 +136,7 @@ public class TransferActivity extends BaseActivity {
                             result = list.get(0);
                             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
                             tvCoin.setText(result.getSymbol());
-                            etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
+                            etMoney.setHint(getString(R.string.transLeft) + result.getBalance() + result.getSymbol());
                         }, t -> {
                             handleApiError(t);
                             finish();
@@ -144,7 +144,7 @@ public class TransferActivity extends BaseActivity {
             }
 
             Glide.with(this).load(targetUser.getPortraitUri().toString()).into(ivHead);
-            tvName.setText("转账给" + targetUser.getName());
+            tvName.setText(getString(R.string.transTo, targetUser.getName()));
         }
     }
 
@@ -165,7 +165,7 @@ public class TransferActivity extends BaseActivity {
         KeyboardUtils.hideSoftInput(this);
         new NewPayBoard(this).show(psw -> {
             String zhuanzhangInfo = etNote.getText().toString().trim();
-            String remarks = TextUtils.isEmpty(zhuanzhangInfo) ? ("转账给" + targetUser.getName()) : zhuanzhangInfo;
+            String remarks = TextUtils.isEmpty(zhuanzhangInfo) ? getString(R.string.transTo, targetUser.getName()) : zhuanzhangInfo;
             String payPsd = MD5Utils.getMD5(psw);
             String money = etMoney.getText().toString().trim();
             String toId = targetUser.getUserId();
@@ -250,7 +250,7 @@ public class TransferActivity extends BaseActivity {
             result = data.getParcelableExtra("result");
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             tvCoin.setText(result.getSymbol());
-            etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
+            etMoney.setHint(getString(R.string.transLeft) + result.getBalance() + result.getSymbol());
         }
     }
 

@@ -198,10 +198,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                                         }, true))
                                 .show();
                         TextView tv = show.findViewById(R.id.tvTips);
-                        tv.setText(Html.fromHtml(
-                                " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
-                                        "&nbsp;<font color='black'><b>" + bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle() + "</b></font>" +
-                                        "&nbsp;直接并单独向您承担责任。</p>"));
+                        tv.setText(Html.fromHtml(getString(R.string.danger_tips)));
                     }
                     break;
                 case SocialCaltureListBean.TYPE_FILE:
@@ -386,7 +383,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
     private void initViewForFilePage(BaseViewHolder helper, SocialCaltureListBean item) {
         TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
         if (llBottom.getVisibility() == View.VISIBLE) {
-            tvNumLeft.setText("(还可上传" + (Integer.parseInt(item.getFiles().getFileCreate()) - item.getFiles().getFilesList().size()) + "份资料)");
+            tvNumLeft.setText(getString(R.string.nums_left_upload_social_files, (Integer.parseInt(item.getFiles().getFileCreate()) - item.getFiles().getFilesList().size())));
         } else {
             tvNumLeft.setText("");
         }
@@ -501,7 +498,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 ToastUtils.showShort(R.string.cantopenfile);
             }
         } else {
-            LoadingDialog loadingDialog = new LoadingDialog(getActivity(), "下载中，请稍后");
+            LoadingDialog loadingDialog = new LoadingDialog(getActivity(), getString(R.string.downloading));
             loadingDialog.show();
             ServiceFactory.getInstance().getNormalService(Constant.OSS_URL, Api.class)
                     .downloadFile(url)
@@ -623,10 +620,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                                 }, true))
                         .show();
                 TextView tips = show.findViewById(R.id.tvTips);
-                tips.setText(Html.fromHtml(
-                        " <p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由" +
-                                "&nbsp;<font color='black'><b>" + appAdapter.getData().get(position).getApplicationName() + "</b></font>" +
-                                "&nbsp;直接并单独向您承担责任。</p>"));
+                tips.setText(Html.fromHtml(getString(R.string.danger_tips, appAdapter.getData().get(position).getApplicationName())));
             } else {
                 EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean applicationListBean = appAdapter.getData().get(position);
                 Intent intent = new Intent(getContext(), WebActivity.class);
@@ -672,7 +666,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         pagerVideo.setLayoutParams(layoutParams);
 
         if (llBottom.getVisibility() == View.VISIBLE) {
-            tvNumLeft.setText("(还可上传" + (Integer.parseInt(item.getVideo().getVideoCreate()) - item.getVideo().getVideoList().size()) + "条视频)");
+            tvNumLeft.setText(getString(R.string.upload_video_max1, (Integer.parseInt(item.getVideo().getVideoCreate()) - item.getVideo().getVideoList().size())));
         } else {
             tvNumLeft.setText("");
         }
@@ -884,7 +878,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             doneAction.done(adapter.getData());
             llBottom.setVisibility(View.GONE);
 
-            InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("社群文化已更新");
+            InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(getString(R.string.social_calture_update));
             Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
             RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
         }

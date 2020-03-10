@@ -36,8 +36,8 @@ public class EditSocialVideoNameActivity extends BaseActivity {
 
         fromFile = getIntent().getBooleanExtra("fromFile", false);
         if (fromFile) {
-            tvTitle.setText("资料重命名");
-            et.setHint("商业计划书名称");
+            tvTitle.setText(R.string.file_rename);
+            et.setHint(R.string.paper_name);
         }
     }
 

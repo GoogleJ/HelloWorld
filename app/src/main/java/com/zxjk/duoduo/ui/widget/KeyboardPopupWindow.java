@@ -154,7 +154,7 @@ public class KeyboardPopupWindow extends PopupWindow {
         if (!isRandomSort) {
             for (int i = 0; i < commonButtonIds.length; i++) {
                 final Button button = parentView.findViewById(commonButtonIds[i]);
-                button.setText("" + i);
+                button.setText(String.valueOf(i));
             }
         } else {
             list.clear();
@@ -167,7 +167,7 @@ public class KeyboardPopupWindow extends PopupWindow {
             }
             for (int i = 0; i < commonButtonIds.length; i++) {
                 final Button button = parentView.findViewById(commonButtonIds[i]);
-                button.setText("" + list.get(i));
+                button.setText(String.valueOf(list.get(i)));
             }
         }
     }

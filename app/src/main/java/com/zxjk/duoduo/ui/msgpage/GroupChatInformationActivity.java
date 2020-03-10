@@ -141,7 +141,8 @@ public class GroupChatInformationActivity extends BaseActivity {
             }
         });
         switch1.setOnCheckedChangeListener((buttonView, isChecked) -> RongIM.getInstance().setConversationToTop(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), isChecked, null));
-        tv_title.setText(getString(R.string.chat_message) + "(" + allGroupMembersResponseList.size() + ")");
+
+        tv_title.setText(getString(R.string.chat_message, String.valueOf(allGroupMembersResponseList.size())));
         groupChatName = findViewById(R.id.group_chat_name);
         groupChatRecyclerView = findViewById(R.id.group_chat_recycler_view);
 
@@ -246,9 +247,11 @@ public class GroupChatInformationActivity extends BaseActivity {
     public void dissolutionGroup(View view) {
         ConfirmDialog confirmDialog;
         if (Constant.userId.equals(group.getGroupInfo().getGroupOwnerId())) {
-            confirmDialog = new ConfirmDialog(this, "提示", "是否确定解散该群", v -> disBandGroup(group.getGroupInfo().getId(), Constant.userId));
+            confirmDialog = new ConfirmDialog(this, getString(R.string.hinttext),
+                    getString(R.string.is_confirm_delete_group), v -> disBandGroup(group.getGroupInfo().getId(), Constant.userId));
         } else {
-            confirmDialog = new ConfirmDialog(this, "提示", "是否确定退出该群", v -> exitGroup(group.getGroupInfo().getId(), Constant.userId));
+            confirmDialog = new ConfirmDialog(this, getString(R.string.hinttext),
+                    getString(R.string.is_confirm_exit_group), v -> exitGroup(group.getGroupInfo().getId(), Constant.userId));
         }
         confirmDialog.show();
     }
@@ -314,10 +317,10 @@ public class GroupChatInformationActivity extends BaseActivity {
         NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
             @Override
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                holder.setText(R.id.tv_title, "提示");
-                holder.setText(R.id.tv_content, "确定要清空当前聊天记录吗？");
-                holder.setText(R.id.tv_cancel, "取消");
-                holder.setText(R.id.tv_notarize, "确认");
+                holder.setText(R.id.tv_title, R.string.hinttext);
+                holder.setText(R.id.tv_content, R.string.is_clear_conversation_history);
+                holder.setText(R.id.tv_cancel, R.string.cancel);
+                holder.setText(R.id.tv_notarize, R.string.m_transfer_info_commit_btn);
                 holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_notarize, v1 -> RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, group.getGroupInfo().getId(), new RongIMClient.ResultCallback<Boolean>() {
                     @Override
@@ -343,7 +346,7 @@ public class GroupChatInformationActivity extends BaseActivity {
             Intent intent = new Intent(this, UpdateUserInfoActivity.class);
             intent.putExtra("type", 4);
             intent.putExtra("data", group);
-            intent.putExtra("groupId",group.getGroupInfo().getId());
+            intent.putExtra("groupId", group.getGroupInfo().getId());
             startActivityForResult(intent, 1);
         } else {
             ToastUtils.showShort(getString(R.string.no_update_nick));
@@ -394,7 +397,7 @@ public class GroupChatInformationActivity extends BaseActivity {
                     see_more_group_members.setVisibility(View.VISIBLE);
                     mAdapter.setNewData(allGroupMembersResponseList.subList(0, 15));
                 }
-                tv_title.setText(getString(R.string.chat_message) + "(" + allGroupMembersResponseList.size() + ")");
+                tv_title.setText(getString(R.string.chat_message, String.valueOf(allGroupMembersResponseList.size())));
             }
         }
     }

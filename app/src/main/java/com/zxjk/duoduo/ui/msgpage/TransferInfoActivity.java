@@ -104,34 +104,34 @@ public class TransferInfoActivity extends BaseActivity {
                     boolean fromSelf = transferResponse.getFormCustomerId().equals(Constant.currentUser.getId());
                     String status = transferResponse.getStatus();
                     if (status.equals("0") && fromSelf) {
-                        m_transfer_info_pending_payment_text.setText("待" + targetUserInfo.getName() + "确认领取");
+                        m_transfer_info_pending_payment_text.setText(getString(R.string.waitFor) + targetUserInfo.getName() + getString(R.string.confirmReceive));
                         m_transfer_info_caveat_text.setText(R.string.m_transfer_pending_return_text);
                         tvShouKuanTime.setVisibility(View.GONE);
-                        tvZhuanZhangTime.setText("转账时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
+                        tvZhuanZhangTime.setText(getString(R.string.transTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
                     } else if (status.equals("0") && !fromSelf) {
                         commitBtn.setVisibility(View.VISIBLE);
                         m_transfer_info_caveat_text.setText(R.string.m_transfer_info_caveat_text);
                     } else if (status.equals("1") && fromSelf) {
-                        m_transfer_info_pending_payment_text.setText(targetUserInfo.getName() + "已领取");
+                        m_transfer_info_pending_payment_text.setText(targetUserInfo.getName() + getString(R.string.received));
                         m_transfer_info_caveat_text.setText(R.string.receive3);
                         m_transfer_info_icon.setImageResource(R.drawable.icon_transfer_successful);
-                        tvZhuanZhangTime.setText("转账时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
-                        tvShouKuanTime.setText("收账时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCloseTime())));
+                        tvZhuanZhangTime.setText(getString(R.string.transTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
+                        tvShouKuanTime.setText(getString(R.string.receiveTransTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCloseTime())));
                     } else if (status.equals("1") && !fromSelf) {
                         m_transfer_info_pending_payment_text.setText(R.string.receive1);
                         m_transfer_info_icon.setImageResource(R.drawable.icon_transfer_successful);
-                        tvZhuanZhangTime.setText("转账时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
-                        tvShouKuanTime.setText("收账时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCloseTime())));
+                        tvZhuanZhangTime.setText(getString(R.string.transTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
+                        tvShouKuanTime.setText(getString(R.string.receiveTransTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCloseTime())));
                     } else if (status.equals("2") && fromSelf) {
                         m_transfer_info_icon.setImageResource(R.drawable.ic_zhuanzhanginfo_tuihuan);
                         m_transfer_info_pending_payment_text.setText(R.string.yituihuan);
-                        tvZhuanZhangTime.setText("转账时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
-                        tvShouKuanTime.setText("退还时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCloseTime())));
+                        tvZhuanZhangTime.setText(getString(R.string.transTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
+                        tvShouKuanTime.setText(getString(R.string.backTransTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCloseTime())));
                     } else {
                         m_transfer_info_icon.setImageResource(R.drawable.ic_zhuanzhanginfo_guoqi);
                         m_transfer_info_pending_payment_text.setText(R.string.yiguoqi);
-                        tvZhuanZhangTime.setText("转账时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
-                        tvShouKuanTime.setText("退还时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCloseTime())));
+                        tvZhuanZhangTime.setText(getString(R.string.transTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCreateTime())));
+                        tvShouKuanTime.setText(getString(R.string.backTransTime) + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.parseLong(transferResponse.getCloseTime())));
                     }
                 }, this::handleApiError);
     }

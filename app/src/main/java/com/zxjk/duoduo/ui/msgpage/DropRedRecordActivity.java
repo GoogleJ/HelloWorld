@@ -75,7 +75,7 @@ public class DropRedRecordActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void initData() {
-        mTvTitle.setText("空投记录");
+        mTvTitle.setText(R.string.drop_record);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         groupId = getIntent().getStringExtra("groupId");
         ServiceFactory.getInstance().getBaseService(Api.class)
@@ -122,16 +122,16 @@ public class DropRedRecordActivity extends BaseActivity {
                         mTvDropRecordCurrency.setText(releaseRecords.get(index).getSymbol());
                         mTvDropRecordAirdrops.setText(releaseRecords.get(index).getAirdrops());
                         if (releaseRecords.get(index).getStatus().equals("0")) {
-                            mTvDropRecordStatus.setText("未开始");
+                            mTvDropRecordStatus.setText(R.string.notStart);
                             mTvDropRecordStatus.setTextColor(getResources().getColor(R.color.count_down));
                         } else if (releaseRecords.get(index).getStatus().equals("1")) {
-                            mTvDropRecordStatus.setText("进行中");
+                            mTvDropRecordStatus.setText(R.string.procssing);
                             mTvDropRecordStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
                         } else if (releaseRecords.get(index).getStatus().equals("2")) {
-                            mTvDropRecordStatus.setText("已结束");
+                            mTvDropRecordStatus.setText(R.string.done2);
                             mTvDropRecordStatus.setTextColor(getResources().getColor(R.color.text_select_color));
                         } else if (releaseRecords.get(index).getStatus().equals("3")) {
-                            mTvDropRecordStatus.setText("已退回");
+                            mTvDropRecordStatus.setText(R.string.done3);
                             mTvDropRecordStatus.setTextColor(getResources().getColor(R.color.text_select_color));
                         }
 
@@ -144,12 +144,10 @@ public class DropRedRecordActivity extends BaseActivity {
 
                     @Override
                     public void onLeave(int index, int totalCount, float leavePercent, boolean leftToRight) {
-
                     }
 
                     @Override
                     public void onEnter(int index, int totalCount, float enterPercent, boolean leftToRight) {
-
                     }
                 });
 

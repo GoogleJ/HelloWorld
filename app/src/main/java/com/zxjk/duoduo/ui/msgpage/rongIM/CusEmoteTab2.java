@@ -183,7 +183,7 @@ public class CusEmoteTab2 implements IEmoticonTab {
                 msgContent.setIsGif("0");
 
                 Message message = Message.obtain(targetId, conversationType, msgContent);
-                RongIM.getInstance().sendMessage(message, "[表情]", "[表情]", (IRongCallback.ISendMessageCallback) null);
+                RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
             });
             container.addView(gridView);
             return gridView;

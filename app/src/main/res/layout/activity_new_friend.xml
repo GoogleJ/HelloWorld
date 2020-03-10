@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="添加通讯录中的朋友"
+                    android:text="@string/add_friend_from_book"
                     android:textColor="@color/textColor9"
                     android:textSize="11sp" />
 
@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="添加附近的朋友"
+                    android:text="@string/add_friend_from_near"
                     android:textColor="@color/textColor9"
                     android:textSize="11sp" />
 

@@ -86,7 +86,7 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                 .subscribe(getRedPackageStatusResponse -> {
                     title.setText(getRedPackageStatusResponse.getMessage());
                     GlideUtil.loadCircleImg(head, getRedPackageStatusResponse.getHeadPortrait());
-                    name.setText(getRedPackageStatusResponse.getUsernick() + getString(R.string.red_envelope));
+                    name.setText(getString(R.string.xxx_red, getRedPackageStatusResponse.getUsernick()));
                     if (getRedPackageStatusResponse.getRedPackageType() == 1) {
                         //群组红包
                         baseService
@@ -100,9 +100,9 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                             tv_redEnvelope.setText(response.getCustomerInfo().get(i).getMoney() + " " + response.getRedPackageInfo().getSymbol());
                                         }
                                     }
-                                    String text = " (已领取" + response.getRedPackageInfo().getReceiveCount() + "/" + response.getRedPackageInfo().getNumber() + "个)";
+                                    String text = getString(R.string.current_receive, response.getRedPackageInfo().getReceiveCount(), String.valueOf(response.getRedPackageInfo().getNumber()));
                                     int number = response.getRedPackageInfo().getNumber();
-                                    tips.setText(number + "个红包，共" + response.getRedPackageInfo().getMoney() + response.getRedPackageInfo().getSymbol() + text);
+                                    tips.setText(getString(R.string.xxx_red_total_xxx, String.valueOf(number), response.getRedPackageInfo().getMoney() + response.getRedPackageInfo().getSymbol() + text));
                                     adapter.setSymbol(response.getRedPackageInfo().getSymbol());
                                     adapter.setData(response.getCustomerInfo());
                                 }, this::handleApiError);
@@ -118,10 +118,10 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                     tv_redEnvelope.setText(money + " " + response.getRedPachageInfo().getSymbol());
                                     if (response.getRedPachageInfo().getStatus().equals("0")) {
                                         //未领取
-                                        tips.setText("红包金额" + money + response.getRedPachageInfo().getSymbol() + ",等待对方领取");
+                                        tips.setText(getString(R.string.red_money, money + response.getRedPachageInfo().getSymbol()));
                                     } else {
                                         //已领取
-                                        tips.setText("红包金额" + money + response.getRedPachageInfo().getSymbol() + ",已被领取");
+                                        tips.setText(getString(R.string.red_money1, money + response.getRedPachageInfo().getSymbol()));
                                     }
                                     GetGroupRedPackageInfoResponse.CustomerInfoBean bean = new GetGroupRedPackageInfoResponse.CustomerInfoBean();
                                     if (response.getRedPachageInfo().getStatus().equals("1")) {
@@ -133,94 +133,6 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                         ArrayList<GetGroupRedPackageInfoResponse.CustomerInfoBean> objects = new ArrayList<>(1);
                                         objects.add(bean);
                                         adapter.setSymbol(response.getRedPachageInfo().getSymbol());
-                                        adapter.setData(objects);
-                                    }
-                                }, this::handleApiError);
-                    }
-                }, this::handleApiError);
-    }
-
-    @SuppressLint("CheckResult")
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-        RedPackageAdapter adapter = new RedPackageAdapter();
-        adapter.setData(new ArrayList<>());
-        recycler.setAdapter(adapter);
-
-        String id = intent.getStringExtra("id");
-        isShow = intent.getBooleanExtra("isShow", true);
-        if (!isShow) {
-            tv_redEnvelope.setVisibility(View.GONE);
-        } else {
-            tv_redEnvelope.setVisibility(View.VISIBLE);
-        }
-        isGame = intent.getStringExtra("isGame");
-        if (TextUtils.isEmpty(isGame)) {
-            isGame = "1";
-        }
-        if (isGame.equals("0")) {
-            tips.setVisibility(View.GONE);
-        }
-        boolean fromList = intent.getBooleanExtra("fromList", false);
-        if (fromList) {
-            tv_end.setVisibility(View.GONE);
-        }
-        Api baseService = ServiceFactory.getInstance().getBaseService(Api.class);
-        baseService.getRedPackageStatus(id, isGame)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .compose(RxSchedulers.normalTrans())
-                .subscribe(getRedPackageStatusResponse -> {
-                    title.setText(getRedPackageStatusResponse.getMessage());
-                    GlideUtil.loadCircleImg(head, getRedPackageStatusResponse.getHeadPortrait());
-                    name.setText(getRedPackageStatusResponse.getUsernick() + getString(R.string.red_envelope));
-                    if (getRedPackageStatusResponse.getRedPackageType() == 1) {
-                        //群组红包
-                        baseService
-                                .getGroupRedPackageInfo(id)
-                                .compose(bindToLifecycle())
-                                .compose(RxSchedulers.normalTrans())
-                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                                .subscribe(response -> {
-                                    for (int i = 0; i < response.getCustomerInfo().size(); i++) {
-                                        if (String.valueOf(response.getCustomerInfo().get(i).getCustomerId()).equals(Constant.currentUser.getId())) {
-                                            tv_redEnvelope.setText(response.getCustomerInfo().get(i).getMoney() + " MoT");
-                                        }
-                                    }
-                                    int number = response.getRedPackageInfo().getNumber();
-                                    tips.setText(number + "个红包，共" + response.getRedPackageInfo().getMoney() + "MoT");
-                                    if (!isGame.equals("0")) {
-                                        adapter.setData(response.getCustomerInfo());
-                                    }
-                                }, this::handleApiError);
-                    } else {
-                        //个人红包
-                        baseService
-                                .personalRedPackageInfo(id, Integer.parseInt(Constant.userId))
-                                .compose(bindToLifecycle())
-                                .compose(RxSchedulers.normalTrans())
-                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                                .subscribe(response -> {
-                                    String money = response.getRedPachageInfo().getMoney();
-                                    tv_redEnvelope.setText(money + " MoT");
-                                    if (response.getRedPachageInfo().getStatus().equals("0")) {
-                                        //未领取
-                                        tips.setText("红包金额" + money + "MoT,等待对方领取");
-                                    } else {
-                                        //已领取
-                                        tips.setText("红包金额" + money + "MoT,已被领取");
-                                    }
-                                    GetGroupRedPackageInfoResponse.CustomerInfoBean bean = new GetGroupRedPackageInfoResponse.CustomerInfoBean();
-                                    if (response.getRedPachageInfo().getStatus().equals("1")) {
-                                        bean.setHeadPortrait(response.getReceiveInfo().getHeadPortrait());
-                                        bean.setNick(response.getReceiveInfo().getUsernick());
-                                        bean.setMoney(response.getRedPachageInfo().getMoney());
-                                        bean.setCreateTime(response.getReceiveInfo().getTime());
-                                        ArrayList<GetGroupRedPackageInfoResponse.CustomerInfoBean> objects = new ArrayList<>(1);
-                                        objects.add(bean);
                                         adapter.setData(objects);
                                     }
                                 }, this::handleApiError);

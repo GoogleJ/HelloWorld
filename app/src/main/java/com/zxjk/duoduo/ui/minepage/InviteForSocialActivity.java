@@ -168,7 +168,7 @@ public class InviteForSocialActivity extends BaseActivity {
                     TextView tv = helper.getView(R.id.tvReward);
                     if (!item.getIsAuthentication().equals("0")) {
                         tv.setTextColor(color1);
-                        tv.setText("认证中");
+                        tv.setText(R.string.authening);
                         ivSigned.setVisibility(View.GONE);
                     } else {
                         tv.setTextColor(color2);
@@ -207,7 +207,7 @@ public class InviteForSocialActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
                     if (TextUtils.isEmpty(tvInviteCount.getText())) {
-                        tvInviteCount.setText(r.getTotal() + "人");
+                        tvInviteCount.setText(getString(R.string.person1, String.valueOf(r.getTotal())));
                     }
                     page += 1;
                     if (adapter.getData().size() == 0) {

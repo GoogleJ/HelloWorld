@@ -94,7 +94,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
                     }
 
                     ImageUtil.loadGroupPortrait(groupHeader, s, 80, 2);
-                    tvGroupName.setText(groupName + "(" + list.size() + "人)");
+                    tvGroupName.setText(getString(R.string.groupname_num, groupName, String.valueOf(list.size())));
                     joinGroupBtn.setOnClickListener(v -> {
                         if (canJoin) {
                             ToastUtils.showShort(getString(R.string.group_max_number));
@@ -120,8 +120,10 @@ public class AgreeGroupChatActivity extends BaseActivity {
                     }
 
                     //发送进群灰条
-                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                            Constant.currentUser.getNick() + "\"加入了讨论组");
+
+                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(
+                            getString(R.string.xxx_join_dissection, Constant.currentUser.getNick())
+                    );
                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 

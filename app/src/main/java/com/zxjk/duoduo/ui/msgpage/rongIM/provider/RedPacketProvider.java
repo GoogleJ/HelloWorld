@@ -60,7 +60,6 @@ public class RedPacketProvider extends IContainerItemProvider.MessageProvider<Re
     public void onItemClick(View view, int i, RedPacketMessage redPacketMessage, UIMessage uiMessage) {
     }
 
-
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_red_packet_send, viewGroup, false);

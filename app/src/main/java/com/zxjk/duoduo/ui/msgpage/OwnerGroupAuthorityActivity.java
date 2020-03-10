@@ -210,7 +210,7 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
 
         TextView emptyView = new TextView(this);
         emptyView.setGravity(Gravity.CENTER);
-        emptyView.setText("暂无管理员，点击添加");
+        emptyView.setText(R.string.no_manager);
         emptyView.setTextSize(15);
         emptyView.setTextColor(ContextCompat.getColor(this, R.color.textcolor2));
 

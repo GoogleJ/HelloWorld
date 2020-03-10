@@ -477,7 +477,7 @@
                     android:id="@+id/tvGroupTips2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="发言间隔:1秒"
+                    android:text="@string/speech_interval_1"
                     android:textColor="@color/textcolor3"
                     android:textSize="13sp" />
 
@@ -516,7 +516,7 @@
                         android:drawableStart="@drawable/ic_groupmanage13"
                         android:drawablePadding="4dp"
                         android:gravity="center_vertical"
-                        android:text="社群公开"
+                        android:text="@string/community_open"
                         android:textColor="@color/textcolor1"
                         android:textSize="16sp" />
 

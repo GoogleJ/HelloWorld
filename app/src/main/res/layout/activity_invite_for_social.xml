@@ -75,7 +75,7 @@
         android:paddingTop="6dp"
         android:paddingEnd="14dp"
         android:paddingBottom="6dp"
-        android:text="社群空间，让价值更好更快流通"
+        android:text="@string/community_space_info"
         android:textColor="#F8D337"
         android:textSize="16sp" />
 
@@ -91,7 +91,7 @@
             android:layout_marginEnd="32dp"
             android:drawableStart="@drawable/ic_invite_check"
             android:drawablePadding="8dp"
-            android:text="付费进群"
+            android:text="@string/pay_enter_group"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -101,7 +101,7 @@
             android:layout_marginEnd="24dp"
             android:drawableStart="@drawable/ic_invite_check"
             android:drawablePadding="8dp"
-            android:text="进群领红包"
+            android:text="@string/group_leader"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -119,7 +119,7 @@
             android:layout_marginEnd="32dp"
             android:drawableStart="@drawable/ic_invite_check"
             android:drawablePadding="8dp"
-            android:text="慢速模式"
+            android:text="@string/slowmode"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -129,7 +129,7 @@
             android:layout_marginEnd="24dp"
             android:drawableStart="@drawable/ic_invite_check"
             android:drawablePadding="8dp"
-            android:text="群消息过滤"
+            android:text="@string/message_filter"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -171,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.1"
-                        android:text="我的邀请码"
+                        android:text="@string/invite_code"
                         android:textColor="#4C4C4C"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -186,7 +186,7 @@
                         android:paddingTop="2dp"
                         android:paddingEnd="10dp"
                         android:paddingBottom="2dp"
-                        android:text="查看奖励"
+                        android:text="@string/view_rewards"
                         android:textColor="@color/colorTheme"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -262,7 +262,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="保存海报"
+                    android:text="@string/saveposters"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -290,7 +290,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="立即邀请"
+                    android:text="@string/invite_now"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />

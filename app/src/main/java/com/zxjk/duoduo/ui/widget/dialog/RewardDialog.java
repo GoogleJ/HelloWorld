@@ -1,6 +1,5 @@
 package com.zxjk.duoduo.ui.widget.dialog;
 
-
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -60,19 +59,18 @@ public class RewardDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_reward);
         setCanceledOnTouchOutside(false);
+
         initView();
 
-        initDate();
+        initAnim();
     }
 
-
-    private void initDate() {
+    private void initAnim() {
         RotateAnimation rotate = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         LinearInterpolator lin = new LinearInterpolator();
         rotate.setInterpolator(lin);

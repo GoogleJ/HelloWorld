@@ -212,8 +212,8 @@ public class MuteManageActivity extends BaseActivity {
 
                     switch (position) {
                         case 0:
-                            tv1.setText("禁言");
-                            tv2.setText("踢出");
+                            tv1.setText(R.string.mute);
+                            tv2.setText(R.string.kickout);
                             tv1.setOnClickListener(v -> api.muteMembers(groupId, bean.getId(), "add")
                                     .compose(bindToLifecycle())
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
@@ -238,8 +238,8 @@ public class MuteManageActivity extends BaseActivity {
                                     }, MuteManageActivity.this::handleApiError));
                             break;
                         case 1:
-                            tv1.setText("取消");
-                            tv2.setText("移除");
+                            tv1.setText(R.string.cancel);
+                            tv2.setText(R.string.remove);
                             tv1.setSelected(true);
                             tv1.setOnClickListener(v -> api.muteMembers(groupId, bean.getId(), "remove")
                                     .compose(bindToLifecycle())
@@ -279,7 +279,7 @@ public class MuteManageActivity extends BaseActivity {
                             break;
                         case 2:
                             tv1.setVisibility(View.GONE);
-                            tv2.setText("移除");
+                            tv2.setText(R.string.remove);
                             tv2.setOnClickListener(v -> api.kickOutORRemove(groupId, bean.getId(), "remove")
                                     .compose(bindToLifecycle())
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))

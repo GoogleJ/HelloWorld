@@ -198,7 +198,7 @@ public class EnlargeImageActivity extends BaseActivity {
                         String userId = uri.data;
                         CommonUtils.resolveFriendList(EnlargeImageActivity.this, userId);
                     } else if (action.equals("action3")) {
-                        ToastUtils.showShort("群组二维码已过期，请使用社群二维码");
+                        ToastUtils.showShort(R.string.decode_qr_failure);
                     } else if (action.equals("action4")) {
                         BaseUri<SocialQRCodeActivity.QRCodeData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<SocialQRCodeActivity.QRCodeData>>() {
                         }.getType());
@@ -353,8 +353,8 @@ public class EnlargeImageActivity extends BaseActivity {
                 NiceDialog.init().setLayoutId(R.layout.layout_general_dialog6).setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        holder.setText(R.id.tv_photograph, "保存图片");
-                        holder.setText(R.id.tv_photo_select, "识别二维码");
+                        holder.setText(R.id.tv_photograph, R.string.save_picture);
+                        holder.setText(R.id.tv_photo_select, R.string.parse_qr);
 
                         //识别二维码
                         holder.setOnClickListener(R.id.tv_photo_select, v -> {

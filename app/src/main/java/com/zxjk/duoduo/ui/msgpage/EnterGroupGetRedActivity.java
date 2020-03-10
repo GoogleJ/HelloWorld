@@ -83,7 +83,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         mRecord = findViewById(R.id.tv_end);
         mRecord.setVisibility(View.VISIBLE);
-        mRecord.setText("空投记录");
+        mRecord.setText(R.string.drop_record);
 
         sw = findViewById(R.id.sw);
         tvStartTime = findViewById(R.id.tvStartTime);
@@ -115,7 +115,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
             }
             request.setSymbol(result.getSymbol());
             if (tvAll.getText().equals("0") || tvEach.getText().equals("0") ||
-                    tvEndTime.getText().equals("请设置") || tvStartTime.getText().equals("请设置")) {
+                    tvEndTime.getText().equals(getString(R.string.please_set_up)) || tvStartTime.getText().equals(getString(R.string.please_set_up))) {
                 ToastUtils.showShort(R.string.please_setall);
             } else if (Float.parseFloat(tvAll.getText().toString()) < Float.parseFloat(tvEach.getText().toString())) {
                 ToastUtils.showShort(R.string.all_less_each);
@@ -262,14 +262,13 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day)
                 -> {
             String[] endTime = tvEndTime.getText().toString().split("-");
-            if (!tvEndTime.getText().toString().equals("请设置") &&
+            if (!tvEndTime.getText().toString().equals(getString(R.string.please_set_up)) &&
                     (Integer.parseInt(year + month + day))
                             > (Integer.parseInt(endTime[0] + endTime[1] + endTime[2]))) {
                 ToastUtils.showShort(R.string.starttime_less_end);
                 return;
             }
-
-            tvStartTime.setText(year + "-" + month + "-" + day);
+            tvStartTime.setText(getString(R.string.value_value_value, year, month, day));
         });
         String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
         datePicker.setRangeStart(Integer.parseInt(nowString[0]),
@@ -284,14 +283,13 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         if (mBtnGroupSave.getVisibility() != View.VISIBLE) {
             return;
         }
-        if (tvStartTime.getText().equals("请设置")) {
+        if (tvStartTime.getText().equals(getString(R.string.please_set_up))) {
             ToastUtils.showShort(R.string.please_set_start_time);
             return;
         }
         DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
         datePicker.setOnDatePickListener((DatePicker.OnYearMonthDayPickListener) (year, month, day) -> {
-
-            tvEndTime.setText(year + "-" + month + "-" + day);
+            tvEndTime.setText(getString(R.string.value_value_value, year, month, day));
         });
         String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd")).split("-");
         datePicker.setRangeStart(Integer.parseInt(nowString[0]),
@@ -302,7 +300,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
     }
 
     private void initPicker(DatePicker datePicker) {
-        datePicker.setTitleText("选择时间");
+        datePicker.setTitleText(getString(R.string.choose_time));
         datePicker.setTitleTextSize(17);
         datePicker.setTitleTextColor(ContextCompat.getColor(this, R.color.textcolor1));
         datePicker.setCancelTextColor(ContextCompat.getColor(this, R.color.textcolor3));

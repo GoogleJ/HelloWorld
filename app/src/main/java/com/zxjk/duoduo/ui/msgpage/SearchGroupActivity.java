@@ -102,7 +102,7 @@ public class SearchGroupActivity extends BaseActivity {
                 if (item.getCommunityName().contains(searchWord)) {
                     helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), searchWord));
                 } else if (item.getCode().contains(searchWord)) {
-                    helper.setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), "社群号:" + item.getCode(), searchWord));
+                    helper.setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), getString(R.string.social_code) + item.getCode(), searchWord));
                 } else if (item.getOwnerNick().contains(searchWord)) {
                     helper.setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), searchWord));
                 }

@@ -211,7 +211,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:layout_marginBottom="6dp"
-                                android:text="邀请好友"
+                                android:text="@string/invite_friends1"
                                 android:textColor="@color/white"
                                 android:textSize="13sp" />
 
@@ -240,7 +240,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:layout_marginBottom="6dp"
-                                android:text="移除成员"
+                                android:text="@string/remove_member"
                                 android:textColor="@color/colorTheme"
                                 android:textSize="13sp" />
 

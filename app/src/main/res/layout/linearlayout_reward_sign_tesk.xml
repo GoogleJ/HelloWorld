@@ -57,7 +57,7 @@
                 android:id="@+id/ic_reward_receive_tack"
                 android:layout_width="80dp"
                 android:layout_height="32dp"
-                android:text="领取"
+                android:text="@string/receive2"
                 android:background="@drawable/reward_receive_tack"
                 android:textColor="#FFFFFF"
                 android:gravity="center"
@@ -70,7 +70,7 @@
                 android:id="@+id/ic_reward_receive_tack2"
                 android:layout_width="80dp"
                 android:layout_height="32dp"
-                android:text="已领取"
+                android:text="@string/receive1"
                 android:background="@drawable/reward_receive_tack2"
                 android:textColor="@color/white"
                 android:gravity="center"
@@ -100,7 +100,7 @@
                 android:layout_weight="1"/>
             <TextView
                 android:id="@+id/tv_reward_task_go"
-                android:text="去完成"
+                android:text="@string/go_finish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_teskrightarrow"

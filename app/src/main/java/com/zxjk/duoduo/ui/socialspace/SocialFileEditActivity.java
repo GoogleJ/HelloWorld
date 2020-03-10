@@ -65,7 +65,7 @@ public class SocialFileEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_file_edit);
 
-        uploadLoading = new LoadingDialog(this, "上传中");
+        uploadLoading = new LoadingDialog(this, getString(R.string.uploading));
         uploadLoading.setDelayTimeStamp(0);
 
         TextView title = findViewById(R.id.tv_title);
@@ -80,7 +80,7 @@ public class SocialFileEditActivity extends BaseActivity {
         llTopTips = findViewById(R.id.llTopTips);
         recycler = findViewById(R.id.recycler);
 
-        tvMaxCount.setText("最多上传" + maxCount + "份社群资料，请上传体验");
+        tvMaxCount.setText(getString(R.string.upload_max_file, maxCount));
 
         adapter = new BaseQuickAdapter<FileBean, BaseViewHolder>(R.layout.item_social_file_list, null) {
             @Override
@@ -102,9 +102,9 @@ public class SocialFileEditActivity extends BaseActivity {
         };
 
         if (currentMax == 0) {
-            tvCurrentCount.setText("目前已达上传上限");
+            tvCurrentCount.setText(getString(R.string.hitMaxUploadCount));
         } else {
-            tvCurrentCount.setText("已选" + " (0" + "/" + currentMax + ")");
+            tvCurrentCount.setText(getString(R.string.current_selected, 0, currentMax));
         }
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
@@ -117,15 +117,15 @@ public class SocialFileEditActivity extends BaseActivity {
                 b.setChecked(true);
                 selectedFiles.add(((FileBean) adapter.getData().get(position)));
                 currentCount += 1;
-                tvCurrentCount.setText("已选" + " (" + currentCount + "/" + currentMax + ")");
                 adapter.notifyItemChanged(position);
             } else {
                 b.setChecked(false);
                 selectedFiles.remove(adapter.getData().get(position));
                 currentCount -= 1;
-                tvCurrentCount.setText("已选" + " (" + currentCount + "/" + currentMax + ")");
                 adapter.notifyItemChanged(position);
             }
+
+            tvCurrentCount.setText(getString(R.string.current_selected, currentCount, currentMax));
         });
 
         View emptyview = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
@@ -144,7 +144,7 @@ public class SocialFileEditActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(adapter::setNewData, t -> {
-                    ToastUtils.showShort("暂时无法读取本地文件，请联系客服");
+                    ToastUtils.showShort(R.string.cant_parse_data);
                     finish();
                 });
     }
@@ -196,7 +196,7 @@ public class SocialFileEditActivity extends BaseActivity {
             return;
         }
 
-        uploadLoading.setText("上传中");
+        uploadLoading.setText(getString(R.string.uploading));
         uploadLoading.show();
 
         OssUtils.uploadFile(selectedFiles.get(0).path, selectedFiles.get(0).format, new OssUtils.OssCallBack1() {
@@ -220,8 +220,9 @@ public class SocialFileEditActivity extends BaseActivity {
                     uploadLoading.dismissReally();
                 }
                 finish();
+
             }
-        }, progress -> runOnUiThread(() -> uploadLoading.setText("上传中," + (int) (progress * 100) + "%")));
+        }, progress -> runOnUiThread(() -> uploadLoading.setText(getString(R.string.uploading_progress, (int) progress * 100))));
     }
 
     /**

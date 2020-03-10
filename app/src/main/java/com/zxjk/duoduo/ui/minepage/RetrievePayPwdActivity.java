@@ -24,19 +24,19 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 public class RetrievePayPwdActivity extends BaseActivity implements View.OnClickListener {
-    ImageView idCardImage;
-    ImageView phoneCodeImage;
-    LinearLayout idCardLayout;
-    ConstraintLayout phoneCodeLayout;
-    EditText idCardEdit;
-    TextView phone;
-    TextView textGetCode;
-    EditText verifiedCodeEdit;
-    TextView commitBtn;
-    boolean isTrue = true;
+    private ImageView idCardImage;
+    private ImageView phoneCodeImage;
+    private LinearLayout idCardLayout;
+    private ConstraintLayout phoneCodeLayout;
+    private EditText idCardEdit;
+    private TextView phone;
+    private TextView textGetCode;
+    private EditText verifiedCodeEdit;
+    private TextView commitBtn;
+    private boolean isTrue = true;
 
     //短信验证
-    String messagfeCode;
+    private String messagfeCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

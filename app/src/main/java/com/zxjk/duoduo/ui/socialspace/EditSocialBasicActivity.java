@@ -183,20 +183,20 @@ public class EditSocialBasicActivity extends BaseActivity {
                                 intent.putExtra("slogan", etSocialSlogan.getText().toString().trim());
 
                                 if (!etSocialName.getText().toString().trim().equals(data.getName())) {
-                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("社群改名为" + etSocialName.getText().toString().trim());
+                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(getString(R.string.change_socialname_to, etSocialName.getText().toString().trim()));
                                     Message message = Message.obtain(data.getGroupId(), Conversation.ConversationType.GROUP, notificationMessage);
                                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
                                 }
 
                                 if (etSocialSlogan.getText().toString().trim().equals(data.getIntroduction())) {
-                                    InformationNotificationMessage notificationMessage1 = InformationNotificationMessage.obtain("社群简介已更新");
+                                    InformationNotificationMessage notificationMessage1 = InformationNotificationMessage.obtain(getString(R.string.social_basic_upgrade));
                                     Message message1 = Message.obtain(data.getGroupId(), Conversation.ConversationType.GROUP, notificationMessage1);
                                     RongIM.getInstance().sendMessage(message1, "", "", (IRongCallback.ISendMessageCallback) null);
                                 }
 
                             } else {
                                 if (!etSocialSlogan.getText().toString().trim().equals(data.getAnnouncement())) {
-                                    InformationNotificationMessage notificationMessage1 = InformationNotificationMessage.obtain("社群公告已更新");
+                                    InformationNotificationMessage notificationMessage1 = InformationNotificationMessage.obtain(getString(R.string.social_basic_upgrade1));
                                     Message message1 = Message.obtain(data.getGroupId(), Conversation.ConversationType.GROUP, notificationMessage1);
                                     RongIM.getInstance().sendMessage(message1, "", "", (IRongCallback.ISendMessageCallback) null);
                                 }

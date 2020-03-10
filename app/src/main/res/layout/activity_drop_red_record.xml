@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="72dp"/>
         <TextView
-            android:text="暂无空投记录！"
+            android:text="@string/no_drop_red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:text="剩余数量:"
+                        android:text="@string/num_left"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#4A494A"/>
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:text="空投人数:"
+                        android:text="@string/drops_person_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#4A494A"/>

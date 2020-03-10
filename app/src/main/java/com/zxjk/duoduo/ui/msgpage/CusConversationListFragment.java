@@ -7,21 +7,13 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.msgpage.rongIM.CusConversationListAdapter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
-import io.rong.imkit.fragment.IHistoryDataResultCallback;
 import io.rong.imkit.model.UIConversation;
 import io.rong.imkit.widget.adapter.ConversationListAdapter;
-import io.rong.imlib.model.Conversation;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
@@ -67,8 +59,10 @@ public class CusConversationListFragment extends ConversationListFragment {
                         }, true))
                 .show();
 
+        String cancelTop = ((Fragment) this).getContext().getString(R.string.cancelTop);
+        String setTop = ((Fragment) this).getContext().getString(R.string.setTop);
         TextView tvSetTop = longClickPop.findViewById(R.id.tv1);
-        tvSetTop.setText(c.isTop() ? "取消置顶" : "置顶会话");
+        tvSetTop.setText(c.isTop() ? cancelTop : setTop);
     }
 
 }

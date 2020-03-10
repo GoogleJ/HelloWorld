@@ -33,7 +33,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="(还可上传4份资料)"
+            android:text="@string/file_upload"
             android:textColor="@color/textColor9"
             android:textSize="12.5sp" />
 

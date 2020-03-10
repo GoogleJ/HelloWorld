@@ -91,7 +91,7 @@ public class SocialQRCodeActivity extends BaseActivity {
         tvTitle.setText(R.string.qrcodename);
         tvSocialName.setText(data.getName());
 
-        tvSocialId.setText("社群号:" + data.getCode());
+        tvSocialId.setText(getString(R.string.social_code) + data.getCode());
         GlideUtil.loadNormalImg(ivBg, data.getBgi());
         GlideUtil.loadNormalImg(ivHead, data.getLogo());
 

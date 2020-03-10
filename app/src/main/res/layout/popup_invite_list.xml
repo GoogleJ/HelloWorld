@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_invite_invite"
                 android:drawablePadding="8dp"
-                android:text="邀请人数"
+                android:text="@string/invite_num"
                 android:textSize="15sp" />
 
             <TextView
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="被邀请人昵称"
+                android:text="@string/invite_friend_nick"
                 android:textColor="@color/textColor9" />
 
             <TextView
@@ -65,7 +65,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="邀请日期"
+                android:text="@string/invite_date"
                 android:textColor="@color/textColor9" />
 
             <TextView
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="邀请收益"
+                android:text="@string/invite_earn"
                 android:textColor="@color/textColor9" />
 
         </LinearLayout>

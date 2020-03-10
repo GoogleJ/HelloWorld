@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
-        android:text="暂无活动，点击上传"
+        android:text="@string/no_activity"
         android:textColor="@color/textColor9" />
 
 </LinearLayout>

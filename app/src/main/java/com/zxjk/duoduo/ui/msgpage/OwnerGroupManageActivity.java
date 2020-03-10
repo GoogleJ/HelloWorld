@@ -32,7 +32,6 @@ import io.rong.message.CommandMessage;
 import io.rong.message.InformationNotificationMessage;
 
 public class OwnerGroupManageActivity extends BaseActivity {
-
     private Api api;
 
     private RelativeLayout rl_back;
@@ -92,29 +91,30 @@ public class OwnerGroupManageActivity extends BaseActivity {
         String tips = "";
         switch (group.getGroupInfo().getSlowMode()) {
             case "0":
-                tips = "关闭";
+                tips = getString(R.string.close);
                 break;
             case "30":
-                tips = "发言间隔:30秒";
+                tips = getString(R.string.slowMode_time, "30", getString(R.string.second));
                 break;
             case "60":
-                tips = "发言间隔:1分钟";
+                tips = getString(R.string.slowMode_time, "1", getString(R.string.minute));
                 break;
             case "300":
-                tips = "发言间隔:5分钟";
+                tips = getString(R.string.slowMode_time, "5", getString(R.string.minute));
                 break;
             case "600":
-                tips = "发言间隔:10分钟";
+                tips = getString(R.string.slowMode_time, "10", getString(R.string.minute));
                 break;
             case "3600":
-                tips = "发言间隔:1小时";
+                tips = getString(R.string.slowMode_time, "1", getString(R.string.hour));
                 break;
         }
         tvGroupTips2.setText(tips);
-        tvGroupTips3.setText("当前限制" + group.getGroupInfo().getLimitNumber() + "人");
+        tvGroupTips3.setText(getString(R.string.current_limit_xx_person, group.getGroupInfo().getLimitNumber()));
 
         switchSendPic.setOnClickListener(v -> {
-            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止发图片确认", "是否确定操作禁止发送图片功能");
+            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, getString(R.string.queding), getString(R.string.cancel),
+                    getString(R.string.ban_send_pic), getString(R.string.ban_send_pic1));
             dialog.setOnCommitListener(() -> switchSendPic.setChecked(!switchSendPic.isChecked()));
             dialog.setOnCancelListener(() -> api.groupOperation(group.getGroupInfo().getId(), switchSendPic.isChecked() ? "1" : "0", "1")
                     .compose(bindToLifecycle())
@@ -130,9 +130,9 @@ public class OwnerGroupManageActivity extends BaseActivity {
 
                         String text;
                         if (switchSendPic.isChecked()) {
-                            text = "禁止发图片已开启";
+                            text = getString(R.string.ban_sendpic_open);
                         } else {
-                            text = "禁止发图片已关闭";
+                            text = getString(R.string.ban_sendpic_close);
                         }
                         InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
                         Message message1 = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, notificationMessage);
@@ -146,7 +146,8 @@ public class OwnerGroupManageActivity extends BaseActivity {
         });
 
         switchSendUrl.setOnClickListener(v -> {
-            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止发链接确认", "是否确定操作禁止发送链接功能");
+            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, getString(R.string.queding),
+                    getString(R.string.cancel), getString(R.string.ban_send_link), getString(R.string.ban_send_link1));
             dialog.setOnCommitListener(() -> switchSendUrl.setChecked(!switchSendUrl.isChecked()));
             dialog.setOnCancelListener(() -> api.groupOperation(group.getGroupInfo().getId(), switchSendUrl.isChecked() ? "1" : "0", "2")
                     .compose(bindToLifecycle())
@@ -162,9 +163,9 @@ public class OwnerGroupManageActivity extends BaseActivity {
 
                         String text;
                         if (switchSendUrl.isChecked()) {
-                            text = "禁止发链接已开启";
+                            text = getString(R.string.ban_send_link_open);
                         } else {
-                            text = "禁止发链接已关闭";
+                            text = getString(R.string.ban_send_link_close);
                         }
                         InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
                         Message message1 = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, notificationMessage);
@@ -178,7 +179,8 @@ public class OwnerGroupManageActivity extends BaseActivity {
         });
 
         switchAddFriend.setOnClickListener(v -> {
-            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁止互加好友确认", "是否确定操作成员不能互加好友功能");
+            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, getString(R.string.queding),
+                    getString(R.string.cancel), getString(R.string.ban_add_friend), getString(R.string.ban_add_friend1));
             dialog.setOnCommitListener(() -> switchAddFriend.setChecked(!switchAddFriend.isChecked()));
             dialog.setOnCancelListener(() -> api.groupOperation(group.getGroupInfo().getId(), switchAddFriend.isChecked() ? "1" : "0", "0")
                     .compose(bindToLifecycle())
@@ -188,9 +190,9 @@ public class OwnerGroupManageActivity extends BaseActivity {
                         group.getGroupInfo().setBanFriend(switchAddFriend.isChecked() ? "1" : "0");
                         String text;
                         if (switchAddFriend.isChecked()) {
-                            text = "禁止互加好友已开启";
+                            text = getString(R.string.ban_add_friend_open);
                         } else {
-                            text = "禁止互加好友已关闭";
+                            text = getString(R.string.ban_add_friend_close);
                         }
                         InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
                         Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, notificationMessage);
@@ -204,7 +206,8 @@ public class OwnerGroupManageActivity extends BaseActivity {
         });
 
         switchMuteAll.setOnClickListener(v -> {
-            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "禁言确认", "是否确定操作全员禁言功能");
+            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, getString(R.string.queding), getString(R.string.cancel),
+                    getString(R.string.mute_confirm), getString(R.string.mute_confirm1));
             dialog.setOnCommitListener(() -> switchMuteAll.setChecked(!switchMuteAll.isChecked()));
             dialog.setOnCancelListener(() -> api.muteGroups(group.getGroupInfo().getId(), switchMuteAll.isChecked() ? "add" : "remove")
                     .compose(bindToLifecycle())
@@ -214,9 +217,9 @@ public class OwnerGroupManageActivity extends BaseActivity {
                         group.getGroupInfo().setIsBanned(switchMuteAll.isChecked() ? "1" : "0");
                         String text;
                         if (switchMuteAll.isChecked()) {
-                            text = "群员禁言已开启";
+                            text = getString(R.string.mute_all_open);
                         } else {
-                            text = "群员禁言已关闭";
+                            text = getString(R.string.mute_all_close);
                         }
                         InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(text);
                         Message message = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, notificationMessage);
@@ -230,7 +233,8 @@ public class OwnerGroupManageActivity extends BaseActivity {
         });
 
         switchGroupPublic.setOnClickListener(v -> {
-            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, "确定", "取消", "社群公开", "是否确定操作社群公开功能");
+            MuteRemoveDialog dialog = new MuteRemoveDialog(OwnerGroupManageActivity.this, getString(R.string.queding), getString(R.string.cancel),
+                    getString(R.string.social_public), getString(R.string.social_public1));
             dialog.setOnCommitListener(() -> switchGroupPublic.setChecked(!switchGroupPublic.isChecked()));
             dialog.setOnCancelListener(() -> api.groupOperation(group.getGroupInfo().getId(), switchGroupPublic.isChecked() ? "1" : "0", "3")
                     .compose(bindToLifecycle())
@@ -304,28 +308,28 @@ public class OwnerGroupManageActivity extends BaseActivity {
                         String tips = "";
                         switch (str) {
                             case "0":
-                                tips = "关闭";
-                                text = "群主关闭了慢速模式";
+                                tips = getString(R.string.close);
+                                text = getString(R.string.close_slow_mode);
                                 break;
                             case "30":
-                                text = "群主开启了慢速模式,发言间隔:30秒";
-                                tips = "发言间隔:30秒";
+                                text = getString(R.string.owner_open_slowmode, "30", getString(R.string.second));
+                                tips = getString(R.string.slowMode_time, "30", getString(R.string.second));
                                 break;
                             case "60":
-                                text = "群主开启了慢速模式,发言间隔:1分钟";
-                                tips = "发言间隔:1分钟";
+                                text = getString(R.string.owner_open_slowmode, "1", getString(R.string.minute));
+                                tips = getString(R.string.slowMode_time, "1", getString(R.string.minute));
                                 break;
                             case "300":
-                                text = "群主开启了慢速模式,发言间隔:5分钟";
-                                tips = "发言间隔:5分钟";
+                                text = getString(R.string.owner_open_slowmode, "5", getString(R.string.minute));
+                                tips = getString(R.string.slowMode_time, "5", getString(R.string.minute));
                                 break;
                             case "600":
-                                text = "群主开启了慢速模式,发言间隔:10分钟";
-                                tips = "发言间隔:10分钟";
+                                text = getString(R.string.owner_open_slowmode, "10", getString(R.string.minute));
+                                tips = getString(R.string.slowMode_time, "10", getString(R.string.minute));
                                 break;
                             case "3600":
-                                text = "群主开启了慢速模式,发言间隔:1小时";
-                                tips = "发言间隔:1小时";
+                                text = getString(R.string.owner_open_slowmode, "1", getString(R.string.hour));
+                                tips = getString(R.string.slowMode_time, "1", getString(R.string.hour));
                                 break;
                         }
                         tvGroupTips2.setText(tips);
@@ -340,20 +344,27 @@ public class OwnerGroupManageActivity extends BaseActivity {
     }
 
     private int parseTime(String time) {
-        switch (time) {
-            case "发言间隔:30秒":
-                return 1;
-            case "发言间隔:1分钟":
-                return 2;
-            case "发言间隔:5分钟":
-                return 3;
-            case "发言间隔:10分钟":
-                return 4;
-            case "发言间隔:1小时":
-                return 5;
-            default:
-                return 0;
+        if (time.equals(getString(R.string.slowMode_time, "30", getString(R.string.second)))) {
+            return 1;
         }
+
+        if (time.equals(getString(R.string.slowMode_time, "1", getString(R.string.second)))) {
+            return 2;
+        }
+
+        if (time.equals(getString(R.string.slowMode_time, "5", getString(R.string.minute)))) {
+            return 3;
+        }
+
+        if (time.equals(getString(R.string.slowMode_time, "10", getString(R.string.minute)))) {
+            return 4;
+        }
+
+        if (time.equals(getString(R.string.slowMode_time, "1", getString(R.string.hour)))) {
+            return 5;
+        }
+
+        return 0;
     }
 
     @Override
@@ -361,7 +372,7 @@ public class OwnerGroupManageActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 1 && data != null) {
             group = (GroupResponse) data.getSerializableExtra("group");
-            tvGroupTips3.setText("当前限制" + group.getGroupInfo().getLimitNumber() + "人");
+            tvGroupTips3.setText(getString(R.string.current_limit_xx_person, group.getGroupInfo().getLimitNumber()));
         }
     }
 

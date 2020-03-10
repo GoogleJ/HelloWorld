@@ -58,7 +58,7 @@ public class GroupChatActivity extends BaseActivity implements TextWatcher {
         tv_commit.setVisibility(View.VISIBLE);
         tv_commit.setTextColor(Color.parseColor("#333333"));
         tv_commit.setBackground(null);
-        tv_commit.setText("创建群聊");
+        tv_commit.setText(R.string.createGroup);
         tv_commit.setOnClickListener(v -> {
             Intent intent = new Intent(this, CreateGroupActivity.class);
             intent.putExtra("eventType", 1);

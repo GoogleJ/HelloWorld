@@ -11,7 +11,7 @@
         android:gravity="center"
         android:paddingTop="24dp"
         android:paddingBottom="24dp"
-        android:text="阅后即焚"
+        android:text="@string/burn_after_read"
         android:textColor="@color/black"
         android:textSize="18sp" />
 

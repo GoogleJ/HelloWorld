@@ -62,7 +62,7 @@ public class UpCoinActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver())
                 .subscribe(ivQR::setImageBitmap);
 
-        tvTips.setText("请勿向上述地址充值任何非" + data.getCurrencyName() + "资产，否则资产将不可找回。");
+        tvTips.setText(getString(R.string.tips_upcoin, data.getCurrencyName()));
     }
 
     public void copyAddress(View view) {

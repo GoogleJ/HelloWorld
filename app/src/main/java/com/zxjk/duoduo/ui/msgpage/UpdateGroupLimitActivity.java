@@ -35,7 +35,6 @@ public class UpdateGroupLimitActivity extends BaseActivity {
     private BaseQuickAdapter adapter;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_group_limit);
@@ -51,11 +50,12 @@ public class UpdateGroupLimitActivity extends BaseActivity {
         float itemHeight = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(this, 36)) / 2f;
         adapter = new BaseQuickAdapter<GetUpgradeGroupsResponnse.GroupLevelsInfoListBean, BaseViewHolder>(
                 R.layout.item_updategrouplimit) {
+
             @Override
             protected void convert(BaseViewHolder helper, GetUpgradeGroupsResponnse.GroupLevelsInfoListBean item) {
-                helper.setText(R.id.tvtips, item.getFee() + item.getSymbol() + "永久升级")
+                helper.setText(R.id.tvtips, item.getFee() + item.getSymbol() + getString(R.string.upgrade))
                         .setText(R.id.tvNum, item.getLimitNumber())
-                        .setText(R.id.btnUpdate, item.getIsUpgrade().equals("1") ? "已升级" : "升级");
+                        .setText(R.id.btnUpdate, item.getIsUpgrade().equals("1") ? getString(R.string.upgrade3) : getString(R.string.upgrade1));
                 helper.setBackgroundRes(R.id.btnUpdate, item.getIsUpgrade().equals("1") ? R.drawable.shape_unable
                         : R.drawable.shape_theme1);
                 LinearLayout ll = helper.getView(R.id.ll);
@@ -66,7 +66,8 @@ public class UpdateGroupLimitActivity extends BaseActivity {
                 Button btnUpdate = helper.getView(R.id.btnUpdate);
                 if (!item.getIsUpgrade().equals("1")) {
                     btnUpdate.setOnClickListener(v -> {
-                        MuteRemoveDialog dialog = new MuteRemoveDialog(UpdateGroupLimitActivity.this, "确定", "取消", "提示", "是否确定升级该群");
+                        MuteRemoveDialog dialog = new MuteRemoveDialog(UpdateGroupLimitActivity.this, getString(R.string.queding),
+                                getString(R.string.cancel), getString(R.string.hinttext), getString(R.string.confirm_upgrade_social));
                         dialog.setOnCancelListener(() -> new NewPayBoard(UpdateGroupLimitActivity.this)
                                 .show(psw -> ServiceFactory.getInstance().getBaseService(Api.class)
                                         .payToUpgradeGroup(group.getGroupInfo().getId(),

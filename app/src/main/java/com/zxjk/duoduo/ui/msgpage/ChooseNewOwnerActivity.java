@@ -1,13 +1,11 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,9 +55,9 @@ public class ChooseNewOwnerActivity extends BaseActivity {
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> NiceDialog.init().setLayoutId(R.layout.layout_general_dialog4).setConvertListener(new ViewConvertListener() {
             @Override
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                holder.setText(R.id.tv_content, "确定选择为新群主吗?");
-                holder.setText(R.id.tv_cancel, "取消");
-                holder.setText(R.id.tv_notarize, "确定");
+                holder.setText(R.id.tv_content, R.string.confirm_choose_tobe_new_owner);
+                holder.setText(R.id.tv_cancel, R.string.cancel);
+                holder.setText(R.id.tv_notarize,R.string.queding);
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_notarize, v -> {
                     updateGroupOwner(groupId, mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getNick());
@@ -91,7 +89,7 @@ public class ChooseNewOwnerActivity extends BaseActivity {
                 .subscribe(s -> {
                     ToastUtils.showShort(ChooseNewOwnerActivity.this.getString(R.string.transfer_group_successful));
 
-                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(newOwnerNick + "成为了新的群主");
+                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(getString(R.string.xxx_become_new_owner, newOwnerNick));
                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 

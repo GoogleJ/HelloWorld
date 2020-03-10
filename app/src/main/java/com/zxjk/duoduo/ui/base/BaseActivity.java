@@ -31,6 +31,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.NewLoginActivity;
+import com.zxjk.duoduo.utils.LanguageUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.TakePicUtil;
 
@@ -187,7 +188,7 @@ public class BaseActivity extends RxAppCompatActivity {
             RxView.clicks(view)
                     .compose(rxPermissions.ensureEachCombined(permissions))
                     .subscribe(permission -> {
-                        if (!permission.granted) ToastUtils.showShort("请开启相关权限");
+                        if (!permission.granted) ToastUtils.showShort(R.string.open_related_permission);
 
                         if (null != result) result.onResult(permission.granted);
                     });
@@ -195,7 +196,7 @@ public class BaseActivity extends RxAppCompatActivity {
         }
         rxPermissions.requestEachCombined(permissions)
                 .subscribe(granted -> {
-                    if (!granted.granted) ToastUtils.showShort("请开启相关权限");
+                    if (!granted.granted) ToastUtils.showShort(R.string.open_related_permission);
 
                     if (null != result) result.onResult(granted.granted);
                 });
@@ -278,5 +279,10 @@ public class BaseActivity extends RxAppCompatActivity {
                     && event.getY() > top && event.getY() < bottom);
         }
         return false;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageUtil.getInstance(newBase).setLocal(newBase));
     }
 }

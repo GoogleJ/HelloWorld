@@ -39,7 +39,7 @@ import razerdp.basepopup.QuickPopupConfig;
 @SuppressLint("CheckResult")
 public class SocialFileActivity extends BaseActivity {
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm上传");
+    private SimpleDateFormat sdf;
 
     private final int REQUEST_ADD = 1;
     private final int REQUEST_MODIFY = 2;
@@ -59,6 +59,8 @@ public class SocialFileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social_file);
+
+        sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm" + getString(R.string.upload));
 
         bean = getIntent().getParcelableExtra("bean");
 
@@ -120,7 +122,10 @@ public class SocialFileActivity extends BaseActivity {
     }
 
     private void deleteFile(int position) {
-        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消", "确认", "提示", "是否确定删除此资料？");
+        MuteRemoveDialog dialog = new MuteRemoveDialog(this, getString(R.string.cancel),
+                getString(R.string.m_transfer_info_commit_btn),
+                getString(R.string.hinttext),
+                getString(R.string.is_confirm_delete_file));
         dialog.setOnCommitListener(() -> {
             EditCommunityFileRequest request = new EditCommunityFileRequest();
             request.setGroupId(getIntent().getStringExtra("id"));
@@ -158,7 +163,7 @@ public class SocialFileActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
                     maxCount = Integer.parseInt(r.getFilesCreate());
-                    tvMaxCount.setText("最多上传" + maxCount + "份社群资料，请上传体验");
+                    tvMaxCount.setText(getString(R.string.upload_max_file,maxCount));
                     bean.getFiles().setFilesList(r.getFiles());
                     adapter.setNewData(r.getFiles());
                 }, this::handleApiError);

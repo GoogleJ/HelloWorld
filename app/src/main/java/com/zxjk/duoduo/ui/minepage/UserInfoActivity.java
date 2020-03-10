@@ -135,10 +135,10 @@ public class UserInfoActivity extends BaseActivity {
         tv_nickname.setText(Constant.currentUser.getNick());
         tvUserInfoSex.setText(CommonUtils.getSex(Constant.currentUser.getSex()));
         tv_DuoDuoNumber.setText(Constant.currentUser.getDuoduoId());
-        tv_realName.setText(TextUtils.isEmpty(Constant.currentUser.getRealname()) ? "未认证" : Constant.currentUser.getRealname());
-        tv_phoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7, 11));
-        tv_personalizedSignature.setText(TextUtils.isEmpty(Constant.currentUser.getSignature()) ? "暂无" : Constant.currentUser.getSignature());
-        tv_email.setText(TextUtils.isEmpty(Constant.currentUser.getEmail()) ? "暂无" : Constant.currentUser.getEmail());
+        tv_realName.setText(TextUtils.isEmpty(Constant.currentUser.getRealname()) ? getString(R.string.authen_false) : Constant.currentUser.getRealname());
+        tv_phoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7, mobile.length()));
+        tv_personalizedSignature.setText(TextUtils.isEmpty(Constant.currentUser.getSignature()) ? getString(R.string.none) : Constant.currentUser.getSignature());
+        tv_email.setText(TextUtils.isEmpty(Constant.currentUser.getEmail()) ? getString(R.string.none) : Constant.currentUser.getEmail());
         tvArea.setText(Constant.currentUser.getAddress());
     }
 
@@ -161,16 +161,16 @@ public class UserInfoActivity extends BaseActivity {
                         MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                         switch (s) {
                             case "0":
-                                tv_realName.setText("已认证");
+                                tv_realName.setText(R.string.authen_true);
                                 break;
                             case "2":
-                                tv_realName.setText("认证审核中");
+                                tv_realName.setText(R.string.authening);
                                 break;
                             case "1":
-                                tv_realName.setText("认证未通过");
+                                tv_realName.setText(R.string.authenfail);
                                 break;
                             default:
-                                tv_realName.setText("未认证");
+                                tv_realName.setText(R.string.authen_false);
                                 break;
                         }
                     }, this::handleApiError);
@@ -274,17 +274,14 @@ public class UserInfoActivity extends BaseActivity {
         NiceDialog.init().setLayoutId(R.layout.layout_general_dialog6).setConvertListener(new ViewConvertListener() {
             @Override
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                //拍照
                 holder.setOnClickListener(R.id.tv_photograph, v -> {
                     dialog.dismiss();
                     TakePicUtil.takePicture(UserInfoActivity.this);
                 });
-                //相册选择
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
                     TakePicUtil.albumPhoto(UserInfoActivity.this);
                 });
-                //取消
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
 
             }

@@ -44,30 +44,37 @@ public class TransferProvider extends IContainerItemProvider.MessageProvider<Tra
             holder.sendLayout.setAlpha(0.6f);
             if (transferMessage.getFromCustomerId().equals(Constant.userId)) {
                 if (uiMessage.getMessageDirection().equals(Message.MessageDirection.RECEIVE)) {
-                    holder.remark.setText("已领取");
+                    holder.remark.setText(R.string.received);
                 } else {
-                    holder.remark.setText("已被领取");
+                    holder.remark.setText(R.string.received1);
                 }
             } else {
                 if (uiMessage.getMessageDirection().equals(Message.MessageDirection.RECEIVE)) {
-                    holder.remark.setText("已被领取");
+                    holder.remark.setText(R.string.received1);
                 } else {
-                    holder.remark.setText("已领取");
+                    holder.remark.setText(R.string.received);
                 }
             }
         } else {
             // 未被领取
             holder.sendLayout.setAlpha(1f);
-            holder.remark.setText(TextUtils.isEmpty(transferMessage.getRemark()) ? "转账给" + transferMessage.getName() : transferMessage.getRemark());
+
+            holder.remark.setText(TextUtils.isEmpty(transferMessage.getRemark()) ? (
+                    view.getContext().getString(R.string.transfer_to, transferMessage.getName())
+            ) : transferMessage.getRemark());
         }
         holder.transferMoney.setText(transferMessage.getMoney() + transferMessage.getSymbol());
     }
 
     @Override
     public Spannable getContentSummary(TransferMessage transferMessage) {
-        return new SpannableString("[转账]");
+        return null;
     }
 
+    @Override
+    public Spannable getContentSummary(Context context, TransferMessage data) {
+        return new SpannableString(context.getString(R.string.transfer));
+    }
 
     @Override
     public void onItemClick(View view, int i, TransferMessage transferMessage, UIMessage uiMessage) {
@@ -77,10 +84,10 @@ public class TransferProvider extends IContainerItemProvider.MessageProvider<Tra
     public View newView(Context context, ViewGroup viewGroup) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_transfer_send, null);
         ViewHolder holder = new ViewHolder();
-        holder.remark =  view.findViewById(R.id.remark);
-        holder.transferMoney =  view.findViewById(R.id.transfer_money);
-        holder.transferIconType =  view.findViewById(R.id.transfer_type_icon);
-        holder.sendLayout =  view.findViewById(R.id.send_red_packet_layout);
+        holder.remark = view.findViewById(R.id.remark);
+        holder.transferMoney = view.findViewById(R.id.transfer_money);
+        holder.transferIconType = view.findViewById(R.id.transfer_type_icon);
+        holder.sendLayout = view.findViewById(R.id.send_red_packet_layout);
         view.setTag(holder);
         return view;
     }

@@ -116,7 +116,7 @@ public class GroupRedPacketActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (start == 0 && count == 0) {
-                    etMoney2.setText("0.0000");
+                    etMoney2.setText(getString(R.string.zero_value));
                 } else {
                     etMoney2.setTextColor(Color.parseColor("#000000"));
                     etMoney2.setText(s.toString());
@@ -172,7 +172,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                 .flatMap((Function<GroupResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) r -> {
                     runOnUiThread(() -> {
                         group = r;
-                        etCount.setHint(getString(R.string.group_number, group.getGroupInfo().getCustomerNumber()));
+                        etCount.setHint(getString(R.string.group_total_member_count, group.getGroupInfo().getCustomerNumber()));
                         etCount.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -206,7 +206,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                     GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
                     tvCoin.setText(result.getSymbol());
                     tvCoin2.setText(result.getSymbol());
-                    etMoney.setHint(getString(R.string.balanceof, result.getBalance(), result.getSymbol()));
+                    etMoney.setHint(getString(R.string.can_user_value_symbol, result.getBalance(), result.getSymbol()));
                 }, this::handleApiError);
     }
 
@@ -314,7 +314,7 @@ public class GroupRedPacketActivity extends BaseActivity {
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
             tvCoin.setText(result.getSymbol());
-            etMoney.setHint(getString(R.string.balanceof, result.getBalance(), result.getSymbol()));
+            etMoney.setHint(getString(R.string.can_user_value_symbol, result.getBalance(), result.getSymbol()));
             tvCoin2.setText(result.getSymbol());
         }
     }

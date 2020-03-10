@@ -206,7 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="请设置"
+                android:text="@string/please_set_up"
                 android:textColor="#9EA0A4" />
 
             <ImageView
@@ -243,7 +243,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="请设置"
+                android:text="@string/please_set_up"
                 android:textColor="#9EA0A4" />
 
             <ImageView
@@ -261,7 +261,7 @@
             android:layout_marginTop="32dp"
             android:background="@drawable/shape_theme4"
             android:foreground="?selectableItemBackgroundBorderless"
-            android:text="保存"
+            android:text="@string/save"
             android:textColor="@color/white"
             android:visibility="gone" />
     </LinearLayout>

@@ -24,7 +24,7 @@ public class PhoneContactAdapter extends BaseQuickAdapter<PhoneInfo, BaseViewHol
                     .setTextColor(R.id.apply_to_add, context.getColor(R.color.colorWhite));
             view.setBackgroundResource(R.drawable.shape_theme);
         } else {
-            helper.setText(R.id.apply_to_add, "已添加")
+            helper.setText(R.id.apply_to_add, R.string.added)
                     .setTextColor(R.id.apply_to_add, context.getColor(R.color.color6));
             view.setBackground(null);
         }

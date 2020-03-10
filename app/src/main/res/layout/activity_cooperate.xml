@@ -33,7 +33,7 @@
             android:layout_alignParentEnd="true"
             android:scaleType="centerInside"
             android:src="@drawable/ic_share_action_right"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -91,7 +91,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="钱包对接"
+                                android:text="@string/coor_tips1"
                                 android:textColor="@color/textcolor1" />
 
                             <TextView
@@ -99,7 +99,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="对接第三方数字货币，实现发红包、转账、存储"
+                                android:text="@string/coor_tips1_detail"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -122,7 +122,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="广告推广"
+                                android:text="@string/coor_tips2"
                                 android:textColor="@color/textcolor1" />
 
                             <TextView
@@ -130,7 +130,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="启动页、\n轮播图广告宣传"
+                                android:text="@string/coor_tips2_detail"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -162,7 +162,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="第三方应用接入"
+                                android:text="@string/coor_tips3"
                                 android:textColor="@color/textcolor1" />
 
                             <TextView
@@ -170,7 +170,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="接入第三方项目链接，共享Hilamg流量"
+                                android:text="@string/coor_tips3_detail"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -193,7 +193,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="快讯发布"
+                                android:text="@string/coor_tips4"
                                 android:textColor="@color/textcolor1" />
 
                             <TextView
@@ -201,7 +201,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="Hilamg资讯 发布，.其他媒体渠道代发文章"
+                                android:text="@string/coor_tips4_detail"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -233,7 +233,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="数字支付接口"
+                                android:text="@string/coor_tips5"
                                 android:textColor="@color/textcolor1" />
 
                             <TextView
@@ -241,7 +241,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="开发者快速接入Hilamg数字支付"
+                                android:text="@string/coor_tips5_detail"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -264,7 +264,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="登录授权"
+                                android:text="@string/coor_tips6"
                                 android:textColor="@color/textcolor1" />
 
                             <TextView
@@ -272,7 +272,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:text="为第三方系统提供Hilamg一键登录"
+                                android:text="@string/coor_tips6_detail"
                                 android:textColor="@color/textcolor3"
                                 android:textSize="12sp" />
 
@@ -291,7 +291,7 @@
                 android:background="@drawable/shape_circular_bead_btn1"
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                 android:onClick="confirm"
-                android:text="点击申请商务合作"
+                android:text="@string/apply_for_coor"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -303,7 +303,7 @@
                 android:drawableStart="@drawable/ic_mail_cooperate"
                 android:drawablePadding="4dp"
                 android:gravity="center"
-                android:text="商务合作 bd@Hilamg.sg"
+                android:text="@string/apply_for_coor_tips"
                 android:textColor="@color/textcolor1"
                 android:textSize="15sp" />
 

@@ -62,18 +62,16 @@ public class UpdateUserInfoActivity extends BaseActivity {
         etChangeSign.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 int length = s.toString().length();
-                tvChangeSign.setText("" + (20 - length));
+                tvChangeSign.setText(String.valueOf(20 - length));
             }
         });
 
@@ -137,7 +135,7 @@ public class UpdateUserInfoActivity extends BaseActivity {
                     .compose(RxSchedulers.normalTrans())
                     .subscribe(s -> {
                         if (getIntent().getBooleanExtra("fromSocial", false)) {
-                            InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("社群改名为" + sign);
+                            InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(getString(R.string.change_socialname_to, sign));
                             Message message = Message.obtain(getIntent().getStringExtra("groupId"), Conversation.ConversationType.GROUP, notificationMessage);
                             RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
                         }

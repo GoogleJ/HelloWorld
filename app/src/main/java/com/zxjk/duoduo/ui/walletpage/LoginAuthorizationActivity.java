@@ -83,10 +83,10 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
             @SuppressLint("CheckResult")
             @Override
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                holder.setText(R.id.tv_title, "提示");
-                holder.setText(R.id.tv_content, "您将退出登录");
-                holder.setText(R.id.tv_cancel, "取消");
-                holder.setText(R.id.tv_notarize, "确认");
+                holder.setText(R.id.tv_title, R.string.hinttext);
+                holder.setText(R.id.tv_content, R.string.your_will_unlogin);
+                holder.setText(R.id.tv_cancel, R.string.cancel);
+                holder.setText(R.id.tv_notarize, R.string.queding);
                 holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_notarize, v12 -> {
                     dialog.dismiss();
@@ -121,7 +121,7 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
                 .subscribe(s -> {
-                    ToastUtils.showShort("授权成功！");
+                    ToastUtils.showShort(R.string.authen_success);
                     switch (action) {
                         case ACTION_THIRDPARTLOGINACCESS:
                             ((Application) getApplication()).getWebDataUtils().webToLogin(s);

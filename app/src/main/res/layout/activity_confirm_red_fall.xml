@@ -139,7 +139,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="领取成功"
+                    android:text="@string/receive_success"
                     android:textColor="#FBD9AD"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="24dp"
-                    android:text="已存入余额钱包，请查收！"
+                    android:text="@string/add_to_balance_wallet"
                     android:textColor="#FBD9AD" />
 
             </LinearLayout>
@@ -180,7 +180,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="币种介绍"
+                        android:text="@string/coin_introduce"
                         android:textColor="#583F3E"
                         android:textSize="15.5sp"
                         android:textStyle="bold" />
@@ -192,7 +192,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="10dp"
-                    android:text="ETH使得开发者能够创建任意的基于共识的、可扩展的、标准化的、特性完备的、易于开发的和协同的区块链应用。以太坊通过建立终极的抽象的基础层-内置有图灵完备(一切可计算的问题都能计算，这样的虚拟机或者编程语言就叫图灵完备的)。"
                     android:textColor="#583F3E" />
 
             </LinearLayout>
@@ -221,7 +220,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="加入社群，参与更多活动"
+                    android:text="@string/join_social_enjoy_more_activity"
                     android:textColor="#583F3E"
                     android:textSize="14.5sp"
                     android:textStyle="bold" />
@@ -234,7 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
-                android:text="注：成功分享至朋友圈，当日参与活动次数上限+1；\n活动解释权归海浪所有。"
+                android:text="@string/redfall_share_to_get_more_chance"
                 android:textColor="#FBD9AD"
                 android:textSize="12sp"
                 android:visibility="gone" />

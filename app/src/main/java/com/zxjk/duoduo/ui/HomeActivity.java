@@ -48,7 +48,6 @@ import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
 import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
-import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
@@ -82,7 +81,6 @@ import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
 import io.rong.imkit.mention.RongMentionManager;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.widget.provider.MessageItemLongClickAction;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -178,7 +176,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                 result.add(member);
                             }
                             callBack.onGetGroupMembersResult(result);
-                        }, t -> ToastUtils.showShort("暂时无法获取用户列表"))
+                        }, t -> ToastUtils.showShort(R.string.function_fail))
         );
     }
 
@@ -496,10 +494,10 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 .setActiveColor(R.color.colorTheme)
                 .setInActiveColor("#000000")
                 // 添加Item
-                .addItem(new BottomNavigationItem(R.drawable.tab_icon_message_selected, "消息").setInactiveIconResource(R.drawable.tab_icon_message_unselected).setBadgeItem(badgeItem))
-                .addItem(new BottomNavigationItem(R.drawable.tab_icon_friend_selected, "通讯录").setInactiveIconResource(R.drawable.tab_icon_friend_unselected).setBadgeItem(badgeItem2))
-                .addItem(new BottomNavigationItem(R.drawable.tab_icon_find_selected, "发现").setInactiveIconResource(R.drawable.tab_icon_find_unselected))
-                .addItem(new BottomNavigationItem(R.drawable.tab_icon_my_selected, "我的").setInactiveIconResource(R.drawable.tab_icon_my_unselected).setBadgeItem(badgeItem3))
+                .addItem(new BottomNavigationItem(R.drawable.tab_icon_message_selected, getString(R.string.home_bottom1)).setInactiveIconResource(R.drawable.tab_icon_message_unselected).setBadgeItem(badgeItem))
+                .addItem(new BottomNavigationItem(R.drawable.tab_icon_friend_selected, getString(R.string.home_bottom2)).setInactiveIconResource(R.drawable.tab_icon_friend_unselected).setBadgeItem(badgeItem2))
+                .addItem(new BottomNavigationItem(R.drawable.tab_icon_find_selected, getString(R.string.home_bottom3)).setInactiveIconResource(R.drawable.tab_icon_find_unselected))
+                .addItem(new BottomNavigationItem(R.drawable.tab_icon_my_selected, getString(R.string.home_bottom4)).setInactiveIconResource(R.drawable.tab_icon_my_unselected).setBadgeItem(badgeItem3))
                 //设置默认选中位置
                 .setFirstSelectedPosition(0)
                 // 提交初始化（完成配置）
@@ -596,7 +594,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
                 @Override
                 public void onProgress(long progress) {
-                    runOnUiThread(() -> tvUpdate.setText((int) ((float) progress / max1 * 100) + "%"));
+                    runOnUiThread(() -> tvUpdate.setText(getString(R.string.progress, (String.valueOf((int) ((float) progress / max1 * 100))))));
                 }
 
                 @Override

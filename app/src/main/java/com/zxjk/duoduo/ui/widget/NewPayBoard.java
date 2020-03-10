@@ -136,7 +136,7 @@ public class NewPayBoard extends BasePopupWindow {
         }
         for (int i = 0; i < commonButtonIds.length; i++) {
             final Button button = findViewById(commonButtonIds[i]);
-            button.setText("" + list.get(i));
+            button.setText(String.valueOf(list.get(i)));
         }
     }
 

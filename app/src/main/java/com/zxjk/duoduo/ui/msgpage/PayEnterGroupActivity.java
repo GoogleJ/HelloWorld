@@ -175,7 +175,7 @@ public class PayEnterGroupActivity extends BaseActivity {
         };
         TextView emptyView = new TextView(this);
         emptyView.setGravity(Gravity.CENTER);
-        emptyView.setText("暂无付费入群信息");
+        emptyView.setText(R.string.no_enter_red_data);
         emptyView.setTextSize(15);
         emptyView.setTextColor(ContextCompat.getColor(this, R.color.textcolor2));
 

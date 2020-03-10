@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,7 +82,7 @@ public class RewardMotActivity extends BaseActivity {
         findViewById(R.id.rlBack).setOnClickListener(v -> finish());
         findViewById(R.id.tv_rules_web).setOnClickListener(v -> {
             Intent intent = new Intent(RewardMotActivity.this, WebActivity.class);
-            intent.putExtra("title", "活动规则");
+            intent.putExtra("title", getString(R.string.rule));
             intent.putExtra("url", "file:///android_asset/rules/index.html");
             startActivity(intent);
         });
@@ -91,8 +90,6 @@ public class RewardMotActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void initData() {
-
-
         adapter2 = new BaseQuickAdapter<GetSignListResponse.PointsListBean, BaseViewHolder>(R.layout.linearlayout_reward_sign_tesk) {
             @Override
             protected void convert(BaseViewHolder helper, GetSignListResponse.PointsListBean p) {
@@ -114,7 +111,7 @@ public class RewardMotActivity extends BaseActivity {
                     mTvRewardTaskGo.setVisibility(View.GONE);
                     mRewardReceiveTack.setVisibility(View.GONE);
                     mRewardReceiveTack2.setVisibility(View.VISIBLE);
-                    mRewardReceiveTack2.setText("不可领");
+                    mRewardReceiveTack2.setText(getString(R.string.cant_receive));
                     taskState(p, mTvRewardTaskNumber);
                 }
                 //未完成
@@ -136,14 +133,14 @@ public class RewardMotActivity extends BaseActivity {
                 if (p.getReceiveStatus().equals("1")) {
                     mRewardReceiveTack.setVisibility(View.GONE);
                     mRewardReceiveTack2.setVisibility(View.GONE);
-                    mTvRewardTaskNumber.setText("每日" + p.getNumber() + "次（" + p.getCounts() + "/" + p.getNumber() + "）");
+                    mTvRewardTaskNumber.setText(getString(R.string.rewardTips1, p.getNumber(), p.getCounts(), p.getNumber()));
                 }
                 //已领取完
                 if (p.getReceiveStatus().equals("2")) {
                     mTvRewardTaskGo.setVisibility(View.GONE);
                     mRewardReceiveTack.setVisibility(View.GONE);
                     mRewardReceiveTack2.setVisibility(View.VISIBLE);
-                    mRewardReceiveTack2.setText("已领取");
+                    mRewardReceiveTack2.setText(getString(R.string.received));
                     taskState(p, mTvRewardTaskNumber);
                 }
 
@@ -181,7 +178,7 @@ public class RewardMotActivity extends BaseActivity {
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
                             .compose(RxSchedulers.normalTrans())
                             .subscribe(s -> {
-                                showDialog("恭喜您！", p.getPoints() + "USDT已存入余额钱包~");
+                                showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips3, p.getPoints()));
                                 tvTotalReward.setText(s.getMoney());
                                 signListResponse.setPointsList(s.getPointsList());
                                 List<GetSignListResponse.PointsListBean> pointsList;
@@ -206,14 +203,11 @@ public class RewardMotActivity extends BaseActivity {
         mRecyclerSignTesk.setItemAnimator(new DefaultItemAnimator());
         mRecyclerSignTesk.setLayoutManager(new LinearLayoutManager(this));
 
-
-
         tvTotalReward = headerView.findViewById(R.id.tvTotalReward);
         tvSignDays = headerView.findViewById(R.id.tvSignDays);
         recyclerSign = headerView.findViewById(R.id.recyclerSign);
         mIvHead = headerView.findViewById(R.id.iv_head_reward);
         Glide.with(this).load(headPortrait).into(mIvHead);
-
 
         adapter1 = new BaseQuickAdapter<GetSignListResponse.CustomerSignBean, BaseViewHolder>(R.layout.item_sign) {
             @Override
@@ -236,9 +230,9 @@ public class RewardMotActivity extends BaseActivity {
                     mLSignSeven.setVisibility(View.GONE);
                 }
 
-                tvCoins.setText("第" + (helper.getLayoutPosition() + 1) + "天");
-                mSignSevenDay.setText("第" + (helper.getLayoutPosition() + 1) + "天");
-                mSignSevenUsdt.setText(b.getRepay() + "USDT");
+                tvCoins.setText(getString(R.string.xx_day, String.valueOf(helper.getLayoutPosition() + 1)));
+                mSignSevenDay.setText(getString(R.string.xx_day, String.valueOf(helper.getLayoutPosition() + 1)));
+                mSignSevenUsdt.setText(getString(R.string.value_format, b.getRepay(), "USDT"));
                 if (b.getSignStatus().equals("1")) {
                     helper.getView(R.id.llContent).setBackgroundResource(R.drawable.shape_reward_sign2);
                     helper.getView(R.id.llContent).setAlpha((float) 0.5);
@@ -267,43 +261,43 @@ public class RewardMotActivity extends BaseActivity {
 
                 mLSignSeven.setOnClickListener(v -> {
                     if (b.getLastModifyTime().equals("今日")) {
-                    ServiceFactory.getInstance().getBaseService(Api.class)
-                            .createSign()
-                            .compose(bindToLifecycle())
-                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
-                            .compose(RxSchedulers.normalTrans())
-                            .subscribe(c -> {
-                                showDialog("恭喜您，签到成功！", b.getRepay() + "USDT已存入余额钱包~");
-                                adapter1.setNewData(c.getCustomerSign());
-                                tvTotalReward.setText(c.getSumPay());
-                                tvSignDays.setText(c.getCount() + "\u0020天");
-                            }, RewardMotActivity.this::handleApiError);
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .createSign()
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(c -> {
+                                    showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips3, b.getRepay()));
+                                    adapter1.setNewData(c.getCustomerSign());
+                                    tvTotalReward.setText(c.getSumPay());
+                                    tvSignDays.setText(getString(R.string.xx_day1, String.valueOf(c.getCount())));
+                                }, RewardMotActivity.this::handleApiError);
                     }
                 });
 
                 fl.setOnClickListener(v -> {
                     if (b.getLastModifyTime().equals("今日")) {
-                    ServiceFactory.getInstance().getBaseService(Api.class)
-                            .createSign()
-                            .compose(bindToLifecycle())
-                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
-                            .compose(RxSchedulers.normalTrans())
-                            .subscribe(c -> {
-                                showDialog("恭喜您，签到成功！", b.getRepay() + "USDT已存入余额钱包~");
-                                adapter1.setNewData(c.getCustomerSign());
-                                tvTotalReward.setText(c.getSumPay());
-                                tvSignDays.setText(c.getCount() + "\u0020天");
-                            }, RewardMotActivity.this::handleApiError);
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .createSign()
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(c -> {
+                                    showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips3, b.getRepay()));
+                                    adapter1.setNewData(c.getCustomerSign());
+                                    tvTotalReward.setText(c.getSumPay());
+                                    tvSignDays.setText(getString(R.string.xx_day1, String.valueOf(c.getCount())));
+                                }, RewardMotActivity.this::handleApiError);
                     }
                 });
             }
         };
 
         List<GetSignListResponse.CustomerSignBean> customerSignBean1 = new ArrayList<>();
-        GetSignListResponse.CustomerSignBean customerSignBean2= new GetSignListResponse.CustomerSignBean();
+        GetSignListResponse.CustomerSignBean customerSignBean2 = new GetSignListResponse.CustomerSignBean();
         customerSignBean2.setSignStatus("1");
         customerSignBean2.setRepay("1.00");
-        for (int i = 0;i < 7;i++){
+        for (int i = 0; i < 7; i++) {
             customerSignBean1.add(customerSignBean2);
         }
         adapter1.setNewData(customerSignBean1);
@@ -351,7 +345,7 @@ public class RewardMotActivity extends BaseActivity {
                     float alpha = (255 * scale);
                     mRlRewardrlNavigationBar.setBackgroundColor(Color.argb((int) alpha, 30, 144, 255));
                 } else {
-                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb( 255, 30, 144, 255));
+                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb(255, 30, 144, 255));
                 }
             }
         });
@@ -371,11 +365,10 @@ public class RewardMotActivity extends BaseActivity {
                     }
                     TextView signTomorrow = headerView.findViewById(R.id.tv_sign_tomorrow);
                     if (rewardUSDT != null) {
-                        signTomorrow.setText("明日签到可获得\u0020" + rewardUSDT + "\u0020USDT");
+                        signTomorrow.setText(getString(R.string.rewardtips4, rewardUSDT));
                     }
-
                     signListResponse = r;
-                    tvSignDays.setText(r.getCount() + "\u0020天");
+                    tvSignDays.setText(getString(R.string.xx_day1, String.valueOf(r.getCount())));
                     tvTotalReward.setText(r.getSumPay());
                     adapter1.setNewData(r.getCustomerSign());
 
@@ -396,9 +389,9 @@ public class RewardMotActivity extends BaseActivity {
 
     public void taskState(GetSignListResponse.PointsListBean p, TextView v) {
         if (p.getPointType().equals("0") || p.getPointType().equals("1")) {
-            v.setText("仅可完成一次");
+            v.setText(R.string.only_once_done);
         } else {
-            v.setText("每日" + p.getNumber() + "次（" + p.getCounts() + "/" + p.getNumber() + "）");
+            v.setText(getString(R.string.rewardTips1, p.getNumber(), p.getCounts(), p.getNumber()));
         }
     }
 

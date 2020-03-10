@@ -43,7 +43,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private TextView tvNick;
     private TextView tvMochatID;
     private TextView tvSign;
-    private TextView tvMot2Reward;
     private LinearLayout llRedFall;
     private ImageView ivRedFall;
     private TextView tvMindRedCountDown;
@@ -62,7 +61,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         tvNick = view.findViewById(R.id.tvNick);
         tvMochatID = view.findViewById(R.id.tvMochatID);
         tvSign = view.findViewById(R.id.tvSign);
-        tvMot2Reward = view.findViewById(R.id.tvMot2Reward);
         llRedFall = view.findViewById(R.id.llRedFall);
         ivRedFall = view.findViewById(R.id.ivRedFall);
         tvMindRedCountDown = view.findViewById(R.id.tvMindRedCountDown);
@@ -180,7 +178,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
             case R.id.llMine7:
-                tvMot2Reward.setVisibility(View.GONE);
                 Intent intent = new Intent(getContext(), RewardMotActivity.class);
                 getActivity().startActivityForResult(intent, HomeActivity.REQUEST_REWARD);
                 break;
