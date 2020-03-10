@@ -32,7 +32,7 @@ public class ConfirmDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.dialog_confirm);
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         tvDialogTitle = findViewById(R.id.tvDialogTitle);
         tvDialogContent = findViewById(R.id.tvDialogContent);
