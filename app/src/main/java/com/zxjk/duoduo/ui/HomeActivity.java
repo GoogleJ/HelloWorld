@@ -594,7 +594,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
                 @Override
                 public void onProgress(long progress) {
-                    runOnUiThread(() -> tvUpdate.setText(getString(R.string.progress, (String.valueOf((int) ((float) progress / max1 * 100))))));
+                    runOnUiThread(() -> tvUpdate.setText((int) ((float) progress / max1 * 100) + "%"));
                 }
 
                 @Override
