@@ -1,6 +1,5 @@
 package com.zxjk.duoduo.ui.msgpage.rongIM;
 
-import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.AudioVideoPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.FilePlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.MyCombineLocationPlugin;
@@ -33,7 +32,6 @@ public class BasePluginExtensionModule extends DefaultExtensionModule {
             list.add(new TakePhotoPlugin());
             list.add(new TransferPlugin());
             list.add(new SightPlugin());
-            list.add(new AudioVideoPlugin());
             list.add(new RedPacketPlugin());
             list.add(new BusinessCardPlugin());
             list.add(new MyCombineLocationPlugin());

@@ -128,8 +128,6 @@ dependencies {
     //融云
     implementation project(':IMKit')
     implementation project(':IMLib')
-    implementation project(':CallLib')
-    implementation project(':CallKit')
     implementation project(':Sight')
 
     //视频压缩
