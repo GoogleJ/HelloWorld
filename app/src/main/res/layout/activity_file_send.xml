@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,59 +13,67 @@
 
         <TextView
             android:id="@+id/ivBack"
-            android:text="@string/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
-            android:textColor="@color/callkit_black"/>
-
+            android:text="@string/cancel"
+            android:textColor="@android:color/black" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/shape_file_send"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp">
+            android:background="@drawable/shape_file_send"
+            android:orientation="horizontal">
+
             <FrameLayout
                 android:id="@+id/fm_we_chat_file"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:onClick="weChatFile">
+
                 <TextView
                     android:id="@+id/tv_we_chat_file"
-                    android:text="@string/file_send_wechat"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
                     android:gravity="center"
                     android:paddingStart="24dp"
                     android:paddingEnd="24dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"/>
+                    android:text="@string/file_send_wechat" />
+
             </FrameLayout>
+
             <FrameLayout
                 android:id="@+id/fm_phone_file"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:onClick="phoneFile">
+
                 <TextView
                     android:id="@+id/tv_phone_file"
-                    android:text="@string/file_send_phone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/shape_file_send2"
                     android:gravity="center"
                     android:paddingStart="24dp"
                     android:paddingEnd="24dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:background="@drawable/shape_file_send2"/>
+                    android:text="@string/file_send_phone" />
+
             </FrameLayout>
+
         </LinearLayout>
+
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
@@ -76,4 +84,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never" />
+
 </LinearLayout>
