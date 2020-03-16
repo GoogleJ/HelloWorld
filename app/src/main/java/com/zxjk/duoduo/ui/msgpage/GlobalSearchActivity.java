@@ -1,7 +1,6 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -37,7 +36,6 @@ public class GlobalSearchActivity extends BaseActivity {
     RecyclerView mRecyclerView;
 
     GlobalSearchAdapter mAdapter;
-    Intent intent;
 
     private int currentPage = -1;
     private String pageSize = "10";
@@ -48,9 +46,9 @@ public class GlobalSearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_search);
         ButterKnife.bind(this);
-        searchEdit.requestFocus();
         initData();
         initUI();
+        searchEdit.requestFocus();
     }
 
     private void initData() {
