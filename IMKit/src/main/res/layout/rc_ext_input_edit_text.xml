@@ -5,32 +5,39 @@
     android:layout_centerVertical="true"
     android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/rc_edit_text"
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="34dp"
-        android:layout_gravity="bottom"
+        android:layout_marginLeft="2dp"
         android:layout_weight="1"
-        android:background="@drawable/shape_rc_etbac"
-        android:maxLines="3"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:minHeight="34dp">
+
+        <EditText
+            android:id="@+id/rc_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_rc_etbac"
+            android:maxLines="3"
+            android:minHeight="34dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/rc_emoticon_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="3dp"
         android:src="@drawable/rc_emotion_toggle_selector" />
 
     <FrameLayout
         android:id="@+id/rc_send_toggle"
-        android:layout_width="48dp"
+        android:layout_width="54dp"
         android:layout_height="34dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/rc_send_toggle_selector"
@@ -44,7 +51,5 @@
             android:text="@string/rc_ext_send"
             android:textColor="#ffffff"
             android:textSize="14sp" />
-
     </FrameLayout>
-
 </LinearLayout>

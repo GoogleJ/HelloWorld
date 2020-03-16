@@ -60,7 +60,6 @@ import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialManageActivity;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.IExtensionClickAdapter;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
 
 import java.util.ArrayList;
@@ -95,6 +94,7 @@ import io.rong.imlib.model.UserInfo;
 import io.rong.imlib.typingmessage.TypingStatus;
 import io.rong.message.CommandMessage;
 import io.rong.message.FileMessage;
+import io.rong.message.HQVoiceMessage;
 import io.rong.message.ImageMessage;
 import io.rong.message.InformationNotificationMessage;
 import io.rong.message.LocationMessage;
@@ -188,20 +188,6 @@ public class ConversationActivity extends BaseActivity {
         handleBurnAfterReadForReceivers();
 
         sendFakeC2CMsg();
-
-        initPictureForbidden();
-    }
-
-    private void initPictureForbidden() {
-        fragment.setClickAdapter(new IExtensionClickAdapter() {
-            @Override
-            public void onSendToggleClick(View view, String s) {
-            }
-
-            @Override
-            public void onPluginClicked(IPluginModule iPluginModule, int i) {
-            }
-        });
     }
 
     private void sendFakeC2CMsg() {
@@ -260,6 +246,9 @@ public class ConversationActivity extends BaseActivity {
         } else if (message.getContent() instanceof CusEmoteTabMessage) {
             CusEmoteTabMessage cusEmoteTabMessage = (CusEmoteTabMessage) message.getContent();
             cusEmoteTabMessage.setExtra(s);
+        } else if (message.getContent() instanceof HQVoiceMessage) {
+            HQVoiceMessage hqVoiceMessage = (HQVoiceMessage) message.getContent();
+            hqVoiceMessage.setExtra(s);
         }
     }
 
@@ -273,7 +262,8 @@ public class ConversationActivity extends BaseActivity {
         if (conversationInfo == null || conversationInfo.getMessageBurnTime() == -1) {
             map.put("MsgType", "NormalMsg");
         } else if (message.getObjectName().equals("RC:TxtMsg") || message.getObjectName().equals("RC:ImgMsg")
-                || message.getObjectName().equals("RC:VcMsg") || message.getObjectName().equals("MCusEmoteTabMsg")) {
+                || message.getObjectName().equals("RC:VcMsg") || message.getObjectName().equals("MCusEmoteTabMsg")
+                || message.getObjectName().equals("RC:HQVCMsg")) {
             BurnAfterReadMessageLocalBean b = new BurnAfterReadMessageLocalBean();
             b.setMessageId(message.getMessageId());
             b.setBurnTime(System.currentTimeMillis() + (conversationInfo.getMessageBurnTime() * 1000));
@@ -346,6 +336,9 @@ public class ConversationActivity extends BaseActivity {
                                 CusEmoteTabMessage cusEmoteTabMessage = (CusEmoteTabMessage) m.getContent();
                                 extra = cusEmoteTabMessage.getExtra();
                                 break;
+                            case "RC:HQVCMsg":
+                                HQVoiceMessage hqVoiceMessage = (HQVoiceMessage) m.getContent();
+                                extra = hqVoiceMessage.getExtra();
                         }
 
                         if (TextUtils.isEmpty(extra)) {

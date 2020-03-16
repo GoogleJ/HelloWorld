@@ -1,11 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <com.amap.api.maps.MapView
@@ -51,7 +52,7 @@
             android:background="@android:color/white"
             android:divider="@color/rc_map_list_divider_color"
             android:dividerHeight="1dp"
-            android:paddingLeft="14dp"/>
+            android:paddingLeft="14dp"></ListView>
 
         <ProgressBar
             android:id="@+id/rc_ext_loading"

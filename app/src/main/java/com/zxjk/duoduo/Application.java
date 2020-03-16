@@ -29,6 +29,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SocialGroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnHQVoiceMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnImageMessageItemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnTextMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnVoiceMessageProvider;
@@ -176,6 +177,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new MInfoNotificationMsgItemProvider());
         RongIM.registerMessageTemplate(new SightMessageItemProvider());
         RongIM.registerMessageTemplate(new BurnVoiceMessageProvider());
+        RongIM.registerMessageTemplate(new BurnHQVoiceMessageProvider());
         RongIM.registerMessageTemplate(new RedPacketProvider());
         RongIM.registerMessageTemplate(new TransferProvider());
         RongIM.registerMessageTemplate(new BusinessCardProvider());
@@ -189,6 +191,8 @@ public class Application extends android.app.Application {
         RongIM.getInstance().enableNewComingMessageIcon(true);
         RongIM.getInstance().enableUnreadMessageIcon(true);
         setMyExtensionModule();
+
+        RongIM.getInstance().setVoiceMessageType(RongIM.VoiceMessageType.HighQuality);
     }
 
     private void initOSS() {

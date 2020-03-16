@@ -45,7 +45,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="com.zxjk.duoduo.permission.PROCESS_PUSH_MSG" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
 
     <application
@@ -701,19 +701,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="io.rong.callkit.MultiAudioCallActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-            <intent-filter>
-                <action android:name="io.rong.intent.action.voip.MULTIAUDIO" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="io.rong.callkit.CallSelectMemberActivity" /> <!-- 高德定位 -->
-        <activity
             android:name="com.vivo.push.sdk.LinkProxyClientActivity"
             android:exported="false"
             android:screenOrientation="portrait"
@@ -728,7 +715,7 @@
             <meta-data
                 android:name="hwc-theme"
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity> <!-- 音视频配置开始 -->
+        </activity>
         <activity
             android:name="com.huawei.updatesdk.service.otaupdate.AppUpdateActivity"
             android:configChanges="orientation|screenSize"
@@ -757,7 +744,7 @@
             <meta-data
                 android:name="hwc-theme"
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity> <!-- 音视频配置结束 -->
+        </activity>
         <!-- 融云push receiver，不定义无法收到通知 -->
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
@@ -833,6 +820,8 @@
             android:authorities="com.zxjk.duoduo.updateSdk.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true" />
+
+
 
         <receiver
             android:name=".ui.RongPushMessageReceiver"

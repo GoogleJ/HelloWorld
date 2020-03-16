@@ -2,5 +2,4 @@
 <resources>
     <integer name="rc_extension_emoji_count_per_page">20</integer>
     <integer name="rc_extension_plugin_count_per_page">8</integer>
-    <integer name="rc_extension_photo">20</integer>
 </resources>

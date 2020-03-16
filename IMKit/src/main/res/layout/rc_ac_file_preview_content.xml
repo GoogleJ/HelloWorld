@@ -60,7 +60,7 @@
             <ProgressBar
                 android:id="@+id/rc_ac_pb_download_progress"
                 style="@style/rc_pb_file_download_progress"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="8dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="3dp"
@@ -94,7 +94,7 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="54dp"
         android:background="@drawable/rc_ac_btn_file_download_open_button"
-        android:text="@string/rc_ac_file_download_btn"
         android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:text="@string/rc_ac_file_download_btn" />
 </LinearLayout>

@@ -22,6 +22,7 @@ import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.HQVoiceMessage;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
@@ -52,6 +53,9 @@ public class ForwardAction implements IClickActions {
             } else if (msg.getContent() instanceof VoiceMessage) {
                 VoiceMessage voiceMessage = (VoiceMessage) msg.getContent();
                 extra = voiceMessage.getExtra();
+            } else if (msg.getContent() instanceof HQVoiceMessage) {
+                HQVoiceMessage hqVoiceMessage = (HQVoiceMessage) msg.getContent();
+                extra = hqVoiceMessage.getExtra();
             }
             try {
                 ConversationInfo info = GsonUtils.fromJson(extra, ConversationInfo.class);

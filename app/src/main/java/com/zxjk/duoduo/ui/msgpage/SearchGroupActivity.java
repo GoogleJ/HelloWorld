@@ -96,15 +96,15 @@ public class SearchGroupActivity extends BaseActivity {
             @Override
             protected void convert(BaseViewHolder helper, SearchCommunityResponse.ListBean item) {
                 helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), searchWord))
-                        .setText(R.id.tvGroupOnwerName, item.getOwnerNick())
+                        .setText(R.id.tvGroupOwnerName, item.getOwnerNick())
                         .setText(R.id.tvCount, item.getMembers());
 
                 if (item.getCommunityName().contains(searchWord)) {
                     helper.setText(R.id.tvGroupName, matcherSearchText(Color.parseColor("#4486ff"), item.getCommunityName(), searchWord));
                 } else if (item.getCode().contains(searchWord)) {
-                    helper.setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), getString(R.string.social_code) + item.getCode(), searchWord));
+                    helper.setText(R.id.tvGroupOwnerName, matcherSearchText(Color.parseColor("#4486ff"), getString(R.string.social_code) + item.getCode(), searchWord));
                 } else if (item.getOwnerNick().contains(searchWord)) {
-                    helper.setText(R.id.tvGroupOnwerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), searchWord));
+                    helper.setText(R.id.tvGroupOwnerName, matcherSearchText(Color.parseColor("#4486ff"), item.getOwnerNick(), searchWord));
                 }
 
                 FrameLayout fl = helper.getView(R.id.fl);

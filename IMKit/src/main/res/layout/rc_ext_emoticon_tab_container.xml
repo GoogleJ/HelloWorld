@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.rong.imkit.DectedRl
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rlRongEmoticon"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -77,4 +76,4 @@
         android:layout_height="2px"
         android:layout_alignParentTop="true"
         android:background="@color/rc_divider_color"/>
-</io.rong.imkit.DectedRl>
+</RelativeLayout>

@@ -4,6 +4,7 @@
     android:id="@id/rc_item_conversation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
     android:gravity="center_vertical">
 
     <FrameLayout
@@ -29,7 +30,7 @@
             android:id="@+id/rc_mask"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <FrameLayout
             android:id="@+id/rc_unread_view_left"

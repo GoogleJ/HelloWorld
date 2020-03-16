@@ -14,49 +14,38 @@
             android:id="@id/rc_btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/rc_cancel"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:clickable="true"
+            android:text="@string/rc_cancel"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/rc_choose_members"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:text="@string/rc_choose_members"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
     </RelativeLayout>
 
     <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_width="0px"
-        android:layout_height="0px" />
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
     <EditText
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/shape_search_ediitext"
-        android:gravity="center_vertical"
-        android:drawableLeft="@drawable/icon_search_view"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:maxLines="1"
-        android:drawablePadding="10dp"
         android:id="@id/rc_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:hint="@string/rc_search"
-        android:textSize="15sp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textSize="14sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -67,15 +56,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:divider="@null" />
+            android:divider="@null"></ListView>
 
         <TextView
             android:id="@+id/rc_popup_bg"
             android:layout_width="80.0dip"
             android:layout_height="80.0dip"
             android:layout_gravity="center"
-            android:gravity="center"
             android:background="@drawable/rc_bg_toast"
+            android:gravity="center"
             android:textColor="#ffffffff"
             android:textSize="30.0dip"
             android:visibility="invisible" />

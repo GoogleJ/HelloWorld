@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +21,12 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.ConversationInfo;
 
+import io.rong.eventbus.EventBus;
 import io.rong.imkit.R.bool;
 import io.rong.imkit.R.drawable;
 import io.rong.imkit.R.id;
 import io.rong.imkit.R.layout;
 import io.rong.imkit.R.string;
-import io.rong.eventbus.EventBus;
 import io.rong.imkit.manager.AudioPlayManager;
 import io.rong.imkit.manager.AudioRecordManager;
 import io.rong.imkit.manager.IAudioPlayListener;

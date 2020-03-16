@@ -1,8 +1,0 @@
-<resources>
-    <string name="rc_plugin_sight">짧은 비디오</string>
-    <string name="rc_sight_reminder">짧은 비디오를 녹화하려면 길게 누름</string>
-    <string name="rc_sight_list_title">채팅 파일</string>
-    <string name="rc_sight_download_failed">다운로드 실패, 다시 다운로드하려면 클릭하십시오</string>
-    <string name="rc_sight_record_too_short_time">녹음 시간이 짧습니다. 다시 시도하십시오</string>
-    <string name="rc_sight_message_recalled">메시지가 철회되었습니다</string>
-</resources>

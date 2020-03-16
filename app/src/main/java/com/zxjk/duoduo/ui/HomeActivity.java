@@ -76,7 +76,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import io.rong.callkit.RongCallKit;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
@@ -253,17 +252,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             return null;
         }, true);
 
-        RongCallKit.setGroupMemberProvider((groupId, result) -> {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getMemberIdByGroupId(groupId)
-                    .doOnSubscribe(d -> ToastUtils.showShort(R.string.loading))
-                    .compose(RxSchedulers.ioObserver())
-                    .compose(RxSchedulers.normalTrans())
-                    .subscribe(result::onGotMemberList, t -> {
-                    });
-
-            return null;
-        });
     }
 
     @SuppressLint("CheckResult")
