@@ -2,7 +2,6 @@ package com.zxjk.duoduo.ui.msgpage.rongIM;
 
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.FilePlugin;
-import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.MyCombineLocationPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.PhotoSelectorPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.SightPlugin;
@@ -34,7 +33,6 @@ public class BasePluginExtensionModule extends DefaultExtensionModule {
             list.add(new SightPlugin());
             list.add(new RedPacketPlugin());
             list.add(new BusinessCardPlugin());
-            list.add(new MyCombineLocationPlugin());
             list.add(new FilePlugin());
         }
 

@@ -144,6 +144,7 @@ public class ConversationActivity extends BaseActivity {
      * 截屏disposable
      */
     private Disposable screenCapture;
+    private SocialLocalBean socialLocalBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -854,10 +855,6 @@ public class ConversationActivity extends BaseActivity {
             public boolean onMessageClick(Context context, View view, Message message) {
                 switch (message.getObjectName()) {
                     case "RC:LBSMsg":
-                        LocationMessage locationMessage = (LocationMessage) message.getContent();
-                        Intent intent6 = new Intent(context, MessageLocationActivity.class);
-                        intent6.putExtra("location", locationMessage);
-                        startActivity(intent6);
                         return true;
                     case "MMyCardMsg":
                         BusinessCardMessage businessCardMessage = (BusinessCardMessage) message.getContent();
@@ -1090,8 +1087,6 @@ public class ConversationActivity extends BaseActivity {
             startActivityForResult(intent1, 1000);
         }
     }
-
-    private SocialLocalBean socialLocalBean;
 
     private void initView() {
         tvTitle = findViewById(R.id.tv_title);
