@@ -22,11 +22,6 @@ import com.zxjk.duoduo.ui.msgpage.FriendDetailsActivity;
 import com.zxjk.duoduo.ui.widget.dialog.LoadingDialog;
 
 import java.lang.ref.WeakReference;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 @SuppressLint("CheckResult")
 public class CommonUtils {
@@ -97,7 +92,7 @@ public class CommonUtils {
     public static void resolveFriendList(BaseActivity activity, String friendId, String groupId, boolean finish) {
         LifecycleProvider<Lifecycle.Event> provider = AndroidLifecycle.createLifecycleProvider(activity);
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getFriendListById()
+                .getFriendInfoById(friendId)
                 .compose(provider.bindUntilEvent(Lifecycle.Event.ON_DESTROY))
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(activity)))
@@ -117,7 +112,7 @@ public class CommonUtils {
         resolveFriendList(activity, friendId, groupId, false);
     }
 
-    private static void handleFriendList(List<FriendInfoResponse> friendInfoResponses, BaseActivity activity, String userId, String groupId, boolean finish) {
+    private static void handleFriendList(FriendInfoResponse friendInfo, BaseActivity activity, String userId, String groupId, boolean finish) {
         if (finish) {
             activity.finish();
         }
@@ -128,14 +123,13 @@ public class CommonUtils {
             activity.startActivity(intent);
             return;
         }
-        for (FriendInfoResponse f : friendInfoResponses) {
-            if (f.getId().equals(userId)) {
-                //好友，进入详情页（可聊天）
-                Intent intent = new Intent(activity, FriendDetailsActivity.class);
-                intent.putExtra("friendId", userId);
-                activity.startActivity(intent);
-                return;
-            }
+
+        if (!TextUtils.isEmpty(friendInfo.getIsFriend()) && friendInfo.getIsFriend().equals("1")) {
+            //好友，进入详情页（可聊天）
+            Intent intent = new Intent(activity, FriendDetailsActivity.class);
+            intent.putExtra("friendId", userId);
+            activity.startActivity(intent);
+            return;
         }
 
         //陌生人，进入加好友页面

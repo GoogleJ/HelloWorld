@@ -53,9 +53,18 @@ public class FriendInfoResponse implements Serializable {
     private String isConfine;
     private String sortLetters;
     private String status;
+    private String isFriend;
     private boolean checked;
     private String firstLeter;
     private boolean canCheck = true;//是否可以点击（好友列表中的某人已在当前群中）
+
+    public String getIsFriend() {
+        return isFriend;
+    }
+
+    public void setIsFriend(String isFriend) {
+        this.isFriend = isFriend;
+    }
 
     public boolean isCanCheck() {
         return canCheck;
