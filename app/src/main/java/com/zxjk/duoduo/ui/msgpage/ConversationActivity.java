@@ -847,7 +847,9 @@ public class ConversationActivity extends BaseActivity {
             @Override
             public boolean onMessageClick(Context context, View view, Message message) {
                 switch (message.getObjectName()) {
+                    case "RC:RLStart":
                     case "RC:LBSMsg":
+                        ToastUtils.showShort(R.string.cantdone);
                         return true;
                     case "MMyCardMsg":
                         BusinessCardMessage businessCardMessage = (BusinessCardMessage) message.getContent();

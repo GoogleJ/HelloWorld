@@ -252,6 +252,7 @@ public class BurnHQVoiceMessageProvider extends MessageProvider<HQVoiceMessage> 
                 }
             }
         } else {
+            holder.content.setBackground(null);
             holder.right.setText(String.format("%s\"", content.getDuration()));
             holder.right.setVisibility(View.VISIBLE);
             holder.left.setVisibility(View.GONE);
@@ -261,6 +262,7 @@ public class BurnHQVoiceMessageProvider extends MessageProvider<HQVoiceMessage> 
             if (((HQVoiceMessage) message.getContent()).getLocalPath() != null) {
                 holder.downloadProcessing.setVisibility(View.GONE);
                 holder.downloadError.setVisibility(View.GONE);
+                holder.content.setBackgroundResource(drawable.shape_rc_bubble_left);
                 if (conversationInfo != null && conversationInfo.getMessageBurnTime() != -1) {
                     holder.ivFireLeft.setVisibility(View.VISIBLE);
                 }
@@ -275,7 +277,6 @@ public class BurnHQVoiceMessageProvider extends MessageProvider<HQVoiceMessage> 
                 holder.unread.setVisibility(View.GONE);
             }
 
-            holder.content.setBackgroundResource(drawable.shape_rc_bubble_left);
             animationDrawable = (AnimationDrawable) context.getResources().getDrawable(drawable.rc_an_voice_receive);
             if (playing) {
                 holder.img.setImageDrawable(animationDrawable);
