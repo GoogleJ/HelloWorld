@@ -693,10 +693,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="file_send_wechat">微信文件</string>
     <string name="file_send_phone">手机文件</string>
-    <string name="phonefilenum">文件: %1$d</string>
+    <string name="phonefilenum">文件:%1$d</string>
     <string name="phonefile_nofile">暂时无法读取本地文件，请联系客服</string>
-    <string name="phonefile_selectedfile">已选 (%1$d/%2$d)</string>
-    <string name="phonefilexml_selectedfile">已选 (0/5)</string>
+    <string name="phonefile_selectedfile">已选(%1$d/%2$d)</string>
+    <string name="phonefilexml_selectedfile">已选(0/5)</string>
     <string name="file_filesending">正在发送,请稍等</string>
     <string name="no_file">暂无文件</string>
     <string name="file">文件</string>
@@ -1002,4 +1002,32 @@
     <string name="country_phone" translatable="false">+%1$s</string>
     <string name="no_enter_red_data">暂无付费入群信息</string>
     <string name="unknown">未知</string>
+    <string name="enter_group_manage">进群管理</string>
+    <string name="tips_new_social_manage1">设置后新成员进群即可获得红包空投</string>
+    <string name="tips_new_social_manage2">群主设置加群金额,成员支付后即可入群</string>
+    <string name="public_social">群公开</string>
+    <string name="tips_new_social_manage3">根据群名称或群号搜索到此群</string>
+    <string name="msg_manage">消息管理</string>
+    <string name="tips_new_social_manage4">管理员可把成员的某一条消息强制撤回（长按）</string>
+    <string name="tips_new_social_manage5">限制群成员发消息间隔时间</string>
+    <string name="clear_all_history">清空记录(全局)</string>
+    <string name="tips_new_social_manage6">清空群内所有人的聊天记录</string>
+    <string name="group_func_manage">群功能管理</string>
+    <string name="manager_setting">管理员设置</string>
+    <string name="tips_new_social_manage7">仅群主和管理员可以发言</string>
+    <string name="more_group_func">更多群功能</string>
+    <string name="cant_sendVoice">禁止发语音</string>
+    <string name="current_group_nick">本群昵称</string>
+    <string name="trans_group">转让群</string>
+    <string name="enabled">已开启</string>
+    <string name="ban_send_voice">禁止发语音确认</string>
+    <string name="ban_send_voice1">是否确定操作禁止发送语音功能</string>
+    <string name="ban_send_voice_open">禁止发语音已开启</string>
+    <string name="ban_send_voice_close">禁止发语音已关闭</string>
+    <string name="is_confirm_disband_group">是否确定解散社群</string>
+    <string name="is_confirm_exit_group1">是否确定退出社群</string>
+    <string name="fold">收起</string>
+    <string name="no_authorization">暂无权限</string>
+    <string name="clear_local_history">清空聊天记录</string>
+    <string name="is_clear_all_conversation_history">将清空所有群内成员的聊天记录！</string>
 </resources>

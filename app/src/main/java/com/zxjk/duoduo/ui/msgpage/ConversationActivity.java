@@ -57,7 +57,6 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
-import com.zxjk.duoduo.ui.socialspace.SocialManageActivity;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
@@ -1106,7 +1105,7 @@ public class ConversationActivity extends BaseActivity {
             ImageView iv_end = findViewById(R.id.iv_end);
             iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_end));
             rl_end.setOnClickListener(v -> {
-                Intent intent = new Intent(this, SocialManageActivity.class);
+                Intent intent = new Intent(this, NewSocialManageActivity.class);
                 intent.putExtra("group", groupInfo);
                 startActivityForResult(intent, 1000);
             });

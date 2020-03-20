@@ -238,6 +238,15 @@ public class GroupResponse implements Serializable {
         private String customerNumber;
         private String groupOwnerNick;
         private String ownerHeadPortrait;
+        private String banSendVoice;
+
+        public String getBanSendVoice() {
+            return banSendVoice;
+        }
+
+        public void setBanSendVoice(String banSendVoice) {
+            this.banSendVoice = banSendVoice;
+        }
 
         public String getCustomerNumber() {
             return customerNumber;

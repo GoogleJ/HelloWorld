@@ -7,8 +7,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -46,16 +44,12 @@ import io.rong.imlib.model.Conversation;
 
 @SuppressLint("CheckResult")
 public class GroupChatInformationActivity extends BaseActivity {
-
     private static final int REQUEST_REMOVE = 7;
     private ArrayList<String> selectedIds = new ArrayList<>();
 
     private TextView groupChatName;
     private TextView see_more_group_members;
     private RecyclerView groupChatRecyclerView;
-    private RelativeLayout rl_groupManage;
-    private LinearLayout ll_groupowner;
-    private LinearLayout ll_groupmanager;
 
     //群公告
     private TextView announcement;
@@ -77,16 +71,12 @@ public class GroupChatInformationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat_information);
         tv_title = findViewById(R.id.tv_title);
-        ll_groupowner = findViewById(R.id.ll_groupowner);
-        ll_groupmanager = findViewById(R.id.ll_groupmanager);
 
         switch1 = findViewById(R.id.switch1);
         switch2 = findViewById(R.id.switch2);
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         see_more_group_members = findViewById(R.id.see_more_group_members);
-
-        rl_groupManage = findViewById(R.id.rl_groupManage);
 
         group = (GroupResponse) getIntent().getSerializableExtra("group");
 
@@ -226,18 +216,6 @@ public class GroupChatInformationActivity extends BaseActivity {
         Intent intent = new Intent(this, AllGroupMembersActivity.class);
         intent.putExtra("groupId", group.getGroupInfo().getId());
         intent.putExtra("allGroupMembers", group);
-        startActivity(intent);
-    }
-
-    /**
-     * 管理群
-     * 群转让
-     *
-     * @param view
-     */
-    public void groupManagement(View view) {
-        Intent intent = new Intent(this, ChooseNewOwnerActivity.class);
-        intent.putExtra("groupId", group.getGroupInfo().getId());
         startActivity(intent);
     }
 
@@ -404,52 +382,6 @@ public class GroupChatInformationActivity extends BaseActivity {
 
     public void report(View view) {
         startActivity(new Intent(this, SkinReportActivity.class));
-    }
-
-    //群主权限管理
-    public void ownerAuthority(View view) {
-        Intent intent = new Intent(this, OwnerGroupAuthorityActivity.class);
-        intent.putExtra("group", group);
-        startActivityForResult(intent, 1);
-    }
-
-    //群主群管理
-    public void ownerGroupManage(View view) {
-        Intent intent = new Intent(this, OwnerGroupManageActivity.class);
-        intent.putExtra("group", group);
-        startActivityForResult(intent, 1);
-    }
-
-    //管理员禁言管理
-    public void managerMute(View view) {
-        GroupResponse.PermissionBean permission = group.getGroupPermission();
-        if (permission.getOpenBanned().equals("0")) {
-            ToastUtils.showShort(R.string.nopermisson);
-            return;
-        }
-        Intent intent = new Intent(this, MuteManageActivity.class);
-        intent.putExtra("groupId", group.getGroupInfo().getId());
-        startActivity(intent);
-    }
-
-    //管理员视频直播
-    public void managerVideo(View view) {
-        GroupResponse.PermissionBean permission = group.getGroupPermission();
-        if (permission.getOpenVideo().equals("0")) {
-            ToastUtils.showShort(R.string.nopermisson);
-            return;
-        }
-        ToastUtils.showShort(R.string.developing);
-    }
-
-    //管理员语音直播
-    public void managerAudio(View view) {
-        GroupResponse.PermissionBean permission = group.getGroupPermission();
-        if (permission.getOpenAudio().equals("0")) {
-            ToastUtils.showShort(R.string.nopermisson);
-            return;
-        }
-        ToastUtils.showShort(R.string.developing);
     }
 
 }
