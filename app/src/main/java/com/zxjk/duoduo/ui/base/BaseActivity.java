@@ -49,14 +49,10 @@ import top.zibin.luban.Luban;
 
 @SuppressLint({"CheckResult", "Registered"})
 public class BaseActivity extends RxAppCompatActivity {
-    private boolean enableTouchHideKeyBoard = true;
-    private boolean enableCheckConstant = true;
     public RxPermissions rxPermissions = new RxPermissions(this);
     public File corpFile;
-
-    public interface PermissionResult {
-        void onResult(boolean granted);
-    }
+    private boolean enableTouchHideKeyBoard = true;
+    private boolean enableCheckConstant = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -188,7 +184,8 @@ public class BaseActivity extends RxAppCompatActivity {
             RxView.clicks(view)
                     .compose(rxPermissions.ensureEachCombined(permissions))
                     .subscribe(permission -> {
-                        if (!permission.granted) ToastUtils.showShort(R.string.open_related_permission);
+                        if (!permission.granted)
+                            ToastUtils.showShort(R.string.open_related_permission);
 
                         if (null != result) result.onResult(permission.granted);
                     });
@@ -223,10 +220,6 @@ public class BaseActivity extends RxAppCompatActivity {
         startActivity(intent);
     }
 
-    public interface OnZipFileFinish {
-        void onFinish(List<File> result);
-    }
-
     public void zipFile(List<String> files, OnZipFileFinish onFinish) {
         Observable.just(files)
                 .observeOn(Schedulers.io())
@@ -236,6 +229,13 @@ public class BaseActivity extends RxAppCompatActivity {
                 .subscribe(result -> {
                     if (onFinish != null) onFinish.onFinish(result);
                 });
+    }
+
+    public Observable<List<File>> zipFile(List<String> files) {
+        return Observable.just(files)
+                .subscribeOn(Schedulers.io())
+                .map(origin -> Luban.with(Utils.getApp()).load(origin).get())
+                .compose(bindToLifecycle());
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -284,5 +284,13 @@ public class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LanguageUtil.getInstance(newBase).setLocal(newBase));
+    }
+
+    public interface PermissionResult {
+        void onResult(boolean granted);
+    }
+
+    public interface OnZipFileFinish {
+        void onFinish(List<File> result);
     }
 }

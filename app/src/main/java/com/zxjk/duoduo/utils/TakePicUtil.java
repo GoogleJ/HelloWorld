@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
@@ -86,7 +87,7 @@ public class TakePicUtil {
         Intent cropIntent = new Intent("com.android.camera.action.CROP");
 
         cropIntent.setDataAndType(uri, "image/*");
-        cropIntent.putExtra("crop", "true");
+        cropIntent.putExtra("dontCrop", "true");
         cropIntent.putExtra("circleCrop", false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -107,8 +108,8 @@ public class TakePicUtil {
                 cropIntent.putExtra("outputX", (config.acceptX * 400));
                 cropIntent.putExtra("outputY", (config.acceptY * 400));
             }
+            config = null;
         }
-        config = null;
 
         cropIntent.putExtra("return-data", false);
         cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
@@ -128,7 +129,7 @@ public class TakePicUtil {
     }
 
     public static File onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode != Activity.RESULT_OK)
+        if (resultCode != Activity.RESULT_OK || data == null)
             return null;
         if (requestCode == CODE_PICTURE || requestCode == CODE_ALBUM) {
             String filePath = "";
@@ -139,6 +140,14 @@ public class TakePicUtil {
                 case CODE_ALBUM:
                     filePath = getPath(activity, data.getData());
                     break;
+            }
+            if (TextUtils.isEmpty(filePath)) {
+                return null;
+            }
+
+            if (config != null && !config.isCrop) {
+                config = null;
+                return new File(filePath);
             }
             corp(activity, new File(filePath));
             return null;
@@ -248,6 +257,7 @@ public class TakePicUtil {
         private boolean circleCorp;
         private int acceptX = 1;
         private int acceptY = 1;
+        private boolean isCrop = true;
 
         public Config enableZipPixel() {
             enableZipPixel = true;
@@ -262,6 +272,11 @@ public class TakePicUtil {
         public Config rectParm(int acceptX, int acceptY) {
             this.acceptX = acceptX;
             this.acceptY = acceptY;
+            return this;
+        }
+
+        public Config dontCrop() {
+            this.isCrop = false;
             return this;
         }
 

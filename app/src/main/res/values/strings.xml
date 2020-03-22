@@ -1030,4 +1030,26 @@
     <string name="no_authorization">暂无权限</string>
     <string name="clear_local_history">清空聊天记录</string>
     <string name="is_clear_all_conversation_history">将清空所有群内成员的聊天记录！</string>
+    <string name="wechat_cast">微信直播</string>
+    <string name="video_cast">视频直播</string>
+    <string name="audio_cast">语音直播</string>
+    <string name="go_for_service">有疑问？请联系客服</string>
+    <string name="create_cast">创建直播</string>
+    <string name="choose_cast_type">请选择直播类型</string>
+    <string name="developing1">暂未开放</string>
+    <string name="create_cast_step1">上传直播封面</string>
+    <string name="create_cast_step2">直播主题</string>
+    <string name="create_cast_step3">直播日期与时间</string>
+    <string name="create_cast_step4">直播详情内容与详情页</string>
+    <string name="input_cast_theme">请输入直播主题…</string>
+    <string name="select_cast_date">选择直播日期</string>
+    <string name="select_cast_time">选择直播时间</string>
+    <string name="upload_cast_thumb">请上传直播封面</string>
+    <string name="setup_cast_title">请输入直播主题</string>
+    <string name="setup_cast_date">请设置直播日期</string>
+    <string name="setup_cast_time">请设置直播时间</string>
+    <string name="input_cast_detail">请输入直播详情</string>
+    <string name="x_month_x_day">%1$s月%2$s日</string>
+    <string name="x_colon_x" translatable="false">%1$s:%2$s</string>
+    <string name="choose_date">选择日期</string>
 </resources>
