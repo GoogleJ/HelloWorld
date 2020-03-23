@@ -1010,7 +1010,7 @@
     <string name="msg_manage">消息管理</string>
     <string name="tips_new_social_manage4">管理员可把成员的某一条消息强制撤回（长按）</string>
     <string name="tips_new_social_manage5">限制群成员发消息间隔时间</string>
-    <string name="clear_all_history">清空记录(全局)</string>
+    <string name="clear_all_history">全局清空</string>
     <string name="tips_new_social_manage6">清空群内所有人的聊天记录</string>
     <string name="group_func_manage">群功能管理</string>
     <string name="manager_setting">管理员设置</string>
