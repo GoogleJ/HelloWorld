@@ -11,7 +11,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="184dp"
         android:background="@drawable/bg_create_cast">
 
         <FrameLayout

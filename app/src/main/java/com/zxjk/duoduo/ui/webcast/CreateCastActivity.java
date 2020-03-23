@@ -3,7 +3,6 @@ package com.zxjk.duoduo.ui.webcast;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -50,9 +50,9 @@ import com.zxjk.duoduo.utils.TakePicUtil;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.DateTimePicker;
@@ -141,7 +141,6 @@ public class CreateCastActivity extends BaseActivity {
             }
         }, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-
         etStep2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -225,8 +224,7 @@ public class CreateCastActivity extends BaseActivity {
 
     public void selectTime(View view) {
         TimePicker timePicker = new TimePicker(this, DateTimePicker.HOUR_24);
-        String s = TimeUtils.date2String(new Date(), "HH:mm");
-        String[] split = s.split(":");
+        String[] split = TimeUtils.millis2String(TimeUtils.getNowMills() + 1800000, "HH:mm").split(":");
         timePicker.setRangeStart(Integer.parseInt(split[0]) + 1, Integer.parseInt(split[1]));
         timePicker.setRangeEnd(23, 59);
         initPicker(timePicker);
@@ -354,6 +352,7 @@ public class CreateCastActivity extends BaseActivity {
             vf.showPrevious();
             stepFlag -= 1;
         }
+
         isFlipping = true;
         Observable.timer(350, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
@@ -369,25 +368,20 @@ public class CreateCastActivity extends BaseActivity {
             case 1:
                 tvStep.setText(R.string.create_cast_step1);
                 ivStep.setImageResource(R.drawable.ic_create_cast_step1);
-
                 break;
             case 2:
                 tvStep.setText(R.string.create_cast_step2);
                 ivStep.setImageResource(R.drawable.ic_create_cast_step2);
-
                 break;
             case 3:
                 tvStep.setText(R.string.create_cast_step3);
                 ivStep.setImageResource(R.drawable.ic_create_cast_step3);
-
                 break;
             case 4:
                 tvStep.setText(R.string.create_cast_step4);
                 ivStep.setImageResource(R.drawable.ic_create_cast_step4);
-
                 break;
         }
-
     }
 
     private void showSelectPop() {
@@ -399,19 +393,19 @@ public class CreateCastActivity extends BaseActivity {
                     dialog.dismiss();
                     if (stepFlag == 1) {
                         TakePicUtil.config(new TakePicUtil.Config().rectParm(23, 14));
+                        TakePicUtil.takePicture(CreateCastActivity.this);
                     } else {
-                        TakePicUtil.config(new TakePicUtil.Config().dontCrop());
+                        TakePicUtil.takePicture(CreateCastActivity.this, false);
                     }
-                    TakePicUtil.takePicture(CreateCastActivity.this);
                 });
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
                     if (stepFlag == 1) {
                         TakePicUtil.config(new TakePicUtil.Config().rectParm(23, 14));
+                        TakePicUtil.albumPhoto(CreateCastActivity.this);
                     } else {
-                        TakePicUtil.config(new TakePicUtil.Config().dontCrop());
+                        TakePicUtil.albumPhoto(CreateCastActivity.this, false);
                     }
-                    TakePicUtil.albumPhoto(CreateCastActivity.this);
                 });
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
             }
@@ -441,35 +435,38 @@ public class CreateCastActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void uploadImg() {
         zipFile(Collections.singletonList(corpFile.getPath()))
-                .flatMap((Function<List<File>, ObservableSource<String>>) files ->
-                        Observable.create(e ->
-                                OssUtils.uploadFile(files.get(0).getAbsolutePath(), new OssUtils.OssCallBack1() {
-                                    @Override
-                                    public void onSuccess(String url) {
-                                        e.onNext(url);
-                                    }
+                .flatMap((Function<List<File>, ObservableSource<String>>) files -> Observable.create(e ->
+                        OssUtils.uploadFile(files.get(0).getAbsolutePath(), new OssUtils.OssCallBack1() {
+                            @Override
+                            public void onSuccess(String url) {
+                                e.onNext(url);
+                                e.onComplete();
+                            }
 
+                            @Override
+                            public void onFail() {
+                                e.tryOnError(new Exception(getString(R.string.function_fail)));
+                            }
+                        }, null)))
+                .flatMap((Function<String, ObservableSource<String>>) url -> Observable.create(e ->
+                        Glide.with(this).downloadOnly().load(url)
+                                .listener(new RequestListener<File>() {
                                     @Override
-                                    public void onFail() {
-                                        e.onError(new Exception(getString(R.string.function_fail)));
-                                    }
-                                }, null)))
-                .flatMap((Function<String, ObservableSource<String>>) url ->
-                        Observable.create(e ->
-                                GlideUtil.loadCornerImg(stepFlag == 1 ? ivContent1 : ivContent4, url, 6, new RequestListener<Bitmap>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException ex, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                                        e.onError(new Exception(getString(R.string.function_fail)));
-                                        return false;
-                                    }
-
-                                    @Override
-                                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                    public boolean onResourceReady(File resource, Object model, Target<File> target, DataSource dataSource, boolean isFirstResource) {
                                         e.onNext(url);
+                                        e.onComplete();
                                         return true;
                                     }
-                                })))
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException ex, Object model, Target<File> target, boolean isFirstResource) {
+                                        e.tryOnError(new Exception(getString(R.string.upload_fail)));
+                                        return false;
+                                    }
+                                }).submit(ivContent1.getWidth(), ivContent1.getHeight())
+                ))
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                .timeout(6, TimeUnit.SECONDS)
                 .subscribe(url -> {
                     if (stepFlag == 1) {
                         GlideUtil.loadCornerImg(ivContent1, url, 10);
@@ -487,6 +484,8 @@ public class CreateCastActivity extends BaseActivity {
                 }, t -> {
                     if (TextUtils.isEmpty(t.getMessage())) {
                         ToastUtils.showShort(R.string.function_fail);
+                    } else if (t instanceof TimeoutException) {
+                        ToastUtils.showShort(getString(R.string.upload_fail));
                     } else {
                         ToastUtils.showShort(t.getMessage());
                     }

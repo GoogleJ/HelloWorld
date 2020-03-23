@@ -32,12 +32,23 @@ public class CommonUtils {
     }
 
     public static LoadingDialog initDialog(Context context, String loadText) {
+        return initDialog(context, -1, loadText);
+    }
+
+    public static LoadingDialog initDialog(Context context, long timestamp) {
+        return initDialog(context, timestamp, "");
+    }
+
+    public static LoadingDialog initDialog(Context context, long timestamp, String loadText) {
         LoadingDialog d = loadingDialog.get();
         if (d != null) {
             d.dismissReally();
             loadingDialog.clear();
         }
         d = new LoadingDialog(context, loadText);
+        if (timestamp != -1) {
+            d.setDelayTimeStamp(timestamp);
+        }
         loadingDialog = new WeakReference<>(d);
         return d;
     }

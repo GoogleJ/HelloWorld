@@ -19,7 +19,7 @@ public class LoadingDialog extends Dialog {
     private static final int MSG_HIDE = 2;
     private static final int MSG_REAL_HIDE = 3;
 
-    private int delayTimeStamp = 400;
+    private long delayTimeStamp = 400;
     private static int showTimeStamp = 700;
 
     private Handler mHandler;
@@ -46,7 +46,7 @@ public class LoadingDialog extends Dialog {
         }
     }
 
-    public void setDelayTimeStamp(int delayTimeStamp) {
+    public void setDelayTimeStamp(long delayTimeStamp) {
         this.delayTimeStamp = delayTimeStamp;
     }
 
