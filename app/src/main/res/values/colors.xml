@@ -31,6 +31,7 @@
     <color name="click_bg_dark_light">#E0E0E0</color>
     <color name="red_eth_in">#F43532</color>
     <color name="count_down">#EB1D1C</color>
+    <color name="the_order_state">#FF655C</color>
     <color name="confirm_sale_line">#eeeeee</color>
     <color name="tvChangeSign">#BCBDC7</color>
     <color name="choosesex_line">#D2D2D2</color>
@@ -53,7 +54,9 @@
     <color name="color9">#999999</color>
     <color name="color39">#393939</color>
     <color name="colorDBGreen">#11BE11</color>
+    <color name="colorGreen">#3DCC9C</color>
     <color name="msgTitle">#020818</color>
     <color name="backupwordUnable">#83B0FF</color>
     <color name="title_offcial">#415686</color>
+
 </resources>

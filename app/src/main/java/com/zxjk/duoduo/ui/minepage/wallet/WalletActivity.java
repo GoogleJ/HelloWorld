@@ -89,7 +89,7 @@ public class WalletActivity extends BaseActivity {
     }
 
     public void func4(View view) {
-        ToastUtils.showShort(R.string.developing);
+        startActivity(new Intent(this,OneKeyBuyCoinActivity.class));
     }
 
     public void func5(View view) {

@@ -12,6 +12,8 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.zxjk.duoduo.Constant.CODE_OTC_SUCCESS;
+import static com.zxjk.duoduo.Constant.CODE_OTC_TIMEOUT;
 import static com.zxjk.duoduo.Constant.CODE_SUCCESS;
 import static com.zxjk.duoduo.Constant.CODE_UNLOGIN;
 
@@ -48,11 +50,30 @@ public class RxSchedulers {
     //返回结果预处理
     public static <T> ObservableTransformer<BaseResponse<T>, T> normalTrans() {
         return upstream -> upstream.flatMap((Function<BaseResponse<T>, ObservableSource<T>>) response -> {
-            if (response.code == CODE_SUCCESS) {
+            if (response.code == CODE_SUCCESS ) {
                 return Observable.just(response.data);
             } else if (response.code == CODE_UNLOGIN) {
                 return Observable.error(new RxException.DuplicateLoginExcepiton("重复登录"));
             } else {
+                return Observable.error(new RxException.ParamsException(response.msg, response.code));
+            }
+        });
+    }
+
+    //返回结果预处理
+    public static <T> ObservableTransformer<BaseResponse<T>, T> otc() {
+        return upstream -> upstream.flatMap((Function<BaseResponse<T>, ObservableSource<T>>) response -> {
+            if (response.code == CODE_OTC_SUCCESS) {
+                return Observable.just(response.data);
+            }else if(response.code == CODE_OTC_TIMEOUT){
+                return Observable.error(new RxException.ParamsException("没有满足条件的订单", response.code));
+            }else if (response.code == CODE_SUCCESS ) {
+                return Observable.just(response.data);
+            } else if (response.code == CODE_UNLOGIN) {
+                return Observable.error(new RxException.ParamsException("重复登录", response.code));
+            } else if(response.code == 1){
+                return Observable.error(new RxException.ParamsException(response.msg, response.code));
+            }else {
                 return Observable.error(new RxException.ParamsException(response.msg, response.code));
             }
         });

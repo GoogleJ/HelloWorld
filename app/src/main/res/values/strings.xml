@@ -1052,4 +1052,107 @@
     <string name="x_month_x_day">%1$s月%2$s日</string>
     <string name="x_colon_x" translatable="false">%1$s:%2$s</string>
     <string name="choose_date">选择日期</string>
+
+
+    <string name="remove_order" translatable="false">确认取消订单?</string>
+    <string name="buy" translatable="false">购买</string>
+    <string name="sell" translatable="false">出售</string>
+    <string name="transaction_type" translatable="false">交易类型</string>
+    <string name="transaction_status" translatable="false">交易状态</string>
+    <string name="for_the_payment" translatable="false">待付款</string>
+    <string name="payment_has_been" translatable="false">已付款</string>
+    <string name="has_been_completed" translatable="false">已完成</string>
+    <string name="has_been_cancelled" translatable="false">已取消</string>
+    <string name="in_the_complaint" translatable="false">申诉中</string>
+    <string name="waiting_to_put_money" translatable="false">待放币</string>
+    <string name="not_to_put_money" translatable="false">未放币</string>
+    <string name="reset" translatable="false">重置</string>
+    <string name="determine" translatable="false">确定</string>
+    <string name="the_complaint" translatable="false">申诉</string>
+    <string name="appeal_content" translatable="false">申诉内容</string>
+    <string name="edit_the_appeal" translatable="false">请填写订单号以及您需要申诉的信息...</string>
+    <string name="tv_upload_documents" translatable="false">上传凭证</string>
+    <string name="add_image" translatable="false">(请上传一张图片)</string>
+    <string name="submit" translatable="false">提交</string>
+    <string name="set_add_image" translatable="false">请选择上传图片</string>
+    <string name="appeal_message" translatable="false">请输入申诉信息</string>
+    <string name="has_been_submitted" translatable="false">提交成功</string>
+    <string name="order_info_by_type" translatable="false">订单记录</string>
+    <string name="buy_coin_prompt" translatable="false">买方当日累计%1$s笔取消，将会限制当天的买入功能；  本服务由IXX交易所提供，交易0手续费；</string>
+    <string name="quick_buy_coins" translatable="false">一键购币</string>
+    <string name="buying_patterns" translatable="false">按数量购买</string>
+    <string name="purchase_coin" translatable="false">购买金额</string>
+    <string name="purchase_coin_hint" translatable="false">请输入购买金额</string>
+    <string name="purchase_quantity" translatable="false">购买数量</string>
+    <string name="purchase_amount_hint" translatable="false">请输入购买数量</string>
+    <string name="buying_coin" translatable="false">按金额购买</string>
+    <string name="buy_coins_prompt" translatable="false">输入金额不能大于%1$sCNY。</string>
+    <string name="buy_amount_prompt" translatable="false">最大购买数量为%1$s%2$s</string>
+    <string name="buy_coins_prompt2" translatable="false">输入金额不能小于最小限额</string>
+    <string name="buy_amount_prompt2" translatable="false">最小购买数量为%1$s%2$s</string>
+    <string name="the_unit_price" translatable="false">单价约%1$s %2$s/%3$s</string>
+    <string name="limit" translatable="false">限额: %1$s~%2$s CNY</string>
+    <string name="wechat_pay" translatable="false">微信支付</string>
+    <string name="pay_treasure" translatable="false">支付宝</string>
+    <string name="bank_card" translatable="false">银行卡</string>
+    <string name="buy_coin" translatable="false">购买 %1$s</string>
+    <string name="payment_way" translatable="false">选择付款方式</string>
+    <string name="payment_way2" translatable="false">付款方式:</string>
+    <string name="price" translatable="false">单价:</string>
+    <string name="amount" translatable="false">购买数量:</string>
+    <string name="total" translatable="false">实付金额:</string>
+    <string name="Determine_to_buy" translatable="false">确定购买</string>
+    <string name="transaction_number" translatable="false">交易次数</string>
+    <string name="completion" translatable="false">完成率</string>
+    <string name="speed" translatable="false">平均放行(分钟)</string>
+    <string name="senior_certification" translatable="false">高级认证</string>
+    <string name="the_phone_authentication" translatable="false">手机认证</string>
+    <string name="email_authentication" translatable="false">邮箱认证</string>
+    <string name="business_details" translatable="false">商家详情</string>
+    <string name="registration_time" translatable="false">注册时间: %1$s</string>
+    <string name="to_buy" translatable="false">我要买</string>
+    <string name="to_sell" translatable="false">我要卖</string>
+    <string name="the_order_details" translatable="false">订单详情</string>
+    <string name="no_payment" translatable="false">未付款</string>
+    <string name="the_payee" translatable="false">收款人</string>
+    <string name="payee_account_number" translatable="false">收款人账号</string>
+    <string name="remark" translatable="false">收款人备注</string>
+    <string name="warm_prompt" translatable="false">温馨提示</string>
+    <string name="prompt" translatable="false">如您已向卖家线下转账付款，请务必点击“已完成付款”按钮，否则有可能造成您的资金损失！</string>
+    <string name="payment_is_done" translatable="false">已完成付款</string>
+    <string name="order_a_timeout" translatable="false">订单超时</string>
+    <string name="already_timeout" translatable="false">已经超时</string>
+    <string name="order_number" translatable="false">订单号:%1$s</string>
+    <string name="bank_card_payment" translatable="false">银行卡支付</string>
+    <string name="payee_card_number" translatable="false">收款人银行卡号</string>
+    <string name="merchants_remark" translatable="false">商家备注</string>
+    <string name="alipay_pay" translatable="false">支付宝支付</string>
+    <string name="payment_reminder" translatable="false">如您已付款，请务必点击“已完成付款”。否则有可能造成您的资金损失！</string>
+    <string name="confirm_to_leave_the_pay" translatable="false">确认离开支付</string>
+    <string name="remove_order_remind" translatable="false">单天最多取消%1$s次订单，超过%2$s次后，单天不可再下单！</string>
+    <string name="time" translatable="false">时间</string>
+    <string name="unit_price" translatable="false">单价(CNY)</string>
+    <string name="the_number" translatable="false">数量</string>
+    <string name="total_amount" translatable="false">交易总额(CNY)</string>
+    <string name="timeout" translatable="false">未放币</string>
+    <string name="waiting_to_put_money2" translatable="false">待商家放币</string>
+    <string name="coin_timeout" translatable="false">商家放币超时</string>
+    <string name="coin_timeout2" translatable="false">商家未放币，已超时</string>
+    <string name="waiting_for_payment" translatable="false">待买家付款</string>
+    <string name="complete_the_transaction" translatable="false">交易完成</string>
+    <string name="fifteen_minutes" translatable="false">15分钟内可自主</string>
+    <string name="cancel_the_order" translatable="false">取消订单</string>
+    <string name="purchase_details" translatable="false">购买详情</string>
+    <string name="deal_price" translatable="false">交易总价</string>
+    <string name="deal_unit_price" translatable="false">交易单价</string>
+    <string name="the_number_of_deals" translatable="false">交易数量</string>
+    <string name="order_time" translatable="false">下单时间</string>
+    <string name="vendor_name" translatable="false">商家名称</string>
+    <string name="merchant_account" translatable="false">商家账号</string>
+    <string name="go_to_the_payment" translatable="false">去付款</string>
+    <string name="no_data" translatable="false">暂无数据</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+
 </resources>

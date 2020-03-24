@@ -9,6 +9,7 @@ import com.zxjk.duoduo.bean.response.AssetManageBean;
 import com.zxjk.duoduo.bean.response.BalanceAssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
+import com.zxjk.duoduo.bean.response.ByBoinsResponse;
 import com.zxjk.duoduo.bean.response.CommunityApplicationListResponse;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityFilesListResponse;
@@ -18,6 +19,7 @@ import com.zxjk.duoduo.bean.response.CommunityVideoListResponse;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.EditCommunityResponse;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
+import com.zxjk.duoduo.bean.response.FindHailangResponse;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
@@ -30,12 +32,14 @@ import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
+import com.zxjk.duoduo.bean.response.GetOrderInfoByTypeResponse;
 import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.duoduo.bean.response.GetSerialBean;
 import com.zxjk.duoduo.bean.response.GetSignListResponse;
+import com.zxjk.duoduo.bean.response.GetSymbolInfo;
 import com.zxjk.duoduo.bean.response.GetSymbolSerialResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetUInvitationUrlBean;
@@ -46,6 +50,7 @@ import com.zxjk.duoduo.bean.response.GroupManagementInfoBean;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.bean.response.MarketsResponse;
+import com.zxjk.duoduo.bean.response.PaymentDoneResponse;
 import com.zxjk.duoduo.bean.response.PermissionInfoBean;
 import com.zxjk.duoduo.bean.response.PersonalChatConfigResponse;
 import com.zxjk.duoduo.bean.response.PersonalRedPackageInfoResponse;
@@ -662,5 +667,72 @@ public interface Api {
     @POST("duoduo/group/getMemberIdByGroupId")
     Observable<BaseResponse<ArrayList<String>>> getMemberIdByGroupId(@Field("groupId") String groupId);
 
+    @POST("duoduo/purchase/getSymbolInfo")
+    Observable<BaseResponse<GetSymbolInfo>> getSymbolInfo();
 
+
+    @FormUrlEncoded
+    @POST("otc/active/find/hailang")
+    Observable<BaseResponse<ArrayList<FindHailangResponse>>> findhailang(@Field("currency") String currency, @Field("nonce") String nonce);
+
+
+    @FormUrlEncoded
+    @POST("duoduo/purchase/bycoins")
+    Observable<BaseResponse<ByBoinsResponse>> byCoins(@Field("active_id") String activeId,
+                                                      @Field("by_cny") String byCny,
+                                                      @Field("currency") String currency,
+                                                      @Field("nonce") String nonce,
+                                                      @Field("price") String price,
+                                                      @Field("user_id") String userId,
+                                                      @Field("payment_type") String paymentType);
+
+    @FormUrlEncoded
+    @POST("duoduo/purchase/byAmount")
+    Observable<BaseResponse<ByBoinsResponse>> byAmount(@Field("user_id") String userId,
+                                                       @Field("currency") String currency,
+                                                       @Field("by_amount") String byAmount,
+                                                       @Field("active_id") String activeId,
+                                                       @Field("nonce") String nonce,
+                                                       @Field("payment_type") String paymentType);
+
+    @FormUrlEncoded
+    @POST("duoduo/purchase/removeOrder")
+    Observable<BaseResponse<String>> removeOrder(@Field("trans_id") String transId,
+                                                 @Field("type") String type,
+                                                 @Field("nonce") String nonce,
+                                                 @Field("user_id") String userId);
+
+
+    @FormUrlEncoded
+    @POST("duoduo/purchase/paymentDone")
+    Observable<BaseResponse<PaymentDoneResponse>> paymentDone(@Field("collection_id") String collectionId,
+                                                              @Field("nonce") String nonce,
+                                                              @Field("trans_id") String transId,
+                                                              @Field("user_id") String userId);
+
+
+    @FormUrlEncoded
+    @POST("duoduo/purchase/getOrderInfoByType")
+    Observable<BaseResponse<GetOrderInfoByTypeResponse>> getOrderInfoByType(@Field("page") String page,
+                                                                            @Field("offset") String offset,
+                                                                            @Field("side") String side,
+                                                                            @Field("state") String state);
+
+    @FormUrlEncoded
+    @POST("duoduo/purchase/orderInfo")
+    Observable<BaseResponse<ByBoinsResponse>> orderInfo(@Field("nonce") String nonce,
+                                                        @Field("trans_id") String trans_id,
+                                                        @Field("user_id") String user_id,
+                                                        @Field("paymentType") String paymentType,
+                                                        @Field("createTime") String createTime);
+
+
+    @FormUrlEncoded
+    @POST("duoduo/purchase/orderAppeal")
+    Observable<BaseResponse<String>> orderAppeal(@Field("img") String img,
+                                                 @Field("nonce") String nonce,
+                                                 @Field("phone") String phone,
+                                                 @Field("reason") String reason,
+                                                 @Field("trans_id") String trans_id,
+                                                 @Field("user_id") String user_id);
 }
