@@ -1,5 +1,6 @@
 package com.zxjk.duoduo.ui.webcast;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,8 +9,12 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
+import com.zxjk.duoduo.utils.CommonUtils;
 
 public class CreateChooseCastTypeActivity extends BaseActivity {
     private int chooseFlag = -1;
@@ -56,15 +61,24 @@ public class CreateChooseCastTypeActivity extends BaseActivity {
 //        ivCheck3.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("CheckResult")
     public void next(View view) {
         if (chooseFlag == -1) {
             ToastUtils.showShort(R.string.choose_cast_type);
             return;
         }
-        Intent intent = new Intent(this, CreateCastActivity.class);
-        intent.putExtra("castType", chooseFlag);
-        startActivity(intent);
-        finish();
+
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .enableOpenLive(getIntent().getStringExtra("groupId"))
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(s -> {
+                    Intent intent = new Intent(this, CreateWechatCastActivity.class);
+                    intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
+                    startActivity(intent);
+                    finish();
+                }, this::handleApiError);
     }
 
     public void service(View view) {

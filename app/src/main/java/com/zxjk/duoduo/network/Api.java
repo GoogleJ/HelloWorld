@@ -10,6 +10,7 @@ import com.zxjk.duoduo.bean.response.BalanceAssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
 import com.zxjk.duoduo.bean.response.ByBoinsResponse;
+import com.zxjk.duoduo.bean.response.CastListBean;
 import com.zxjk.duoduo.bean.response.CommunityApplicationListResponse;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityFilesListResponse;
@@ -25,6 +26,7 @@ import com.zxjk.duoduo.bean.response.GenerateMnemonicResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
+import com.zxjk.duoduo.bean.response.GetChatRoomInfoResponse;
 import com.zxjk.duoduo.bean.response.GetCustomerBasicInfoByIdResponse;
 import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.duoduo.bean.response.GetGroupChatInfoByGroupIdResponse;
@@ -670,11 +672,9 @@ public interface Api {
     @POST("duoduo/purchase/getSymbolInfo")
     Observable<BaseResponse<GetSymbolInfo>> getSymbolInfo();
 
-
     @FormUrlEncoded
     @POST("otc/active/find/hailang")
     Observable<BaseResponse<ArrayList<FindHailangResponse>>> findhailang(@Field("currency") String currency, @Field("nonce") String nonce);
-
 
     @FormUrlEncoded
     @POST("duoduo/purchase/bycoins")
@@ -702,14 +702,12 @@ public interface Api {
                                                  @Field("nonce") String nonce,
                                                  @Field("user_id") String userId);
 
-
     @FormUrlEncoded
     @POST("duoduo/purchase/paymentDone")
     Observable<BaseResponse<PaymentDoneResponse>> paymentDone(@Field("collection_id") String collectionId,
                                                               @Field("nonce") String nonce,
                                                               @Field("trans_id") String transId,
                                                               @Field("user_id") String userId);
-
 
     @FormUrlEncoded
     @POST("duoduo/purchase/getOrderInfoByType")
@@ -719,13 +717,38 @@ public interface Api {
                                                                             @Field("state") String state);
 
     @FormUrlEncoded
+    @POST("duoduo/live/createLive")
+    Observable<BaseResponse<String>> createLive(@Field("chatRoom") String chatRoom);
+
+    @FormUrlEncoded
+    @POST("duoduo/chatRoom/getChatRoomInfo")
+    Observable<BaseResponse<GetChatRoomInfoResponse>> getChatRoomInfo(@Field("roomId") String roomId);
+
+    @FormUrlEncoded
+    @POST("duoduo/live/enableOpenLive")
+    Observable<BaseResponse<String>> enableOpenLive(@Field("groupId") String groupId);
+
+    @GET("duoduo/live/shareToWx")
+    Observable<BaseResponse<String>> shareToWx();
+
+    @FormUrlEncoded
+    @POST("duoduo/live/delLive")
+    Observable<BaseResponse<String>> delLive(@Field("roomId") String roomId);
+
+    @POST("duoduo/live/toLiveList")
+    Observable<BaseResponse<List<CastListBean>>> toLiveList();
+
+    @FormUrlEncoded
+    @POST("duoduo/live/getGroupLiveGoingInfo")
+    Observable<BaseResponse<List<GetChatRoomInfoResponse>>> getGroupLiveGoingInfo(@Field("groupId") String groupId);
+
+    @FormUrlEncoded
     @POST("duoduo/purchase/orderInfo")
     Observable<BaseResponse<ByBoinsResponse>> orderInfo(@Field("nonce") String nonce,
                                                         @Field("trans_id") String trans_id,
                                                         @Field("user_id") String user_id,
                                                         @Field("paymentType") String paymentType,
                                                         @Field("createTime") String createTime);
-
 
     @FormUrlEncoded
     @POST("duoduo/purchase/orderAppeal")

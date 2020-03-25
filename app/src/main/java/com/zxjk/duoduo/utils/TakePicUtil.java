@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
@@ -128,8 +129,10 @@ public class TakePicUtil {
     }
 
     public static File onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode != Activity.RESULT_OK)
+        if (resultCode != Activity.RESULT_OK || data == null) {
             return null;
+        }
+
         if (requestCode == CODE_PICTURE || requestCode == CODE_ALBUM) {
             String filePath = "";
             switch (requestCode) {
@@ -140,12 +143,27 @@ public class TakePicUtil {
                     filePath = getPath(activity, data.getData());
                     break;
             }
+
+            if (TextUtils.isEmpty(filePath)) {
+                return null;
+            }
+
             corp(activity, new File(filePath));
             return null;
         }
-        if (requestCode == CODE_CORP || requestCode == CODE_ALBUM_NOCORP || requestCode == CODE_PICTURE_NOCORP) {
+
+        if (requestCode == CODE_CORP || requestCode == CODE_PICTURE_NOCORP) {
             return output;
         }
+
+        if (requestCode == CODE_ALBUM_NOCORP) {
+            String path = getPath(activity, data.getData());
+            if (TextUtils.isEmpty(path)) {
+                return null;
+            }
+            return new File(path);
+        }
+
         return null;
     }
 

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
+import com.zxjk.duoduo.bean.CastDao;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
 import com.zxjk.duoduo.bean.SlowModeLocalBeanDao;
@@ -33,6 +34,7 @@ public class OpenHelper extends DaoMaster.OpenHelper {
             public void onDropAllTables(Database db, boolean ifExists) {
                 DaoMaster.dropAllTables(db, true);
             }
-        }, BurnAfterReadMessageLocalBeanDao.class, SlowModeLocalBeanDao.class, SocialLocalBeanDao.class, RedFallActivityLocalBeanDao.class);
+        }, BurnAfterReadMessageLocalBeanDao.class, SlowModeLocalBeanDao.class, SocialLocalBeanDao.class, RedFallActivityLocalBeanDao.class, CastDao.class)
+        ;
     }
 }

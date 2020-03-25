@@ -36,6 +36,12 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
+        <ViewStub
+            android:id="@+id/stubCast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout="@layout/layout_msg_title_cast" />
+
         <io.rong.imkit.widget.RongSwipeRefreshLayout
             android:id="@+id/rc_refresh"
             android:layout_width="match_parent"

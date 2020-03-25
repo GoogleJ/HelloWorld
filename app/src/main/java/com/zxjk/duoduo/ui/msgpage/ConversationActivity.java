@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -54,9 +55,11 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
+import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.CastPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
+import com.zxjk.duoduo.ui.webcast.WechatCastDetailActivity;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
@@ -394,9 +397,8 @@ public class ConversationActivity extends BaseActivity {
             public Message onSend(Message message) {
                 handleBurnAfterReadForSendersOnSend(message);
 
-                if (conversationType.equals("group") && groupInfo != null
-                        && !groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId)
-                        && groupInfo.getIsAdmin().equals("0")) {
+                if (groupInfo != null &&
+                        (!groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || !groupInfo.getIsAdmin().equals("1"))) {
                     if (!TextUtils.isEmpty(groupInfo.getGroupInfo().getSlowMode())) {
                         if (groupInfo.getGroupInfo().getSlowMode().equals("0")) {
                             return handleMsgForbiden(message);
@@ -462,20 +464,25 @@ public class ConversationActivity extends BaseActivity {
         if (!conversationType.equals("group")) {
             return message;
         }
-        if (message.getContent() instanceof TextMessage &&
-                groupInfo.getGroupInfo().getBanSendLink().equals("1")) {
-            TextMessage textMessage = (TextMessage) message.getContent();
-            if (RegexUtils.isMatch(Constant.regUrl, textMessage.getContent())) {
-                ToastUtils.showShort(R.string.url_forbidden);
+        if (!groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) && !groupInfo.getIsAdmin().equals("1")) {
+            if (message.getContent() instanceof TextMessage &&
+                    groupInfo.getGroupInfo().getBanSendLink().equals("1")) {
+                TextMessage textMessage = (TextMessage) message.getContent();
+                if (RegexUtils.isMatch(Constant.regUrl, textMessage.getContent())) {
+                    ToastUtils.showShort(R.string.url_forbidden);
+                    return null;
+                }
+            } else if (message.getContent() instanceof ImageMessage &&
+                    groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
+                ToastUtils.showShort(R.string.picture_forbidden);
+                return null;
+            } else if (message.getContent() instanceof CusEmoteTabMessage && groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
+                ToastUtils.showShort(R.string.picture_forbidden);
+                return null;
+            } else if ((message.getContent() instanceof VoiceMessage || message.getContent() instanceof HQVoiceMessage) && groupInfo.getGroupInfo().getBanSendVoice().equals("1")) {
+                ToastUtils.showShort(R.string.voice_forbidden);
                 return null;
             }
-        } else if (message.getContent() instanceof ImageMessage &&
-                groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
-            ToastUtils.showShort(R.string.picture_forbidden);
-            return null;
-        } else if (message.getContent() instanceof CusEmoteTabMessage && groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
-            ToastUtils.showShort(R.string.picture_forbidden);
-            return null;
         }
         return message;
     }
@@ -526,6 +533,7 @@ public class ConversationActivity extends BaseActivity {
                                 SendUrlAndsendImgBean sendUrlAndsendImgBean = GsonUtils.fromJson(commandMessage.getData(), SendUrlAndsendImgBean.class);
                                 groupInfo.getGroupInfo().setBanSendLink(sendUrlAndsendImgBean.getSendUrl());
                                 groupInfo.getGroupInfo().setBanSendPicture(sendUrlAndsendImgBean.getSendImg());
+                                groupInfo.getGroupInfo().setBanSendVoice(sendUrlAndsendImgBean.getSendVoice());
                                 break;
                         }
                     }
@@ -695,6 +703,26 @@ public class ConversationActivity extends BaseActivity {
                         RongIM.getInstance().removeConversation(Conversation.ConversationType.GROUP, targetId, null);
                         finish();
                     });
+
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getGroupLiveGoingInfo(targetId)
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver())
+                    .subscribe(list -> {
+                        if (list.size() != 0) {
+                            ViewStub casting = findViewById(R.id.stubCasting);
+                            View castingView = casting.inflate();
+                            TextView tvCastTopic = castingView.findViewById(R.id.tvCastTopic);
+                            tvCastTopic.setText(list.get(0).getTopic());
+                            tvCastTopic.setOnClickListener(v -> {
+                                Intent intent = new Intent(this, WechatCastDetailActivity.class);
+                                intent.putExtra("roomId", list.get(0).getRoomId());
+                                startActivity(intent);
+                            });
+                        }
+                    }, t -> {
+                    });
         }
     }
 
@@ -728,8 +756,8 @@ public class ConversationActivity extends BaseActivity {
                         return (messageContent instanceof TextMessage || messageContent instanceof VoiceMessage || messageContent instanceof ImageMessage
                                 || messageContent instanceof CusEmoteTabMessage || messageContent instanceof BusinessCardMessage ||
                                 messageContent instanceof NewsCardMessage || messageContent instanceof GroupCardMessage ||
-                                messageContent instanceof LocationMessage || messageContent instanceof SightMessage || messageContent instanceof FileMessage
-                        ) &&
+                                messageContent instanceof LocationMessage || messageContent instanceof SightMessage || messageContent instanceof FileMessage ||
+                                messageContent instanceof RedPacketMessage || messageContent instanceof HQVoiceMessage) &&
                                 !senderUserId.equals(Constant.userId) && !senderUserId.equals(groupInfo.getGroupInfo().getGroupOwnerId());
                     })
                     .actionListener((context, uiMessage) -> {
@@ -795,6 +823,9 @@ public class ConversationActivity extends BaseActivity {
                     iterator.remove();
                     extension.removePlugin(next);
                 }
+            }
+            if (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || (groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenWxLive().equals("1"))) {
+                pluginModules.add(new CastPlugin());
             }
         }
     }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,9 +27,10 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -40,6 +43,9 @@ import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.request.CreateLiveRequest;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -48,21 +54,25 @@ import com.zxjk.duoduo.utils.OssUtils;
 import com.zxjk.duoduo.utils.TakePicUtil;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import cn.qqtheme.framework.picker.DatePicker;
-import cn.qqtheme.framework.picker.DateTimePicker;
-import cn.qqtheme.framework.picker.TimePicker;
+import cn.qqtheme.framework.widget.WheelView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
+import io.rong.imkit.userInfoCache.RongUserInfoManager;
+import io.rong.imlib.model.Group;
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
+import razerdp.widget.QuickPopup;
 
-public class CreateCastActivity extends BaseActivity {
+public class CreateWechatCastActivity extends BaseActivity {
+    private QuickPopup timePicker;
 
     private int stepFlag = 1;
     private boolean isFlipping;
@@ -76,14 +86,12 @@ public class CreateCastActivity extends BaseActivity {
     private RelativeLayout rlStep1;
     private ImageView ivCrossStep1;
     private ImageView ivContent1;
-    private ImageView ivDelete;
 
     private FrameLayout flStep2;
     private EditText etStep2;
     private TextView tvCountStep2;
 
     private LinearLayout llStep3;
-    private TextView tvStep3Date;
     private TextView tvStep3Time;
 
     private LinearLayout llStep4;
@@ -92,21 +100,22 @@ public class CreateCastActivity extends BaseActivity {
     private RelativeLayout rlImgContainerStep4;
     private ImageView ivCrossStep4;
     private ImageView ivContent4;
-    private ImageView ivDelete2;
 
     private TextView tvBottom;
 
     private String thumbUrl;
     private String title;
-    private String date;
-    private String time;
-    private String detail;
+    private long startTimeStamp;
     private String detailUrl;
+
+    private ArrayList<String> dateList = new ArrayList<>(3);
+    private ArrayList<String> timeList1 = new ArrayList<>();
+    private ArrayList<String> timeList2 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_cast);
+        setContentView(R.layout.activity_create_wechat_cast);
 
         setTrasnferStatusBar(true);
 
@@ -184,14 +193,12 @@ public class CreateCastActivity extends BaseActivity {
         rlStep1 = findViewById(R.id.rlStep1);
         ivCrossStep1 = findViewById(R.id.ivCrossStep1);
         ivContent1 = findViewById(R.id.ivContent1);
-        ivDelete = findViewById(R.id.ivDelete);
 
         flStep2 = findViewById(R.id.flStep2);
         etStep2 = findViewById(R.id.etStep2);
         tvCountStep2 = findViewById(R.id.tvCountStep2);
 
         llStep3 = findViewById(R.id.llStep3);
-        tvStep3Date = findViewById(R.id.tvStep3Date);
         tvStep3Time = findViewById(R.id.tvStep3Time);
 
         llStep4 = findViewById(R.id.llStep4);
@@ -200,77 +207,98 @@ public class CreateCastActivity extends BaseActivity {
         rlImgContainerStep4 = findViewById(R.id.rlImgContainerStep4);
         ivCrossStep4 = findViewById(R.id.ivCrossStep4);
         ivContent4 = findViewById(R.id.ivContent4);
-        ivDelete2 = findViewById(R.id.ivDelete2);
 
         tvBottom = findViewById(R.id.tvBottom);
     }
 
+    @SuppressLint("CheckResult")
     public void next(View view) {
         if (stepFlag == 4) {
+            String detail = etStep4.getText().toString().trim();
             if (TextUtils.isEmpty(detail)) {
                 ToastUtils.showShort(R.string.input_cast_detail);
                 return;
             }
             if (TextUtils.isEmpty(detailUrl)) {
-                //todo 详情img是否为必选项?
-//                ToastUtils.showShort(R.string.setup_cast_detailimg);
-//                return;
+                ToastUtils.showShort(R.string.setup_cast_detailimg);
+                return;
             }
-            //todo 调用接口创建直播
+
+            CreateLiveRequest request = new CreateLiveRequest();
+            request.setGroupId(getIntent().getStringExtra("groupId"));
+            request.setLiveDetails(detail);
+            request.setLiveContentImg(detailUrl);
+            request.setTopic(title);
+            request.setLivePoster(thumbUrl);
+            request.setStartTime(String.valueOf(startTimeStamp));
+
+            Group groupInfo = RongUserInfoManager.getInstance().getGroupInfo(getIntent().getStringExtra("groupId"));
+            if (groupInfo != null) {
+                String groupInfoName = groupInfo.getName();
+                if (!TextUtils.isEmpty(groupInfoName)) {
+                    request.setGroupNikeName(groupInfoName.replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
+                }
+            }
+
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .createLive(GsonUtils.toJson(request))
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(s -> {
+                        //todo 本地数据库插入直播记录
+                        Intent intent = new Intent(this, WechatCastDetailActivity.class);
+                        intent.putExtra("roomId", s);
+                        intent.putExtra("fromCreate", true);
+                        startActivity(intent);
+                        finish();
+                    }, this::handleApiError);
             return;
         }
         updateUIByStep(true);
     }
 
     public void selectTime(View view) {
-        TimePicker timePicker = new TimePicker(this, DateTimePicker.HOUR_24);
-        String[] split = TimeUtils.millis2String(TimeUtils.getNowMills() + 1800000, "HH:mm").split(":");
-        timePicker.setRangeStart(Integer.parseInt(split[0]) + 1, Integer.parseInt(split[1]));
-        timePicker.setRangeEnd(23, 59);
-        initPicker(timePicker);
-        timePicker.setTitleText(getString(R.string.choose_time));
+        if (timePicker == null) {
+            initTimeList();
 
-        timePicker.setOnTimePickListener((hour, minute) -> {
-            String time = getString(R.string.x_colon_x, hour, minute);
-            tvStep3Time.setText(time);
-            this.time = time;
-        });
+            TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
+            showAnimation.setDuration(250);
+            TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
+            dismissAnimation.setDuration(500);
 
-        timePicker.show();
-    }
+            timePicker = QuickPopupBuilder.with(this)
+                    .contentView(R.layout.popup_choosetime_cast)
+                    .config(new QuickPopupConfig()
+                            .withShowAnimation(showAnimation)
+                            .withDismissAnimation(dismissAnimation)
+                            .withClick(R.id.ivClose, null, true))
+                    .build();
 
-    public void selectDate(View view) {
-        DatePicker datePicker = new DatePicker(this, DateTimePicker.MONTH_DAY);
-        String[] nowString = TimeUtils.getNowString(new SimpleDateFormat("MM-dd")).split("-");
-        datePicker.setRangeStart(Integer.parseInt(nowString[0]),
-                Integer.parseInt(nowString[1]));
-        datePicker.setRangeEnd(Integer.parseInt(nowString[0]), Integer.parseInt(nowString[1]) + 3);
-        initPicker(datePicker);
-        datePicker.setTitleText(getString(R.string.choose_date));
+            WheelView wheel1 = timePicker.findViewById(R.id.wheel1);
+            WheelView wheel2 = timePicker.findViewById(R.id.wheel2);
+            WheelView wheel3 = timePicker.findViewById(R.id.wheel3);
+            TextView tvBottom = timePicker.findViewById(R.id.tvBottom);
 
-        datePicker.setOnDatePickListener((DatePicker.OnMonthDayPickListener) (month, day) -> {
-            String date = getString(R.string.x_month_x_day, month, day);
-            tvStep3Date.setText(date);
-            this.date = date;
-        });
+            tvBottom.setOnClickListener(v -> {
+                String date = dateList.get(wheel1.getSelectedIndex());
+                String time = timeList1.get(wheel2.getSelectedIndex()) + timeList2.get(wheel3.getSelectedIndex());
+                String yearStr = TimeUtils.millis2String(TimeUtils.getNowMills(), "yyyy年");
+                startTimeStamp = TimeUtils.string2Millis(yearStr + date + time, "yyyy年MM月dd日HH点mm分");
+                tvStep3Time.setText(date + "  " + time);
+                timePicker.dismiss();
+            });
 
-        datePicker.show();
-    }
+            initWheelView(wheel1);
+            initWheelView(wheel2);
+            initWheelView(wheel3);
 
-    public void clearImg(View view) {
-        if (stepFlag == 1) {
-            ivDelete.setVisibility(View.INVISIBLE);
-            ivCrossStep1.setVisibility(View.VISIBLE);
-            ivContent1.setImageBitmap(null);
-            thumbUrl = "";
-            rlStep1.setBackgroundResource(R.drawable.shape_create_cast_step1);
-        } else if (stepFlag == 4) {
-            ivDelete2.setVisibility(View.INVISIBLE);
-            ivCrossStep4.setVisibility(View.VISIBLE);
-            ivContent4.setImageBitmap(null);
-            detailUrl = "";
-            rlImgContainerStep4.setBackgroundResource(R.drawable.shape_create_cast_step1);
+            wheel1.setItems(dateList);
+            wheel2.setItems(timeList1);
+            wheel3.setItems(timeList2);
         }
+
+        timePicker.showPopupWindow();
     }
 
     @SuppressLint("CheckResult")
@@ -312,11 +340,7 @@ public class CreateCastActivity extends BaseActivity {
                     llStep3.setVisibility(View.VISIBLE);
                     break;
                 case 3:
-                    if (TextUtils.isEmpty(date)) {
-                        ToastUtils.showShort(R.string.setup_cast_date);
-                        return;
-                    }
-                    if (TextUtils.isEmpty(time)) {
+                    if (startTimeStamp == 0) {
                         ToastUtils.showShort(R.string.setup_cast_time);
                         return;
                     }
@@ -384,6 +408,51 @@ public class CreateCastActivity extends BaseActivity {
         }
     }
 
+    private void initTimeList() {
+        for (int i = 0; i < 4; i++) {
+            dateList.add(TimeUtils.millis2String(TimeUtils.getNowMills() + i * 86400000,
+                    "MM月dd日"));
+        }
+
+        for (int i = 0; i < 24; i++) {
+            String str;
+            str = i + "点";
+            if (i < 10) {
+                str = "0" + str;
+            }
+            timeList1.add(str);
+        }
+
+        for (int i = 0; i < 59; i++) {
+            if (i % 5 != 0) {
+                continue;
+            }
+            if (i == 0) {
+                timeList2.add("00分");
+            } else if (i == 5) {
+                timeList2.add("05分");
+            } else {
+                timeList2.add(i + "分");
+            }
+        }
+    }
+
+    private void initWheelView(WheelView wheel) {
+        WheelView.DividerConfig dividerConfig = new WheelView.DividerConfig();
+        dividerConfig.setColor(Color.parseColor("#DDDDDD"));
+        dividerConfig.setThick(CommonUtils.dip2px(this, 1));
+
+        wheel.setLineSpaceMultiplier(WheelView.LINE_SPACE_MULTIPLIER);
+        wheel.setTextPadding(WheelView.TEXT_PADDING);
+        wheel.setTextSize(17);
+        wheel.setTypeface(Typeface.DEFAULT);
+        wheel.setTextColor(Color.parseColor("#C1C2C6"), Color.BLACK);
+        wheel.setOffset(WheelView.ITEM_OFF_SET);
+        wheel.setCycleDisable(true);
+        wheel.setUseWeight(true);
+        wheel.setDividerConfig(dividerConfig);
+    }
+
     private void showSelectPop() {
         KeyboardUtils.hideSoftInput(this);
         NiceDialog.init().setLayoutId(R.layout.layout_general_dialog6).setConvertListener(new ViewConvertListener() {
@@ -393,18 +462,18 @@ public class CreateCastActivity extends BaseActivity {
                     dialog.dismiss();
                     if (stepFlag == 1) {
                         TakePicUtil.config(new TakePicUtil.Config().rectParm(23, 14));
-                        TakePicUtil.takePicture(CreateCastActivity.this);
+                        TakePicUtil.takePicture(CreateWechatCastActivity.this);
                     } else {
-                        TakePicUtil.takePicture(CreateCastActivity.this, false);
+                        TakePicUtil.takePicture(CreateWechatCastActivity.this, false);
                     }
                 });
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
                     if (stepFlag == 1) {
                         TakePicUtil.config(new TakePicUtil.Config().rectParm(23, 14));
-                        TakePicUtil.albumPhoto(CreateCastActivity.this);
+                        TakePicUtil.albumPhoto(CreateWechatCastActivity.this);
                     } else {
-                        TakePicUtil.albumPhoto(CreateCastActivity.this, false);
+                        TakePicUtil.albumPhoto(CreateWechatCastActivity.this, false);
                     }
                 });
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
@@ -413,23 +482,6 @@ public class CreateCastActivity extends BaseActivity {
                 .setOutCancel(true)
                 .setDimAmount(0.5f)
                 .show(getSupportFragmentManager());
-    }
-
-    private void initPicker(DateTimePicker picker) {
-        picker.setLabel("", "", "", "", "");
-        picker.setTitleTextSize(17);
-        picker.setTitleTextColor(ContextCompat.getColor(this, R.color.textcolor1));
-        picker.setCancelTextColor(ContextCompat.getColor(this, R.color.textcolor3));
-        picker.setSubmitTextColor(ContextCompat.getColor(this, R.color.colorTheme));
-        picker.setTopLineColor(Color.parseColor("#E5E5E5"));
-        picker.setDividerVisible(false);
-        picker.setTextColor(Color.parseColor("#000000"), Color.parseColor("#bababa"));
-        picker.setTextSize(18);
-        View foot = new View(this);
-        foot.setBackgroundColor(Color.parseColor("#ffffff"));
-        picker.setFooterView(foot);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, CommonUtils.dip2px(this, 24));
-        foot.setLayoutParams(layoutParams);
     }
 
     @SuppressLint("CheckResult")
@@ -473,13 +525,11 @@ public class CreateCastActivity extends BaseActivity {
                         thumbUrl = url;
                         ivCrossStep1.setVisibility(View.GONE);
                         rlStep1.setBackground(null);
-                        ivDelete.setVisibility(View.VISIBLE);
                     } else if (stepFlag == 4) {
                         GlideUtil.loadCornerImg(ivContent4, url, 10);
                         detailUrl = url;
                         ivCrossStep4.setVisibility(View.GONE);
                         rlImgContainerStep4.setBackground(null);
-                        ivDelete2.setVisibility(View.VISIBLE);
                     }
                 }, t -> {
                     if (TextUtils.isEmpty(t.getMessage())) {

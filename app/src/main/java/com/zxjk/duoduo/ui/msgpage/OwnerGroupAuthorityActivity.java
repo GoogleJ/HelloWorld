@@ -44,6 +44,9 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
     private Switch sw2;
     private Switch sw3;
     private Switch sw4;
+    private Switch sw5;
+    private Switch sw6;
+    private Switch sw7;
 
     private GroupResponse group;
 
@@ -58,7 +61,9 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
         group = (GroupResponse) getIntent().getSerializableExtra("group");
 
         initView();
+
         initData();
+
         bindData();
     }
 
@@ -70,6 +75,9 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
         sw2 = findViewById(R.id.sw2);
         sw3 = findViewById(R.id.sw3);
         sw4 = findViewById(R.id.sw4);
+        sw5 = findViewById(R.id.sw5);
+        sw6 = findViewById(R.id.sw6);
+        sw7 = findViewById(R.id.sw7);
     }
 
     private void initData() {
@@ -103,6 +111,27 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
         sw4.setOnClickListener(v -> {
             if (currentCheckedB != null)
                 currentCheckedB.setForceRecall(sw4.isChecked() ? "1" : "0");
+            else
+                ToastUtils.showShort(R.string.selectPerson);
+        });
+
+        sw5.setOnClickListener(v -> {
+            if (currentCheckedB != null)
+                currentCheckedB.setOpenWxLive(sw5.isChecked() ? "1" : "0");
+            else
+                ToastUtils.showShort(R.string.selectPerson);
+        });
+
+        sw6.setOnClickListener(v -> {
+            if (currentCheckedB != null)
+                currentCheckedB.setOpenSlowModel(sw6.isChecked() ? "1" : "0");
+            else
+                ToastUtils.showShort(R.string.selectPerson);
+        });
+
+        sw7.setOnClickListener(v -> {
+            if (currentCheckedB != null)
+                currentCheckedB.setOpenGlobalClean(sw7.isChecked() ? "1" : "0");
             else
                 ToastUtils.showShort(R.string.selectPerson);
         });
@@ -199,10 +228,23 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
                         if (!sw4.isEnabled()) {
                             sw4.setEnabled(true);
                         }
+                        if (!sw5.isEnabled()) {
+                            sw5.setEnabled(true);
+                        }
+                        if (!sw6.isEnabled()) {
+                            sw6.setEnabled(true);
+                        }
+                        if (!sw7.isEnabled()) {
+                            sw7.setEnabled(true);
+                        }
+
                         sw1.setChecked(!b.getOpenAudio().equals("0"));
                         sw2.setChecked(!b.getOpenVideo().equals("0"));
                         sw3.setChecked(!b.getOpenBanned().equals("0"));
                         sw4.setChecked(!b.getForceRecall().equals("0"));
+                        sw5.setChecked(!b.getOpenWxLive().equals("0"));
+                        sw6.setChecked(!b.getOpenSlowModel().equals("0"));
+                        sw7.setChecked(!b.getOpenGlobalClean().equals("0"));
                     });
                 }
             }

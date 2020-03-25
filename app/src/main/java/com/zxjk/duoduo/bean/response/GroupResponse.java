@@ -13,7 +13,7 @@ public class GroupResponse implements Serializable {
     private GroupInfoBean groupInfo;
     private String maxNumber;
     private String isAdmin;
-    private PermissionBean groupPermission;
+    private PermissionInfoBean groupPermission;
     private RedPacketInfoBean redPacketInfo;
     private String communityUpdateTime;
 
@@ -33,38 +33,11 @@ public class GroupResponse implements Serializable {
         this.redPacketInfo = redPacketInfo;
     }
 
-    public static class RedPacketInfoBean implements Serializable {
-
-        /**
-         * redNewPersonStatus : 1
-         * isGetNewPersonRed : 2
-         */
-
-        private String redNewPersonStatus;
-        private String isGetNewPersonRed;
-
-        public String getRedNewPersonStatus() {
-            return redNewPersonStatus;
-        }
-
-        public void setRedNewPersonStatus(String redNewPersonStatus) {
-            this.redNewPersonStatus = redNewPersonStatus;
-        }
-
-        public String getIsGetNewPersonRed() {
-            return isGetNewPersonRed;
-        }
-
-        public void setIsGetNewPersonRed(String isGetNewPersonRed) {
-            this.isGetNewPersonRed = isGetNewPersonRed;
-        }
-    }
-
-    public PermissionBean getGroupPermission() {
+    public PermissionInfoBean getGroupPermission() {
         return groupPermission;
     }
 
-    public void setGroupPermission(PermissionBean groupPermission) {
+    public void setGroupPermission(PermissionInfoBean groupPermission) {
         this.groupPermission = groupPermission;
     }
 
@@ -92,43 +65,23 @@ public class GroupResponse implements Serializable {
         this.groupInfo = groupInfo;
     }
 
-    public static class PermissionBean implements Serializable {
-
-        /**
-         * id : 38
-         * groupId : 278
-         * customerId :
-         * isDelete :
-         * createTime :
-         * updateTime :
-         * openBanned : 0
-         * openForbidden : 0
-         * nick :
-         * headPortrait :
-         * openAudio : 0
-         * openVideo : 0
-         */
-
+    public static class PermissionInfoBean implements Serializable {
         private String id;
         private String groupId;
         private String customerId;
         private String isDelete;
         private String createTime;
         private String updateTime;
-        private String openBanned;
+        private String openBanned = "0";
         private String nick;
         private String headPortrait;
-        private String openAudio;
-        private String openVideo;
-        private String forceRecall;
-
-        public String getForceRecall() {
-            return forceRecall;
-        }
-
-        public void setForceRecall(String forceRecall) {
-            this.forceRecall = forceRecall;
-        }
+        private String openAudio = "0";
+        private String openVideo = "0";
+        private String forceRecall = "0";
+        private String openWxLive = "0";
+        private String openSlowModel = "0";
+        private String openGlobalClean = "0";
+        private boolean checked;
 
         public String getId() {
             return id;
@@ -216,6 +169,73 @@ public class GroupResponse implements Serializable {
 
         public void setOpenVideo(String openVideo) {
             this.openVideo = openVideo;
+        }
+
+        public String getForceRecall() {
+            return forceRecall;
+        }
+
+        public void setForceRecall(String forceRecall) {
+            this.forceRecall = forceRecall;
+        }
+
+        public String getOpenWxLive() {
+            return openWxLive;
+        }
+
+        public void setOpenWxLive(String openWxLive) {
+            this.openWxLive = openWxLive;
+        }
+
+        public String getOpenSlowModel() {
+            return openSlowModel;
+        }
+
+        public void setOpenSlowModel(String openSlowModel) {
+            this.openSlowModel = openSlowModel;
+        }
+
+        public String getOpenGlobalClean() {
+            return openGlobalClean;
+        }
+
+        public void setOpenGlobalClean(String openGlobalClean) {
+            this.openGlobalClean = openGlobalClean;
+        }
+
+        public boolean isChecked() {
+            return checked;
+        }
+
+        public void setChecked(boolean checked) {
+            this.checked = checked;
+        }
+    }
+
+    public static class RedPacketInfoBean implements Serializable {
+
+        /**
+         * redNewPersonStatus : 1
+         * isGetNewPersonRed : 2
+         */
+
+        private String redNewPersonStatus;
+        private String isGetNewPersonRed;
+
+        public String getRedNewPersonStatus() {
+            return redNewPersonStatus;
+        }
+
+        public void setRedNewPersonStatus(String redNewPersonStatus) {
+            this.redNewPersonStatus = redNewPersonStatus;
+        }
+
+        public String getIsGetNewPersonRed() {
+            return isGetNewPersonRed;
+        }
+
+        public void setIsGetNewPersonRed(String isGetNewPersonRed) {
+            this.isGetNewPersonRed = isGetNewPersonRed;
         }
     }
 

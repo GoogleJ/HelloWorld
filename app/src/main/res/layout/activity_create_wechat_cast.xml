@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clipChildren="false"
     android:orientation="vertical"
-    tools:context=".ui.webcast.CreateCastActivity">
+    tools:context=".ui.webcast.CreateWechatCastActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -148,17 +148,6 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/ivDelete"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="-10dp"
-            android:layout_marginEnd="-10dp"
-            android:onClick="clearImg"
-            android:src="@drawable/ic_create_cast_delete"
-            android:visibility="invisible" />
-
     </RelativeLayout>
 
     <FrameLayout
@@ -179,6 +168,7 @@
             android:imeOptions="actionDone"
             android:lineSpacingExtra="8dp"
             android:maxLength="20"
+            android:textColor="@color/black"
             android:textSize="15.5sp" />
 
         <LinearLayout
@@ -216,24 +206,6 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/tvStep3Date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_end"
-            android:gravity="center_vertical"
-            android:onClick="selectDate"
-            android:paddingBottom="20dp"
-            android:text="@string/select_cast_date"
-            android:textColor="@color/textColor9"
-            android:textSize="16sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginBottom="20dp"
-            android:background="#DDDDDD" />
-
-        <TextView
             android:id="@+id/tvStep3Time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -248,6 +220,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
+            android:layout_marginBottom="20dp"
             android:background="#DDDDDD" />
 
     </LinearLayout>
@@ -277,6 +250,7 @@
                 android:imeOptions="actionDone"
                 android:lineSpacingExtra="8dp"
                 android:maxLength="800"
+                android:textColor="@color/black"
                 android:textSize="15.5sp" />
 
             <LinearLayout
@@ -324,17 +298,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop" />
-
-            <ImageView
-                android:id="@+id/ivDelete2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="-10dp"
-                android:layout_marginEnd="-10dp"
-                android:onClick="clearImg"
-                android:src="@drawable/ic_create_cast_delete"
-                android:visibility="invisible" />
 
         </RelativeLayout>
 

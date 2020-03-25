@@ -29,7 +29,34 @@ public class PermissionInfoBean implements Parcelable {
     private String openAudio = "0";
     private String openVideo = "0";
     private String forceRecall = "0";
+    private String openWxLive = "0";
+    private String openSlowModel = "0";
+    private String openGlobalClean = "0";
     private boolean checked;
+
+    public String getOpenWxLive() {
+        return openWxLive;
+    }
+
+    public void setOpenWxLive(String openWxLive) {
+        this.openWxLive = openWxLive;
+    }
+
+    public String getOpenSlowModel() {
+        return openSlowModel;
+    }
+
+    public void setOpenSlowModel(String openSlowModel) {
+        this.openSlowModel = openSlowModel;
+    }
+
+    public String getOpenGlobalClean() {
+        return openGlobalClean;
+    }
+
+    public void setOpenGlobalClean(String openGlobalClean) {
+        this.openGlobalClean = openGlobalClean;
+    }
 
     public String getId() {
         return id;
@@ -135,6 +162,9 @@ public class PermissionInfoBean implements Parcelable {
         this.checked = checked;
     }
 
+    public PermissionInfoBean() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -154,10 +184,10 @@ public class PermissionInfoBean implements Parcelable {
         dest.writeString(this.openAudio);
         dest.writeString(this.openVideo);
         dest.writeString(this.forceRecall);
+        dest.writeString(this.openWxLive);
+        dest.writeString(this.openSlowModel);
+        dest.writeString(this.openGlobalClean);
         dest.writeByte(this.checked ? (byte) 1 : (byte) 0);
-    }
-
-    public PermissionInfoBean() {
     }
 
     protected PermissionInfoBean(Parcel in) {
@@ -173,10 +203,13 @@ public class PermissionInfoBean implements Parcelable {
         this.openAudio = in.readString();
         this.openVideo = in.readString();
         this.forceRecall = in.readString();
+        this.openWxLive = in.readString();
+        this.openSlowModel = in.readString();
+        this.openGlobalClean = in.readString();
         this.checked = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<PermissionInfoBean> CREATOR = new Parcelable.Creator<PermissionInfoBean>() {
+    public static final Creator<PermissionInfoBean> CREATOR = new Creator<PermissionInfoBean>() {
         @Override
         public PermissionInfoBean createFromParcel(Parcel source) {
             return new PermissionInfoBean(source);

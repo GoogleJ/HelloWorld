@@ -512,7 +512,15 @@ public class NewSocialManageActivity extends BaseActivity {
                 holder.setText(R.id.tv_notarize, getString(R.string.queding));
                 holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_notarize, v1 -> {
-                    //todo 发送CommandMessage
+                    CommandMessage command = CommandMessage.obtain("forceClearAllLocalHistory", groupInfo.getGroupInfo().getId());
+                    Message message = Message.obtain(groupInfo.getGroupInfo().getId(), Conversation.ConversationType.GROUP, command);
+                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
+                    RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, groupInfo.getGroupInfo().getId(), null);
+
+                    dialog.dismiss();
+                    Intent intent = new Intent(NewSocialManageActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 });
             }
         }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
@@ -650,7 +658,6 @@ public class NewSocialManageActivity extends BaseActivity {
             groupInfo.getGroupInfo().setGroupNikeName(data.getStringExtra("result"));
             tvSocialName.setText(data.getStringExtra("result"));
         }
-
     }
 
     @Override

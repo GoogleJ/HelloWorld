@@ -173,7 +173,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .flatMap((Function<GetRedNewPersonInfoResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) r -> {
                     runOnUiThread(() -> {
-                        if (r.getRedNewPersonStatus().equals("1")) {
+                        if (!TextUtils.isEmpty(r.getRedNewPersonStatus()) && r.getRedNewPersonStatus().equals("1")) {
                             if (!TextUtils.isEmpty(r.getSymbol())) {
                                 result = new GetPaymentListBean();
                                 result.setSymbol(r.getSymbol());

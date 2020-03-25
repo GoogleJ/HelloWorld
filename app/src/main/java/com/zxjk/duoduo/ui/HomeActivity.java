@@ -96,9 +96,8 @@ import static com.ashokvarma.bottomnavigation.BottomNavigationBar.BACKGROUND_STY
 public class HomeActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
     public static final int REQUEST_REWARD = 1001;
-
-    private Fragment mFragment;
     public BadgeItem badgeItem2;
+    private Fragment mFragment;
     private BadgeItem badgeItem3;
     private MsgFragment msgFragment;
     private ContactFragment contactFragment;
@@ -111,6 +110,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private int msgCount1;
 
     private BurnAfterReadMessageLocalBeanDao dao;
+    private long max1;
 
     @Override
     protected void onDestroy() {
@@ -162,6 +162,10 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initRedfallData();
 
+        initRongMention();
+    }
+
+    private void initRongMention() {
         RongMentionManager.getInstance().setGroupMembersProvider((s, callBack) ->
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getGroupMemByGroupId(s)
@@ -294,6 +298,9 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     });
                 } else if (commandMessage.getName().equals("agreeFriend")) {
                     contactFragment.onResume();
+                } else if (commandMessage.getName().equals("forceClearAllLocalHistory")) {
+                    String groupId2BeClear = commandMessage.getData();
+                    RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, groupId2BeClear, null);
                 }
             }
             return false;
@@ -527,8 +534,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             }
         }
     }
-
-    private long max1;
 
     //获取版本
     @SuppressLint("CheckResult")
