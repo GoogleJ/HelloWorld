@@ -1151,6 +1151,8 @@
     <string name="merchant_account" translatable="false">商家账号</string>
     <string name="go_to_the_payment" translatable="false">去付款</string>
     <string name="no_data" translatable="false">暂无数据</string>
+    <string name="buyer_cancel">买家取消</string>
+    <string name="seller_to_cancel">卖家取消</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

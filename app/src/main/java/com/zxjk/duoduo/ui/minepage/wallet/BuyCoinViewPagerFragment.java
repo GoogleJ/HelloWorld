@@ -293,8 +293,6 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
 
         llBuyCoin.setOnClickListener(v -> {
 
-            etPurchaseAmount.getText();
-
             minimum = findHailangResponse.get(0).getOtc_active().getQuota().substring(0, findHailangResponse.get(0).getOtc_active().getQuota().indexOf("~"));
 
             if (etPurchaseAmount.getText().length() == 0) {
@@ -471,19 +469,6 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         startActivity(intent);
                     }, this::handleApiError);
         }
-    }
-
-    private void setDrawable(Drawable d1, Drawable d2, TextView textView) {
-        Drawable drawable = d1;
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable
-                .getMinimumHeight());// 设置边界
-
-        Drawable drawables = d2;
-        drawables.setBounds(0, 0, drawables.getMinimumWidth(), drawables
-                .getMinimumHeight());// 设置边界
-
-        textView.setCompoundDrawables(drawables, null, drawable, null);
-        textView.setCompoundDrawablePadding(8);
     }
 
 

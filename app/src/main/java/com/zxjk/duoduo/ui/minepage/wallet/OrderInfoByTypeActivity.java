@@ -48,11 +48,9 @@ import razerdp.widget.QuickPopup;
 @SuppressLint("CheckResult")
 public class OrderInfoByTypeActivity extends BaseActivity {
 
-    private static final String COUNT_PER_PAGE = "15";
     private RecyclerView rlOrderInfoByType;
     private BaseQuickAdapter<GetOrderInfoByTypeResponse.ListBean, BaseViewHolder> adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private int pages = 1;
     private Api api;
     private TextView tvScreening;
     private String timestamp;
@@ -64,6 +62,9 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     private QuickPopup OrderPop;
 
     private List<CheckBox> checkBoxs = new ArrayList<>();
+
+    private int page = 0;
+    private int numsPerPage = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     }
 
     private void initData() {
+        swipeRefreshLayout.setRefreshing(true);
         onRefreshLayout();
         tvScreening.setOnClickListener(v -> {
 
@@ -141,10 +143,12 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                                 OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                                 OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
                                 setCheckBox(R.id.radio3);
+                                page = 0;
                                 onRefreshLayout();
                             }, false)
                             .withClick(R.id.tv_determine, v1 -> {
                                 onRefreshLayout();
+                                page = 0;
                             }, true)
                             .withClick(R.id.view1, null, true)
                     ).show();
@@ -180,7 +184,10 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         });
 
         swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
-        swipeRefreshLayout.setOnRefreshListener(() -> onRefreshLayout());
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            onRefreshLayout();
+            page = 0;
+        });
 
         adapter = new BaseQuickAdapter<GetOrderInfoByTypeResponse.ListBean, BaseViewHolder>(R.layout.item_order_info_by_type) {
             @Override
@@ -260,48 +267,37 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         rlOrderInfoByType.setAdapter(adapter);
         rlOrderInfoByType.setItemAnimator(new DefaultItemAnimator());
         rlOrderInfoByType.setLayoutManager(new LinearLayoutManager(this));
-        adapter.setEnableLoadMore(true);
-        adapter.isFirstOnly(true);
+
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         adapter.setLoadMoreView(new NewsLoadMoreView());
-        adapter.setOnLoadMoreListener(() -> {
-            onLoadMoreListener(String.valueOf(pages), COUNT_PER_PAGE, side, state);
-        }, rlOrderInfoByType);
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(this::onRefreshLayout, rlOrderInfoByType);
     }
 
 
     private void onRefreshLayout() {
-        api.getOrderInfoByType("1", COUNT_PER_PAGE, side, state)
+        api.getOrderInfoByType(String.valueOf(page), String.valueOf(numsPerPage), side, state)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver())
+                .doOnTerminate(() -> (swipeRefreshLayout).setRefreshing(false))
                 .subscribe(s -> {
-                    pages = 1;
-                    adapter.replaceData(s.getList());
-                    if (swipeRefreshLayout.isRefreshing()) {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                    if (s.getList().size() != 15) {
-                        adapter.loadMoreEnd(false);
+
+                    page += 1;
+                    if (page == 1) {
+                        adapter.setNewData(s.getList());
+                        adapter.disableLoadMoreIfNotFullPage();
+                    } else {
+                        adapter.addData(s.getList());
+                        if (s.getList().size() >= numsPerPage) {
+                            adapter.loadMoreComplete();
+                        } else {
+                            adapter.loadMoreEnd(false);
+                        }
                     }
                 });
     }
 
-    private void onLoadMoreListener(String page, String offset, String side, String state) {
-        api.getOrderInfoByType(page, offset, side, state)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver())
-                .subscribe(s -> {
-                    if (s.getList().size() != 15) {
-                        adapter.loadMoreEnd(false);
-                    } else {
-                        pages++;
-                        adapter.loadMoreComplete();
-                    }
-                    adapter.addData(s.getList());
-                });
-    }
 
     private void setCheckBox(int checkBox) {
         for (CheckBox chb : checkBoxs) {
@@ -317,6 +313,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        onRefreshLayout();
+        page = 0;
+        initData();
     }
 }

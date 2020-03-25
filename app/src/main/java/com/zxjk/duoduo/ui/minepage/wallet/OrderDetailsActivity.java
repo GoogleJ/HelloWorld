@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
@@ -70,6 +69,7 @@ public class OrderDetailsActivity extends BaseActivity {
     private String sign;
     private String timestamp;
     private Boolean payment = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +99,7 @@ public class OrderDetailsActivity extends BaseActivity {
         scrollView = findViewById(R.id.scrollview);
         llTitleBar = findViewById(R.id.ll_title_bar);
         findViewById(R.id.rl_back).setOnClickListener(v -> {
-                onBackDialog();
+            onBackDialog();
         });
     }
 
@@ -127,7 +127,7 @@ public class OrderDetailsActivity extends BaseActivity {
                 });
 
         tvTotal.setText(byBoinsResponse.getTotal());
-        tvTheOrderNumber.setText(getString(R.string.order_number,byBoinsResponse.getTransId()));
+        tvTheOrderNumber.setText(getString(R.string.order_number, byBoinsResponse.getTransId()));
 
         if (byBoinsResponse.getPaymentType().equals("1")) {
             tvPaymentType.setText(R.string.bank_card_payment);
@@ -181,7 +181,7 @@ public class OrderDetailsActivity extends BaseActivity {
         tvBranchBankName.setOnClickListener(v -> copyText(byBoinsResponse.getSubBranch()));
 
         tvPayment.setOnClickListener(v -> {
-            if(payment){
+            if (payment) {
                 long timeStampSec = System.currentTimeMillis() / 1000;
                 timestamp = String.format("%010d", timeStampSec);
 
@@ -189,7 +189,6 @@ public class OrderDetailsActivity extends BaseActivity {
                         "&nonce=" + timestamp +
                         "&trans_id=" + byBoinsResponse.getTransId() +
                         "&user_id=" + Constant.USERID + Constant.SECRET;
-                Log.i("tag", "initData: " + secret);
                 sign = Sha256.getSHA256(secret);
                 ServiceFactory.getInstance().otcService(Constant.BASE_URL, sign, Api.class)
                         .paymentDone(byBoinsResponse.getCollectionId(),
@@ -288,6 +287,6 @@ public class OrderDetailsActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-            onBackDialog();
+        onBackDialog();
     }
 }

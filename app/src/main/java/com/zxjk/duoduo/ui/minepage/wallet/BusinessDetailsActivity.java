@@ -2,12 +2,14 @@ package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.ByBoinsResponse;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -57,9 +59,8 @@ public class BusinessDetailsActivity extends BaseActivity {
         tvOrdersComplete.setText(byBoinsResponse.getOrdersComplete());
         tvOrdersRate.setText(byBoinsResponse.getOrdersRate()+"%");
 
-        sdf = new SimpleDateFormat("mm.ss");
-        String IssueTime = sdf.format(new Date(Long.parseLong(byBoinsResponse.getIssueTimeAvg())));
-        tvIssueTimeAvg.setText(IssueTime);
+        DecimalFormat df4 = new DecimalFormat("###");
+        tvIssueTimeAvg.setText(df4.format(Double.parseDouble(byBoinsResponse.getIssueTimeAvg())/1000/60));
 
         if(byBoinsResponse.getKycLevel().equals("1")){
             setDrawables(getResources().getDrawable(R.drawable.ic_real_name_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);

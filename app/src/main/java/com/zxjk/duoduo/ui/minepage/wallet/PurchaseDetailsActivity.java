@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -129,6 +128,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
     }
 
     private void initData() {
+
         if (isJump) {
             byBoinsResponse = (ByBoinsResponse) getIntent().getExtras().getSerializable("ByBoinsResponse");
         }
@@ -142,26 +142,36 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.waiting_to_put_money));
 
                 long l1 = (System.currentTimeMillis() - Long.parseLong(byBoinsResponse.getPayTime())) / 1000;
-                long total = (900 - l1) <= 0 ? 0 : (900 - l1);
+                long total = ((900 - l1) <= 0 ? 0 : (900 - l1)) + 15;
                 Observable.interval(0, 1, TimeUnit.SECONDS)
-                        .take(total)
+                        .take(total + 10)
                         .observeOn(AndroidSchedulers.mainThread())
                         .compose(bindToLifecycle())
                         .subscribe(l -> {
                             long minute = (total - l) / 60;
                             long second = (total - l) % 60;
-                            tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + second) : second))));
+                            tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + (second - 1)) : second))));
                             if (total == 0 || l == total - 1) {
                                 orderInfo();
                             }
                         }, t -> {
                         });
 
-            } else if (byBoinsResponse.getState().equals("4") || byBoinsResponse.getState().equals("5") || byBoinsResponse.getState().equals("6")) {
+            } else if (byBoinsResponse.getState().equals("6")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, getString(R.string.has_been_cancelled));
                 tvPayment.setVisibility(View.INVISIBLE);
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.no_payment));
                 tvCancelTheOrder.setText(R.string.already_timeout);
+            } else if (byBoinsResponse.getState().equals("4")) {
+                setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, getString(R.string.has_been_cancelled));
+                tvPayment.setVisibility(View.INVISIBLE);
+                setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.buyer_cancel));
+                tvCancelTheOrder.setVisibility(View.GONE);
+            }else if(byBoinsResponse.getState().equals("5") ){
+                setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, getString(R.string.has_been_cancelled));
+                tvPayment.setVisibility(View.INVISIBLE);
+                setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.seller_to_cancel));
+                tvCancelTheOrder.setVisibility(View.GONE);
             } else if (byBoinsResponse.getState().equals("1") || byBoinsResponse.getState().equals("7")) {
                 if (byBoinsResponse.getAppeal().equals("0") && byBoinsResponse.getAppealTime().equals("0")) {
                     if (byBoinsResponse.getState().equals("1")) {
@@ -229,7 +239,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
         });
 
         tvCancelTheOrder.setOnClickListener(v -> {
-            if(tvCancelTheOrder.getText().equals(getString(R.string.cancel_the_order))){
+            if (tvCancelTheOrder.getText().equals(getString(R.string.cancel_the_order))) {
                 onBackDialog();
             }
         });
