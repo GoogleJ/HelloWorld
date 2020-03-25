@@ -220,7 +220,8 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         }
                     } else {
                         //(最大金额/当前价格)获得最多可购买币的数量
-                        Double amount = Double.parseDouble(nf.format(Double.parseDouble(findHailangResponse.get(0).getOtc_active().getAmount()) - Double.parseDouble(findHailangResponse.get(0).getOtc_active().getFreezed())));
+                        Double amount = Double.parseDouble(nf.format(Double.parseDouble(findHailangResponse.get(0).getOtc_active().getAmount()) - Double.parseDouble(findHailangResponse.get(0).getOtc_active().getFreezed())).replace(",",""));
+
                         if (Double.parseDouble(String.valueOf(editable)) > amount) {
                             ToastUtils.showShort(getString(R.string.buy_amount_prompt, amount.toString(), currency));
                             etPurchaseAmount.setText(String.valueOf(amount));

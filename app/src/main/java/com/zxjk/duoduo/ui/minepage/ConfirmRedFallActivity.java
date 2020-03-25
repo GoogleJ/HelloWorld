@@ -162,8 +162,8 @@ public class ConfirmRedFallActivity extends BaseActivity {
             cm.setPrimaryClip(ClipData.newPlainText("text", text));
         }
 
-        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "去微信", "取消", "分享至朋友圈", "文案已自动生成，快去粘贴吧！");
-        dialog.setOnCancelListener(() -> ShareUtil.share2WTimeline(this, new ShareUtil.ShareListener() {
+        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消","去微信",  "分享至朋友圈", "文案已自动生成，快去粘贴吧！");
+        dialog.setOnCommitListener(() -> ShareUtil.share2WTimeline(this, new ShareUtil.ShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
                 super.onStart(share_media);

@@ -79,7 +79,7 @@ public class MuteRemoveDialog extends Dialog {
 
 //        ivRight.setVisibility(View.VISIBLE);
 
-        tvCancel.setTextColor(Color.parseColor("#FC6660"));
+//        tvCancel.setTextColor(Color.parseColor("#FC6660"));
 
         tvCancel.setText(cancel);
         tvCommit.setText(commit);

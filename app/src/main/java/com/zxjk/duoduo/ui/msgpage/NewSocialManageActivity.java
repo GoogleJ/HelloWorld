@@ -145,10 +145,10 @@ public class NewSocialManageActivity extends BaseActivity {
         if (swForbidPic != null) {
             swForbidPic.setChecked(!groupInfo.getGroupInfo().getBanSendPicture().equals("0"));
             swForbidPic.setOnClickListener(v -> {
-                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.queding), getString(R.string.cancel),
+                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.cancel), getString(R.string.queding),
                         getString(R.string.ban_send_pic), getString(R.string.ban_send_pic1));
-                dialog.setOnCommitListener(() -> swForbidPic.setChecked(!swForbidPic.isChecked()));
-                dialog.setOnCancelListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swForbidPic.isChecked() ? "1" : "0", "1")
+                dialog.setOnCancelListener(() -> swForbidPic.setChecked(!swForbidPic.isChecked()));
+                dialog.setOnCommitListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swForbidPic.isChecked() ? "1" : "0", "1")
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -181,10 +181,10 @@ public class NewSocialManageActivity extends BaseActivity {
         if (swForbidUrl != null) {
             swForbidUrl.setChecked(!groupInfo.getGroupInfo().getBanSendLink().equals("0"));
             swForbidUrl.setOnClickListener(v -> {
-                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.queding),
-                        getString(R.string.cancel), getString(R.string.ban_send_link), getString(R.string.ban_send_link1));
-                dialog.setOnCommitListener(() -> swForbidUrl.setChecked(!swForbidUrl.isChecked()));
-                dialog.setOnCancelListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swForbidUrl.isChecked() ? "1" : "0", "2")
+                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.cancel), getString(R.string.queding),
+                        getString(R.string.ban_send_link), getString(R.string.ban_send_link1));
+                dialog.setOnCancelListener(() -> swForbidUrl.setChecked(!swForbidUrl.isChecked()));
+                dialog.setOnCommitListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swForbidUrl.isChecked() ? "1" : "0", "2")
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -217,10 +217,10 @@ public class NewSocialManageActivity extends BaseActivity {
         if (swForbidVoice != null) {
             swForbidVoice.setChecked(!groupInfo.getGroupInfo().getBanSendVoice().equals("0"));
             swForbidVoice.setOnClickListener(v -> {
-                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.queding),
-                        getString(R.string.cancel), getString(R.string.ban_send_voice), getString(R.string.ban_send_voice1));
-                dialog.setOnCommitListener(() -> swForbidVoice.setChecked(!swForbidVoice.isChecked()));
-                dialog.setOnCancelListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swForbidVoice.isChecked() ? "1" : "0", "5")
+                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.cancel), getString(R.string.queding),
+                        getString(R.string.ban_send_voice), getString(R.string.ban_send_voice1));
+                dialog.setOnCancelListener(() -> swForbidVoice.setChecked(!swForbidVoice.isChecked()));
+                dialog.setOnCommitListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swForbidVoice.isChecked() ? "1" : "0", "5")
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -253,10 +253,10 @@ public class NewSocialManageActivity extends BaseActivity {
         if (swForbidAddF != null) {
             swForbidAddF.setChecked(!groupInfo.getGroupInfo().getBanFriend().equals("0"));
             swForbidAddF.setOnClickListener(v -> {
-                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.queding),
-                        getString(R.string.cancel), getString(R.string.ban_add_friend), getString(R.string.ban_add_friend1));
-                dialog.setOnCommitListener(() -> swForbidAddF.setChecked(!swForbidAddF.isChecked()));
-                dialog.setOnCancelListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swForbidAddF.isChecked() ? "1" : "0", "0")
+                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.cancel), getString(R.string.queding),
+                        getString(R.string.ban_add_friend), getString(R.string.ban_add_friend1));
+                dialog.setOnCancelListener(() -> swForbidAddF.setChecked(!swForbidAddF.isChecked()));
+                dialog.setOnCommitListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swForbidAddF.isChecked() ? "1" : "0", "0")
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -283,10 +283,10 @@ public class NewSocialManageActivity extends BaseActivity {
         if (swMuteAll != null) {
             swMuteAll.setChecked(!groupInfo.getGroupInfo().getIsBanned().equals("0"));
             swMuteAll.setOnClickListener(v -> {
-                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.queding), getString(R.string.cancel),
+                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.cancel), getString(R.string.queding),
                         getString(R.string.mute_confirm), getString(R.string.mute_confirm1));
-                dialog.setOnCommitListener(() -> swMuteAll.setChecked(!swMuteAll.isChecked()));
-                dialog.setOnCancelListener(() -> api.muteGroups(groupInfo.getGroupInfo().getId(), swMuteAll.isChecked() ? "add" : "remove")
+                dialog.setOnCancelListener(() -> swMuteAll.setChecked(!swMuteAll.isChecked()));
+                dialog.setOnCommitListener(() -> api.muteGroups(groupInfo.getGroupInfo().getId(), swMuteAll.isChecked() ? "add" : "remove")
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -313,10 +313,10 @@ public class NewSocialManageActivity extends BaseActivity {
         if (swGroupPublic != null) {
             swGroupPublic.setChecked(!groupInfo.getGroupInfo().getIsPublic().equals("0"));
             swGroupPublic.setOnClickListener(v -> {
-                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.queding), getString(R.string.cancel),
+                MuteRemoveDialog dialog = new MuteRemoveDialog(NewSocialManageActivity.this, getString(R.string.cancel), getString(R.string.queding),
                         getString(R.string.social_public), getString(R.string.social_public1));
-                dialog.setOnCommitListener(() -> swGroupPublic.setChecked(!swGroupPublic.isChecked()));
-                dialog.setOnCancelListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swGroupPublic.isChecked() ? "1" : "0", "3")
+                dialog.setOnCancelListener(() -> swGroupPublic.setChecked(!swGroupPublic.isChecked()));
+                dialog.setOnCommitListener(() -> api.groupOperation(groupInfo.getGroupInfo().getId(), swGroupPublic.isChecked() ? "1" : "0", "3")
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))

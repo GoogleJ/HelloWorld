@@ -55,7 +55,7 @@ public class BusinessDetailsActivity extends BaseActivity {
         String sd = sdf.format(new Date(Long.parseLong(byBoinsResponse.getRegisterTime())));
         tvRegisterTime.setText(getString(R.string.registration_time,sd));
         tvOrdersComplete.setText(byBoinsResponse.getOrdersComplete());
-        tvOrdersRate.setText(byBoinsResponse.getOrdersRate());
+        tvOrdersRate.setText(byBoinsResponse.getOrdersRate()+"%");
 
         sdf = new SimpleDateFormat("mm.ss");
         String IssueTime = sdf.format(new Date(Long.parseLong(byBoinsResponse.getIssueTimeAvg())));

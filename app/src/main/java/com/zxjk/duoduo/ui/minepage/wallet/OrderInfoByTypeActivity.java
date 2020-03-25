@@ -186,7 +186,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             @Override
             protected void convert(BaseViewHolder helper, GetOrderInfoByTypeResponse.ListBean item) {
 
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm MM/dd");
                 String sd = sdf.format(new Date(Long.parseLong(item.getCreateTime())));
 
                 helper.setText(R.id.tv_nonce, sd)
