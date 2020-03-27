@@ -21,7 +21,7 @@ public class ConfirmDialog extends Dialog {
     private View.OnClickListener listener;
 
     public ConfirmDialog(@NonNull Context context, String title, String content, View.OnClickListener listener) {
-        super(context, R.style.CommentStyle);
+        super(context, R.style.dialogstyle);
         this.content = content;
         this.title = title;
         this.listener = listener;
