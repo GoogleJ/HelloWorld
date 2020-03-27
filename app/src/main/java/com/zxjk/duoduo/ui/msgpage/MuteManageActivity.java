@@ -1,23 +1,20 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -28,40 +25,36 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
-import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
-
-import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("CheckResult")
 public class MuteManageActivity extends BaseActivity {
 
+    private RecyclerView recyclerView1;
+    private RecyclerView recyclerView2;
+    private SwipeRefreshLayout refreshLayout;
+
+    private int page = 0;
+    private int numsPerPage = 10;
+    private String searchKey = "";
+    private BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder> adapter1;
+    private BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder> adapter2;
+    private List<GroupManagementInfoBean> data1 = new ArrayList<>();
+    private List<GroupManagementInfoBean> data2 = new ArrayList<>();
+
+    private TextView tvListMute;
     private TextView tv_title;
     private RelativeLayout rl_back;
     private EditText etSearch;
-    private ViewPager pager;
-    private MagicIndicator indicator;
-
-    private int[] detailTitles = {R.string.group_member, R.string.list_mute, R.string.list_kickout};
-
-    private List<BaseQuickAdapter> adapters = new ArrayList<>(3);
-    private List<GroupManagementInfoBean> data1;
-    private List<GroupManagementInfoBean> data2;
-    private List<GroupManagementInfoBean> data3;
-    private int currentPosition;
 
     private Api api;
 
     private String groupId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,37 +65,31 @@ public class MuteManageActivity extends BaseActivity {
         groupId = getIntent().getStringExtra("groupId");
 
         initView();
+
         initData();
     }
 
     private void initView() {
+
+        recyclerView2 = findViewById(R.id.rc2);
+        refreshLayout = findViewById(R.id.refresh_layout);
+
         tv_title = findViewById(R.id.tv_title);
         rl_back = findViewById(R.id.rl_back);
         etSearch = findViewById(R.id.etSearch);
-        pager = findViewById(R.id.pager);
-        indicator = findViewById(R.id.indicator);
     }
 
     private void initData() {
         tv_title.setText(R.string.mute_manage);
         rl_back.setOnClickListener(v -> finish());
-        pager.setOffscreenPageLimit(5);
-        pager.setAdapter(new DetailPagerAdapter());
-
-        initIndicator();
-
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                indicator.onPageScrolled(position, positionOffset, positionOffsetPixels);
-            }
-
-            public void onPageSelected(int position) {
-                currentPosition = position;
-                indicator.onPageSelected(position);
-            }
-
-            public void onPageScrollStateChanged(int state) {
-                indicator.onPageScrollStateChanged(state);
+        refreshLayout.setRefreshing(true);
+        refreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
+        refreshLayout.setOnRefreshListener(() -> {
+            page = 0;
+            if (searchKey.equals("")) {
+                getDumbManagers("");
+            } else {
+                getDumbManagers(searchKey);
             }
         });
 
@@ -119,206 +106,250 @@ public class MuteManageActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String s = editable.toString();
-                if (TextUtils.isEmpty(s)) {
-                    adapters.get(currentPosition).setNewData(currentPosition == 0 ? data1 : (currentPosition == 1 ? data2 : data3));
-                    return;
+                page = 0;
+                searchKey = editable.toString();
+                if (TextUtils.isEmpty(searchKey)) {
+                    getDumbManagers("");
                 }
-                List<GroupManagementInfoBean> temp = new ArrayList<>();
-                switch (currentPosition) {
-                    case 0:
-                        for (int i = 0; i < data1.size(); i++) {
-                            if (data1.get(i).getNick().contains(s)) temp.add(data1.get(i));
-                        }
-                        break;
-                    case 1:
-                        for (int i = 0; i < data2.size(); i++) {
-                            if (data2.get(i).getNick().contains(s)) temp.add(data2.get(i));
-                        }
-                        break;
-                    case 2:
-                        for (int i = 0; i < data3.size(); i++) {
-                            if (data3.get(i).getNick().contains(s)) temp.add(data3.get(i));
-                        }
-                        break;
-                }
-                adapters.get(currentPosition).setNewData(temp);
             }
         });
-    }
 
-    private void initIndicator() {
-        CommonNavigator navigator = new CommonNavigator(this);
-        navigator.setAdjustMode(true);
-        navigator.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return detailTitles.length;
-            }
+        etSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                page = 0;
 
-            @Override
-            public IPagerTitleView getTitleView(Context context, int index) {
-                SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
-                pagerTitleView.setTextSize(15);
-                pagerTitleView.setNormalColor(ContextCompat.getColor(MuteManageActivity.this, R.color.msgTitle));
-                pagerTitleView.setSelectedColor(ContextCompat.getColor(MuteManageActivity.this, R.color.colorTheme));
-                pagerTitleView.setText(detailTitles[index]);
-                pagerTitleView.setOnClickListener(v -> pager.setCurrentItem(index));
-                return pagerTitleView;
+                if (!TextUtils.isEmpty(searchKey)) {
+                    getDumbManagers(searchKey);
+                    return true;
+                }
             }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-                LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
-                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
-                linePagerIndicator.setColors(ContextCompat.getColor(MuteManageActivity.this, R.color.colorTheme));
-                return linePagerIndicator;
-            }
+            return false;
         });
-        indicator.setNavigator(navigator);
-    }
 
-    class DetailPagerAdapter extends PagerAdapter {
 
-        @Override
-        public int getCount() {
-            return detailTitles.length;
-        }
+        adapter2 = new BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder>(R.layout.item_members_of_the_banned) {
+            @Override
+            protected void convert(BaseViewHolder helper, GroupManagementInfoBean item) {
+                GroupManagementInfoBean groupManagementInfo = item;
+                helper.setText(R.id.tv_name, item.getNick());
+                GlideUtil.loadCircleImg(helper.getView(R.id.iv_head), item.getHeadPortrait());
 
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
-        }
+                TextView mute = helper.getView(R.id.tv_mute);
+                TextView blacklist = helper.getView(R.id.tv_blacklist);
 
-        @SuppressLint("CheckResult")
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            RecyclerView recycler = new RecyclerView(MuteManageActivity.this);
-            recycler.setOverScrollMode(View.OVER_SCROLL_NEVER);
-            recycler.setLayoutManager(new LinearLayoutManager(MuteManageActivity.this));
+                blacklist.setText("加入黑名单");
+                blacklist.setTextColor(getResources().getColor(R.color.color5c, null));
+                blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_nor, null));
 
-            BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder> adapter;
-            adapter = new BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder>(R.layout.item_mute_manage, null) {
-                @Override
-                protected void convert(BaseViewHolder helper, GroupManagementInfoBean bean) {
+                mute.setText(R.string.mute);
+                mute.setBackground(getResources().getDrawable(R.drawable.shape_mute_nor, null));
+                mute.setTextColor(getResources().getColor(R.color.colorTheme, null));
 
-                    helper.setText(R.id.tvName, bean.getNick());
+                mute.setOnClickListener(v -> api.muteMembers(groupId, item.getCustomerId(), "add")
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribe(c -> {
+                            tvListMute.setVisibility(View.VISIBLE);
+                            groupManagementInfo.setIsBanned("1");
+                            data1.add(0, groupManagementInfo);
+                            adapter1.notifyItemInserted(0);
+                            data2.remove(item);
+                            notifyItemRemoved(helper.getAdapterPosition());
+                        }, MuteManageActivity.this::handleApiError));
 
-                    GlideUtil.loadCircleImg(helper.getView(R.id.ivHead), bean.getHeadPortrait());
+                blacklist.setOnClickListener(v -> api.blacklistOperation(groupId, item.getCustomerId(), "kickOut")
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribe(c -> {
+                            tvListMute.setVisibility(View.VISIBLE);
+                            groupManagementInfo.setIsKickOut("1");
+                            data1.add(0, groupManagementInfo);
+                            adapter1.notifyItemInserted(0);
+                            data2.remove(item);
+                            notifyItemRemoved(helper.getAdapterPosition());
+                        }, MuteManageActivity.this::handleApiError));
+            }
+        };
 
-                    TextView tv1 = helper.getView(R.id.tv1);
-                    TextView tv2 = helper.getView(R.id.tv2);
 
-                    switch (position) {
-                        case 0:
-                            tv1.setText(R.string.mute);
-                            tv2.setText(R.string.kickout);
-                            tv1.setOnClickListener(v -> api.muteMembers(groupId, bean.getId(), "add")
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(c -> {
-                                        data2.add(0, data1.get(helper.getAdapterPosition()));
-                                        adapters.get(1).notifyItemInserted(0);
+        View headerView = getLayoutInflater().inflate(R.layout.rc_mutemanage_header, null);
+        adapter2.addHeaderView(headerView);
+        recyclerView2.setAdapter(adapter2);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView2.setNestedScrollingEnabled(false);
 
-                                        data1.remove(helper.getAdapterPosition());
-                                        notifyItemRemoved(helper.getAdapterPosition());
-                                    }, MuteManageActivity.this::handleApiError));
-                            tv2.setOnClickListener(v -> api.kickOutORRemove(groupId, bean.getId(), "kickOut")
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(c -> {
-                                        data3.add(0, data1.get(helper.getAdapterPosition()));
-                                        adapters.get(2).notifyItemInserted(0);
+        adapter2.setLoadMoreView(new NewsLoadMoreView());
+        adapter2.setEnableLoadMore(true);
+        adapter2.setOnLoadMoreListener(() -> {
+            if (searchKey.equals("")) {
+                getDumbManagers("");
+            } else {
+                getDumbManagers(searchKey);
+            }
+        }, recyclerView2);
 
-                                        data1.remove(helper.getAdapterPosition());
-                                        notifyItemRemoved(helper.getAdapterPosition());
-                                    }, MuteManageActivity.this::handleApiError));
-                            break;
-                        case 1:
-                            tv1.setText(R.string.cancel);
-                            tv2.setText(R.string.remove);
-                            tv1.setSelected(true);
-                            tv1.setOnClickListener(v -> api.muteMembers(groupId, bean.getId(), "remove")
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(c -> {
-                                        data1.add(0, data2.get(helper.getAdapterPosition()));
-                                        adapters.get(0).notifyItemInserted(0);
 
-                                        data2.remove(helper.getAdapterPosition());
-                                        notifyItemRemoved(helper.getAdapterPosition());
-                                    }, MuteManageActivity.this::handleApiError));
+        recyclerView1 = headerView.findViewById(R.id.rc1);
+        tvListMute = headerView.findViewById(R.id.tv_list_mute);
+        adapter1 = new BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder>(R.layout.item_members_of_the_banned) {
+            @Override
+            protected void convert(BaseViewHolder helper, GroupManagementInfoBean item) {
+                GroupManagementInfoBean groupManagementInfo = item;
+                helper.setText(R.id.tv_name, item.getNick());
+                GlideUtil.loadCircleImg(helper.getView(R.id.iv_head), item.getHeadPortrait());
 
-                            MuteRemoveDialog d = new MuteRemoveDialog(MuteManageActivity.this);
+                TextView mute = helper.getView(R.id.tv_mute);
+                TextView blacklist = helper.getView(R.id.tv_blacklist);
 
-                            d.setOnCancelListener(() -> api.kickOutORRemove(groupId, bean.getId(), "remove")
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(c -> {
-                                        data2.remove(helper.getAdapterPosition());
-                                        notifyItemRemoved(helper.getAdapterPosition());
-                                    }, MuteManageActivity.this::handleApiError));
+                if (item.getIsKickOut().equals("1")) {
+                    blacklist.setText("移出黑名单");
+                    blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_che, null));
+                    blacklist.setTextColor(getResources().getColor(R.color.white, null));
+                    mute.setVisibility(View.INVISIBLE);
+                } else {
+                    blacklist.setText("加入黑名单");
+                    blacklist.setTextColor(getResources().getColor(R.color.color5c, null));
+                    blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_nor, null));
+                }
 
-                            d.setOnCommitListener(() -> api.kickOutORRemove(groupId, bean.getId(), "kickOut")
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(c -> {
-                                        data3.add(0, data2.get(helper.getAdapterPosition()));
-                                        adapters.get(2).notifyItemInserted(0);
-                                        data2.remove(helper.getAdapterPosition());
-                                        notifyItemRemoved(helper.getAdapterPosition());
-                                    }, MuteManageActivity.this::handleApiError));
-
-                            tv2.setOnClickListener(v -> d.show());
-                            break;
-                        case 2:
-                            tv1.setVisibility(View.GONE);
-                            tv2.setText(R.string.remove);
-                            tv2.setOnClickListener(v -> api.kickOutORRemove(groupId, bean.getId(), "remove")
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(c -> {
-                                        data3.remove(helper.getAdapterPosition());
-                                        notifyItemRemoved(helper.getAdapterPosition());
-                                    }, MuteManageActivity.this::handleApiError));
-                            break;
+                if (item.getIsBanned().equals("1")) {
+                    if (item.getIsKickOut().equals("1")) {
+                        mute.setVisibility(View.INVISIBLE);
+                    } else {
+                        mute.setVisibility(View.VISIBLE);
+                        mute.setText("解除禁言");
+                        mute.setBackground(getResources().getDrawable(R.drawable.shape_mute_che, null));
+                        mute.setTextColor(getResources().getColor(R.color.white, null));
                     }
+                } else {
+                    mute.setVisibility(View.INVISIBLE);
                 }
-            };
 
-            adapters.add(position, adapter);
+                mute.setOnClickListener(v -> api.muteMembers(groupId, item.getCustomerId(), "remove")
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribe(c -> {
 
-            adapter.setEnableLoadMore(true);
-            adapter.setLoadMoreView(new NewsLoadMoreView());
+                            groupManagementInfo.setIsBanned("0");
+                            groupManagementInfo.setIsKickOut("0");
+                            data2.add(0, groupManagementInfo);
+                            adapter2.notifyItemInserted(0);
+                            data1.remove(item);
+                            notifyItemRemoved(helper.getAdapterPosition());
+                            if (data1.size() == 0) {
+                                tvListMute.setVisibility(View.GONE);
+                            }
+                        }, MuteManageActivity.this::handleApiError));
 
-            recycler.setAdapter(adapter);
+                blacklist.setOnClickListener(v -> {
+                    if (item.getIsKickOut().equals("0")) {
+                        api.blacklistOperation(groupId, item.getCustomerId(), "kickOut")
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(c -> {
+                                    blacklist.setText("移出黑名单");
+                                    blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_che, null));
+                                    blacklist.setTextColor(getResources().getColor(R.color.white, null));
+                                    mute.setVisibility(View.INVISIBLE);
+                                    item.setIsKickOut("1");
+                                }, MuteManageActivity.this::handleApiError);
+                    } else {
+                        if (item.getIsBanned().equals("1")) {
+                            api.blacklistOperation(groupId, item.getCustomerId(), "remove")
+                                    .compose(bindToLifecycle())
+                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                                    .compose(RxSchedulers.normalTrans())
+                                    .subscribe(c -> {
+                                        groupManagementInfo.setIsKickOut("0");
+                                        blacklist.setText("加入黑名单");
+                                        blacklist.setTextColor(getResources().getColor(R.color.color5c, null));
+                                        blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_nor, null));
+                                        mute.setVisibility(View.VISIBLE);
+                                        mute.setText("解除禁言");
+                                        mute.setBackground(getResources().getDrawable(R.drawable.shape_mute_che, null));
+                                        mute.setTextColor(getResources().getColor(R.color.white, null));
+                                    }, MuteManageActivity.this::handleApiError);
 
-            api.getGroupManagementInfo(groupId, position + "")
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver())
-                    .compose(RxSchedulers.normalTrans())
-                    .subscribe(list -> {
-                        adapter.setNewData(list);
-                        adapter.loadMoreEnd(true);
-                        if (position == 0) data1 = list;
-                        if (position == 1) data2 = list;
-                        if (position == 2) data3 = list;
-                    }, MuteManageActivity.this::handleApiError);
+                        } else {
+                            api.blacklistOperation(groupId, item.getCustomerId(), "remove")
+                                    .compose(bindToLifecycle())
+                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                                    .compose(RxSchedulers.normalTrans())
+                                    .subscribe(c -> {
+                                        groupManagementInfo.setIsBanned("0");
+                                        groupManagementInfo.setIsKickOut("0");
+                                        data2.add(0, groupManagementInfo);
+                                        adapter2.notifyItemInserted(0);
+                                        data1.remove(item);
+                                        notifyItemRemoved(helper.getAdapterPosition());
+                                        if (data1.size() == 0) {
+                                            tvListMute.setVisibility(View.GONE);
+                                        }
+                                    }, MuteManageActivity.this::handleApiError);
 
-            container.addView(recycler);
+                        }
+                    }
+                });
+            }
+        };
 
-            return recycler;
-        }
+        recyclerView1.setAdapter(adapter1);
+        recyclerView1.setLayoutManager(new LinearLayoutManager(this));
 
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        }
+        refreshLayout.setRefreshing(true);
+        getDumbManagers("");
+    }
+
+
+    private void getDumbManagers(String searchKey) {
+        api.getDumbManagers(groupId, String.valueOf(page), String.valueOf(numsPerPage), searchKey)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver())
+                .compose(RxSchedulers.normalTrans())
+                .doOnTerminate(() -> (refreshLayout).setRefreshing(false))
+                .subscribe(list -> {
+
+                    page += 1;
+
+                    if (page == 1) {
+                        data1.clear();
+                        data2.clear();
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).getIsBanned().equals("1") || list.get(i).getIsKickOut().equals("1")) {
+                                data1.add(list.get(i));
+                            } else {
+                                data2.add(list.get(i));
+                            }
+                        }
+                        adapter1.setNewData(data1);
+                        adapter2.setNewData(data2);
+                        adapter2.disableLoadMoreIfNotFullPage();
+                    } else {
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).getIsBanned().equals("1") || list.get(i).getIsKickOut().equals("1")) {
+                                data1.add(list.get(i));
+                            } else {
+                                data2.add(list.get(i));
+                            }
+                        }
+
+                        if (list.size() >= numsPerPage) {
+                            adapter1.loadMoreComplete();
+                            adapter2.loadMoreComplete();
+                        } else {
+                            adapter1.loadMoreEnd(false);
+                            adapter2.loadMoreEnd(false);
+                        }
+                    }
+
+
+                    if (data1.size() != 0) {
+                        tvListMute.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 }

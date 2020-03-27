@@ -147,8 +147,8 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                                 onRefreshLayout();
                             }, false)
                             .withClick(R.id.tv_determine, v1 -> {
-                                onRefreshLayout();
                                 page = 0;
+                                onRefreshLayout();
                             }, true)
                             .withClick(R.id.view1, null, true)
                     ).show();
@@ -185,8 +185,8 @@ public class OrderInfoByTypeActivity extends BaseActivity {
 
         swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            onRefreshLayout();
             page = 0;
+            onRefreshLayout();
         });
 
         adapter = new BaseQuickAdapter<GetOrderInfoByTypeResponse.ListBean, BaseViewHolder>(R.layout.item_order_info_by_type) {
@@ -271,7 +271,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         adapter.setLoadMoreView(new NewsLoadMoreView());
         adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(this::onRefreshLayout, rlOrderInfoByType);
+        adapter.setOnLoadMoreListener(OrderInfoByTypeActivity.this::onRefreshLayout, rlOrderInfoByType);
     }
 
 
@@ -298,7 +298,6 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                 });
     }
 
-
     private void setCheckBox(int checkBox) {
         for (CheckBox chb : checkBoxs) {
             chb.setChecked(false);
@@ -314,6 +313,6 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     protected void onRestart() {
         super.onRestart();
         page = 0;
-        initData();
+        onRefreshLayout();
     }
 }

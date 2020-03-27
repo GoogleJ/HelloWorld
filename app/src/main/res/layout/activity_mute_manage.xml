@@ -25,20 +25,20 @@
 
     </FrameLayout>
 
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/white" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#e5e5e5" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rc2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

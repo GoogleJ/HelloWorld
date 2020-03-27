@@ -378,10 +378,6 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> removePermissionInfo(@Field("groupId") String groupId, @Field("customerIds") String customerIds);
 
-    @POST("duoduo/group/getGroupManagementInfo")
-    @FormUrlEncoded
-    Observable<BaseResponse<List<GroupManagementInfoBean>>> getGroupManagementInfo(@Field("groupId") String groupId, @Field("type") String type);
-
     @POST("duoduo/group/muteGroups")
     @FormUrlEncoded
     Observable<BaseResponse<String>> muteGroups(@Field("groupId") String groupId, @Field("type") String type);
@@ -389,14 +385,6 @@ public interface Api {
     @POST("duoduo/group/groupOperation")
     @FormUrlEncoded
     Observable<BaseResponse<String>> groupOperation(@Field("groupId") String groupId, @Field("type") String type, @Field("source") String source);
-
-    @POST("duoduo/group/kickOutORRemove")
-    @FormUrlEncoded
-    Observable<BaseResponse<String>> kickOutORRemove(@Field("groupId") String groupId, @Field("groupMembersId") String groupMembersId, @Field("type") String type);
-
-    @POST("duoduo/group/muteMembers")
-    @FormUrlEncoded
-    Observable<BaseResponse<String>> muteMembers(@Field("groupId") String groupId, @Field("groupMembersId") String groupMembersId, @Field("type") String type);
 
     @POST("duoduo/customer/getSignList")
     Observable<BaseResponse<GetSignListResponse>> getSignList();
@@ -758,4 +746,26 @@ public interface Api {
                                                  @Field("reason") String reason,
                                                  @Field("trans_id") String trans_id,
                                                  @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("duoduo/group/getDumbManagers")
+    Observable<BaseResponse<ArrayList<GroupManagementInfoBean>>> getDumbManagers(@Field("groupId") String groupId,
+                                                 @Field("page") String page,
+                                                 @Field("offset") String offset,
+                                                 @Field("searchKey") String searchKey);
+
+
+    @POST("duoduo/group/memberMutedOperation")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> muteMembers(@Field("groupId") String groupId,
+                                                 @Field("customerId") String customerId,
+                                                 @Field("type") String type);
+
+    @POST("duoduo/group/blacklistOperation")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> blacklistOperation(@Field("groupId") String groupId,
+                                                 @Field("customerId") String customerId,
+                                                 @Field("type") String type);
+
+
 }

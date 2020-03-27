@@ -817,7 +817,7 @@
     <string name="invite_desc1">推广邀请说明</string>
     <string name="no_application">暂无应用，点击上传</string>
     <string name="hot1">热</string>
-    <string name="mute">禁言</string>
+    <string name="mute"> 禁言 </string>
     <string name="kickout">踢出</string>
     <string name="no_open">未开通</string>
     <string name="no_activity">暂无活动，点击上传</string>

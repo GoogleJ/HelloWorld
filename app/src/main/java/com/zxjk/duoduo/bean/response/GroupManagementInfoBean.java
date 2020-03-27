@@ -4,23 +4,41 @@ public class GroupManagementInfoBean {
 
 
     /**
-     * id : 9
-     * nick : 刘一
-     * headPortrait : https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/91556354875135.jpg
-     * isBanned : 0
+     * customerId : 5
+     * isBanned : 1
+     * isKickOut : 1
+     * nick : 小倩
+     * headPortrait : https://zhongxingjike1.oss-cn-beijing.aliyuncs.com/upload/51582100118917
      */
 
-    private String id;
+    private String customerId;
+    private String isBanned;
+    private String isKickOut;
     private String nick;
     private String headPortrait;
-    private String isBanned;
 
-    public String getId() {
-        return id;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getIsBanned() {
+        return isBanned;
+    }
+
+    public void setIsBanned(String isBanned) {
+        this.isBanned = isBanned;
+    }
+
+    public String getIsKickOut() {
+        return isKickOut;
+    }
+
+    public void setIsKickOut(String isKickOut) {
+        this.isKickOut = isKickOut;
     }
 
     public String getNick() {
@@ -37,13 +55,5 @@ public class GroupManagementInfoBean {
 
     public void setHeadPortrait(String headPortrait) {
         this.headPortrait = headPortrait;
-    }
-
-    public String getIsBanned() {
-        return isBanned;
-    }
-
-    public void setIsBanned(String isBanned) {
-        this.isBanned = isBanned;
     }
 }
