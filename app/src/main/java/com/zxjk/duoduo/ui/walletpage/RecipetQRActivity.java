@@ -143,6 +143,8 @@ public class RecipetQRActivity extends BaseActivity {
             result = data.getParcelableExtra("result");
             GlideUtil.loadCircleImg(ivHead, result.getLogo());
             tvMoney.setText(money + " " + result.getSymbol() + ">");
+            initUri();
+            getCodeBitmap();
             return;
         }
 
