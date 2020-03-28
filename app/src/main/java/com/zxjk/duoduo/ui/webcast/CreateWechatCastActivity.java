@@ -42,8 +42,10 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
+import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.CreateLiveRequest;
+import com.zxjk.duoduo.db.Cast;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -246,7 +248,12 @@ public class CreateWechatCastActivity extends BaseActivity {
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .subscribe(s -> {
-                        //todo 本地数据库插入直播记录
+                        Cast cast = new Cast();
+                        cast.setRoomId(s);
+                        cast.setType("1");
+                        cast.setStartTimeStamp(startTimeStamp);
+                        Application.daoSession.getCastDao().insertOrReplace(cast);
+
                         Intent intent = new Intent(this, WechatCastDetailActivity.class);
                         intent.putExtra("roomId", s);
                         intent.putExtra("fromCreate", true);

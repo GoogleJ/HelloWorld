@@ -13,14 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blankj.utilcode.util.TimeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.CastListBean;
+import com.zxjk.duoduo.db.Cast;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CastListActivity extends BaseActivity {
 
@@ -72,9 +77,19 @@ public class CastListActivity extends BaseActivity {
                 .toLiveList()
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
+                .doOnNext(origin -> {
+                    if (origin.size() == 0) {
+                        Application.daoSession.getCastDao().deleteAll();
+                    } else {
+                        List<Cast> result = new ArrayList<>(origin.size());
+                        for (CastListBean castListBean : origin) {
+                            result.add(castListBean.convert2TableBean());
+                        }
+                        Application.daoSession.getCastDao().insertOrReplaceInTx(result);
+                    }
+                })
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(list -> {
-                    //todo 更新本地数据
                     adapter.setNewData(list);
                 }, this::handleApiError);
     }

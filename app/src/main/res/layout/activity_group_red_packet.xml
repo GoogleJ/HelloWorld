@@ -358,7 +358,6 @@
             </LinearLayout>
         </LinearLayout>
 
-
         <Button
             android:id="@+id/m_red_envelopes_commit_btn"
             android:layout_width="match_parent"

@@ -7,11 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +27,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.ShareGroupQRAdapter;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -75,6 +74,7 @@ public class ShareGroupQRActivity extends BaseActivity {
         if (data == null) {
             data = new ArrayList<>();
         }
+
         Iterator<Conversation> iterator = data.iterator();
         while (iterator.hasNext()) {
             Conversation next = iterator.next();
@@ -122,11 +122,12 @@ public class ShareGroupQRActivity extends BaseActivity {
                 //消息转发
                 handleTransfer(position);
             } else {
-                //分享(群名片、游戏群名片)
-                boolean fromShareNews = getIntent().getBooleanExtra("fromShareNews", false);
-                if (fromShareNews) {
+                if (getIntent().getBooleanExtra("fromShareNews", false)) {
                     shareNews(position);
+                } else if (getIntent().getBooleanExtra("fromShareCast", false)) {
+                    handleShareCast(position);
                 } else {
+                    //分享(群名片)
                     handleShare(position);
                 }
             }
@@ -135,17 +136,42 @@ public class ShareGroupQRActivity extends BaseActivity {
         search_edit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 doSearch(data);
+            }
+        });
+    }
+
+    private void handleShareCast(int position) {
+        CommonUtils.initDialog(this).show();
+        WechatCastMessage content = new WechatCastMessage();
+        content.setRoomID(getIntent().getStringExtra("roomId"));
+        content.setType("0");
+        content.setIcon(getIntent().getStringExtra("icon"));
+        content.setTitle(getIntent().getStringExtra("title"));
+        Message message = Message.obtain(data.get(position).getTargetId(), data.get(position).getConversationType(), content);
+        RongIM.getInstance().sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                CommonUtils.destoryDialog();
+                ToastUtils.showShort(R.string.share_success);
+                finish();
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                CommonUtils.destoryDialog();
             }
         });
     }
@@ -178,7 +204,6 @@ public class ShareGroupQRActivity extends BaseActivity {
         RongIM.getInstance().sendMessage(message, "", "", new IRongCallback.ISendMessageCallback() {
             @Override
             public void onAttached(Message message) {
-
             }
 
             @Override
@@ -247,13 +272,17 @@ public class ShareGroupQRActivity extends BaseActivity {
             } else {
                 intent.putParcelableArrayListExtra("messagelist", getIntent().getParcelableArrayListExtra("messagelist"));
             }
-        }else if(fromShareNews){
-            intent.putParcelableArrayListExtra("data", data);
+        } else if (fromShareNews) {
             intent.putExtra("fromShareNews", true);
             intent.putExtra("url", getIntent().getStringExtra("url"));
             intent.putExtra("title", getIntent().getStringExtra("title"));
             intent.putExtra("icon", getIntent().getStringExtra("icon"));
             intent.putExtra("article", getIntent().getStringExtra("article"));
+        } else if (getIntent().getBooleanExtra("fromShareCast", false)) {
+            intent.putExtra("fromShareCast", true);
+            intent.putExtra("roomId", getIntent().getStringExtra("roomId"));
+            intent.putExtra("icon", getIntent().getStringExtra("icon"));
+            intent.putExtra("title", getIntent().getStringExtra("title"));
         }
         startActivity(intent);
         finish();
@@ -270,7 +299,6 @@ public class ShareGroupQRActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
 
     private void shareNews(int position) {
         NewsCardMessage message = new NewsCardMessage();

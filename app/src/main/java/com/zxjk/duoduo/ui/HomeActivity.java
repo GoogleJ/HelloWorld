@@ -270,37 +270,42 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             if (!AppUtils.isAppForeground()) {
                 BadgeNumberManager.from(this).setBadgeNumber(++Constant.messageCount);
             }
-            //handle command(delete add newfriend)
-            if (message.getObjectName().equals("RC:CmdMsg")) {
+
+            if (!TextUtils.isEmpty(message.getObjectName()) && message.getObjectName().equals("RC:CmdMsg")) {
                 CommandMessage commandMessage = (CommandMessage) message.getContent();
-                if (commandMessage.getName().equals("deleteFriend")) {
-                    RongIM.getInstance().clearMessages(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
-                    RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
-                    contactFragment.onResume();
-                } else if (commandMessage.getName().equals("addFriend")) {
-                    runOnUiThread(() -> {
-                        long newFriendCount = MMKVUtils.getInstance().decodeLong("newFriendCount");
-                        newFriendCount += 1;
-                        MMKVUtils.getInstance().enCode("newFriendCount", newFriendCount);
-                        if (newFriendCount == 0) {
-                            badgeItem2.hide();
-                        } else {
-                            badgeItem2.show(true);
-                            if (newFriendCount >= 100) {
-                                badgeItem2.setText("99+");
+                switch (commandMessage.getName()) {
+                    case "deleteFriend":
+                        RongIM.getInstance().clearMessages(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
+                        RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
+                        contactFragment.onResume();
+                        break;
+                    case "addFriend":
+                        runOnUiThread(() -> {
+                            long newFriendCount = MMKVUtils.getInstance().decodeLong("newFriendCount");
+                            newFriendCount += 1;
+                            MMKVUtils.getInstance().enCode("newFriendCount", newFriendCount);
+                            if (newFriendCount == 0) {
+                                badgeItem2.hide();
                             } else {
-                                badgeItem2.setText(String.valueOf(newFriendCount));
+                                badgeItem2.show(true);
+                                if (newFriendCount >= 100) {
+                                    badgeItem2.setText("99+");
+                                } else {
+                                    badgeItem2.setText(String.valueOf(newFriendCount));
+                                }
                             }
-                        }
-                        if (contactFragment.getDotNewFriend() != null) {
-                            contactFragment.getDotNewFriend().setVisibility(View.VISIBLE);
-                        }
-                    });
-                } else if (commandMessage.getName().equals("agreeFriend")) {
-                    contactFragment.onResume();
-                } else if (commandMessage.getName().equals("forceClearAllLocalHistory")) {
-                    String groupId2BeClear = commandMessage.getData();
-                    RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, groupId2BeClear, null);
+                            if (contactFragment.getDotNewFriend() != null) {
+                                contactFragment.getDotNewFriend().setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case "agreeFriend":
+                        contactFragment.onResume();
+                        break;
+                    case "forceClearAllLocalHistory":
+                        String groupId2BeClear = commandMessage.getData();
+                        RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, groupId2BeClear, null);
+                        break;
                 }
             }
             return false;

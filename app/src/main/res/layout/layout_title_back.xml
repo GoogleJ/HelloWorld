@@ -48,6 +48,17 @@
             android:layout_centerInParent="true"
             android:src="@drawable/icon_right_title" />
 
+        <View
+            android:id="@+id/dotSocialContentUpdate"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_alignTop="@id/iv_end"
+            android:layout_marginStart="-3dp"
+            android:layout_marginTop="-3dp"
+            android:layout_toEndOf="@id/iv_end"
+            android:background="@drawable/shape_dot_red"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
     <TextView
@@ -81,16 +92,5 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
-
-    <View
-        android:id="@+id/dotSocialContentUpdate"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_above="@+id/tv_title"
-        android:layout_marginStart="-2dp"
-        android:layout_marginBottom="-6dp"
-        android:layout_toEndOf="@id/tv_title"
-        android:background="@drawable/shape_dot_red"
-        android:visibility="gone" />
 
 </RelativeLayout>

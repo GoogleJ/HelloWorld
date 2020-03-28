@@ -120,8 +120,7 @@ public class FileSendActivity extends BaseActivity implements PhoneFileFragment.
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .subscribe(l ->
-                                        uId = userInfo.getUserId()
+                        .subscribe(l -> uId = userInfo.getUserId()
                                 , this::handleApiError);
             }
             editor.putString("ConversationType", "private");

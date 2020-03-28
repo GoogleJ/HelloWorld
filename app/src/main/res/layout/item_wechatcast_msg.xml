@@ -17,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:ellipsize="end"
-            android:lines="2"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -43,16 +43,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/news_card_content"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:lineSpacingExtra="6dp"
                     android:lines="2"
-                    android:textColor="@color/m_add_friend_wechat_label_2"
-                    android:textSize="12sp" />
+                    android:text="@string/tips_wechatcast_card"
+                    android:textColor="@color/textColor9"
+                    android:textSize="13sp" />
 
             </LinearLayout>
         </LinearLayout>
@@ -74,21 +77,19 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
-            android:gravity="center_vertical"
+            android:gravity="start"
             android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_myqr_hilamg" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:text="@string/hilamg_consulting"
+                android:text="@string/wechat_cast"
                 android:textColor="@color/m_add_friend_wechat_label_2"
                 android:textSize="12sp" />
+
         </LinearLayout>
+
     </RelativeLayout>
+
 </LinearLayout>

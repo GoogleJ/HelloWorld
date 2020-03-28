@@ -128,14 +128,28 @@ public class GroupRedPacketActivity extends BaseActivity {
             }
         });
 
-
         etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5), new InputFilter.LengthFilter(10)});
 
         nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(2);
-        String groupId = getIntent().getStringExtra("groupId");
-        getGroupInfo(groupId);
-
+        if (getIntent().getBooleanExtra("fromWechatCast", false)) {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getPaymentList()
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(l -> {
+                        list.addAll(l);
+                        result = list.get(0);
+                        GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
+                        GlideUtil.loadCircleImg(ivCoinIcon2, result.getLogo());
+                        tvCoin.setText(result.getSymbol());
+                        tvCoin2.setText(result.getSymbol());
+                        etMoney.setHint(getString(R.string.can_user_value_symbol, result.getBalance(), result.getSymbol()));
+                    }, this::handleApiError);
+        } else {
+            getGroupInfo(getIntent().getStringExtra("groupId"));
+        }
     }
 
     public void top1(View view) {
@@ -176,12 +190,10 @@ public class GroupRedPacketActivity extends BaseActivity {
                         etCount.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                             }
 
                             @Override
                             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                             }
 
                             @Override
@@ -245,14 +257,18 @@ public class GroupRedPacketActivity extends BaseActivity {
         new NewPayBoard(this).show(pwd -> {
             String message = etBless.getText().toString().trim();
 
+            boolean fromWechatCast = getIntent().getBooleanExtra("fromWechatCast", false);
+
             SendGroupRedPackageRequest request = new SendGroupRedPackageRequest();
             request.setPayPwd(MD5Utils.getMD5(pwd));
-            request.setGroupId(group.getGroupInfo().getId());
+            request.setGroupId(getIntent().getStringExtra("groupId"));
             request.setType(redType);
             request.setMessage(TextUtils.isEmpty(message) ? getString(R.string.m_red_envelopes_label) : message);
             request.setIsGame("1");
             request.setNumber(num);
             request.setSymbol(result.getSymbol());
+            request.setSendRedPacketType(fromWechatCast ? "1" : "0");
+
             if (redType.equals("2")) {
                 request.setTotalAmount(nf.format(Integer.parseInt(num) * Double.parseDouble(price)));
                 request.setMoney(price);
@@ -271,7 +287,9 @@ public class GroupRedPacketActivity extends BaseActivity {
                         redPacketMessage.setFromCustomer(Constant.userId);
                         redPacketMessage.setRemark(TextUtils.isEmpty(message) ? getString(R.string.m_red_envelopes_label) : message);
                         redPacketMessage.setRedId(s.getId());
-                        Message groupRedMessage = Message.obtain(group.getGroupInfo().getId(), Conversation.ConversationType.GROUP, redPacketMessage);
+                        Message groupRedMessage = Message.obtain(getIntent().getStringExtra("groupId"),
+                                fromWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                redPacketMessage);
                         RongIM.getInstance().sendMessage(groupRedMessage, null, null,
                                 new IRongCallback.ISendMessageCallback() {
                                     @Override
@@ -287,7 +305,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                                     public void onError(Message message, RongIMClient.ErrorCode errorCode) {
                                     }
                                 });
-                    }, GroupRedPacketActivity.this::handleApiError);
+                    }, this::handleApiError);
         });
     }
 

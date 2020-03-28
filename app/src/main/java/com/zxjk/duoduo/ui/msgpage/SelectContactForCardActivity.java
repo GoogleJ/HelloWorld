@@ -29,6 +29,7 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.SelectForCardAdapter;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -61,17 +62,11 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
     private boolean fromPulgin;
 
     private List<FriendInfoResponse> list = new ArrayList<>();
-    private ArrayList<Conversation> data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_contact_for_card);
-
-        data = getIntent().getParcelableArrayListExtra("data");
-        if (data == null) {
-            data = new ArrayList<>();
-        }
 
         initView();
 
@@ -98,15 +93,45 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                     handleTransfer(position);
                 } else {
                     boolean fromShareNews = getIntent().getBooleanExtra("fromShareNews", false);
-                    if(fromShareNews){
+                    if (fromShareNews) {
                         shareNews(position);
-                    }else {
+                    } else if (getIntent().getBooleanExtra("fromShareCast", false)) {
+                        handleShareCast(position);
+                    } else {
                         //分享群二维码
                         handleShareQR(position);
                     }
                 }
             } else {
                 shareCard(position);
+            }
+        });
+    }
+
+    private void handleShareCast(int position) {
+        CommonUtils.initDialog(this).show();
+        WechatCastMessage content = new WechatCastMessage();
+        content.setRoomID(getIntent().getStringExtra("roomId"));
+        content.setType("0");
+        content.setIcon(getIntent().getStringExtra("icon"));
+        content.setTitle(getIntent().getStringExtra("title"));
+        Message message = Message.obtain(list.get(position).getId(),
+                Conversation.ConversationType.PRIVATE, content);
+        RongIM.getInstance().sendMessage(message, null, null, new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                CommonUtils.destoryDialog();
+                ToastUtils.showShort(R.string.share_success);
+                finish();
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                CommonUtils.destoryDialog();
             }
         });
     }
@@ -170,7 +195,7 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_ok, v -> {
                     dialog.dismiss();
-                    Message message1 = Message.obtain(listBean.getId(), data.get(position).getConversationType(), message);
+                    Message message1 = Message.obtain(listBean.getId(), Conversation.ConversationType.PRIVATE, message);
                     RongIM.getInstance().sendMessage(message1, null, null, new IRongCallback.ISendMessageCallback() {
 
                         @Override
@@ -192,8 +217,6 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
             }
         }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
     }
-
-
 
     private void handleShareQR(int position) {
         CommonUtils.initDialog(this).show();

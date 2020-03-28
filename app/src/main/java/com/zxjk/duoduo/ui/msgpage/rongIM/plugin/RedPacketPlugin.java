@@ -42,12 +42,16 @@ public class RedPacketPlugin implements IPluginModule {
             Intent intent = new Intent(fragment.getContext(), GroupRedPacketActivity.class);
             intent.putExtra("groupId", rongExtension.getTargetId());
             fragment.startActivity(intent);
+        } else if (rongExtension.getConversationType() == Conversation.ConversationType.CHATROOM) {
+            Intent intent = new Intent(fragment.getContext(), GroupRedPacketActivity.class);
+            intent.putExtra("groupId", rongExtension.getTargetId());
+            intent.putExtra("fromWechatCast", true);
+            fragment.startActivity(intent);
         }
     }
 
     @Override
     public void onActivityResult(int i, int i1, Intent intent) {
-
     }
 
 }

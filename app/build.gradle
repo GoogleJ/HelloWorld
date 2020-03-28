@@ -202,6 +202,7 @@ dependencies {
     implementation 'com.umeng.umsdk:common:2.0.0'
     implementation 'com.umeng.umsdk:utdid:1.1.5.3'
 
+    //点击爆炸
     implementation 'tyrantgit:explosionfield:1.0.1'
 
     //debugtools

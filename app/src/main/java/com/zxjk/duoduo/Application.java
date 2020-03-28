@@ -29,6 +29,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SocialGroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
+import com.zxjk.duoduo.ui.msgpage.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnHQVoiceMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnImageMessageItemProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnTextMessageProvider;
@@ -42,6 +43,7 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.provider.RedPacketProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SocialGroupCardProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SystemMessageProvider;
 import com.zxjk.duoduo.ui.msgpage.rongIM.provider.TransferProvider;
+import com.zxjk.duoduo.ui.msgpage.rongIM.provider.WechatCastProvider;
 import com.zxjk.duoduo.utils.LanguageUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.MyCrashHandler;
@@ -68,6 +70,40 @@ public class Application extends android.app.Application {
     public static DaoSession daoSession;
 
     private WebDataUtils webDataUtils;
+
+    public static void initSmallVideo() {
+        // 设置拍摄视频缓存路径
+        File dcim = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        if (DeviceUtils.isZte()) {
+            if (dcim.exists()) {
+                JianXiCamera.setVideoCachePath(dcim + "/Hilamg/ZipedVideos/");
+            } else {
+                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
+                        "/sdcard-ext/")
+                        + "/Hilamg/ZipedVideos/");
+            }
+        } else {
+            JianXiCamera.setVideoCachePath(dcim + "/Hilamg/ZipedVideos/");
+        }
+        JianXiCamera.initialize(false, null);
+    }
+
+    public static void setMyExtensionModule() {
+        List<IExtensionModule> moduleList = RongExtensionManager.getInstance().getExtensionModules();
+
+        if (moduleList != null) {
+            IExtensionModule defaultModule = null;
+            for (IExtensionModule module : moduleList) {
+                if (module instanceof DefaultExtensionModule) {
+                    defaultModule = module;
+                    break;
+                }
+            }
+            RongExtensionManager.getInstance().unregisterExtensionModule(defaultModule);
+            RongExtensionManager.getInstance().registerExtensionModule(new BasePluginExtensionModule());
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -109,24 +145,6 @@ public class Application extends android.app.Application {
 
     public WebDataUtils getWebDataUtils() {
         return webDataUtils;
-    }
-
-    public static void initSmallVideo() {
-        // 设置拍摄视频缓存路径
-        File dcim = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        if (DeviceUtils.isZte()) {
-            if (dcim.exists()) {
-                JianXiCamera.setVideoCachePath(dcim + "/Hilamg/ZipedVideos/");
-            } else {
-                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
-                        "/sdcard-ext/")
-                        + "/Hilamg/ZipedVideos/");
-            }
-        } else {
-            JianXiCamera.setVideoCachePath(dcim + "/Hilamg/ZipedVideos/");
-        }
-        JianXiCamera.initialize(false, null);
     }
 
     private void initUmeng() {
@@ -174,6 +192,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageType(SocialGroupCardMessage.class);
         RongIM.registerMessageType(NewsCardMessage.class);
         RongIM.registerMessageType(SystemMessage.class);
+        RongIM.registerMessageType(WechatCastMessage.class);
         RongIM.registerMessageTemplate(new MInfoNotificationMsgItemProvider());
         RongIM.registerMessageTemplate(new SightMessageItemProvider());
         RongIM.registerMessageTemplate(new BurnVoiceMessageProvider());
@@ -188,6 +207,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new SocialGroupCardProvider());
         RongIM.registerMessageTemplate(new NewsCardProvider());
         RongIM.registerMessageTemplate(new SystemMessageProvider());
+        RongIM.registerMessageTemplate(new WechatCastProvider());
         RongIM.getInstance().enableNewComingMessageIcon(true);
         RongIM.getInstance().enableUnreadMessageIcon(true);
         setMyExtensionModule();
@@ -207,22 +227,6 @@ public class Application extends android.app.Application {
             endpoint = "oss-cn-hongkong.aliyuncs.com";
         }
         oss = new OSSClient(this, endpoint, ossPlainTextAKSKCredentialProvider);
-    }
-
-    public static void setMyExtensionModule() {
-        List<IExtensionModule> moduleList = RongExtensionManager.getInstance().getExtensionModules();
-
-        if (moduleList != null) {
-            IExtensionModule defaultModule = null;
-            for (IExtensionModule module : moduleList) {
-                if (module instanceof DefaultExtensionModule) {
-                    defaultModule = module;
-                    break;
-                }
-            }
-            RongExtensionManager.getInstance().unregisterExtensionModule(defaultModule);
-            RongExtensionManager.getInstance().registerExtensionModule(new BasePluginExtensionModule());
-        }
     }
 
     @Override

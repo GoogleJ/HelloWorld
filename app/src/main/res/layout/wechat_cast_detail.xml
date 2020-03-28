@@ -204,15 +204,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingStart="20dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="10dp">
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/tvBottom1"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="44dp"
             android:layout_weight="1"
             android:background="@drawable/shape_3dcc9c_5"
             android:foreground="?android:selectableItemBackground"
@@ -224,13 +224,13 @@
 
         <View
             android:id="@+id/dividerBottom"
-            android:layout_width="20dp"
+            android:layout_width="32dp"
             android:layout_height="0.5dp" />
 
         <TextView
             android:id="@+id/tvBottom2"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="44dp"
             android:layout_weight="1"
             android:background="@drawable/shape_theme_5"
             android:foreground="?android:selectableItemBackground"

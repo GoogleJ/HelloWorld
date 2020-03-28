@@ -129,7 +129,7 @@ public class TakePicUtil {
     }
 
     public static File onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode != Activity.RESULT_OK || data == null) {
+        if (resultCode != Activity.RESULT_OK || ((requestCode == CODE_ALBUM || requestCode == CODE_ALBUM_NOCORP) && data == null)) {
             return null;
         }
 

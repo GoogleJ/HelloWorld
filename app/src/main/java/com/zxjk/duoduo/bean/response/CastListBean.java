@@ -1,5 +1,7 @@
 package com.zxjk.duoduo.bean.response;
 
+import com.zxjk.duoduo.db.Cast;
+
 public class CastListBean {
 
     /**
@@ -64,5 +66,13 @@ public class CastListBean {
 
     public void setRoomStatus(String roomStatus) {
         this.roomStatus = roomStatus;
+    }
+
+    public Cast convert2TableBean() {
+        Cast cast = new Cast();
+        cast.setRoomId(this.roomId);
+        cast.setStartTimeStamp(Long.parseLong(this.startTime));
+        cast.setType("1");
+        return cast;
     }
 }

@@ -68,6 +68,7 @@ import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
+import com.zxjk.duoduo.bean.response.WechatChatRoomPermission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -746,6 +747,26 @@ public interface Api {
                                                  @Field("reason") String reason,
                                                  @Field("trans_id") String trans_id,
                                                  @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("duoduo/live/getRoomPermissionByRoomId")
+    Observable<BaseResponse<WechatChatRoomPermission>> getRoomPermissionByRoomId(@Field("roomId") String roomId);
+
+    @FormUrlEncoded
+    @POST("duoduo/live/modifyLive")
+    Observable<BaseResponse<String>> modifyLive(@Field("chatRoom") String chatRoom);
+
+    @FormUrlEncoded
+    @POST("duoduo/live/endLive")
+    Observable<BaseResponse<String>> endLive(@Field("roomId") String roomId);
+
+    @FormUrlEncoded
+    @POST("duoduo/live/updateRoomPermissionByRoomId")
+    Observable<BaseResponse<String>> updateRoomPermissionByRoomId(@Field("roomId") String roomId, @Field("permission") String permission, @Field("status") String status);
+
+    @FormUrlEncoded
+    @POST("duoduo/live/getRoomStatusByRoomId")
+    Observable<BaseResponse<String>> getRoomStatusByRoomId(@Field("roomId") String roomId);
 
     @FormUrlEncoded
     @POST("duoduo/group/getDumbManagers")

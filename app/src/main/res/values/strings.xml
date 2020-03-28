@@ -1183,6 +1183,20 @@
     <string name="no_data" translatable="false">暂无数据</string>
     <string name="buyer_cancel">买家取消</string>
     <string name="seller_to_cancel">卖家取消</string>
+    <string name="cast_title_ing">你有一个直播正在进行中…</string>
+    <string name="continue_cast"><![CDATA[继续直播>>]]></string>
+    <string name="cast_title_date">您有一个直播，将于%1$s开始</string>
+    <string name="cast_title_view"><![CDATA[查看>>]]></string>
+    <string name="voice_forbidden1">禁止发送语音</string>
+    <string name="open_ban_sendvoice">禁止发语音已开启</string>
+    <string name="open_ban_all">全员禁言已开启</string>
+    <string name="close_ban_all">全员禁言已关闭</string>
+    <string name="close_ban_sendvoice">禁止发语音已关闭</string>
+    <string name="confirm_close_cast">是否确定结束直播？</string>
+    <string name="current_chatroom_over">当前直播已结束</string>
+    <string name="msg_forbidden">本会话已开启全员禁言</string>
+    <string name="tips_wechatcast_card">社群正在直播,讲的特别好,再不来看就晚了。</string>
+    <string name="share_cast_card">[海浪直播]</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

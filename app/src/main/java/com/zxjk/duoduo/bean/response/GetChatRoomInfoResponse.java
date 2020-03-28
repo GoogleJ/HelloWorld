@@ -30,6 +30,15 @@ public class GetChatRoomInfoResponse implements Parcelable {
     private String startTime;
     private String liveContentImg;
     private String roomId;
+    private String groupId;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public String getRoomId() {
         return roomId;
@@ -140,6 +149,7 @@ public class GetChatRoomInfoResponse implements Parcelable {
         dest.writeString(this.startTime);
         dest.writeString(this.liveContentImg);
         dest.writeString(this.roomId);
+        dest.writeString(this.groupId);
     }
 
     protected GetChatRoomInfoResponse(Parcel in) {
@@ -154,6 +164,7 @@ public class GetChatRoomInfoResponse implements Parcelable {
         this.startTime = in.readString();
         this.liveContentImg = in.readString();
         this.roomId = in.readString();
+        this.groupId = in.readString();
     }
 
     public static final Creator<GetChatRoomInfoResponse> CREATOR = new Creator<GetChatRoomInfoResponse>() {

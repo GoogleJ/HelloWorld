@@ -2,27 +2,26 @@ package com.zxjk.duoduo.db;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Unique;
 import org.greenrobot.greendao.annotation.Generated;
 
 @Entity
 public class Cast {
     @Id(autoincrement = true)
     private Long id;
-    private String castId;
-    private long timeStamp;
-    private String timeStr;
+    @Unique
+    private String roomId;
+    private long startTimeStamp;
     private String type;//1:wechat
-    private String wechatCastStatus;
-
-    @Generated(hash = 683141846)
-    public Cast(Long id, String castId, long timeStamp, String timeStr, String type,
-            String wechatCastStatus) {
+    private String status;
+    @Generated(hash = 2065490945)
+    public Cast(Long id, String roomId, long startTimeStamp, String type,
+            String status) {
         this.id = id;
-        this.castId = castId;
-        this.timeStamp = timeStamp;
-        this.timeStr = timeStr;
+        this.roomId = roomId;
+        this.startTimeStamp = startTimeStamp;
         this.type = type;
-        this.wechatCastStatus = wechatCastStatus;
+        this.status = status;
     }
     @Generated(hash = 971498007)
     public Cast() {
@@ -33,23 +32,17 @@ public class Cast {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getCastId() {
-        return this.castId;
+    public String getRoomId() {
+        return this.roomId;
     }
-    public void setCastId(String castId) {
-        this.castId = castId;
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
-    public long getTimeStamp() {
-        return this.timeStamp;
+    public long getStartTimeStamp() {
+        return this.startTimeStamp;
     }
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-    public String getTimeStr() {
-        return this.timeStr;
-    }
-    public void setTimeStr(String timeStr) {
-        this.timeStr = timeStr;
+    public void setStartTimeStamp(long startTimeStamp) {
+        this.startTimeStamp = startTimeStamp;
     }
     public String getType() {
         return this.type;
@@ -57,10 +50,11 @@ public class Cast {
     public void setType(String type) {
         this.type = type;
     }
-    public String getWechatCastStatus() {
-        return this.wechatCastStatus;
+    public String getStatus() {
+        return this.status;
     }
-    public void setWechatCastStatus(String wechatCastStatus) {
-        this.wechatCastStatus = wechatCastStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
+
 }

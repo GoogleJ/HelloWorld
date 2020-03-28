@@ -5,26 +5,28 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.webcast.WechatCastManageActivity">
+    tools:context=".ui.webcast.WechatChatRoomManageActivity">
 
     <include layout="@layout/layout_title_back" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#dddddd" />
+        android:background="#DDDDDD" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="12dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:drawableStart="@drawable/ic_new_socialmanage11"
-            android:drawablePadding="8dp"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/mute_all"
             android:textColor="@color/black"
@@ -33,60 +35,62 @@
         <Switch
             android:id="@+id/sw1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end" />
+            android:layout_height="wrap_content" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:background="#dddddd" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="12dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:drawableStart="@drawable/ic_new_socialmanage6"
-            android:drawablePadding="8dp"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            android:text="@string/cant_sendVoice"
+            android:text="@string/voice_forbidden1"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
         <Switch
             android:id="@+id/sw2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end" />
+            android:layout_height="wrap_content" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:background="#dddddd" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="12dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:drawableStart="@drawable/ic_new_socialmanage4"
-            android:drawablePadding="8dp"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/cant_sendUrl"
             android:textColor="@color/black"
@@ -95,23 +99,22 @@
         <Switch
             android:id="@+id/sw3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end" />
+            android:layout_height="wrap_content" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:background="#dddddd" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/shape_theme_5"
         android:foreground="?android:selectableItemBackground"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llCastTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#F5F4F7"
@@ -8,7 +9,8 @@
     android:paddingStart="16dp"
     android:paddingTop="12dp"
     android:paddingEnd="16dp"
-    android:paddingBottom="12dp">
+    android:paddingBottom="12dp"
+    android:visibility="gone">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -24,14 +26,12 @@
         android:layout_weight="1"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="您有一个直播"
         android:textColor="@color/textColor6" />
 
     <TextView
         android:id="@+id/tvAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="查看>>"
         android:textColor="@color/colorTheme" />
 
 </LinearLayout>

@@ -2,8 +2,8 @@ package com.zxjk.duoduo.ui.webcast;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -18,28 +18,41 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.CastDao;
 import com.zxjk.duoduo.bean.response.GetChatRoomInfoResponse;
+import com.zxjk.duoduo.db.Cast;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
+import org.greenrobot.greendao.query.DeleteQuery;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
@@ -204,9 +217,13 @@ public class WechatCastDetailActivity extends BaseActivity {
                         .delLive(roomId)
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
+                        .doOnNext(s -> {
+                            DeleteQuery<Cast> deleteQuery = Application.daoSession.queryBuilder(Cast.class)
+                                    .where(CastDao.Properties.RoomId.eq(roomId)).buildDelete();
+                            deleteQuery.executeDeleteWithoutDetachingEntities();
+                        })
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(s -> {
-                            //todo 更新本地数据库
                             Intent intent1 = new Intent(this, HomeActivity.class);
                             intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent1);
@@ -257,8 +274,22 @@ public class WechatCastDetailActivity extends BaseActivity {
     private void handleSharePop(int i) {
         switch (i) {
             case 1:
-                //todo share2Hilamg
+                RongIM.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+                    @Override
+                    public void onSuccess(List<Conversation> conversations) {
+                        Intent intent = new Intent(WechatCastDetailActivity.this, ShareGroupQRActivity.class);
+                        intent.putExtra("fromShareCast", true);
+                        intent.putExtra("roomId", info.getRoomId());
+                        intent.putExtra("icon", info.getCommunityLogo());
+                        intent.putExtra("title", info.getTopic());
+                        intent.putParcelableArrayListExtra("data", (ArrayList<? extends Parcelable>) conversations);
+                        startActivity(intent);
+                    }
 
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                    }
+                }, Conversation.ConversationType.PRIVATE, Conversation.ConversationType.GROUP);
                 break;
             case 2:
                 //todo share2Wechat
@@ -341,22 +372,21 @@ public class WechatCastDetailActivity extends BaseActivity {
     }
 
     private void loadLongImg() {
-        Glide.with(this).load(info.getLiveContentImg()).into(new CustomViewTarget<SubsamplingScaleImageView, Drawable>(ivDetail) {
-            @Override
-            protected void onResourceCleared(@Nullable Drawable placeholder) {
-            }
+        Glide.with(this).download(new GlideUrl(info.getLiveContentImg()))
+                .into(new CustomViewTarget<SubsamplingScaleImageView, File>(ivDetail) {
+                    @Override
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                    }
 
-            @Override
-            public void onLoadFailed(@Nullable Drawable errorDrawable) {
-            }
+                    @Override
+                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                        ivDetail.setImage(ImageSource.uri(Uri.fromFile(resource)));
+                    }
 
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                Bitmap bitmap = ImageUtils.drawable2Bitmap(resource);
-                ivDetail.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_INSIDE);
-                ivDetail.setImage((ImageSource.bitmap(bitmap)));
-            }
-        });
+                    @Override
+                    protected void onResourceCleared(@Nullable Drawable placeholder) {
+                    }
+                });
     }
 
     @Override
@@ -368,21 +398,38 @@ public class WechatCastDetailActivity extends BaseActivity {
 
         Parcelable extra = data.getParcelableExtra("info");
         if (extra != null) {
-            //todo 更新本地数据库
             this.info = (GetChatRoomInfoResponse) extra;
             updateUIByStatus();
         }
     }
 
+    @SuppressLint("CheckResult")
     public void funcBottom2(View view) {
         if (fromCreate) {
             judgeShowPop();
         } else {
             if (!info.getRoomStatus().equals("")) {
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                RongIM.getInstance().startChatRoomChat(this, roomId, false);
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .getRoomStatusByRoomId(roomId)
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .subscribe(s -> {
+                            if (s.equals("3") || s.equals("0")) {
+                                ToastUtils.showShort(R.string.cant_view_cast1);
+                            } else {
+                                Intent intent = new Intent(this, HomeActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon().appendPath("conversation").appendPath(Conversation.ConversationType.CHATROOM.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", roomId).build();
+                                intent = new Intent("android.intent.action.VIEW", uri);
+                                intent.putExtra("chatRoomOwnerId", info.getRoomOwnerId());
+                                intent.putExtra("chatRoomStatus", s);
+                                intent.putExtra("chatRoomName", info.getRoomName());
+                                intent.putExtra("groupId", info.getGroupId());
+                                startActivity(intent);
+                            }
+                        }, this::handleApiError);
             } else {
                 ToastUtils.showShort(R.string.cant_view_cast1);
             }

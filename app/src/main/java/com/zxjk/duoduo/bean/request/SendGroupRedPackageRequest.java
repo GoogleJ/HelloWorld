@@ -10,6 +10,15 @@ public class SendGroupRedPackageRequest {
     private String totalAmount;
     private String isGame;
     private String symbol;
+    private String sendRedPacketType;
+
+    public String getSendRedPacketType() {
+        return sendRedPacketType;
+    }
+
+    public void setSendRedPacketType(String sendRedPacketType) {
+        this.sendRedPacketType = sendRedPacketType;
+    }
 
     public String getSymbol() {
         return symbol;

@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,6 +36,7 @@ import com.zxjk.duoduo.bean.SendUrlAndsendImgBean;
 import com.zxjk.duoduo.bean.SlowModeLocalBeanDao;
 import com.zxjk.duoduo.bean.SocialLocalBeanDao;
 import com.zxjk.duoduo.bean.response.GroupResponse;
+import com.zxjk.duoduo.bean.response.WechatChatRoomPermission;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
 import com.zxjk.duoduo.db.SlowModeLocalBean;
@@ -56,10 +56,13 @@ import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.CastPlugin;
+import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.FilePlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
+import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.SightPlugin;
 import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.ui.webcast.WechatCastDetailActivity;
+import com.zxjk.duoduo.ui.webcast.WechatChatRoomManageActivity;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
@@ -77,6 +80,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import io.rong.imkit.InputBar;
 import io.rong.imkit.RongExtension;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
@@ -121,6 +125,7 @@ public class ConversationActivity extends BaseActivity {
     private GroupResponse groupInfo;
     private ConversationInfo conversationInfo = new ConversationInfo();
     private String conversationType;
+    private WechatChatRoomPermission chatRoomPermission;
 
     /**
      * 融云监听
@@ -397,12 +402,13 @@ public class ConversationActivity extends BaseActivity {
             public Message onSend(Message message) {
                 handleBurnAfterReadForSendersOnSend(message);
 
+                if (handleMsgForbiden(message)) {
+                    return null;
+                }
+
                 if (groupInfo != null &&
-                        (!groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || !groupInfo.getIsAdmin().equals("1"))) {
-                    if (!TextUtils.isEmpty(groupInfo.getGroupInfo().getSlowMode())) {
-                        if (groupInfo.getGroupInfo().getSlowMode().equals("0")) {
-                            return handleMsgForbiden(message);
-                        }
+                        (!groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) && !groupInfo.getIsAdmin().equals("1"))) {
+                    if (!TextUtils.isEmpty(groupInfo.getGroupInfo().getSlowMode()) && !groupInfo.getGroupInfo().getSlowMode().equals("0")) {
                         slowModeLocalBeanDao.detachAll();
                         List<SlowModeLocalBean> localSlowList =
                                 slowModeLocalBeanDao.queryBuilder()
@@ -429,7 +435,28 @@ public class ConversationActivity extends BaseActivity {
                     }
                 }
 
-                return handleMsgForbiden(message);
+                if (chatRoomPermission != null) {
+                    String ownerId = getIntent().getStringExtra("chatRoomOwnerId");
+                    if (!TextUtils.isEmpty(ownerId) && !ownerId.equals(Constant.userId)) {
+                        if ("1".equals(chatRoomPermission.getIsBanned())) {
+                            ToastUtils.showShort(R.string.msg_forbidden);
+                            return null;
+                        } else if ("1".equals(chatRoomPermission.getBanSendLink()) &&
+                                message.getContent() instanceof TextMessage) {
+                            TextMessage textMessage = (TextMessage) message.getContent();
+                            if (RegexUtils.isMatch(Constant.regUrl, textMessage.getContent())) {
+                                ToastUtils.showShort(R.string.url_forbidden);
+                                return null;
+                            }
+                        } else if ("1".equals(chatRoomPermission.getBanSendVoice()) &&
+                                (message.getContent() instanceof VoiceMessage || message.getContent() instanceof HQVoiceMessage)) {
+                            ToastUtils.showShort(R.string.voice_forbidden);
+                            return null;
+                        }
+                    }
+                }
+
+                return message;
             }
 
             @Override
@@ -460,9 +487,9 @@ public class ConversationActivity extends BaseActivity {
         return timeLeft / 60 / 60 + "小时";
     }
 
-    private Message handleMsgForbiden(Message message) {
+    private boolean handleMsgForbiden(Message message) {
         if (!conversationType.equals("group")) {
-            return message;
+            return false;
         }
         if (!groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) && !groupInfo.getIsAdmin().equals("1")) {
             if (message.getContent() instanceof TextMessage &&
@@ -470,21 +497,21 @@ public class ConversationActivity extends BaseActivity {
                 TextMessage textMessage = (TextMessage) message.getContent();
                 if (RegexUtils.isMatch(Constant.regUrl, textMessage.getContent())) {
                     ToastUtils.showShort(R.string.url_forbidden);
-                    return null;
+                    return true;
                 }
             } else if (message.getContent() instanceof ImageMessage &&
                     groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
                 ToastUtils.showShort(R.string.picture_forbidden);
-                return null;
+                return true;
             } else if (message.getContent() instanceof CusEmoteTabMessage && groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
                 ToastUtils.showShort(R.string.picture_forbidden);
-                return null;
+                return true;
             } else if ((message.getContent() instanceof VoiceMessage || message.getContent() instanceof HQVoiceMessage) && groupInfo.getGroupInfo().getBanSendVoice().equals("1")) {
                 ToastUtils.showShort(R.string.voice_forbidden);
-                return null;
+                return true;
             }
         }
-        return message;
+        return false;
     }
 
     private void registerMsgReceiver() {
@@ -493,6 +520,8 @@ public class ConversationActivity extends BaseActivity {
             public void onReceive(Context context, Intent intent) {
                 Message message = intent.getParcelableExtra("msg");
                 if (message == null) return;
+
+                if (TextUtils.isEmpty(message.getObjectName())) return;
 
                 if (message.getObjectName().equals("app:transfer")) {
                     //收到一条转账消息(已领取)
@@ -534,6 +563,12 @@ public class ConversationActivity extends BaseActivity {
                                 groupInfo.getGroupInfo().setBanSendLink(sendUrlAndsendImgBean.getSendUrl());
                                 groupInfo.getGroupInfo().setBanSendPicture(sendUrlAndsendImgBean.getSendImg());
                                 groupInfo.getGroupInfo().setBanSendVoice(sendUrlAndsendImgBean.getSendVoice());
+                                break;
+                            case "chatRoomConfig":
+                                try {
+                                    chatRoomPermission = GsonUtils.fromJson(commandMessage.getData(), WechatChatRoomPermission.class);
+                                } catch (Exception e) {
+                                }
                                 break;
                         }
                     }
@@ -642,88 +677,149 @@ public class ConversationActivity extends BaseActivity {
     private void handleBean() {
         targetId = getIntent().getData().getQueryParameter("targetId");
 
-        if (conversationType.equals("private")) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .personalChatConfig(targetId)
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .compose(bindToLifecycle())
-                    .subscribe(response -> {
-                        conversationInfo.setMessageBurnTime(response.getChatInfo().getIncinerationTime());
-                        conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
-                        conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
+        switch (conversationType) {
+            case "private":
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .personalChatConfig(targetId)
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(bindToLifecycle())
+                        .subscribe(response -> {
+                            conversationInfo.setMessageBurnTime(response.getChatInfo().getIncinerationTime());
+                            conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
+                            conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
 
-                        if (!targetId.equals(Constant.userId)) {
-                            targetUserInfo = new UserInfo(targetId,
-                                    TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
-                                            response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
-                                    Uri.parse(response.getCustomerForChat().getHeadPortrait()));
-                            RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
-                        }
-                        handlePrivate();
-                    }, this::handleApiError);
-        } else if (conversationType.equals("group")) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getGroupByGroupId(targetId)
-                    .compose(RxSchedulers.normalTrans())
-                    .doOnNext(groupResponse -> {
-                        //refresh local cache when serve logic change
-                        Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupResponse.getGroupInfo().getId());
-                        if (ronginfo == null) return;
+                            if (!targetId.equals(Constant.userId)) {
+                                targetUserInfo = new UserInfo(targetId,
+                                        TextUtils.isEmpty(response.getCustomerForChat().getFriendNick()) ?
+                                                response.getCustomerForChat().getNick() : response.getCustomerForChat().getFriendNick(),
+                                        Uri.parse(response.getCustomerForChat().getHeadPortrait()));
+                                RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
+                            }
+                            handlePrivate();
+                        }, this::handleApiError);
+                break;
+            case "group":
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .getGroupByGroupId(targetId)
+                        .compose(RxSchedulers.normalTrans())
+                        .doOnNext(groupResponse -> {
+                            //refresh local cache when serve logic change
+                            Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupResponse.getGroupInfo().getId());
+                            if (ronginfo == null) return;
 
-                        String tempName = groupResponse.getGroupInfo().getGroupNikeName();
-                        if (groupResponse.getGroupInfo().getGroupType().equals("1")) {
-                            tempName = tempName + "おれは人间をやめるぞ！ジョジョ―――ッ!";
-                        }
-                        String tempGroupHead = groupResponse.getGroupInfo().getHeadPortrait();
-                        //refresh local cache when serve logic change
-                        if (ronginfo.getPortraitUri() == null ||
-                                TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
-                                TextUtils.isEmpty(ronginfo.getName()) ||
-                                !ronginfo.getName().equals(tempName) ||
-                                !ronginfo.getPortraitUri().toString().equals(tempGroupHead)) {
-                            RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), tempName, Uri.parse(tempGroupHead)));
-                        }
-                    })
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(groupInfo -> {
-                        handleNewReceiveRed(groupInfo);
+                            String tempName = groupResponse.getGroupInfo().getGroupNikeName();
+                            if (groupResponse.getGroupInfo().getGroupType().equals("1")) {
+                                tempName = tempName + "おれは人间をやめるぞ！ジョジョ―――ッ!";
+                            }
+                            String tempGroupHead = groupResponse.getGroupInfo().getHeadPortrait();
+                            //refresh local cache when serve logic change
+                            if (ronginfo.getPortraitUri() == null ||
+                                    TextUtils.isEmpty(ronginfo.getPortraitUri().toString()) ||
+                                    TextUtils.isEmpty(ronginfo.getName()) ||
+                                    !ronginfo.getName().equals(tempName) ||
+                                    !ronginfo.getPortraitUri().toString().equals(tempGroupHead)) {
+                                RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), tempName, Uri.parse(tempGroupHead)));
+                            }
+                        })
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .subscribe(groupInfo -> {
+                            handleNewReceiveRed(groupInfo);
 
-                        handleGroupPlugin(groupInfo);
+                            handleGroupPlugin(groupInfo);
 
-                        this.groupInfo = groupInfo;
+                            this.groupInfo = groupInfo;
 
-                        handleGroupOwnerInit();
+                            handleGroupOwnerInit();
 
-                        initView();
-                    }, t -> {
-                        extension.removeAllViews();
-                        handleApiError(t);
-                        RongIM.getInstance().removeConversation(Conversation.ConversationType.GROUP, targetId, null);
-                        finish();
-                    });
+                            initView();
+                        }, t -> {
+                            extension.removeAllViews();
+                            handleApiError(t);
+                            RongIM.getInstance().removeConversation(Conversation.ConversationType.GROUP, targetId, null);
+                            finish();
+                        });
 
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getGroupLiveGoingInfo(targetId)
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver())
-                    .subscribe(list -> {
-                        if (list.size() != 0) {
-                            ViewStub casting = findViewById(R.id.stubCasting);
-                            View castingView = casting.inflate();
-                            TextView tvCastTopic = castingView.findViewById(R.id.tvCastTopic);
-                            tvCastTopic.setText(list.get(0).getTopic());
-                            tvCastTopic.setOnClickListener(v -> {
-                                Intent intent = new Intent(this, WechatCastDetailActivity.class);
-                                intent.putExtra("roomId", list.get(0).getRoomId());
-                                startActivity(intent);
-                            });
-                        }
-                    }, t -> {
-                    });
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .getGroupLiveGoingInfo(targetId)
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver())
+                        .subscribe(list -> {
+                            if (list.size() != 0) {
+                                ViewStub casting = findViewById(R.id.stubCasting);
+                                View castingView = casting.inflate();
+                                TextView tvCastTopic = castingView.findViewById(R.id.tvCastTopic);
+                                tvCastTopic.setText(list.get(0).getTopic());
+                                tvCastTopic.setOnClickListener(v -> {
+                                    Intent intent = new Intent(this, WechatCastDetailActivity.class);
+                                    intent.putExtra("roomId", list.get(0).getRoomId());
+                                    startActivity(intent);
+                                });
+                            }
+                        }, t -> {
+                        });
+                break;
+            case "chatroom":
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .getRoomPermissionByRoomId(targetId)
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(RxSchedulers.normalTrans())
+                        .subscribe(chatRoomPermission -> {
+                            this.chatRoomPermission = chatRoomPermission;
+                            handleChatRoom();
+                        }, t -> {
+                            handleApiError(t);
+                            finish();
+                        });
+                break;
         }
+    }
+
+    private void handleChatRoom() {
+        String ownerId = getIntent().getStringExtra("chatRoomOwnerId");
+
+        List<IPluginModule> pluginModules = extension.getPluginModules();
+        Iterator<IPluginModule> iterator = pluginModules.iterator();
+
+        tvTitle = findViewById(R.id.tv_title);
+
+        String title = getIntent().getStringExtra("chatRoomName");
+        tvTitle.setText(title);
+
+        ImageView iv_end = findViewById(R.id.iv_end);
+        RelativeLayout rl_end = findViewById(R.id.rl_end);
+        rl_end.setVisibility(View.VISIBLE);
+        if (Constant.userId.equals(ownerId)) {
+            rl_end.setOnClickListener(v -> {
+                Intent intent = new Intent(this, WechatChatRoomManageActivity.class);
+                intent.putExtra("roomId", targetId);
+                startActivity(intent);
+            });
+            iv_end.setImageResource(R.drawable.ic_title_end_chatroom_manage);
+
+            while (iterator.hasNext()) {
+                IPluginModule next = iterator.next();
+                if (next instanceof TransferPlugin || next instanceof BusinessCardPlugin || next instanceof SightPlugin
+                        || next instanceof FilePlugin) {
+                    iterator.remove();
+                    extension.removePlugin(next);
+                }
+            }
+        } else {
+            rl_end.setOnClickListener(v -> {
+                Intent intent = new Intent(this, SocialHomeActivity.class);
+                intent.putExtra("id", getIntent().getStringExtra("groupId"));
+                startActivity(intent);
+            });
+            iv_end.setImageResource(R.drawable.ic_social_title_end);
+
+            extension.setInputBarStyle(InputBar.Style.STYLE_SWITCH_CONTAINER);
+            extension.hideMoreActionLayout();
+        }
+
     }
 
     /**
@@ -982,7 +1078,8 @@ public class ConversationActivity extends BaseActivity {
                                             intent1.putExtra("isShow", false);
                                             intent1.putExtra("id", redPacketMessage.getRedId());
                                             startActivity(intent1);
-                                        } else if (message.getConversationType().equals(Conversation.ConversationType.GROUP)) {
+                                        } else if (message.getConversationType().equals(Conversation.ConversationType.GROUP)
+                                                || message.getConversationType().equals(Conversation.ConversationType.CHATROOM)) {
                                             newRedDialog.setOpenListener(() -> ServiceFactory.getInstance().getBaseService(Api.class)
                                                     .receiveGroupRedPackage(redPacketMessage.getRedId(), redPacketMessage.getIsGame())
                                                     .compose(bindToLifecycle())
@@ -997,16 +1094,22 @@ public class ConversationActivity extends BaseActivity {
                                                             return;
                                                         }
 
+                                                        boolean formWechatCast = message.getConversationType().equals(Conversation.ConversationType.CHATROOM);
+
                                                         if (!message.getSenderUserId().equals(Constant.userId)) {
 
                                                             InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
                                                                     getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
                                                             );
-                                                            RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP, groupInfo.getGroupInfo().getId(), message1, new String[]{message.getSenderUserId()}
+                                                            RongIM.getInstance().sendDirectionalMessage(
+                                                                    formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                    targetId, message1, new String[]{message.getSenderUserId()}
                                                                     , null, null, null);
                                                         } else {
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)));
-                                                            RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP, groupInfo.getGroupInfo().getId(), message1, new String[]{Constant.userId}
+                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, R.string.you, R.string.you));
+                                                            RongIM.getInstance().sendDirectionalMessage(
+                                                                    formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                    targetId, message1, new String[]{Constant.userId}
                                                                     , null, null, null);
                                                         }
 
@@ -1132,9 +1235,8 @@ public class ConversationActivity extends BaseActivity {
 
         //group logic
         if (groupInfo != null && groupInfo.getGroupInfo().getGroupType().equals("1")) {
-            tvTitle.setTextColor(Color.parseColor("#EC7A00"));
             ImageView iv_end = findViewById(R.id.iv_end);
-            iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_end));
+            iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_title_end));
             rl_end.setOnClickListener(v -> {
                 Intent intent = new Intent(this, NewSocialManageActivity.class);
                 intent.putExtra("group", groupInfo);
