@@ -15,6 +15,15 @@ public class ReleaseRecord {
     private String laveCount;
     private String logo;
     private String status;
+    private String airdropId;
+
+    public String getAirdropId() {
+        return airdropId;
+    }
+
+    public void setAirdropId(String airdropId) {
+        this.airdropId = airdropId;
+    }
 
     public String getSymbol() {
         return symbol;

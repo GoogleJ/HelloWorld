@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/drop_red_indicator"
             android:layout_width="match_parent"
@@ -62,7 +62,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center">
                     <TextView
                         android:text="@string/num_left"
                         android:layout_width="wrap_content"

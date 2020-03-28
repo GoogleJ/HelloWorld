@@ -31,6 +31,7 @@ public class DropRedRecordFragment extends BaseFragment {
 
     public String groupId;
     public String symbol;
+    public String airdropId;
     private RecyclerView recyclerView;
     private BaseQuickAdapter adapter;
     private boolean hasInitData;
@@ -79,7 +80,7 @@ public class DropRedRecordFragment extends BaseFragment {
     @SuppressLint("CheckResult")
     private void initData() {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .releaseRecordDetails(groupId, symbol, String.valueOf(page), String.valueOf(offset))
+                .releaseRecordDetails(groupId, symbol,airdropId, String.valueOf(page), String.valueOf(offset))
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
                 .doOnTerminate(() -> ((SwipeRefreshLayout) rootView).setRefreshing(false))

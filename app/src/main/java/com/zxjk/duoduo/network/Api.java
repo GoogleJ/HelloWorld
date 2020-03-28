@@ -644,7 +644,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("duoduo/group/getReleaseRecordDetails")
-    Observable<BaseResponse<ReleaseRecordDetails>> releaseRecordDetails(@Field("groupId") String groupId, @Field("symbol") String symbol, @Field("page") String page, @Field("offset") String offset);
+    Observable<BaseResponse<ReleaseRecordDetails>> releaseRecordDetails(@Field("groupId") String groupId, @Field("symbol") String symbol, @Field("airdropId") String airdropId,@Field("page") String page, @Field("offset") String offset);
 
     @FormUrlEncoded
     @POST("duoduo/walletBalance/balanceManage")

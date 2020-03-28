@@ -986,7 +986,7 @@
     <string name="paper_name">商业计划书名称</string>
     <string name="notStart">未开始</string>
     <string name="done2">已结束</string>
-    <string name="done3">已退回</string>
+    <string name="done3">已关闭</string>
     <string name="pay">付费</string>
     <string name="enter">进入</string>
     <string name="noSocialDynamics">社群动态暂未开放，敬请期待！</string>

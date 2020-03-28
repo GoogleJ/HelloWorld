@@ -173,6 +173,7 @@ public class DropRedRecordActivity extends BaseActivity {
                 DropRedRecordFragment dropRedRecordFragment = new DropRedRecordFragment();
                 dropRedRecordFragment.groupId = groupId;
                 dropRedRecordFragment.symbol = releaseRecords.get(position).getSymbol();
+                dropRedRecordFragment.airdropId = releaseRecords.get(position).getAirdropId();
 
                 return dropRedRecordFragment;
             }
