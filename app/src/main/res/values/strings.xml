@@ -752,7 +752,7 @@
     <string name="add_to_balance_wallet">已存入余额钱包，请查收！</string>
     <string name="coin_introduce">币种介绍</string>
     <string name="join_social_enjoy_more_activity">加入社群，参与更多活动</string>
-    <string name="redfall_share_to_get_more_chance">注：成功分享至朋友圈，当日参与活动次数上限+1；\\n活动解释权归海浪所有。</string>
+    <string name="redfall_share_to_get_more_chance">注：成功分享至朋友圈，当日参与活动次数上限+1；\n活动解释权归海浪所有。</string>
     <string name="coor_tips1">钱包对接</string>
     <string name="coor_tips1_detail">对接第三方数字货币，实现发红包、转账、存储</string>
     <string name="coor_tips2">广告推广</string>

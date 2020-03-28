@@ -62,15 +62,14 @@ public class BusinessDetailsActivity extends BaseActivity {
         DecimalFormat df4 = new DecimalFormat("###");
         tvIssueTimeAvg.setText(df4.format(Double.parseDouble(byBoinsResponse.getIssueTimeAvg())/1000/60));
 
+        setDrawables(getResources().getDrawable(R.drawable.ic_phone_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
+        setDrawables(getResources().getDrawable(R.drawable.ic_email_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
         if(byBoinsResponse.getKycLevel().equals("1")){
             setDrawables(getResources().getDrawable(R.drawable.ic_real_name_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
-            setDrawables(getResources().getDrawable(R.drawable.ic_phone_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
-            setDrawables(getResources().getDrawable(R.drawable.ic_email_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
         }else {
             setDrawables(getResources().getDrawable(R.drawable.ic_real_name_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
             setDrawables(getResources().getDrawable(R.drawable.ic_senior_certification,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel2);
-            setDrawables(getResources().getDrawable(R.drawable.ic_phone_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
-            setDrawables(getResources().getDrawable(R.drawable.ic_email_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
+
         }
     }
 
