@@ -64,9 +64,13 @@ public class BusinessDetailsActivity extends BaseActivity {
 
         if(byBoinsResponse.getKycLevel().equals("1")){
             setDrawables(getResources().getDrawable(R.drawable.ic_real_name_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
+            setDrawables(getResources().getDrawable(R.drawable.ic_phone_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
+            setDrawables(getResources().getDrawable(R.drawable.ic_email_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
         }else {
             setDrawables(getResources().getDrawable(R.drawable.ic_real_name_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
             setDrawables(getResources().getDrawable(R.drawable.ic_senior_certification,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel2);
+            setDrawables(getResources().getDrawable(R.drawable.ic_phone_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
+            setDrawables(getResources().getDrawable(R.drawable.ic_email_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
         }
     }
 

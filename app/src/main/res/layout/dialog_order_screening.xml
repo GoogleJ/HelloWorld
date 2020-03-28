@@ -122,7 +122,7 @@
                 <CheckBox
                     android:id="@+id/radio3"
                     style="@style/select_style"
-                    android:background="@drawable/shape_checkbox_item"
+                    android:background="@drawable/shape_checkbox_item2"
                     android:tag="rd1"
                     android:text="@string/for_the_payment" />
 
