@@ -22,6 +22,8 @@ public class BusinessDetailsActivity extends BaseActivity {
     private TextView tvIssueTimeAvg;
     private TextView tvKycLevel1;
     private TextView tvKycLevel2;
+    private TextView tvPhone;
+    private TextView tvEmail;
     private ByBoinsResponse byBoinsResponse;
 
     @Override
@@ -43,6 +45,8 @@ public class BusinessDetailsActivity extends BaseActivity {
         tvIssueTimeAvg = findViewById(R.id.tv_issue_time_avg);
         tvKycLevel1 = findViewById(R.id.tv_kycLevel1);
         tvKycLevel2 = findViewById(R.id.tv_kycLevel2);
+        tvPhone = findViewById(R.id.tv_phone);
+        tvEmail = findViewById(R.id.tv_email);
         findViewById(R.id.rl_back).setOnClickListener(v -> {
             finish();
         });
@@ -62,8 +66,8 @@ public class BusinessDetailsActivity extends BaseActivity {
         DecimalFormat df4 = new DecimalFormat("###");
         tvIssueTimeAvg.setText(df4.format(Double.parseDouble(byBoinsResponse.getIssueTimeAvg())/1000/60));
 
-        setDrawables(getResources().getDrawable(R.drawable.ic_phone_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
-        setDrawables(getResources().getDrawable(R.drawable.ic_email_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
+        setDrawables(getResources().getDrawable(R.drawable.ic_phone_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvPhone);
+        setDrawables(getResources().getDrawable(R.drawable.ic_email_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvEmail);
         if(byBoinsResponse.getKycLevel().equals("1")){
             setDrawables(getResources().getDrawable(R.drawable.ic_real_name_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
         }else {

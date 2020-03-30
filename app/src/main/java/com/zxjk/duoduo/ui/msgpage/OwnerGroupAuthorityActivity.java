@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -275,15 +276,20 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
             data1.remove(data1.size() - 1);
         }
         data = GsonUtils.toJson(data1);
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .updatePermissionInfo(data)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .compose(RxSchedulers.normalTrans())
-                .subscribe(s -> {
-                    ToastUtils.showShort(R.string.update_success);
-                    finish();
-                }, this::handleApiError);
+        if(TextUtils.isEmpty(data)){
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .updatePermissionInfo(data)
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .compose(RxSchedulers.normalTrans())
+                    .subscribe(s -> {
+                        ToastUtils.showShort(R.string.update_success);
+                        finish();
+                    }, this::handleApiError);
+        }else {
+            finish();
+        }
+
     }
 
     @Override

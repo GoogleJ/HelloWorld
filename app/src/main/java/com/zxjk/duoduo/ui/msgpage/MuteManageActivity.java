@@ -25,6 +25,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
+import com.zxjk.duoduo.utils.ClickUtils;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -130,14 +131,15 @@ public class MuteManageActivity extends BaseActivity {
         adapter2 = new BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder>(R.layout.item_members_of_the_banned) {
             @Override
             protected void convert(BaseViewHolder helper, GroupManagementInfoBean item) {
-                GroupManagementInfoBean groupManagementInfo = item;
-                helper.setText(R.id.tv_name, item.getNick());
+                helper.setText(R.id.tv_name, item.getNick())
+                        .addOnClickListener(R.id.tv_mute)
+                        .addOnClickListener(R.id.tv_blacklist);
                 GlideUtil.loadCircleImg(helper.getView(R.id.iv_head), item.getHeadPortrait());
 
                 TextView mute = helper.getView(R.id.tv_mute);
                 TextView blacklist = helper.getView(R.id.tv_blacklist);
 
-                blacklist.setText("加入黑名单");
+                blacklist.setText(R.string.blacklist);
                 blacklist.setTextColor(getResources().getColor(R.color.color5c, null));
                 blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_nor, null));
 
@@ -145,43 +147,62 @@ public class MuteManageActivity extends BaseActivity {
                 mute.setBackground(getResources().getDrawable(R.drawable.shape_mute_nor, null));
                 mute.setTextColor(getResources().getColor(R.color.colorTheme, null));
 
-                mute.setOnClickListener(v -> api.muteMembers(groupId, item.getCustomerId(), "add")
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                        .compose(RxSchedulers.normalTrans())
-                        .subscribe(c -> {
-                            tvListMute.setVisibility(View.VISIBLE);
-                            groupManagementInfo.setIsBanned("1");
-                            data1.add(0, groupManagementInfo);
-                            adapter1.notifyItemInserted(0);
-                            data2.remove(item);
-                            notifyItemRemoved(helper.getAdapterPosition());
-                        }, MuteManageActivity.this::handleApiError));
-
-                blacklist.setOnClickListener(v -> api.blacklistOperation(groupId, item.getCustomerId(), "kickOut")
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                        .compose(RxSchedulers.normalTrans())
-                        .subscribe(c -> {
-                            tvListMute.setVisibility(View.VISIBLE);
-                            groupManagementInfo.setIsKickOut("1");
-                            data1.add(0, groupManagementInfo);
-                            adapter1.notifyItemInserted(0);
-                            data2.remove(item);
-                            notifyItemRemoved(helper.getAdapterPosition());
-                        }, MuteManageActivity.this::handleApiError));
             }
         };
+
+        adapter2.setOnItemChildClickListener((adapter, view, position) -> {
+            GroupManagementInfoBean item = data2.get(position);
+            if (!ClickUtils.isFastDoubleClick(R.layout.item_members_of_the_banned)) {
+                switch (view.getId()) {
+                    case R.id.tv_mute:
+                        api.muteMembers(groupId, item.getCustomerId(), "add")
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(c -> {
+                                    tvListMute.setVisibility(View.VISIBLE);
+                                    item.setIsBanned("1");
+                                    data1.add(item);
+                                    adapter1.notifyItemInserted(data1.size());
+                                    data2.remove(position);
+                                    if (adapter2.getData().size() != 0) {
+                                        adapter2.notifyItemRemoved(position + 1);
+                                    }
+                                }, MuteManageActivity.this::handleApiError);
+
+                        break;
+                    case R.id.tv_blacklist:
+                        api.blacklistOperation(groupId, item.getCustomerId(), "kickOut")
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(c -> {
+                                    tvListMute.setVisibility(View.VISIBLE);
+                                    item.setIsKickOut("1");
+                                    data1.add(item);
+                                    adapter1.notifyItemInserted(data1.size());
+
+                                    data2.remove(item);
+                                    if (adapter2.getData().size() != 0) {
+                                        adapter2.notifyItemRemoved(position + 1);
+                                    }
+                                }, MuteManageActivity.this::handleApiError);
+                        break;
+
+                }
+            }
+        });
 
 
         View headerView = getLayoutInflater().inflate(R.layout.rc_mutemanage_header, null);
         adapter2.addHeaderView(headerView);
+
         recyclerView2.setAdapter(adapter2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView2.setNestedScrollingEnabled(false);
 
         adapter2.setLoadMoreView(new NewsLoadMoreView());
-        adapter2.setEnableLoadMore(true);
+        adapter2.setEnableLoadMore(false);
         adapter2.setOnLoadMoreListener(() -> {
             if (searchKey.equals("")) {
                 getDumbManagers("");
@@ -196,20 +217,21 @@ public class MuteManageActivity extends BaseActivity {
         adapter1 = new BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder>(R.layout.item_members_of_the_banned) {
             @Override
             protected void convert(BaseViewHolder helper, GroupManagementInfoBean item) {
-                GroupManagementInfoBean groupManagementInfo = item;
-                helper.setText(R.id.tv_name, item.getNick());
+                helper.setText(R.id.tv_name, item.getNick())
+                        .addOnClickListener(R.id.tv_mute)
+                        .addOnClickListener(R.id.tv_blacklist);
                 GlideUtil.loadCircleImg(helper.getView(R.id.iv_head), item.getHeadPortrait());
 
                 TextView mute = helper.getView(R.id.tv_mute);
                 TextView blacklist = helper.getView(R.id.tv_blacklist);
 
                 if (item.getIsKickOut().equals("1")) {
-                    blacklist.setText("移出黑名单");
+                    blacklist.setText(R.string.remove_blacklist);
                     blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_che, null));
                     blacklist.setTextColor(getResources().getColor(R.color.white, null));
                     mute.setVisibility(View.INVISIBLE);
                 } else {
-                    blacklist.setText("加入黑名单");
+                    blacklist.setText(R.string.blacklist);
                     blacklist.setTextColor(getResources().getColor(R.color.color5c, null));
                     blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_nor, null));
                 }
@@ -219,86 +241,106 @@ public class MuteManageActivity extends BaseActivity {
                         mute.setVisibility(View.INVISIBLE);
                     } else {
                         mute.setVisibility(View.VISIBLE);
-                        mute.setText("解除禁言");
+                        mute.setText(R.string.remove_mute);
                         mute.setBackground(getResources().getDrawable(R.drawable.shape_mute_che, null));
                         mute.setTextColor(getResources().getColor(R.color.white, null));
                     }
                 } else {
                     mute.setVisibility(View.INVISIBLE);
                 }
+            }
+        };
 
-                mute.setOnClickListener(v -> api.muteMembers(groupId, item.getCustomerId(), "remove")
-                        .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                        .compose(RxSchedulers.normalTrans())
-                        .subscribe(c -> {
-
-                            groupManagementInfo.setIsBanned("0");
-                            groupManagementInfo.setIsKickOut("0");
-                            data2.add(0, groupManagementInfo);
-                            adapter2.notifyItemInserted(0);
-                            data1.remove(item);
-                            notifyItemRemoved(helper.getAdapterPosition());
-                            if (data1.size() == 0) {
-                                tvListMute.setVisibility(View.GONE);
-                            }
-                        }, MuteManageActivity.this::handleApiError));
-
-                blacklist.setOnClickListener(v -> {
-                    if (item.getIsKickOut().equals("0")) {
-                        api.blacklistOperation(groupId, item.getCustomerId(), "kickOut")
+        adapter1.setOnItemChildClickListener((BaseQuickAdapter adapter, View view, int position) -> {
+            GroupManagementInfoBean item = data1.get(position);
+            if (!ClickUtils.isFastDoubleClick(R.layout.item_members_of_the_banned)) {
+                switch (view.getId()) {
+                    case R.id.tv_mute:
+                        api.muteMembers(groupId, item.getCustomerId(), "remove")
                                 .compose(bindToLifecycle())
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
                                 .compose(RxSchedulers.normalTrans())
                                 .subscribe(c -> {
-                                    blacklist.setText("移出黑名单");
-                                    blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_che, null));
-                                    blacklist.setTextColor(getResources().getColor(R.color.white, null));
-                                    mute.setVisibility(View.INVISIBLE);
-                                    item.setIsKickOut("1");
-                                }, MuteManageActivity.this::handleApiError);
-                    } else {
-                        if (item.getIsBanned().equals("1")) {
-                            api.blacklistOperation(groupId, item.getCustomerId(), "remove")
+                                    item.setIsBanned("0");
+                                    item.setIsKickOut("0");
+                                    data2.add(item);
+                                    adapter2.notifyItemInserted(data2.size());
+                                    data1.remove(item);
+                                    adapter1.notifyItemRemoved(position);
+                                    if (data1.size() == 0) {
+                                        tvListMute.setVisibility(View.GONE);
+                                    }
+                                });
+
+                        break;
+                    case R.id.tv_blacklist:
+                        TextView mute = adapter1.getViewByPosition(position, R.id.tv_mute).findViewById(R.id.tv_mute);
+                        TextView blacklist = view.findViewById(R.id.tv_blacklist);
+                        if (item.getIsKickOut().equals("0")) {
+                            api.blacklistOperation(groupId, item.getCustomerId(), "kickOut")
                                     .compose(bindToLifecycle())
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
                                     .compose(RxSchedulers.normalTrans())
                                     .subscribe(c -> {
-                                        groupManagementInfo.setIsKickOut("0");
-                                        blacklist.setText("加入黑名单");
-                                        blacklist.setTextColor(getResources().getColor(R.color.color5c, null));
-                                        blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_nor, null));
-                                        mute.setVisibility(View.VISIBLE);
-                                        mute.setText("解除禁言");
-                                        mute.setBackground(getResources().getDrawable(R.drawable.shape_mute_che, null));
-                                        mute.setTextColor(getResources().getColor(R.color.white, null));
-                                    }, MuteManageActivity.this::handleApiError);
-
+                                        blacklist.setText(R.string.remove_blacklist);
+                                        blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_che, null));
+                                        blacklist.setTextColor(getResources().getColor(R.color.white, null));
+                                        mute.setVisibility(View.INVISIBLE);
+                                        item.setIsKickOut("1");
+                                    });
                         } else {
-                            api.blacklistOperation(groupId, item.getCustomerId(), "remove")
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
-                                    .compose(RxSchedulers.normalTrans())
-                                    .subscribe(c -> {
-                                        groupManagementInfo.setIsBanned("0");
-                                        groupManagementInfo.setIsKickOut("0");
-                                        data2.add(0, groupManagementInfo);
-                                        adapter2.notifyItemInserted(0);
-                                        data1.remove(item);
-                                        notifyItemRemoved(helper.getAdapterPosition());
-                                        if (data1.size() == 0) {
-                                            tvListMute.setVisibility(View.GONE);
-                                        }
-                                    }, MuteManageActivity.this::handleApiError);
+                            if (item.getIsBanned().equals("1")) {
+                                api.blacklistOperation(groupId, item.getCustomerId(), "remove")
+                                        .compose(bindToLifecycle())
+                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                                        .compose(RxSchedulers.normalTrans())
+                                        .subscribe(c -> {
+                                            item.setIsKickOut("0");
+                                            blacklist.setText(R.string.blacklist);
+                                            blacklist.setTextColor(getResources().getColor(R.color.color5c, null));
+                                            blacklist.setBackground(getResources().getDrawable(R.drawable.shape_kick_nor, null));
+                                            mute.setVisibility(View.VISIBLE);
+                                            mute.setText(R.string.remove_mute);
+                                            mute.setBackground(getResources().getDrawable(R.drawable.shape_mute_che, null));
+                                            mute.setTextColor(getResources().getColor(R.color.white, null));
+                                        });
 
+                            } else {
+                                api.blacklistOperation(groupId, item.getCustomerId(), "remove")
+                                        .compose(bindToLifecycle())
+                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(MuteManageActivity.this)))
+                                        .compose(RxSchedulers.normalTrans())
+                                        .subscribe(c -> {
+                                            item.setIsBanned("0");
+                                            item.setIsKickOut("0");
+                                            data2.add(item);
+                                            adapter2.notifyItemInserted(data2.size());
+                                            data1.remove(item);
+                                            adapter1.notifyItemRemoved(position);
+                                            if (data1.size() == 0) {
+                                                tvListMute.setVisibility(View.GONE);
+                                            }
+                                        });
+                            }
                         }
-                    }
-                });
+
+                        break;
+                }
             }
-        };
+        });
 
         recyclerView1.setAdapter(adapter1);
         recyclerView1.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView2.setNestedScrollingEnabled(false);
+
+
+        adapter1.setOnLoadMoreListener(() -> {
+            if (searchKey.equals("")) {
+                getDumbManagers("");
+            } else {
+                getDumbManagers(searchKey);
+            }
+        }, recyclerView1);
 
         refreshLayout.setRefreshing(true);
         getDumbManagers("");
@@ -327,7 +369,12 @@ public class MuteManageActivity extends BaseActivity {
                         }
                         adapter1.setNewData(data1);
                         adapter2.setNewData(data2);
-                        adapter2.disableLoadMoreIfNotFullPage();
+                        if (list.size() >= numsPerPage) {
+                            adapter2.loadMoreComplete();
+                        } else {
+                            adapter2.loadMoreEnd(false);
+                        }
+
                     } else {
                         for (int i = 0; i < list.size(); i++) {
                             if (list.get(i).getIsBanned().equals("1") || list.get(i).getIsKickOut().equals("1")) {
@@ -336,16 +383,14 @@ public class MuteManageActivity extends BaseActivity {
                                 data2.add(list.get(i));
                             }
                         }
-
+                        adapter1.disableLoadMoreIfNotFullPage();
+                        adapter1.loadMoreComplete();
                         if (list.size() >= numsPerPage) {
-                            adapter1.loadMoreComplete();
                             adapter2.loadMoreComplete();
                         } else {
-                            adapter1.loadMoreEnd(false);
                             adapter2.loadMoreEnd(false);
                         }
                     }
-
 
                     if (data1.size() != 0) {
                         tvListMute.setVisibility(View.VISIBLE);

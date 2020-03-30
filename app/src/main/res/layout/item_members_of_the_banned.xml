@@ -38,8 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:background="@drawable/shape_mute_che"
-            android:padding="6dp"
-            android:text="解除禁言" />
+            android:padding="6dp" />
 
         <TextView
             android:id="@+id/tv_blacklist"
@@ -48,7 +47,6 @@
             android:layout_marginEnd="12dp"
             android:background="@drawable/shape_kick_nor"
             android:padding="6dp"
-            android:text="加入黑名单"
             android:textColor="@drawable/color_kickout" />
     </LinearLayout>
 

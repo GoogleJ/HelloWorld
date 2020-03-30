@@ -1008,7 +1008,7 @@
     <string name="public_social">群公开</string>
     <string name="tips_new_social_manage3">根据群名称或群号搜索到此群</string>
     <string name="msg_manage">消息管理</string>
-    <string name="tips_new_social_manage4">管理员可把成员的某一条消息强制撤回（长按）</string>
+    <string name="tips_new_social_manage4">管理员可把成员的某一条消息强制撤回(长按)</string>
     <string name="tips_new_social_manage5">限制群成员发消息间隔时间</string>
     <string name="clear_all_history">全局清空</string>
     <string name="tips_new_social_manage6">清空群内所有人的聊天记录</string>
@@ -1183,6 +1183,9 @@
     <string name="no_data" translatable="false">暂无数据</string>
     <string name="buyer_cancel">买家取消</string>
     <string name="seller_to_cancel">卖家取消</string>
+    <string name="blacklist">加入黑名单</string>
+    <string name="remove_blacklist">移出黑名单</string>
+    <string name="remove_mute">解除禁言</string>
     <string name="cast_title_ing">你有一个直播正在进行中…</string>
     <string name="continue_cast"><![CDATA[继续直播>>]]></string>
     <string name="cast_title_date">您有一个直播，将于%1$s开始</string>
