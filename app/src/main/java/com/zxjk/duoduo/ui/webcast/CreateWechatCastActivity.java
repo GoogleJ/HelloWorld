@@ -303,6 +303,17 @@ public class CreateWechatCastActivity extends BaseActivity {
             wheel1.setItems(dateList);
             wheel2.setItems(timeList1);
             wheel3.setItems(timeList2);
+
+            try {
+                wheel2.setSelectedIndex(Integer.parseInt(TimeUtils.millis2String(System.currentTimeMillis(), "HH")));
+                int minute = Integer.parseInt(TimeUtils.millis2String(System.currentTimeMillis(), "mm"));
+                int i = (int) Math.ceil(minute / 5f);
+                if (i >= timeList2.size()) {
+                    i = timeList2.size() - 1;
+                }
+                wheel3.setSelectedIndex(i);
+            } catch (Exception e) {
+            }
         }
 
         timePicker.showPopupWindow();
