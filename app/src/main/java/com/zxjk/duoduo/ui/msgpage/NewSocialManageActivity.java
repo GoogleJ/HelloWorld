@@ -61,6 +61,7 @@ public class NewSocialManageActivity extends BaseActivity {
     private Switch swSetTop;
     private Switch swMute;
     private LinearLayout llMoreFunc;
+    private LinearLayout llClearAllHistory;
 
     private GroupResponse groupInfo;
 
@@ -120,6 +121,15 @@ public class NewSocialManageActivity extends BaseActivity {
                     break;
             }
             tvSlowModeStatus.setText(slowModeStatus);
+        }
+
+        if (llClearAllHistory != null) {
+            if (!TextUtils.isEmpty(groupInfo.getGroupPermission().getOpenGlobalClean())
+                    && groupInfo.getGroupPermission().getOpenGlobalClean().equals("1")) {
+                llClearAllHistory.setVisibility(View.VISIBLE);
+            } else {
+                llClearAllHistory.setVisibility(View.GONE);
+            }
         }
 
         if (tvGroupLimit != null) {
@@ -393,6 +403,7 @@ public class NewSocialManageActivity extends BaseActivity {
         swSetTop = root.findViewById(R.id.swSetTop);
         swMute = root.findViewById(R.id.swMute);
         llMoreFunc = root.findViewById(R.id.llMoreFunc);
+        llClearAllHistory = root.findViewById(R.id.llClearAllHistory);
     }
 
     public void changeGroupName(View view) {
