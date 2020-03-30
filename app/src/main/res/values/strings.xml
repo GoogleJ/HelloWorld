@@ -1197,6 +1197,8 @@
     <string name="msg_forbidden">本会话已开启全员禁言</string>
     <string name="tips_wechatcast_card">社群正在直播,讲的特别好,再不来看就晚了。</string>
     <string name="share_cast_card">[海浪直播]</string>
+    <string name="cast_topic1">主题:%1$s</string>
+    <string name="watch_nums">观看人数:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

@@ -127,13 +127,13 @@ public class WechatCastDetailActivity extends BaseActivity {
     private void initData() {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getChatRoomInfo(roomId)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver())
                 .doOnSubscribe(disposable -> {
                     lottie.setVisibility(View.VISIBLE);
                     tvRetry.setVisibility(View.GONE);
                 })
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver())
                 .doOnNext(r -> flRetry.setVisibility(View.GONE))
                 .doOnError(t -> {
                     lottie.setVisibility(View.GONE);
@@ -427,6 +427,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                                 intent.putExtra("chatRoomStatus", s);
                                 intent.putExtra("chatRoomName", info.getRoomName());
                                 intent.putExtra("groupId", info.getGroupId());
+                                intent.putExtra("castTopic", info.getTopic());
                                 startActivity(intent);
                             }
                         }, this::handleApiError);

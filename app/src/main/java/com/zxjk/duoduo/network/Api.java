@@ -788,5 +788,9 @@ public interface Api {
                                                  @Field("customerId") String customerId,
                                                  @Field("type") String type);
 
+    @POST("duoduo/live/getOnlineUsers")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> getOnlineUsers(@Field("roomId") String roomId);
+
 
 }

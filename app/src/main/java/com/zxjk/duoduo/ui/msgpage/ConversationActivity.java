@@ -5,9 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
@@ -73,10 +75,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -751,8 +755,8 @@ public class ConversationActivity extends BaseActivity {
                                 ViewStub casting = findViewById(R.id.stubCasting);
                                 View castingView = casting.inflate();
                                 TextView tvCastTopic = castingView.findViewById(R.id.tvCastTopic);
-                                tvCastTopic.setText(list.get(0).getTopic());
-                                tvCastTopic.setOnClickListener(v -> {
+                                tvCastTopic.setText(getString(R.string.cast_topic1, list.get(0).getTopic()));
+                                castingView.setOnClickListener(v -> {
                                     Intent intent = new Intent(this, WechatCastDetailActivity.class);
                                     intent.putExtra("roomId", list.get(0).getRoomId());
                                     startActivity(intent);
@@ -769,13 +773,46 @@ public class ConversationActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .subscribe(chatRoomPermission -> {
                             this.chatRoomPermission = chatRoomPermission;
+
                             handleChatRoom();
+
+                            ViewStub casting = findViewById(R.id.stubCasting);
+                            View inflate = casting.inflate();
+                            inflate.findViewById(R.id.lottieCasting).setVisibility(View.GONE);
+                            TextView tv1 = inflate.findViewById(R.id.tvTips1);
+                            TextView tv2 = inflate.findViewById(R.id.tvTips2);
+
+                            tv1.setTextColor(Color.parseColor("#999999"));
+                            tv2.setTextColor(Color.parseColor("#FB6E5D"));
+                            tv1.setText(R.string.watch_nums);
+
+                            TextView tvCastTopic = inflate.findViewById(R.id.tvCastTopic);
+                            tvCastTopic.setText(getString(R.string.cast_topic1, getIntent().getStringExtra("castTopic")));
+
+                            upgradeWatchNumsForWechatCast(tv2);
                         }, t -> {
                             handleApiError(t);
                             finish();
                         });
+
                 break;
         }
+    }
+
+    private void upgradeWatchNumsForWechatCast(TextView tvNums) {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getOnlineUsers(targetId)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver())
+                .compose(RxSchedulers.normalTrans())
+                .flatMap((Function<String, ObservableSource<?>>) s -> {
+                    if (!TextUtils.isEmpty(s)) {
+                        tvNums.setText(s);
+                    }
+                    return Observable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).compose(bindToLifecycle());
+                })
+                .subscribe(s -> upgradeWatchNumsForWechatCast(tvNums), t -> {
+                });
     }
 
     private void handleChatRoom() {
