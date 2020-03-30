@@ -120,7 +120,7 @@ public class NewsPager extends BaseFragment {
         api = ServiceFactory.getInstance().getBaseService(Api.class);
 
         //初始化页码集合，保存各个tab当前所在page
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < detailTitles.length; i++) {
             pages.add(0);
         }
 
