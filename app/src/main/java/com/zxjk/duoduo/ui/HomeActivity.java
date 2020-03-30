@@ -302,7 +302,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     case "agreeFriend":
                         contactFragment.onResume();
                         break;
-                    case "forceClearAllLocalHistory":
+                    case "ForceClearAllLocalHistory":
                         String groupId2BeClear = commandMessage.getData();
                         RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, groupId2BeClear, null);
                         break;

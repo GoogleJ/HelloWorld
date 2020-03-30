@@ -523,7 +523,7 @@ public class NewSocialManageActivity extends BaseActivity {
                 holder.setText(R.id.tv_notarize, getString(R.string.queding));
                 holder.setOnClickListener(R.id.tv_cancel, v1 -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_notarize, v1 -> {
-                    CommandMessage command = CommandMessage.obtain("forceClearAllLocalHistory", groupInfo.getGroupInfo().getId());
+                    CommandMessage command = CommandMessage.obtain("ForceClearAllLocalHistory", groupInfo.getGroupInfo().getId());
                     Message message = Message.obtain(groupInfo.getGroupInfo().getId(), Conversation.ConversationType.GROUP, command);
                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
                     RongIM.getInstance().clearMessages(Conversation.ConversationType.GROUP, groupInfo.getGroupInfo().getId(), null);
