@@ -60,16 +60,8 @@ public class ModifyNotesActivity extends BaseActivity {
                     RongUserInfoManager.getInstance().setUserInfo(new UserInfo(r.getId(),
                             TextUtils.isEmpty(remark) ? getIntent().getStringExtra("nick") : remark, Uri.parse(r.getHeadPortrait())));
                     ToastUtils.showShort(getString(R.string.successfully_modified));
-//                    for (FriendInfoResponse f : Constant.friendsList) {
-//                        if (f.getId().equals(friendId)) {
-//                            f.setRemark(remark);
-//                            break;
-//                        }
-//                    }
                     Intent intent = new Intent();
-                    if (TextUtils.isEmpty(remark)) {
-                        intent.putExtra("remark", getIntent().getStringExtra("nick"));
-                    } else {
+                    if (!TextUtils.isEmpty(remark)) {
                         intent.putExtra("remark", remark);
                     }
                     setResult(1, intent);

@@ -32,79 +32,70 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:padding="16dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/tv_nickname"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:textColor="@color/color39"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <ImageView
-                                    android:id="@+id/iv_gender"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp" />
-
-                            </LinearLayout>
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_DuoDuoNumber"
+                                android:id="@+id/tv_nickname"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
-                                android:textColor="@color/color9"
-                                android:textSize="16sp" />
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/color39"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/iv_gender"
+                                android:layout_width="12dp"
+                                android:layout_height="22dp"
+                                android:layout_marginStart="3dp" />
 
                         </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/iv_headPortrait"
-                            android:layout_width="72dp"
-                            android:layout_height="72dp"
-                            android:layout_marginStart="12dp" />
+                        <TextView
+                            android:id="@+id/tv_realName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:textColor="@color/color9"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_DuoDuoNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="@color/color9"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_district"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="@color/color9"
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_realName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/color9"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tv_district"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/color9"
-                        android:textSize="16sp" />
+                    <ImageView
+                        android:id="@+id/iv_headPortrait"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:layout_marginStart="12dp" />
 
                 </LinearLayout>
 
@@ -113,6 +104,40 @@
         </LinearLayout>
 
         <include layout="@layout/layout_line10" />
+
+        <LinearLayout
+            android:id="@+id/llRemark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/update_rename"
+                    android:textColor="@color/theme_color"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_end" />
+
+            </LinearLayout>
+
+            <include layout="@layout/layout_line" />
+
+        </LinearLayout>
 
         <RelativeLayout style="@style/RLayoutStyle">
 

@@ -9,12 +9,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
@@ -69,6 +71,8 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     TextView tvEmail;
     @BindView(R.id.tv_signature)
     TextView tvSignature;
+    @BindView(R.id.llRemark)
+    LinearLayout llRemark;
 
     String imageUrl;
     String sex = "0";
@@ -115,15 +119,11 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     private void handleData() {
         imageUrl = friendInfoResponse.getHeadPortrait();
         GlideUtil.loadCircleImg(ivHeadPortrait, friendInfoResponse.getHeadPortrait());
-        tvDuoDuoNumber.setText(getString(R.string.duoduo_acount) + " " + friendInfoResponse.getDuoduoId());
-        if (friendInfoResponse.getIsShowRealname().equals("0")) {
-            tvRealName.setText(R.string.real_name1);
-        } else if (TextUtils.isEmpty(friendInfoResponse.getRealname())) {
-            tvRealName.setText(getString(R.string.real_name_noauthentication));
-        } else {
-            tvRealName.setText(getString(R.string.real_name) + friendInfoResponse.getRealname());
-        }
-        tvDistrict.setText(getString(R.string.district) + " " + friendInfoResponse.getAddress());
+        tvDuoDuoNumber.setText(getString(R.string.duoduo_acount) + friendInfoResponse.getDuoduoId());
+        tvNickname.setText(TextUtils.isEmpty(friendInfoResponse.getRemark()) ? friendInfoResponse.getNick() : friendInfoResponse.getRemark());
+        tvRealName.setText(getString(R.string.nick1, friendInfoResponse.getNick()));
+        tvDistrict.setText(getString(R.string.district) + friendInfoResponse.getAddress());
+
         String mobile = friendInfoResponse.getMobile();
         tvPhoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7));
         tvEmail.setText(TextUtils.isEmpty(friendInfoResponse.getEmail()) ? "暂无" : friendInfoResponse.getEmail());
@@ -133,11 +133,14 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         } else {
             ivGender.setImageDrawable(getDrawable(R.drawable.icon_gender_woman));
         }
+
         if (friendInfoResponse.getId().equals(Constant.userId)) {
             rl_end.setVisibility(View.INVISIBLE);
-            tvNickname.setText(friendInfoResponse.getNick());
-        } else {
-            tvNickname.setText(TextUtils.isEmpty(friendInfoResponse.getRemark()) ? friendInfoResponse.getNick() : friendInfoResponse.getRemark());
+            llRemark.setVisibility(View.GONE);
+            tvRealName.setVisibility(View.INVISIBLE);
+        }
+        if (TextUtils.isEmpty(friendInfoResponse.getRemark())) {
+            tvRealName.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -188,6 +191,16 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
             }
 
             menuPop.showPopupWindow(v);
+        });
+
+        tvNickname.setMaxWidth(ScreenUtils.getAppScreenWidth() - CommonUtils.dip2px(this, 165));
+
+        llRemark.setOnClickListener(v -> {
+            Intent intent1 = new Intent(FriendDetailsActivity.this, ModifyNotesActivity.class);
+            intent1.putExtra("friendId", friendInfoResponse.getId());
+            intent1.putExtra("name", RongUserInfoManager.getInstance().getUserInfo(friendInfoResponse.getId()).getName());
+            intent1.putExtra("nick", friendInfoResponse.getNick());
+            startActivityForResult(intent1, 1);
         });
     }
 
@@ -247,8 +260,13 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 1) {
             String remark = data.getStringExtra("remark");
-            if (!TextUtils.isEmpty(remark))
+            if (TextUtils.isEmpty(remark)) {
+                tvRealName.setVisibility(View.INVISIBLE);
+                tvNickname.setText(friendInfoResponse.getNick());
+            } else {
+                tvRealName.setVisibility(View.VISIBLE);
                 tvNickname.setText(remark);
+            }
         }
     }
 
