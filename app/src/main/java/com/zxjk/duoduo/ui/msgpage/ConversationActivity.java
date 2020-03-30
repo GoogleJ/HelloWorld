@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
@@ -555,18 +554,24 @@ public class ConversationActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(commandMessage.getName())) {
                         switch (commandMessage.getName()) {
                             case "screenCapture":
-                                conversationInfo.setTargetCaptureScreenEnabled(Integer.parseInt(commandMessage.getData()));
-                                if (conversationInfo.getTargetCaptureScreenEnabled() == 1) {
-                                    initScreenCapture();
-                                } else if (screenCapture != null && !screenCapture.isDisposed()) {
-                                    screenCapture.dispose();
+                                try {
+                                    conversationInfo.setTargetCaptureScreenEnabled(Integer.parseInt(commandMessage.getData()));
+                                    if (conversationInfo.getTargetCaptureScreenEnabled() == 1) {
+                                        initScreenCapture();
+                                    } else if (screenCapture != null && !screenCapture.isDisposed()) {
+                                        screenCapture.dispose();
+                                    }
+                                } catch (Exception e) {
                                 }
                                 break;
                             case "sendUrlAndsendImg":
-                                SendUrlAndsendImgBean sendUrlAndsendImgBean = GsonUtils.fromJson(commandMessage.getData(), SendUrlAndsendImgBean.class);
-                                groupInfo.getGroupInfo().setBanSendLink(sendUrlAndsendImgBean.getSendUrl());
-                                groupInfo.getGroupInfo().setBanSendPicture(sendUrlAndsendImgBean.getSendImg());
-                                groupInfo.getGroupInfo().setBanSendVoice(sendUrlAndsendImgBean.getSendVoice());
+                                try {
+                                    SendUrlAndsendImgBean sendUrlAndsendImgBean = GsonUtils.fromJson(commandMessage.getData(), SendUrlAndsendImgBean.class);
+                                    groupInfo.getGroupInfo().setBanSendLink(sendUrlAndsendImgBean.getSendUrl());
+                                    groupInfo.getGroupInfo().setBanSendPicture(sendUrlAndsendImgBean.getSendImg());
+                                    groupInfo.getGroupInfo().setBanSendVoice(sendUrlAndsendImgBean.getSendVoice());
+                                } catch (Exception e) {
+                                }
                                 break;
                             case "chatRoomConfig":
                                 try {
@@ -1280,7 +1285,7 @@ public class ConversationActivity extends BaseActivity {
                     socialLocalBean.setContentLastModifyTime(groupInfo.getCommunityUpdateTime());
                     socialLocalBeanDao.update(socialLocalBean);
                 }
-                
+
                 Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("group", groupInfo);
                 intent.putExtra("id", targetId);
