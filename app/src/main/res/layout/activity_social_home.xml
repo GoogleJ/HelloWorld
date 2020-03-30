@@ -461,13 +461,4 @@
         android:overScrollMode="never"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-    <ImageView
-        android:id="@+id/ivOpenConversation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_marginBottom="80dp"
-        android:onClick="openConversation"
-        android:src="@drawable/ic_social_conversation" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

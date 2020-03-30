@@ -30,6 +30,7 @@ import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
+import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -46,8 +47,8 @@ import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 public class SocialVideoAddActivity extends BaseActivity {
 
@@ -256,6 +257,12 @@ public class SocialVideoAddActivity extends BaseActivity {
 
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .editCommunityVideo(GsonUtils.toJson(request, false))
+                        .flatMap((Function<BaseResponse<String>, ObservableSource<BaseResponse<String>>>) stringBaseResponse -> {
+                            request.setType("openOrClose");
+                            request.setVideoOpen("1");
+                            return ServiceFactory.getInstance().getBaseService(Api.class)
+                                    .editCommunityVideo(GsonUtils.toJson(request));
+                        })
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))

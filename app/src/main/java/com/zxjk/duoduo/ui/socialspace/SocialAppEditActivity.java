@@ -21,6 +21,7 @@ import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityApplicationRequest;
+import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -32,6 +33,9 @@ import com.zxjk.duoduo.utils.TakePicUtil;
 
 import java.io.File;
 import java.util.Collections;
+
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 public class SocialAppEditActivity extends BaseActivity {
 
@@ -147,6 +151,12 @@ public class SocialAppEditActivity extends BaseActivity {
 
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .editCommunityApplication(GsonUtils.toJson(request))
+                .flatMap((Function<BaseResponse<String>, ObservableSource<BaseResponse<String>>>) stringBaseResponse -> {
+                    request.setType("openOrClose");
+                    request.setApplicationOpen("1");
+                    return ServiceFactory.getInstance().getBaseService(Api.class)
+                            .editCommunityApplication(GsonUtils.toJson(request));
+                })
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))

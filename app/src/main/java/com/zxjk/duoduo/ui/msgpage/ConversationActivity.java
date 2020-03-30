@@ -1275,8 +1275,15 @@ public class ConversationActivity extends BaseActivity {
             ImageView iv_end = findViewById(R.id.iv_end);
             iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_title_end));
             rl_end.setOnClickListener(v -> {
-                Intent intent = new Intent(this, NewSocialManageActivity.class);
+                dotSocialContentUpdate.setVisibility(View.GONE);
+                if (socialLocalBean != null) {
+                    socialLocalBean.setContentLastModifyTime(groupInfo.getCommunityUpdateTime());
+                    socialLocalBeanDao.update(socialLocalBean);
+                }
+                
+                Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("group", groupInfo);
+                intent.putExtra("id", targetId);
                 startActivityForResult(intent, 1000);
             });
             tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
@@ -1288,9 +1295,9 @@ public class ConversationActivity extends BaseActivity {
                 }
 
                 Intent intent = new Intent(this, SocialHomeActivity.class);
-                intent.putExtra("id", groupInfo.getGroupInfo().getId());
-                intent.putExtra("fromConversatin", true);
-                startActivity(intent);
+                intent.putExtra("group", groupInfo);
+                intent.putExtra("id", targetId);
+                startActivityForResult(intent, 1000);
             });
 
             List<SocialLocalBean> social =

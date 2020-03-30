@@ -675,7 +675,6 @@ public class NewSocialManageActivity extends BaseActivity {
     public void finish() {
         if (groupInfo != null) {
             Intent intent = new Intent();
-            intent.putExtra("title", groupInfo.getGroupInfo().getGroupNikeName());
             intent.putExtra("group", groupInfo);
             this.setResult(1000, intent);
         }

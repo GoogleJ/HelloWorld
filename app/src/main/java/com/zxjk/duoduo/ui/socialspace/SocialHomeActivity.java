@@ -9,11 +9,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +41,8 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
+import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
+import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -50,6 +50,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.ZoomActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
+import com.zxjk.duoduo.ui.msgpage.NewSocialManageActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -79,12 +80,13 @@ import io.rong.message.InformationNotificationMessage;
 
 public class SocialHomeActivity extends BaseActivity {
 
-    private int[] detailTitles = {R.string.social_calture, R.string.social_act};
     private static final int REQUEST_SLOGAN = 1;
     private static final int REQUEST_NOTICE = 2;
     private static final int REQUEST_SOCIALNAME = 3;
     private static final int REQUEST_LOGO = 4;
     private static final int REQUEST_BG = 5;
+    private GroupResponse fromConversation;
+    private int[] detailTitles = {R.string.social_calture, R.string.social_act};
     private int minimumHeightForVisibleOverlappingContent = 0;
     private int totalScrollRange = 0;
     private int statusbarHeight = 0;
@@ -111,7 +113,6 @@ public class SocialHomeActivity extends BaseActivity {
     private TextView tvSocialId;
     private TextView tvNotice;
     private ImageView ivHead;
-    private ImageView ivOpenConversation;
     private LinearLayout llSocialNotice;
     private LinearLayout llRemoveMem;
     private LinearLayout llInviteOrRemove;
@@ -121,7 +122,6 @@ public class SocialHomeActivity extends BaseActivity {
     private ViewStub viewStubFree;
     private boolean contentEnable;
     private boolean hasInitTop;
-    private boolean isInEditStatus;
 
     private CommunityInfoResponse response;
 
@@ -129,8 +129,7 @@ public class SocialHomeActivity extends BaseActivity {
     private DynamicsPage dynamicsPage;
 
     private String groupId;
-
-    private boolean fromConversatin;
+    private int appbarHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,11 +140,7 @@ public class SocialHomeActivity extends BaseActivity {
 
         initView();
 
-        fromConversatin = getIntent().getBooleanExtra("fromConversatin", false);
-        if (fromConversatin) {
-            ivOpenConversation.setVisibility(View.GONE);
-        }
-
+        fromConversation = (GroupResponse) getIntent().getSerializableExtra("group");
         groupId = getIntent().getStringExtra("id");
 
         initFragment();
@@ -163,7 +158,17 @@ public class SocialHomeActivity extends BaseActivity {
 
         onAppBarScroll();
 
-        initData();
+        if (fromConversation != null && (fromConversation.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || fromConversation.getIsAdmin().equals("1"))) {
+            initData2();
+        } else {
+            initData1();
+        }
+
+        if (fromConversation != null) {
+            ivToolBarEnd.setVisibility(View.VISIBLE);
+        } else {
+            ivToolBarEnd.setVisibility(View.GONE);
+        }
 
         setToolBarMarginTop();
 
@@ -182,22 +187,12 @@ public class SocialHomeActivity extends BaseActivity {
 
         Bundle args = new Bundle();
         args.putString("groupId", groupId);
+        args.putBoolean("canModify", fromConversation != null && (fromConversation.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || fromConversation.getIsAdmin().equals("1")));
         socialCalturePage.setArguments(args);
-
-        socialCalturePage.setDoneAction(l -> {
-            isInEditStatus = false;
-            tvSocialId.setVisibility(View.VISIBLE);
-            app_bar.setExpanded(true, true);
-            tvTitle.setText(response.getName());
-            ivToolBarStart.setVisibility(View.VISIBLE);
-            tvSocialCode.setVisibility(View.VISIBLE);
-            ivOpenConversation.animate().translationXBy(-ivOpenConversation.getWidth())
-                    .setInterpolator(new OvershootInterpolator()).start();
-        });
     }
 
     @SuppressLint("CheckResult")
-    private void initData() {
+    private void initData1() {
         Api api = ServiceFactory.getInstance().getBaseService(Api.class);
 
         api.communityCulture(groupId)
@@ -206,14 +201,11 @@ public class SocialHomeActivity extends BaseActivity {
                 .flatMap((Function<CommunityCultureResponse, ObservableSource<BaseResponse<CommunityInfoResponse>>>) r -> {
                     runOnUiThread(() -> {
                         if (!r.getType().equals("culture")) {
-                            banAppBarScroll(true);
-
                             indicatorTop.setVisibility(View.GONE);
                             contentEnable = false;
                             llSocialNotice.setVisibility(View.GONE);
                             pagerOut.setVisibility(View.GONE);
                             llInviteOrRemove.setVisibility(View.GONE);
-                            ivOpenConversation.setVisibility(View.GONE);
                             if (r.getType().equals("free")) {
                                 View inflate = viewStubFree.inflate();
                                 inflate.findViewById(R.id.tvFunc).setOnClickListener(v ->
@@ -222,16 +214,12 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .compose(RxSchedulers.normalTrans())
                                                 .subscribe(s -> {
-//                                                    initData();
                                                     inflate.setVisibility(View.GONE);
-
-                                                    banAppBarScroll(true);
 
                                                     indicatorTop.setVisibility(View.VISIBLE);
                                                     llSocialNotice.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
                                                     llInviteOrRemove.setVisibility(View.VISIBLE);
-                                                    ivOpenConversation.setVisibility(View.VISIBLE);
 
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
                                                             Constant.currentUser.getNick() + "\"" + getString(R.string.enterSocial));
@@ -266,13 +254,10 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .subscribe(s -> {
                                                     inflate.setVisibility(View.GONE);
 
-                                                    banAppBarScroll(true);
-
                                                     indicatorTop.setVisibility(View.VISIBLE);
                                                     llSocialNotice.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
                                                     llInviteOrRemove.setVisibility(View.VISIBLE);
-                                                    ivOpenConversation.setVisibility(View.VISIBLE);
 
                                                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
                                                             Constant.currentUser.getNick() + "\"" + getString(R.string.enterSocial));
@@ -343,7 +328,67 @@ public class SocialHomeActivity extends BaseActivity {
                 });
     }
 
-    private void initAdapter(CommunityInfoResponse r){
+    @SuppressLint("CheckResult")
+    private void initData2() {
+        Api api = ServiceFactory.getInstance().getBaseService(Api.class);
+
+        api.editListCommunityCulture(groupId)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .flatMap((Function<EditListCommunityCultureResponse, ObservableSource<BaseResponse<CommunityInfoResponse>>>) r -> {
+                    runOnUiThread(() -> {
+                        contentEnable = true;
+                        parseCaltureResult(r);
+                    });
+                    return api.communityInfo(groupId);
+                })
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(r -> {
+                    response = r;
+                    tvSlogan.setText(r.getIntroduction());
+                    tvSocialId.setText(getString(R.string.social_code) + r.getCode());
+                    tvSocialName.setText(r.getName());
+                    GlideUtil.loadNormalImg(ivBg, r.getBgi());
+                    GlideUtil.loadNormalImg(ivHead, r.getLogo());
+                    tvTitle.setText(r.getName());
+                    tvSocialCode.setText(getString(R.string.social_code) + r.getCode());
+                    tvNotice.setText(r.getAnnouncement());
+
+                    if (!TextUtils.isEmpty(r.getIdentity()) && !r.getIdentity().equals("0")) {
+                        llRemoveMem.setVisibility(View.VISIBLE);
+                    }
+
+                    ivHead.setOnClickListener(v -> {
+                        Intent intent = new Intent(this, ZoomActivity.class);
+                        intent.putExtra("image", response.getLogo());
+                        intent.putExtra("fromSocialHomePage", true);
+                        if (!response.getIdentity().equals("0")) {
+                            intent.putExtra("id", response.getGroupId());
+                            intent.putExtra("type", 1);
+                        }
+                        startActivityForResult(intent, REQUEST_LOGO);
+                    });
+
+                    ivBg.setOnClickListener(v -> {
+                        Intent intent = new Intent(this, ZoomActivity.class);
+                        intent.putExtra("image", response.getBgi());
+                        intent.putExtra("fromSocialHomePage", true);
+                        if (!response.getIdentity().equals("0")) {
+                            intent.putExtra("id", response.getGroupId());
+                            intent.putExtra("type", 2);
+                        }
+                        startActivityForResult(intent, REQUEST_BG);
+                    });
+
+                    initAdapter(response);
+                }, t -> {
+                    handleApiError(t);
+                    finish();
+                });
+    }
+
+    private void initAdapter(CommunityInfoResponse r) {
         String memCount = r.getMembersCount();
         int realCount = -1;
         if (!TextUtils.isEmpty(memCount)) {
@@ -375,6 +420,35 @@ public class SocialHomeActivity extends BaseActivity {
 
         ArrayList<SocialCaltureListBean> caltures = new ArrayList<>();
 
+        if (r.getOfficialWebsite() != null && r.getOfficialWebsite().getOfficialWebsiteList().size() != 0) {
+            SocialCaltureListBean webBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_WEB);
+            webBean.setOfficialWebsite(r.getOfficialWebsite());
+            caltures.add(webBean);
+        }
+        if (r.getFiles() != null && r.getFiles().getFilesList().size() != 0) {
+            SocialCaltureListBean fileBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_FILE);
+            fileBean.setFiles(r.getFiles());
+            caltures.add(fileBean);
+        }
+        if (r.getVideo() != null && r.getVideo().getVideoList().size() != 0) {
+            SocialCaltureListBean videoBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_VIDEO);
+            videoBean.setVideo(r.getVideo());
+            caltures.add(videoBean);
+        }
+        if (r.getApplication() != null && r.getApplication().getApplicationList().size() != 0) {
+            SocialCaltureListBean appBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_APP);
+            appBean.setApplication(r.getApplication());
+            caltures.add(appBean);
+        }
+
+        socialCalturePage.bindCaltureData(caltures);
+    }
+
+    //解析社群文化为多类型data
+    private void parseCaltureResult(EditListCommunityCultureResponse r) {
+
+        ArrayList<SocialCaltureListBean> caltures = new ArrayList<>();
+
         if (r.getOfficialWebsite() != null) {
             SocialCaltureListBean webBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_WEB);
             webBean.setOfficialWebsite(r.getOfficialWebsite());
@@ -395,29 +469,12 @@ public class SocialHomeActivity extends BaseActivity {
             appBean.setApplication(r.getApplication());
             caltures.add(appBean);
         }
-        if (r.getActivities() != null) {
-            SocialCaltureListBean actBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_ACTIVITY);
-            actBean.setActivities(r.getActivities());
-            caltures.add(actBean);
-        }
 
         socialCalturePage.bindCaltureData(caltures);
     }
 
-    private void banAppBarScroll(boolean isScroll) {
-        if (app_bar == null) return;
-        View mAppBarChildAt = app_bar.getChildAt(0);
-        AppBarLayout.LayoutParams mAppBarParams = (AppBarLayout.LayoutParams) mAppBarChildAt.getLayoutParams();
-        if (isScroll) {
-            mAppBarParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
-            mAppBarChildAt.setLayoutParams(mAppBarParams);
-        } else {
-            mAppBarParams.setScrollFlags(0);
-        }
-    }
-
     public void addSocialMem(View view) {
-        if (!contentEnable || isInEditStatus) {
+        if (!contentEnable) {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
@@ -430,7 +487,7 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void removeSocialMem(View view) {
-        if (!contentEnable || isInEditStatus) {
+        if (!contentEnable) {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
@@ -477,7 +534,7 @@ public class SocialHomeActivity extends BaseActivity {
             }
         };
         socialMemAdapter.setOnItemClickListener((adapter, view, position) -> {
-            if (!contentEnable || isInEditStatus) {
+            if (!contentEnable) {
                 ToastUtils.showShort(R.string.cantdone);
                 return;
             }
@@ -493,14 +550,10 @@ public class SocialHomeActivity extends BaseActivity {
 
     private void onAppBarScroll() {
         app_bar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-            if (isInEditStatus) {
-                return;
-            }
-
             int absOffset = Math.abs(verticalOffset);
 
             if (absOffset <= minimumHeightForVisibleOverlappingContent) {
-                if (ivToolBarEnd.getVisibility() == View.GONE && response != null && !response.getIdentity().equals("0")) {
+                if (ivToolBarEnd.getVisibility() == View.GONE && fromConversation != null) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
                     ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_white);
                 }
@@ -513,7 +566,7 @@ public class SocialHomeActivity extends BaseActivity {
                     tvSocialCode.setVisibility(View.INVISIBLE);
                 }
             } else if (absOffset < totalScrollRange) {
-                if (ivToolBarEnd.getVisibility() == View.VISIBLE && response != null && !response.getIdentity().equals("0")) {
+                if (ivToolBarEnd.getVisibility() == View.VISIBLE && fromConversation != null) {
                     ivToolBarEnd.setVisibility(View.GONE);
                 }
                 if (ivToolBarStart.getVisibility() == View.VISIBLE) {
@@ -528,7 +581,7 @@ public class SocialHomeActivity extends BaseActivity {
                     tvTitle.setVisibility(View.VISIBLE);
                     tvSocialCode.setVisibility(View.VISIBLE);
                 }
-                if (ivToolBarEnd.getVisibility() == View.GONE && response != null && !response.getIdentity().equals("0")) {
+                if (ivToolBarEnd.getVisibility() == View.GONE && fromConversation != null) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
                     ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_black);
                 }
@@ -546,8 +599,6 @@ public class SocialHomeActivity extends BaseActivity {
         layoutParams1.topMargin = statusbarHeight;
         toolbar.setLayoutParams(layoutParams1);
     }
-
-    private int appbarHeight;
 
     private void setSocialBackgroundHeight() {
         app_bar.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
@@ -580,7 +631,6 @@ public class SocialHomeActivity extends BaseActivity {
         tvSocialName = findViewById(R.id.tvSocialName);
         tvSocialId = findViewById(R.id.tvSocialId);
         ivHead = findViewById(R.id.ivHead);
-        ivOpenConversation = findViewById(R.id.ivOpenConversation);
         llSocialNotice = findViewById(R.id.llSocialNotice);
         viewStubPay = findViewById(R.id.viewStubPay);
         viewStubFree = findViewById(R.id.viewStubFree);
@@ -665,7 +715,7 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void socialSlogan(View view) {
-        if (!contentEnable || isInEditStatus) {
+        if (!contentEnable) {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
@@ -676,7 +726,7 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void socialNotice(View view) {
-        if (!contentEnable || isInEditStatus) {
+        if (!contentEnable) {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
@@ -695,7 +745,7 @@ public class SocialHomeActivity extends BaseActivity {
     }
 
     public void QRCode(View View) {
-        if (!contentEnable || isInEditStatus) {
+        if (!contentEnable) {
             ToastUtils.showShort(R.string.cantdone);
             return;
         }
@@ -703,10 +753,6 @@ public class SocialHomeActivity extends BaseActivity {
         intent.putExtra("type", "3");
         intent.putExtra("data", response);
         startActivityForResult(intent, REQUEST_NOTICE);
-    }
-
-    public void openConversation(View view) {
-        RongIM.getInstance().startGroupChat(this, response.getGroupId(), response.getName());
     }
 
     public void back(View view) {
@@ -718,34 +764,27 @@ public class SocialHomeActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void menu(View view) {
-        if (ivToolBarEnd.getVisibility() != View.VISIBLE) {
+        if (ivToolBarEnd.getVisibility() != View.VISIBLE || fromConversation == null) {
             return;
         }
 
-        if (!contentEnable) {
-            ToastUtils.showShort(R.string.cantdone);
-            return;
-        }
-
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .editListCommunityCulture(groupId)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(SocialHomeActivity.this)))
-                .subscribe(r -> {
-                    isInEditStatus = true;
-                    ivToolBarEnd.setVisibility(View.GONE);
-                    ivToolBarStart.setVisibility(View.GONE);
-                    tvSocialCode.setVisibility(View.GONE);
-                    tvTitle.setText(R.string.edit_social_calture);
-                    tvTitle.setVisibility(View.VISIBLE);
-                    socialCalturePage.change2Edit(r);
-                    app_bar.setExpanded(false, true);
-                    ivOpenConversation.animate().translationXBy(ivOpenConversation.getWidth()).start();
-                }, this::handleApiError);
+        Intent intent = new Intent(this, NewSocialManageActivity.class);
+        intent.putExtra("group", fromConversation);
+        startActivityForResult(intent, 1000);
     }
 
     public void fakeClick(View view) {
+    }
+
+    @Override
+    public void finish() {
+        if (fromConversation != null) {
+            Intent intent = new Intent();
+            intent.putExtra("title", fromConversation.getGroupInfo().getGroupNikeName());
+            intent.putExtra("group", fromConversation);
+            this.setResult(1000, intent);
+        }
+        super.finish();
     }
 
     @Override
@@ -778,6 +817,13 @@ public class SocialHomeActivity extends BaseActivity {
                     response.setBgi(bg);
                     GlideUtil.loadNormalImg(ivBg, bg);
                     break;
+            }
+        }
+
+        if (data != null && requestCode == 1000 && resultCode == 1000) {
+            if (fromConversation != null) {
+                fromConversation = (GroupResponse) data.getSerializableExtra("group");
+                tvSocialName.setText(fromConversation.getGroupInfo().getGroupNikeName());
             }
         }
     }

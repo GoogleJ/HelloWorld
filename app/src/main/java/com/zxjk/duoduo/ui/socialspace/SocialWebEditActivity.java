@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityWebSiteRequest;
+import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
@@ -20,6 +21,9 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.util.ArrayList;
+
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 public class SocialWebEditActivity extends BaseActivity {
 
@@ -96,8 +100,14 @@ public class SocialWebEditActivity extends BaseActivity {
         request.setWebsiteUrl(address);
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .editCommunityWebSite(GsonUtils.toJson(request))
-                .compose(bindToLifecycle())
+                .flatMap((Function<BaseResponse<String>, ObservableSource<BaseResponse<String>>>) stringBaseResponse -> {
+                    request.setType("openOrClose");
+                    request.setOfficialWebsiteOpen("1");
+                    return ServiceFactory.getInstance().getBaseService(Api.class)
+                            .editCommunityWebSite(GsonUtils.toJson(request));
+                })
                 .compose(RxSchedulers.normalTrans())
+                .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
                     origin.getOfficialWebsite().setTitle(name);

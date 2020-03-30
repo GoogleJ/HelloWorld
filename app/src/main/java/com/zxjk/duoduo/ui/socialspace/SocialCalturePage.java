@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +26,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.artifex.mupdf.viewer.DocumentActivity;
 import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
@@ -39,15 +37,10 @@ import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsVideo;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.request.EditCommunityApplicationRequest;
-import com.zxjk.duoduo.bean.request.EditCommunityFileRequest;
-import com.zxjk.duoduo.bean.request.EditCommunityVideoRequest;
-import com.zxjk.duoduo.bean.request.EditCommunityWebSiteRequest;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.widget.CircleNavigator;
@@ -63,15 +56,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
-import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
-import io.rong.message.InformationNotificationMessage;
 import okhttp3.ResponseBody;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
@@ -80,32 +67,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SocialCalturePage extends BaseFragment implements View.OnClickListener {
+public class SocialCalturePage extends BaseFragment {
     private final int REQUEST_SETTINGWEB = 1;
     private final int REQUEST_SETTINGFILE = 2;
     private final int REQUEST_SETTINGVIDEO = 3;
     private final int REQUEST_SETTINGAPP = 4;
-    private final int REQUEST_SETTINGACT = 5;
 
-    private LinearLayout llBottom;
     private RecyclerView recycler;
     private BaseMultiItemQuickAdapter<SocialCaltureListBean, BaseViewHolder> adapter;
     private String groupId;
-
-    private OnDoneAction doneAction;
-
-    public interface OnDoneAction {
-        void done(List<SocialCaltureListBean> result);
-    }
-
-    public void setDoneAction(OnDoneAction doneAction) {
-        this.doneAction = doneAction;
-    }
-
-    private int dp56;
+    private boolean canModify;
 
     private java.util.Formatter timeFormatter;
     private StringBuilder mFormatBuilder;
+    private File futureStudioIconFile;
 
     @SuppressLint("CheckResult")
     @Nullable
@@ -113,16 +88,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         groupId = getArguments().getString("groupId");
+        canModify = getArguments().getBoolean("canModify", false);
 
         mFormatBuilder = new StringBuilder();
         timeFormatter = new java.util.Formatter(mFormatBuilder, Locale.ENGLISH);
 
         rootView = inflater.inflate(R.layout.calturepager, container, false);
-
-        dp56 = CommonUtils.dip2px(getContext(), 56);
-
-        llBottom = rootView.findViewById(R.id.llBottom);
-        llBottom.setOnClickListener(this);
 
         recycler = rootView.findViewById(R.id.recycler);
         recycler.setItemAnimator(null);
@@ -134,20 +105,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 addItemType(SocialCaltureListBean.TYPE_FILE, R.layout.item_socialcalture_file);
                 addItemType(SocialCaltureListBean.TYPE_VIDEO, R.layout.item_socialcalture_video);
                 addItemType(SocialCaltureListBean.TYPE_APP, R.layout.item_socialcalture_app);
-                addItemType(SocialCaltureListBean.TYPE_ACTIVITY, R.layout.item_socialcalture_activity);
             }
 
             @Override
             protected void convert(BaseViewHolder helper, SocialCaltureListBean item) {
-                boolean isEdit = llBottom.getVisibility() == View.VISIBLE;
-                Switch sw = helper.getView(R.id.sw);
-                if (!isEdit) {
-                    sw.setVisibility(View.INVISIBLE);
-                } else {
-                    sw.setVisibility(View.VISIBLE);
-                }
+                helper.addOnClickListener(R.id.tvModify);
 
-                helper.addOnClickListener(R.id.sw);
                 switch (helper.getItemViewType()) {
                     case SocialCaltureListBean.TYPE_WEB:
                         initViewForWebPage(helper, item);
@@ -161,9 +124,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     case SocialCaltureListBean.TYPE_APP:
                         initViewForAppPage(helper, item);
                         break;
-                    case SocialCaltureListBean.TYPE_ACTIVITY:
-                        initViewForActivityPage(helper);
-                        break;
                 }
             }
         };
@@ -174,7 +134,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             SocialCaltureListBean bean = (SocialCaltureListBean) adapter.getData().get(position);
             switch (adapter.getItemViewType(position)) {
                 case SocialCaltureListBean.TYPE_WEB:
-                    if (llBottom.getVisibility() == View.VISIBLE) {
+                    if (canModify) {
                         Intent intent = new Intent(getContext(), SocialWebEditActivity.class);
                         intent.putExtra("id", groupId);
                         intent.putExtra("bean", bean);
@@ -202,7 +162,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                     break;
                 case SocialCaltureListBean.TYPE_FILE:
-                    if (llBottom.getVisibility() == View.VISIBLE) {
+                    if (canModify) {
                         Intent intent = new Intent(getContext(), SocialFileActivity.class);
                         intent.putExtra("id", groupId);
                         intent.putExtra("bean", bean);
@@ -210,7 +170,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                     break;
                 case SocialCaltureListBean.TYPE_VIDEO:
-                    if (llBottom.getVisibility() == View.VISIBLE) {
+                    if (canModify) {
                         Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
                         intent.putExtra("id", groupId);
                         intent.putExtra("bean", bean);
@@ -218,134 +178,43 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     }
                     break;
                 case SocialCaltureListBean.TYPE_APP:
-                    if (llBottom.getVisibility() == View.VISIBLE) {
+                    if (canModify) {
                         Intent intent = new Intent(getContext(), SocialAppActivity.class);
                         intent.putExtra("groupId", groupId);
                         intent.putExtra("data", bean);
                         startActivityForResult(intent, REQUEST_SETTINGAPP);
                     }
-                    break;
-                case SocialCaltureListBean.TYPE_ACTIVITY:
-                    ToastUtils.showShort(R.string.developing);
                     break;
             }
         });
 
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             SocialCaltureListBean bean = (SocialCaltureListBean) adapter.getData().get(position);
-            Switch sw = (Switch) view;
+            Intent intent;
             switch (adapter.getItemViewType(position)) {
                 case SocialCaltureListBean.TYPE_WEB:
-                    if (bean.getOfficialWebsite().getOfficialWebsiteList().size() == 0) {
-                        sw.setChecked(false);
-                        Intent intent = new Intent(getContext(), SocialWebEditActivity.class);
-                        intent.putExtra("id", groupId);
-                        intent.putExtra("bean", bean);
-                        startActivityForResult(intent, REQUEST_SETTINGWEB);
-                    } else {
-                        //call api 2 update status
-                        EditCommunityWebSiteRequest request = new EditCommunityWebSiteRequest();
-                        request.setGroupId(groupId);
-                        request.setType("openOrClose");
-                        request.setOfficialWebsiteOpen(sw.isChecked() ? "1" : "0");
-                        ServiceFactory.getInstance().getBaseService(Api.class)
-                                .editCommunityWebSite(GsonUtils.toJson(request))
-                                .compose(bindToLifecycle())
-                                .compose(RxSchedulers.normalTrans())
-                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                                .subscribe(s -> {
-                                    bean.getOfficialWebsite().setOfficialWebsiteOpen(sw.isChecked() ? "1" : "0");
-                                    adapter.notifyItemChanged(position);
-                                }, t -> {
-                                    sw.setChecked(!sw.isChecked());
-                                    handleApiError(t);
-                                });
-                    }
+                    intent = new Intent(getContext(), SocialWebEditActivity.class);
+                    intent.putExtra("id", groupId);
+                    intent.putExtra("bean", bean);
+                    startActivityForResult(intent, REQUEST_SETTINGWEB);
                     break;
                 case SocialCaltureListBean.TYPE_FILE:
-                    if (bean.getFiles().getFilesList().size() == 0) {
-                        sw.setChecked(false);
-                        Intent intent = new Intent(getContext(), SocialFileActivity.class);
-                        intent.putExtra("id", groupId);
-                        intent.putExtra("bean", bean);
-                        startActivityForResult(intent, REQUEST_SETTINGFILE);
-                    } else {
-                        //call api 2 update status
-                        EditCommunityFileRequest request = new EditCommunityFileRequest();
-                        request.setGroupId(groupId);
-                        request.setType("openOrClose");
-                        request.setFilesOpen(sw.isChecked() ? "1" : "0");
-                        ServiceFactory.getInstance().getBaseService(Api.class)
-                                .editCommunityFile(GsonUtils.toJson(request))
-                                .compose(bindToLifecycle())
-                                .compose(RxSchedulers.normalTrans())
-                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                                .subscribe(s -> {
-                                    bean.getFiles().setFilesOpen(sw.isChecked() ? "1" : "0");
-                                    adapter.notifyItemChanged(position);
-                                }, t -> {
-                                    sw.setChecked(!sw.isChecked());
-                                    handleApiError(t);
-                                });
-                    }
+                    intent = new Intent(getContext(), SocialFileActivity.class);
+                    intent.putExtra("id", groupId);
+                    intent.putExtra("bean", bean);
+                    startActivityForResult(intent, REQUEST_SETTINGFILE);
                     break;
                 case SocialCaltureListBean.TYPE_VIDEO:
-                    if (bean.getVideo().getVideoList().size() == 0) {
-                        sw.setChecked(false);
-                        Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
-                        intent.putExtra("id", groupId);
-                        intent.putExtra("bean", bean);
-                        startActivityForResult(intent, REQUEST_SETTINGVIDEO);
-                    } else {
-                        //call api 2 update status
-                        EditCommunityVideoRequest request = new EditCommunityVideoRequest();
-                        request.setGroupId(groupId);
-                        request.setType("openOrClose");
-                        request.setVideoOpen(sw.isChecked() ? "1" : "0");
-                        ServiceFactory.getInstance().getBaseService(Api.class)
-                                .editCommunityVideo(GsonUtils.toJson(request))
-                                .compose(bindToLifecycle())
-                                .compose(RxSchedulers.normalTrans())
-                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                                .subscribe(s -> {
-                                    bean.getVideo().setVideoOpen(sw.isChecked() ? "1" : "0");
-                                    adapter.notifyItemChanged(position);
-                                }, t -> {
-                                    sw.setChecked(!sw.isChecked());
-                                    handleApiError(t);
-                                });
-                    }
+                    intent = new Intent(getContext(), SocialVideoEditActivity.class);
+                    intent.putExtra("id", groupId);
+                    intent.putExtra("bean", bean);
+                    startActivityForResult(intent, REQUEST_SETTINGVIDEO);
                     break;
                 case SocialCaltureListBean.TYPE_APP:
-                    if (bean.getApplication().getApplicationList().size() == 0) {
-                        sw.setChecked(false);
-                        Intent intent = new Intent(getContext(), SocialAppActivity.class);
-                        intent.putExtra("groupId", groupId);
-                        intent.putExtra("data", bean);
-                        startActivityForResult(intent, REQUEST_SETTINGAPP);
-                    } else {
-                        //call api 2 update status
-                        EditCommunityApplicationRequest request = new EditCommunityApplicationRequest();
-                        request.setGroupId(groupId);
-                        request.setType("openOrClose");
-                        request.setApplicationOpen(sw.isChecked() ? "1" : "0");
-                        ServiceFactory.getInstance().getBaseService(Api.class)
-                                .editCommunityApplication(GsonUtils.toJson(request))
-                                .compose(bindToLifecycle())
-                                .compose(RxSchedulers.normalTrans())
-                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                                .subscribe(s -> {
-                                    bean.getApplication().setApplicationOpen(sw.isChecked() ? "1" : "0");
-                                    adapter.notifyItemChanged(position);
-                                }, t -> {
-                                    sw.setChecked(!sw.isChecked());
-                                    handleApiError(t);
-                                });
-                    }
-                    break;
-                case SocialCaltureListBean.TYPE_ACTIVITY:
-                    ((Switch) view).setChecked(false);
-                    ToastUtils.showShort(R.string.developing);
+                    intent = new Intent(getContext(), SocialAppActivity.class);
+                    intent.putExtra("groupId", groupId);
+                    intent.putExtra("data", bean);
+                    startActivityForResult(intent, REQUEST_SETTINGAPP);
                     break;
             }
         });
@@ -355,44 +224,34 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         return rootView;
     }
 
-    private void initViewForActivityPage(BaseViewHolder helper) {
-        if (llBottom.getVisibility() == View.VISIBLE) {
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
-            layoutParams.bottomMargin = dp56;
-            helper.itemView.setLayoutParams(layoutParams);
-        } else {
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) helper.itemView.getLayoutParams();
-            layoutParams.bottomMargin = 0;
-            helper.itemView.setLayoutParams(layoutParams);
-        }
-    }
-
     private void initViewForWebPage(BaseViewHolder helper, SocialCaltureListBean item) {
         EditListCommunityCultureResponse.OfficialWebsiteBean web = item.getOfficialWebsite();
-        if (!TextUtils.isEmpty(web.getOfficialWebsiteOpen())
-                && web.getOfficialWebsiteOpen().equals("1")) {
-            helper.setChecked(R.id.sw, true);
+
+        TextView tvModify = helper.getView(R.id.tvModify);
+        if (canModify && web.getOfficialWebsiteList().size() != 0) {
+            tvModify.setVisibility(View.VISIBLE);
         } else {
-            helper.setChecked(R.id.sw, false);
+            tvModify.setVisibility(View.GONE);
         }
+
         helper.setText(R.id.tv, (web.getOfficialWebsiteList().size() == 0 || TextUtils.isEmpty(web.getOfficialWebsiteList().get(0).getWebsiteContent())) ?
                 getContext().getString(R.string.empty_socialweb) : web.getOfficialWebsiteList().get(0).getWebsiteContent())
                 .setText(R.id.tvTitle, item.getOfficialWebsite().getTitle());
     }
 
     private void initViewForFilePage(BaseViewHolder helper, SocialCaltureListBean item) {
+        TextView tvModify = helper.getView(R.id.tvModify);
+        if (canModify && item.getFiles().getFilesList().size() != 0) {
+            tvModify.setVisibility(View.VISIBLE);
+        } else {
+            tvModify.setVisibility(View.GONE);
+        }
+
         TextView tvNumLeft = helper.getView(R.id.tvNumLeft);
-        if (llBottom.getVisibility() == View.VISIBLE) {
+        if (canModify) {
             tvNumLeft.setText(getString(R.string.nums_left_upload_social_files, (Integer.parseInt(item.getFiles().getFileCreate()) - item.getFiles().getFilesList().size())));
         } else {
             tvNumLeft.setText("");
-        }
-
-        if (!TextUtils.isEmpty(item.getFiles().getFilesOpen())
-                && item.getFiles().getFilesOpen().equals("1")) {
-            helper.setChecked(R.id.sw, true);
-        } else {
-            helper.setChecked(R.id.sw, false);
         }
 
         RecyclerView fileRecycler = helper.getView(R.id.recycler);
@@ -441,20 +300,17 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             }
         };
 
-        appAdapter.setOnItemClickListener((adapter, view, position) -> {
-            if (llBottom.getVisibility() == View.VISIBLE) {
-                Intent intent = new Intent(getContext(), SocialFileActivity.class);
-                intent.putExtra("id", groupId);
-                intent.putExtra("bean", item);
-                startActivityForResult(intent, REQUEST_SETTINGFILE);
-                return;
-            }
-            downloadAndShowFile(appAdapter, position);
-        });
+        appAdapter.setOnItemClickListener((adapter, view, position) -> downloadAndShowFile(appAdapter, position));
 
         View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.empty_recycler_social_app, (ViewGroup) rootView, false);
         appAdapter.setEmptyView(emptyView);
         emptyView.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SocialFileActivity.class);
+            intent.putExtra("id", groupId);
+            intent.putExtra("bean", item);
+            startActivityForResult(intent, REQUEST_SETTINGFILE);
+        });
+        tvModify.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), SocialFileActivity.class);
             intent.putExtra("id", groupId);
             intent.putExtra("bean", item);
@@ -540,27 +396,29 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
     }
 
     private void initViewForAppPage(BaseViewHolder helper, SocialCaltureListBean item) {
+        int dp56 = CommonUtils.dip2px(getContext(), 56);
+        int dp48 = CommonUtils.dip2px(getContext(), 48);
+        int dp8 = CommonUtils.dip2px(getContext(), 8);
+
         EditListCommunityCultureResponse.ApplicationBean app = item.getApplication();
-        if (!TextUtils.isEmpty(app.getApplicationOpen())
-                && app.getApplicationOpen().equals("1")) {
-            helper.setChecked(R.id.sw, true);
+
+        TextView tvModify = helper.getView(R.id.tvModify);
+        if (canModify && app.getApplicationList().size() != 0) {
+            tvModify.setVisibility(View.VISIBLE);
         } else {
-            helper.setChecked(R.id.sw, false);
+            tvModify.setVisibility(View.GONE);
         }
 
         RecyclerView appRecycler = helper.getView(R.id.recycler);
         appRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
         TextView tvTips = helper.getView(R.id.tvTips);
-        if (llBottom.getVisibility() == View.VISIBLE) {
+        if (canModify) {
             tvTips.setVisibility(View.VISIBLE);
         } else {
             tvTips.setVisibility(View.INVISIBLE);
         }
 
-        int dp56 = CommonUtils.dip2px(getContext(), 56);
-        int dp48 = CommonUtils.dip2px(getContext(), 48);
-        int dp8 = CommonUtils.dip2px(getContext(), 8);
         int recyclerWidth = ScreenUtils.getScreenWidth() - dp48;
         boolean isNormalSize = true;
         if (((recyclerWidth - dp56 * 4) / 4) < dp8) {
@@ -593,13 +451,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         };
 
         appAdapter.setOnItemClickListener((adapter, view, position) -> {
-            if (llBottom.getVisibility() == View.VISIBLE) {
-                Intent intent = new Intent(getContext(), SocialAppActivity.class);
-                intent.putExtra("groupId", groupId);
-                intent.putExtra("data", item);
-                startActivityForResult(intent, REQUEST_SETTINGAPP);
-                return;
-            }
             if (appAdapter.getData().get(position).getIsOffical().equals("0")) {
                 TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
                 showAnimation.setDuration(250);
@@ -638,6 +489,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             intent.putExtra("data", item);
             startActivityForResult(intent, REQUEST_SETTINGAPP);
         });
+        tvModify.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SocialAppActivity.class);
+            intent.putExtra("groupId", groupId);
+            intent.putExtra("data", item);
+            startActivityForResult(intent, REQUEST_SETTINGAPP);
+        });
 
         appRecycler.setAdapter(appAdapter);
 
@@ -646,11 +503,12 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
 
     private void initViewForVideoPage(BaseViewHolder helper, SocialCaltureListBean item) {
         EditListCommunityCultureResponse.VideoBean video = item.getVideo();
-        if (!TextUtils.isEmpty(video.getVideoOpen())
-                && video.getVideoOpen().equals("1")) {
-            helper.setChecked(R.id.sw, true);
+
+        TextView tvModify = helper.getView(R.id.tvModify);
+        if (canModify && video.getVideoList().size() != 0) {
+            tvModify.setVisibility(View.VISIBLE);
         } else {
-            helper.setChecked(R.id.sw, false);
+            tvModify.setVisibility(View.GONE);
         }
 
         ViewPager pagerVideo = helper.getView(R.id.pagerVideo);
@@ -665,7 +523,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         layoutParams.height = height;
         pagerVideo.setLayoutParams(layoutParams);
 
-        if (llBottom.getVisibility() == View.VISIBLE) {
+        if (canModify) {
             tvNumLeft.setText(getString(R.string.upload_video_max1, (Integer.parseInt(item.getVideo().getVideoCreate()) - item.getVideo().getVideoList().size())));
         } else {
             tvNumLeft.setText("");
@@ -743,7 +601,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                     ImageView imageView = inflate.findViewById(R.id.ivVideoPic);
                     GlideUtil.loadNormalImg(imageView, item.getVideo().getVideoList().get(position).getVideoPic());
                     imageView.setOnClickListener(v -> {
-                        if (llBottom.getVisibility() == View.VISIBLE) {
+                        if (video.getVideoList().size() == 0) {
                             Intent intent = new Intent(getContext(), SocialVideoEditActivity.class);
                             intent.putExtra("id", groupId);
                             intent.putExtra("bean", item);
@@ -773,7 +631,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
                 }
             });
         } else {
-
             pagerVideo.setVisibility(View.GONE);
             indicatorVideo.setVisibility(View.GONE);
             llVideoEmpty.setVisibility(View.VISIBLE);
@@ -803,12 +660,6 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
         }
     }
 
-    @SuppressLint("CheckResult")
-    public void change2Edit(EditListCommunityCultureResponse r) {
-        parseCaltureResult(r);
-        llBottom.setVisibility(View.VISIBLE);
-    }
-
     //解析社群文化为多类型data
     private void parseCaltureResult(EditListCommunityCultureResponse r) {
 
@@ -834,54 +685,8 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             appBean.setApplication(r.getApplication());
             caltures.add(appBean);
         }
-        if (r.getActivities() != null) {
-            SocialCaltureListBean actBean = new SocialCaltureListBean(SocialCaltureListBean.TYPE_ACTIVITY);
-            actBean.setActivities(r.getActivities());
-            caltures.add(actBean);
-        }
 
         bindCaltureData(caltures);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (doneAction != null) {
-            if (adapter != null) {
-                Iterator<SocialCaltureListBean> iterator = adapter.getData().iterator();
-                while (iterator.hasNext()) {
-                    SocialCaltureListBean bean = iterator.next();
-                    switch (bean.getItemType()) {
-                        case SocialCaltureListBean.TYPE_WEB:
-                            if (bean.getOfficialWebsite().getOfficialWebsiteOpen().equals("0"))
-                                iterator.remove();
-                            break;
-                        case SocialCaltureListBean.TYPE_FILE:
-                            if (bean.getFiles().getFilesOpen().equals("0"))
-                                iterator.remove();
-                            break;
-                        case SocialCaltureListBean.TYPE_VIDEO:
-                            if (bean.getVideo().getVideoOpen().equals("0"))
-                                iterator.remove();
-                            break;
-                        case SocialCaltureListBean.TYPE_APP:
-                            if (bean.getApplication().getApplicationOpen().equals("0"))
-                                iterator.remove();
-                            break;
-                        case SocialCaltureListBean.TYPE_ACTIVITY:
-                            if (bean.getActivities().getActivityOpen().equals("0"))
-                                iterator.remove();
-                            break;
-                    }
-                }
-                adapter.notifyDataSetChanged();
-            }
-            doneAction.done(adapter.getData());
-            llBottom.setVisibility(View.GONE);
-
-            InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(getString(R.string.social_calture_update));
-            Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
-            RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-        }
     }
 
     @Override
@@ -926,15 +731,7 @@ public class SocialCalturePage extends BaseFragment implements View.OnClickListe
             adapter.notifyItemChanged(3);
         }
 
-        if (requestCode == REQUEST_SETTINGACT && resultCode == 1) {
-            SocialCaltureListBean bean = data.getParcelableExtra("data");
-            adapter.getData().add(4, bean);
-            adapter.getData().remove(5);
-            adapter.notifyItemChanged(4);
-        }
     }
-
-    private File futureStudioIconFile;
 
     private boolean writeResponseBodyToDisk(ResponseBody body) {
         try {

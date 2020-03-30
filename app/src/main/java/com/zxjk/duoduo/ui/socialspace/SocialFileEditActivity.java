@@ -24,6 +24,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityFileRequest;
+import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -39,25 +40,36 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 public class SocialFileEditActivity extends BaseActivity {
 
+    /**
+     * 文档类型
+     */
+    public static final int TYPE_DOC = 0;
+    /**
+     * apk类型
+     */
+    public static final int TYPE_APK = 1;
+    /**
+     * 压缩包类型
+     */
+    public static final int TYPE_ZIP = 2;
     //20M
     private final String maxFileSize = "20971520";
-
     private int currentCount;
     private int currentMax;
     private int maxCount;
-
     private TextView tvCurrentCount;
     private TextView tvMaxCount;
     private LinearLayout llTopTips;
     private RecyclerView recycler;
     private BaseQuickAdapter<FileBean, BaseViewHolder> adapter;
-
     private ArrayList<FileBean> selectedFiles = new ArrayList<>();
-
     private LoadingDialog uploadLoading;
+    private List<EditCommunityFileRequest.FilesListBean> uploadList;
 
     @SuppressLint("CheckResult")
     @Override
@@ -153,8 +165,6 @@ public class SocialFileEditActivity extends BaseActivity {
         llTopTips.setVisibility(View.GONE);
     }
 
-    private List<EditCommunityFileRequest.FilesListBean> uploadList;
-
     public void uploadFile(View view) {
         if (currentCount == 0) {
             ToastUtils.showShort(R.string.selectFiles);
@@ -180,6 +190,12 @@ public class SocialFileEditActivity extends BaseActivity {
 
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .editCommunityFile(GsonUtils.toJson(request, false))
+                        .flatMap((Function<BaseResponse<String>, ObservableSource<BaseResponse<String>>>) stringBaseResponse -> {
+                            request.setType("openOrClose");
+                            request.setFilesOpen("1");
+                            return ServiceFactory.getInstance().getBaseService(Api.class)
+                                    .editCommunityFile(GsonUtils.toJson(request));
+                        })
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -222,21 +238,8 @@ public class SocialFileEditActivity extends BaseActivity {
                 finish();
 
             }
-        }, progress -> runOnUiThread(() -> uploadLoading.setText(getString(R.string.uploading_progress, (int) progress * 100,"%"))));
+        }, progress -> runOnUiThread(() -> uploadLoading.setText(getString(R.string.uploading_progress, (int) progress * 100, "%"))));
     }
-
-    /**
-     * 文档类型
-     */
-    public static final int TYPE_DOC = 0;
-    /**
-     * apk类型
-     */
-    public static final int TYPE_APK = 1;
-    /**
-     * 压缩包类型
-     */
-    public static final int TYPE_ZIP = 2;
 
     /**
      * 通过文件类型得到相应文件的集合

@@ -40,7 +40,6 @@ public class CommunityInfoResponse implements Parcelable {
     private String status;
     private String createTime;
     private String identity;
-    private GroupPermissionBean groupPermission;
     private String ownerId;
     private List<MembersBean> members;
     private String membersCount;
@@ -157,14 +156,6 @@ public class CommunityInfoResponse implements Parcelable {
         this.identity = identity;
     }
 
-    public GroupPermissionBean getGroupPermission() {
-        return groupPermission;
-    }
-
-    public void setGroupPermission(GroupPermissionBean groupPermission) {
-        this.groupPermission = groupPermission;
-    }
-
     public String getOwnerId() {
         return ownerId;
     }
@@ -179,183 +170,6 @@ public class CommunityInfoResponse implements Parcelable {
 
     public void setMembers(List<MembersBean> members) {
         this.members = members;
-    }
-
-    public static class GroupPermissionBean implements Parcelable {
-        /**
-         * id :
-         * groupId :
-         * customerId :
-         * isDelete :
-         * createTime :
-         * updateTime :
-         * openBanned :
-         * nick :
-         * headPortrait :
-         * openAudio :
-         * openVideo :
-         * forceRecall :
-         */
-
-        private String id;
-        private String groupId;
-        private String customerId;
-        private String isDelete;
-        private String createTime;
-        private String updateTime;
-        private String openBanned;
-        private String nick;
-        private String headPortrait;
-        private String openAudio;
-        private String openVideo;
-        private String forceRecall;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getGroupId() {
-            return groupId;
-        }
-
-        public void setGroupId(String groupId) {
-            this.groupId = groupId;
-        }
-
-        public String getCustomerId() {
-            return customerId;
-        }
-
-        public void setCustomerId(String customerId) {
-            this.customerId = customerId;
-        }
-
-        public String getIsDelete() {
-            return isDelete;
-        }
-
-        public void setIsDelete(String isDelete) {
-            this.isDelete = isDelete;
-        }
-
-        public String getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
-        }
-
-        public String getUpdateTime() {
-            return updateTime;
-        }
-
-        public void setUpdateTime(String updateTime) {
-            this.updateTime = updateTime;
-        }
-
-        public String getOpenBanned() {
-            return openBanned;
-        }
-
-        public void setOpenBanned(String openBanned) {
-            this.openBanned = openBanned;
-        }
-
-        public String getNick() {
-            return nick;
-        }
-
-        public void setNick(String nick) {
-            this.nick = nick;
-        }
-
-        public String getHeadPortrait() {
-            return headPortrait;
-        }
-
-        public void setHeadPortrait(String headPortrait) {
-            this.headPortrait = headPortrait;
-        }
-
-        public String getOpenAudio() {
-            return openAudio;
-        }
-
-        public void setOpenAudio(String openAudio) {
-            this.openAudio = openAudio;
-        }
-
-        public String getOpenVideo() {
-            return openVideo;
-        }
-
-        public void setOpenVideo(String openVideo) {
-            this.openVideo = openVideo;
-        }
-
-        public String getForceRecall() {
-            return forceRecall;
-        }
-
-        public void setForceRecall(String forceRecall) {
-            this.forceRecall = forceRecall;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.id);
-            dest.writeString(this.groupId);
-            dest.writeString(this.customerId);
-            dest.writeString(this.isDelete);
-            dest.writeString(this.createTime);
-            dest.writeString(this.updateTime);
-            dest.writeString(this.openBanned);
-            dest.writeString(this.nick);
-            dest.writeString(this.headPortrait);
-            dest.writeString(this.openAudio);
-            dest.writeString(this.openVideo);
-            dest.writeString(this.forceRecall);
-        }
-
-        public GroupPermissionBean() {
-        }
-
-        protected GroupPermissionBean(Parcel in) {
-            this.id = in.readString();
-            this.groupId = in.readString();
-            this.customerId = in.readString();
-            this.isDelete = in.readString();
-            this.createTime = in.readString();
-            this.updateTime = in.readString();
-            this.openBanned = in.readString();
-            this.nick = in.readString();
-            this.headPortrait = in.readString();
-            this.openAudio = in.readString();
-            this.openVideo = in.readString();
-            this.forceRecall = in.readString();
-        }
-
-        public static final Creator<GroupPermissionBean> CREATOR = new Creator<GroupPermissionBean>() {
-            @Override
-            public GroupPermissionBean createFromParcel(Parcel source) {
-                return new GroupPermissionBean(source);
-            }
-
-            @Override
-            public GroupPermissionBean[] newArray(int size) {
-                return new GroupPermissionBean[size];
-            }
-        };
     }
 
     public static class MembersBean implements Parcelable {
@@ -435,7 +249,6 @@ public class CommunityInfoResponse implements Parcelable {
         dest.writeString(this.status);
         dest.writeString(this.createTime);
         dest.writeString(this.identity);
-        dest.writeParcelable(this.groupPermission, flags);
         dest.writeString(this.ownerId);
         dest.writeList(this.members);
     }
@@ -457,7 +270,6 @@ public class CommunityInfoResponse implements Parcelable {
         this.status = in.readString();
         this.createTime = in.readString();
         this.identity = in.readString();
-        this.groupPermission = in.readParcelable(GroupPermissionBean.class.getClassLoader());
         this.ownerId = in.readString();
         this.members = new ArrayList<MembersBean>();
         in.readList(this.members, MembersBean.class.getClassLoader());

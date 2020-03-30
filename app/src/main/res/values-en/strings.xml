@@ -17,7 +17,7 @@
     <string name="social_app_4">(Contact customer service for more applications)</string>
     <string name="social_app_2">(Please contact customer service to close or open more applications)</string>
     <string name="nums_left_upload_social_files">(You can also upload %1$d copies of information)</string>
-    <string name="upload_video_max1">(You can also upload% %1$d videos)</string>
+    <string name="upload_video_max1">(You can also upload%1$d videos)</string>
     <string name="file_upload">(4 documents can also be uploaded)</string>
     <string name="social_card">[Social card]</string>
     <string name="group_card">[Group card]</string>

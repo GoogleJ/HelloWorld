@@ -37,10 +37,12 @@
             android:textColor="@color/textColor9"
             android:textSize="12.5sp" />
 
-        <Switch
-            android:id="@+id/sw"
+        <TextView
+            android:id="@+id/tvModify"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/modify2"
+            android:textColor="#45679B" />
 
     </LinearLayout>
 

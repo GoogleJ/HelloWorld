@@ -43,6 +43,8 @@ import com.zxjk.duoduo.utils.TakePicUtil;
 import java.io.File;
 import java.util.Collections;
 
+import io.rong.imkit.RongIM;
+
 public class CreateSocialActivity4 extends BaseActivity {
 
     private FrameLayout flTop;
@@ -136,9 +138,7 @@ public class CreateSocialActivity4 extends BaseActivity {
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    intent = new Intent(this, SocialHomeActivity.class);
-                    intent.putExtra("id", r.getGroupId());
-                    startActivity(intent);
+                    RongIM.getInstance().startGroupChat(this, r.getGroupId(), "");
                 }, this::handleApiError);
     }
 
