@@ -523,7 +523,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 badgeItem.setText("99+");
             }
             badgeItem.show(true);
-        }, Conversation.ConversationType.PRIVATE, Conversation.ConversationType.GROUP);
+        }, Conversation.ConversationType.PRIVATE, Conversation.ConversationType.GROUP, Conversation.ConversationType.SYSTEM);
     }
 
     private void getNewFriendCount() {
