@@ -834,7 +834,7 @@
     <string name="upload_max_file">최대 %1$d 개의 커뮤니티 프로필을 업로드하십시오. 업로드 경험</string>
     <string name="current_selected">선택됨 (%1$d/%2$d)</string>
     <string name="cant_parse_data">로컬 파일을 읽을 수 없으면,고객 서비스로 연락하십시오</string>
-    <string name="uploading_progress">업로드 중, %1$d,%2$s</string>
+    <string name="uploading_progress">업로드 중, %1$d%2$s</string>
     <string name="group_card">[그룹 명함]</string>
     <string name="invite_you_into_group_check">%1$s가 당신 %2$s에 가입 하도록 초대합니다,클릭 더 보기</string>
     <string name="me_and_x_nums_friend_wait_for_you_at">%1$이고 나는[%2$s]에 있으며, 당신이 참여하기를 기다리고 있습니다!</string>

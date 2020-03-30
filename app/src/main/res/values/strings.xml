@@ -869,7 +869,7 @@
     <string name="upload_max_file">最多上传%1$d份社群资料，请上传体验</string>
     <string name="current_selected">已选(%1$d/%2$d)</string>
     <string name="cant_parse_data">暂时无法读取本地文件，请联系客服</string>
-    <string name="uploading_progress">上传中,%1$d,%2$s</string>
+    <string name="uploading_progress">上传中,%1$d%2$s</string>
     <string name="group_card">[群名片]</string>
     <string name="invite_you_into_group_check">%1$s邀请你加入群聊%2$s,点击查看</string>
     <string name="me_and_x_nums_friend_wait_for_you_at">我和%1$s个小伙伴在【%2$s】,等待你加入！</string>
