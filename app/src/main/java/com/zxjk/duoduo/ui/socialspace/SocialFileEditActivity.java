@@ -222,7 +222,7 @@ public class SocialFileEditActivity extends BaseActivity {
                 finish();
 
             }
-        }, progress -> runOnUiThread(() -> uploadLoading.setText(getString(R.string.uploading_progress, (int) progress * 100))));
+        }, progress -> runOnUiThread(() -> uploadLoading.setText(getString(R.string.uploading_progress, (int) progress * 100,"%"))));
     }
 
     /**

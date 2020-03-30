@@ -53,7 +53,7 @@
     <string name="buycoinonekey">One-click currency purchase</string>
     <string name="upload">Upload</string>
     <string name="uploading">Uploading</string>
-    <string name="uploading_progress">Uploading,%1$d%</string>
+    <string name="uploading_progress">Uploading,%1$d,%2$s</string>
     <string name="upload_social_video_success">Uploaded successfully</string>
     <string name="upload_newvideo">Upload new Video</string>
     <string name="upload_newfile">Upload new file</string>
