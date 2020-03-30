@@ -13,7 +13,7 @@ import io.rong.imlib.MessageTag;
 import io.rong.imlib.model.MessageContent;
 
 @SuppressLint("ParcelCreator")
-@MessageTag(value = "MNewsCardMsg", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
+@MessageTag(value = "MLiveCardMsg", flag = MessageTag.ISCOUNTED | MessageTag.ISPERSISTED)
 public class WechatCastMessage extends MessageContent {
     private String title;
     private String content;
