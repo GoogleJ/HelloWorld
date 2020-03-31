@@ -349,7 +349,7 @@
     <string name="inputoldpsd">输入旧密码</string>
     <string name="moexchange">交易所</string>
     <string name="moshopping">商城</string>
-    <string name="mojiaofei">生活缴费</string>
+    <string name="mojiaofei">话费充值</string>
     <string name="mocoin">余币宝</string>
     <string name="buycoinonekey">一键购币</string>
     <string name="kuangji">硬件矿机</string>
@@ -810,7 +810,7 @@
     <string name="save_local">保存本地</string>
     <string name="selected_2">已选 (0/3)</string>
     <string name="video_tips1">最多上传0份企业宣传视频，请上传体验</string>
-    <string name="hilamg_service">Hilamg社区服务</string>
+    <string name="hilamg_service">Hilamg服务</string>
     <string name="third_service">第三方服务</string>
     <string name="community_posters">社群海报</string>
     <string name="invite_desc">推广好友说明</string>
@@ -841,7 +841,7 @@
     <string name="invite_earn">邀请收益</string>
     <string name="new_source">快讯来源：海浪之声</string>
     <string name="blockchain_social">区块链社交，就在Hilamg</string>
-    <string name="press_code">长按识别二维码 \\n下载HilamgApp</string>
+    <string name="press_code">长按识别二维码 \n下载HilamgApp</string>
     <string name="activity_tip1">已累计签到</string>
     <string name="activity_tip2">已获得(USDT)</string>
     <string name="activity_tip3">连续签到领取更多USDT</string>

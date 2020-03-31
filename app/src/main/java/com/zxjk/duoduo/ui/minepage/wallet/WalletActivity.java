@@ -1,8 +1,14 @@
 package com.zxjk.duoduo.ui.minepage.wallet;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,6 +27,11 @@ import com.zxjk.duoduo.utils.CommonUtils;
 
 public class WalletActivity extends BaseActivity {
 
+    private static String FIRST_CLICK = "first_click";
+    private String data;
+    private String version;
+    private SharedPreferences settings ;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +42,25 @@ public class WalletActivity extends BaseActivity {
         textView.setText(R.string.blockWallet);
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+
+
+        PackageManager packageManager = getPackageManager();
+        PackageInfo packInfo = null;
+        try {
+            packInfo = packageManager.getPackageInfo(getPackageName(),0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+         version = packInfo.versionName;
+        settings = getSharedPreferences(FIRST_CLICK, 0);
+
+        data = settings.getString("firstdot", "0");
+
+        if(version.equals("1.9.0") && data.equals("1")){
+            findViewById(R.id.first).setVisibility(View.GONE);
+        }else if(!version.equals("1.9.0")){
+            findViewById(R.id.first).setVisibility(View.GONE);
+        }
     }
 
     public void balanceLeft(View view) {
@@ -88,8 +118,27 @@ public class WalletActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    @SuppressLint("CheckResult")
     public void func4(View view) {
-        startActivity(new Intent(this,OneKeyBuyCoinActivity.class));
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getOpenPurchaseStatus()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(d -> {
+                    if(d.equals("1")){
+                        if(data.equals("0")){
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putString("firstdot","1");
+                            editor.commit();
+                            findViewById(R.id.first).setVisibility(View.GONE);
+                        }
+                        startActivity(new Intent(this,OneKeyBuyCoinActivity.class));
+                    }else {
+                        findViewById(R.id.first).setVisibility(View.GONE);
+                        ToastUtils.showShort(R.string.developing);
+                    }
+                }, this::handleApiError);
     }
 
     public void func5(View view) {

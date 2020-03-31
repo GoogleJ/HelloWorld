@@ -793,4 +793,6 @@ public interface Api {
     Observable<BaseResponse<String>> getOnlineUsers(@Field("roomId") String roomId);
 
 
+    @POST("duoduo/purchase/getOpenPurchaseStatus")
+    Observable<BaseResponse<String>> getOpenPurchaseStatus();
 }

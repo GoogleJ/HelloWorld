@@ -88,7 +88,8 @@ import razerdp.widget.QuickPopup;
 @SuppressLint("CheckResult")
 public class NewsPager extends BaseFragment {
     private static final int SCROLL_SLOP = 240;
-
+    private static final int BANNER_INTERVEL = 3;
+    private static final int COUNT_PER_PAGE = 15;
     private SlopScrollView scrollView;
     private ViewPager pagerBanner;
     private ViewPager pagerDetail;
@@ -102,15 +103,10 @@ public class NewsPager extends BaseFragment {
     private int[] detailTitles = {R.string.boutique, R.string.quick_news, R.string.sickness};
     private boolean hasInitHeight;
     private QuickPopup invitePop;
-
     private int currentBannerIndex;
     private Disposable bannerIntervel;
-    private static final int BANNER_INTERVEL = 3;
-
     private List<BaseQuickAdapter> adapters = new ArrayList<>();
     private List<Integer> pages = new ArrayList<>();
-    private static final int COUNT_PER_PAGE = 15;
-
     private Api api;
 
     @Nullable
@@ -364,6 +360,107 @@ public class NewsPager extends BaseFragment {
                 }, t -> adapter.loadMoreFail());
     }
 
+    private void shareTo(int plantform) {
+        Bitmap bitmap = getBitmapByView(invitePop.findViewById(R.id.sv_newspagerpopup));
+        final Bitmap bitmap2 = compressImage(bitmap);
+        UMImage link = new UMImage(getActivity(), bitmap2);
+
+        SHARE_MEDIA platform = null;
+        switch (plantform) {
+            case 1:
+                platform = SHARE_MEDIA.WEIXIN;
+                savePointInfo();
+                break;
+            case 2:
+                platform = SHARE_MEDIA.WEIXIN_CIRCLE;
+                savePointInfo();
+                break;
+            case 3:
+                platform = SHARE_MEDIA.QQ;
+                savePointInfo();
+                break;
+            case 4:
+                RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+                    @Override
+                    public void onSuccess(List<Conversation> conversations) {
+                        savePointInfo();
+                        Constant.shareGroupQR = bitmap2;
+                        Intent intent = new Intent(getActivity(), ShareGroupQRActivity.class);
+                        intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                    }
+                });
+                break;
+            case 5:
+                Observable.create((ObservableOnSubscribe<Boolean>)
+                        e -> SaveImageUtil.get().savePic(bitmap2,
+                                success -> {
+                                    if (success) e.onNext(true);
+                                    else e.onNext(false);
+                                })).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                        .subscribe(success -> {
+                            if (success) {
+                                ToastUtils.showShort(R.string.savesucceed);
+                                return;
+                            }
+                            ToastUtils.showShort(R.string.savefailed);
+                        });
+                break;
+            case 6:
+                if (invitePop != null) {
+                    invitePop.dismiss();
+                }
+                break;
+        }
+        new ShareAction(getActivity())
+                .setPlatform(platform)
+                .withMedia(link)
+                .setCallback(new ShareUtil.ShareListener())
+                .share();
+    }
+
+    private Bitmap getBitmapByView(ScrollView scrollView) {
+        int h = 0;
+        Bitmap bitmap;
+        for (int i = 0; i < scrollView.getChildCount(); i++) {
+            h += scrollView.getChildAt(i).getHeight();
+            scrollView.getChildAt(i).setBackgroundColor(
+                    Color.parseColor("#ffffff"));
+        }
+        bitmap = Bitmap.createBitmap(scrollView.getWidth(), h,
+                Bitmap.Config.RGB_565);
+        final Canvas canvas = new Canvas(bitmap);
+        scrollView.draw(canvas);
+        return bitmap;
+    }
+
+    private Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        int options = 100;
+        while (baos.toByteArray().length / 1024 > 100) {
+            baos.reset();
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
+            options -= 10;
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
+        return bitmap;
+    }
+
+    private void savePointInfo() {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .savePointInfo("4")
+                .compose(RxSchedulers.ioObserver())
+                .subscribe(s -> {
+                }, t -> {
+                });
+    }
+
     class DetailPagerAdapter extends PagerAdapter {
 
         @Override
@@ -602,7 +699,7 @@ public class NewsPager extends BaseFragment {
                                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
                                     .subscribe(r ->
                                             Observable.create((ObservableOnSubscribe<Bitmap>)
-                                                    e -> e.onNext(QRCodeEncoder.syncEncodeQRCode(r, UIUtil.dip2px(getActivity(), 80), Color.BLACK)))
+                                                    e -> e.onNext(QRCodeEncoder.syncEncodeQRCode("http://hilamg.com/", UIUtil.dip2px(getActivity(), 80), Color.BLACK)))
                                                     .compose(RxSchedulers.ioObserver())
                                                     .compose(bindToLifecycle())
                                                     .subscribe(im::setImageBitmap));
@@ -646,107 +743,6 @@ public class NewsPager extends BaseFragment {
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         }
-    }
-
-    private void shareTo(int plantform) {
-        Bitmap bitmap = getBitmapByView(invitePop.findViewById(R.id.sv_newspagerpopup));
-        final Bitmap bitmap2 = compressImage(bitmap);
-        UMImage link = new UMImage(getActivity(), bitmap2);
-
-        SHARE_MEDIA platform = null;
-        switch (plantform) {
-            case 1:
-                platform = SHARE_MEDIA.WEIXIN;
-                savePointInfo();
-                break;
-            case 2:
-                platform = SHARE_MEDIA.WEIXIN_CIRCLE;
-                savePointInfo();
-                break;
-            case 3:
-                platform = SHARE_MEDIA.QQ;
-                savePointInfo();
-                break;
-            case 4:
-                RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
-                    @Override
-                    public void onSuccess(List<Conversation> conversations) {
-                        savePointInfo();
-                        Constant.shareGroupQR = bitmap2;
-                        Intent intent = new Intent(getActivity(), ShareGroupQRActivity.class);
-                        intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onError(RongIMClient.ErrorCode errorCode) {
-                    }
-                });
-                break;
-            case 5:
-                Observable.create((ObservableOnSubscribe<Boolean>)
-                        e -> SaveImageUtil.get().savePic(bitmap2,
-                                success -> {
-                                    if (success) e.onNext(true);
-                                    else e.onNext(false);
-                                })).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                        .subscribe(success -> {
-                            if (success) {
-                                ToastUtils.showShort(R.string.savesucceed);
-                                return;
-                            }
-                            ToastUtils.showShort(R.string.savefailed);
-                        });
-                break;
-            case 6:
-                if (invitePop != null) {
-                    invitePop.dismiss();
-                }
-                break;
-        }
-        new ShareAction(getActivity())
-                .setPlatform(platform)
-                .withMedia(link)
-                .setCallback(new ShareUtil.ShareListener())
-                .share();
-    }
-
-    private Bitmap getBitmapByView(ScrollView scrollView) {
-        int h = 0;
-        Bitmap bitmap;
-        for (int i = 0; i < scrollView.getChildCount(); i++) {
-            h += scrollView.getChildAt(i).getHeight();
-            scrollView.getChildAt(i).setBackgroundColor(
-                    Color.parseColor("#ffffff"));
-        }
-        bitmap = Bitmap.createBitmap(scrollView.getWidth(), h,
-                Bitmap.Config.RGB_565);
-        final Canvas canvas = new Canvas(bitmap);
-        scrollView.draw(canvas);
-        return bitmap;
-    }
-
-    private Bitmap compressImage(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        int options = 100;
-        while (baos.toByteArray().length / 1024 > 100) {
-            baos.reset();
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
-            options -= 10;
-        }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
-        return bitmap;
-    }
-
-    private void savePointInfo() {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .savePointInfo("4")
-                .compose(RxSchedulers.ioObserver())
-                .subscribe(s -> {
-                }, t -> {
-                });
     }
 
 }
