@@ -2,6 +2,7 @@ package com.zxjk.duoduo.ui.webcast;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,11 +23,18 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMMin;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
@@ -49,7 +57,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -292,23 +304,39 @@ public class WechatCastDetailActivity extends BaseActivity {
                 }, Conversation.ConversationType.PRIVATE, Conversation.ConversationType.GROUP);
                 break;
             case 2:
-                //todo share2Wechat
-//                UMMin umMin = new UMMin(Defaultcontent.url);
-////兼容低版本的网页链接
-//                umMin.setThumb(imagelocal);
-//// 小程序消息封面图片
-//                umMin.setTitle(Defaultcontent.title);
-//// 小程序消息title
-//                umMin.setDescription(Defaultcontent.text);
-//// 小程序消息描述
-//                umMin.setPath("pages/page10007/xxxxxx");
-////小程序页面路径
-//                umMin.setUserName("gh_xxxxxxxxxxxx");
-//// 小程序原始id,在微信平台查询
-//                new ShareAction(this)
-//                        .withMedia(umMin)
-//                        .share();
-//                break;
+                Observable.just("")
+                        .flatMap((Function<String, ObservableSource<Bitmap>>) s ->
+                                Observable.create(emitter ->
+                                        Glide.with(this).asBitmap().load(info.getLivePoster()).listener(new RequestListener<Bitmap>() {
+                                            @Override
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                                emitter.tryOnError(new Exception());
+                                                return false;
+                                            }
+
+                                            @Override
+                                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                                emitter.onNext(resource);
+                                                emitter.onComplete();
+                                                return true;
+                                            }
+                                        }).submit(CommonUtils.dip2px(this, 160), CommonUtils.dip2px(this, 96))))
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.ioObserver())
+                        .doOnSubscribe(d -> ToastUtils.showShort(R.string.parseimg))
+                        .timeout(8, TimeUnit.SECONDS)
+                        .subscribe(bitmap -> {
+                            UMMin umMin = new UMMin("");
+                            umMin.setThumb(new UMImage(this, bitmap));
+                            umMin.setTitle(getString(R.string.hilamg));
+                            umMin.setDescription(info.getTopic());
+                            umMin.setPath("pages/live/index?roomId=" + info.getRoomId() + "&groupId=" + info.getGroupId() + "&inviteCode=" + Constant.currentUser.getInviteCode());
+                            umMin.setUserName("gh_ccebc1a7e592");
+                            new ShareAction(this)
+                                    .withMedia(umMin)
+                                    .share();
+                        }, t -> ToastUtils.showShort(getString(R.string.sharefail)));
+                break;
         }
     }
 

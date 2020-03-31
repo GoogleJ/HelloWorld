@@ -1206,6 +1206,8 @@
     <string name="nick1">昵称:%1$s</string>
     <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
     <string name="share_tip">分享获得更多领取机会~</string>
+    <string name="sharefail">分享失败</string>
+    <string name="parseimg">处理图片中…</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
