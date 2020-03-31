@@ -645,7 +645,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("duoduo/group/getReleaseRecordDetails")
-    Observable<BaseResponse<ReleaseRecordDetails>> releaseRecordDetails(@Field("groupId") String groupId, @Field("symbol") String symbol, @Field("airdropId") String airdropId,@Field("page") String page, @Field("offset") String offset);
+    Observable<BaseResponse<ReleaseRecordDetails>> releaseRecordDetails(@Field("groupId") String groupId, @Field("symbol") String symbol, @Field("airdropId") String airdropId, @Field("page") String page, @Field("offset") String offset);
 
     @FormUrlEncoded
     @POST("duoduo/walletBalance/balanceManage")
@@ -771,10 +771,9 @@ public interface Api {
     @FormUrlEncoded
     @POST("duoduo/group/getDumbManagers")
     Observable<BaseResponse<ArrayList<GroupManagementInfoBean>>> getDumbManagers(@Field("groupId") String groupId,
-                                                 @Field("page") String page,
-                                                 @Field("offset") String offset,
-                                                 @Field("searchKey") String searchKey);
-
+                                                                                 @Field("page") String page,
+                                                                                 @Field("offset") String offset,
+                                                                                 @Field("searchKey") String searchKey);
 
     @POST("duoduo/group/memberMutedOperation")
     @FormUrlEncoded
@@ -785,13 +784,16 @@ public interface Api {
     @POST("duoduo/group/blacklistOperation")
     @FormUrlEncoded
     Observable<BaseResponse<String>> blacklistOperation(@Field("groupId") String groupId,
-                                                 @Field("customerId") String customerId,
-                                                 @Field("type") String type);
+                                                        @Field("customerId") String customerId,
+                                                        @Field("type") String type);
 
     @POST("duoduo/live/getOnlineUsers")
     @FormUrlEncoded
     Observable<BaseResponse<String>> getOnlineUsers(@Field("roomId") String roomId);
 
+    @POST("duoduo/group/recallAndMuted")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> recallAndMuted(@Field("customerId") String customerId, @Field("groupId") String groupId);
 
     @POST("duoduo/purchase/getOpenPurchaseStatus")
     Observable<BaseResponse<String>> getOpenPurchaseStatus();

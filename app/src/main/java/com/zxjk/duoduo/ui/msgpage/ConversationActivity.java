@@ -884,13 +884,9 @@ public class ConversationActivity extends BaseActivity {
             MessageItemLongClickAction forceRecallAction = new MessageItemLongClickAction.Builder()
                     .title(getString(R.string.force_recall))
                     .showFilter(uiMessage -> {
-
                         String senderUserId = uiMessage.getSenderUserId();
-
                         groupInfo.getGroupInfo().getGroupOwnerId();
-
                         MessageContent messageContent = uiMessage.getContent();
-
                         return (messageContent instanceof TextMessage || messageContent instanceof VoiceMessage || messageContent instanceof ImageMessage
                                 || messageContent instanceof CusEmoteTabMessage || messageContent instanceof BusinessCardMessage ||
                                 messageContent instanceof NewsCardMessage || messageContent instanceof GroupCardMessage ||
@@ -908,7 +904,33 @@ public class ConversationActivity extends BaseActivity {
                                 }, ConversationActivity.this::handleApiError);
                         return true;
                     }).build();
+
+            MessageItemLongClickAction forceRecallAction2 = new MessageItemLongClickAction.Builder()
+                    .title(getString(R.string.force_recall_update))
+                    .showFilter(uiMessage -> {
+                        String senderUserId = uiMessage.getSenderUserId();
+                        groupInfo.getGroupInfo().getGroupOwnerId();
+                        MessageContent messageContent = uiMessage.getContent();
+                        return (messageContent instanceof TextMessage || messageContent instanceof VoiceMessage || messageContent instanceof ImageMessage
+                                || messageContent instanceof CusEmoteTabMessage || messageContent instanceof BusinessCardMessage ||
+                                messageContent instanceof NewsCardMessage || messageContent instanceof GroupCardMessage ||
+                                messageContent instanceof LocationMessage || messageContent instanceof SightMessage || messageContent instanceof FileMessage ||
+                                messageContent instanceof RedPacketMessage || messageContent instanceof HQVoiceMessage) &&
+                                !senderUserId.equals(Constant.userId) && !senderUserId.equals(groupInfo.getGroupInfo().getGroupOwnerId());
+                    })
+                    .actionListener((context, uiMessage) -> {
+                        ServiceFactory.getInstance().getBaseService(Api.class)
+                                .recallAndMuted(uiMessage.getSenderUserId(), groupInfo.getGroupInfo().getId())
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConversationActivity.this)))
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(s -> {
+                                }, ConversationActivity.this::handleApiError);
+                        return true;
+                    }).build();
+
             RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction);
+            RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction2);
         }
     }
 
