@@ -254,10 +254,13 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 TextView tv = helper.getView(R.id.tv1);
                 Drawable drawable;
                 if (item.getPayment_type() == 1) {
+                    tv.setText(R.string.bank_card);
                     drawable = getResources().getDrawable(R.drawable.bank_card, null);
                 } else if (item.getPayment_type() == 2) {
+                    tv.setText(R.string.pay_treasure);
                     drawable = getResources().getDrawable(R.drawable.pay_treasure, null);
                 } else {
+                    tv.setText(R.string.wechat_pay);
                     drawable = getResources().getDrawable(R.drawable.wechat, null);
                 }
                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable
