@@ -46,17 +46,6 @@ public class CusConversationListFragment extends ConversationListFragment {
         return new CusConversationListAdapter(context);
     }
 
-//    @Override
-//    public void onPortraitItemClick(View v, UIConversation data) {
-//        super.onPortraitItemClick(v, data);
-//    }
-//
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        UIConversation uiConversation = (UIConversation) parent.getItemAtPosition(position);
-//        super.onItemClick(parent, view, position, id);
-//    }
-
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         handleLongClick((UIConversation) parent.getItemAtPosition(position));

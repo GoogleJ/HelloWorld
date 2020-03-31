@@ -127,6 +127,14 @@ public class SocialWebEditActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .doOnError(t -> {
+                    try {
+                        if (request.getType().equals("add")) {
+                            origin.getOfficialWebsite().getOfficialWebsiteList().clear();
+                        }
+                    } catch (Exception e) {
+                    }
+                })
                 .subscribe(s -> {
                     origin.getOfficialWebsite().setTitle(name);
                     origin.getOfficialWebsite().getOfficialWebsiteList().get(0).setWebsiteTitle(name);
