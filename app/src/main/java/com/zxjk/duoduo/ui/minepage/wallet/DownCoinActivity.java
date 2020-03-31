@@ -12,6 +12,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -145,7 +146,8 @@ public class DownCoinActivity extends BaseActivity {
                     ToastUtils.showShort(R.string.balance_not_enough);
                     return;
                 }
-                if (String.valueOf(result).length() > Integer.parseInt(data.getDecimals())) {
+
+                if (String.valueOf(result).substring(String.valueOf(result).indexOf(".")+1).length() > Integer.parseInt(data.getDecimals())) {
                     ToastUtils.showShort(R.string.number_overlimit);
                 } else {
                     etCount.setText(String.valueOf(result));

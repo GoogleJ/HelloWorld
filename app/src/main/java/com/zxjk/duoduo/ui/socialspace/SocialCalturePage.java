@@ -158,7 +158,7 @@ public class SocialCalturePage extends BaseFragment {
                                         }, true))
                                 .show();
                         TextView tv = show.findViewById(R.id.tvTips);
-                        tv.setText(Html.fromHtml(getString(R.string.danger_tips)));
+                        tv.setText(Html.fromHtml(getString(R.string.danger_tips,bean.getOfficialWebsite().getOfficialWebsiteList().get(0).getWebsiteTitle())));
                     }
                     break;
                 case SocialCaltureListBean.TYPE_FILE:

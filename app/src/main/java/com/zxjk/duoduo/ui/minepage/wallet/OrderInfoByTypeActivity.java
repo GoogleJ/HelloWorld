@@ -141,8 +141,11 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                                 side = "";
                                 state = "";
                                 OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
-                                OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
-                                setCheckBox(R.id.radio3);
+                                OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
+                                for (CheckBox chb : checkBoxs) {
+                                    chb.setChecked(false);
+                                    chb.setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2,null));
+                                }
                                 page = 0;
                                 onRefreshLayout();
                             }, false)
@@ -153,11 +156,14 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                             .withClick(R.id.view1, null, true)
                     ).show();
             if (side.equals("1")) {
-                OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
-                OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
-            } else {
                 OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                 OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
+            } else if(side.equals("2")){
+                OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
+                OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
+            }else {
+                OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
+                OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
             }
 
             checkBoxs.add(OrderPop.findViewById(R.id.radio3));

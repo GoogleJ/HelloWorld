@@ -78,7 +78,7 @@
             <CheckBox
                 android:id="@+id/radio1"
                 style="@style/select_style"
-                android:background="@drawable/shape_checkbox_item"
+                android:background="@drawable/shape_checkbox_item2"
                 android:tag="rd1"
                 android:text="@string/buy" />
 

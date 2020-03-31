@@ -190,6 +190,8 @@ public class EnlargeImageActivity extends BaseActivity {
                         intent.putExtra("fromScan", true);
                         intent.putExtra("money", uri.data.money);
                         intent.putExtra("userId", uri.data.userId);
+                        intent.putExtra("symbol", uri.data.symbol);
+                        intent.putExtra("logo", uri.data.logo);
                         startActivity(intent);
                         finish();
                     } else if (action.equals("action2")) {
