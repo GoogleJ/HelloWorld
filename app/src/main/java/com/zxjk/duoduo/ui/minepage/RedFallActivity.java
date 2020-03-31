@@ -265,10 +265,15 @@ public class RedFallActivity extends BaseActivity {
                                                 ToastUtils.showShort(R.string.noredfalldata);
                                                 finish();
                                             } else {
-                                                if (r.getNextReceive().equals("1") && r.getReceiveCount() != 0) {
+                                                if (r.getNextReceive().equals("1")){
                                                     List<RedFallActivityLocalBean> redFallActivityLocalBeans = redFallActivityLocalBeanDao.loadAll();
                                                     RedFallActivityLocalBean redFallActivityLocalBean = redFallActivityLocalBeans.get(0);
                                                     redFallActivityLocalBean.setLastPlayTime(String.valueOf(System.currentTimeMillis()));
+                                                    redFallActivityLocalBean.setOpenShare(r.getOpenShare());
+                                                    redFallActivityLocalBean.setReceiveCount(r.getReceiveCount());
+                                                    redFallActivityLocalBean.setShareCount(r.getShareCount());
+                                                    redFallActivityLocalBean.setReward(r.getReward());
+                                                    redFallActivityLocalBean.setSymbol(r.getSymbol());
                                                     redFallActivityLocalBeanDao.update(redFallActivityLocalBean);
                                                 } else {
                                                     redFallActivityLocalBeanDao.deleteAll();

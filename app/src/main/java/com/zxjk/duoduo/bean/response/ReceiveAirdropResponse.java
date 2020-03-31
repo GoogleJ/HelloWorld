@@ -31,6 +31,16 @@ public class ReceiveAirdropResponse implements Parcelable {
     private String receive;
     private int shareCount;
     private int receiveCount;
+    private String openShare;
+
+    public String getOpenShare() {
+        return openShare;
+    }
+
+    public void setOpenShare(String openShare) {
+        this.openShare = openShare;
+    }
+
 
     public String getId() {
         return id;
@@ -136,6 +146,9 @@ public class ReceiveAirdropResponse implements Parcelable {
         this.receiveCount = receiveCount;
     }
 
+    public ReceiveAirdropResponse() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -156,9 +169,7 @@ public class ReceiveAirdropResponse implements Parcelable {
         dest.writeString(this.receive);
         dest.writeInt(this.shareCount);
         dest.writeInt(this.receiveCount);
-    }
-
-    public ReceiveAirdropResponse() {
+        dest.writeString(this.openShare);
     }
 
     protected ReceiveAirdropResponse(Parcel in) {
@@ -175,6 +186,7 @@ public class ReceiveAirdropResponse implements Parcelable {
         this.receive = in.readString();
         this.shareCount = in.readInt();
         this.receiveCount = in.readInt();
+        this.openShare = in.readString();
     }
 
     public static final Creator<ReceiveAirdropResponse> CREATOR = new Creator<ReceiveAirdropResponse>() {

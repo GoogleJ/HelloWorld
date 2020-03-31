@@ -682,7 +682,7 @@
     <string name="reward_sign">已签到</string>
     <string name="social_slogan">社群简介</string>
     <string name="update1">更新说明</string>
-    <string name="noredfalldata">暂无红包雨数据</string>
+    <string name="noredfalldata">来晚了，红包已被领取完</string>
     <string name="redfall_tips_noshareyet">您今天还未分享</string>
     <string name="redfall_tips_shared">您今天已分享过</string>
     <string name="payPhone">话费充值</string>
@@ -1205,6 +1205,7 @@
     <string name="modify2"><![CDATA[编辑 >]]></string>
     <string name="nick1">昵称:%1$s</string>
     <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
+    <string name="share_tip">分享获得更多领取机会~</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

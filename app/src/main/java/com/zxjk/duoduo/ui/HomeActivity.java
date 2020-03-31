@@ -196,14 +196,23 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     if (r.getReceive().equals("1")) {
                         RedFallActivityLocalBean redFallActivityLocalBean = new RedFallActivityLocalBean();
                         redFallActivityLocalBean.setLastPlayTime("0");
+                        redFallActivityLocalBean.setOpenShare(r.getOpenShare());
+                        redFallActivityLocalBean.setReceiveCount(r.getReceiveCount());
+                        redFallActivityLocalBean.setShareCount(r.getShareCount());
+                        redFallActivityLocalBean.setReward(r.getReward());
+                        redFallActivityLocalBean.setSymbol(r.getSymbol());
                         redFallActivityLocalBeanDao.insert(redFallActivityLocalBean);
                         badgeItem3.show(true);
                     } else if (!TextUtils.isEmpty(r.getLastTime())) {
                         RedFallActivityLocalBean redFallActivityLocalBean = new RedFallActivityLocalBean();
                         redFallActivityLocalBean.setLastPlayTime(r.getLastTime());
+                        redFallActivityLocalBean.setOpenShare(r.getOpenShare());
+                        redFallActivityLocalBean.setReceiveCount(r.getReceiveCount());
+                        redFallActivityLocalBean.setShareCount(r.getShareCount());
+                        redFallActivityLocalBean.setReward(r.getReward());
+                        redFallActivityLocalBean.setSymbol(r.getSymbol());
                         redFallActivityLocalBeanDao.insert(redFallActivityLocalBean);
                     }
-
                 }, this::handleApiError);
     }
 

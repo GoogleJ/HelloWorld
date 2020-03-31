@@ -49,7 +49,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/redfall_tips_noshareyet"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 

@@ -46,8 +46,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import razerdp.basepopup.QuickPopupBuilder;
-import razerdp.basepopup.QuickPopupConfig;
 
 public class ConfirmRedFallActivity extends BaseActivity {
 
@@ -57,7 +55,6 @@ public class ConfirmRedFallActivity extends BaseActivity {
     private LinearLayout llAnim3;
     private LinearLayout llAnim4;
     private TextView tvAnim5;
-    private TextView tvTips;
 
     private ImageView ivSocialLogo;
     private TextView tvSocialName;
@@ -100,21 +97,6 @@ public class ConfirmRedFallActivity extends BaseActivity {
         tvSocialName = findViewById(R.id.tvSocialName);
         tvMoney = findViewById(R.id.tvMoney);
         tvCoinContent = findViewById(R.id.tvCoinContent);
-        tvTips = findViewById(R.id.tvTips);
-
-        if (data.getShareCount() == 0) {
-            tvTips.setText(R.string.redfall_tips_noshareyet);
-            if (data.getReceiveCount() == 0) {
-                QuickPopupBuilder.with(this)
-                        .contentView(R.layout.redfall_lastnoshare)
-                        .config(new QuickPopupConfig()
-                                .dismissOnOutSideTouch(false)
-                                .withClick(R.id.iv, null, true)
-                        ).show();
-            }
-        } else {
-            tvTips.setText(R.string.redfall_tips_shared);
-        }
 
         GlideUtil.loadCircleImg(ivSocialLogo, data.getCommunityLogo());
         GlideUtil.loadCircleImg(ivCoinIcon, data.getSymbolLogo());
@@ -162,7 +144,7 @@ public class ConfirmRedFallActivity extends BaseActivity {
             cm.setPrimaryClip(ClipData.newPlainText("text", text));
         }
 
-        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消","去微信",  "分享至朋友圈", "文案已自动生成，快去粘贴吧！");
+        MuteRemoveDialog dialog = new MuteRemoveDialog(this, "取消", "去微信", "分享至朋友圈", "文案已自动生成，快去粘贴吧！");
         dialog.setOnCommitListener(() -> ShareUtil.share2WTimeline(this, new ShareUtil.ShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
