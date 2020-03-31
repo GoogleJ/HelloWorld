@@ -66,7 +66,7 @@ public class BuyCoinFragment extends BaseFragment {
                 .subscribe(response -> {
                     symbolInfoBean.addAll(response.getSymbolInfo());
                     setPagerTitle(response);
-                });
+                }, this::handleApiError);
 
     }
 

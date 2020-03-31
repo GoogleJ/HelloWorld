@@ -315,7 +315,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     getBoinsResponse(s);
                     isJump = false;
                     initData();
-                });
+                }, PurchaseDetailsActivity.this::handleApiError);
     }
 
     private void getBoinsResponse(ByBoinsResponse byBoinsResponse) {

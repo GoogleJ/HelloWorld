@@ -211,7 +211,7 @@ public class OrderDetailsActivity extends BaseActivity {
                             intent.putExtra("ByBoinsResponse", s);
                             startActivity(intent);
                             finish();
-                        });
+                        }, this::handleApiError);
             }
         });
 

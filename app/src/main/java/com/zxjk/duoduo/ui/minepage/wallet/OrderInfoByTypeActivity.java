@@ -8,8 +8,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -17,8 +15,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -144,7 +140,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                                 OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                                 for (CheckBox chb : checkBoxs) {
                                     chb.setChecked(false);
-                                    chb.setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2,null));
+                                    chb.setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                                 }
                                 page = 0;
                                 onRefreshLayout();
@@ -158,10 +154,10 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             if (side.equals("1")) {
                 OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                 OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
-            } else if(side.equals("2")){
+            } else if (side.equals("2")) {
                 OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
                 OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
-            }else {
+            } else {
                 OrderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                 OrderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
             }
@@ -241,7 +237,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             }
         };
 
-        View  inflate= LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
+        View inflate = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, null, false);
         TextView tv = inflate.findViewById(R.id.tv);
         ImageView iv = inflate.findViewById(R.id.iv);
         iv.setImageResource(R.drawable.ic_empty_orders);
@@ -267,7 +263,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                         Intent intent = new Intent(this, PurchaseDetailsActivity.class);
                         intent.putExtra("ByBoinsResponse", s);
                         startActivity(intent);
-                    });
+                    }, this::handleApiError);
         });
 
         rlOrderInfoByType.setAdapter(adapter);

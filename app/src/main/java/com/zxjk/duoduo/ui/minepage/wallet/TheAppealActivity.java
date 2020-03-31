@@ -108,7 +108,7 @@ public class TheAppealActivity extends BaseActivity {
                         intent.putExtra("ByBoinsResponse", s);
                         startActivity(intent);
                         finish();
-                    });
+                    }, this::handleApiError);
         });
     }
 
