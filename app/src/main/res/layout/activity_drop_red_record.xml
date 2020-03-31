@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/drop_red_indicator"
             android:layout_width="match_parent"
@@ -70,7 +70,6 @@
                         android:layout_height="wrap_content"
                         android:textColor="#4A494A"/>
                     <TextView
-                        android:text="0.00"
                         android:id="@+id/tv_drop_record_laveCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -79,7 +78,6 @@
                         android:textSize="18sp"
                         android:layout_marginStart="4dp"/>
                     <TextView
-                        android:text="USDT"
                         android:id="@+id/tv_drop_record_currency"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
