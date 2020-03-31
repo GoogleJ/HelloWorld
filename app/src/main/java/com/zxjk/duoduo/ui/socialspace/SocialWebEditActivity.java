@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityWebSiteRequest;
 import com.zxjk.duoduo.bean.response.BaseResponse;
@@ -21,6 +23,9 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
@@ -59,11 +64,24 @@ public class SocialWebEditActivity extends BaseActivity {
         finish();
     }
 
+    public String stringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[/\\:*?<>|,，\"\n\t]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("");
+    }
+
+
     @SuppressLint("CheckResult")
     public void save(View view) {
         String name = etName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             ToastUtils.showShort(R.string.input_webname);
+            return;
+        }
+
+        if (RegexUtils.isMatch(Constant.speChat, name)) {
+            ToastUtils.showShort(getString(R.string.special_chat));
             return;
         }
 

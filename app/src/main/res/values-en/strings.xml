@@ -1022,4 +1022,5 @@
     <string name="remove_blacklist">移出黑名单</string>
     <string name="remove_mute">解除禁言</string>
     <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
+    <string name="special_chat">不能包含特殊字符</string>
 </resources>

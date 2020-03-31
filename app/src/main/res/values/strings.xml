@@ -1208,6 +1208,7 @@
     <string name="share_tip">分享获得更多领取机会~</string>
     <string name="sharefail">分享失败</string>
     <string name="parseimg">处理图片中…</string>
+    <string name="special_chat">不能包含特殊字符</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
