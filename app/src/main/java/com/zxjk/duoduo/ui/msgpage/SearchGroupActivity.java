@@ -136,7 +136,7 @@ public class SearchGroupActivity extends BaseActivity {
         ImageView iv = emptyView.findViewById(R.id.iv);
         TextView tv = emptyView.findViewById(R.id.tv);
         iv.setImageResource(R.drawable.ic_empty_nosearch);
-        tv.setText(R.string.no_search);
+        tv.setText(R.string.empty_nosearch);
         adapter.setEmptyView(emptyView);
 
         adapter.setEnableLoadMore(true);

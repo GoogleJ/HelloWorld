@@ -1021,4 +1021,5 @@
     <string name="blacklist">加入黑名单</string>
     <string name="remove_blacklist">移出黑名单</string>
     <string name="remove_mute">解除禁言</string>
+    <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
 </resources>

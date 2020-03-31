@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -364,6 +365,7 @@ public class GroupChatInformationActivity extends BaseActivity {
                         String id1 = it.next().getId();
                         if (id1.equals(id)) {
                             it.remove();
+                            break;
                         }
                     }
                 }

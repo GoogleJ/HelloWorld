@@ -1204,6 +1204,7 @@
     <string name="watch_nums">观看人数:</string>
     <string name="modify2"><![CDATA[编辑 >]]></string>
     <string name="nick1">昵称:%1$s</string>
+    <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
