@@ -100,6 +100,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         animatorObject.start();
 
         ivRedFall.setOnClickListener(v -> {
+            if (!tvMindRedCountDown.getText().toString().equals("Go")) return;
             if (redFallActivityLocalBean.getReceiveCount() != 0 && "1".equals(redFallActivityLocalBean.getOpenShare()) && redFallActivityLocalBean.getShareCount() == 0) {
                 // 提示分享
                 new ConfirmDialog(getActivity(), getString(R.string.rc_ext_warning), getString(R.string.share_tip),
