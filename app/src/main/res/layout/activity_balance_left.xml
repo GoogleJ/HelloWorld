@@ -78,7 +78,6 @@
                 android:id="@+id/ivShowOrHide"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:onClick="showOrHide"
                 android:padding="5dp"
                 android:src="@drawable/ic_blockwallet_hide"
                 android:tint="#06328A" />

@@ -73,7 +73,13 @@ public class BalanceLeftActivity extends BaseActivity {
         });
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
-        isShow = MMKVUtils.getInstance().decodeBool("bahaviour2_showWalletBalance");
+        isShow = MMKVUtils.getInstance().decodeBool("bahaviour2_showWalletBalance", true);
+
+        ivShowOrHide.setOnClickListener(v -> {
+            isShow = !isShow;
+            MMKVUtils.getInstance().enCode("bahaviour2_showWalletBalance", isShow);
+            showOrHide();
+        });
 
         initData();
     }
@@ -95,23 +101,21 @@ public class BalanceLeftActivity extends BaseActivity {
                     tvBalance.setText(response.getTotalToBtc());
                     tvBalance2CNY.setText("≈" + response.getTotalToCny() + "CNY");
                     adapter.setNewData(response.getBalanceList());
-                    showOrHide(null);
+                    showOrHide();
                 }, throwable -> {
                     handleApiError(throwable);
                     finish();
                 });
     }
 
-    public void showOrHide(View view) {
-        isShow = !isShow;
-        MMKVUtils.getInstance().enCode("bahaviour2_showWalletBalance", isShow);
+    private void showOrHide() {
         if (isShow) {
             ivShowOrHide.setImageResource(R.drawable.ic_blockwallet_hide);
 
             SpannableString string = new SpannableString(response.getTotalToBtc() + " BTC");
             string.setSpan(new RelativeSizeSpan(0.56f), string.length() - 3, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             tvBalance.setText(string);
+
             tvBalance2CNY.setText("≈" + response.getTotalToCny() + "CNY");
             adapter.notifyDataSetChanged();
         } else {

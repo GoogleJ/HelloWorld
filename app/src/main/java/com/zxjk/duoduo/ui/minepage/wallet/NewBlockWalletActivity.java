@@ -68,12 +68,14 @@ public class NewBlockWalletActivity extends BaseActivity {
         tvNewBlockWalletSum = findViewById(R.id.tvNewBlockWalletSum);
         tvSign = findViewById(R.id.tvSign);
 
-        ivShowOrHide.setOnClickListener(v -> showOrHideMoney());
+        ivShowOrHide.setOnClickListener(v -> {
+            isShow = !isShow;
+            MMKVUtils.getInstance().enCode("bahaviour1_showWalletBalance", isShow);
+            showOrHideMoney();
+        });
     }
 
     private void showOrHideMoney() {
-        isShow = !isShow;
-        MMKVUtils.getInstance().enCode("bahaviour1_showWalletBalance", isShow);
         adapter.notifyDataSetChanged();
         if (isShow) {
             ivShowOrHide.setImageResource(R.drawable.ic_blockwallet_hide);
@@ -94,8 +96,7 @@ public class NewBlockWalletActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .doOnNext(response -> {
                     NewBlockWalletActivity.this.response = response;
-                    tvNewBlockWalletSum.setText(isShow ? response.getBalanceTotal() : hideStr);
-                    isShow = MMKVUtils.getInstance().decodeBool("bahaviour1_showWalletBalance");
+                    isShow = MMKVUtils.getInstance().decodeBool("bahaviour1_showWalletBalance", true);
                     showOrHideMoney();
                 })
                 .observeOn(Schedulers.io())

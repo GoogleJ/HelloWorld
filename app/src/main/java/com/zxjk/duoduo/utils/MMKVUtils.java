@@ -50,6 +50,10 @@ public class MMKVUtils {
         return mmkv.decodeBool(key, false);
     }
 
+    public Boolean decodeBool(String key, boolean defaultValue) {
+        return mmkv.decodeBool(key, defaultValue);
+    }
+
     public LoginResponse decodeParcelable(String key) {
         return mmkv.decodeParcelable(key, LoginResponse.class, null);
     }
