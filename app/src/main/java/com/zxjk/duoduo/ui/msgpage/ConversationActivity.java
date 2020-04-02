@@ -821,6 +821,16 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void handleChatRoom() {
+        List<MessageItemLongClickAction> actionList = RongMessageItemLongClickActionManager.getInstance().getMessageItemLongClickActions();
+        Iterator<MessageItemLongClickAction> iterator1 = actionList.iterator();
+        while (iterator1.hasNext()) {
+            MessageItemLongClickAction next = iterator1.next();
+            if (next.getTitle(this).equals(getString(R.string.force_recall))
+                    || next.getTitle(this).equals(getString(R.string.force_recall_update))) {
+                iterator1.remove();
+            }
+        }
+
         String ownerId = getIntent().getStringExtra("chatRoomOwnerId");
 
         List<IPluginModule> pluginModules = extension.getPluginModules();
@@ -861,7 +871,6 @@ public class ConversationActivity extends BaseActivity {
             extension.setInputBarStyle(InputBar.Style.STYLE_SWITCH_CONTAINER);
             extension.hideMoreActionLayout();
         }
-
     }
 
     /**
@@ -874,9 +883,9 @@ public class ConversationActivity extends BaseActivity {
         Iterator<MessageItemLongClickAction> iterator = actionList.iterator();
         while (iterator.hasNext()) {
             MessageItemLongClickAction next = iterator.next();
-            if (next.getTitle(this).equals(getString(R.string.force_recall))) {
+            if (next.getTitle(this).equals(getString(R.string.force_recall))
+                    || next.getTitle(this).equals(getString(R.string.force_recall_update))) {
                 iterator.remove();
-                break;
             }
         }
 
@@ -929,8 +938,8 @@ public class ConversationActivity extends BaseActivity {
                         return true;
                     }).build();
 
-            RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction);
-            RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction2);
+            RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction, 0);
+            RongMessageItemLongClickActionManager.getInstance().addMessageItemLongClickAction(forceRecallAction2, 0);
         }
     }
 
@@ -1008,9 +1017,9 @@ public class ConversationActivity extends BaseActivity {
         Iterator<MessageItemLongClickAction> iterator = actionList.iterator();
         while (iterator.hasNext()) {
             MessageItemLongClickAction next = iterator.next();
-            if (next.getTitle(this).equals(getString(R.string.force_recall))) {
+            if (next.getTitle(this).equals(getString(R.string.force_recall))
+                    || next.getTitle(this).equals(getString(R.string.force_recall_update))) {
                 iterator.remove();
-                break;
             }
         }
     }
