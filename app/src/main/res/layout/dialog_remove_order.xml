@@ -59,7 +59,8 @@
                 android:paddingBottom="12dp"
                 android:text="@string/cancel"
                 android:textColor="@color/colorTheme"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:foreground="?selectableItemBackgroundBorderless"/>
 
             <TextView
                 android:id="@+id/tv_ok"
@@ -73,7 +74,8 @@
                 android:paddingBottom="12dp"
                 android:text="@string/ok"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:foreground="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
 
     </LinearLayout>

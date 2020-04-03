@@ -56,9 +56,9 @@ public class WalletActivity extends BaseActivity {
 
         data = settings.getString("firstdot", "0");
 
-        if(version.equals("1.9.0") && data.equals("1")){
+        if(version.equals("1.9.1") && data.equals("1")){
             findViewById(R.id.first).setVisibility(View.GONE);
-        }else if(!version.equals("1.9.0")){
+        }else if(!version.equals("1.9.1")){
             findViewById(R.id.first).setVisibility(View.GONE);
         }
     }

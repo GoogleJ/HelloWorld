@@ -25,6 +25,10 @@
 
     </FrameLayout>
 
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/empty_publicgroup"
+        android:visibility="gone"/>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="wrap_content"
@@ -39,4 +43,6 @@
                 android:overScrollMode="never" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 </LinearLayout>

@@ -47,9 +47,7 @@ public class BusinessDetailsActivity extends BaseActivity {
         tvKycLevel2 = findViewById(R.id.tv_kycLevel2);
         tvPhone = findViewById(R.id.tv_phone);
         tvEmail = findViewById(R.id.tv_email);
-        findViewById(R.id.rl_back).setOnClickListener(v -> {
-            finish();
-        });
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
 
     private void initData() {
@@ -70,22 +68,22 @@ public class BusinessDetailsActivity extends BaseActivity {
         setDrawables(getResources().getDrawable(R.drawable.ic_email_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvEmail);
         if(byBoinsResponse.getKycLevel().equals("1")){
             setDrawables(getResources().getDrawable(R.drawable.ic_real_name_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
+            setDrawables(getResources().getDrawable(R.drawable.ic_senior_certification,null),getResources().getDrawable(R.drawable.ic_no_selected,null),tvKycLevel2);
         }else {
             setDrawables(getResources().getDrawable(R.drawable.ic_real_name_authentication,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel1);
             setDrawables(getResources().getDrawable(R.drawable.ic_senior_certification,null),getResources().getDrawable(R.drawable.ic_selected,null),tvKycLevel2);
-
         }
     }
 
     private void setDrawables(Drawable drawable, Drawable drawable2, TextView textView) {
-        Drawable drawables = drawable;
-        drawables.setBounds(0, 0, drawable.getMinimumWidth(), drawable
+
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable
                 .getMinimumHeight());// 设置边界
         if (drawable2 != null) {
-            drawable2.setBounds(0, 0, drawable.getMinimumWidth(), drawable
+            drawable2.setBounds(0, 0, drawable2.getMinimumWidth(), drawable2
                     .getMinimumHeight());
         }
-        textView.setCompoundDrawables(drawables, null, drawable2 != null ? drawable2 : null, null);
+        textView.setCompoundDrawables(drawable, null, drawable2 != null ? drawable2 : null, null);
         textView.setCompoundDrawablePadding(8);
     }
 }

@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,6 +40,11 @@ public class MuteManageActivity extends BaseActivity {
     private RecyclerView recyclerView1;
     private RecyclerView recyclerView2;
     private SwipeRefreshLayout refreshLayout;
+    private TextView tvListMute2;
+    private TextView tvListMute;
+    private TextView tv_title;
+    private RelativeLayout rl_back;
+    private EditText etSearch;
 
     private int page = 0;
     private int numsPerPage = 10;
@@ -47,10 +54,6 @@ public class MuteManageActivity extends BaseActivity {
     private List<GroupManagementInfoBean> data1 = new ArrayList<>();
     private List<GroupManagementInfoBean> data2 = new ArrayList<>();
 
-    private TextView tvListMute;
-    private TextView tv_title;
-    private RelativeLayout rl_back;
-    private EditText etSearch;
 
     private Api api;
 
@@ -120,6 +123,8 @@ public class MuteManageActivity extends BaseActivity {
                 page = 0;
 
                 if (!TextUtils.isEmpty(searchKey)) {
+                    tvListMute.setVisibility(View.GONE);
+                    tvListMute2.setVisibility(View.GONE);
                     getDumbManagers(searchKey);
                     return true;
                 }
@@ -168,6 +173,9 @@ public class MuteManageActivity extends BaseActivity {
                                     if (adapter2.getData().size() != 0) {
                                         adapter2.notifyItemRemoved(position + 1);
                                     }
+                                    if (data2.size() == 0) {
+                                        tvListMute2.setVisibility(View.GONE);
+                                    }
                                 }, MuteManageActivity.this::handleApiError);
 
                         break;
@@ -186,6 +194,9 @@ public class MuteManageActivity extends BaseActivity {
                                     if (adapter2.getData().size() != 0) {
                                         adapter2.notifyItemRemoved(position + 1);
                                     }
+                                    if (data2.size() == 0) {
+                                        tvListMute2.setVisibility(View.GONE);
+                                    }
                                 }, MuteManageActivity.this::handleApiError);
                         break;
 
@@ -201,6 +212,7 @@ public class MuteManageActivity extends BaseActivity {
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView2.setNestedScrollingEnabled(false);
 
+
         adapter2.setLoadMoreView(new NewsLoadMoreView());
         adapter2.setEnableLoadMore(false);
         adapter2.setOnLoadMoreListener(() -> {
@@ -213,6 +225,7 @@ public class MuteManageActivity extends BaseActivity {
 
 
         recyclerView1 = headerView.findViewById(R.id.rc1);
+        tvListMute2 = headerView.findViewById(R.id.tv_list_mute2);
         tvListMute = headerView.findViewById(R.id.tv_list_mute);
         adapter1 = new BaseQuickAdapter<GroupManagementInfoBean, BaseViewHolder>(R.layout.item_members_of_the_banned) {
             @Override
@@ -270,11 +283,11 @@ public class MuteManageActivity extends BaseActivity {
                                     if (data1.size() == 0) {
                                         tvListMute.setVisibility(View.GONE);
                                     }
+                                    tvListMute2.setVisibility(View.VISIBLE);
                                 });
-
                         break;
                     case R.id.tv_blacklist:
-                        TextView mute = adapter1.getViewByPosition(position, R.id.tv_mute).findViewById(R.id.tv_mute);
+                        TextView mute = adapter1.getViewByPosition(recyclerView1, position, R.id.tv_mute).findViewById(R.id.tv_mute);
                         TextView blacklist = view.findViewById(R.id.tv_blacklist);
                         if (item.getIsKickOut().equals("0")) {
                             api.blacklistOperation(groupId, item.getCustomerId(), "kickOut")
@@ -320,10 +333,10 @@ public class MuteManageActivity extends BaseActivity {
                                             if (data1.size() == 0) {
                                                 tvListMute.setVisibility(View.GONE);
                                             }
+                                            tvListMute2.setVisibility(View.VISIBLE);
                                         });
                             }
                         }
-
                         break;
                 }
             }
@@ -331,16 +344,6 @@ public class MuteManageActivity extends BaseActivity {
 
         recyclerView1.setAdapter(adapter1);
         recyclerView1.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView2.setNestedScrollingEnabled(false);
-
-
-        adapter1.setOnLoadMoreListener(() -> {
-            if (searchKey.equals("")) {
-                getDumbManagers("");
-            } else {
-                getDumbManagers(searchKey);
-            }
-        }, recyclerView1);
 
         refreshLayout.setRefreshing(true);
         getDumbManagers("");
@@ -367,12 +370,14 @@ public class MuteManageActivity extends BaseActivity {
                                 data2.add(list.get(i));
                             }
                         }
+
                         adapter1.setNewData(data1);
                         adapter2.setNewData(data2);
+                        adapter2.disableLoadMoreIfNotFullPage();
                         if (list.size() >= numsPerPage) {
                             adapter2.loadMoreComplete();
                         } else {
-                            adapter2.loadMoreEnd(false);
+                            adapter2.loadMoreEnd();
                         }
 
                     } else {
@@ -383,17 +388,33 @@ public class MuteManageActivity extends BaseActivity {
                                 data2.add(list.get(i));
                             }
                         }
-                        adapter1.disableLoadMoreIfNotFullPage();
-                        adapter1.loadMoreComplete();
+
+                        adapter1.setNewData(data1);
+
                         if (list.size() >= numsPerPage) {
                             adapter2.loadMoreComplete();
                         } else {
-                            adapter2.loadMoreEnd(false);
+                            adapter2.loadMoreEnd();
                         }
                     }
 
                     if (data1.size() != 0) {
                         tvListMute.setVisibility(View.VISIBLE);
+                    }
+                    if (data2.size() != 0) {
+                        tvListMute2.setVisibility(View.VISIBLE);
+                    }
+
+                    if (data1.size() == 0 && data2.size()==0) {
+                        findViewById(R.id.empty_view).setVisibility(View.VISIBLE);
+                        findViewById(R.id.refresh_layout).setVisibility(View.GONE);
+                    }else {
+                        findViewById(R.id.empty_view).setVisibility(View.GONE);
+                        findViewById(R.id.refresh_layout).setVisibility(View.VISIBLE);
+                    }
+
+                    if (list.size() >= numsPerPage && data2.size() == 0) {
+                        getDumbManagers(searchKey);
                     }
                 });
     }

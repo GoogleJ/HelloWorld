@@ -38,7 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:background="@drawable/shape_mute_che"
-            android:padding="6dp" />
+            android:padding="6dp"
+            android:foreground="?selectableItemBackgroundBorderless"/>
 
         <TextView
             android:id="@+id/tv_blacklist"
@@ -47,7 +48,8 @@
             android:layout_marginEnd="12dp"
             android:background="@drawable/shape_kick_nor"
             android:padding="6dp"
-            android:textColor="@drawable/color_kickout" />
+            android:textColor="@drawable/color_kickout"
+            android:foreground="?selectableItemBackgroundBorderless"/>
     </LinearLayout>
 
     <View

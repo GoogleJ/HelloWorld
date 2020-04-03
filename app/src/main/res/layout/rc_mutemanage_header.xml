@@ -23,6 +23,7 @@
         android:overScrollMode="never" />
 
     <TextView
+        android:id="@+id/tv_list_mute2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F2F3F5"
@@ -30,5 +31,6 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:text="@string/group_member"
-        android:textColor="@color/textcolor2" />
+        android:textColor="@color/textcolor2"
+        android:visibility="gone"/>
 </LinearLayout>
