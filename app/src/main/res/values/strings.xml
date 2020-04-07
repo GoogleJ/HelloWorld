@@ -1210,6 +1210,10 @@
     <string name="parseimg">处理图片中…</string>
     <string name="force_recall_update">禁言+撤回</string>
     <string name="special_chat">不能包含特殊字符</string>
+    <string name="groupqr">群二维码</string>
+    <string name="sharecode">分享二维码</string>
+    <string name="savetophone">保存二维码</string>
+    <string name="joined">加入</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

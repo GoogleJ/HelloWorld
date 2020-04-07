@@ -24,7 +24,7 @@
             android:textColor="@color/m_verification_send_btn"
             android:textSize="18sp" />
 
-        <com.zxjk.duoduo.ui.widget.PayPsdInputView
+        <com.zxjk.moneyspace.ui.widget.PayPsdInputView
             android:id="@+id/m_set_payment_pwd_edit"
             android:layout_width="match_parent"
             android:layout_height="48dp"

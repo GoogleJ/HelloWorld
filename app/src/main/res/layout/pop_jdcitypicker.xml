@@ -74,7 +74,7 @@
             android:layout_height="1dp"
             android:background="@color/colorE" />
 
-        <com.zxjk.duoduo.ui.widget.provinces.MyListView
+        <com.zxjk.moneyspace.ui.widget.provinces.MyListView
             android:id="@+id/city_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -91,7 +91,7 @@
         android:textSize="13sp"
         android:visibility="gone" />
 
-    <com.zxjk.duoduo.ui.widget.PayPsdInputView
+    <com.zxjk.moneyspace.ui.widget.PayPsdInputView
         android:id="@+id/ppivVerify"
         android:layout_width="match_parent"
         android:layout_height="40dp"

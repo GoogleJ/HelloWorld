@@ -4,11 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/llTitle"
-        layout="@layout/invitewechatfriend"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/add_del_group_layout"
         android:layout_width="match_parent"

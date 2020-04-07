@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.zxjk.duoduo">
+    package="com.zxjk.moneyspace">
     <!-- 查看 Wi-Fi 状态 -->
     <permission
         android:name="${applicationId}.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" /> <!-- 查看网络状态 -->
     <permission
-        android:name="com.zxjk.duoduo.permission.PROCESS_PUSH_MSG"
+        android:name="com.zxjk.moneyspace.permission.PROCESS_PUSH_MSG"
         android:protectionLevel="signatureOrSystem" />
 
     <uses-permission
@@ -44,10 +44,10 @@
     <uses-permission android:name="${applicationId}.permission.MIPUSH_RECEIVE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="com.zxjk.duoduo.permission.PROCESS_PUSH_MSG" />
+    <uses-permission android:name="com.zxjk.moneyspace.permission.PROCESS_PUSH_MSG" />
 
     <application
-        android:name=".Application"
+        android:name="com.zxjk.moneyspace.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -58,118 +58,58 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".ui.webcast.WechatChatRoomManageActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.FileSendActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.ModifyWechatCastActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.TheAppealActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.CastListActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.OrderInfoByTypeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.WechatCastDetailActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BusinessDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.CreateWechatCastActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.OrderDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.CreateChooseCastTypeActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.PurchaseDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.NewSocialManageActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.OneKeyBuyCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.FileSendActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BalanceShowItemActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.TheAppealActivity"
+            android:name="com.zxjk.moneyspace.ui.walletpage.LoginAuthorizationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.OrderInfoByTypeActivity"
+            android:name="com.zxjk.moneyspace.ui.walletpage.OrderPaymentActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BusinessDetailsActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.OrderDetailsActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.PurchaseDetailsActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.OneKeyBuyCoinActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.BalanceShowItemActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.msgpage.DropRedRecordActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.ConfirmRedFallActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.RedFallActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.walletpage.LoginAuthorizationActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.walletpage.OrderPaymentActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.walletpage.ThirdPartLoginActivity"
+            android:name="com.zxjk.moneyspace.ui.walletpage.ThirdPartLoginActivity"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.socialspace.SocialAllMemberActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.socialspace.SocialQRCodeActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -185,495 +125,390 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.socialspace.SocialFileEditActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.UpDownCoinResultActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.SocialFileActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.DownCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.SocialAppEditActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.UpCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.SocialAppActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BalanceDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.EditSocialVideoNameActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.ChooseCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.SocialVideoEditActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.AddBlockShowItemActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.SocialVideoAddActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BlockWalletPaymentQRActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.InviteForSocialActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.WalletTradeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.SocialWebEditActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.ImportWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.EditSocialBasicActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.DeleteBlockWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.SocialHomeActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BackupKeystoreActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.CreateSocialActivity4"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.ChangeWalletNameActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.CreateSocialActivity3"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BlockWalletManageDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.CreateSocialActivity2"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BlockWalletManageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.socialspace.CreateSocialActivity1"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BackupWordsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.UpDownCoinResultActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.CreateWalletSuccessActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.DownCoinActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.CreateingWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.UpCoinActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.CreateWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BalanceDetailActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BlockWalletEmptyActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.ChooseCoinActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.AddBlockShowItemActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.BlockWalletPaymentQRActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.WalletTradeActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.ImportWalletActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.DeleteBlockWalletActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.BackupKeystoreActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.ChangeWalletNameActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.BlockWalletManageDetailActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.BlockWalletManageActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.BackupWordsActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.CreateWalletSuccessActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.CreateingWalletActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.CreateWalletActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.wallet.BlockWalletEmptyActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.msgpage.SearchGroupActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.SearchGroupActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity
-            android:name=".ui.msgpage.UpdateGroupLimitActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.UpdateGroupLimitActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.NewBlockWalletActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.NewBlockWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.AppFirstLogin"
+            android:name="com.zxjk.moneyspace.ui.AppFirstLogin"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.InviterActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.NewLoginActivity"
+            android:name="com.zxjk.moneyspace.ui.NewLoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.RewardMotActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.GroupChatActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.PayEnterGroupActivity"
+            android:name="com.zxjk.moneyspace.ui.walletpage.SetRecipetActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.EnterGroupGetRedActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.WalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.GroupChatActivity"
+            android:name="com.zxjk.moneyspace.ui.findpage.NewsDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.MuteManageActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.CooperateActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.OwnerGroupAuthorityActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.AddPhoneContractActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.walletpage.SetRecipetActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.AddWaysActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.minepage.PrivicyActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.WebActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.minepage.NearByActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.ZoomActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.EnlargeImageActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.msgpage.ShareGroupQRActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.WalletActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.HelpActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.msgpage.SkinReportActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.msgpage.GroupRedPacketActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.msgpage.CreateGroupActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.findpage.NewsDetailActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.DetailInfoActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.minepage.DetailListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.walletpage.RecipetQRActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.msgpage.TransferSuccessActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.walletpage.BlockOrderDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.walletpage.ZhuanChuActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.msgpage.ChatInformationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zxjk.moneyspace.ui.msgpage.SelectContactForCardActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.CooperateActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.msgpage.AddPhoneContractActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.AddWaysActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.ChangePhoneActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.PrivicyActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.AccountActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.WebActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.minepage.NearByActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.ZoomActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.EnlargeImageActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.msgpage.ShareGroupQRActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.HelpActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.msgpage.SkinReportActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.msgpage.GroupRedPacketActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.msgpage.CreateGroupActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.DetailInfoActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.minepage.DetailListActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.RecipetQRActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.msgpage.TransferSuccessActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.BlockOrderDetailActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.walletpage.ZhuanChuActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.msgpage.ChatInformationActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.msgpage.SelectContactForCardActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.minepage.ChangePhoneActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.minepage.AccountActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.msgpage.GlobalSearchActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.GlobalSearchActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity
-            android:name=".ui.minepage.OnlineServiceActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.OnlineServiceActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.AllGroupMembersActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.AllGroupMembersActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.ChooseNewOwnerActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.ChooseNewOwnerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.GroupAnnouncementActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.GroupAnnouncementActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.GroupChatInformationActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.GroupChatInformationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.PaySettingActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.PaySettingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.UpdatePayPwdActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.UpdatePayPwdActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.RetrievePayPwdActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.RetrievePayPwdActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.SettingPayPwdActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.SettingPayPwdActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.SelectContactForGroupCardActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.SelectContactForGroupCardActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.SelectContactActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.SelectContactActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.AgreeGroupChatActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.AgreeGroupChatActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.PhoneContactActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.PhoneContactActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.msgpage.PrivacyRedPacketActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.PrivacyRedPacketActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.PeopleRedEnvelopesActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.PeopleRedEnvelopesActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/RedPackageTheme" />
         <activity
-            android:name=".ui.msgpage.TransferActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.TransferActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.TransferInfoActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.TransferInfoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.PeopleUnaccalimedActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.PeopleUnaccalimedActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/RedPackageTheme" />
         <activity
-            android:name=".ui.msgpage.ModifyNotesActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.ModifyNotesActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.UserInfoActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.UserInfoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.SettingActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.SettingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.UpdateUserInfoActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.UpdateUserInfoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.AddFriendDetailsActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.AddFriendDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.ChangeLanguageActivity"
+            android:name="com.zxjk.moneyspace.ui.ChangeLanguageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.CountrySelectActivity"
+            android:name="com.zxjk.moneyspace.ui.CountrySelectActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.SetUpPaymentPwdActivity"
+            android:name="com.zxjk.moneyspace.ui.SetUpPaymentPwdActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.MyQrCodeActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.MyQrCodeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.QrCodeActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.QrCodeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.FriendDetailsActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.FriendDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.NewFriendActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.NewFriendActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.VerificationActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.VerificationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.wallet.BalanceLeftActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.wallet.BalanceLeftActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.AboutActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.AboutActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.FeedbackActivity"
+            android:name="com.zxjk.moneyspace.ui.minepage.FeedbackActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" /> <!-- 启动页 -->
-        <activity android:name=".ui.BrowsableActivity">
+        <activity android:name="com.zxjk.moneyspace.ui.BrowsableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -686,7 +521,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.WelcomeActivity"
+            android:name="com.zxjk.moneyspace.ui.WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Theme_Splash">
             <intent-filter>
@@ -696,7 +531,7 @@
             </intent-filter>
         </activity> <!-- 聊天列表页 -->
         <activity
-            android:name=".ui.HomeActivity"
+            android:name="com.zxjk.moneyspace.ui.HomeActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -707,13 +542,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="com.zxjk.duoduo"
+                    android:host="com.zxjk.moneyspace"
                     android:pathPrefix="/conversationlist/"
                     android:scheme="rong" />
             </intent-filter>
         </activity> <!-- 会话页 -->
         <activity
-            android:name=".ui.msgpage.ConversationActivity"
+            android:name="com.zxjk.moneyspace.ui.msgpage.ConversationActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -723,56 +558,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="com.zxjk.duoduo"
+                    android:host="com.zxjk.moneyspace"
                     android:pathPrefix="/conversation/"
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.vivo.push.sdk.LinkProxyClientActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="com.huawei.hms.activity.BridgeActivity"
-            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Translucent">
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity>
-        <activity
-            android:name="com.huawei.updatesdk.service.otaupdate.AppUpdateActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="false"
-            android:theme="@style/upsdkDlDialog">
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent.NoTitleBar" />
-        </activity>
-        <activity
-            android:name="com.huawei.updatesdk.support.pm.PackageInstallerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:theme="@style/upsdkDlDialog">
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity>
-        <activity
-            android:name="com.huawei.android.hms.agent.common.HMSAgentActivity"
-            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Translucent">
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity> <!-- 融云push receiver，不定义无法收到通知 -->
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -794,7 +584,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.zxjk.moneyspace.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
@@ -818,38 +608,17 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="cf78026d76c3b2dcd0a8384061970712" />
-        <meta-data
-            android:name="com.vivo.push.api_key"
-            android:value="您的 vivo 推送平台生成 AppKey" /> <!-- 小米 Push配置开始 < -->
-        <meta-data
-            android:name="com.vivo.push.app_id"
-            android:value="100744837" />
-        <meta-data
-            android:name="com.huawei.hms.client.appid"
-            android:value="100887731" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.zxjk.duoduo.FileProvider"
+            android:authorities="com.zxjk.moneyspace.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
-        <provider
-            android:name="com.huawei.hms.update.provider.UpdateProvider"
-            android:authorities="com.zxjk.duoduo.hms.update.provider"
-            android:exported="false"
-            android:grantUriPermissions="true" /> <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
-        <provider
-            android:name="com.huawei.updatesdk.fileprovider.UpdateSdkFileProvider"
-            android:authorities="com.zxjk.duoduo.updateSdk.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true" />
-
         <receiver
-            android:name=".ui.RongPushMessageReceiver"
+            android:name="com.zxjk.moneyspace.ui.RongPushMessageReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
@@ -857,86 +626,7 @@
                 <action android:name="io.rong.push.intent.THIRD_PARTY_PUSH_STATE" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver> <!-- 小米push 配置结束 -->
-        <!-- OPPO push配置开始 -->
-        <receiver
-            android:name="com.xiaomi.push.service.receivers.PingReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.xiaomi.push.PING_TIMER" />
-            </intent-filter>
-        </receiver> <!-- OPPO push配置结束 -->
-        <!-- VIVO push 配置开始 -->
-        <receiver
-            android:name="io.rong.push.platform.mi.MiMessageReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.ERROR" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="io.rong.push.platform.vivo.VivoPushMessageReceiver">
-            <intent-filter>
-                <action android:name="com.vivo.pushclient.action.RECEIVE" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="io.rong.push.platform.hms.HMSReceiver">
-            <intent-filter>
-
-                <!-- 必须,用于接收token -->
-                <action android:name="com.huawei.android.push.intent.REGISTRATION" />
-                <!-- 必须，用于接收消息 -->
-                <action android:name="com.huawei.android.push.intent.RECEIVE" />
-                <!-- 可选，用于点击通知栏或通知栏上的按钮后触发onEvent回调 -->
-                <action android:name="com.huawei.android.push.intent.CLICK" />
-                <!-- 可选，查看push通道是否连接，不查看则不需要 -->
-                <action android:name="com.huawei.intent.action.PUSH_STATE" />
-            </intent-filter>
-        </receiver> <!-- VIVO push 配置结束 -->
-        <!-- 华为 push 配置开始 -->
-        <!-- BridgeActivity定义了HMS-SDK中一些跳转所需要的透明页面 -->
         <service android:name="com.amap.api.location.APSService" />
-        <service
-            android:name="com.xiaomi.push.service.XMPushService"
-            android:enabled="true" />
-        <service
-            android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name="com.xiaomi.mipush.sdk.MessageHandleService"
-            android:enabled="true" />
-        <service
-            android:name="com.xiaomi.push.service.XMJobService"
-            android:enabled="true"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name="com.coloros.mcssdk.PushService"
-            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
-            <intent-filter>
-                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
-            </intent-filter>
-        </service> <!-- 第三方相关 :接收Push消息（注册、Push消息、Push连接状态）广播 -->
-        <service
-            android:name="com.vivo.push.sdk.service.CommandClientService"
-            android:exported="true" />
-        <service
-            android:name="com.huawei.updatesdk.service.deamon.download.DownloadService"
-            android:exported="false" />
     </application>
 
 </manifest>

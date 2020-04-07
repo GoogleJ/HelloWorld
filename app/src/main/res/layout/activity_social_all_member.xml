@@ -49,7 +49,7 @@
             android:layout_height="match_parent"
             android:overScrollMode="never" />
 
-        <com.zxjk.duoduo.ui.msgpage.widget.IndexView
+        <com.zxjk.moneyspace.ui.msgpage.widget.IndexView
             android:id="@+id/index"
             android:layout_width="24dp"
             android:layout_height="match_parent"

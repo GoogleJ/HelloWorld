@@ -17,7 +17,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.zxjk.duoduo.ui.widget.ProgressView
+        <com.zxjk.moneyspace.ui.widget.ProgressView
             android:id="@+id/pb_webview"
             android:layout_width="match_parent"
             android:layout_height="3dp" />

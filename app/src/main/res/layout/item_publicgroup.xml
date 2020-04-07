@@ -101,7 +101,7 @@
                 android:textColor="@color/white" />
 
             <TextView
-                android:id="@+id/tvGroupOwnerName"
+                android:id="@+id/tvGroupOnwerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"

@@ -27,7 +27,7 @@
         android:padding="12dp"
         android:background="@color/white">
 
-        <com.zxjk.duoduo.ui.widget.PayPsdInputView
+        <com.zxjk.moneyspace.ui.widget.PayPsdInputView
             android:id="@+id/pay_pwd"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"

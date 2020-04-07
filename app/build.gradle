@@ -12,7 +12,7 @@ android {
     }
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.zxjk.duoduo"
+        applicationId "com.zxjk.moneyspace"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 17
@@ -46,7 +46,7 @@ android {
     }
     greendao {
         schemaVersion 5
-        daoPackage 'com.zxjk.duoduo.bean'
+        daoPackage 'com.zxjk.moneyspace.bean'
     }
 
     sourceSets {
@@ -128,12 +128,9 @@ dependencies {
     //融云
     implementation project(':IMKit')
     implementation project(':IMLib')
+    implementation project(':CallLib')
+    implementation project(':CallKit')
     implementation project(':Sight')
-
-    //视频压缩
-    implementation 'com.mabeijianxi:small-video-record2:2.0.3@aar'
-
-    implementation 'com.artifex.mupdf:viewer:1.15.0'
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
@@ -180,13 +177,6 @@ dependencies {
     //高德地图
     implementation files('libs/AMap_Location_V4.6.0_20190423.jar')
 
-    //小米推送
-    implementation files('libs/MiPush_SDK_Client_3_6_18.jar')
-
-    //华为推送
-    implementation 'com.huawei.android.hms:base:2.6.3.306'
-    implementation 'com.huawei.android.hms:push:2.6.3.306'
-
     //greendao
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
@@ -201,9 +191,6 @@ dependencies {
     implementation 'com.umeng.umsdk:analytics:8.0.0'
     implementation 'com.umeng.umsdk:common:2.0.0'
     implementation 'com.umeng.umsdk:utdid:1.1.5.3'
-
-    //点击爆炸
-    implementation 'tyrantgit:explosionfield:1.0.1'
 
     //debugtools
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
