@@ -4,15 +4,21 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -43,6 +49,30 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
     private String title;
     private String type;
     private ValueAnimator pbAnim;
+
+    private BroadcastReceiver downloadCompleteReceive = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())) {
+                    long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                    DownloadManager downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
+                    String type = downloadManager.getMimeTypeForDownloadedFile(downloadId);
+                    if (TextUtils.isEmpty(type)) {
+                        type = "*/*";
+                    }
+                    Uri uri = downloadManager.getUriForDownloadedFile(downloadId);
+                    if (uri != null) {
+                        Intent handlerIntent = new Intent(Intent.ACTION_VIEW);
+                        handlerIntent.setDataAndType(uri, type);
+                        handlerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        handlerIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivity(handlerIntent);
+                    }
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +138,7 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
 
 //        webSettings.setMixedContentMode(WebSettings.);
 
-//设置自适应屏幕，两者合用
+        //设置自适应屏幕，两者合用
         webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
         webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
 
@@ -119,7 +149,7 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
         webSettings.setDomStorageEnabled(true);
         webSettings.setBlockNetworkImage(false);
 
-//缩放操作
+        //缩放操作
         webSettings.setSupportZoom(false); //支持缩放，默认为true。是下面那个的前提。
         webSettings.setBuiltInZoomControls(false); //设置内置的缩放控件。若为false，则该WebView不可缩放
         webSettings.setDisplayZoomControls(true); //隐藏原生的缩放控件
@@ -183,8 +213,32 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             }
         });
         mWebView.loadUrl(currentUrl);
-    }
 
+
+        mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setTitle(getString(R.string.hilamg));
+            // 设置通知栏的描述
+//          request.setDescription("This is description");
+            // 允许在计费流量下下载
+            request.setAllowedOverMetered(false);
+            // 允许漫游时下载
+            request.setAllowedOverRoaming(true);
+            // 允许下载的网路类型
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+            String fileName = URLUtil.guessFileName(url, contentDisposition, mimetype);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+
+            final DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            downloadManager.enqueue(request);
+
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+            registerReceiver(downloadCompleteReceive, intentFilter);
+        });
+    }
 
     @Override
     protected void onDestroy() {
@@ -197,6 +251,7 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             mWebView = null;
         }
         super.onDestroy();
+        unregisterReceiver(downloadCompleteReceive);
     }
 
     @Override
@@ -209,7 +264,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             }
         }
     }
-
 
     @Override
     public void webToLogin(String token) {
