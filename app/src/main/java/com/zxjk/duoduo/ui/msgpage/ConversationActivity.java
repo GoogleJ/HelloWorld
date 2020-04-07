@@ -993,7 +993,9 @@ public class ConversationActivity extends BaseActivity {
                     extension.removePlugin(next);
                 }
             }
-            if (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || (groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenWxLive().equals("1"))) {
+            if (groupInfo.getGroupInfo().getGroupType().equals("1") &&
+                    (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) ||
+                            groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenWxLive().equals("1"))) {
                 pluginModules.add(new CastPlugin());
             }
         }
