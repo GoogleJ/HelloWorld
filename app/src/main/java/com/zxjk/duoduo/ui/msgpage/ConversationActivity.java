@@ -807,7 +807,7 @@ public class ConversationActivity extends BaseActivity {
     private void upgradeWatchNumsForWechatCast(TextView tvNums) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getOnlineUsers(targetId)
-                .compose(bindToLifecycle())
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
                 .flatMap((Function<String, ObservableSource<?>>) s -> {
