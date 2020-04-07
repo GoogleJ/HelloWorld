@@ -733,6 +733,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) return;
 
         switch (requestCode) {
             case REQUEST_REWARD:
