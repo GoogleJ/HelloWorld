@@ -135,14 +135,75 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<List<GroupChatResponse>>> getMygroupinformation(@Field("customerId") String customerId);
 
+    @POST("duoduo/exchange/getNumbeOfTransaction")
+    Observable<BaseResponse<GetNumbeOfTransactionResponse>> getNumbeOfTransaction();
+
+    @POST("duoduo/exchange/releasePurchase")
+    @FormUrlEncoded
+    Observable<BaseResponse<ReleasePurchaseResponse>> releasePurchase(@Field("number") String number,
+                                                                      @Field("money") String money, @Field("currency") String currency, @Field("payPwd") String paypwd, @Field("payTpye") String payTpye,
+                                                                      @Field("minNum") String minNum, @Field("maxNum") String maxNum, @Field("exchangeFee") String exchangeFee);
+
+    @POST("duoduo/exchange/releaseSale")
+    @FormUrlEncoded
+    Observable<BaseResponse<ReleaseSaleResponse>> releaseSale(@Field("number") String number,
+                                                              @Field("money") String money,
+                                                              @Field("currency") String currency,
+                                                              @Field("payTpye") String payTpye);
+
+    @POST("duoduo/customer/getPayInfo")
+    Observable<BaseResponse<List<PayInfoResponse>>> getPayInfo();
 
     @POST("duoduo/friend/deleteFriend")
     @FormUrlEncoded
     Observable<BaseResponse<String>> deleteFriend(@Field("friendId") String friendId);
 
+    @POST("duoduo/customer/updatePwd")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> updatePwd(
+            @Field("oldPwd") String oldPwd,
+            @Field("newPwdOne") String newPwdOne,
+            @Field("newPwdTwo") String newPwdTwo
+    );
 
     @POST("duoduo/loginOut")
     Observable<BaseResponse<String>> loginOut();
+
+    @POST("duoduo/customer/addPayInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> addPayInfo(@Field("data") String data);
+
+    @POST("duoduo/customer/certification")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> certification(@Field("data") String data);
+
+    @POST("duoduo/exchange/closeSellOrder")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> closeSellOrder(@Field("sellOrderId") String sellOrderId);
+
+    @POST("duoduo/exchange/cancelled")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> cancelled(@Field("buyOrderId") String buyOrderId
+            , @Field("bothOrderId") String bothOrderId
+            , @Field("sellOrderId") String sellOrderId);
+
+    @POST("duoduo/exchange/isConfine")
+    Observable<BaseResponse<String>> isConfine();
+
+    @POST("duoduo/exchange/overOrder")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> overOrder(@Field("buyCustomerId") String buyCustomerId
+            , @Field("buyOrderId") String buyOrderId
+            , @Field("sellOrderId") String sellOrderId
+            , @Field("bothOrderId") String bothOrderId
+            , @Field("payPwd") String payPwd);
+
+    @POST("duoduo/exchange/rejectAudit")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> rejectAudit(
+            @Field("buyOrderId") String buyOrderId
+            , @Field("bothOrderId") String bothOrderId
+            , @Field("sellOrderId") String sellOrderId);
 
     @POST("duoduo/friend/updateRemark")
     @FormUrlEncoded
@@ -151,10 +212,20 @@ public interface Api {
             @Field("remark") String remark
     );
 
+    @POST("duoduo/exchange/updateBuyPayState")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> updateBuyPayState(@Field("bothOrderId") String bothOrderId
+            , @Field("picture") String picture);
+
+    @POST("duoduo/customer/updatePayInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> updatePayInfo(@Field("payType") String payType);
 
     @POST("duoduo/customer/getCustomerAuth")
     Observable<BaseResponse<String>> getCustomerAuth();
 
+    @POST("duoduo/exchange/getOverOrder")
+    Observable<BaseResponse<List<GetOverOrderResponse>>> getOverOrder();
 
     @POST("duoduo/customer/fandPayPwd")
     @FormUrlEncoded
@@ -253,6 +324,9 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<TransferResponse>> getTransferInfo(@Field("transferId") String transferId);
 
+    @POST("duoduo/redPackage/getRedPackageRecord")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetRedPackageRecordResponse>> getRedPackageRecord(@Field("type") String type);
 
     @POST("duoduo/redPackage/receivePersonalRedPackage")
     @FormUrlEncoded
@@ -272,11 +346,17 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<GetGroupRedPackageInfoResponse>> getGroupRedPackageInfo(@Field("redPackageId") String redPackageId);
 
+    @POST("duoduo/customer/verifyPayPwd")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> verifyPayPwd(@Field("payPwd") String payPwd);
 
     @POST("duoduo/customer/verifyPaperworkNumber")
     @FormUrlEncoded
     Observable<BaseResponse<String>> verifyPaperworkNumber(@Field("number") String number);
 
+    @POST("duoduo/exchange/addAppeal")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> addAppeal(@Field("orderAppealStr") String orderAppealStr);
 
     @POST("duoduo/redPackage/sendGroupRedPackage")
     @FormUrlEncoded
@@ -486,6 +566,9 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> getShoppingUrl(@Field("type") String type);
 
+    @POST("duoduo/customer/authorizedLogin")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> getAuthorization(@Field("appId") String appid);
 
     @POST("duoduo/customer/thirdPartLogin")
     @FormUrlEncoded
