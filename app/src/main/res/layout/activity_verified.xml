@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:ignore="all">
+
+    <include layout="@layout/layout_title_back" />
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/verified_prompt"
+                android:textColor="@color/textColor3"
+                android:textSize="14sp" />
+
+            <RelativeLayout style="@style/RLayoutStyle">
+
+                <TextView
+                    android:id="@+id/tv_certificateType"
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp" />
+
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <EditText
+                android:id="@+id/et_realName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@android:color/white"
+                android:hint="@string/bank_real_name"
+                android:paddingStart="15dp"
+                android:singleLine="true"
+                android:textColor="@color/theme_color"
+                android:textSize="16sp" />
+
+            <include layout="@layout/layout_line" />
+
+            <EditText
+                android:id="@+id/et_idCard"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="@string/id_number"
+                android:paddingStart="15dp"
+                android:singleLine="true"
+                android:textColor="@color/theme_color"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/verified_prompt_1"
+                android:textColor="@color/textColor3"
+                android:textSize="14sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rl_front"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/iv_frontPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="103dp"
+                        android:background="@drawable/shape_circular_bead1"
+                        android:scaleType="center"
+                        android:src="@drawable/icon_add_a_photo_of_the_id" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iv_frontPhoto"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/front_photo_of_the_document"
+                        android:textColor="@color/textColor6"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_frontPhotoEdit"
+                        android:layout_width="29dp"
+                        android:layout_height="29dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/icon_image_edit"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_reverse"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/iv_reversePhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="103dp"
+                        android:background="@drawable/shape_circular_bead1"
+                        android:scaleType="center"
+                        android:src="@drawable/icon_add_a_photo_of_the_id" />
+
+                    <TextView
+                        android:id="@+id/tv_reverse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iv_reversePhoto"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/reverse_photo_of_the_document"
+                        android:textColor="@color/textColor6"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_reversePhotoEdit"
+                        android:layout_width="29dp"
+                        android:layout_height="29dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/icon_image_edit"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rl_heldPhoto"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/iv_heldPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="103dp"
+                        android:background="@drawable/shape_circular_bead1"
+                        android:scaleType="center"
+                        android:src="@drawable/icon_hand_held_passport_photo" />
+
+                    <TextView
+                        android:id="@+id/tv_heldPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iv_heldPhoto"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/hand_held_passport_photo"
+                        android:textColor="@color/textColor6"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_heldPhotoEdit"
+                        android:layout_width="29dp"
+                        android:layout_height="29dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/icon_image_edit"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>

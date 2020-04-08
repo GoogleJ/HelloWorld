@@ -7,8 +7,7 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <RelativeLayout
-        style="@style/RLayoutStyle"
+    <RelativeLayout style="@style/RLayoutStyle"
         android:layout_marginTop="10dp">
 
         <TextView
@@ -21,16 +20,14 @@
             android:id="@+id/tv_DuoDuoNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#cccccc"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="#cccccc"
-            android:textSize="15sp" />
+            android:layout_marginEnd="10dp" />
 
     </RelativeLayout>
-
-    <include layout="@layout/layout_line" />
 
     <RelativeLayout
         android:id="@+id/rl_changePhoneNumber"
@@ -52,7 +49,23 @@
         <ImageView
             android:id="@+id/iv_enter1"
             style="@style/ImageEnter" />
+    </RelativeLayout>
 
+    <include layout="@layout/layout_line" />
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:id="@+id/rl_changePassword"
+        style="@style/RLayoutStyle">
+
+        <TextView
+            style="@style/textStyle"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="@string/change_password" />
+
+        <ImageView style="@style/ImageEnter" />
     </RelativeLayout>
 
 </LinearLayout>

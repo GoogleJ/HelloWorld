@@ -122,6 +122,33 @@
 
             </RelativeLayout>
 
+            <!--            <include layout="@layout/layout_line" />-->
+
+            <RelativeLayout
+                android:id="@+id/rl_collectionInformation"
+                style="@style/RLayoutStyle"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/collection_information" />
+
+                <TextView
+                    android:id="@+id/tv_perfection"
+                    style="@style/textStyle16"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@+id/iv_enter1"
+                    android:text="@string/not_perfection" />
+
+                <ImageView
+                    android:id="@+id/iv_enter1"
+                    style="@style/ImageEnter" />
+
+            </RelativeLayout>
+
             <include layout="@layout/layout_line" />
 
             <RelativeLayout

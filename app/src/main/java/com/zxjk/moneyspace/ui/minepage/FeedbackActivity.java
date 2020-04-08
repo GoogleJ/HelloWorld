@@ -25,11 +25,16 @@ public class FeedbackActivity extends BaseActivity {
         TextView tv_commit = findViewById(R.id.tv_commit);
         feedbackEdit = findViewById(R.id.feedback_edit);
 
-        feedbackEdit.postDelayed(() -> {
-            feedbackEdit.requestFocus();
-            InputMethodManager manager = ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE));
-            if (manager != null) manager.showSoftInput(feedbackEdit, 0);
+
+        feedbackEdit.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                feedbackEdit.requestFocus();
+                InputMethodManager manager = ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE));
+                if (manager != null) manager.showSoftInput(feedbackEdit, 0);
+            }
         }, 200);
+
 
         tv_commit.setVisibility(View.VISIBLE);
         tv_commit.setText(getString(R.string.commit));

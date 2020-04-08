@@ -29,6 +29,7 @@ import com.zxjk.moneyspace.utils.MoneyValueFilter;
 
 import java.text.DecimalFormat;
 
+
 @SuppressLint("CheckResult")
 public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
 
@@ -39,7 +40,9 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
     private EditText etWalletAddress;
     private EditText etCount;
     private TextView mTvZhuanChuAll;
+
     private MoneyValueFilter moneyValueFilter;
+
     private String symbol;
     private String formAddress;
     private String coinType;
@@ -48,6 +51,7 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
     private String tokenDecimal;
     private String contractAddress;
     private String sum;
+
     private float gasMax;
     private float gasMin;
 
@@ -64,6 +68,8 @@ public class ZhuanChuActivity extends BaseActivity implements SeekBar.OnSeekBarC
         tokenDecimal = getIntent().getStringExtra("tokenDecimal");
         contractAddress = getIntent().getStringExtra("contractAddress");
         sum = getIntent().getStringExtra("sum");
+
+
 
         initView();
 

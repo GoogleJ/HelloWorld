@@ -33,9 +33,11 @@ import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
+
 @SuppressLint("CheckResult")
 public class SettingActivity extends BaseActivity {
 
+    private TextView tv_perfection;
     private ImageView iv_authentication;
     private TextView tv_authentication;
     private Switch swGlobalMute;
@@ -122,6 +124,10 @@ public class SettingActivity extends BaseActivity {
         super.onResume();
         tv_authentication.setText(CommonUtils.getAuthenticate(Constant.currentUser.getIsAuthentication()));
         iv_authentication.setVisibility(Constant.currentUser.getIsAuthentication().equals("0") ? View.VISIBLE : View.GONE);
+
+        if (SPUtils.getInstance().getBoolean(Constant.currentUser.getId(), false)) {
+            tv_perfection.setText(getString(R.string.complete_payinfo));
+        }
     }
 
     private void initView() {
@@ -133,6 +139,9 @@ public class SettingActivity extends BaseActivity {
         iv_authentication = findViewById(R.id.iv_authentication);
         swGlobalMute = findViewById(R.id.swGlobalMute);
         swGlobalVibrate = findViewById(R.id.swGlobalVibrate);
+        boolean hasCompletePay = SPUtils.getInstance().getBoolean(Constant.currentUser.getId(), false);
+        tv_perfection = findViewById(R.id.tv_perfection);
+        tv_perfection.setText(hasCompletePay ? R.string.complete_payinfo : R.string.uncomplete_payinfo);
 
         //返回
         rl_back.setOnClickListener(v -> finish());
@@ -172,6 +181,17 @@ public class SettingActivity extends BaseActivity {
                             Constant.currentUser.setIsAuthentication("0");
                             tv_authentication.setText(CommonUtils.getAuthenticate(Constant.currentUser.getIsAuthentication()));
                         }, this::handleApiError);
+            }
+        });
+        //收款信息
+        findViewById(R.id.rl_collectionInformation).setOnClickListener(v -> {
+            String isAuthentication = Constant.currentUser.getIsAuthentication();
+            if ("0".equals(isAuthentication)) {
+                startActivity(new Intent(SettingActivity.this, BillingMessageActivity.class));
+            } else if ("2".equals(isAuthentication)) {
+                ToastUtils.showShort(R.string.waitAuthentication);
+            } else {
+                ToastUtils.showShort(R.string.notAuthentication);
             }
         });
         //帮助中心

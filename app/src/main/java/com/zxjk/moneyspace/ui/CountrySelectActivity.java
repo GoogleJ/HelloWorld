@@ -102,5 +102,5 @@ public class CountrySelectActivity extends BaseActivity {
         }
         return entities;
     }
-    
+
 }
