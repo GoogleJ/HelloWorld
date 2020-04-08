@@ -501,6 +501,7 @@ public class NewSocialManageActivity extends BaseActivity {
                                         Intent intent = new Intent(NewSocialManageActivity.this, HomeActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
+                                        ToastUtils.showShort(getString(R.string.clearance));
                                     }
 
                                     @Override

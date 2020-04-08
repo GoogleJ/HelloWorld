@@ -1210,6 +1210,7 @@
     <string name="parseimg">处理图片中…</string>
     <string name="force_recall_update">禁言+撤回</string>
     <string name="special_chat">不能包含特殊字符</string>
+    <string name="clearance">已清空</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

@@ -172,11 +172,22 @@ public class CommunityInfoResponse implements Parcelable {
         this.members = members;
     }
 
-    public static class MembersBean implements Parcelable {
+    public static class MembersBean implements Parcelable , Cloneable {
         /**
          * headPortrait : https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/54CFA243-272B-43FF-80A1-8622F42316C9.jpg
          * identity : 2
          */
+
+
+        private String memberId;
+
+        public String getMemberId() {
+            return memberId;
+        }
+
+        public void setMemberId(String memberId) {
+            this.memberId = memberId;
+        }
 
         private String headPortrait;
         private String identity;
@@ -196,6 +207,8 @@ public class CommunityInfoResponse implements Parcelable {
         public void setIdentity(String identity) {
             this.identity = identity;
         }
+
+
 
         @Override
         public int describeContents() {

@@ -659,14 +659,10 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(CreateGroupActivity.this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
-                    if (getIntent().getBooleanExtra("fromSocial", false)) {
-                        finish();
-                    } else {
                         Intent intent = new Intent();
                         intent.putStringArrayListExtra("deletemanagers", selectedIds);
                         setResult(7, intent);
                         finish();
-                    }
                 }, this::handleApiError);
     }
 

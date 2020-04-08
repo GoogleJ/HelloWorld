@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.CloneUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
@@ -36,6 +37,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.gson.reflect.TypeToken;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BaseResponse;
@@ -67,11 +69,16 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.model.Conversation;
@@ -85,6 +92,10 @@ public class SocialHomeActivity extends BaseActivity {
     private static final int REQUEST_SOCIALNAME = 3;
     private static final int REQUEST_LOGO = 4;
     private static final int REQUEST_BG = 5;
+    private static final int REQUEST_REMOVE = 7;
+    private ArrayList<String> selectedIds = new ArrayList<>();
+    private List<CommunityInfoResponse.MembersBean> membersBeanList = new ArrayList<>();
+
     private GroupResponse fromConversation;
     private int[] detailTitles = {R.string.social_calture, R.string.social_act};
     private int minimumHeightForVisibleOverlappingContent = 0;
@@ -235,8 +246,10 @@ public class SocialHomeActivity extends BaseActivity {
                                                     membersBean.setIdentity("0");
                                                     response.setIdentity("0");
                                                     response.getMembers().add(membersBean);
-                                                    initAdapter(response);
 
+                                                    membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
+                                                    }.getType());
+                                                    initAdapter();
                                                 }, this::handleApiError));
                             } else if (r.getType().equals("pay")) {
                                 View inflate = viewStubPay.inflate();
@@ -272,7 +285,10 @@ public class SocialHomeActivity extends BaseActivity {
                                                     membersBean.setIdentity("0");
                                                     response.setIdentity("0");
                                                     response.getMembers().add(membersBean);
-                                                    initAdapter(response);
+
+                                                    membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
+                                                    }.getType());
+                                                    initAdapter();
                                                 }, this::handleApiError)));
                             }
                         } else {
@@ -321,7 +337,9 @@ public class SocialHomeActivity extends BaseActivity {
                         startActivityForResult(intent, REQUEST_BG);
                     });
 
-                    initAdapter(response);
+                    membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
+                    }.getType());
+                    initAdapter();
                 }, t -> {
                     handleApiError(t);
                     finish();
@@ -381,15 +399,18 @@ public class SocialHomeActivity extends BaseActivity {
                         startActivityForResult(intent, REQUEST_BG);
                     });
 
-                    initAdapter(response);
+                    membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
+                    }.getType());
+
+                    initAdapter();
                 }, t -> {
                     handleApiError(t);
                     finish();
                 });
     }
 
-    private void initAdapter(CommunityInfoResponse r) {
-        String memCount = r.getMembersCount();
+    private void initAdapter() {
+        String memCount = response.getMembersCount();
         int realCount = -1;
         if (!TextUtils.isEmpty(memCount)) {
             try {
@@ -399,7 +420,7 @@ public class SocialHomeActivity extends BaseActivity {
         }
         if (realCount != -1 && realCount >= maxMemVisiableItem) {
             maxMemVisiableItem -= 1;
-            List<CommunityInfoResponse.MembersBean> result = r.getMembers().subList(0, maxMemVisiableItem - 1);
+            List<CommunityInfoResponse.MembersBean> result = membersBeanList.subList(0, maxMemVisiableItem - 1);
             int numLeft = realCount - result.size();
             result.add(new CommunityInfoResponse.MembersBean());
             ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
@@ -409,9 +430,9 @@ public class SocialHomeActivity extends BaseActivity {
             initAdapterForSocialMem(result, numLeft);
         } else {
             ViewGroup.MarginLayoutParams layoutParams2 = (ViewGroup.MarginLayoutParams) recyclerGroupMember.getLayoutParams();
-            layoutParams2.width = CommonUtils.dip2px(this, 25) * (r.getMembers().size()) + CommonUtils.dip2px(this, 20);
+            layoutParams2.width = CommonUtils.dip2px(this, 25) * (membersBeanList.size()) + CommonUtils.dip2px(this, 20);
             recyclerGroupMember.setLayoutParams(layoutParams2);
-            initAdapterForSocialMem(r.getMembers(), 0);
+            initAdapterForSocialMem(membersBeanList, 0);
         }
     }
 
@@ -494,8 +515,7 @@ public class SocialHomeActivity extends BaseActivity {
         Intent intent = new Intent(SocialHomeActivity.this, CreateGroupActivity.class);
         intent.putExtra("eventType", 3);
         intent.putExtra("groupId", response.getGroupId());
-        intent.putExtra("fromSocial", true);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_REMOVE);
     }
 
     private void initAdapterForSocialMem(List<CommunityInfoResponse.MembersBean> data, int numLeft) {
@@ -787,10 +807,13 @@ public class SocialHomeActivity extends BaseActivity {
         super.finish();
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && resultCode == 1) {
+        if (data == null) return;
+
+        if (resultCode == 1) {
             switch (requestCode) {
                 case REQUEST_NOTICE:
                     response.setAnnouncementEditDate(data.getStringExtra("result"));
@@ -820,11 +843,43 @@ public class SocialHomeActivity extends BaseActivity {
             }
         }
 
-        if (data != null && requestCode == 1000 && resultCode == 1000) {
+        if (requestCode == 1000 && resultCode == 1000) {
             if (fromConversation != null) {
                 fromConversation = (GroupResponse) data.getSerializableExtra("group");
                 tvSocialName.setText(fromConversation.getGroupInfo().getGroupNikeName());
             }
+        }
+
+        if (resultCode == 7) {
+            selectedIds = data.getStringArrayListExtra("deletemanagers");
+            if (null == selectedIds) return;
+
+            Observable.fromArray(selectedIds)
+                    .subscribeOn(Schedulers.io())
+                    .doOnNext(selectedIds -> {
+                        for (String id : selectedIds) {
+                            for (CommunityInfoResponse.MembersBean membersBean : response.getMembers()) {
+                                if (!TextUtils.isEmpty(membersBean.getMemberId())) {
+                                    if (membersBean.getMemberId().equals(id)) {
+                                        response.getMembers().remove(membersBean);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(bindToLifecycle())
+                    .subscribe(strings -> {
+                        response.setMembersCount(String.valueOf(Integer.valueOf(response.getMembersCount()) - selectedIds.size()));
+
+                        maxMemVisiableItem = (ScreenUtils.getScreenWidth() - CommonUtils.dip2px(SocialHomeActivity.this, 84)) / CommonUtils.dip2px(SocialHomeActivity.this, 25) + 1;
+
+                        membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
+                        }.getType());
+                        SocialHomeActivity.this.initAdapter();
+                    }, t -> {
+                    });
         }
     }
 }
