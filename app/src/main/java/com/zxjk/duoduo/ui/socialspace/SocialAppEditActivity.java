@@ -14,11 +14,13 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.EditCommunityApplicationRequest;
 import com.zxjk.duoduo.bean.response.BaseResponse;
@@ -122,6 +124,11 @@ public class SocialAppEditActivity extends BaseActivity {
         String name = etName.getText().toString().trim();
         if (name.isEmpty()) {
             ToastUtils.showShort(R.string.input_socialapp_name);
+            return;
+        }
+
+        if (RegexUtils.isMatch(Constant.speChat, name)) {
+            ToastUtils.showShort(getString(R.string.special_chat));
             return;
         }
 

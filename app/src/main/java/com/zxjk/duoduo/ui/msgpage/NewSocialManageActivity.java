@@ -498,9 +498,7 @@ public class NewSocialManageActivity extends BaseActivity {
                                     @Override
                                     public void onSuccess(Boolean aBoolean) {
                                         dialog.dismiss();
-                                        Intent intent = new Intent(NewSocialManageActivity.this, HomeActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
+
                                         ToastUtils.showShort(getString(R.string.clearance));
                                     }
 
