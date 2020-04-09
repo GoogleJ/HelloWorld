@@ -855,7 +855,7 @@
     <string name="late">来晚了！</string>
     <string name="red_invidate">非常抱歉，当前红包已过期</string>
     <string name="no_red_left">非常抱歉，当前红包已领取完</string>
-    <string name="num_can_be_trans">可转出数量%1$d</string>
+    <string name="num_can_be_trans">可转出数量%1$s%2$s</string>
     <string name="groupowner_or_manager">群主/管理员</string>
     <string name="manager">管理</string>
     <string name="danger_tips" translatable="false"><![CDATA[<p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由&nbsp;<font color=\'black\'><b>%1$s</b></font>&nbsp;直接并单独向您承担责任。</p>]]></string>

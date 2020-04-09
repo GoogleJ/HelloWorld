@@ -30,6 +30,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -361,9 +362,10 @@ public class NewsPager extends BaseFragment {
     }
 
     private void shareTo(int plantform) {
-        Bitmap bitmap = getBitmapByView(invitePop.findViewById(R.id.sv_newspagerpopup));
-        final Bitmap bitmap2 = compressImage(bitmap);
-        UMImage link = new UMImage(getActivity(), bitmap2);
+
+        Bitmap bitmap2 = getBitmapByView(invitePop.findViewById(R.id.sv_newspagerpopup));
+        final Bitmap bitmap = compressImage(bitmap2);
+        UMImage link = new UMImage(getActivity(), bitmap);
 
         SHARE_MEDIA platform = null;
         switch (plantform) {
@@ -440,7 +442,7 @@ public class NewsPager extends BaseFragment {
 
     private Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        image.compress(Bitmap.CompressFormat.WEBP, 100, baos);
         int options = 100;
         while (baos.toByteArray().length / 1024 > 100) {
             baos.reset();

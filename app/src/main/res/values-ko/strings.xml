@@ -821,7 +821,7 @@
     <string name="late">늦었습니다</string>
     <string name="red_invidate">죄송합니다,현재 빨간봉투의기한이 지났습니다 </string>
     <string name="no_red_left">죄송합니다,현재 빨간봉투는 이미 수령하였습니다 </string>
-    <string name="num_can_be_trans">환승 횟수%1$d</string>
+    <string name="num_can_be_trans">환승 횟수%1$s%2$s</string>
     <string name="groupowner_or_manager">소유자/관리자</string>
     <string name="manager">관리</string>
     <string name="nums_left_upload_social_files">(정보 사본 %1$d 개도 업로드 가능)</string>

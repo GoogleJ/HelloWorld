@@ -45,8 +45,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
     private ProgressView pb_webview;
     private WebSettings webSettings;
     private WebView mWebView;
-    private TextView tv_title;
-    private String title;
     private String type;
     private ValueAnimator pbAnim;
 
@@ -80,7 +78,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
         setContentView(R.layout.activity_web111);
 
         currentUrl = getIntent().getStringExtra("url");
-        title = getIntent().getStringExtra("title");
         type = getIntent().getStringExtra("type");
 
         ((Application) getApplication()).getWebDataUtils().setWebActivityToLogin(this);
@@ -100,21 +97,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
     private void initView() {
         fl_webview = findViewById(R.id.fl_webview);
         pb_webview = findViewById(R.id.pb_webview);
-        tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(title);
-
-        if (!TextUtils.isEmpty(type) && type.equals("mall")) {
-            findViewById(R.id.rl_back).setVisibility(View.INVISIBLE);
-            findViewById(R.id.rl_end).setVisibility(View.VISIBLE);
-            ImageView iv_end = findViewById(R.id.iv_end);
-            Drawable up = ContextCompat.getDrawable(this, R.drawable.ic_delete_dialog);
-            Drawable drawableUp = DrawableCompat.wrap(up);
-            DrawableCompat.setTint(drawableUp, ContextCompat.getColor(this, R.color.black));
-            iv_end.setImageDrawable(drawableUp);
-            findViewById(R.id.rl_end).setOnClickListener(v -> finish());
-        } else {
-            findViewById(R.id.rl_back).setOnClickListener(v -> finish());
-        }
     }
 
     private void initAnimtor() {
@@ -251,7 +233,6 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             mWebView = null;
         }
         super.onDestroy();
-        unregisterReceiver(downloadCompleteReceive);
     }
 
     @Override

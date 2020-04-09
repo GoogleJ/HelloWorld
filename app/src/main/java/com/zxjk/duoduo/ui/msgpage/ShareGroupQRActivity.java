@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
@@ -51,6 +53,7 @@ import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
+import io.rong.message.utils.BitmapUtil;
 
 public class ShareGroupQRActivity extends BaseActivity {
 
@@ -224,7 +227,7 @@ public class ShareGroupQRActivity extends BaseActivity {
         CommonUtils.initDialog(this).show();
         saveBitmapFile(Constant.shareGroupQR);
         Uri uri = Uri.fromFile(new File(getExternalCacheDir(), "1.jpg"));
-        ImageMessage obtain = ImageMessage.obtain(uri, uri, false);
+        ImageMessage obtain = ImageMessage.obtain(uri, uri, true);
         Message obtain1 = Message.obtain(data.get(position).getTargetId(), data.get(position).getConversationType(), obtain);
         RongIM.getInstance().sendImageMessage(obtain1, null, null, new RongIMClient.SendImageMessageCallback() {
             @Override

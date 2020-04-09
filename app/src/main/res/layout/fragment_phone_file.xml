@@ -42,7 +42,6 @@
                 android:id="@+id/bt_send_file"
                 android:layout_width="66dp"
                 android:layout_height="28dp"
-                android:layout_alignParentEnd="true"
                 android:background="@drawable/shape_theme2"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:text="@string/m_verification_send_btn"

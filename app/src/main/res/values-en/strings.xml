@@ -209,7 +209,7 @@
     <string name="groupmanage_tips4">Search for this community based on the community number</string>
     <string name="transLeft">Available</string>
     <string name="can_user_value_symbol">Available %1$s%2$s</string>
-    <string name="num_can_be_trans">Number of transfers %1$d</string>
+    <string name="num_can_be_trans">Number of transfers %1$s%2$s</string>
     <string name="login_agreed">Agree</string>
     <string name="m_add_my_way_business_carde_text">business card</string>
     <string name="m_privacy_recommend_friend">Recommend a friend from Contact</string>
