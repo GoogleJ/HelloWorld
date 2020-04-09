@@ -21,7 +21,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.zxjk.duoduo.ui.msgpage.GroupQRActivity;
+import com.zxjk.moneyspace.ui.msgpage.GroupQRActivity;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.ui.WebActivity;

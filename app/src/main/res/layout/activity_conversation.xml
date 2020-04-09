@@ -6,12 +6,6 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <ViewStub
-        android:id="@+id/stubCasting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout="@layout/layout_conversation_casting" />
-
     <fragment
         android:id="@+id/conversation"
         android:name="com.zxjk.moneyspace.ui.msgpage.rongIM.CusConversationFragment"

@@ -1,11 +1,11 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
-import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.moneyspace.bean.response.ReleasePurchaseResponse;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

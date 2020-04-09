@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.zxjk.duoduo.ui.msgpage.SearchGroupActivity;
+import com.zxjk.moneyspace.ui.msgpage.SearchGroupActivity;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
 import com.zxjk.moneyspace.ui.walletpage.RecipetQRActivity;

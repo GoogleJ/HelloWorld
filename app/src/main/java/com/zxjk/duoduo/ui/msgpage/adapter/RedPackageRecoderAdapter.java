@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.msgpage.adapter;
+package com.zxjk.moneyspace.ui.msgpage.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetRedPackageRecordResponse;
-import com.zxjk.duoduo.ui.msgpage.PeopleUnaccalimedActivity;
+import com.zxjk.moneyspace.bean.response.GetRedPackageRecordResponse;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.ui.msgpage.PeopleUnaccalimedActivity;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

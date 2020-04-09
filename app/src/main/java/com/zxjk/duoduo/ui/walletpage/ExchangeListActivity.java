@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,17 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.zxjk.duoduo.Constant;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
-import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
-import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.walletpage.adapter.ExchangeListAdapter;
-import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.moneyspace.Constant;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.GetOverOrderResponse;
+import com.zxjk.moneyspace.bean.response.ReleasePurchaseResponse;
+import com.zxjk.moneyspace.bean.response.ReleaseSaleResponse;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.ui.walletpage.adapter.ExchangeListAdapter;
+import com.zxjk.moneyspace.utils.CommonUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class ExchangeListActivity extends BaseActivity {
                     //买方
                     if (g.getIsBuyPay().equals("1")) {
                         //确认支付
-                        intent = new Intent(this, ConfirmBuyActivity.class);
+                        intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.ConfirmBuyActivity.class);
                         ReleaseSaleResponse data = new ReleaseSaleResponse();
                         data.setNick(g.getSellNick());
                         data.setCurrency(g.getCurrency());
@@ -85,7 +85,7 @@ public class ExchangeListActivity extends BaseActivity {
                         intent.putExtra("rate", rate);
                     } else {
                         //等待审核
-                        intent = new Intent(this, WaitForJudgeActivity.class);
+                        intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.WaitForJudgeActivity.class);
                         ReleaseSaleResponse data = new ReleaseSaleResponse();
                         data.setCurrency(g.getCurrency());
                         if (g.getPayType().equals("1")) {
@@ -111,12 +111,12 @@ public class ExchangeListActivity extends BaseActivity {
                 } else {
                     if (g.getIsBuyPay().equals("1")) {
                         //对方正在支付中
-                        intent = new Intent(this, WaitForPayOverActivity.class);
+                        intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.WaitForPayOverActivity.class);
                         intent.putExtra("data", g);
                         intent.putExtra("rate", rate);
                     } else if (g.getIsBuyPay().equals("0")) {
                         //对方已支付，审核
-                        intent = new Intent(this, OverOrderActivity.class);
+                        intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.OverOrderActivity.class);
                         intent.putExtra("data", g);
                         intent.putExtra("rate", rate);
                     }
@@ -130,7 +130,7 @@ public class ExchangeListActivity extends BaseActivity {
                     money = new DecimalFormat("0.00").format(CommonUtils.mul(Double.parseDouble(r), Double.parseDouble(mAdapter.getItem(position).getNumber())));
                 }
                 //挂单中
-                intent = new Intent(this, ConfirmSaleActivity.class);
+                intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.ConfirmSaleActivity.class);
                 ReleasePurchaseResponse data = new ReleasePurchaseResponse();
                 data.setPayType(g.getPayType());  //收款方式
                 data.setMoney(money);//出售总金额
@@ -144,28 +144,28 @@ public class ExchangeListActivity extends BaseActivity {
                 intent.putExtra("rate", rate);
             } else if (g.getStatus().equals("4")) {
                 //申诉完成
-                intent = new Intent(this, OrderComplaintActivity.class);
+                intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.OrderComplaintActivity.class);
                 intent.putExtra("data", g);
                 intent.putExtra("rate", rate);
             } else if (g.getStatus().equals("6")) {
                 //申诉中
-                intent = new Intent(this, OrderComplaintActivity.class);
+                intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.OrderComplaintActivity.class);
                 intent.putExtra("data", g);
                 intent.putExtra("rate", rate);
             } else {
                 //交易完成（1取消、2失败、0完成）
                 if (g.getStatus().equals("0")) {
-                    intent = new Intent(this, ExchangeOrderSuccessActivity.class);
+                    intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.ExchangeOrderSuccessActivity.class);
                     intent.putExtra("data", g);
                     intent.putExtra("rate", rate);
                 }
                 if (g.getStatus().equals("1")) {
-                    intent = new Intent(this, ExchangeOrderCancelActivity.class);
+                    intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.ExchangeOrderCancelActivity.class);
                     intent.putExtra("data", g);
                     intent.putExtra("rate", rate);
                 }
                 if (g.getStatus().equals("2")) {
-                    intent = new Intent(this, ExchangeOrderFailedActivity.class);
+                    intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.ExchangeOrderFailedActivity.class);
                     intent.putExtra("data", g);
                     intent.putExtra("rate", rate);
                 }

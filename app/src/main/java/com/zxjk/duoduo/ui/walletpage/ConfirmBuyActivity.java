@@ -1,8 +1,7 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -21,17 +20,17 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.ZoomActivity;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.OssUtils;
-import com.zxjk.duoduo.utils.TakePicUtil;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.ReleasePurchaseResponse;
+import com.zxjk.moneyspace.bean.response.ReleaseSaleResponse;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.ZoomActivity;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.OssUtils;
+import com.zxjk.moneyspace.utils.TakePicUtil;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -183,7 +182,7 @@ public class ConfirmBuyActivity extends BaseActivity {
                             .compose(bindToLifecycle())
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConfirmBuyActivity.this)))
                             .subscribe(s -> {
-                                Intent intent = new Intent(ConfirmBuyActivity.this, WaitForJudgeActivity.class);
+                                Intent intent = new Intent(ConfirmBuyActivity.this, com.zxjk.moneyspace.ui.walletpage.WaitForJudgeActivity.class);
                                 data.setPayTime(String.valueOf(System.currentTimeMillis()));
                                 intent.putExtra("data", data);
                                 intent.putExtra("buytype", getIntent().getStringExtra("buytype"));
@@ -221,7 +220,7 @@ public class ConfirmBuyActivity extends BaseActivity {
                                 result.setNumber(data.getNumber());
                                 result.setMoney(data.getMoney());
                                 result.setPayType(getIntent().getStringExtra("buytype"));
-                                Intent intent = new Intent(ConfirmBuyActivity.this, CancelOrderActivity.class);
+                                Intent intent = new Intent(ConfirmBuyActivity.this, com.zxjk.moneyspace.ui.walletpage.CancelOrderActivity.class);
                                 intent.putExtra("data", result);
                                 intent.putExtra("rate", getIntent().getStringExtra("rate"));
                                 startActivity(intent);

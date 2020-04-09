@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -13,14 +13,14 @@ import android.widget.TextView;
 import androidx.core.app.ActivityOptionsCompat;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.ZoomActivity;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.msgpage.VerificationActivity;
+import com.zxjk.moneyspace.bean.response.ReleaseSaleResponse;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.ZoomActivity;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.ui.msgpage.VerificationActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +32,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.rong.imkit.RongIM;
 
-@SuppressLint({"CheckResult", "SimpleDateFormat", "SetTextI18n"})
+@SuppressLint({"CheckResult", "SimpleDateFormat"})
 public class WaitForJudgeActivity extends BaseActivity {
 
     @BindView(R.id.tv_chat)

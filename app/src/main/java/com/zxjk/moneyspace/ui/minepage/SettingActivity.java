@@ -10,6 +10,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.security.rp.RPSDK;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
@@ -187,7 +188,7 @@ public class SettingActivity extends BaseActivity {
         findViewById(R.id.rl_collectionInformation).setOnClickListener(v -> {
             String isAuthentication = Constant.currentUser.getIsAuthentication();
             if ("0".equals(isAuthentication)) {
-                startActivity(new Intent(SettingActivity.this, BillingMessageActivity.class));
+                startActivity(new Intent(SettingActivity.this, com.zxjk.moneyspace.ui.minepage.BillingMessageActivity.class));
             } else if ("2".equals(isAuthentication)) {
                 ToastUtils.showShort(R.string.waitAuthentication);
             } else {

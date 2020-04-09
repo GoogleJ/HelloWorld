@@ -29,8 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="13dp"
-        android:text="@string/commit_label"
-
-        />
+        android:text="@string/commit_label" />
 
 </LinearLayout>

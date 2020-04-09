@@ -59,5 +59,9 @@
     <color name="backupwordUnable">#83B0FF</color>
     <color name="title_offcial">#415686</color>
     <color name="color5c">#FF5C5C</color>
+    <color name="colorB">#BBBBBB</color>
+    <color name="exchange_line">#dddddd</color>
+    <color name="background_color1">#EDEDEE</color>
+    <color name="m_item_msg_message_number">#EA2222</color>
 
 </resources>

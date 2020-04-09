@@ -114,7 +114,6 @@ public class ConversationActivity extends BaseActivity {
     private GroupResponse groupInfo;
     private ConversationInfo conversationInfo = new ConversationInfo();
     private String conversationType;
-    private WechatChatRoomPermission chatRoomPermission;
 
     /**
      * 融云监听
@@ -390,27 +389,6 @@ public class ConversationActivity extends BaseActivity {
                     return null;
                 }
 
-                if (chatRoomPermission != null) {
-                    String ownerId = getIntent().getStringExtra("chatRoomOwnerId");
-                    if (!TextUtils.isEmpty(ownerId) && !ownerId.equals(Constant.userId)) {
-                        if ("1".equals(chatRoomPermission.getIsBanned())) {
-                            ToastUtils.showShort(R.string.msg_forbidden);
-                            return null;
-                        } else if ("1".equals(chatRoomPermission.getBanSendLink()) &&
-                                message.getContent() instanceof TextMessage) {
-                            TextMessage textMessage = (TextMessage) message.getContent();
-                            if (RegexUtils.isMatch(Constant.regUrl, textMessage.getContent())) {
-                                ToastUtils.showShort(R.string.url_forbidden);
-                                return null;
-                            }
-                        } else if ("1".equals(chatRoomPermission.getBanSendVoice()) &&
-                                (message.getContent() instanceof VoiceMessage || message.getContent() instanceof HQVoiceMessage)) {
-                            ToastUtils.showShort(R.string.voice_forbidden);
-                            return null;
-                        }
-                    }
-                }
-
                 return message;
             }
 
@@ -501,12 +479,6 @@ public class ConversationActivity extends BaseActivity {
                                     SendUrlAndsendImgBean sendUrlAndsendImgBean = GsonUtils.fromJson(commandMessage.getData(), SendUrlAndsendImgBean.class);
                                     groupInfo.getGroupInfo().setBanSendLink(sendUrlAndsendImgBean.getSendUrl());
                                     groupInfo.getGroupInfo().setBanSendPicture(sendUrlAndsendImgBean.getSendImg());
-                                } catch (Exception e) {
-                                }
-                                break;
-                            case "chatRoomConfig":
-                                try {
-                                    chatRoomPermission = GsonUtils.fromJson(commandMessage.getData(), WechatChatRoomPermission.class);
                                 } catch (Exception e) {
                                 }
                                 break;

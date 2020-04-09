@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.GetOverOrderResponse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

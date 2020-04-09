@@ -1,15 +1,17 @@
-package com.zxjk.duoduo.ui.walletpage.adapter;
+package com.zxjk.moneyspace.ui.walletpage.adapter;
 
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.zxjk.duoduo.Constant;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
-import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.moneyspace.Constant;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.GetOverOrderResponse;
+import com.zxjk.moneyspace.utils.CommonUtils;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 

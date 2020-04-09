@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -25,17 +25,17 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
-import com.zxjk.duoduo.Constant;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.bean.request.ShenSuRequest;
-import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.OssUtils;
-import com.zxjk.duoduo.utils.TakePicUtil;
+import com.zxjk.moneyspace.Constant;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.request.ShenSuRequest;
+import com.zxjk.moneyspace.bean.response.GetOverOrderResponse;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.OssUtils;
+import com.zxjk.moneyspace.utils.TakePicUtil;
 
 import java.io.File;
 import java.util.Collections;
@@ -261,7 +261,7 @@ public class ShenSuActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
                     ToastUtils.showShort(getString(R.string.shensu_success));
-                    Intent intent = new Intent(this, ExchangeListActivity.class);
+                    Intent intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.ExchangeListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("rate", rate);
                     startActivity(intent);

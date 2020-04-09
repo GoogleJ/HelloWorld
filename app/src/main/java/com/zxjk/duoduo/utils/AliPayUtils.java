@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.utils;
+package com.zxjk.moneyspace.utils;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;

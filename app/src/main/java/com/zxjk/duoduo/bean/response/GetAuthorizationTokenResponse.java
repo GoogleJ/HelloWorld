@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.bean.response;
+package com.zxjk.moneyspace.bean.response;
 
 public class GetAuthorizationTokenResponse {
 

@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,16 +15,16 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.ZoomActivity;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.widget.NewPayBoard;
-import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.MD5Utils;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.GetOverOrderResponse;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.ZoomActivity;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.ui.widget.NewPayBoard;
+import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.MD5Utils;
 
 import java.text.SimpleDateFormat;
 

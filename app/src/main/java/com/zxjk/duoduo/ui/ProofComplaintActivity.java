@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui;
+package com.zxjk.moneyspace.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,10 +11,10 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.ScreenUtils;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.widget.PinchImageView;
-import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.ui.widget.PinchImageView;
+import com.zxjk.moneyspace.utils.GlideUtil;
 
 import java.util.LinkedList;
 

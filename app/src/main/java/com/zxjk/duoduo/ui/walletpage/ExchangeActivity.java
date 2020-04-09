@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -21,20 +21,20 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetNumbeOfTransactionResponse;
-import com.zxjk.duoduo.bean.response.PayInfoResponse;
-import com.zxjk.duoduo.bean.response.ReleaseSaleResponse;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.widget.NewPayBoard;
-import com.zxjk.duoduo.utils.AliPayUtils;
-import com.zxjk.duoduo.utils.ArithUtils;
-import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.DataUtils;
-import com.zxjk.duoduo.utils.MD5Utils;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.GetNumbeOfTransactionResponse;
+import com.zxjk.moneyspace.bean.response.PayInfoResponse;
+import com.zxjk.moneyspace.bean.response.ReleaseSaleResponse;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.ui.widget.NewPayBoard;
+import com.zxjk.moneyspace.utils.AliPayUtils;
+import com.zxjk.moneyspace.utils.ArithUtils;
+import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.DataUtils;
+import com.zxjk.moneyspace.utils.MD5Utils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -337,7 +337,7 @@ public class ExchangeActivity extends BaseActivity implements RadioGroup.OnCheck
                                 .subscribe(s -> {
                                     //购买
                                     dialog.dismiss();
-                                    Intent intent = new Intent(ExchangeActivity.this, ConfirmBuyActivity.class);
+                                    Intent intent = new Intent(ExchangeActivity.this, com.zxjk.moneyspace.ui.walletpage.ConfirmBuyActivity.class);
                                     if (buyType.equals(PAYTYPE_WECHAT)) {
                                         s.setReceiptNumber(s.getWechatNick());
                                     }
@@ -430,7 +430,7 @@ public class ExchangeActivity extends BaseActivity implements RadioGroup.OnCheck
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ExchangeActivity.this)))
                                 .subscribe(s -> {
                                     s.setUnSaledNum(s.getNumber());
-                                    Intent intent = new Intent(ExchangeActivity.this, ConfirmSaleActivity.class);
+                                    Intent intent = new Intent(ExchangeActivity.this, com.zxjk.moneyspace.ui.walletpage.ConfirmSaleActivity.class);
                                     intent.putExtra("data", s);
                                     intent.putExtra("rate", tvExchangePrice.getText().toString());
                                     startActivity(intent);
@@ -451,7 +451,7 @@ public class ExchangeActivity extends BaseActivity implements RadioGroup.OnCheck
     }
 
     public void jump2List(View view) {
-        Intent intent = new Intent(this, ExchangeListActivity.class);
+        Intent intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.ExchangeListActivity.class);
         intent.putExtra("rate", tvExchangePrice.getText().toString());
         startActivity(intent);
     }

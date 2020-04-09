@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetOverOrderResponse;
-import com.zxjk.duoduo.ui.ZoomActivity;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.GetOverOrderResponse;
+import com.zxjk.moneyspace.ui.ZoomActivity;
 
 import java.text.SimpleDateFormat;
 

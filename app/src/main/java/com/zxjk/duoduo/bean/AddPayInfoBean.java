@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.bean;
+package com.zxjk.moneyspace.bean;
 
 public class AddPayInfoBean {
 

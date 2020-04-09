@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.minepage;
+package com.zxjk.moneyspace.ui.minepage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -21,19 +21,19 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
-import com.zxjk.duoduo.Constant;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.AddPayInfoBean;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.widget.dialog.PaymentTypeDialog;
-import com.zxjk.duoduo.utils.AesUtil;
-import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.MD5Utils;
-import com.zxjk.duoduo.utils.OssUtils;
-import com.zxjk.duoduo.utils.TakePicUtil;
+import com.zxjk.moneyspace.bean.AddPayInfoBean;
+import com.zxjk.moneyspace.Constant;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.ui.widget.dialog.PaymentTypeDialog;
+import com.zxjk.moneyspace.utils.AesUtil;
+import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.MD5Utils;
+import com.zxjk.moneyspace.utils.OssUtils;
+import com.zxjk.moneyspace.utils.TakePicUtil;
 
 import java.io.File;
 import java.util.Collections;
@@ -193,7 +193,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                         dialog.dismiss();
                     });
-                    dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay);
+                    dialog.show(getString(R.string.alipay_number), getString(R.string.alipay_number), alipay);
                     return;
                 }
                 break;

@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.walletpage;
+package com.zxjk.moneyspace.ui.walletpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,14 +11,14 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
-import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.bean.response.ReleasePurchaseResponse;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.DataUtils;
+import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.ReleasePurchaseResponse;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.DataUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -123,7 +123,7 @@ public class ConfirmSaleActivity extends BaseActivity {
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConfirmSaleActivity.this)))
                             .subscribe(response -> {
                                 finish();
-                                Intent intent = new Intent(ConfirmSaleActivity.this, CancelOrderActivity.class);
+                                Intent intent = new Intent(ConfirmSaleActivity.this, com.zxjk.moneyspace.ui.walletpage.CancelOrderActivity.class);
                                 intent.putExtra("data", data);
                                 intent.putExtra("rate", rate);
                                 startActivity(intent);
@@ -139,7 +139,7 @@ public class ConfirmSaleActivity extends BaseActivity {
 
 
     public void showOrders(View view) {
-        Intent intent = new Intent(this, ExchangeListActivity.class);
+        Intent intent = new Intent(this, com.zxjk.moneyspace.ui.walletpage.ExchangeListActivity.class);
         intent.putExtra("rate", rate);
         startActivity(intent);
         finish();

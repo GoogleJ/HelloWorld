@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.bean.request;
+package com.zxjk.moneyspace.bean.request;
 
 public class ShenSuRequest {
 

@@ -1,4 +1,4 @@
-package com.zxjk.duoduo.ui.msgpage;
+package com.zxjk.moneyspace.ui.msgpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
