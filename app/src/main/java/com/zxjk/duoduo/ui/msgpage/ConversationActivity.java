@@ -814,7 +814,7 @@ public class ConversationActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(s)) {
                         tvNums.setText(s);
                     }
-                    return Observable.timer(30, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).compose(bindToLifecycle());
+                    return Observable.timer(30, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).compose(bindUntilEvent(ActivityEvent.DESTROY));
                 })
                 .subscribe(s -> upgradeWatchNumsForWechatCast(tvNums), t -> {
                 });
