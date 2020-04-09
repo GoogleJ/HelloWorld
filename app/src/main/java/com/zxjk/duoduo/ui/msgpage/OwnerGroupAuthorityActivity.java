@@ -276,7 +276,7 @@ public class OwnerGroupAuthorityActivity extends BaseActivity {
             data1.remove(data1.size() - 1);
         }
         data = GsonUtils.toJson(data1);
-        if(TextUtils.isEmpty(data)){
+        if(!TextUtils.isEmpty(data)){
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .updatePermissionInfo(data)
                     .compose(bindToLifecycle())

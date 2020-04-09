@@ -482,11 +482,11 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         DecimalFormat df4 = new DecimalFormat("###.00");
 
         if (buyPatterns.equals("CNY")) {
-            amount = Double.parseDouble(nf.format(Float.parseFloat(String.valueOf(etPurchaseAmount.getText())) / Float.parseFloat(findHailangResponse.get(position).getOtc_active().getPrice())));
+            amount = Double.parseDouble(nf.format(Float.parseFloat(String.valueOf(etPurchaseAmount.getText())) / Float.parseFloat(findHailangResponse.get(position).getOtc_active().getPrice())).replace(",",""));
             total = Double.parseDouble(String.valueOf(etPurchaseAmount.getText()));
         } else {
-            amount = Double.parseDouble(nf.format(Float.parseFloat(String.valueOf(etPurchaseAmount.getText()))));
-            total = Double.parseDouble(df4.format(Double.parseDouble(String.valueOf(etPurchaseAmount.getText())) * Double.parseDouble(findHailangResponse.get(position).getOtc_active().getPrice())));
+            amount = Double.parseDouble(nf.format(Float.parseFloat(String.valueOf(etPurchaseAmount.getText()))).replace(",",""));
+            total = Double.parseDouble(df4.format(Double.parseDouble(String.valueOf(etPurchaseAmount.getText())) * Double.parseDouble(findHailangResponse.get(position).getOtc_active().getPrice())).replace(",",""));
         }
     }
 }
