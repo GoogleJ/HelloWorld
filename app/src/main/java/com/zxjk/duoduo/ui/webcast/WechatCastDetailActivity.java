@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.TranslateAnimation;
@@ -154,7 +155,8 @@ public class WechatCastDetailActivity extends BaseActivity {
                 })
                 .subscribe(r -> {
                     info = r;
-                    if (info.getRoomStatus().equals("3")) {
+                    if (!TextUtils.isEmpty(info.getRoomStatus()) &&
+                            (info.getRoomStatus().equals("3") || info.getRoomStatus().equals("2"))) {
                         ToastUtils.showShort(R.string.cant_view_cast);
                         finish();
                     }
