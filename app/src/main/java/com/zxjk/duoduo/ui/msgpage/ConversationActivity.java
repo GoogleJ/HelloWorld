@@ -1082,7 +1082,7 @@ public class ConversationActivity extends BaseActivity {
                                                         intent5.putExtra("image", "");
                                                         startActivity(intent5,
                                                                 ActivityOptionsCompat.makeSceneTransitionAnimation(ConversationActivity.this,
-                                                                        view, "img").toBundle());
+                                                                        view, "a").toBundle());
                                                     }
 
                                                     @Override
