@@ -33,6 +33,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMMin;
 import com.zxjk.duoduo.Application;
@@ -326,14 +327,15 @@ public class WechatCastDetailActivity extends BaseActivity {
                         .doOnSubscribe(d -> ToastUtils.showShort(R.string.parseimg))
                         .timeout(8, TimeUnit.SECONDS)
                         .subscribe(bitmap -> {
-                            UMMin umMin = new UMMin("");
+                            UMMin umMin = new UMMin("http://hilamg.com/");
                             umMin.setThumb(new UMImage(this, bitmap));
-                            umMin.setTitle(getString(R.string.hilamg));
-                            umMin.setDescription(info.getTopic());
+                            umMin.setTitle(info.getTopic());
+                            umMin.setDescription(getString(R.string.app_name));
                             umMin.setPath("pages/live/index?roomId=" + info.getRoomId() + "&groupId=" + info.getGroupId() + "&inviteCode=" + Constant.currentUser.getInviteCode());
                             umMin.setUserName("gh_ccebc1a7e592");
                             new ShareAction(this)
                                     .withMedia(umMin)
+                                    .setPlatform(SHARE_MEDIA.WEIXIN)
                                     .share();
                         }, t -> ToastUtils.showShort(getString(R.string.sharefail)));
                 break;
