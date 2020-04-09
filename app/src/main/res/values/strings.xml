@@ -48,7 +48,7 @@
     <string name="update_head_portrail">更新头像成功</string>
     <string name="input_empty">请输入内容</string>
     <string name="wechat">微信</string>
-    <string name="hilamg">海浪</string>
+    <string name="hilamg">Hilamg</string>
     <string name="m_red_envelopes_label">鸿运当头，大吉大利</string>
     <string name="m_red_envelopes_money_text" translatable="false">0.00</string>
     <string name="m_red_envelopes_commit_btn">塞进红包</string>
@@ -664,7 +664,7 @@
     <string name="cantopenvideo">视频暂时无法加载，请稍后尝试</string>
     <string name="cantopenfile">暂时无法查看文档，请稍后再试</string>
     <string name="back">返回</string>
-    <string name="search1">搜索手机号/海浪号</string>
+    <string name="search1">搜索手机号/Hilamg号</string>
     <string name="choosegroupchat">选择群聊</string>
     <string name="input_socialnintroduction">请输入社群简介</string>
     <string name="login_describe">你可选择使用不同的个人信息登录</string>
@@ -687,7 +687,7 @@
     <string name="redfall_tips_shared">您今天已分享过</string>
     <string name="payPhone">话费充值</string>
     <string name="system">[系统]</string>
-    <string name="hilamg_official">海浪官方</string>
+    <string name="hilamg_official">Hilamg官方</string>
     <string name="detail_forward">查看详情</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -703,7 +703,7 @@
     <string name="select_file">请选择发送文件!</string>
     <string name="wallet_income">收入:%1$s %2$s</string>
     <string name="wallet_spending">支出:%1$s %2$s</string>
-    <string name="news_pager_pop_text">快讯来源：海浪之声</string>
+    <string name="news_pager_pop_text">快讯来源：Hilamg之声</string>
     <string name="news_pager_pop_text1">区块链社交，就在Hilamg</string>
     <string name="news_pager_pop_text2">长按识别二维码  下载HilamgApp</string>
     <string name="hilamg_consulting">Hilamg资讯</string>
@@ -752,7 +752,7 @@
     <string name="add_to_balance_wallet">已存入余额钱包，请查收！</string>
     <string name="coin_introduce">币种介绍</string>
     <string name="join_social_enjoy_more_activity">加入社群，参与更多活动</string>
-    <string name="redfall_share_to_get_more_chance">注：成功分享至朋友圈，当日参与活动次数上限+1；\n活动解释权归海浪所有。</string>
+    <string name="redfall_share_to_get_more_chance">注：成功分享至朋友圈，当日参与活动次数上限+1；\n活动解释权归Hilamg所有。</string>
     <string name="coor_tips1">钱包对接</string>
     <string name="coor_tips1_detail">对接第三方数字货币，实现发红包、转账、存储</string>
     <string name="coor_tips2">广告推广</string>
@@ -806,7 +806,7 @@
     <string name="selected_1">已选 (0/4)</string>
     <string name="remove_member">移除成员</string>
     <string name="community_transfer">社群转让</string>
-    <string name="hilamg_friend">海浪好友</string>
+    <string name="hilamg_friend">Hilamg好友</string>
     <string name="save_local">保存本地</string>
     <string name="selected_2">已选 (0/3)</string>
     <string name="video_tips1">最多上传0份企业宣传视频，请上传体验</string>
@@ -834,12 +834,12 @@
     <string name="area">所在地区</string>
     <string name="please_choice">请选择</string>
     <string name="popup_tip1">您正在访问第三方链接</string>
-    <string name="popup_tip2">您在第三方链接上的使用行为将适用该第三方链接的《用户协议》和《隐私政策》，由海浪官网直接并单独向您承担责任。</string>
+    <string name="popup_tip2">您在第三方链接上的使用行为将适用该第三方链接的《用户协议》和《隐私政策》，由Hilamg官网直接并单独向您承担责任。</string>
     <string name="invite_num">邀请人数</string>
     <string name="invite_friend_nick">被邀请人昵称</string>
     <string name="invite_date">邀请日期</string>
     <string name="invite_earn">邀请收益</string>
-    <string name="new_source">快讯来源：海浪之声</string>
+    <string name="new_source">快讯来源：Hilamg之声</string>
     <string name="blockchain_social">区块链社交，就在Hilamg</string>
     <string name="press_code">长按识别二维码 \n下载HilamgApp</string>
     <string name="activity_tip1">已累计签到</string>
@@ -916,7 +916,7 @@
     <string name="authenfail">认证未通过</string>
     <string name="xxx_join_dissection">\"%1$s\"加入了讨论组</string>
     <string name="groupname_num" translatable="false">%1$s(%2$s)</string>
-    <string name="my_hilamg_code">我的海浪号:%1$s</string>
+    <string name="my_hilamg_code">我的Hilamg号:%1$s</string>
     <string name="total_xx_contact">共 %1$s 位联系人</string>
     <string name="xx_receive_xx_red">%1$s领取了%2$s的红包</string>
     <string name="you">你</string>
@@ -1199,7 +1199,7 @@
     <string name="current_chatroom_over">当前直播已结束</string>
     <string name="msg_forbidden">本会话已开启全员禁言</string>
     <string name="tips_wechatcast_card">社群正在直播,讲的特别好,再不来看就晚了。</string>
-    <string name="share_cast_card">[海浪直播]</string>
+    <string name="share_cast_card">[Hilamg直播]</string>
     <string name="cast_topic1">主题:%1$s</string>
     <string name="watch_nums">观看人数:</string>
     <string name="modify2"><![CDATA[编辑 >]]></string>
