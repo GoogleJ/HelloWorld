@@ -344,35 +344,44 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <RelativeLayout
+
+    <LinearLayout
+        android:id="@+id/ll_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/rl_back"
-            android:layout_width="50dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:foreground="?selectableItemBackgroundBorderless">
+            android:layout_marginTop="26dp">
 
-            <ImageView
+            <FrameLayout
+                android:id="@+id/rl_back"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:foreground="?selectableItemBackgroundBorderless">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ico_back_white"
+                    android:tint="#cacaca" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ico_back_white"
-                android:tint="#cacaca" />
+                android:layout_centerInParent="true"
+                android:text="@string/the_order_details"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
 
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/the_order_details"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>

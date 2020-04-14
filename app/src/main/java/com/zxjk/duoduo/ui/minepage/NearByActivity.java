@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.maps.AMapUtils;
-import com.amap.api.maps.model.LatLng;
+
 import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -23,6 +22,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.utils.AMapUtils;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -63,9 +63,11 @@ public class NearByActivity extends BaseActivity {
         adapter = new BaseQuickAdapter<GetVicinityResponse, BaseViewHolder>(R.layout.item_nearby, nearList) {
             @Override
             protected void convert(BaseViewHolder helper, GetVicinityResponse item) {
-                float distance = AMapUtils.calculateLineDistance(
-                        new LatLng(Double.parseDouble(item.getLatitude()), Double.parseDouble(item.getLongitude())),
-                        new LatLng(l.getLatitude(), l.getLongitude()));
+
+                float distance = (float) AMapUtils.getDistance(Double.parseDouble(item.getLatitude()),
+                        Double.parseDouble(item.getLongitude()),
+                        l.getLatitude(),
+                        l.getLongitude());
 
                 helper.setText(R.id.tvName, item.getNick().length() >= 15 ? item.getNick().substring(0, 12) + "..." : item.getNick())
                         .setText(R.id.tvSign, "个性签名：" + (TextUtils.isEmpty(item.getSignature()) ? "暂无" : item.getSignature()))
