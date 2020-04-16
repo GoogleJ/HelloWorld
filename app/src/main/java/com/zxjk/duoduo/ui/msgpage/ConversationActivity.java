@@ -1181,11 +1181,10 @@ public class ConversationActivity extends BaseActivity {
                                                                     targetId, message1, new String[]{message.getSenderUserId()}
                                                                     , null, null, null);
                                                         } else {
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)));
-                                                            RongIM.getInstance().sendDirectionalMessage(
+                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.receiveRed));
+                                                            RongIM.getInstance().insertIncomingMessage(
                                                                     formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
-                                                                    targetId, message1, new String[]{Constant.userId}
-                                                                    , null, null, null);
+                                                                    targetId, Constant.userId, new Message.ReceivedStatus(1), message1, null);
                                                         }
 
                                                         Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
