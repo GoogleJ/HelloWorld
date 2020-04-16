@@ -1288,6 +1288,7 @@
     <string name="pay_type_successful">该信息已完善</string>
     <string name="complete_payinfo">已完善</string>
     <string name="uncomplete_payinfo">未完善</string>
+    <string name="notAuthentication">未完善</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

@@ -1,11 +1,7 @@
 package com.zxjk.moneyspace.network;
 
-import com.zxjk.moneyspace.bean.response.GetNumbeOfTransactionResponse;
-import com.zxjk.moneyspace.bean.response.GetOverOrderResponse;
 import com.zxjk.moneyspace.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.moneyspace.bean.response.PayInfoResponse;
-import com.zxjk.moneyspace.bean.response.ReleasePurchaseResponse;
-import com.zxjk.moneyspace.bean.response.ReleaseSaleResponse;
 import com.zxjk.moneyspace.bean.AuditCertificationBean;
 import com.zxjk.moneyspace.bean.CardBackBean;
 import com.zxjk.moneyspace.bean.CardFaceBean;
@@ -141,22 +137,6 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<List<GroupChatResponse>>> getMygroupinformation(@Field("customerId") String customerId);
 
-    @POST("duoduo/exchange/getNumbeOfTransaction")
-    Observable<BaseResponse<GetNumbeOfTransactionResponse>> getNumbeOfTransaction();
-
-    @POST("duoduo/exchange/releasePurchase")
-    @FormUrlEncoded
-    Observable<BaseResponse<ReleasePurchaseResponse>> releasePurchase(@Field("number") String number,
-                                                                      @Field("money") String money, @Field("currency") String currency, @Field("payPwd") String paypwd, @Field("payTpye") String payTpye,
-                                                                      @Field("minNum") String minNum, @Field("maxNum") String maxNum, @Field("exchangeFee") String exchangeFee);
-
-    @POST("duoduo/exchange/releaseSale")
-    @FormUrlEncoded
-    Observable<BaseResponse<ReleaseSaleResponse>> releaseSale(@Field("number") String number,
-                                                              @Field("money") String money,
-                                                              @Field("currency") String currency,
-                                                              @Field("payTpye") String payTpye);
-
     @POST("duoduo/customer/getPayInfo")
     Observable<BaseResponse<List<PayInfoResponse>>> getPayInfo();
 
@@ -229,9 +209,6 @@ public interface Api {
 
     @POST("duoduo/customer/getCustomerAuth")
     Observable<BaseResponse<String>> getCustomerAuth();
-
-    @POST("duoduo/exchange/getOverOrder")
-    Observable<BaseResponse<List<GetOverOrderResponse>>> getOverOrder();
 
     @POST("duoduo/customer/fandPayPwd")
     @FormUrlEncoded
@@ -661,10 +638,6 @@ public interface Api {
                                                  @Field("reason") String reason,
                                                  @Field("trans_id") String trans_id,
                                                  @Field("user_id") String user_id);
-
-    @FormUrlEncoded
-    @POST("duoduo/live/getRoomPermissionByRoomId")
-    Observable<BaseResponse<WechatChatRoomPermission>> getRoomPermissionByRoomId(@Field("roomId") String roomId);
 
     @POST("duoduo/live/getOnlineUsers")
     @FormUrlEncoded
