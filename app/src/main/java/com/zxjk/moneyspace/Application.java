@@ -103,7 +103,7 @@ public class Application extends android.app.Application {
         registerConnectionStatusListener();
 
         //Umeng
-        initUmeng();
+//        initUmeng();
 
         RPSDK.initialize(getApplicationContext());
 
