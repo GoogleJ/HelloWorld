@@ -4,10 +4,10 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     signingConfigs {
         release {
-            keyAlias 'duoduo'
-            keyPassword 'duoduo'
-            storeFile file("../duoduo.jks")
-            storePassword 'duoduo'
+            keyAlias 'moneyspace'
+            keyPassword 'moneyspace'
+            storeFile file("../moneyspace.jks")
+            storePassword 'moneyspace'
         }
     }
     compileSdkVersion 29
