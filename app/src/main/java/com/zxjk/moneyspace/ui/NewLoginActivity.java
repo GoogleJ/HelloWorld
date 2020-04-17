@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.transition.ChangeBounds;
 import androidx.transition.Fade;
 import androidx.transition.Slide;
@@ -338,35 +337,16 @@ public class NewLoginActivity extends BaseActivity {
                 RongIM.getInstance().setCurrentUserInfo(userInfo);
 
                 if (equals) {
-                    if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
-                        MMKVUtils.getInstance().enCode("appFirstLogin", true);
-                        Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
-                        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
-                                , ivIcon, "appicon");
-                        intent.putExtra("setupPayPass", true);
-                        startActivity(intent, activityOptionsCompat.toBundle());
-                    } else {
-                        Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
-                        intent.putExtra("firstLogin", true);
-                        startActivity(intent);
-                        finish();
-                    }
+                    Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
+                    intent.putExtra("firstLogin", true);
+                    startActivity(intent);
+                    finish();
                     return;
                 }
 
                 MMKVUtils.getInstance().enCode("isLogin", true);
-
-                if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
-                    MMKVUtils.getInstance().enCode("appFirstLogin", true);
-                    Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
-                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
-                            , ivIcon, "appicon");
-                    startActivity(intent, activityOptionsCompat.toBundle());
-                } else {
-                    startActivity(new Intent(NewLoginActivity.this, HomeActivity.class));
-                    finish();
-                }
-
+                startActivity(new Intent(NewLoginActivity.this, HomeActivity.class));
+                finish();
             }
 
             @Override
@@ -398,6 +378,20 @@ public class NewLoginActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if (receiver != null) unregisterReceiver(receiver);
+
+        super.onDestroy();
+    }
+
+    private String parseSms(String msg) {
+        String regEx = "[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(msg);
+        return m.replaceAll("").trim().substring(0, 6);
+    }
+
     class MSGReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -414,19 +408,5 @@ public class NewLoginActivity extends BaseActivity {
                 if (content.contains("Hilamg")) ppivVerify.setText(parseSms(content));
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (receiver != null) unregisterReceiver(receiver);
-
-        super.onDestroy();
-    }
-
-    private String parseSms(String msg) {
-        String regEx = "[^0-9]";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(msg);
-        return m.replaceAll("").trim().substring(0, 6);
     }
 }

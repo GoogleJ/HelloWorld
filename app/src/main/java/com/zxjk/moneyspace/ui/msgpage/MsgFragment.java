@@ -42,10 +42,9 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
     private ImageView ivMenu;
     private int currentPosition;
     private ViewPager pagerMsg;
-    private MagicIndicator indicator;
-    private int[] mTitleDataList = new int[]{R.string.chat, R.string.de_actionbar_sub_group};
+    private int[] mTitleDataList = new int[]{R.string.chat};
     private QuickPopup menuPop;
-    private MsgTitleView[] badgeTitleViews = new MsgTitleView[2];
+    private MsgTitleView[] badgeTitleViews = new MsgTitleView[1];
 
     public MsgTitleView[] getBadgeTitleViews() {
         return badgeTitleViews;
@@ -66,10 +65,6 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         ivMenu.setOnClickListener(this);
 
         initPager();
-
-        initIndicator();
-
-        ViewPagerHelper.bind(indicator, pagerMsg);
 
     }
 
@@ -99,40 +94,6 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
                 }
             }
         });
-    }
-
-    private void initIndicator() {
-        indicator = rootView.findViewById(R.id.indicator);
-        CommonNavigator navigator = new CommonNavigator(getContext());
-        navigator.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return mTitleDataList == null ? 0 : mTitleDataList.length;
-            }
-
-            @Override
-            public IPagerTitleView getTitleView(Context context, final int index) {
-                createTitleView(context, index);
-                return badgeTitleViews[index];
-            }
-
-            private void createTitleView(Context context, int index) {
-                MsgTitleView badgeTitleView = new MsgTitleView(context);
-                badgeTitleView.setOnClickListener(view -> {
-                    pagerMsg.setCurrentItem(index);
-                    badgeTitleView.getBadgeView().setVisibility(View.INVISIBLE);
-                });
-                badgeTitleView.getTitleView().setText(mTitleDataList[index]);
-                badgeTitleViews[index] = badgeTitleView;
-            }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-                return new ImagePagerIndicator(context);
-            }
-        });
-
-        indicator.setNavigator(navigator);
     }
 
     private Fragment createConversationList() {

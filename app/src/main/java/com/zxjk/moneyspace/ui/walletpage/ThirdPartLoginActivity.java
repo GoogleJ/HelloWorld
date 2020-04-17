@@ -26,7 +26,6 @@ import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
-import com.zxjk.moneyspace.ui.AppFirstLogin;
 import com.zxjk.moneyspace.ui.CountrySelectActivity;
 import com.zxjk.moneyspace.ui.HomeActivity;
 import com.zxjk.moneyspace.ui.SetUpPaymentPwdActivity;

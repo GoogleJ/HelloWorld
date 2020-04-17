@@ -9,11 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <net.lucode.hackware.magicindicator.MagicIndicator
-            android:id="@+id/indicator"
+        <TextView
             android:layout_width="144dp"
             android:layout_height="45dp"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
+            android:text="@string/chat"
+            android:textColor="#272E3F"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/ivMenu"

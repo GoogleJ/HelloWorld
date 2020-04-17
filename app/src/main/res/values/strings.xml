@@ -433,7 +433,7 @@
     <string name="close">关闭</string>
     <string name="each_more_all">单人奖励金不能大于总奖励金</string>
     <string name="starttime_less_end">开始时间不能大于结束时间</string>
-    <string name="welcome">欢迎来到Hilamg</string>
+    <string name="welcome">欢迎来到Money Space</string>
     <string name="welcometopay">欢迎登录Hilamg</string>
     <string name="login_verify">验证码登录</string>
     <string name="next">下一步</string>
@@ -1289,6 +1289,11 @@
     <string name="complete_payinfo">已完善</string>
     <string name="uncomplete_payinfo">未完善</string>
     <string name="notAuthentication">未完善</string>
+    <string name="login_byemail">邮箱登陆</string>
+    <string name="login_byphone">手机号登陆</string>
+    <string name="hello">您好，</string>
+    <string name="input_email">请输入邮箱账号</string>
+    <string name="input_wrong">输入有误，请重试</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

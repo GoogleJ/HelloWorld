@@ -39,7 +39,7 @@ public class WelcomeActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(aLong -> {
-                        startActivity(new Intent(this, NewLoginActivity.class));
+                        startActivity(new Intent(this, SaasLoginSelectActivity.class));
                         finish();
                     });
         }
@@ -89,7 +89,7 @@ public class WelcomeActivity extends BaseActivity {
                     MMKVUtils.getInstance().enCode("isLogin", false);
                     Constant.clear();
                     ToastUtils.showShort(getString(R.string.login_again));
-                    Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
+                    Intent intent = new Intent(WelcomeActivity.this, SaasLoginSelectActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
@@ -108,7 +108,7 @@ public class WelcomeActivity extends BaseActivity {
                     MMKVUtils.getInstance().enCode("isLogin", false);
                     Constant.clear();
                     ToastUtils.showShort(getString(R.string.login_again));
-                    Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
+                    Intent intent = new Intent(WelcomeActivity.this, SaasLoginSelectActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
@@ -117,7 +117,7 @@ public class WelcomeActivity extends BaseActivity {
         } else {
             ToastUtils.showShort(getString(R.string.login_again));
             MMKVUtils.getInstance().enCode("isLogin", false);
-            startActivity(new Intent(this, NewLoginActivity.class));
+            startActivity(new Intent(this, SaasLoginSelectActivity.class));
             finish();
         }
     }
