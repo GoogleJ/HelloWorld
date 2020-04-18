@@ -44,6 +44,7 @@ public class NewLoginActivity1 extends BaseActivity {
 
     public void phone(View view) {
         startActivity(new Intent(this, NewLoginActivity.class));
+        finish();
     }
 
     public void back(View view) {

@@ -57,7 +57,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.NewLoginActivity1"></activity>
+        <activity android:name=".ui.UserFirstSetupPaypassActivity"></activity>
+        <activity android:name=".ui.GetCodeActivity" />
+        <activity android:name=".ui.NewLoginActivity1" />
         <activity android:name=".ui.SaasLoginSelectActivity" />
         <activity
             android:name=".ui.msgpage.FileSendActivity"

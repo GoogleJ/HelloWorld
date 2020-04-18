@@ -1294,6 +1294,14 @@
     <string name="hello">您好，</string>
     <string name="input_email">请输入邮箱账号</string>
     <string name="input_wrong">输入有误，请重试</string>
+    <string name="vercod_phone">短信验证码</string>
+    <string name="vercod_email">邮箱验证码</string>
+    <string name="code_send_to">验证码已发送至</string>
+    <string name="setup_paypass">设置交易密码</string>
+    <string name="setup_paypass1">请设置您的交易密码</string>
+    <string name="verify_paypass">验证交易密码</string>
+    <string name="verify_paypass1">请再次输入您的交易密码</string>
+    <string name="input_pay_pwd">请输入支付密码</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
