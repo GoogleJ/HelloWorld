@@ -1,5 +1,6 @@
 package com.zxjk.moneyspace.ui.msgpage.rongIM;
 
+import com.zxjk.moneyspace.ui.msgpage.rongIM.plugin.AudioVideoPlugin;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.plugin.FilePlugin;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.plugin.PhotoSelectorPlugin;
@@ -28,9 +29,11 @@ public class BasePluginExtensionModule extends DefaultExtensionModule {
             list.clear();
             list.add(new PhotoSelectorPlugin());
             list.add(new TakePhotoPlugin());
-            list.add(new TransferPlugin());
             list.add(new SightPlugin());
+            list.add(new AudioVideoPlugin());
+
             list.add(new RedPacketPlugin());
+            list.add(new TransferPlugin());
             list.add(new BusinessCardPlugin());
             list.add(new FilePlugin());
         }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -618,12 +619,9 @@ public class ConversationActivity extends BaseActivity {
                         .doOnNext(groupResponse -> {
                             //refresh local cache when serve logic change
                             Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupResponse.getGroupInfo().getId());
-                            if (ronginfo == null) return;
+                            if (ronginfo == null) RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupResponse.getGroupInfo().getHeadPortrait())));;
 
                             String tempName = groupResponse.getGroupInfo().getGroupNikeName();
-                            if (groupResponse.getGroupInfo().getGroupType().equals("1")) {
-                                tempName = tempName + "おれは人间をやめるぞ！ジョジョ―――ッ!";
-                            }
                             String tempGroupHead = groupResponse.getGroupInfo().getHeadPortrait();
                             //refresh local cache when serve logic change
                             if (ronginfo.getPortraitUri() == null ||
@@ -766,6 +764,9 @@ public class ConversationActivity extends BaseActivity {
 
     private void handlePrivate() {
         initView();
+        ImageView iv_end = findViewById(R.id.iv_end);
+        iv_end.setImageResource(R.drawable.ic_title_end_private);
+
         if (targetId.equals(Constant.userId)) {
             List<IPluginModule> pluginModules = extension.getPluginModules();
             Iterator<IPluginModule> iterator = pluginModules.iterator();

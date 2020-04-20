@@ -59,8 +59,6 @@ import com.zxjk.moneyspace.ui.minepage.MineFragment;
 import com.zxjk.moneyspace.ui.msgpage.ContactFragment;
 import com.zxjk.moneyspace.ui.msgpage.MsgFragment;
 import com.zxjk.moneyspace.ui.msgpage.ShareGroupQRActivity;
-import com.zxjk.moneyspace.ui.msgpage.rongIM.GroupConversationProvider;
-import com.zxjk.moneyspace.ui.msgpage.rongIM.PrivateConversationProvider;
 import com.zxjk.moneyspace.utils.MMKVUtils;
 import com.zxjk.moneyspace.utils.badge.BadgeNumberManager;
 
@@ -74,7 +72,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
 import io.rong.imkit.mention.RongMentionManager;
@@ -152,8 +149,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initGreenDaoSession();
 
-        RongContext.getInstance().registerConversationTemplate(new PrivateConversationProvider());
-        RongContext.getInstance().registerConversationTemplate(new GroupConversationProvider());
+//        RongContext.getInstance().registerConversationTemplate(new PrivateConversationProvider());
+//        RongContext.getInstance().registerConversationTemplate(new GroupConversationProvider());
 
         initRongUserProvider();
 
@@ -178,14 +175,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         );
     }
 
-    public void showFourthBadge() {
-        if (badgeItem3 != null) badgeItem3.show(true);
-    }
-
-    public void hideFourthBadge() {
-        if (badgeItem3 != null) badgeItem3.hide(true);
-    }
-
     @SuppressLint("CheckResult")
     private void initRongUserProvider() {
         RongIM.setGroupInfoProvider(id -> {
@@ -194,15 +183,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(group -> {
-                                if (group.getGroupType() == 1) {
-                                    RongIM.getInstance().refreshGroupInfoCache(new Group(id, group.getGroupNikeName()
-                                            + "おれは人间をやめるぞ！ジョジョ―――ッ!", Uri.parse(group.getHeadPortrait())));
-                                } else {
-                                    RongIM.getInstance().refreshGroupInfoCache(new Group(id, group.getGroupNikeName(),
-                                            Uri.parse(group.getHeadPortrait())));
-                                }
-                            },
+                    .subscribe(group ->
+                                    RongIM.getInstance().refreshGroupInfoCache(new Group(id, group.getGroupNikeName(), Uri.parse(group.getHeadPortrait()))),
                             t -> {
                             });
 

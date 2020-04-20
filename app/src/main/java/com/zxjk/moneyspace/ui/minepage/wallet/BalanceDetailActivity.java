@@ -223,7 +223,7 @@ public class BalanceDetailActivity extends BaseActivity {
             page = 0;
             initData();
         });
-        refreshLayout.setColorSchemeResources(R.color.colorTheme);
+        refreshLayout.setColorSchemeResources(R.color.color1);
     }
 
     public void downCoin(View view) {

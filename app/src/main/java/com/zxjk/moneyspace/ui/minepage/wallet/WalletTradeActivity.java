@@ -89,7 +89,7 @@ public class WalletTradeActivity extends BaseActivity {
             page = 1;
             initData();
         });
-        refreshLayout.setColorSchemeResources(R.color.colorTheme);
+        refreshLayout.setColorSchemeResources(R.color.color1);
 
         tvBalanceToCny.setText(money.equals("-") ? "-" : ("≈" + money + "\u0020CNY"));
         tvBalance.setText(sum);
