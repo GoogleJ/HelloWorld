@@ -2,6 +2,7 @@ package com.zxjk.moneyspace.ui.msgpage.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -69,7 +70,7 @@ public class IndexView extends View {
 
     private void initPaint() {
         mPaint = new Paint();
-        mPaint.setColor(DEFAULT_TEXT_COLOR);
+        mPaint.setColor(Color.parseColor("#6D7278"));
         mPaint.setAntiAlias(true);
         mPaint.setTextSize(mWordSize);
     }

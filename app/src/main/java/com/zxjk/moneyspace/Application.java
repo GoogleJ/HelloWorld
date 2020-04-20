@@ -19,7 +19,6 @@ import com.zxjk.moneyspace.bean.DaoSession;
 import com.zxjk.moneyspace.ui.SaasLoginSelectActivity;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.BasePluginExtensionModule;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.message.BusinessCardMessage;
-import com.zxjk.moneyspace.ui.msgpage.rongIM.message.CusEmoteTabMessage;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.message.GroupCardMessage;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.message.NewsCardMessage;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.message.RedPacketMessage;
@@ -30,7 +29,6 @@ import com.zxjk.moneyspace.ui.msgpage.rongIM.provider.BurnImageMessageItemProvid
 import com.zxjk.moneyspace.ui.msgpage.rongIM.provider.BurnTextMessageProvider;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.provider.BurnVoiceMessageProvider;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.provider.BusinessCardProvider;
-import com.zxjk.moneyspace.ui.msgpage.rongIM.provider.CusEmoteTabMessageProvider;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.provider.GroupCardProvider;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.provider.MInfoNotificationMsgItemProvider;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.provider.NewsCardProvider;
@@ -147,7 +145,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageType(TransferMessage.class);
         RongIM.registerMessageType(GroupCardMessage.class);
         RongIM.registerMessageType(SightMessage.class);
-        RongIM.registerMessageType(CusEmoteTabMessage.class);
+//        RongIM.registerMessageType(CusEmoteTabMessage.class);
         RongIM.registerMessageType(NewsCardMessage.class);
         RongIM.registerMessageType(SystemMessage.class);
         RongIM.registerMessageTemplate(new MInfoNotificationMsgItemProvider());
@@ -160,7 +158,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new GroupCardProvider());
         RongIM.registerMessageTemplate(new BurnTextMessageProvider());
         RongIM.registerMessageTemplate(new BurnImageMessageItemProvider());
-        RongIM.registerMessageTemplate(new CusEmoteTabMessageProvider());
+//        RongIM.registerMessageTemplate(new CusEmoteTabMessageProvider());
         RongIM.registerMessageTemplate(new NewsCardProvider());
         RongIM.registerMessageTemplate(new SystemMessageProvider());
         RongIM.getInstance().enableNewComingMessageIcon(true);

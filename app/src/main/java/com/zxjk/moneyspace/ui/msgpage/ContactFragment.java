@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.FriendInfoResponse;
 import com.zxjk.moneyspace.network.Api;
@@ -50,12 +49,11 @@ public class ContactFragment extends BaseFragment {
     View layout_contract_head;
     @BindView(R.id.llSearch)
     LinearLayout llSearch;
-
+    List<FriendInfoResponse> list = new ArrayList<>();
     private BaseContactAdapter mAdapter;
     private View dotNewFriend;
     private TextView footview;
-
-    List<FriendInfoResponse> list = new ArrayList<>();
+    private View headView;
 
     public View getDotNewFriend() {
         return dotNewFriend;
@@ -66,10 +64,6 @@ public class ContactFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
-
-        TextView tvContactHilamgId = rootView.findViewById(R.id.tvContactHilamgId);
-        tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
-        tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyQrCodeActivity.class)));
 
         rootView.findViewById(R.id.ll_contract_top1).setOnClickListener(v -> {
             ((HomeActivity) getActivity()).badgeItem2.hide();
@@ -147,13 +141,10 @@ public class ContactFragment extends BaseFragment {
         }
     }
 
-    private View headView;
-
     private void initHead(boolean isEmpty) {
         LinearLayout ll_contract_top1;
         LinearLayout ll_contract_top2;
         LinearLayout ll_contract_top3;
-        TextView tvContactHilamgId;
         if (isEmpty) {
             layout_contract_head.setVisibility(View.VISIBLE);
             headView = layout_contract_head;
@@ -167,11 +158,7 @@ public class ContactFragment extends BaseFragment {
         ll_contract_top1 = headView.findViewById(R.id.ll_contract_top1);
         ll_contract_top2 = headView.findViewById(R.id.ll_contract_top2);
         ll_contract_top3 = headView.findViewById(R.id.ll_contract_top3);
-        tvContactHilamgId = headView.findViewById(R.id.tvContactHilamgId);
         dotNewFriend = headView.findViewById(R.id.dotNewFriend);
-
-        tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
-        tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyQrCodeActivity.class)));
 
         if (MMKVUtils.getInstance().decodeLong("newFriendCount") != 0) {
             dotNewFriend.setVisibility(View.VISIBLE);

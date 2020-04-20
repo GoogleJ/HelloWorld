@@ -12,7 +12,6 @@ import java.util.List;
 
 import io.rong.imkit.DefaultExtensionModule;
 import io.rong.imkit.RongExtension;
-import io.rong.imkit.emoticon.IEmoticonTab;
 import io.rong.imkit.plugin.IPluginModule;
 import io.rong.imlib.model.Conversation;
 
@@ -39,17 +38,17 @@ public class BasePluginExtensionModule extends DefaultExtensionModule {
         return list;
     }
 
-    @Override
-    public List<IEmoticonTab> getEmoticonTabs() {
-        List<IEmoticonTab> tabs = super.getEmoticonTabs();
-
-        CusEmoteTab cusEmoteTab = new CusEmoteTab(targetId, conversationType);
-        CusEmoteTab2 cusEmoteTab2 = new CusEmoteTab2(targetId, conversationType);
-
-        tabs.add(cusEmoteTab);
-        tabs.add(cusEmoteTab2);
-        return tabs;
-    }
+//    @Override
+//    public List<IEmoticonTab> getEmoticonTabs() {
+//        List<IEmoticonTab> tabs = super.getEmoticonTabs();
+//
+//        CusEmoteTab cusEmoteTab = new CusEmoteTab(targetId, conversationType);
+//        CusEmoteTab2 cusEmoteTab2 = new CusEmoteTab2(targetId, conversationType);
+//
+//        tabs.add(cusEmoteTab);
+//        tabs.add(cusEmoteTab2);
+//        return tabs;
+//    }
 
     @Override
     public void onAttachedToExtension(RongExtension extension) {
