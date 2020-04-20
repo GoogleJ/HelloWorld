@@ -164,7 +164,7 @@ public class PayPsdInputView extends AppCompatEditText {
 
         textPaint = new Paint(ANTI_ALIAS_FLAG);
         textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setColor(Color.parseColor("#4585F5"));
+        textPaint.setColor(Color.parseColor("#ffffff"));
         textPaint.setTextSize(CommonUtils.sp2px(getContext(), 16));
     }
 

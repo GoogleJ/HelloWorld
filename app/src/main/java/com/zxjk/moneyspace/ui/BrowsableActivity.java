@@ -4,15 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.moneyspace.Constant;
-import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.findpage.NewsDetailActivity;
-import com.zxjk.moneyspace.ui.walletpage.LoginAuthorizationActivity;
-import com.zxjk.moneyspace.ui.walletpage.ThirdPartLoginActivity;
-
-import static com.zxjk.moneyspace.ui.walletpage.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
 
 public class BrowsableActivity extends BaseActivity {
 
@@ -46,31 +40,6 @@ public class BrowsableActivity extends BaseActivity {
                         } else {
                             startActivity(new Intent(this, WelcomeActivity.class));
                         }
-                        break;
-                    case "authorizationLogin":
-                        String appid = getIntent().getData().getQueryParameter("appId");
-                        String randomStr = getIntent().getData().getQueryParameter("randomStr");
-                        String sign = getIntent().getData().getQueryParameter("sign");
-                        if (!TextUtils.isEmpty(appid) && !TextUtils.isEmpty(randomStr) && !TextUtils.isEmpty(sign)) {
-                            if (Constant.currentUser.getId() == null) {
-                                Intent intent = new Intent(this, ThirdPartLoginActivity.class);
-                                intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
-                                intent.putExtra("appId", appid);
-                                intent.putExtra("randomStr", randomStr);
-                                intent.putExtra("sign", sign);
-                                startActivity(intent);
-                            } else {
-                                Intent intent = new Intent(this, LoginAuthorizationActivity.class);
-                                intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
-                                intent.putExtra("appId", appid);
-                                intent.putExtra("randomStr", randomStr);
-                                intent.putExtra("sign", sign);
-                                startActivity(intent);
-                            }
-                        } else {
-                            ToastUtils.showShort(R.string.wrong_param_data);
-                        }
-
                         break;
                 }
             }

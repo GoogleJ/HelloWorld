@@ -17,7 +17,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.network.rx.RxException;
-import com.zxjk.moneyspace.ui.NewLoginActivity;
+import com.zxjk.moneyspace.ui.SaasLoginSelectActivity;
 import com.zxjk.moneyspace.utils.MMKVUtils;
 import com.zxjk.moneyspace.utils.TakePicUtil;
 
@@ -72,7 +72,7 @@ public class BaseFragment extends RxFragment {
             Constant.clear();
             MMKVUtils.getInstance().enCode("isLogin", false);
 
-            Intent intent = new Intent(getActivity(), NewLoginActivity.class);
+            Intent intent = new Intent(getActivity(), SaasLoginSelectActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }

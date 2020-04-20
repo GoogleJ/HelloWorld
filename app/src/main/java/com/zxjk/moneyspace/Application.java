@@ -16,7 +16,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.zxjk.moneyspace.bean.DaoSession;
-import com.zxjk.moneyspace.ui.NewLoginActivity;
+import com.zxjk.moneyspace.ui.SaasLoginSelectActivity;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.BasePluginExtensionModule;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.message.BusinessCardMessage;
 import com.zxjk.moneyspace.ui.msgpage.rongIM.message.CusEmoteTabMessage;
@@ -132,7 +132,7 @@ public class Application extends android.app.Application {
                 Constant.clear();
                 MMKVUtils.getInstance().enCode("isLogin", false);
 
-                Intent intent = new Intent(getApplicationContext(), NewLoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SaasLoginSelectActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Hilamg</string>
+    <string name="app_name" translatable="false">MoneySpace</string>
     <string name="login">登录</string>
     <string name="edit_code_tip">请输入正确的验证码</string>
     <string name="text_get_code">获取验证码</string>
@@ -1302,6 +1302,7 @@
     <string name="verify_paypass">验证交易密码</string>
     <string name="verify_paypass1">请再次输入您的交易密码</string>
     <string name="input_pay_pwd">请输入支付密码</string>
+    <string name="email_label">邮箱登陆</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

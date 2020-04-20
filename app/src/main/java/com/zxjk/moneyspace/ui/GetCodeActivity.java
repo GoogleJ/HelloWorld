@@ -14,15 +14,18 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.LoginResponse;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.widget.PayPsdInputView;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.MMKVUtils;
 
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
@@ -66,50 +69,76 @@ public class GetCodeActivity extends BaseActivity {
             return;
         }
 
-        //todo login
+        String email = getIntent().getStringExtra("email");
+        String phone = getIntent().getStringExtra("phone");
+
+        if (!TextUtils.isEmpty(email)) {
+            doLoginByEmail(email);
+        } else if (!TextUtils.isEmpty(phone)) {
+            doLoginByPhone(phone);
+        }
     }
 
     @SuppressLint("CheckResult")
-    private void connect(String token, boolean equals) {
-        Observable.timer(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+    private void doLoginByPhone(String phone) {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString())
                 .compose(bindToLifecycle())
-                .subscribe(c -> CommonUtils.initDialog(this).show());
+                .compose(RxSchedulers.normalTrans())
+                .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->
+                        Observable.create(emitter ->
+                                RongIM.connect(loginResponse.getRongToken(), new RongIMClient.ConnectCallback() {
+                                    @Override
+                                    public void onTokenIncorrect() {
+                                        emitter.tryOnError(new Exception(getString(R.string.connect_failed)));
+                                    }
 
-        RongIM.connect(token, new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-                CommonUtils.destoryDialog();
-            }
+                                    @Override
+                                    public void onSuccess(String userid) {
+                                        Constant.currentUser = loginResponse;
+                                        Constant.userId = userid;
+                                        Constant.token = loginResponse.getToken();
+                                        Constant.authentication = loginResponse.getIsAuthentication();
+                                        if ("0".equals(loginResponse.getIsFirstLogin())) {
+                                            userid = userid + "AAA1";
+                                        }
+                                        emitter.onNext(userid);
+                                    }
 
-            @Override
-            public void onSuccess(String userid) {
-                CommonUtils.destoryDialog();
+                                    @Override
+                                    public void onError(RongIMClient.ErrorCode errorCode) {
+                                        emitter.tryOnError(new Exception(getString(R.string.connect_failed)));
+                                    }
+                                }))
+                                .compose(bindToLifecycle())
+                )
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(o -> {
+                    String userid = (String) o;
+                    boolean firstLogin = userid.contains("AAA1");
 
-                MMKVUtils.getInstance().enCode("login", Constant.currentUser);
-                MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
-                MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
-                UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
-                RongIM.getInstance().setCurrentUserInfo(userInfo);
+                    MMKVUtils.getInstance().enCode("login", Constant.currentUser);
+                    MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
+                    MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
+                    UserInfo userInfo = new UserInfo(userid.replace("AAA1", ""), Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
+                    RongIM.getInstance().setCurrentUserInfo(userInfo);
 
-                if (equals) {
-                    Intent intent = new Intent(GetCodeActivity.this, SetUpPaymentPwdActivity.class);
-                    intent.putExtra("firstLogin", true);
-                    startActivity(intent);
+                    if (firstLogin) {
+                        Intent intent = new Intent(GetCodeActivity.this, SetUpPaymentPwdActivity.class);
+                        intent.putExtra("firstLogin", true);
+                        startActivity(intent);
+                        finish();
+                        return;
+                    }
+
+                    MMKVUtils.getInstance().enCode("isLogin", true);
+                    startActivity(new Intent(GetCodeActivity.this, HomeActivity.class));
                     finish();
-                    return;
-                }
+                }, this::handleApiError);
+    }
 
-                MMKVUtils.getInstance().enCode("isLogin", true);
-                startActivity(new Intent(GetCodeActivity.this, HomeActivity.class));
-                finish();
-            }
+    private void doLoginByEmail(String email) {
 
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                ToastUtils.showShort(R.string.connect_failed);
-                CommonUtils.destoryDialog();
-            }
-        });
     }
 
     public void back(View view) {

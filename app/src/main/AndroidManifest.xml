@@ -57,10 +57,26 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.UserFirstSetupPaypassActivity"></activity>
-        <activity android:name=".ui.GetCodeActivity" />
-        <activity android:name=".ui.NewLoginActivity1" />
-        <activity android:name=".ui.SaasLoginSelectActivity" />
+        <activity
+            android:name=".ui.UserFirstSetupPaypassActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.GetCodeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.NewLoginActivity1"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.SaasLoginSelectActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.msgpage.FileSendActivity"
             android:launchMode="singleTop"
@@ -99,21 +115,6 @@
         <activity
             android:name=".ui.minepage.wallet.BalanceShowItemActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.walletpage.LoginAuthorizationActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.walletpage.OrderPaymentActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.walletpage.ThirdPartLoginActivity"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -464,10 +465,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.ChangeLanguageActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.CountrySelectActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
@@ -507,18 +504,10 @@
             android:name=".ui.minepage.FeedbackActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" /> <!-- 启动页 -->
-        <activity android:name=".ui.BrowsableActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="web"
-                    android:scheme="MoneySpace" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".ui.BrowsableActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.WelcomeActivity"
             android:screenOrientation="portrait"

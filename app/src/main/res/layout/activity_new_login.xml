@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llRoot"
     android:layout_width="match_parent"
@@ -21,8 +20,7 @@
             android:layout_centerVertical="true"
             android:padding="16dp"
             android:src="@drawable/ico_back"
-            android:tint="@color/white"
-            android:visibility="invisible" />
+            android:tint="@color/white" />
 
         <TextView
             android:id="@+id/tvChangeLanguage"
@@ -33,7 +31,8 @@
             android:gravity="end"
             android:padding="16dp"
             android:text="@string/change_language"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -47,65 +46,23 @@
         android:src="@drawable/ic_newlogin"
         android:transitionName="appicon" />
 
-    <ViewFlipper
-        android:id="@+id/vf"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inAnimation="@anim/anim_login_tips_in"
-        android:outAnimation="@anim/anim_login_tips_out">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:text="@string/welcome"
-            android:textColor="@color/white"
-            android:textSize="27sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:text="@string/login_verify"
-            android:textColor="@color/black"
-            android:textSize="27sp"
-            android:textStyle="bold" />
-
-    </ViewFlipper>
-
     <TextView
-        android:id="@+id/tv_new_login_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/phonelogin_autoregister"
-        android:textColor="@color/white" />
+        android:text="@string/hello"
+        android:textColor="@color/white"
+        android:textSize="27sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tvTips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:textColor="#8E949B"
-        android:textSize="13sp"
-        android:visibility="gone" />
-
-    <com.zxjk.moneyspace.ui.widget.PayPsdInputView
-        android:id="@+id/ppivVerify"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="80dp"
-        android:imeOptions="actionDone"
-        android:visibility="gone"
-        app:bottomLineColor="#D2D2D2"
-        app:focusedColor="#3296F8"
-        app:maxCount="6"
-        app:psdType="bottomLine" />
+        android:layout_marginTop="4dp"
+        android:text="@string/welcome"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:id="@+id/llPhone"
@@ -113,12 +70,12 @@
         android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="136dp"
+        android:layout_marginEnd="24dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -150,7 +107,7 @@
             <EditText
                 android:id="@+id/etPhone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:background="@null"
                 android:hint="@string/input_phone"
                 android:imeOptions="actionDone"
@@ -160,27 +117,41 @@
                 android:paddingBottom="4dp"
                 android:textColor="@color/white"
                 android:textColorHint="#6D7278"
-                android:textSize="16.5sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.6dp"
-            android:layout_marginTop="12dp"
-            android:background="#B8C0C1" />
-
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnConfirm"
-        android:layout_width="144dp"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/colorTheme" />
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/shape_theme"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:text="@string/next"
-        android:textColor="#333333" />
+        android:gravity="center"
+        android:onClick="code"
+        android:text="@string/getVerGode"
+        android:textColor="#333333"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:onClick="email"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/email_label"
+        android:textColor="#E7C39B" />
 
 </LinearLayout>

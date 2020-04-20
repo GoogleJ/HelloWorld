@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.RegexUtils;
@@ -25,24 +23,15 @@ import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
-import com.zxjk.moneyspace.ui.widget.PayPsdInputView;
 import com.zxjk.moneyspace.utils.CommonUtils;
 
 public class NewLoginActivity extends BaseActivity {
 
-    private ImageView ivIcon;
-    private LinearLayout llRoot;
     private ImageView ivBack;
     private TextView tvChangeLanguage;
-    private ViewFlipper vf;
-    private TextView tvTips;
-    private PayPsdInputView ppivVerify;
-    private LinearLayout llPhone;
     private LinearLayout llContrary;
     private TextView tvContrary;
     private EditText etPhone;
-    private Button btnConfirm;
-    private TextView mNewLoginText;
 
     private String phone;
 
@@ -85,12 +74,10 @@ public class NewLoginActivity extends BaseActivity {
         llContrary.setOnClickListener(v -> startActivityForResult(new Intent(this, CountrySelectActivity.class), 200));
 
         ivBack.setOnClickListener(v -> finish());
-
-        btnConfirm.setOnClickListener(v -> getCode());
     }
 
     @SuppressLint("CheckResult")
-    private void getCode() {
+    public void code(View view) {
         String phoneText = etPhone.getText().toString().trim();
         if ("86".equals(tvContrary.getText().toString().substring(1))) {
             isChinaPhone = "1";
@@ -109,32 +96,23 @@ public class NewLoginActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(o -> {
-                    String head = phone.substring(0, 3);
-                    String tail = phone.substring(phone.length() - 4);
-                    tvTips.setText(getString(R.string.send_sms_to, tvContrary.getText().toString() + " " + head + "****" + tail));
-
                     Intent intent = new Intent(this, GetCodeActivity.class);
                     intent.putExtra("phone", phone);
                     startActivity(intent);
                 }, this::handleApiError);
     }
 
+    public void email(View view) {
+        startActivity(new Intent(this, NewLoginActivity1.class));
+        finish();
+    }
+
     private void initView() {
-        ivIcon = findViewById(R.id.ivIcon);
-        llRoot = findViewById(R.id.llRoot);
         ivBack = findViewById(R.id.ivBack);
         tvChangeLanguage = findViewById(R.id.tvChangeLanguage);
-        tvTips = findViewById(R.id.tvTips);
-        vf = findViewById(R.id.vf);
-        mNewLoginText = findViewById(R.id.tv_new_login_text);
-        ppivVerify = findViewById(R.id.ppivVerify);
-
-        llPhone = findViewById(R.id.llPhone);
         llContrary = findViewById(R.id.llContrary);
         tvContrary = findViewById(R.id.tvContrary);
         etPhone = findViewById(R.id.etPhone);
-
-        btnConfirm = findViewById(R.id.btnConfirm);
     }
 
     @Override

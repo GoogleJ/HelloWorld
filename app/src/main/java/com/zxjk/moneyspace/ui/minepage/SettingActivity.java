@@ -23,7 +23,7 @@ import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxException;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
-import com.zxjk.moneyspace.ui.NewLoginActivity;
+import com.zxjk.moneyspace.ui.SaasLoginSelectActivity;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.MMKVUtils;
@@ -231,7 +231,7 @@ public class SettingActivity extends BaseActivity {
                                 MMKVUtils.getInstance().enCode("isLogin", false);
                                 Constant.clear();
                                 ToastUtils.showShort(R.string.login_out);
-                                Intent intent = new Intent(SettingActivity.this, NewLoginActivity.class);
+                                Intent intent = new Intent(SettingActivity.this, SaasLoginSelectActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }, SettingActivity.this::handleApiError);

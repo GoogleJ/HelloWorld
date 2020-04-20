@@ -30,7 +30,7 @@ import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.LoginResponse;
 import com.zxjk.moneyspace.network.rx.RxException;
-import com.zxjk.moneyspace.ui.NewLoginActivity;
+import com.zxjk.moneyspace.ui.SaasLoginSelectActivity;
 import com.zxjk.moneyspace.utils.LanguageUtil;
 import com.zxjk.moneyspace.utils.MMKVUtils;
 import com.zxjk.moneyspace.utils.TakePicUtil;
@@ -72,7 +72,7 @@ public class BaseActivity extends RxAppCompatActivity {
                                 MMKVUtils.getInstance().enCode("isLogin", false);
                                 Constant.clear();
                                 ToastUtils.showShort(getString(R.string.login_again));
-                                Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+                                Intent intent = new Intent(BaseActivity.this, SaasLoginSelectActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();
@@ -88,7 +88,7 @@ public class BaseActivity extends RxAppCompatActivity {
                                 MMKVUtils.getInstance().enCode("isLogin", false);
                                 Constant.clear();
                                 ToastUtils.showShort(getString(R.string.login_again));
-                                Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+                                Intent intent = new Intent(BaseActivity.this, SaasLoginSelectActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();
@@ -98,7 +98,7 @@ public class BaseActivity extends RxAppCompatActivity {
                 } else {
                     ToastUtils.showShort(getString(R.string.login_again));
                     MMKVUtils.getInstance().enCode("isLogin", false);
-                    startActivity(new Intent(this, NewLoginActivity.class));
+                    startActivity(new Intent(this, SaasLoginSelectActivity.class));
                     finish();
                 }
             }
@@ -215,7 +215,7 @@ public class BaseActivity extends RxAppCompatActivity {
         Constant.clear();
         MMKVUtils.getInstance().enCode("isLogin", false);
 
-        Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+        Intent intent = new Intent(BaseActivity.this, SaasLoginSelectActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
