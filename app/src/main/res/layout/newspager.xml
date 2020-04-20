@@ -23,7 +23,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 app:round_corner="8dp">
 
@@ -55,41 +54,10 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center_horizontal" />
 
-            <FrameLayout
-                android:id="@+id/flIndicatorDetail"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="34dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <net.lucode.hackware.magicindicator.MagicIndicator
-                        android:id="@+id/indicatorDetail"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_newspager_more"
-                        android:visibility="invisible" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_gravity="bottom"
-                    android:background="#E5E5E5" />
-
-            </FrameLayout>
+                android:layout_height="10dp"
+                android:background="#F2F3F5" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/pagerDetail"
@@ -100,44 +68,5 @@
         </LinearLayout>
 
     </com.zxjk.moneyspace.ui.widget.SlopScrollView>
-
-    <FrameLayout
-        android:id="@+id/flIndicatorTop"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:visibility="invisible">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="34dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <net.lucode.hackware.magicindicator.MagicIndicator
-                android:id="@+id/indicatorTop"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_newspager_more"
-                android:visibility="invisible" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_gravity="bottom"
-            android:background="#E5E5E5" />
-
-    </FrameLayout>
-
 
 </FrameLayout>

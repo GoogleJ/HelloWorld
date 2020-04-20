@@ -68,7 +68,7 @@ public class JDCityPicker {
 
     private int tabIndex = INDEX_TAB_PROVINCE;
     private Context context;
-    private String colorSelected = "#4585F5";
+    private String colorSelected = "#272E3F";
     private String colorAlert = "#000000";
 
     private OnCityItemClickListener mBaseListener;

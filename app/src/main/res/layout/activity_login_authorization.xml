@@ -221,7 +221,7 @@
             android:foreground="?selectableItemBackgroundBorderless"
             android:stateListAnimator="@null"
             android:text="@string/login_agreed"
-            android:textColor="#4585F5"
+            android:textColor="#272E3F"
             android:textSize="16sp"
             android:textStyle="bold" />
 

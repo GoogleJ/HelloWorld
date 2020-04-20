@@ -43,7 +43,7 @@ public class MarketPager extends BaseFragment {
         rootView = inflater.inflate(R.layout.marketpager, container, false);
 
         swipeRefresh = rootView.findViewById(R.id.swipeRefresh);
-        swipeRefresh.setColorSchemeColors(Color.parseColor("#4585F5"));
+        swipeRefresh.setColorSchemeColors(Color.parseColor("#272E3F"));
         swipeRefresh.setOnRefreshListener(() -> {
             if (disposable != null && !disposable.isDisposed()) {
                 disposable.dispose();

@@ -1,7 +1,6 @@
 package com.zxjk.moneyspace.ui.msgpage;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,19 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.zxjk.moneyspace.ui.msgpage.SearchGroupActivity;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
 import com.zxjk.moneyspace.ui.walletpage.RecipetQRActivity;
-import com.zxjk.moneyspace.ui.widget.ImagePagerIndicator;
 import com.zxjk.moneyspace.ui.widget.MsgTitleView;
-
-import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 
 import io.rong.imlib.model.Conversation;
 import razerdp.basepopup.QuickPopupBuilder;
@@ -40,9 +30,8 @@ import razerdp.widget.QuickPopup;
 public class MsgFragment extends BaseFragment implements View.OnClickListener {
 
     private ImageView ivMenu;
-    private int currentPosition;
+    private ImageView ivSearch;
     private ViewPager pagerMsg;
-    private int[] mTitleDataList = new int[]{R.string.chat};
     private QuickPopup menuPop;
     private MsgTitleView[] badgeTitleViews = new MsgTitleView[1];
 
@@ -62,7 +51,9 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
 
     private void initView() {
         ivMenu = rootView.findViewById(R.id.ivMenu);
+        ivSearch = rootView.findViewById(R.id.ivSearch);
         ivMenu.setOnClickListener(this);
+        ivSearch.setOnClickListener(this);
 
         initPager();
 
@@ -80,18 +71,6 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public int getCount() {
                 return 1;
-            }
-        });
-        pagerMsg.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                currentPosition = position;
-                if (position == 0) {
-                    ivMenu.setImageResource(R.drawable.ic_msg_new);
-                } else {
-                    ivMenu.setImageResource(R.drawable.ic_msg_search);
-                }
             }
         });
     }
@@ -115,7 +94,7 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (currentPosition == 0) {
+        if (v.getId() == R.id.ivMenu) {
             if (menuPop == null) {
                 menuPop = QuickPopupBuilder.with(getContext())
                         .contentView(R.layout.pop_msg_top)
@@ -146,7 +125,7 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    public void msgFragmentSelect(){
+    public void msgFragmentSelect() {
         pagerMsg.setCurrentItem(1);
     }
 

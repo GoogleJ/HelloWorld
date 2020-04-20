@@ -11,10 +11,6 @@ import android.view.ViewConfiguration;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
-import androidx.core.content.ContextCompat;
-
-import com.zxjk.moneyspace.R;
-
 import net.lucode.hackware.magicindicator.abs.IPagerNavigator;
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
@@ -102,7 +98,7 @@ public class CircleNavigator extends View implements IPagerNavigator {
     }
 
     private void drawCircles(Canvas canvas) {
-        mPaint.setColor(Color.parseColor("#ADCAFF"));
+        mPaint.setColor(Color.parseColor("#BEC0C5"));
         mPaint.setStyle(Paint.Style.FILL);
         for (int i = 0, j = mCirclePoints.size(); i < j; i++) {
             PointF pointF = mCirclePoints.get(i);
@@ -111,7 +107,7 @@ public class CircleNavigator extends View implements IPagerNavigator {
     }
 
     private void drawIndicator(Canvas canvas) {
-        mPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
+        mPaint.setColor(Color.parseColor("#272E3F"));
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(mRadius * 2);

@@ -447,11 +447,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         badgeItem3.setText("1");
         badgeItem3.hide();
 
-        //设置Item选中颜色方法
-        m_bottom_bar.setActiveColor(R.color.colorAccent)
-                //设置Item未选中颜色方法
-                .setInActiveColor(R.color.colorPrimary)
-                //背景颜色
+        m_bottom_bar.setActiveColor(R.color.color1)
+                .setInActiveColor(R.color.color2)
                 .setBarBackgroundColor("#FFFFFF");
 
         m_bottom_bar.setMode(BottomNavigationBar.MODE_FIXED);
@@ -459,11 +456,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         m_bottom_bar
                 // 背景样式
                 .setBackgroundStyle(BACKGROUND_STYLE_STATIC)
-                // 背景颜色
-                .setBarBackgroundColor("#ffffff")
-                .setActiveColor(R.color.colorTheme)
-                .setInActiveColor("#000000")
-                // 添加Item
                 .addItem(new BottomNavigationItem(R.drawable.tab_icon_message_selected, getString(R.string.home_bottom1)).setInactiveIconResource(R.drawable.tab_icon_message_unselected).setBadgeItem(badgeItem))
                 .addItem(new BottomNavigationItem(R.drawable.tab_icon_friend_selected, getString(R.string.home_bottom2)).setInactiveIconResource(R.drawable.tab_icon_friend_unselected).setBadgeItem(badgeItem2))
                 .addItem(new BottomNavigationItem(R.drawable.tab_icon_find_selected, getString(R.string.home_bottom3)).setInactiveIconResource(R.drawable.tab_icon_find_unselected))

@@ -107,7 +107,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="3dp"
                     android:text="@string/pinshouqi"
-                    android:textColor="#4585F5"
+                    android:textColor="#272E3F"
                     android:textSize="16sp" />
 
             </FrameLayout>

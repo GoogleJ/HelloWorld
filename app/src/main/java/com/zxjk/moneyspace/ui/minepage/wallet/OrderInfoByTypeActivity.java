@@ -185,7 +185,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             }
         });
 
-        swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
+        swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#272E3F"));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             page = 0;
             onRefreshLayout();

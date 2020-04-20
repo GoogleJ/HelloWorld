@@ -1,11 +1,7 @@
 package com.zxjk.moneyspace.ui.findpage;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,32 +9,21 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.blankj.utilcode.util.ScreenUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.trello.rxlifecycle3.android.FragmentEvent;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.BlockChainNewsBean;
 import com.zxjk.moneyspace.bean.response.GetCarouselMap;
@@ -47,43 +32,23 @@ import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.WebActivity;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
-import com.zxjk.moneyspace.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.moneyspace.ui.widget.CircleNavigator;
 import com.zxjk.moneyspace.ui.widget.NewsLoadMoreView;
 import com.zxjk.moneyspace.ui.widget.SlopScrollView;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.GlideUtil;
-import com.zxjk.moneyspace.utils.QRCodeEncoder;
-import com.zxjk.moneyspace.utils.SaveImageUtil;
-import com.zxjk.moneyspace.utils.ShareUtil;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
-import net.lucode.hackware.magicindicator.buildins.UIUtil;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
-import razerdp.basepopup.QuickPopupBuilder;
-import razerdp.basepopup.QuickPopupConfig;
-import razerdp.widget.QuickPopup;
 
 @SuppressLint("CheckResult")
 public class NewsPager extends BaseFragment {
@@ -95,19 +60,13 @@ public class NewsPager extends BaseFragment {
     private ViewPager pagerDetail;
     private DetailPagerAdapter detailPagerAdapter;
     private MagicIndicator indicatorBanner;
-    private MagicIndicator indicatorTop;
-    private MagicIndicator indicatorDetail;
-    private FrameLayout flIndicatorDetail;
-    private FrameLayout flIndicatorTop;
     private TextView tvBanner;
-    private int[] detailTitles = {R.string.boutique, R.string.quick_news, R.string.sickness};
     private boolean hasInitHeight;
-    private QuickPopup invitePop;
     private int currentBannerIndex;
     private Disposable bannerIntervel;
     private List<BaseQuickAdapter> adapters = new ArrayList<>();
-    private List<Integer> pages = new ArrayList<>();
     private Api api;
+    private Integer page = 0;
 
     @Nullable
     @Override
@@ -115,14 +74,7 @@ public class NewsPager extends BaseFragment {
 
         api = ServiceFactory.getInstance().getBaseService(Api.class);
 
-        //初始化页码集合，保存各个tab当前所在page
-        for (int i = 0; i < detailTitles.length; i++) {
-            pages.add(0);
-        }
-
         initView(inflater, container);
-
-        initIndicator();
 
         initPager();
 
@@ -239,16 +191,6 @@ public class NewsPager extends BaseFragment {
         int slop = CommonUtils.dip2px(getContext(), SCROLL_SLOP);
         scrollView.setScrollSlop(slop);
 
-        scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY >= slop && flIndicatorTop.getVisibility() == View.INVISIBLE) {
-                flIndicatorTop.setVisibility(View.VISIBLE);
-                flIndicatorDetail.setVisibility(View.INVISIBLE);
-            } else if (scrollY < slop && flIndicatorTop.getVisibility() == View.VISIBLE) {
-                flIndicatorTop.setVisibility(View.INVISIBLE);
-                flIndicatorDetail.setVisibility(View.VISIBLE);
-            }
-        });
-
         pagerDetail.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (hasInitHeight) {
                 return;
@@ -258,9 +200,6 @@ public class NewsPager extends BaseFragment {
             pagerDetail.setLayoutParams(layoutParams);
             hasInitHeight = true;
         });
-
-        ViewPagerHelper.bind(indicatorDetail, pagerDetail);
-        ViewPagerHelper.bind(indicatorTop, pagerDetail);
     }
 
     private void initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
@@ -269,81 +208,17 @@ public class NewsPager extends BaseFragment {
         pagerBanner = rootView.findViewById(R.id.pagerBanner);
         pagerDetail = rootView.findViewById(R.id.pagerDetail);
         indicatorBanner = rootView.findViewById(R.id.indicatorBanner);
-        indicatorTop = rootView.findViewById(R.id.indicatorTop);
-        indicatorDetail = rootView.findViewById(R.id.indicatorDetail);
-        flIndicatorDetail = rootView.findViewById(R.id.flIndicatorDetail);
-        flIndicatorTop = rootView.findViewById(R.id.flIndicatorTop);
         tvBanner = rootView.findViewById(R.id.tvBanner);
     }
 
     private void initPager() {
         detailPagerAdapter = new DetailPagerAdapter();
         pagerDetail.setAdapter(detailPagerAdapter);
-        pagerDetail.setOffscreenPageLimit(detailTitles.length);
-    }
-
-    private void initIndicator() {
-        CommonNavigator navigator1 = new CommonNavigator(getContext());
-        navigator1.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return detailTitles.length;
-            }
-
-            @Override
-            public IPagerTitleView getTitleView(Context context, int index) {
-                SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
-                pagerTitleView.setTextSize(15.5f);
-                pagerTitleView.setNormalColor(ContextCompat.getColor(getContext(), R.color.msgTitle));
-                pagerTitleView.setSelectedColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
-                pagerTitleView.setText(detailTitles[index]);
-                pagerTitleView.setOnClickListener(v -> pagerDetail.setCurrentItem(index));
-                return pagerTitleView;
-            }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-                LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
-                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
-                linePagerIndicator.setColors(ContextCompat.getColor(getContext(), R.color.colorTheme));
-                return linePagerIndicator;
-            }
-        });
-
-        CommonNavigator navigator2 = new CommonNavigator(getContext());
-        navigator2.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return detailTitles.length;
-            }
-
-            @Override
-            public IPagerTitleView getTitleView(Context context, int index) {
-                SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
-                pagerTitleView.setTextSize(15.5f);
-                pagerTitleView.setNormalColor(ContextCompat.getColor(getContext(), R.color.msgTitle));
-                pagerTitleView.setSelectedColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
-                pagerTitleView.setText(detailTitles[index]);
-                pagerTitleView.setOnClickListener(v -> pagerDetail.setCurrentItem(index));
-                return pagerTitleView;
-            }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-                LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
-                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
-                linePagerIndicator.setColors(ContextCompat.getColor(getContext(), R.color.colorTheme));
-                return linePagerIndicator;
-            }
-        });
-
-        indicatorTop.setNavigator(navigator1);
-        indicatorDetail.setNavigator(navigator2);
     }
 
     private void loadmore(int tabIndex, String finalType) {
         BaseQuickAdapter adapter = adapters.get(tabIndex);
-        api.blockChainNews(finalType, String.valueOf(pages.get(tabIndex) + 1), String.valueOf(COUNT_PER_PAGE))
+        api.blockChainNews(finalType, String.valueOf(page + 1), String.valueOf(COUNT_PER_PAGE))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
@@ -351,121 +226,17 @@ public class NewsPager extends BaseFragment {
                     if (list.size() != COUNT_PER_PAGE) {
                         adapter.loadMoreEnd(false);
                     } else {
-                        Integer integer = pages.get(tabIndex);
-                        pages.set(tabIndex, integer + 1);
-
+                        page += 1;
                         adapter.loadMoreComplete();
                     }
                     adapter.addData(list);
                 }, t -> adapter.loadMoreFail());
     }
 
-    private void shareTo(int plantform) {
-        Bitmap bitmap = getBitmapByView(invitePop.findViewById(R.id.sv_newspagerpopup));
-        final Bitmap bitmap2 = compressImage(bitmap);
-        UMImage link = new UMImage(getActivity(), bitmap2);
-
-        SHARE_MEDIA platform = null;
-        switch (plantform) {
-            case 1:
-                platform = SHARE_MEDIA.WEIXIN;
-                savePointInfo();
-                break;
-            case 2:
-                platform = SHARE_MEDIA.WEIXIN_CIRCLE;
-                savePointInfo();
-                break;
-            case 3:
-                platform = SHARE_MEDIA.QQ;
-                savePointInfo();
-                break;
-            case 4:
-                RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
-                    @Override
-                    public void onSuccess(List<Conversation> conversations) {
-                        savePointInfo();
-                        Constant.shareGroupQR = bitmap2;
-                        Intent intent = new Intent(getActivity(), ShareGroupQRActivity.class);
-                        intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onError(RongIMClient.ErrorCode errorCode) {
-                    }
-                });
-                break;
-            case 5:
-                Observable.create((ObservableOnSubscribe<Boolean>)
-                        e -> SaveImageUtil.get().savePic(bitmap2,
-                                success -> {
-                                    if (success) e.onNext(true);
-                                    else e.onNext(false);
-                                })).compose(bindToLifecycle()).compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                        .subscribe(success -> {
-                            if (success) {
-                                ToastUtils.showShort(R.string.savesucceed);
-                                return;
-                            }
-                            ToastUtils.showShort(R.string.savefailed);
-                        });
-                break;
-            case 6:
-                if (invitePop != null) {
-                    invitePop.dismiss();
-                }
-                break;
-        }
-        new ShareAction(getActivity())
-                .setPlatform(platform)
-                .withMedia(link)
-                .setCallback(new ShareUtil.ShareListener())
-                .share();
-    }
-
-    private Bitmap getBitmapByView(ScrollView scrollView) {
-        int h = 0;
-        Bitmap bitmap;
-        for (int i = 0; i < scrollView.getChildCount(); i++) {
-            h += scrollView.getChildAt(i).getHeight();
-            scrollView.getChildAt(i).setBackgroundColor(
-                    Color.parseColor("#ffffff"));
-        }
-        bitmap = Bitmap.createBitmap(scrollView.getWidth(), h,
-                Bitmap.Config.RGB_565);
-        final Canvas canvas = new Canvas(bitmap);
-        scrollView.draw(canvas);
-        return bitmap;
-    }
-
-    private Bitmap compressImage(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        int options = 100;
-        while (baos.toByteArray().length / 1024 > 100) {
-            baos.reset();
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
-            options -= 10;
-        }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
-        return bitmap;
-    }
-
-    private void savePointInfo() {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .savePointInfo("4")
-                .compose(RxSchedulers.ioObserver())
-                .subscribe(s -> {
-                }, t -> {
-                });
-    }
-
     class DetailPagerAdapter extends PagerAdapter {
-
         @Override
         public int getCount() {
-            return detailTitles.length;
+            return 1;
         }
 
         @Override
@@ -519,15 +290,13 @@ public class NewsPager extends BaseFragment {
 
             recycler.setAdapter(adapter);
             adapter.setEnableLoadMore(true);
-            adapter.isFirstOnly(true);
-            adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
             adapter.setLoadMoreView(new NewsLoadMoreView());
 
             String finalType = type;
             adapter.setOnLoadMoreListener(() -> loadmore(position, finalType), recycler);
 
             container.addView(swipeRefreshLayout);
-            swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
+            swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#272E3F"));
 
             swipeRefreshLayout.setEnabled(false);
             if (position == 0 || position == 1 || position == 2) {
@@ -670,67 +439,6 @@ public class NewsPager extends BaseFragment {
                             }
                         }
                         notifyItemChanged(helper.getAdapterPosition());
-                    });
-
-                    helper.getView(R.id.iv_quick_new_share).setOnClickListener(v -> {
-                        if (invitePop == null) {
-                            TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
-                            showAnimation.setDuration(350);
-                            TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
-                            dismissAnimation.setDuration(500);
-                            invitePop = QuickPopupBuilder.with(getActivity())
-                                    .contentView(R.layout.popup_newspager)
-                                    .config(new QuickPopupConfig()
-                                            .withShowAnimation(showAnimation)
-                                            .withDismissAnimation(dismissAnimation)
-                                            .withClick(R.id.tv1, view -> shareTo(1), true)
-                                            .withClick(R.id.tv2, view -> shareTo(2), true)
-                                            .withClick(R.id.tv3, view -> shareTo(3), true)
-                                            .withClick(R.id.tv4, view -> shareTo(4), true)
-                                            .withClick(R.id.tv5, view -> shareTo(5), true)
-                                            .withClick(R.id.img_exit, null, true)
-                                    )
-                                    .show();
-                            ImageView im = invitePop.findViewById(R.id.ivQRImg);
-                            ServiceFactory.getInstance().getBaseService(Api.class)
-                                    .getAppVersionBysystemType("1")
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.normalTrans())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                                    .subscribe(r ->
-                                            Observable.create((ObservableOnSubscribe<Bitmap>)
-                                                    e -> e.onNext(QRCodeEncoder.syncEncodeQRCode("http://hilamg.com/", UIUtil.dip2px(getActivity(), 80), Color.BLACK)))
-                                                    .compose(RxSchedulers.ioObserver())
-                                                    .compose(bindToLifecycle())
-                                                    .subscribe(im::setImageBitmap));
-
-                            ViewTreeObserver vto = invitePop.findViewById(R.id.popup_dialog_layout).getViewTreeObserver();
-                            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                                @Override
-                                public void onGlobalLayout() {
-                                    invitePop.findViewById(R.id.popup_dialog_layout).getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                                    ScrollView scrollView = invitePop.findViewById(R.id.sv_newspagerpopup);
-                                    ScrollView.LayoutParams layoutParams = (ScrollView.LayoutParams) scrollView.getLayoutParams();
-                                    layoutParams.bottomMargin = invitePop.findViewById(R.id.popup_dialog_layout).getHeight() + 30;
-                                    scrollView.setLayoutParams(layoutParams);
-                                }
-                            });
-
-                            TextView content = invitePop.findViewById(R.id.tv_newspagercontent);
-                            content.setText(bean.getArticle());
-                            TextView title = invitePop.findViewById(R.id.tv_newspagertitle);
-                            title.setText(bean.getTitle());
-                            TextView time = invitePop.findViewById(R.id.tv_newspagertime);
-                            time.setText(bean.getNewsTime());
-                        } else {
-                            invitePop.showPopupWindow();
-                            TextView content = invitePop.findViewById(R.id.tv_newspagercontent);
-                            content.setText(bean.getArticle());
-                            TextView title = invitePop.findViewById(R.id.tv_newspagertitle);
-                            title.setText(bean.getTitle());
-                            TextView time = invitePop.findViewById(R.id.tv_newspagertime);
-                            time.setText(bean.getNewsTime());
-                        }
                     });
 
                     helper.setImageResource(R.id.iv_quick_new_like, bean.getLike().equals("0") ? R.drawable.ic_quick_news_like_nor : R.drawable.ic_quick_news_like_checked)
