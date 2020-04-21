@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.zxjk.moneyspace.Constant;
@@ -18,7 +19,6 @@ import com.zxjk.moneyspace.bean.response.GroupResponse;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.minepage.scanuri.BaseUri;
-import com.zxjk.moneyspace.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.moneyspace.utils.ImageUtil;
 import com.zxjk.moneyspace.utils.SaveImageUtil;
 
@@ -46,11 +46,13 @@ public class GroupQRActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BarUtils.setStatusBarColor(this, Color.parseColor("#272E3F"));
         setContentView(R.layout.activity_group_qr);
 
         ivHead = findViewById(R.id.ivHead);
-        tvGroupName = findViewById(R.id.tvGroupName);
-        ivRecipetImg = findViewById(R.id.ivRecipetImg);
+        tvGroupName = findViewById(R.id.tvUserName);
+        ivRecipetImg = findViewById(R.id.ivQRImg);
 
         GroupResponse data = (GroupResponse) getIntent().getSerializableExtra("data");
 
@@ -76,8 +78,7 @@ public class GroupQRActivity extends BaseActivity {
     }
 
     private void save2Phone() {
-        getPermisson(findViewById(R.id.cardSave), g -> {
-            //保存到手机
+        getPermisson(findViewById(R.id.savetophone), g -> {
             if (bitmap == null) {
                 return;
             }
@@ -95,23 +96,13 @@ public class GroupQRActivity extends BaseActivity {
     }
 
     private void loadHead(GroupResponse data) {
-        String s = "";
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < data.getCustomers().size(); i++) {
-            stringBuilder.append(data.getCustomers().get(i).getHeadPortrait() + ",");
-            if (i == data.getCustomers().size() - 1 || i == 8) {
-                s = stringBuilder.substring(0, stringBuilder.length() - 1);
-                break;
-            }
-        }
-
-        ImageUtil.loadGroupPortrait(ivHead, s);
+        ImageUtil.loadGroupPortrait(ivHead, data.getGroupInfo().getHeadPortrait());
     }
 
     @SuppressLint("CheckResult")
     private void getCodeBitmap() {
         Observable.create((ObservableOnSubscribe<Bitmap>) e -> {
-            bitmap = QRCodeEncoder.syncEncodeQRCode(uri2Code, UIUtil.dip2px(this, 192), Color.BLACK);
+            bitmap = QRCodeEncoder.syncEncodeQRCode(uri2Code, UIUtil.dip2px(this, 180), Color.BLACK);
             e.onNext(bitmap);
         })
                 .compose(RxSchedulers.ioObserver())

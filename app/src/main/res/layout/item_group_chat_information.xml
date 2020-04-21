@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:gravity="center"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/header_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
+        android:id="@+id/llBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/nick_owner"
@@ -24,11 +26,14 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/shape_groupowner_bac"
             android:ellipsize="end"
-            android:lines="1"
-            android:padding="0.5dp"
+            android:padding="1dp"
+            android:paddingStart="1dp"
+            android:paddingTop="0.5dp"
+            android:paddingEnd="1dp"
+            android:paddingBottom="0.5dp"
             android:text="@string/group_owner"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textColor="@color/colorTheme"
+            android:textSize="11sp"
             android:visibility="gone" />
 
         <TextView

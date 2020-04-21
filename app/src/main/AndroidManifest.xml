@@ -288,6 +288,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.msgpage.GroupQRActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.minepage.NearByActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

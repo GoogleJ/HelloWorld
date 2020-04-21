@@ -56,7 +56,6 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         ivSearch.setOnClickListener(this);
 
         initPager();
-
     }
 
     private void initPager() {
@@ -120,7 +119,7 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
 
             menuPop.showPopupWindow(v);
         } else {
-            startActivity(new Intent(getContext(), SearchGroupActivity.class));
+            startActivity(new Intent(getContext(), GlobalSearchActivity.class));
             getActivity().overridePendingTransition(0, 0);
         }
     }

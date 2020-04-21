@@ -1,7 +1,6 @@
 package com.zxjk.moneyspace.ui.msgpage;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
@@ -34,20 +32,13 @@ public class MyQrCodeActivity extends BaseActivity {
     private TextView tvUserName;
     private TextView tvLocation;
     private CircleImageView ivHead;
-    private CircleImageView ivHeadQR;
-
     private BaseUri uri = new BaseUri("action2");
     private String uri2Code;
-
-    public static void start(AppCompatActivity activity) {
-        Intent intent = new Intent(activity, MyQrCodeActivity.class);
-        activity.startActivity(intent);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BarUtils.setStatusBarColor(this, Color.parseColor("#F2F3F5"));
+        BarUtils.setStatusBarColor(this, Color.parseColor("#272E3F"));
 
         setContentView(R.layout.activity_my_qr_code);
 
@@ -55,11 +46,9 @@ public class MyQrCodeActivity extends BaseActivity {
         ivQRImg = findViewById(R.id.ivQRImg);
         ivSex = findViewById(R.id.ivSex);
         ivHead = findViewById(R.id.ivHead);
-        ivHeadQR = findViewById(R.id.ivHeadQR);
         tvUserName = findViewById(R.id.tvUserName);
         tvLocation = findViewById(R.id.tvLocation);
 
-        Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(ivHeadQR);
         Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(ivHead);
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
@@ -83,7 +72,7 @@ public class MyQrCodeActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void getCodeBitmap() {
         Observable.create((ObservableOnSubscribe<Bitmap>) e -> {
-            Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(uri2Code, UIUtil.dip2px(this, 200), Color.BLACK);
+            Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(uri2Code, UIUtil.dip2px(this, 180), Color.BLACK);
             e.onNext(bitmap);
         })
                 .compose(RxSchedulers.ioObserver())

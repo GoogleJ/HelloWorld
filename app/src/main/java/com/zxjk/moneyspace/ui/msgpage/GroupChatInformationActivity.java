@@ -390,4 +390,10 @@ public class GroupChatInformationActivity extends BaseActivity {
         startActivity(new Intent(this, SkinReportActivity.class));
     }
 
+    public void groupQR(View view) {
+        Intent intent = new Intent(this, GroupQRActivity.class);
+        intent.putExtra("data", group);
+        startActivity(intent);
+    }
+
 }
