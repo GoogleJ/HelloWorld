@@ -90,7 +90,7 @@
     <string name="passport">护照</string>
     <string name="other_identity_card">其他国家或地区的身份证</string>
     <string name="bank_real_name">真实姓名</string>
-    <string name="cointype">选择资产</string>
+    <string name="cointype">当前币种</string>
     <string name="group_chat_name_label">群聊名称</string>
     <string name="see_more_group_members">查看更多群成员></string>
     <string name="group_announcement">群公告</string>
