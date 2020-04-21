@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +35,8 @@ public class GlobalSearchActivity extends BaseActivity {
     EditText searchEdit;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.llroot)
+    LinearLayout llroot;
 
     GlobalSearchAdapter mAdapter;
 
@@ -64,7 +67,7 @@ public class GlobalSearchActivity extends BaseActivity {
     }
 
     private void initUI() {
-        View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
+        View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, llroot, false);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         ImageView app_type = emptyView.findViewById(R.id.app_type);

@@ -59,6 +59,7 @@
     <Button
         android:id="@+id/m_verification_send_btn"
         style="@style/BtnStyle"
+        android:textColor="@color/color3"
         android:text="@string/m_verification_send_btn" />
 
 </LinearLayout>

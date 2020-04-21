@@ -1,7 +1,5 @@
 package com.zxjk.moneyspace.network;
 
-import com.zxjk.moneyspace.bean.response.GetRedPackageRecordResponse;
-import com.zxjk.moneyspace.bean.response.PayInfoResponse;
 import com.zxjk.moneyspace.bean.AuditCertificationBean;
 import com.zxjk.moneyspace.bean.CardBackBean;
 import com.zxjk.moneyspace.bean.CardFaceBean;
@@ -31,6 +29,7 @@ import com.zxjk.moneyspace.bean.response.GetParentSymbolBean;
 import com.zxjk.moneyspace.bean.response.GetPaymentListBean;
 import com.zxjk.moneyspace.bean.response.GetPublicGroupResponse;
 import com.zxjk.moneyspace.bean.response.GetRedNewPersonInfoResponse;
+import com.zxjk.moneyspace.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.moneyspace.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.moneyspace.bean.response.GetSerialBean;
 import com.zxjk.moneyspace.bean.response.GetSymbolInfo;
@@ -42,6 +41,7 @@ import com.zxjk.moneyspace.bean.response.GroupChatResponse;
 import com.zxjk.moneyspace.bean.response.GroupResponse;
 import com.zxjk.moneyspace.bean.response.LoginResponse;
 import com.zxjk.moneyspace.bean.response.MarketsResponse;
+import com.zxjk.moneyspace.bean.response.PayInfoResponse;
 import com.zxjk.moneyspace.bean.response.PaymentDoneResponse;
 import com.zxjk.moneyspace.bean.response.PersonalChatConfigResponse;
 import com.zxjk.moneyspace.bean.response.PersonalRedPackageInfoResponse;
@@ -53,7 +53,6 @@ import com.zxjk.moneyspace.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.moneyspace.bean.response.TransferResponse;
 import com.zxjk.moneyspace.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.moneyspace.bean.response.WalletChainInfosResponse;
-import com.zxjk.moneyspace.bean.response.WechatChatRoomPermission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -417,6 +416,10 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile, @Field("securityCode") String securityCode);
 
+    @POST("duoduo/customer/appUserRegisterAndLogin")
+    @FormUrlEncoded
+    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLoginEmail(@Field("email") String email, @Field("securityCode") String securityCode);
+
     @POST("duoduo/group/getUpgradeGroups")
     @FormUrlEncoded
     Observable<BaseResponse<GetUpgradeGroupsResponnse>> getUpgradeGroups(@Field("groupId") String groupId);
@@ -652,5 +655,9 @@ public interface Api {
 
     @POST("duoduo/group/getPublicGroupList")
     Observable<BaseResponse<List<GetPublicGroupResponse>>> getPublicGroupList(@Field("groupName") String groupName);
+
+    @POST("duoduo/mail/getEmailCode")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> getEmailCode(@Field("email") String email);
 
 }

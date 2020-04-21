@@ -54,7 +54,7 @@
         android:background="@drawable/shape_circular_bead_btn"
         android:onClick="submit"
         android:text="@string/done1"
-        android:textColor="@color/white"
+        android:textColor="@color/color3"
         android:textSize="17sp" />
 
 </LinearLayout>

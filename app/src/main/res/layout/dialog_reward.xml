@@ -45,7 +45,7 @@
                 android:background="@drawable/shape_reward_btn"
                 android:stateListAnimator="@null"
                 android:text="@string/ok1"
-                android:textColor="#FFFFFF"
+                android:textColor="#E7C39B"
                 android:textSize="16sp" />
         </LinearLayout>
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="56dp">
+    android:padding="40dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -18,8 +18,9 @@
             android:gravity="center"
             android:paddingTop="28dp"
             android:paddingBottom="16dp"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textColor="#272E3F"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/ivRight"
@@ -49,8 +50,8 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:gravity="center"
-            android:text=""
-            android:textColor="@color/pop_color1"
+            android:lineSpacingExtra="6dp"
+            android:textColor="#272E3F"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -61,39 +62,38 @@
         android:background="@drawable/shape_bac_white_conor7"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:paddingBottom="16dp">
 
         <TextView
             android:id="@+id/tvCancel"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="24dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_cancel_payenter"
+            android:background="@drawable/shape_dialog_cancel"
             android:foreground="?selectableItemBackgroundBorderless"
             android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:text="@string/cancel"
-            android:textColor="@color/colorTheme"
-            android:textSize="15sp" />
+            android:textColor="#272E3F"
+            android:textSize="15.5sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvCommit"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="24dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_commit_payenter"
+            android:background="@drawable/shape_dialog_confirm"
             android:foreground="?selectableItemBackgroundBorderless"
             android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:text="@string/ok"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textColor="@color/color3"
+            android:textSize="15.5sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
+
 </LinearLayout>

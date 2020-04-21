@@ -7,11 +7,6 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#eeeeee" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -71,7 +66,7 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_line" />
+            <include layout="@layout/layout_line10" />
 
             <RelativeLayout
                 android:id="@+id/rl_add"
@@ -82,13 +77,10 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:drawableStart="@drawable/information_icon_add_defualt"
                     android:drawablePadding="6dp"
                     android:text="@string/add_new_member"
                     android:textColor="@color/theme_color"
                     android:textSize="16sp" />
-
-                <ImageView style="@style/ImageEnter" />
 
             </RelativeLayout>
 

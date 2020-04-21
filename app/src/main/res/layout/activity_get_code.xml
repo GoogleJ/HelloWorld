@@ -89,7 +89,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:background="@drawable/shape_theme"
+        android:background="@drawable/shape_theme11"
         android:gravity="center"
         android:onClick="next"
         android:text="@string/next"

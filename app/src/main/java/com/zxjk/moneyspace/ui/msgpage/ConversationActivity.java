@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.trello.rxlifecycle3.android.ActivityEvent;
@@ -33,7 +32,6 @@ import com.zxjk.moneyspace.bean.ConversationInfo;
 import com.zxjk.moneyspace.bean.DaoMaster;
 import com.zxjk.moneyspace.bean.SendUrlAndsendImgBean;
 import com.zxjk.moneyspace.bean.response.GroupResponse;
-import com.zxjk.moneyspace.bean.response.WechatChatRoomPermission;
 import com.zxjk.moneyspace.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.moneyspace.db.OpenHelper;
 import com.zxjk.moneyspace.network.Api;
@@ -619,7 +617,10 @@ public class ConversationActivity extends BaseActivity {
                         .doOnNext(groupResponse -> {
                             //refresh local cache when serve logic change
                             Group ronginfo = RongUserInfoManager.getInstance().getGroupInfo(groupResponse.getGroupInfo().getId());
-                            if (ronginfo == null) RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupResponse.getGroupInfo().getHeadPortrait())));;
+                            if (ronginfo == null) {
+                                RongIM.getInstance().refreshGroupInfoCache(new Group(groupResponse.getGroupInfo().getId(), groupResponse.getGroupInfo().getGroupNikeName(), Uri.parse(groupResponse.getGroupInfo().getHeadPortrait())));
+                                return;
+                            }
 
                             String tempName = groupResponse.getGroupInfo().getGroupNikeName();
                             String tempGroupHead = groupResponse.getGroupInfo().getHeadPortrait();

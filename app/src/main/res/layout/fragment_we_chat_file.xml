@@ -44,7 +44,7 @@
                 android:background="@drawable/shape_theme2"
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:text="@string/m_verification_send_btn"
-                android:textColor="@color/white" />
+                android:textColor="#E7C39B" />
 
         </LinearLayout>
 

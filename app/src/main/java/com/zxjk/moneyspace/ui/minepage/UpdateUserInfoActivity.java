@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -114,6 +116,7 @@ public class UpdateUserInfoActivity extends BaseActivity {
         tv_commit.setText(getString(R.string.save));
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         tv_commit.setOnClickListener(v -> submit());
+        tv_commit.setTextColor(ContextCompat.getColor(this, R.color.color3));
     }
 
     //保存

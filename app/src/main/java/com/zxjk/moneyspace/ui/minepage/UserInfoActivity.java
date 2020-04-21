@@ -48,7 +48,12 @@ import io.rong.imlib.model.UserInfo;
 
 @SuppressLint("CheckResult")
 public class UserInfoActivity extends BaseActivity {
-
+    String type = "type";
+    int changeNick = 2;
+    int changeSign = 1;
+    int changeEmail = 3;
+    private RelativeLayout rlEmial;
+    private RelativeLayout rlPhone;
     private TextView tvUserInfoSex;
     private TextView tv_DuoDuoNumber;
     private TextView tv_realName;
@@ -58,14 +63,7 @@ public class UserInfoActivity extends BaseActivity {
     private ImageView iv_headPortrait;
     private TextView tv_nickname;
     private TextView tvArea;
-
     private JDCityPicker cityPicker;
-
-    String type = "type";
-    int changeNick = 2;
-    int changeSign = 1;
-    int changeEmail = 3;
-
     private ChooseSexDialog dialog;
 
     @Override
@@ -131,15 +129,30 @@ public class UserInfoActivity extends BaseActivity {
     @SuppressLint("SetTextI18n")
     private void bindData() {
         GlideUtil.loadCircleImg(iv_headPortrait, Constant.currentUser.getHeadPortrait());
-        String mobile = Constant.currentUser.getMobile();
         tv_nickname.setText(Constant.currentUser.getNick());
         tvUserInfoSex.setText(CommonUtils.getSex(Constant.currentUser.getSex()));
         tv_DuoDuoNumber.setText(Constant.currentUser.getDuoduoId());
         tv_realName.setText(TextUtils.isEmpty(Constant.currentUser.getRealname()) ? getString(R.string.authen_false) : Constant.currentUser.getRealname());
-        tv_phoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7, mobile.length()));
         tv_personalizedSignature.setText(TextUtils.isEmpty(Constant.currentUser.getSignature()) ? getString(R.string.none) : Constant.currentUser.getSignature());
-        tv_email.setText(TextUtils.isEmpty(Constant.currentUser.getEmail()) ? getString(R.string.none) : Constant.currentUser.getEmail());
         tvArea.setText(Constant.currentUser.getAddress());
+
+        String mobile = Constant.currentUser.getMobile();
+        String email = Constant.currentUser.getEmail();
+
+        if (!TextUtils.isEmpty(mobile)) {
+            rlPhone.setVisibility(View.VISIBLE);
+
+            try {
+                tv_phoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7));
+            } catch (Exception e) {
+                tv_phoneNumber.setText(mobile);
+            }
+        }
+
+        if (!TextUtils.isEmpty(email)) {
+            rlEmial.setVisibility(View.VISIBLE);
+            tv_email.setText(email);
+        }
     }
 
     @Override
@@ -192,6 +205,9 @@ public class UserInfoActivity extends BaseActivity {
         tv_email = findViewById(R.id.tv_email);
         tvArea = findViewById(R.id.tvArea);
 
+        rlEmial = findViewById(R.id.rlEmail);
+        rlPhone = findViewById(R.id.rlPhone);
+
         getPermisson(rl_headPortrait, result -> {
             if (result) {
                 dialogType();
@@ -230,9 +246,9 @@ public class UserInfoActivity extends BaseActivity {
 
     //修改Email
     public void changeEmail(View view) {
-        Intent intent = new Intent(this, UpdateUserInfoActivity.class);
-        intent.putExtra(type, changeEmail);
-        startActivity(intent);
+//        Intent intent = new Intent(this, UpdateUserInfoActivity.class);
+//        intent.putExtra(type, changeEmail);
+//        startActivity(intent);
     }
 
     //修改地区

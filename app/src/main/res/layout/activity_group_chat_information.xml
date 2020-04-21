@@ -8,9 +8,9 @@
     <include layout="@layout/layout_title_back" />
 
     <androidx.core.widget.NestedScrollView
-        android:overScrollMode="never"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:text="@string/group_chat_name_label"
-                    android:textColor="@color/theme_color"
+                    android:textColor="#272E3F"
                     android:textSize="16sp" />
 
                 <TextView
@@ -75,7 +75,36 @@
             <include layout="@layout/layout_line10" />
 
             <RelativeLayout
-                android:visibility="gone"
+                style="@style/RLayoutStyle"
+                android:onClick="groupQR">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/social_remark"
+                    android:textColor="#272E3F"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvNick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="10dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textColor="#6D7278"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_line" />
+
+            <RelativeLayout
                 style="@style/RLayoutStyle"
                 android:onClick="groupQR">
 
@@ -85,16 +114,17 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:text="@string/group_qr"
-                    android:textColor="@color/theme_color"
+                    android:textColor="#272E3F"
                     android:textSize="16sp" />
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@id/iv_enter1"
-                    android:src="@drawable/icon_qr_code" />
+                    android:src="@drawable/icon_qr_code"
+                    android:tint="#6D7278" />
 
                 <ImageView
                     android:id="@+id/iv_enter1"
@@ -102,7 +132,7 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_line10" android:visibility="gone"/>
+            <include layout="@layout/layout_line" />
 
             <RelativeLayout
                 android:id="@+id/rl_setTop"
@@ -114,7 +144,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:text="@string/set_conversation_top"
-                    android:textColor="@color/theme_color"
+                    android:textColor="#272E3F"
                     android:textSize="16sp" />
 
                 <Switch
@@ -139,7 +169,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:text="@string/msg_not_disturb"
-                    android:textColor="@color/theme_color"
+                    android:textColor="#272E3F"
                     android:textSize="16sp" />
 
                 <Switch
@@ -152,7 +182,7 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_line10" />
+            <include layout="@layout/layout_line" />
 
             <RelativeLayout
                 style="@style/RLayoutStyle"
@@ -164,7 +194,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:text="@string/report"
-                    android:textColor="@color/theme_color"
+                    android:textColor="#272E3F"
                     android:textSize="16sp" />
 
                 <ImageView style="@style/ImageEnter" />
@@ -184,7 +214,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:text="@string/clear_msg_history"
-                    android:textColor="@color/theme_color"
+                    android:textColor="#272E3F"
                     android:textSize="16sp" />
 
                 <ImageView style="@style/ImageEnter" />
@@ -192,9 +222,9 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 style="@style/RLayoutStyle"
-                android:onClick="announcement">
+                android:onClick="announcement"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_1"
@@ -203,7 +233,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:text="@string/group_announcement"
-                    android:textColor="@color/theme_color"
+                    android:textColor="#272E3F"
                     android:textSize="16sp" />
 
                 <TextView
@@ -228,10 +258,17 @@
 
             <include layout="@layout/layout_line" />
 
-            <Button
+            <include layout="@layout/layout_line10" />
+
+            <TextView
                 android:id="@+id/dissolution_group"
-                style="@style/BtnStyle"
-                android:onClick="dissolutionGroup" />
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:onClick="dissolutionGroup"
+                android:textColor="#FF593B"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

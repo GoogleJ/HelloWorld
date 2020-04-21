@@ -56,6 +56,8 @@ public class GroupChatInformationActivity extends BaseActivity {
     //解散群
     private TextView dissolutionGroup;
 
+    private TextView tvNick;
+
     private AllGroupMemebersAdapter mAdapter;
 
     private Intent intent;
@@ -138,6 +140,9 @@ public class GroupChatInformationActivity extends BaseActivity {
 
         announcement = findViewById(R.id.announcement);
         dissolutionGroup = findViewById(R.id.dissolution_group);
+        tvNick = findViewById(R.id.tvNick);
+        tvNick.setText(Constant.currentUser.getNick());
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 5);
         groupChatRecyclerView.setLayoutManager(gridLayoutManager);
         mAdapter = new AllGroupMemebersAdapter();

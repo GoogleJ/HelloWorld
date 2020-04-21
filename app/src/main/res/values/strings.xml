@@ -240,7 +240,7 @@
     <string name="accomplish">完成</string>
     <string name="duo_duo_account">Hilamg账号</string>
     <string name="hasjoined">已接受</string>
-    <string name="duoduo_acount">Hilamg号:</string>
+    <string name="duoduo_acount">ID:</string>
     <string name="district">地区:</string>
     <string name="send_message">发消息</string>
     <string name="new_message">新消息通知</string>
@@ -603,7 +603,7 @@
     <string name="social_calture">社群文化</string>
     <string name="social_act">社群动态</string>
     <string name="ic_social_end_pop2">社群管理</string>
-    <string name="social_remark">我在本社群昵称</string>
+    <string name="social_remark">我在本群的昵称</string>
     <string name="invite_wechat">邀请微信好友</string>
     <string name="close_social">解散社群</string>
     <string name="exit_social">退出社群</string>

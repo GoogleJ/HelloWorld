@@ -95,14 +95,7 @@ public class GetCodeActivity extends BaseActivity {
 
                                     @Override
                                     public void onSuccess(String userid) {
-                                        Constant.currentUser = loginResponse;
-                                        Constant.userId = userid;
-                                        Constant.token = loginResponse.getToken();
-                                        Constant.authentication = loginResponse.getIsAuthentication();
-                                        if ("0".equals(loginResponse.getIsFirstLogin())) {
-                                            userid = userid + "AAA1";
-                                        }
-                                        emitter.onNext(userid);
+                                        emitter.onNext(loginResponse);
                                     }
 
                                     @Override
@@ -112,18 +105,21 @@ public class GetCodeActivity extends BaseActivity {
                                 }))
                                 .compose(bindToLifecycle())
                 )
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
                 .subscribe(o -> {
-                    String userid = (String) o;
-                    boolean firstLogin = userid.contains("AAA1");
+                    LoginResponse loginResponse = (LoginResponse) o;
+                    Constant.currentUser = loginResponse;
+                    Constant.userId = loginResponse.getId();
+                    Constant.token = loginResponse.getToken();
+                    Constant.authentication = loginResponse.getIsAuthentication();
 
                     MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                     MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
                     MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
-                    UserInfo userInfo = new UserInfo(userid.replace("AAA1", ""), Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
+                    UserInfo userInfo = new UserInfo(Constant.userId, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
                     RongIM.getInstance().setCurrentUserInfo(userInfo);
 
-                    if (firstLogin) {
+                    if ("0".equals(loginResponse.getIsFirstLogin())) {
                         Intent intent = new Intent(GetCodeActivity.this, SetUpPaymentPwdActivity.class);
                         intent.putExtra("firstLogin", true);
                         startActivity(intent);
@@ -137,8 +133,58 @@ public class GetCodeActivity extends BaseActivity {
                 }, this::handleApiError);
     }
 
+    @SuppressLint("CheckResult")
     private void doLoginByEmail(String email) {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .appUserRegisterAndLoginEmail(email, ppivVerify.getPasswordString())
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->
+                        Observable.create(emitter ->
+                                RongIM.connect(loginResponse.getRongToken(), new RongIMClient.ConnectCallback() {
+                                    @Override
+                                    public void onTokenIncorrect() {
+                                        emitter.tryOnError(new Exception(getString(R.string.connect_failed)));
+                                    }
 
+                                    @Override
+                                    public void onSuccess(String userid) {
+                                        emitter.onNext(loginResponse);
+                                    }
+
+                                    @Override
+                                    public void onError(RongIMClient.ErrorCode errorCode) {
+                                        emitter.tryOnError(new Exception(getString(R.string.connect_failed)));
+                                    }
+                                }))
+                                .compose(bindToLifecycle())
+                )
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                .subscribe(o -> {
+                    LoginResponse loginResponse = (LoginResponse) o;
+                    Constant.currentUser = loginResponse;
+                    Constant.userId = loginResponse.getId();
+                    Constant.token = loginResponse.getToken();
+                    Constant.authentication = loginResponse.getIsAuthentication();
+
+                    MMKVUtils.getInstance().enCode("login", Constant.currentUser);
+                    MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
+                    MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
+                    UserInfo userInfo = new UserInfo(Constant.userId, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
+                    RongIM.getInstance().setCurrentUserInfo(userInfo);
+
+                    if ("0".equals(loginResponse.getIsFirstLogin())) {
+                        Intent intent = new Intent(GetCodeActivity.this, SetUpPaymentPwdActivity.class);
+                        intent.putExtra("firstLogin", true);
+                        startActivity(intent);
+                        finish();
+                        return;
+                    }
+
+                    MMKVUtils.getInstance().enCode("isLogin", true);
+                    startActivity(new Intent(GetCodeActivity.this, HomeActivity.class));
+                    finish();
+                }, this::handleApiError);
     }
 
     public void back(View view) {

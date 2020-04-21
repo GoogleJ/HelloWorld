@@ -32,7 +32,6 @@ import com.zxjk.moneyspace.ui.HomeActivity;
 import com.zxjk.moneyspace.ui.ZoomActivity;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.msgpage.widget.CommonPopupWindow;
-import com.zxjk.moneyspace.ui.msgpage.widget.dialog.DeleteFriendInformationDialog;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.GlideUtil;
 
@@ -73,10 +72,13 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     TextView tvSignature;
     @BindView(R.id.llRemark)
     LinearLayout llRemark;
+    @BindView(R.id.rlPhone)
+    RelativeLayout rlPhone;
+    @BindView(R.id.rlEmail)
+    RelativeLayout rlEmail;
 
     String imageUrl;
     String sex = "0";
-    DeleteFriendInformationDialog dialog;
     FriendInfoResponse friendInfoResponse;
     private RelativeLayout rl_end;
     private QuickPopup menuPop;
@@ -125,8 +127,22 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         tvDistrict.setText(getString(R.string.district) + friendInfoResponse.getAddress());
 
         String mobile = friendInfoResponse.getMobile();
-        tvPhoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7));
-        tvEmail.setText(TextUtils.isEmpty(friendInfoResponse.getEmail()) ? "暂无" : friendInfoResponse.getEmail());
+        String email = friendInfoResponse.getEmail();
+
+        if (!TextUtils.isEmpty(mobile)) {
+            rlPhone.setVisibility(View.VISIBLE);
+            try {
+                tvPhoneNumber.setText(mobile.substring(0, 3) + "****" + mobile.substring(7));
+            } catch (Exception e) {
+                tvPhoneNumber.setText(mobile);
+            }
+        }
+
+        if (!TextUtils.isEmpty(email)) {
+            rlEmail.setVisibility(View.VISIBLE);
+            tvEmail.setText(email);
+        }
+
         tvSignature.setText(TextUtils.isEmpty(friendInfoResponse.getSignature()) ? "暂无" : friendInfoResponse.getSignature());
         if (sex.equals(friendInfoResponse.getSex())) {
             ivGender.setImageDrawable(getDrawable(R.drawable.icon_gender_man));
@@ -137,10 +153,10 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         if (friendInfoResponse.getId().equals(Constant.userId)) {
             rl_end.setVisibility(View.INVISIBLE);
             llRemark.setVisibility(View.GONE);
-            tvRealName.setVisibility(View.INVISIBLE);
+            tvRealName.setVisibility(View.GONE);
         }
         if (TextUtils.isEmpty(friendInfoResponse.getRemark())) {
-            tvRealName.setVisibility(View.INVISIBLE);
+            tvRealName.setVisibility(View.GONE);
         }
     }
 

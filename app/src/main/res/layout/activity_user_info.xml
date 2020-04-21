@@ -21,8 +21,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/background_color" />
+                android:layout_height="0.5dp"
+                android:background="#D9D9D9" />
 
             <RelativeLayout
                 android:id="@+id/rl_headPortrait"
@@ -195,7 +195,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="12dp"
-                    android:tint="#CCCCCC"
+                    android:tint="@color/colorTheme"
                     app:srcCompat="@drawable/icon_qr_code" />
 
             </RelativeLayout>
@@ -236,8 +236,10 @@
                 android:background="@color/background_color" />
 
             <RelativeLayout
+                android:id="@+id/rlPhone"
                 style="@style/RLayoutStyle"
-                android:onClick="changeMobile">
+                android:onClick="changeMobile"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/textStyle"
@@ -300,6 +302,7 @@
                 android:background="@color/background_color" />
 
             <RelativeLayout
+                android:id="@+id/rlEmail"
                 style="@style/RLayoutStyle"
                 android:onClick="changeEmail">
 
@@ -313,18 +316,14 @@
                 <TextView
                     android:id="@+id/tv_email"
                     style="@style/textStyle14"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@id/iv_enter8"
                     android:layout_toEndOf="@id/tvMailTitle"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:lines="1" />
-
-                <ImageView
-                    android:id="@+id/iv_enter8"
-                    style="@style/ImageEnter" />
 
             </RelativeLayout>
 

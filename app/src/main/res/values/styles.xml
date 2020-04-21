@@ -127,7 +127,7 @@
         <item name="android:foreground">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/color3</item>
     </style>
 
     <style name="tab">
