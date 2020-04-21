@@ -36,8 +36,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <include layout="@layout/layout_msg_title_cast" />
-
         <io.rong.imkit.widget.RongSwipeRefreshLayout
             android:id="@+id/rc_refresh"
             android:layout_width="match_parent"
