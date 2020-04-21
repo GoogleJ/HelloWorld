@@ -141,7 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="24dp"
-            android:text="@string/group_qr"
+            android:text="@string/group_qr1"
             android:textColor="#6D7278"
             android:textSize="15sp" />
 

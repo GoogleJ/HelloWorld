@@ -267,7 +267,8 @@
     <string name="mailbox">邮箱</string>
     <string name="personalized">个性签名</string>
     <string name="group_invitation">群聊邀请</string>
-    <string name="group_qr">APP扫码即可加入群聊</string>
+    <string name="group_qr">群二维码</string>
+    <string name="group_qr1">APP扫码即可加入群聊</string>
     <string name="head_portrait">头像</string>
     <string name="chat_message">聊天信息(%1$s)</string>
     <string name="savefailed">保存失败,请稍后重试</string>
