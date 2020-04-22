@@ -10,18 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.minepage.scanuri.BaseUri;
+import com.zxjk.moneyspace.utils.GlideUtil;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
 import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 
@@ -31,7 +30,7 @@ public class MyQrCodeActivity extends BaseActivity {
     private TextView tv_title;
     private TextView tvUserName;
     private TextView tvLocation;
-    private CircleImageView ivHead;
+    private ImageView ivHead;
     private BaseUri uri = new BaseUri("action2");
     private String uri2Code;
 
@@ -49,7 +48,7 @@ public class MyQrCodeActivity extends BaseActivity {
         tvUserName = findViewById(R.id.tvUserName);
         tvLocation = findViewById(R.id.tvLocation);
 
-        Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(ivHead);
+        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 

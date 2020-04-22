@@ -6,11 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.google.gson.Gson;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.GetPaymentListBean;
@@ -34,13 +36,12 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 
 public class RecipetQRActivity extends BaseActivity {
+    private static final int QR_SIZE = 192;
     private GetPaymentListBean result;
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();
-
-    private static final int QR_SIZE = 192;
-
     private ImageView ivRecipetImg;
     private ImageView ivHead;
+    private FrameLayout flTop;
     private TextView tvMoney, tv_setMoney;
     private BaseUri uri;
     private String uri2Code;
@@ -53,14 +54,15 @@ public class RecipetQRActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipet_qr);
+        BarUtils.setStatusBarColor(this, Color.parseColor("#272E3F"));
+
         ivRecipetImg = findViewById(R.id.ivRecipetImg);
         ivHead = findViewById(R.id.ivHead);
         tvMoney = findViewById(R.id.tvMoney);
         tv_setMoney = findViewById(R.id.tv_setMoney);
-        TextView tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(getString(R.string.receiptCode));
+        flTop = findViewById(R.id.flTop);
 
-        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        BarUtils.addMarginTopEqualStatusBarHeight(flTop);
 
         Api api = ServiceFactory.getInstance().getBaseService(Api.class);
         api.getPaymentList()
@@ -139,7 +141,10 @@ public class RecipetQRActivity extends BaseActivity {
 
         if (requestCode == 2 && resultCode == 1) {
             result = data.getParcelableExtra("result");
+            if (result == null) return;
+
             GlideUtil.loadCircleImg(ivHead, result.getLogo());
+
             tvMoney.setText(money + " " + result.getSymbol() + ">");
             initUri();
             getCodeBitmap();

@@ -1,69 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f3f5"
+    android:background="@color/colorTheme"
     android:clipChildren="false"
     android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/flTop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_top_transfer"
-        android:orientation="vertical"
-        android:paddingTop="24dp">
+        android:layout_height="40dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/transfer_money_title"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
         <FrameLayout
-            android:layout_width="match_parent"
+            android:layout_width="40dp"
             android:layout_height="40dp"
-            android:gravity="center_vertical">
+            android:clickable="true"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:onClick="back">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/transfer_money_title"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:clickable="true"
-                android:foreground="?selectableItemBackgroundBorderless"
-                android:onClick="back">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ico_back_white" />
-
-            </FrameLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ico_back_white" />
 
         </FrameLayout>
 
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="-104dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="56dp"
-        android:background="@drawable/shape_white_16"
+        android:background="@drawable/shape_white_111"
         android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivHead"
+        <FrameLayout
             android:layout_width="88dp"
             android:layout_height="88dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="-44dp"
-            app:civ_border_color="@color/white"
-            app:civ_border_width="1.5dp" />
+            android:background="@drawable/shape_white_circle">
+
+            <ImageView
+                android:id="@+id/ivHead"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvName"
@@ -77,7 +73,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="17sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,7 +89,7 @@
                 android:layout_weight="1"
                 android:text="@string/cointype"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/ivCoinIcon"
@@ -108,7 +104,7 @@
                 android:layout_marginEnd="6dp"
                 android:text="@string/unChoose"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -134,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/money1"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/etMoney"
@@ -148,8 +144,9 @@
                 android:imeOptions="actionNext"
                 android:inputType="numberDecimal"
                 android:maxLength="15"
-                android:textColor="#9EA0A4"
-                android:textSize="15sp" />
+                android:textColor="@color/colorTheme"
+                android:textColorHint="#D9D9D9"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -170,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/note"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/etNote"
@@ -184,8 +181,9 @@
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:lines="1"
-                android:textColor="#9EA0A4"
-                android:textSize="15sp" />
+                android:textColor="@color/colorTheme"
+                android:textColorHint="#D9D9D9"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -194,16 +192,15 @@
             android:layout_height="0.5dp"
             android:background="#eeeeee" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <Button
             style="@style/BtnStyle"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:onClick="transfer"
-            android:text="@string/m_transfer_commit_btn" />
+            android:text="@string/m_transfer_commit_btn"
+            android:textSize="17sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -211,7 +208,7 @@
             android:layout_marginBottom="40dp"
             android:gravity="center"
             android:text="@string/trans_packet_tips"
-            android:textColor="#9EA0A4"
+            android:textColor="#9E9E9E"
             android:textSize="13sp" />
 
     </LinearLayout>

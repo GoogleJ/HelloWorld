@@ -2,11 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_wallet_qr"
+    android:background="@color/colorTheme"
     android:clipChildren="false"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title_back" />
+    <FrameLayout
+        android:id="@+id/flTop"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/receiptCode"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:onClick="back">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ico_back_white" />
+
+        </FrameLayout>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,18 +43,26 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="88dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/shape_white_16"
+        android:layout_marginBottom="56dp"
+        android:background="@drawable/shape_white_12"
         android:clipChildren="false"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/ivHead"
+        <FrameLayout
             android:layout_width="88dp"
             android:layout_height="88dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-44dp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-44dp"
+            android:background="@drawable/shape_white_circle">
+
+            <ImageView
+                android:id="@+id/ivHead"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvMoney"
@@ -37,29 +74,21 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
 
-        <FrameLayout
-            android:layout_width="224dp"
-            android:layout_height="224dp"
-            android:layout_marginTop="20dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/frame_qr" />
-
-            <ImageView
-                android:id="@+id/ivRecipetImg"
-                android:layout_width="192dp"
-                android:layout_height="192dp"
-                android:layout_gravity="center"
-                android:scaleType="fitXY" />
-
-        </FrameLayout>
+        <ImageView
+            android:id="@+id/ivRecipetImg"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="48dp"
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp">
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="48dp">
 
             <TextView
                 android:id="@+id/tv_setMoney"

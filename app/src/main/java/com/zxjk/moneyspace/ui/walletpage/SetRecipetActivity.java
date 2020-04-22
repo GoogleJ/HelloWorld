@@ -33,7 +33,7 @@ public class SetRecipetActivity extends BaseActivity {
 
 
         etMoney.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        etMoney.addTextChangedListener(new DecimalInputTextWatcher(etMoney,10,5));
+        etMoney.addTextChangedListener(new DecimalInputTextWatcher(etMoney, 10, 5));
     }
 
     public void commit(View view) {

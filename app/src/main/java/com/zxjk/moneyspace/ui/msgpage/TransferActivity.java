@@ -2,20 +2,22 @@ package com.zxjk.moneyspace.ui.msgpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.BaseResponse;
@@ -38,7 +40,6 @@ import com.zxjk.moneyspace.utils.MoneyValueFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
@@ -58,19 +59,21 @@ public class TransferActivity extends BaseActivity {
     private String symbolFromScan;
     private String logoFromScan;
 
-    private CircleImageView ivHead;
+    private ImageView ivHead;
     private TextView tvName;
     private ImageView ivCoinIcon;
     private TextView tvCoin;
     private EditText etMoney;
     private EditText etNote;
 
+    private FrameLayout flTop;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer);
-        setTrasnferStatusBar(true);
+        BarUtils.setStatusBarColor(this, Color.parseColor("#272E3F"));
 
         ivHead = findViewById(R.id.ivHead);
         tvName = findViewById(R.id.tvName);
@@ -78,8 +81,11 @@ public class TransferActivity extends BaseActivity {
         tvCoin = findViewById(R.id.tvCoin);
         etMoney = findViewById(R.id.etMoney);
         etNote = findViewById(R.id.etNote);
+        flTop = findViewById(R.id.flTop);
 
-        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5)});
+        BarUtils.addMarginTopEqualStatusBarHeight(flTop);
+
+        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4)});
 
         fromScan = getIntent().getBooleanExtra("fromScan", false);
         if (fromScan) {
@@ -106,7 +112,7 @@ public class TransferActivity extends BaseActivity {
                     .flatMap((Function<LoginResponse, Observable<BaseResponse<List<GetPaymentListBean>>>>) userInfo -> {
                         runOnUiThread(() -> {
                             targetUser = new UserInfo(userInfo.getId(), userInfo.getNick(), Uri.parse(userInfo.getHeadPortrait()));
-                            Glide.with(TransferActivity.this).load(targetUser.getPortraitUri().toString()).into(ivHead);
+                            GlideUtil.loadCircleImg(ivHead, targetUser.getPortraitUri().toString());
                             tvName.setText(getString(R.string.transTo, targetUser.getName()));
                         });
                         return api.getPaymentList();
@@ -143,7 +149,8 @@ public class TransferActivity extends BaseActivity {
                         });
             }
 
-            Glide.with(this).load(targetUser.getPortraitUri().toString()).into(ivHead);
+            GlideUtil.loadCircleImg(ivHead, targetUser.getPortraitUri().toString());
+
             tvName.setText(getString(R.string.transTo, targetUser.getName()));
         }
     }
@@ -251,6 +258,12 @@ public class TransferActivity extends BaseActivity {
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             tvCoin.setText(result.getSymbol());
             etMoney.setHint(getString(R.string.transLeft) + result.getBalance() + result.getSymbol());
+
+            if (result.getSymbol().equals("CNY")) {
+                etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(2)});
+            } else {
+                etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4)});
+            }
         }
     }
 
