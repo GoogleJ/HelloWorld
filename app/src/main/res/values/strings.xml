@@ -1304,6 +1304,13 @@
     <string name="verify_paypass1">请再次输入您的交易密码</string>
     <string name="input_pay_pwd">请输入支付密码</string>
     <string name="email_label">邮箱登陆</string>
+    <string name="sendred">发红包</string>
+    <string name="control_red">尾数指定</string>
+    <string name="control_red1">最后一位数</string>
+    <string name="control_red2">倒数第二位</string>
+    <string name="control_to">指定为</string>
+    <string name="control_not_to">指定不为</string>
+    <string name="red_tips1">红包个数不能大于群人数</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

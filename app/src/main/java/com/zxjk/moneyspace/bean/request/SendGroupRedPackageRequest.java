@@ -12,6 +12,52 @@ public class SendGroupRedPackageRequest {
     private String symbol;
     private String sendRedPacketType;
 
+    private String redSwitch;
+    private String lastNumIs;
+    private String lastNumNot;
+    private String penultimateIs;
+    private String penultimateNot;
+
+    public String getRedSwitch() {
+        return redSwitch;
+    }
+
+    public void setRedSwitch(String redSwitch) {
+        this.redSwitch = redSwitch;
+    }
+
+    public String getLastNumIs() {
+        return lastNumIs;
+    }
+
+    public void setLastNumIs(String lastNumIs) {
+        this.lastNumIs = lastNumIs;
+    }
+
+    public String getLastNumNot() {
+        return lastNumNot;
+    }
+
+    public void setLastNumNot(String lastNumNot) {
+        this.lastNumNot = lastNumNot;
+    }
+
+    public String getPenultimateIs() {
+        return penultimateIs;
+    }
+
+    public void setPenultimateIs(String penultimateIs) {
+        this.penultimateIs = penultimateIs;
+    }
+
+    public String getPenultimateNot() {
+        return penultimateNot;
+    }
+
+    public void setPenultimateNot(String penultimateNot) {
+        this.penultimateNot = penultimateNot;
+    }
+
     public String getSendRedPacketType() {
         return sendRedPacketType;
     }

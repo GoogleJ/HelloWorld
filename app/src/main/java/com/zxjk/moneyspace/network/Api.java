@@ -660,4 +660,6 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> getEmailCode(@Field("email") String email);
 
+    @POST("duoduo/customer/getRedOperatorIdentity")
+    Observable<BaseResponse<String>> getRedOperatorIdentity();
 }

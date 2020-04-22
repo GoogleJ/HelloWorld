@@ -2,17 +2,20 @@ package com.zxjk.moneyspace.ui.msgpage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
@@ -55,6 +58,7 @@ public class PrivacyRedPacketActivity extends BaseActivity {
     private TextView tvCoin;
     private EditText etMoney;
     private EditText etBless;
+    private FrameLayout flTop;
 
     private GetPaymentListBean result;
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();
@@ -64,7 +68,7 @@ public class PrivacyRedPacketActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_envelopes);
-        setTrasnferStatusBar(true);
+        BarUtils.setStatusBarColor(this, Color.parseColor("#FF665B"));
 
         Api api = ServiceFactory.getInstance().getBaseService(Api.class);
 
@@ -108,8 +112,11 @@ public class PrivacyRedPacketActivity extends BaseActivity {
         tvCoin = findViewById(R.id.tvCoin);
         etMoney = findViewById(R.id.etMoney);
         etBless = findViewById(R.id.etBless);
+        flTop = findViewById(R.id.flTop);
 
         etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5)});
+
+        BarUtils.addMarginTopEqualStatusBarHeight(flTop);
     }
 
     @SuppressLint("CheckResult")

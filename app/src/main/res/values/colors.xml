@@ -2,7 +2,7 @@
 <resources>
     <color name="themecolor">#4B4D5B</color>
     <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
+    <color name="black">#272E3F</color>
     <color name="business_card_duoduo_id">#B5B5B5</color>
     <color name="colorPrimary">#272E3F</color>
     <color name="colorPrimaryDark">#272E3F</color>
