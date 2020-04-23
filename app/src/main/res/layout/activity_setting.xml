@@ -167,22 +167,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_helpCenter"
-                style="@style/RLayoutStyle">
-
-                <TextView
-                    style="@style/textStyle"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/help_center" />
-
-                <ImageView style="@style/ImageEnter" />
-
-            </RelativeLayout>
-
-            <include layout="@layout/layout_line" />
-
-            <RelativeLayout
                 android:id="@+id/rl_feedback"
                 style="@style/RLayoutStyle">
 

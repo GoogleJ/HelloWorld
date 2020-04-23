@@ -195,9 +195,6 @@ public class SettingActivity extends BaseActivity {
                 ToastUtils.showShort(R.string.notAuthentication);
             }
         });
-        //帮助中心
-        findViewById(R.id.rl_helpCenter).setOnClickListener(v ->
-                startActivity(new Intent(SettingActivity.this, HelpActivity.class)));
         //意见反馈
         findViewById(R.id.rl_feedback).setOnClickListener(v ->
                 startActivity(new Intent(SettingActivity.this, FeedbackActivity.class)));
