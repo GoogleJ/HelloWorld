@@ -9,6 +9,7 @@ import com.zxjk.moneyspace.bean.response.BalanceAssetManageBean;
 import com.zxjk.moneyspace.bean.response.BaseResponse;
 import com.zxjk.moneyspace.bean.response.BlockChainNewsBean;
 import com.zxjk.moneyspace.bean.response.ByBoinsResponse;
+import com.zxjk.moneyspace.bean.response.CnyRechargeResponse;
 import com.zxjk.moneyspace.bean.response.CommunityCultureResponse;
 import com.zxjk.moneyspace.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.moneyspace.bean.response.EditCommunityResponse;
@@ -19,6 +20,7 @@ import com.zxjk.moneyspace.bean.response.GetAppVersionResponse;
 import com.zxjk.moneyspace.bean.response.GetBalanceInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetCarouselMap;
 import com.zxjk.moneyspace.bean.response.GetChatRoomInfoResponse;
+import com.zxjk.moneyspace.bean.response.GetCustomerBankInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetCustomerBasicInfoByIdResponse;
 import com.zxjk.moneyspace.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupChatInfoByGroupIdResponse;
@@ -662,4 +664,26 @@ public interface Api {
 
     @POST("duoduo/customer/getRedOperatorIdentity")
     Observable<BaseResponse<String>> getRedOperatorIdentity();
+
+    @POST("duoduo/customer/getCustomerBankInfo")
+    Observable<BaseResponse<GetCustomerBankInfoResponse>> getCustomerBankInfo();
+
+    @POST("duoduo/walletBalance/cnyRecharge")
+    Observable<BaseResponse<CnyRechargeResponse>> cnyRecharge();
+
+    @POST("duoduo/customer/isBandBankInfo")
+    Observable<BaseResponse<String>> isBandBankInfo();
+
+    @POST("duoduo/walletBalance/cnyRechargeConfirm")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> cnyRechargeConfirm(@Field("rechargeNum") String rechargeNum, @Field("remark") String remark, @Field("picture") String picture);
+
+    @POST("duoduo/customer/addCustomerBankInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> addCustomerBankInfo(@Field("bankInfo") String bankInfo);
+
+    @POST("duoduo/walletBalance/cnyWithdraw")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> cnyWithdraw(@Field("withdrawNum") String withdrawNum,@Field("payPwd") String payPwd);
+
 }

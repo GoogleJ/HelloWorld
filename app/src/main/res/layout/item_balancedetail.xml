@@ -35,7 +35,7 @@
                 android:ellipsize="end"
                 android:gravity="end"
                 android:lines="1"
-                android:textColor="#9EA0A4"
+                android:textColor="#6D7278"
                 android:textSize="12sp" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:ellipsize="end"
                 android:gravity="end"
                 android:lines="1"
-                android:textColor="#9EA0A4"
+                android:textColor="#6D7278"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -113,7 +113,7 @@
                     android:id="@+id/tvTips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#9EA0A4"
+                    android:textColor="#6D7278"
                     android:textSize="12sp" />
 
             </LinearLayout>

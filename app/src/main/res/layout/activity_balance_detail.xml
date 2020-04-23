@@ -26,8 +26,8 @@
         android:ellipsize="end"
         android:gravity="center"
         android:lines="1"
-        android:textColor="#2C4879"
-        android:textSize="21sp" />
+        android:textColor="#272E3F"
+        android:textSize="25sp" />
 
     <TextView
         android:id="@id/tvBalance2CNY"
@@ -39,16 +39,10 @@
         android:ellipsize="end"
         android:gravity="center"
         android:lines="1"
-        android:textColor="#9EA0A4" />
-
-    <TextView
-        android:id="@+id/tvRewardCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textColor="#9EA0A4" />
+        android:textColor="#6D7278" />
 
     <LinearLayout
+        android:id="@+id/llAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -69,7 +63,7 @@
             android:layout_weight="1"
             android:ellipsize="middle"
             android:singleLine="true"
-            android:textColor="#2C4879"
+            android:textColor="#272E3F"
             android:textSize="13sp" />
 
         <ImageView
@@ -79,7 +73,8 @@
             android:paddingTop="6dp"
             android:paddingEnd="16dp"
             android:paddingBottom="6dp"
-            android:src="@drawable/ic_balancedetail_copy" />
+            android:src="@drawable/ic_balancedetail_copy"
+            android:tint="#9E9E9E" />
 
     </LinearLayout>
 
@@ -114,27 +109,22 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_stroke_ffae11_4"
+            android:background="@drawable/shape_theme11"
             android:gravity="center"
             android:onClick="downCoin"
             android:paddingTop="12dp"
             android:paddingBottom="12dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_balance_detail_down" />
-
             <TextView
+                android:id="@+id/tvBottom1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@string/tibi"
-                android:textColor="#FFAE11"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:text="@string/chongbi"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -143,26 +133,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_stroke_theme_4"
+            android:background="@drawable/shape_theme3"
             android:gravity="center"
             android:onClick="upCoin"
             android:paddingTop="12dp"
             android:paddingBottom="12dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_balance_detail_up"
-                android:tint="@color/colorTheme" />
-
             <TextView
+                android:id="@+id/tvBottom2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@string/chongbi"
-                android:textColor="@color/colorTheme"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:text="@string/tibi"
+                android:textColor="@color/color3"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

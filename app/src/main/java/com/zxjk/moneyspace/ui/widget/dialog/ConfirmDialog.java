@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+
 import com.zxjk.moneyspace.R;
 
 
@@ -50,5 +52,11 @@ public class ConfirmDialog extends Dialog {
         });
         tvDialogCancel.setOnClickListener(v -> dismiss());
 
+    }
+
+    public void positiveText(String str) {
+        if (tvDialogConfirm != null) {
+            tvDialogConfirm.setText(str);
+        }
     }
 }

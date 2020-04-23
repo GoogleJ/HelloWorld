@@ -50,7 +50,7 @@ public class RxSchedulers {
     //返回结果预处理
     public static <T> ObservableTransformer<BaseResponse<T>, T> normalTrans() {
         return upstream -> upstream.flatMap((Function<BaseResponse<T>, ObservableSource<T>>) response -> {
-            if (response.code == CODE_SUCCESS ) {
+            if (response.code == CODE_SUCCESS) {
                 return Observable.just(response.data);
             } else if (response.code == CODE_UNLOGIN) {
                 return Observable.error(new RxException.DuplicateLoginExcepiton("重复登录"));
@@ -65,15 +65,15 @@ public class RxSchedulers {
         return upstream -> upstream.flatMap((Function<BaseResponse<T>, ObservableSource<T>>) response -> {
             if (response.code == CODE_OTC_SUCCESS) {
                 return Observable.just(response.data);
-            }else if(response.code == CODE_OTC_TIMEOUT){
+            } else if (response.code == CODE_OTC_TIMEOUT) {
                 return Observable.error(new RxException.ParamsException("没有满足条件的订单", response.code));
-            }else if (response.code == CODE_SUCCESS ) {
+            } else if (response.code == CODE_SUCCESS) {
                 return Observable.just(response.data);
             } else if (response.code == CODE_UNLOGIN) {
                 return Observable.error(new RxException.ParamsException("重复登录", response.code));
-            } else if(response.code == 1){
+            } else if (response.code == 1) {
                 return Observable.error(new RxException.ParamsException(response.msg, response.code));
-            }else {
+            } else {
                 return Observable.error(new RxException.ParamsException(response.msg, response.code));
             }
         });

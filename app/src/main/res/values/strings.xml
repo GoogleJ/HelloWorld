@@ -284,7 +284,7 @@
     <string name="phone_friend">手机联系人</string>
     <string name="login_again">登录已过期，请重新登录</string>
     <string name="select_contact">选择联系人</string>
-    <string name="developing">暂未开放,敬请期待</string>
+    <string name="developing">本功能暂未开放,请持续关注</string>
     <string name="create_game_group_success">创建成功</string>
     <string name="group_max_number">群成员已达上限,无法继续邀请</string>
     <string name="no_update_nick">暂无权限修改群昵称</string>
@@ -1255,7 +1255,7 @@
     <string name="commit_btn">提交</string>
     <string name="collection_information">收款信息</string>
     <string name="input_shensu">请填写您需要申诉的信息…</string>
-    <string name="uploadSign">上传凭证（不超过三张）</string>
+    <string name="uploadSign">上传凭证</string>
     <string name="verified_prompt">请填写证件上的真实名称、证件类型及证件号</string>
     <string name="verified_prompt_1">拍摄证件照，确保证件照上的名称及证件号清晰可见</string>
     <string name="front_photo_of_the_document">证件正面照</string>
@@ -1311,6 +1311,43 @@
     <string name="control_to">指定为</string>
     <string name="control_not_to">指定不为</string>
     <string name="red_tips1">红包个数不能大于群人数</string>
+    <string name="wallet">钱包</string>
+    <string name="lines">生态</string>
+    <string name="balance">资产</string>
+    <string name="tradeCenter">第三方交易所</string>
+    <string name="linesService">生态服务</string>
+
+    <string name="trade1">Nogex交易所</string>
+    <string name="trade2">OKEX交易所</string>
+    <string name="trade3">非币网交易所</string>
+    <string name="trade4">Nogex交易所</string>
+    <string name="trade5">OKEX交易所</string>
+    <string name="trade6">嘀嘀打车</string>
+    <string name="trade7">话费充值</string>
+    <string name="trade8">商城</string>
+    <string name="trade9">生活缴费</string>
+    <string name="trade10">游戏</string>
+    <string name="chongzhi">充值</string>
+    <string name="tixian">提现</string>
+    <string name="cnyupmoney">充值金额</string>
+    <string name="tips_cny">温馨提示：充值会有延迟，请稍后查询！</string>
+    <string name="nobank">您还没绑定银行卡，请先去绑卡。</string>
+    <string name="bindBank">去绑卡</string>
+    <string name="bankAddress">支行地址</string>
+    <string name="tip_confirm">温馨提示：\n1.转账请复制信息，到网上银行或支付宝完成转账充值。\n2.充值必须是从Money Space平台绑定的卡转出，否则充值不会到账。\n3.转账成功后，系统会在2小时内充值到账。\n4.保留充值记录，并确认上传。</string>
+    <string name="upload_sign">上传转账凭证</string>
+    <string name="nosign">请上传凭证</string>
+    <string name="uploadsuccess">提交成功，预计2小时到账</string>
+    <string name="watchlist">查看订单</string>
+    <string name="uploadsuccess1">提交成功，请耐心等待</string>
+    <string name="bindbank">绑定银行卡</string>
+    <string name="tip_confirm1">温馨提示：\n1.请仔细填写并核对所填写的银行卡信息。\n2.充值必须是从Money Space平台绑定的卡转出，否则充值不会到账。</string>
+    <string name="card_name">持卡人</string>
+    <string name="info_empty">请完善内容</string>
+    <string name="bank_receive">到账银行卡</string>
+    <string name="tips_bank">预计24小时到账</string>
+    <string name="upnum">提现金额</string>
+    <string name="input_upnum">请输入提现金额</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

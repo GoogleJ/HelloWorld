@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f3f5"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_balanceleft"
+        android:background="@color/colorTheme"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llTop"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -39,9 +39,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/balanceleft1"
+                android:text="@string/wallet"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <FrameLayout
                 android:layout_width="40dp"
@@ -72,16 +73,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/balance2cny"
-                android:textColor="#AFCAFF" />
+                android:textColor="#6D7278" />
 
             <ImageView
                 android:id="@+id/ivShowOrHide"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:onClick="showOrHide"
                 android:padding="5dp"
                 android:src="@drawable/ic_blockwallet_hide"
-                android:tint="#06328A" />
+                android:tint="#6D7278" />
 
         </LinearLayout>
 
@@ -105,38 +105,40 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="16dp"
             android:ellipsize="middle"
             android:singleLine="true"
             android:text="≈ 0.00CNY"
-            android:textColor="#AFCAFF" />
+            android:textColor="#6D7278" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/bg_balanceleft" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="-56dp"
-            android:layout_marginEnd="24dp"
-            android:drawableEnd="@drawable/ic_balanceadd"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:onClick="add"
-            android:text="@string/propertyManage"
-            android:textColor="@color/white" />
     </LinearLayout>
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="3dp"
+        app:tabSelectedTextColor="@color/colorTheme"
+        app:tabTextColor="#6D7278">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lines" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/balance" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-24dp"
+        android:background="@color/white"
         android:overScrollMode="never" />
 
 </LinearLayout>

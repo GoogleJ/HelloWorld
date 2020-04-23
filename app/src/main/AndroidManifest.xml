@@ -57,6 +57,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.SuccessActivity2"></activity>
+        <activity android:name=".ui.SuccessActivity1" />
+        <activity android:name=".ui.walletpage.CNYUpConfirm2Activity" />
+        <activity android:name=".ui.walletpage.BindCNYCardActivity" />
+        <activity android:name=".ui.walletpage.CNYUpConfirm1Activity" />
+        <activity android:name=".ui.walletpage.CNYDownActivity" />
+        <activity android:name=".ui.walletpage.CNYUpActivity" />
         <activity
             android:name=".ui.UserFirstSetupPaypassActivity"
             android:launchMode="singleTop"

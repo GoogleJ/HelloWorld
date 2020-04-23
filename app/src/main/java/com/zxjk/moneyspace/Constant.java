@@ -43,8 +43,6 @@ public class Constant {
     public static final String LOCAL_CHANNEL_ID = "rc_notification_id";
     public static final String ACTION_BROADCAST1 = "Action:Broadcast:blockWalletCreated";
     public static final String ACTION_BROADCAST2 = "Action:Broadcast:rongMsgArrive";
-    public static final String regUrl = "^[\\s\\S]*(http[s]?:\\/\\/)?([\\w-]+\\.)+[\\w-]+([\\w-./?%&=]*)?[\\s\\S]*$";
-    public static final String speChat = ".*<.*|.*>.*";
     public static String HEAD_LOCATION = "86";
     public static String userId = "";
     public static String token = "";

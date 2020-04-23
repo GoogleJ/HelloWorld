@@ -34,13 +34,17 @@ import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.minepage.DetailInfoActivity;
+import com.zxjk.moneyspace.ui.walletpage.BindCNYCardActivity;
+import com.zxjk.moneyspace.ui.walletpage.CNYDownActivity;
+import com.zxjk.moneyspace.ui.walletpage.CNYUpActivity;
 import com.zxjk.moneyspace.ui.widget.NewsLoadMoreView;
+import com.zxjk.moneyspace.ui.widget.dialog.ConfirmDialog;
+import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.GlideUtil;
 
 import java.text.SimpleDateFormat;
 
 public class BalanceDetailActivity extends BaseActivity {
-
     private String canTransfer;
 
     private GetBalanceInfoResponse.BalanceListBean data;
@@ -51,31 +55,40 @@ public class BalanceDetailActivity extends BaseActivity {
     private ImageView ivIcon;
     private TextView tvBlance;
     private TextView tvBalance2CNY;
-    private TextView tvRewardCount;
     private TextView tvAddress;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView recycler;
+    private LinearLayout llAddress;
+    private TextView tvBottom1;
+    private TextView tvBottom2;
+
     private BaseQuickAdapter<GetSymbolSerialResponse.SymbolSerialDTOSBean, BaseViewHolder> adapter;
     private boolean fromTrade;
 
     private int page = 0;
     private int numsPerPage = 10;
 
+    private boolean isCNY;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance_detail);
 
-        colorRed = Color.parseColor("#E94545");
-        colorBlack = Color.parseColor("#000000");
+        colorRed = Color.parseColor("#FF6464");
+        colorBlack = Color.parseColor("#272E3F");
 
         data = getIntent().getParcelableExtra("data");
+        if (data.getCurrencyName().equals("CNY")) {
+            isCNY = true;
+        }
 
         initView();
 
         initAdapter();
 
         refreshLayout.setRefreshing(true);
+
         initData();
     }
 
@@ -163,6 +176,13 @@ public class BalanceDetailActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void initData() {
+        if (isCNY) {
+            llAddress.setVisibility(View.GONE);
+            tvBottom1.setText(R.string.chongzhi);
+            tvBottom2.setText(R.string.tixian);
+            tvBalance2CNY.setVisibility(View.INVISIBLE);
+        }
+
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getSymbolSerial(String.valueOf(numsPerPage), String.valueOf(page), data.getCurrencyName(),
                         data.getParentSymbol())
@@ -201,16 +221,18 @@ public class BalanceDetailActivity extends BaseActivity {
 
         ivIcon = findViewById(R.id.ivIcon);
         tvBlance = findViewById(R.id.tvBlance);
-        tvRewardCount = findViewById(R.id.tvRewardCount);
         tvBalance2CNY = findViewById(R.id.tvBalance2CNY);
         tvAddress = findViewById(R.id.tvAddress);
         refreshLayout = findViewById(R.id.refreshLayout);
         recycler = findViewById(R.id.recycler);
+        llAddress = findViewById(R.id.llAddress);
+        tvBottom1 = findViewById(R.id.tvBottom1);
+        tvBottom2 = findViewById(R.id.tvBottom2);
+
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
         GlideUtil.loadNormalImg(ivIcon, data.getLogo());
         tvBlance.setText(data.getBalanceSum());
-        tvRewardCount.setText(getString(R.string.activity_reward, data.getAwardBalance(), data.getCurrencyName()));
 
         SpannableString string = new SpannableString("≈" + data.getPriceToCny() + "CNY");
         string.setSpan(new RelativeSizeSpan(0.75f), string.length() - 3, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -226,22 +248,76 @@ public class BalanceDetailActivity extends BaseActivity {
         refreshLayout.setColorSchemeResources(R.color.color1);
     }
 
+    @SuppressLint("CheckResult")
     public void downCoin(View view) {
+        if ("CNY".equals(data.getCurrencyName())) {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .isBandBankInfo()
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(r -> {
+                        if ("0".equals(r)) {
+                            ConfirmDialog confirmDialog = new ConfirmDialog(this, getString(R.string.hinttext), getString(R.string.nobank), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(BalanceDetailActivity.this, BindCNYCardActivity.class);
+                                    intent.putExtra("fromBalance", true);
+                                    startActivity(intent);
+                                }
+                            });
+                            confirmDialog.positiveText(getString(R.string.bindBank));
+                            confirmDialog.show();
+                        } else {
+                            startActivity(new Intent(this, CNYUpActivity.class));
+                        }
+                    }, this::handleApiError);
+
+            return;
+        }
+
+        if (!TextUtils.isEmpty(canTransfer) && canTransfer.equals("1")) {
+            ToastUtils.showShort(R.string.developing);
+            return;
+        }
+
+        Intent intent = new Intent(this, UpCoinActivity.class);
+        intent.putExtra("data", data);
+        startActivity(intent);
+    }
+
+    @SuppressLint("CheckResult")
+    public void upCoin(View view) {
+        if ("CNY".equals(data.getCurrencyName())) {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .isBandBankInfo()
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(r -> {
+                        if ("0".equals(r)) {
+                            ConfirmDialog confirmDialog = new ConfirmDialog(this, getString(R.string.hinttext), getString(R.string.nobank), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(BalanceDetailActivity.this, BindCNYCardActivity.class);
+                                    intent.putExtra("fromBalance1", true);
+                                    startActivity(intent);
+                                }
+                            });
+                            confirmDialog.positiveText(getString(R.string.bindBank));
+                            confirmDialog.show();
+                        } else {
+                            startActivity(new Intent(this, CNYDownActivity.class));
+                        }
+                    }, this::handleApiError);
+            return;
+        }
+
         if (!TextUtils.isEmpty(canTransfer) && canTransfer.equals("1")) {
             ToastUtils.showShort(R.string.developing);
             return;
         }
         Intent intent = new Intent(this, DownCoinActivity.class);
-        intent.putExtra("data", data);
-        startActivity(intent);
-    }
-
-    public void upCoin(View view) {
-        if (!TextUtils.isEmpty(canTransfer) && canTransfer.equals("1")) {
-            ToastUtils.showShort(R.string.developing);
-            return;
-        }
-        Intent intent = new Intent(this, UpCoinActivity.class);
         intent.putExtra("data", data);
         startActivity(intent);
     }
