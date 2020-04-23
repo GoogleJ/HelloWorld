@@ -892,7 +892,7 @@
     <string name="tips_blockwallet_qr">该地址仅用于%1$s钱包收款，请勿用于其他币种，否则资产将不可找回。</string>
     <string name="downcoin_nums">充币数量</string>
     <string name="input_downcoin_nums">请输入充币数量</string>
-    <string name="trade_commission">交易手续费为：%1$s%2$s</string>
+    <string name="trade_commission">交易手续费为：</string>
     <string name="balancewallet_nums">余额钱包可用数量%1$s%2$s</string>
     <string name="upcoin_nums">提币数量</string>
     <string name="input_upcoin_nums">请输入提币数量</string>
@@ -1349,6 +1349,8 @@
     <string name="upnum">提现金额</string>
     <string name="input_upnum">请输入提现金额</string>
     <string name="unbind">解绑</string>
+    <string name="getcoin_address">收币地址</string>
+    <string name="price_middle">手续费</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

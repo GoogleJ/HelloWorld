@@ -78,7 +78,7 @@
     <string name="tradeOrder">Transaction Number</string>
     <string name="tradeDone">Success</string>
     <string name="moexchange">Exchange</string>
-    <string name="trade_commission">Transaction fee:%1$s%2$s</string>
+    <string name="trade_commission">Transaction fee:</string>
     <string name="tradeTime">Time</string>
     <string name="tradeType">Type</string>
     <string name="tradeOrders">Record</string>

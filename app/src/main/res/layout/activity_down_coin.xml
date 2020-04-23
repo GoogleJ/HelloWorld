@@ -20,332 +20,160 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="48dp"
-                android:background="@drawable/shape_downcoin1"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/shape_downcoin2"
-                    android:onClick="changeDirection"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_downcoin1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingStart="10dp"
-                        android:text="@string/from"
-                        android:textColor="@color/textColor9"
-                        android:textSize="15sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="#D6D6D6" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingStart="10dp"
-                        android:text="@string/to"
-                        android:textColor="@color/textColor9"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/llBalanceWallet"
-                        android:layout_width="wrap_content"
-                        android:layout_height="64dp"
-                        android:gravity="center_vertical"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="24dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/from_text"
-                            android:textColor="@color/black" />
-
-                        <TextView
-                            android:id="@+id/tvBlanceAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:lines="1"
-                            android:textColor="@color/black" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=")"
-                            android:textColor="@color/black" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="#D6D6D6" />
-
-                    <LinearLayout
-                        android:id="@+id/llBlockWallet"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:gravity="center_vertical"
-                        android:paddingStart="16dp">
-
-                        <EditText
-                            android:id="@+id/etBlockAddress"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@null"
-                            android:hint="@string/tips_downcoin"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="6dp"
-                            android:onClick="chooseBlockAddress"
-                            android:padding="12dp"
-                            android:src="@drawable/ic_downcoin_blockaddress" />
-
-                        <ImageView
-                            android:id="@+id/ivScan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="scan"
-                            android:paddingTop="10dp"
-                            android:paddingEnd="16dp"
-                            android:paddingBottom="10dp"
-                            android:src="@drawable/ic_downcoin_scan" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:layout_height="10dp"
+                android:background="#F2F3F5" />
 
             <TextView
-                android:id="@+id/tvTips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginBottom="12dp"
-                android:text="@string/tibi_tip"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/getcoin_address"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:gravity="center_vertical">
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp">
 
                 <EditText
-                    android:id="@+id/etCount"
+                    android:id="@+id/etBlockAddress"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="@string/tibi_num_tip"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
+                    android:hint="@string/tips_downcoin"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
                     android:lines="1"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textColorHint="#D8D8D8"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvSymbol"
+                <ImageView
+                    android:id="@+id/ivScan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="ETH"
-                    android:textColor="@color/black" />
-
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="#DDDDDD" />
-
-                <TextView
-                    android:id="@+id/tvAllIn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/all"
-                    android:textColor="@color/colorTheme" />
+                    android:onClick="scan"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="4dp"
+                    android:src="@drawable/ic_downcoin_scan" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:background="#dddddd" />
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="#D9D9D9" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#F2F3F5" />
 
             <TextView
-                android:id="@+id/tvBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:textColor="#BFBFBF"
-                android:textSize="12sp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/tibi_tip"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/llBlock2Balance"
+            <EditText
+                android:id="@+id/etCount"
                 android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@null"
+                android:hint="@string/tibi_num_tip"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:lines="1"
+                android:textColor="@color/black"
+                android:textColorHint="#D8D8D8"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="#D9D9D9" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#F2F3F5" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/shape_downcoin1"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/kuanggongprice"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/tvHuaZhuanGasPrice1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="≈0.0000 ether"
-                        android:textColor="@color/textcolor3" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/slow"
-                        android:textColor="@color/textcolor3" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fast"
-                        android:textColor="@color/textcolor3" />
-
-                </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatSeekBar
-                    android:id="@+id/seekHuaZhuan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:maxHeight="8dp"
-                    android:progressDrawable="@drawable/progress_blockwallet"
-                    android:splitTrack="false"
-                    android:thumb="@drawable/ic_seek_thumb" />
-
-                <TextView
-                    android:id="@+id/tvHuaZhuanGasPrice2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:text="0.00 gwei"
-                    android:textColor="@color/textcolor3" />
-
-            </LinearLayout>
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/price_middle"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginEnd="16dp"
-                android:background="#EEF3FC"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginBottom="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tvGasPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:textColor="@color/textColor9"
+                    android:textColor="#6D7278"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tvGasPrice1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="6dp"
-                    android:text="@string/tips_downcoin1"
-                    android:textColor="@color/textColor9"
+                    android:textColor="#FC6660"
                     android:textSize="13sp" />
 
             </LinearLayout>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:background="@drawable/shape_stroke_theme_4"
-                android:gravity="center"
+                android:layout_marginStart="16dp"
+                android:lineSpacingExtra="6dp"
+                android:text="@string/tips_downcoin1"
+                android:textColor="#6D7278"
+                android:textSize="13sp" />
+
+            <Button
+                style="@style/BtnStyle"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="120dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:onClick="confirm"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
                 android:text="@string/queding"
-                android:textColor="@color/colorTheme"
-                android:textSize="16sp" />
+                android:textSize="17sp" />
 
         </LinearLayout>
 

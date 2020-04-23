@@ -1,94 +1,39 @@
 package com.zxjk.moneyspace.ui.minepage.wallet;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.TranslateAnimation;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.request.SignTransactionRequest;
 import com.zxjk.moneyspace.bean.response.GetBalanceInfoResponse;
-import com.zxjk.moneyspace.bean.response.GetParentSymbolBean;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.msgpage.QrCodeActivity;
 import com.zxjk.moneyspace.ui.widget.NewPayBoard;
-import com.zxjk.moneyspace.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.moneyspace.utils.CommonUtils;
-import com.zxjk.moneyspace.utils.GlideUtil;
 import com.zxjk.moneyspace.utils.MD5Utils;
 import com.zxjk.moneyspace.utils.MoneyValueFilter;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
-import razerdp.basepopup.QuickPopupBuilder;
-import razerdp.basepopup.QuickPopupConfig;
-import razerdp.widget.QuickPopup;
 
 public class DownCoinActivity extends BaseActivity {
 
     private GetBalanceInfoResponse.BalanceListBean data;
 
-    private LinearLayout llBalanceWallet;
-    private LinearLayout llBlockWallet;
-    private boolean balance2block = true;
-    private boolean isAniming;
-
-    private TextView tvBlanceAddress;
     private EditText etBlockAddress;
     private EditText etCount;
-    private TextView tvSymbol;
-    private View divider;
-    private TextView tvAllIn;
-    private TextView tvBalance;
-    private TextView tvTips;
-    private LinearLayout llBlock2Balance;
-    private TextView tvHuaZhuanGasPrice1;
-    private SeekBar seekHuaZhuan;
-    private TextView tvHuaZhuanGasPrice2;
     private TextView tvGasPrice;
-    private ImageView ivScan;
-
-    private float gasMax;
-    private float gasMin;
-
-    private QuickPopup chooseAddressPop;
-    private RecyclerView recyclerChooseAddress;
-    private BaseQuickAdapter<GetParentSymbolBean, BaseViewHolder> addressAdapter;
-    private ArrayList<GetParentSymbolBean> parentSymbolBeans = new ArrayList<>();
-    private int checkedIndex = -1;
-    //从本平台选择到的地址对应余额
-    private String blockMoney;
+    private TextView tvGasPrice1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,210 +49,21 @@ public class DownCoinActivity extends BaseActivity {
         title.setText(getString(R.string.xx_trade, data.getCurrencyName()));
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
-        llBalanceWallet = findViewById(R.id.llBalanceWallet);
-        llBlockWallet = findViewById(R.id.llBlockWallet);
-        tvBlanceAddress = findViewById(R.id.tvBlanceAddress);
         etBlockAddress = findViewById(R.id.etBlockAddress);
         etCount = findViewById(R.id.etCount);
-        tvSymbol = findViewById(R.id.tvSymbol);
-        divider = findViewById(R.id.divider);
-        tvAllIn = findViewById(R.id.tvAllIn);
-        tvBalance = findViewById(R.id.tvBalance);
-        tvTips = findViewById(R.id.tvTips);
-        llBlock2Balance = findViewById(R.id.llBlock2Balance);
-        tvHuaZhuanGasPrice1 = findViewById(R.id.tvHuaZhuanGasPrice1);
-        seekHuaZhuan = findViewById(R.id.seekHuaZhuan);
-        tvHuaZhuanGasPrice2 = findViewById(R.id.tvHuaZhuanGasPrice2);
         tvGasPrice = findViewById(R.id.tvGasPrice);
-        ivScan = findViewById(R.id.ivScan);
-
-        tvBlanceAddress.setText(data.getBalanceAddress());
-        tvTips.setText(R.string.tibi_tip);
+        tvGasPrice1 = findViewById(R.id.tvGasPrice1);
         etCount.setHint(R.string.tibi_num_tip);
         etCount.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(Integer.parseInt(data.getDecimals()))});
         tvGasPrice.setVisibility(View.VISIBLE);
-        llBlock2Balance.setVisibility(View.GONE);
-        divider.setVisibility(View.VISIBLE);
-        tvAllIn.setVisibility(View.VISIBLE);
-        tvBalance.setVisibility(View.VISIBLE);
-        tvBalance.setText(getString(R.string.balancewallet_nums, data.getBalanceSum(), data.getCoin()));
-        String str = getString(R.string.trade_commission, data.getRate(), data.getCoin());
-        SpannableString string = new SpannableString(str);
-        string.setSpan(new ForegroundColorSpan(Color.parseColor("#FC6660")), 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        string.setSpan(new RelativeSizeSpan(0.8f), str.length() - data.getCurrencyName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvGasPrice.setText(string);
-        tvSymbol.setText(data.getCurrencyName());
-
-        tvAllIn.setOnClickListener(v -> {
-            if (balance2block) {
-                double result = subtract(Double.parseDouble(data.getBalanceSum()), Double.parseDouble(data.getRate()));
-                if (result < 0) {
-                    ToastUtils.showShort(R.string.balance_not_enough);
-                    return;
-                }
-
-                if (String.valueOf(result).substring(String.valueOf(result).indexOf(".")+1).length() > Integer.parseInt(data.getDecimals())) {
-                    ToastUtils.showShort(R.string.number_overlimit);
-                } else {
-                    etCount.setText(String.valueOf(result));
-                }
-            } else {
-                if (!TextUtils.isEmpty(blockMoney)) {
-                    etCount.setText(blockMoney);
-                }
-            }
-        });
-
-        if (data.getParentSymbol().equals("ETH")) {
-            //ETH
-            if (data.getCoinType().equals("0")) {
-                gasMin = (float) (5 * 6000 * 10E-9);
-                gasMax = 0.006f - gasMin;
-            } else {
-                gasMin = (float) (5 * 9000 * 10E-9);
-                gasMax = 0.009f - gasMin;
-            }
-        } else {
-
-        }
-
-        seekHuaZhuan.setMax(1000);
-        seekHuaZhuan.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvHuaZhuanGasPrice1.setText("≈" + new DecimalFormat("#0.0000").format((progress / 1000f * gasMax) + gasMin) + " ether");
-                tvHuaZhuanGasPrice2.setText(new DecimalFormat("#0.00").format((progress / 1000f * 95) + 5.00) + " gwei");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        seekHuaZhuan.setProgress(1);
-        seekHuaZhuan.setProgress(0);
-    }
-
-    public void changeDirection(View view) {
-        if (isAniming) {
-            return;
-        }
-        isAniming = true;
-        balance2block = !balance2block;
-        if (balance2block) {
-            swapViewUpDown(llBlockWallet, llBalanceWallet);
-        } else {
-            swapViewUpDown(llBalanceWallet, llBlockWallet);
-        }
+        tvGasPrice.setText(R.string.trade_commission);
+        tvGasPrice1.setText(data.getRate() + data.getCoin());
     }
 
     public void scan(View view) {
         Intent intent = new Intent(this, QrCodeActivity.class);
         intent.putExtra("actionType", QrCodeActivity.ACTION_IMPORT_WALLET);
         startActivityForResult(intent, 1);
-    }
-
-    @SuppressLint("CheckResult")
-    public void chooseBlockAddress(View view) {
-        if (chooseAddressPop == null) {
-            TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
-            showAnimation.setDuration(250);
-            TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
-            dismissAnimation.setDuration(500);
-            chooseAddressPop = QuickPopupBuilder.with(this)
-                    .contentView(R.layout.pop_choose_blockaddress)
-                    .config(new QuickPopupConfig()
-                            .withShowAnimation(showAnimation)
-                            .withDismissAnimation(dismissAnimation)
-                            .dismissOnOutSideTouch(false)
-                            .withClick(R.id.ivClose, null, true)
-                            .withClick(R.id.tvConfirm, v -> {
-                                if (checkedIndex == -1) {
-                                    ToastUtils.showShort(R.string.select_walletaddress);
-                                    return;
-                                }
-
-                                GetParentSymbolBean bean = parentSymbolBeans.get(checkedIndex);
-                                if (!balance2block) {
-                                    ServiceFactory.getInstance().getBaseService(Api.class)
-                                            .getBalanceInfoByAddress(bean.getWalletAddress(), bean.getCoinType(), bean.getParentSymbol(), bean.getContractAddress(), bean.getTokenDecimal())
-                                            .compose(bindToLifecycle())
-                                            .compose(RxSchedulers.normalTrans())
-                                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(DownCoinActivity.this)))
-                                            .subscribe(s -> {
-                                                etBlockAddress.setText(bean.getWalletAddress());
-                                                blockMoney = s;
-                                                divider.setVisibility(View.VISIBLE);
-                                                tvAllIn.setVisibility(View.VISIBLE);
-                                                tvBalance.setVisibility(View.VISIBLE);
-                                                tvBalance.setText(getString(R.string.blockwallet_nums, blockMoney, data.getCoin()));
-                                            }, DownCoinActivity.this::handleApiError);
-                                } else {
-                                    etBlockAddress.setText(bean.getWalletAddress());
-                                }
-                            }, true))
-                    .build();
-
-            recyclerChooseAddress = chooseAddressPop.findViewById(R.id.recyclerChooseAddress);
-            recyclerChooseAddress.setLayoutManager(new LinearLayoutManager(this));
-            addressAdapter = new BaseQuickAdapter<GetParentSymbolBean, BaseViewHolder>(R.layout.item_choose_block_walletaddress) {
-                @Override
-                protected void convert(BaseViewHolder helper, GetParentSymbolBean item) {
-                    ImageView ivlogo = helper.getView(R.id.ivLogo);
-                    GlideUtil.loadNormalImg(ivlogo, item.getLogo());
-
-                    helper.setText(R.id.tvSymbol, item.getWalletName())
-                            .setText(R.id.tvAddress, item.getWalletAddress());
-                    CheckBox cb = helper.getView(R.id.cb);
-                    if (helper.getAdapterPosition() == checkedIndex) {
-                        cb.setChecked(true);
-                    } else {
-                        cb.setChecked(false);
-                    }
-                }
-            };
-            addressAdapter.setOnItemClickListener((adapter, view1, p) -> {
-                int position = -1;
-                if (checkedIndex != -1) {
-                    position = checkedIndex;
-                }
-                checkedIndex = p;
-                if (position != -1) {
-                    adapter.notifyItemChanged(position);
-                }
-                adapter.notifyItemChanged(checkedIndex);
-            });
-
-            recyclerChooseAddress.setAdapter(addressAdapter);
-        }
-
-        if (parentSymbolBeans.size() == 0) {
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .getParentSymbol(data.getCoin())
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(list -> {
-                        if (list.size() != 0) {
-                            this.parentSymbolBeans.addAll(list);
-                            addressAdapter.setNewData(list);
-                            chooseAddressPop.showPopupWindow();
-                        } else {
-                            MuteRemoveDialog dialog = new MuteRemoveDialog(this, getString(R.string.cancel), getString(R.string.create),
-                                    getString(R.string.hinttext), getString(R.string.downcoin_tips));
-                            dialog.setOnCommitListener(() -> startActivity(new Intent(this, CreateWalletActivity.class)));
-                            dialog.show();
-                        }
-                    }, this::handleApiError);
-        } else {
-            checkedIndex = -1;
-            blockMoney = "";
-            addressAdapter.notifyDataSetChanged();
-            chooseAddressPop.showPopupWindow();
-        }
     }
 
     @SuppressLint("CheckResult")
@@ -320,20 +76,13 @@ public class DownCoinActivity extends BaseActivity {
 
         String count = etCount.getText().toString().trim();
         if (TextUtils.isEmpty(count)) {
-            if (!balance2block) {
-                ToastUtils.showShort(R.string.input_up_count);
-            } else {
-                ToastUtils.showShort(R.string.input_down_count);
-            }
+
+            ToastUtils.showShort(R.string.input_down_count);
             return;
         }
 
         if (Double.parseDouble(count) <= 0) {
-            if (!balance2block) {
-                ToastUtils.showShort(R.string.up_count_less_zero);
-            } else {
-                ToastUtils.showShort(R.string.down_count_less_zero);
-            }
+            ToastUtils.showShort(R.string.down_count_less_zero);
             return;
         }
 
@@ -345,51 +94,23 @@ public class DownCoinActivity extends BaseActivity {
         String limit = data.getCurrencyLimit();
         if (!TextUtils.isEmpty(limit)) {
             double limitNum = Double.parseDouble(limit);
-            if (balance2block) {
-                if (Double.parseDouble(count) < limitNum) {
-                    ToastUtils.showShort(getString(R.string.current_downcoin_nums_cant_less_than, limitNum));
-                    return;
-                }
+            if (Double.parseDouble(count) < limitNum) {
+                ToastUtils.showShort(getString(R.string.current_downcoin_nums_cant_less_than, limitNum));
+                return;
             }
         }
 
         new NewPayBoard(this)
                 .show(pwd -> {
-                    if (balance2block) {
-                        if (data.getParentSymbol().equals("ETH")) {
-                            SignTransactionRequest request = new SignTransactionRequest();
-                            request.setBalance(count);
-                            request.setTokenName(data.getCoin());
-                            request.setToAddress(blockAddress);
-                            request.setFromAddress(data.getBalanceAddress());
-                            request.setSerialType("1");
-                            request.setTransType("1");
-                            request.setRate(data.getRate());
-
-                            ServiceFactory.getInstance().getBaseService(Api.class)
-                                    .signTransaction(GsonUtils.toJson(request), MD5Utils.getMD5(pwd))
-                                    .compose(bindToLifecycle())
-                                    .compose(RxSchedulers.normalTrans())
-                                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                                    .subscribe(s -> {
-                                        Intent intent = new Intent(this, UpDownCoinResultActivity.class);
-                                        intent.putExtra("type", balance2block ? getString(R.string.tibi) : getString(R.string.chongbi));
-                                        intent.putExtra("logo", data.getCoin());
-                                        startActivity(intent);
-                                        finish();
-                                    }, this::handleApiError);
-                        } else {
-
-                        }
-                    } else {
+                    if (data.getParentSymbol().equals("ETH")) {
                         SignTransactionRequest request = new SignTransactionRequest();
-                        request.setFromAddress(blockAddress);
-                        request.setToAddress(data.getBalanceAddress());
-                        request.setGasPrice(tvHuaZhuanGasPrice2.getText().toString().split(" ")[0]);
                         request.setBalance(count);
-                        request.setSerialType("1");
-                        request.setTransType("0");
                         request.setTokenName(data.getCoin());
+                        request.setToAddress(blockAddress);
+                        request.setFromAddress(data.getBalanceAddress());
+                        request.setSerialType("1");
+                        request.setTransType("1");
+                        request.setRate(data.getRate());
 
                         ServiceFactory.getInstance().getBaseService(Api.class)
                                 .signTransaction(GsonUtils.toJson(request), MD5Utils.getMD5(pwd))
@@ -398,65 +119,14 @@ public class DownCoinActivity extends BaseActivity {
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                 .subscribe(s -> {
                                     Intent intent = new Intent(this, UpDownCoinResultActivity.class);
-                                    intent.putExtra("type", balance2block ? getString(R.string.tibi) : getString(R.string.chongbi));
-                                    intent.putExtra("logo", data.getLogo());
+                                    intent.putExtra("type", getString(R.string.tibi));
+                                    intent.putExtra("logo", data.getCoin());
                                     startActivity(intent);
                                     finish();
                                 }, this::handleApiError);
+                    } else {
                     }
                 });
-    }
-
-    private void swapViewUpDown(View upView, View downView) {
-        upView.animate().translationYBy(upView.getHeight()).setDuration(500)
-                .setInterpolator(new OvershootInterpolator());
-        downView.animate().translationYBy(-downView.getHeight()).setDuration(500)
-                .setInterpolator(new OvershootInterpolator())
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        isAniming = false;
-
-                        seekHuaZhuan.setProgress(0);
-                        etBlockAddress.setText("");
-                        etCount.setText("");
-                        if (balance2block) {
-                            tvTips.setText(R.string.upcoin_nums);
-                            etCount.setHint(R.string.input_upcoin_nums);
-                            tvGasPrice.setVisibility(View.VISIBLE);
-                            llBlock2Balance.setVisibility(View.GONE);
-                            divider.setVisibility(View.VISIBLE);
-                            tvAllIn.setVisibility(View.VISIBLE);
-                            tvBalance.setVisibility(View.VISIBLE);
-                            tvBalance.setText(getString(R.string.balancewallet_nums, data.getBalance(), data.getCoin()));
-                            String str = getString(R.string.trade_commission, data.getRate(), data.getCoin());
-                            SpannableString string = new SpannableString(str);
-                            string.setSpan(new ForegroundColorSpan(Color.parseColor("#FC6660")), 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            string.setSpan(new RelativeSizeSpan(0.8f), str.length() - data.getCurrencyName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            tvGasPrice.setText(string);
-                            ivScan.setVisibility(View.VISIBLE);
-                            etBlockAddress.setEnabled(true);
-                            etBlockAddress.setHint(R.string.tips_downcoin);
-                        } else {
-                            tvTips.setText(R.string.downcoin_nums);
-                            etCount.setHint(R.string.input_downcoin_nums);
-                            tvGasPrice.setVisibility(View.GONE);
-                            llBlock2Balance.setVisibility(View.VISIBLE);
-                            divider.setVisibility(View.GONE);
-                            tvAllIn.setVisibility(View.GONE);
-                            tvBalance.setVisibility(View.GONE);
-                            ivScan.setVisibility(View.GONE);
-                            etBlockAddress.setEnabled(false);
-                            etBlockAddress.setHint(R.string.tips_downcoin2);
-                        }
-                    }
-                });
-    }
-
-    private double subtract(double v1, double v2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.subtract(b2).doubleValue();
     }
 
     @Override
@@ -464,12 +134,6 @@ public class DownCoinActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 1 && data != null) {
             etBlockAddress.setText(data.getStringExtra("result"));
-            if (!balance2block) {
-                blockMoney = "";
-                divider.setVisibility(View.GONE);
-                tvAllIn.setVisibility(View.GONE);
-                tvBalance.setVisibility(View.GONE);
-            }
         }
     }
 }
