@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">MoneySpace</string>
-    <string name="login">登录</string>
+    <string name="app_name" >MoneySpace</string>
     <string name="edit_code_tip">请输入正确的验证码</string>
     <string name="text_get_code">获取验证码</string>
     <string name="edit_mobile_tip">请输入正确的手机号</string>
@@ -15,10 +14,6 @@
     <string name="collection_and_payment">收款</string>
     <string name="select_contacts">选择联系人</string>
     <string name="change_language">切换语言</string>
-    <string name="zh_cn">简体中文</string>
-    <string name="zh_tw">繁体中文</string>
-    <string name="en_us" translatable="false">English</string>
-    <string name="de_actionbar_sub_group">"社群"</string>
     <string name="m_add_friend_contact_label_1">手机联系人</string>
     <string name="m_add_friend_scan_it_label_1">扫一扫</string>
     <string name="m_personal_information_signature_text">添加到通讯录</string>
@@ -48,9 +43,9 @@
     <string name="update_head_portrail">更新头像成功</string>
     <string name="input_empty">请输入内容</string>
     <string name="wechat">微信</string>
-    <string name="hilamg">海浪</string>
+    <string name="hilamg">MoneySpace</string>
     <string name="m_red_envelopes_label">鸿运当头，大吉大利</string>
-    <string name="m_red_envelopes_money_text" translatable="false">0.00</string>
+    <string name="m_red_envelopes_money_text" >0.00</string>
     <string name="m_red_envelopes_commit_btn">塞进红包</string>
     <string name="m_transfer_commit_btn">确认转账</string>
     <string name="m_successful_transfer_title_bar">转账详情</string>
@@ -61,7 +56,7 @@
     <string name="m_transfer_info_caveat_text">24小时内未确认，将退还给对方</string>
     <string name="m_expired_envelopes_info">查看领取详情 ></string>
     <string name="m_add_my_way_title_bar">添加我的方式</string>
-    <string name="m_add_my_way_duoduo_id">Hilamg号</string>
+    <string name="m_add_my_way_duoduo_id">MoneySpace号</string>
     <string name="m_add_my_way_phone_id">手机号</string>
     <string name="m_add_my_way_group_chat_text">群聊</string>
     <string name="m_add_my_way_qrcode_text">二维码</string>
@@ -71,7 +66,7 @@
     <string name="m_privacy_add_friend_verify_text">加我为朋友时需要验证</string>
     <string name="m_privacy_hide_real_name_text">隐藏我的真实姓名</string>
     <string name="m_privacy_recommend_friend">向我推荐通讯录里的朋友</string>
-    <string name="m_privacy_recommend_friend_caveat">开启后，为您推荐已经开通Hilamg的手机联系人</string>
+    <string name="m_privacy_recommend_friend_caveat">开启后，为您推荐已经开通MoneySpace的手机联系人</string>
     <string name="m_privacy_add_my_way">添加我的方式</string>
     <string name="feedback_title">意见反馈</string>
     <string name="feedback_edit">留下你宝贵的意见</string>
@@ -82,8 +77,6 @@
     <string name="login_out">已退出登录</string>
     <string name="account_number">账号</string>
     <string name="pricacy">隐私</string>
-    <string name="help_center">帮助中心</string>
-    <string name="online_service">在线客服</string>
     <string name="id_number">证件号码</string>
     <string name="type_of_certificate">证件类型</string>
     <string name="id_card">身份证</string>
@@ -106,14 +99,9 @@
     <string name="verified_code">验证码</string>
     <string name="please_input_id_card">请先输入证件号码</string>
     <string name="tiem_new_code">秒后重新获取</string>
-    <string name="blockWallet">数字钱包</string>
     <string name="huazhuan">划转</string>
     <string name="zhuanchu">转出</string>
     <string name="verifing">认证中</string>
-    <string name="currentCoin">当前币种</string>
-    <string name="inputwalletaddress">请输入钱包地址</string>
-    <string name="inputZhuanChuCount">请输入转出数量</string>
-    <string name="zhuanchuCount">转出数量</string>
     <string name="kuanggongprice">矿工费用</string>
     <string name="invite_to_group_chat">邀请你加入群聊</string>
     <string name="join_a_group_chat">加入群聊</string>
@@ -122,8 +110,6 @@
     <string name="exit_group">退出群聊</string>
     <string name="you_have_disbanded_the_group">您已解散该群</string>
     <string name="you_have_left_the_group_chat">您已退出群聊</string>
-    <string name="slow">慢</string>
-    <string name="fast">快</string>
     <string name="transfer_group_successful">转让成功</string>
     <string name="send_verification">发送验证</string>
     <string name="verifyfirstpls">请先完成实名认证</string>
@@ -145,14 +131,12 @@
     <string name="failed">失败</string>
     <string name="success">成功</string>
     <string name="procssing">进行中</string>
-    <string name="all">全部</string>
     <string name="red_packet">红包</string>
     <string name="photo_image_title">图片</string>
     <string name="shotting_image_title">拍照</string>
     <string name="transfer_money_title">转账</string>
     <string name="personal_business_card_title">个人名片</string>
-    <string name="location_address_title">位置</string>
-    <string name="transfer_prompt_logo">Hilamg转账</string>
+    <string name="transfer_prompt_logo">转账</string>
     <string name="business_card_label">个人名片</string>
     <string name="inputzhuanzhangmoney">请输入转账金额</string>
     <string name="inputzhuanzhangmoney1">转账金额不能为0</string>
@@ -231,14 +215,10 @@
     <string name="clear_money">清除金额</string>
     <string name="set_money">设置金额</string>
     <string name="please_set_money">请设置金额</string>
-    <string name="duoduo_id">Hilamg号:</string>
+    <string name="duoduo_id">MoneySpace号:</string>
     <string name="no_search">暂无搜索记录</string>
-    <string name="helper_tips">人工服务时间：工作日9:00–18:00</string>
-    <string name="zixun">立即咨询</string>
-    <string name="helper_tips1">Hilamg是什么平台？</string>
-    <string name="helper_tips2">Hilamg是一款“区块链+社交+金融”的APP应用，为区块链生态打造真正应用场景落地的项目，通过区块链技术解决支付问题；</string>
     <string name="accomplish">完成</string>
-    <string name="duo_duo_account">Hilamg账号</string>
+    <string name="duo_duo_account">MoneySpace账号</string>
     <string name="hasjoined">已接受</string>
     <string name="duoduo_acount">ID:</string>
     <string name="district">地区:</string>
@@ -247,9 +227,8 @@
     <string name="real_name_authentication">实名认证</string>
     <string name="not_verify_real_name">未认证</string>
     <string name="feedback">意见反馈</string>
-    <string name="about_duo_duo">关于Hilamg</string>
+    <string name="about_duo_duo">关于MoneySpace</string>
     <string name="language_switch">语言切换</string>
-    <string name="online_customer_service">在线客服</string>
     <string name="change_pay_password">修改支付密码</string>
     <string name="find_pay_password">找回支付密码</string>
     <string name="pay_setting">支付设置</string>
@@ -257,11 +236,9 @@
     <string name="personal_details">个人信息</string>
     <string name="lqxx">聊天信息</string>
     <string name="currency_option">币种选择</string>
-    <string name="collection_wallet">收款钱包</string>
     <string name="input_wallet_address">请输入钱包地址</string>
     <string name="address_list">通讯录</string>
     <string name="new_friend">添加好友</string>
-    <string name="real_name">真实姓名:</string>
     <string name="mobile_phone">手机</string>
     <string name="email">邮箱</string>
     <string name="mailbox">邮箱</string>
@@ -295,7 +272,7 @@
     <string name="dianjichongshi">点击重试</string>
     <string name="lijigengxin">立即更新</string>
     <string name="update_start">开始下载</string>
-    <string name="decode_qr_failure">识别失败，请使用Hilamg二维码</string>
+    <string name="decode_qr_failure">识别失败，请使用MoneySpace二维码</string>
     <string name="audio_video">通话</string>
     <string name="video_call">视频通话</string>
     <string name="voice_call">语音通话</string>
@@ -305,14 +282,10 @@
     <string name="shengming">声明</string>
     <string name="click_retry">点击重试</string>
     <string name="input_phone">请输入手机号码</string>
-    <string name="input_smscode">请输入验证码</string>
-    <string name="order_information">订单信息</string>
-    <string name="but_the">收款方</string>
-    <string name="payment">付款方式</string>
     <string name="notice_creategroup">创建了一个群组</string>
     <string name="new_friend1">已是好友，现在开始聊天吧</string>
     <string name="searching">搜索中…</string>
-    <string name="mochat">Hilamg</string>
+    <string name="mochat">MoneySpace</string>
     <string name="collection_nearby">附近的人</string>
     <string name="getlocation_fail">未能获取当前位置，请重试</string>
     <string name="getlocation">正在获取位置</string>
@@ -322,13 +295,8 @@
     <string name="popnearby_all">查看全部</string>
     <string name="popnearby_clear">清除位置并退出</string>
     <string name="audio_video_sight">小视频</string>
-    <string name="real_name1">真实姓名:已隐藏</string>
-    <string name="popmap_map1">腾讯地图</string>
-    <string name="popmap_map2">高德地图</string>
     <string name="add_phone_contract">添加手机联系人</string>
-    <string name="real_name_noauthentication">真实姓名:未实名</string>
     <string name="remove_from_conversationlist">从会话列表中移除</string>
-    <string name="loading">加载中</string>
     <string name="invite_success">已成功发出邀请</string>
     <string name="inviting">正在邀请，请稍等</string>
     <string name="transfermessagesuccess">转发成功</string>
@@ -338,25 +306,14 @@
     <string name="cant_forward">无法转发特殊消息类型</string>
     <string name="update_success">更新成功</string>
     <string name="chat">消息</string>
-    <string name="conjuncture">行情</string>
-    <string name="boutique">精选</string>
-    <string name="cooperate">商务合作</string>
-    <string name="safesetting">安全设置</string>
     <string name="logout1">退出登录</string>
     <string name="sign1">个性签名：</string>
-    <string name="mochatid">Hilamg号：</string>
+    <string name="mochatid">MoneySpace号：</string>
     <string name="newestVersion">已经是最新版本</string>
     <string name="choose_a_new_owner_title">选择新群主</string>
     <string name="inputoldpsd">输入旧密码</string>
     <string name="moexchange">交易所</string>
-    <string name="moshopping">商城</string>
-    <string name="mojiaofei">话费充值</string>
-    <string name="mocoin">余币宝</string>
-    <string name="buycoinonekey">一键购币</string>
-    <string name="kuangji">硬件矿机</string>
-    <string name="didichuxing">滴滴出行</string>
-    <string name="mogame">DAPP游戏</string>
-    <string name="prompt_logo_red">Hilamg红包</string>
+    <string name="prompt_logo_red">红包</string>
     <string name="shoukuanbizhong">收款币种</string>
     <string name="shoukuanjine">收款金额</string>
     <string name="please_set_money1">收款金额不能为0</string>
@@ -369,86 +326,33 @@
     <string name="closeburn">关闭了阅后即焚</string>
     <string name="close_capturescreen_success">截屏通知已关闭</string>
     <string name="open_capturescreen_success">截屏通知已开启</string>
-    <string name="authory_manage">权限管理</string>
-    <string name="groupmanage">群管理</string>
-    <string name="mute_all">全员禁言</string>
-    <string name="mute_manage">禁言管理</string>
-    <string name="new_enter_group">新人进群</string>
-    <string name="new_redpackage_manage">社群空投</string>
-    <string name="pay_enter_group">付费进群</string>
-    <string name="daily_manage">日常管理</string>
-    <string name="cant_addfriend">禁止互加好友</string>
-    <string name="group_manage">群管理</string>
-    <string name="authority_manage">权限管理</string>
-    <string name="group_member">群成员</string>
-    <string name="list_mute">已禁列表</string>
-    <string name="list_kickout">踢出列表</string>
     <string name="choose_your_func">请选择您要的操作</string>
     <string name="delete_directly">直接删除</string>
     <string name="move_to_kickout">转到踢出</string>
-    <string name="managerList">管理员列表</string>
-    <string name="live_authority">直播权限</string>
-    <string name="audo_live">语音直播</string>
-    <string name="video_live">视频直播</string>
-    <string name="groupmanage_authority">群管权限</string>
     <string name="add_manager">添加管理员</string>
     <string name="delete_manager">删除管理员</string>
     <string name="select_invite_manager">至少指定一位成员</string>
     <string name="select_delete_manager">至少选择一位管理员</string>
-    <string name="video_manage">视频直播</string>
-    <string name="audio_manage">语音直播</string>
-    <string name="nopermisson">暂无操作权限</string>
     <string name="open_permission_reason">需要相关权限以确保正常运行，请打开权限</string>
     <string name="open_permission_reason1">需要相关权限以确保正常运行，请在设置中手动打开</string>
     <string name="enter_group_chat">输入群名称</string>
     <string name="m_group_chat">群组</string>
     <string name="no_qunzu">暂无群组</string>
-    <string name="quick_news">快讯</string>
     <string name="less_min">红包金额不能小于0.00001</string>
-    <string name="rewardmot">活动奖励</string>
     <string name="pay_money">付费金额</string>
-    <string name="payrecord">付费记录</string>
-    <string name="person">人</string>
-    <string name="createTime">日期</string>
-    <string name="user">用户</string>
     <string name="money1">单个金额</string>
     <string name="money2">总金额</string>
-    <string name="setmoneyfirst">请先设置付费金额</string>
-    <string name="open_payenter_success">付费进群已开启</string>
     <string name="input_zhengshu">请输入金额</string>
-    <string name="close_payenter_success">付费进群已关闭</string>
-    <string name="close_payenter_first">请先关闭进群付费币种</string>
-    <string name="eachpay">每人奖励数量</string>
-    <string name="func_status">功能状态</string>
-    <string name="allpay">总奖励数量</string>
-    <string name="starttime">开始时间</string>
-    <string name="endtime">结束时间</string>
-    <string name="setupeach">设置每人奖励数量</string>
-    <string name="setupall">设置总奖励金额</string>
-    <string name="please_setall">请先设置金额以及时间</string>
-    <string name="please_set_start_time">请先设置开始时间</string>
-    <string name="all_less_each">总奖励金不能小于单人奖励金</string>
     <string name="newredtip">领取新人进群红包</string>
     <string name="receive_success">领取成功</string>
     <string name="redtip3">已转入钱包余额，请查收！</string>
     <string name="close">关闭</string>
-    <string name="each_more_all">单人奖励金不能大于总奖励金</string>
-    <string name="starttime_less_end">开始时间不能大于结束时间</string>
     <string name="welcome">欢迎来到Money Space</string>
-    <string name="welcometopay">欢迎登录Hilamg</string>
-    <string name="login_verify">验证码登录</string>
     <string name="next">下一步</string>
-    <string name="invite_friends1">邀请好友</string>
     <string name="shareto">分享到</string>
     <string name="zone">朋友圈</string>
     <string name="qq">qq</string>
-    <string name="qzone">qq空间</string>
-    <string name="url_forbidden">本会话禁止发送链接</string>
-    <string name="picture_forbidden">本会话禁止发送图片</string>
-    <string name="cant_sendPic">禁止发图片</string>
-    <string name="cant_sendUrl">禁止发链接</string>
     <string name="slowmode">慢速模式</string>
-    <string name="selectPerson">请先选择要操作的管理员</string>
     <string name="update_group_limit">升级群人数</string>
     <string name="update_group_limit_tips1">此群是</string>
     <string name="update_group_limit_tips2">人群</string>
@@ -459,89 +363,14 @@
     <string name="inpu_search_group">请输入社群关键字</string>
     <string name="emptylist">什么也没找到</string>
     <string name="join">加入</string>
-    <string name="blockwallet_empty_tips">多币种钱包</string>
-    <string name="blockwallet_empty_tips1">一键添加和管理您的数字资产</string>
-    <string name="createwallet">创建钱包</string>
-    <string name="importwallet">导入钱包</string>
-    <string name="createwallet_tips1">选择您想创建的钱包币种</string>
-    <string name="createwallet_coinunable">该币种暂不可用</string>
-    <string name="createwallet_tips2">ETH钱包正在创建中…</string>
-    <string name="createwallet_tips3">创建完成</string>
-    <string name="createwallet_success_tips1">请备份钱包</string>
-    <string name="createwallet_success_tips2">区块链钱包不同于传统网站账户,它是基于密码学的去中心化账户系统。\n您必须保管好钱包的私钥和交易密码,任何意外将会导致资产账户丢失</string>
-    <string name="createwallet_success_tips3">备份助记词</string>
-    <string name="createwallet_success_tips4">丢失钱包或忘记密码时,可帮助恢复钱包。</string>
-    <string name="backup">立即备份</string>
-    <string name="backup_wallet">备份钱包</string>
-    <string name="backup_words">备份助记词</string>
-    <string name="backup_words_tips1">请准确抄写并安全备份助记词!</string>
-    <string name="backup_words_tips2">还有未校验的助记词,请核对</string>
-    <string name="backup_words_tips3">请选择对应单词的序号</string>
-    <string name="backup_words_tips4">助记词输入顺序有误，请重试！</string>
-    <string name="backup_words_tips5">备份成功</string>
-    <string name="totalmoney1">总资产</string>
-    <string name="wallet_manage">钱包管理</string>
-    <string name="wallet_created">创建的钱包</string>
-    <string name="wallet_imported">导入的钱包</string>
-    <string name="wallet_manage_detail_tips1">修改钱包名称</string>
-    <string name="wallet_manage_detail_tips2">导出助记词</string>
-    <string name="wallet_manage_detail_tips3">导出keystore</string>
-    <string name="wallet_manage_detail_tips4">导出私钥</string>
-    <string name="wallet_delete">删除钱包</string>
-    <string name="balanceWallet">余额钱包</string>
-    <string name="input_wallet_name">请输入钱包名称</string>
-    <string name="change_walletname">修改钱包名称</string>
-    <string name="backup_key_tips1">安全警告:私钥未经加密,导出存在风险,建议使 用助记词和keystore进行备份.</string>
-    <string name="copy">复制</string>
-    <string name="backup_keystore_tips1">请勿截图</string>
-    <string name="backup_key_tips2">请确保四周无人及任何摄像头!勿用截图或拍照的方式保存,勿存放在网络上,以免被黑客获取!</string>
     <string name="ok1">好的</string>
-    <string name="keystoreFile">keystore文件</string>
-    <string name="backup_keystore_tips2">离线保存</string>
-    <string name="backup_keystore_tips3">请复制黏贴keystore文件到安全离线的地方保存。切勿保存至邮箱记事本、记事本、网盘、聊天工具等地方,非常危险。</string>
-    <string name="backup_keystore_tips4">请勿使用网络传输</string>
-    <string name="backup_keystore_tips5">请勿通过网络工具传输keystore文件，一旦被黑客获取将造成不可挽回的资产损失。建议离线设备通过扫描二维码方式传输。</string>
-    <string name="backup_keystore_tips6">密码管理工具保存</string>
-    <string name="backup_keystore_tips7">建议使用密码管理工具管理。</string>
-    <string name="copy_keystore">复制keystore</string>
-    <string name="backup_keystore_tips8">仅供直接扫描</string>
-    <string name="backup_keystore_tips9">二维码禁止保存、截图、以及拍照。仅供用户在安全环境下直接 扫描来方便倒入钱包。</string>
-    <string name="backup_keystore_tips10">在安全环境下使用</string>
-    <string name="backup_keystore_tips11">请在确保四周无人及摄像头的情况下使用。二维码一旦被他人获 取将造成不可挽回的资产损失。</string>
-    <string name="backup_keystore_tips12">已确认周围环境安全</string>
-    <string name="backup_keystore_tips13">显示二维码</string>
-    <string name="delete_wallet_tips">输入正确的助记词后，移除该钱包。</string>
-    <string name="input_words">请输入助记词，用空格分开</string>
-    <string name="confirm_delete">确定移除</string>
-    <string name="delete_wallet">移除钱包</string>
-    <string name="delete_wallet_success">钱包删除成功</string>
-    <string name="block_words">助记词</string>
-    <string name="block_key">私钥</string>
-    <string name="block_keystore">keystore</string>
-    <string name="importwallet_tips1">keystore密码</string>
-    <string name="importwallet_tips2">keystore密码是您在生成keystore文件前，自定义设置的密码，该密码和私钥一起加密生成了keystore文件。</string>
-    <string name="importwallet_tips3">什么是keystore密码？</string>
-    <string name="secretTips">我已阅读并同意</string>
-    <string name="secretTips1">隐私及服务条款</string>
-    <string name="importwallet_tips4">请输入您备份的助记词恢复钱包</string>
-    <string name="input_key">请输入私钥</string>
-    <string name="importwallet_tips5">直接复制粘贴官方钱包的keystore内容至文本框,或通过生成keystore内容的二维码,扫码录入</string>
-    <string name="importwallet_tips6">keystore文本内容</string>
-    <string name="importwallet_success">导入成功</string>
     <string name="emptylist1">暂无记录</string>
-    <string name="wronginput1">转出数量不能大于余额</string>
-    <string name="zhuanchusuccess1">已发起交易</string>
     <string name="tradeDetail">交易详情</string>
     <string name="pay_address">付款地址</string>
     <string name="block2balance">数字钱包→余额钱包</string>
     <string name="balance2block">余额钱包→数字钱包</string>
-    <string name="add_new_blockitem">添加新资产</string>
-    <string name="createwallet_tips5">选择您想导入的钱包币种</string>
-    <string name="emptylist2">暂无钱包</string>
-    <string name="backup_later">稍后备份</string>
     <string name="force_recall">强制撤回</string>
     <string name="tradeOrders">交易记录</string>
-    <string name="balanceleft1">余额钱包</string>
     <string name="balance2cny">总资产折合</string>
     <string name="unChoose">暂未选择</string>
     <string name="bless">祝福语</string>
@@ -550,145 +379,28 @@
     <string name="select_cointype">请选择币种</string>
     <string name="count1">红包个数</string>
     <string name="choose2input">选填</string>
-    <string name="retry">重试</string>
-    <string name="group_member_manage">群成员管理</string>
-    <string name="groupmanage_tips1">群主设置加群金额,成员支付后即可入群</string>
-    <string name="groupmanage_tips5">设置后新成员进群即可获得红包空投</string>
-    <string name="m_group_add_my_way">加群方式</string>
-    <string name="groupmanage_tips2">开启后,只有群主和管理员可以发言</string>
-    <string name="groupmanage_tips3">限制群成员发消息间隔时间</string>
-    <string name="groupmanage_tips4">可根据社群号搜索到本社群</string>
     <string name="tibi">提币</string>
     <string name="chongbi">充币</string>
     <string name="emptylist3">您的钱包记录是空的呦！</string>
     <string name="copy_address">复制地址</string>
-    <string name="from">从</string>
-    <string name="to">到</string>
     <string name="tips_downcoin">输入或长按粘贴地址</string>
     <string name="tips_downcoin1">请仔细核对区块链钱包地址，否则将资产造成损失并不可找回。\n请务必确认手机处于安全状态，防止信息被篡改或泄漏。</string>
-    <string name="balance_not_enough">余额不足</string>
-    <string name="input_up_count">请输入充币数量</string>
     <string name="input_down_count">请输入提币数量</string>
-    <string name="up_count_less_zero">充币数量不能小于0</string>
     <string name="down_count_less_zero">提币数量不能小于0</string>
-    <string name="choose_block_address">选择数字钱包地址</string>
-    <string name="select_walletaddress">请选择钱包地址</string>
     <string name="success1">操作成功</string>
     <string name="tips_updowncoin_result">预计1分钟后到账，请稍后查看！</string>
     <string name="check_orders">查看交易记录</string>
     <string name="back2walletlist">返回钱包首页</string>
     <string name="address_same">钱包地址不能相同</string>
-    <string name="tips_downcoin2">请选择您的数字钱包地址</string>
-    <string name="number_overlimit">请手动输入</string>
-    <string name="no_social">太低调了,你还没有加入任何社群！</string>
-    <string name="read_and_agree">我已阅读并同意</string>
-    <string name="create_social">创建社群</string>
-    <string name="social_type">社群类型</string>
-    <string name="paysocial">收费社群</string>
-    <string name="freesocial">免费社群</string>
-    <string name="set_money1">设置费用</string>
-    <string name="create_social_tips1">设置收费币种及金额</string>
-    <string name="tips_create_social1">请设置费用</string>
-    <string name="modify">编辑</string>
-    <string name="socialname">社群名称</string>
-    <string name="input_socialname">请输入社群名称 (必填)</string>
-    <string name="socialslogan">社群简介</string>
-    <string name="input_socialslogan">请输入社群简介 (选填)</string>
-    <string name="input_socialslogan1">请输入社群简介</string>
-    <string name="input_socialname1">请输入社群名称</string>
-    <string name="input_socialnotice">请输入社群公告</string>
-    <string name="create_social_success">创建成功</string>
-    <string name="qrcodename">社群二维码</string>
-    <string name="social_qecodename">扫一扫，加入社群</string>
-    <string name="social_notice">社群公告</string>
-    <string name="social_calture">社群文化</string>
-    <string name="social_act">社群动态</string>
-    <string name="ic_social_end_pop2">社群管理</string>
     <string name="social_remark">我在本群的昵称</string>
-    <string name="invite_wechat">邀请微信好友</string>
-    <string name="close_social">解散社群</string>
-    <string name="exit_social">退出社群</string>
-    <string name="you_have_disbanded_the_group1">已解散社群</string>
-    <string name="you_have_left_the_group_chat1">已退出社群</string>
-    <string name="check">查看</string>
-    <string name="join_now">立即加入</string>
-    <string name="pay_confirm">确认支付</string>
     <string name="cantdone">暂时无法操作</string>
-    <string name="only_owner_edit">仅群主和管理员可编辑</string>
-    <string name="social_homewebsite">社群官网</string>
-    <string name="empty_socialweb">您还没有官网，赶快去编辑吧</string>
-    <string name="social_files">社群资料</string>
-    <string name="social_videos">社群视频</string>
-    <string name="social_app">社群应用</string>
-    <string name="social_activity">社群活动</string>
-    <string name="edit_social_calture">编辑文化</string>
-    <string name="edit_social_web">编辑官网</string>
-    <string name="webname">官网名称</string>
-    <string name="input_webname">请输入官网名称</string>
-    <string name="webslogan">官网简介</string>
-    <string name="input_webslogan">请输入官网简介</string>
-    <string name="webaddress">官网地址</string>
-    <string name="input_webaddress">地址需加协议前缀，如https://</string>
-    <string name="input_social_web_address">请输入官网地址</string>
-    <string name="social_empty_tips">请联系管理员开放社群文化</string>
     <string name="copylink">复制链接</string>
-    <string name="saveposters">保存海报</string>
-    <string name="zixun1">资讯</string>
-    <string name="video_manage1">视频管理</string>
-    <string name="selectVideos">请选择要上传的视频</string>
-    <string name="upload_social_video_fail">视频上传失败！请尝试单个上传或选择较小的视频。</string>
-    <string name="video_add">视频添加</string>
-    <string name="upload_social_video_success">上传成功</string>
-    <string name="emptylist4">暂无社群视频</string>
-    <string name="upload_newvideo">上传新视频</string>
-    <string name="upload_video_max">视频已达上限，暂时不可上传新视频</string>
-    <string name="rename">重命名</string>
-    <string name="select_videopic">选择封面</string>
-    <string name="rename_socialvideo">企业视频重命名</string>
-    <string name="hint_videoname">企业视频名称</string>
-    <string name="addapp">添加应用</string>
-    <string name="editApp">编辑应用</string>
-    <string name="social_appname">应用名称</string>
-    <string name="input_socialappname">请输入应用名称</string>
-    <string name="social_appaddress">应用地址</string>
-    <string name="input_socialapp_address">请输入应用地址</string>
-    <string name="input_socialapp_name">请输入应用名称</string>
-    <string name="set_socialapp_logo">请上传应用logo</string>
-    <string name="delete_app">删除应用</string>
-    <string name="upload_newfile">上传新资料</string>
-    <string name="emptylist5">暂无社群资料</string>
-    <string name="addfile">添加资料</string>
-    <string name="upload_file_max">资料已达上限，暂时不可上传新资料</string>
-    <string name="selectFiles">请选择要上传的资料</string>
-    <string name="upload_social_file_success">社群资料上传成功</string>
-    <string name="upload_social_file_fail">社群资料上传失败</string>
-    <string name="cantopenvideo">视频暂时无法加载，请稍后尝试</string>
-    <string name="cantopenfile">暂时无法查看文档，请稍后再试</string>
     <string name="back">返回</string>
-    <string name="search1">搜索手机号/海浪号</string>
+    <string name="search1">搜索手机号/MS号</string>
     <string name="choosegroupchat">选择群聊</string>
-    <string name="input_socialnintroduction">请输入社群简介</string>
-    <string name="login_describe">你可选择使用不同的个人信息登录</string>
-    <string name="login_describe2">您需要允许以下权限的使用</string>
-    <string name="login_gender">性别信息等</string>
-    <string name="login_region">地区</string>
-    <string name="login_nickname">昵称</string>
-    <string name="login_head_portrait">头像</string>
-    <string name="login_title1">申请使用</string>
-    <string name="login_title2" translatable="false">Hilamg</string>
-    <string name="login_id_introduction">Hilamg个人信息</string>
-    <string name="login_switch_id">切换账号</string>
-    <string name="login_agreed">同意</string>
-    <string name="login_refused">拒绝</string>
-    <string name="reward_sign">已签到</string>
-    <string name="social_slogan">社群简介</string>
     <string name="update1">更新说明</string>
-    <string name="noredfalldata">来晚了，红包已被领取完</string>
-    <string name="redfall_tips_noshareyet">您今天还未分享</string>
-    <string name="redfall_tips_shared">您今天已分享过</string>
-    <string name="payPhone">话费充值</string>
     <string name="system">[系统]</string>
-    <string name="hilamg_official">海浪官方</string>
+    <string name="hilamg_official">官方</string>
     <string name="detail_forward">查看详情</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -702,21 +414,11 @@
     <string name="no_file">暂无文件</string>
     <string name="file">文件</string>
     <string name="select_file">请选择发送文件!</string>
-    <string name="wallet_income">收入:%1$s %2$s</string>
-    <string name="wallet_spending">支出:%1$s %2$s</string>
-    <string name="news_pager_pop_text">快讯来源：海浪之声</string>
-    <string name="news_pager_pop_text1">区块链社交，就在Hilamg</string>
-    <string name="news_pager_pop_text2">长按识别二维码  下载HilamgApp</string>
-    <string name="hilamg_consulting">Hilamg资讯</string>
-    <string name="share_news_card">[Hilamg资讯]</string>
+    <string name="hilamg_consulting">资讯</string>
+    <string name="share_news_card">[资讯]</string>
     <string name="send_to">发送给:</string>
-    <string name="sickness">疫情快讯</string>
-    <string name="file_remind">Hilamg:您最多只能选择5个文件</string>
-    <string name="group_number">本群共%1$s人</string>
-    <string name="balanceof">可用%1$s%2$s</string>
-    <string name="Invite_rewards">邀请好友成功注册可获得0.1USDT奖励</string>
+    <string name="file_remind">MoneySpace:您最多只能选择5个文件</string>
 
-    <string name="phonelogin_autoregister">未注册的手机号码验证后自动注册</string>
     <string name="detail">详情</string>
     <string name="waitFor">待</string>
     <string name="confirmReceive">确认领取</string>
@@ -726,23 +428,9 @@
     <string name="backTransTime">退还时间：</string>
     <string name="transTo">转账给%1$s</string>
     <string name="transLeft">可用</string>
-    <string name="reGet">重新获取</string>
     <string name="getVerGode">获取验证码</string>
-    <string name="verCodeSendTo">验证码已发送至</string>
-    <string name="confirm_delete_video">是否确定删除此视频？</string>
-    <string name="maxUploadVideo">最多上传%1$d份企业宣传视频，请上传体验</string>
-    <string name="uploading">上传中</string>
-    <string name="tips_uploadSocialVideo">视频压缩时间根据机型不同，需用时3–8分钟，请耐心等待</string>
-    <string name="hitMaxUploadCount">目前已达上传上限</string>
-    <string name="ziping_pleaseWait">正在压缩，请耐心等待</string>
-    <string name="uploading_thumb">正在上传封面</string>
-    <string name="social_code">社群号:</string>
-    <string name="enterSocial">加入了社群</string>
     <string name="versionV">版本号:V</string>
-    <string name="app_summary">安全沟通，值得信赖</string>
-    <string name="propertyManage">资产管理</string>
     <string name="save_picture">保存图片</string>
-    <string name="bear_your_lost">造成的财产损失，将由您自己承担。</string>
     <string name="add_new_member">添加新成员</string>
     <string name="set_conversation_top">置顶聊天</string>
     <string name="msg_not_disturb">消息免打扰</string>
@@ -750,105 +438,17 @@
     <string name="tips_burn_after_read">开启后，对话中消息将在设定的时间销毁</string>
     <string name="screen_capture_detect">截屏通知</string>
     <string name="clear_msg_history">清空聊天记录</string>
-    <string name="add_to_balance_wallet">已存入余额钱包，请查收！</string>
-    <string name="coin_introduce">币种介绍</string>
-    <string name="join_social_enjoy_more_activity">加入社群，参与更多活动</string>
-    <string name="redfall_share_to_get_more_chance">注：成功分享至朋友圈，当日参与活动次数上限+1；\n活动解释权归海浪所有。</string>
-    <string name="coor_tips1">钱包对接</string>
-    <string name="coor_tips1_detail">对接第三方数字货币，实现发红包、转账、存储</string>
-    <string name="coor_tips2">广告推广</string>
-    <string name="coor_tips2_detail">启动页、\\n轮播图广告宣传</string>
-    <string name="coor_tips3">第三方应用接入</string>
-    <string name="coor_tips3_detail">接入第三方项目链接，共享Hilamg流量</string>
-    <string name="coor_tips4">快讯发布</string>
-    <string name="coor_tips4_detail">Hilamg资讯 发布，.其他媒体渠道代发文章</string>
-    <string name="current_limit_xx_person">当前限制%1$s人</string>
-    <string name="coor_tips5">数字支付接口</string>
-    <string name="coor_tips5_detail">开发者快速接入Hilamg数字支付</string>
-    <string name="coor_tips6">登录授权</string>
-    <string name="coor_tips6_detail">为第三方系统提供Hilamg一键登录</string>
-    <string name="apply_for_coor">点击申请商务合作</string>
-    <string name="apply_for_coor_tips">商务合作 bd@Hilamg.sg</string>
-    <string name="from_text">余额钱包(</string>
     <string name="tibi_tip">提币数量</string>
     <string name="tibi_num_tip">请输入提币数量</string>
-    <string name="no_drop_red">暂无空投记录！</string>
-    <string name="num_left">剩余数量:</string>
-    <string name="drops_person_num">空投人数:</string>
-    <string name="please_set_up">请设置</string>
-    <string name="group_transfer">群转让</string>
-    <string name="community_space_info">社群空间，让价值更好更快流通</string>
-    <string name="group_leader">进群领红包</string>
-    <string name="message_filter">群消息过滤</string>
-    <string name="invite_code">我的邀请码</string>
-    <string name="view_rewards">查看奖励</string>
-    <string name="invite_now">立即邀请</string>
-    <string name="product_feature">产品特色</string>
-    <string name="hot">最火热</string>
-    <string name="tip_invites_person">雄岸、彼岸花资本等战略领投</string>
-    <string name="multi_application">多应用</string>
-    <string name="real_leading">多项应用生态真实落地</string>
-    <string name="relieved">安心用</string>
-    <string name="relieved_detail">唯一一款可数字支付的社交app</string>
     <string name="add_friend_from_book">添加通讯录中的朋友</string>
     <string name="add_friend_from_near">添加附近的朋友</string>
-    <string name="confirm_pay">确认付款</string>
-    <string name="pay_confirm_now">立即付款</string>
-    <string name="speech_interval_1">发言间隔:1秒</string>
-    <string name="community_open">社群公开</string>
     <string name="personal_code">我的个人二维码</string>
-    <string name="red_fall_1">连刷越高，红包金额越大</string>
-    <string name="rule_desc">规则说明</string>
     <string name="setting_vibrates">底部图标震动</string>
-    <string name="social_app_1">第三方应用</string>
-    <string name="social_app_2">(请联系客服关闭或开通更多应用)</string>
-    <string name="customer_app">自定义应用</string>
-    <string name="social_app_3">仅可删除本人创建，群主不受限制</string>
-    <string name="selected_1">已选 (0/4)</string>
-    <string name="remove_member">移除成员</string>
-    <string name="community_transfer">社群转让</string>
-    <string name="hilamg_friend">海浪好友</string>
-    <string name="save_local">保存本地</string>
-    <string name="selected_2">已选 (0/3)</string>
-    <string name="video_tips1">最多上传0份企业宣传视频，请上传体验</string>
-    <string name="hilamg_service">Hilamg服务</string>
-    <string name="third_service">第三方服务</string>
     <string name="community_posters">社群海报</string>
-    <string name="invite_desc">推广好友说明</string>
-    <string name="invite_desc1">推广邀请说明</string>
-    <string name="no_application">暂无应用，点击上传</string>
     <string name="hot1">热</string>
-    <string name="mute"> 禁言 </string>
-    <string name="kickout">踢出</string>
-    <string name="no_open">未开通</string>
-    <string name="no_activity">暂无活动，点击上传</string>
-    <string name="social_app_4">(联系客服开通更多应用)</string>
-    <string name="file_upload">(还可上传4份资料)</string>
-    <string name="no_video">暂无视频，点击上传</string>
     <string name="enter_pay_pwd">输入支付密码</string>
-    <string name="receive2">领取</string>
-    <string name="go_finish">去完成</string>
-    <string name="market_1">币种/流通市值</string>
-    <string name="market_2">最新价(¥)</string>
-    <string name="market_3">24H涨幅</string>
-    <string name="market_4">本行情由 ixx.com 提供</string>
     <string name="area">所在地区</string>
     <string name="please_choice">请选择</string>
-    <string name="popup_tip1">您正在访问第三方链接</string>
-    <string name="popup_tip2">您在第三方链接上的使用行为将适用该第三方链接的《用户协议》和《隐私政策》，由海浪官网直接并单独向您承担责任。</string>
-    <string name="invite_num">邀请人数</string>
-    <string name="invite_friend_nick">被邀请人昵称</string>
-    <string name="invite_date">邀请日期</string>
-    <string name="invite_earn">邀请收益</string>
-    <string name="new_source">快讯来源：海浪之声</string>
-    <string name="blockchain_social">区块链社交，就在Hilamg</string>
-    <string name="press_code">长按识别二维码 \n下载HilamgApp</string>
-    <string name="activity_tip1">已累计签到</string>
-    <string name="activity_tip2">已获得(USDT)</string>
-    <string name="activity_tip3">连续签到领取更多USDT</string>
-    <string name="activity_tip4">做任务赚取更多USDT</string>
-    <string name="enter_social_tips1">加入社群后查看更多社群空间信息</string>
-    <string name="pay_to_group">该社群设置了付费进群，您需支付</string>
     <string name="secret_chat">密聊</string>
     <string name="parse_data_wrong">解析数据失败！</string>
     <string name="please_select">请选择</string>
@@ -856,27 +456,10 @@
     <string name="late">来晚了！</string>
     <string name="red_invidate">非常抱歉，当前红包已过期</string>
     <string name="no_red_left">非常抱歉，当前红包已领取完</string>
-    <string name="num_can_be_trans">可转出数量%1$d</string>
-    <string name="groupowner_or_manager">群主/管理员</string>
-    <string name="manager">管理</string>
-    <string name="danger_tips" translatable="false"><![CDATA[<p>您在第三方链接上的使用行为将适用该第三方链接 的《用户协议》和《隐私政策》，由&nbsp;<font color=\'black\'><b>%1$s</b></font>&nbsp;直接并单独向您承担责任。</p>]]></string>
-    <string name="nums_left_upload_social_files">(还可上传%1$d份资料)</string>
-    <string name="downloading">下载中，请稍后</string>
-    <string name="social_calture_update">社群文化已更新</string>
-    <string name="upload_video_max1">(还可上传%1$d条视频)</string>
     <string name="upload">上传</string>
     <string name="hinttext">提示</string>
-    <string name="is_confirm_delete_file">是否确定删除此资料？</string>
-    <string name="upload_max_file">最多上传%1$d份社群资料，请上传体验</string>
-    <string name="current_selected">已选(%1$d/%2$d)</string>
-    <string name="cant_parse_data">暂时无法读取本地文件，请联系客服</string>
-    <string name="uploading_progress">上传中,%1$d%2$s</string>
     <string name="group_card">[群名片]</string>
     <string name="invite_you_into_group_check">%1$s邀请你加入群聊%2$s,点击查看</string>
-    <string name="me_and_x_nums_friend_wait_for_you_at">我和%1$s个小伙伴在【%2$s】,等待你加入！</string>
-    <string name="me_wait_for_you_at">我在【%1$s】,等待你加入！</string>
-    <string name="xx_invite_join">%1$s邀请你加入%2$s</string>
-    <string name="social_card">[社群名片]</string>
     <string name="transfer">[转账]</string>
     <string name="transfer_to">%1$s转账给</string>
     <string name="received1">已被领取</string>
@@ -884,76 +467,30 @@
     <string name="home_bottom2">通讯录</string>
     <string name="home_bottom3">发现</string>
     <string name="home_bottom4">我的</string>
-    <string name="send_sms_to">验证码已发送至%1$s</string>
     <string name="nodata_pleasewait_upgrade">暂无数据源，敬请期待</string>
     <string name="income">收入:%1$s%2$s</string>
     <string name="outgoing">支出:%1$s%2$s</string>
-    <string name="activity_reward">活动奖励:%1$s %2$s</string>
-    <string name="tips_blockwallet_qr">该地址仅用于%1$s钱包收款，请勿用于其他币种，否则资产将不可找回。</string>
-    <string name="downcoin_nums">充币数量</string>
-    <string name="input_downcoin_nums">请输入充币数量</string>
     <string name="trade_commission">交易手续费为：</string>
-    <string name="balancewallet_nums">余额钱包可用数量%1$s%2$s</string>
-    <string name="upcoin_nums">提币数量</string>
-    <string name="input_upcoin_nums">请输入提币数量</string>
     <string name="current_downcoin_nums_cant_less_than">当前提币数量不得小于%1$f</string>
-    <string name="create">去创建</string>
-    <string name="downcoin_tips">您还未创建数字钱包，请创建后再进行划转。</string>
-    <string name="blockwallet_nums">数字钱包可用数量%1$s%2$s</string>
     <string name="xx_trade">%1$s交易</string>
     <string name="tips_upcoin">请勿向上述地址充值任何非%1$s资产，否则资产将不可找回。</string>
-    <string name="person1">%1$s人</string>
     <string name="authening">认证中</string>
-    <string name="cant_receive">不可领</string>
-    <string name="rewardTips1">每日%1$d次(%2$d/%3$d)</string>
-    <string name="rewardtips2">恭喜您！</string>
-    <string name="rewardtips3">%1$sUSDT已存入余额钱包~</string>
-    <string name="xx_day">第%1$s天</string>
-    <string name="xx_day1">%1$s 天</string>
-    <string name="rewardtips4">明日签到可获得 %1$s USDT</string>
-    <string name="only_once_done">仅可完成一次</string>
-    <string name="value_format" translatable="false">%1$s%2$s</string>
     <string name="change_socialname_to">社群改名为%1$s</string>
     <string name="authenfail">认证未通过</string>
     <string name="xxx_join_dissection">\"%1$s\"加入了讨论组</string>
-    <string name="groupname_num" translatable="false">%1$s(%2$s)</string>
-    <string name="my_hilamg_code">我的海浪号:%1$s</string>
+    <string name="groupname_num" >%1$s(%2$s)</string>
     <string name="total_xx_contact">共 %1$s 位联系人</string>
     <string name="xx_receive_xx_red">%1$s领取了%2$s的红包</string>
     <string name="you">你</string>
-    <string name="drop_record">空投记录</string>
-    <string name="choose_time">选择时间</string>
-    <string name="value_value_value" translatable="false">%1$s-%2$s-%3$s</string>
     <string name="is_confirm_delete_group">是否确定解散该群</string>
     <string name="is_confirm_exit_group">是否确定退出该群</string>
     <string name="is_clear_conversation_history">确定要清空当前聊天记录吗？</string>
-    <string name="zero_value" translatable="false">0.0000</string>
+    <string name="zero_value" >0.0000</string>
     <string name="group_total_member_count">本群共%1$s人</string>
     <string name="can_user_value_symbol">可用%1$s%2$s</string>
-    <string name="slowMode_time">发言间隔:%1$s%2$s</string>
     <string name="second">秒</string>
     <string name="minute">分钟</string>
     <string name="hour">小时</string>
-    <string name="close_slow_mode">群主关闭了慢速模式</string>
-    <string name="ban_send_pic">禁止发图片确认</string>
-    <string name="ban_send_pic1">是否确定操作禁止发送图片功能</string>
-    <string name="ban_sendpic_open">禁止发图片已开启</string>
-    <string name="ban_sendpic_close">禁止发图片已关闭</string>
-    <string name="ban_send_link">禁止发链接确认</string>
-    <string name="ban_send_link1">是否确定操作禁止发送链接功能</string>
-    <string name="ban_send_link_open">禁止发链接已开启</string>
-    <string name="ban_send_link_close">禁止发链接已关闭</string>
-    <string name="ban_add_friend">禁止互加好友确认</string>
-    <string name="ban_add_friend1">是否确定操作成员不能互加好友功能</string>
-    <string name="ban_add_friend_open">禁止互加好友已开启</string>
-    <string name="ban_add_friend_close">禁止互加好友已关闭</string>
-    <string name="mute_confirm">禁言确认</string>
-    <string name="mute_confirm1">是否确定操作全员禁言功能</string>
-    <string name="mute_all_open">群员禁言已开启</string>
-    <string name="mute_all_close">群员禁言已关闭</string>
-    <string name="social_public">社群公开</string>
-    <string name="social_public1">是否确定操作社群公开功能</string>
-    <string name="owner_open_slowmode">群主开启了慢速模式,发言间隔:%1$s%2$s</string>
     <string name="current_receive">（已领取%1$s/%2$s个）</string>
     <string name="xxx_red_total_xxx">%1$s个红包，共%2$s</string>
     <string name="wait_for_xxx_confirm_receive">待好友%1$s确认收款</string>
@@ -962,8 +499,6 @@
     <string name="xxx_become_new_owner">%1$s成为了新的群主</string>
     <string name="current_conversation_secret">本次会话已开启端对端加密</string>
     <string name="theOther_capture_screen">对方截取了屏幕</string>
-    <string name="social_basic_upgrade">社群简介已更新</string>
-    <string name="social_basic_upgrade1">社群公告已更新</string>
     <string name="screen_capture_open">开启了截屏通知</string>
     <string name="screen_capture_close">关闭了截屏通知</string>
     <string name="burn_now">即刻焚烧</string>
@@ -973,302 +508,132 @@
     <string name="confirm_choose_tobe_new_owner">确定选择为新群主吗?</string>
     <string name="parse_qr">识别二维码</string>
     <string name="open_related_permission">请开启相关权限</string>
-    <string name="authen_success">授权成功！</string>
-    <string name="wrong_param_data">参数错误！</string>
     <string name="added">已添加</string>
-    <string name="remove">移除</string>
     <string name="cancelTop">取消置顶</string>
     <string name="setTop">置顶会话</string>
     <string name="noChatHistory">暂无聊天记录</string>
     <string name="createGroup">创建群聊</string>
-    <string name="no_manager">暂无管理员，点击添加</string>
     <string name="setting">设置</string>
-    <string name="file_rename">资料重命名</string>
-    <string name="paper_name">商业计划书名称</string>
-    <string name="notStart">未开始</string>
-    <string name="done2">已结束</string>
-    <string name="done3">已关闭</string>
-    <string name="pay">付费</string>
-    <string name="enter">进入</string>
-    <string name="noSocialDynamics">社群动态暂未开放，敬请期待！</string>
     <string name="upgrade">永久升级</string>
     <string name="upgrade1">升级</string>
     <string name="upgrade3">已升级</string>
     <string name="confirm_upgrade_social">是否确定升级该群</string>
     <string name="account">账号</string>
-    <string name="cant_load_position">未获取到位置信息</string>
-    <string name="no_thirdpart_application">暂无第三方应用，敬请期待开放</string>
-    <string name="no_cust_application">暂无自定义应用，请添加应用</string>
-    <string name="progress" translatable="false">%1$s%</string>
-    <string name="country_phone" translatable="false">+%1$s</string>
-    <string name="no_enter_red_data">暂无付费入群信息</string>
+    <string name="country_phone" >+%1$s</string>
     <string name="unknown">未知</string>
-    <string name="enter_group_manage">进群管理</string>
-    <string name="tips_new_social_manage1">设置后新成员进群即可获得红包空投</string>
-    <string name="tips_new_social_manage2">群主设置加群金额,成员支付后即可入群</string>
-    <string name="public_social">群公开</string>
-    <string name="tips_new_social_manage3">根据群名称或群号搜索到此群</string>
-    <string name="msg_manage">消息管理</string>
-    <string name="tips_new_social_manage4">管理员可把成员的某一条消息强制撤回(长按)</string>
-    <string name="tips_new_social_manage5">限制群成员发消息间隔时间</string>
-    <string name="clear_all_history">全局清空</string>
-    <string name="tips_new_social_manage6">清空群内所有人的聊天记录</string>
-    <string name="group_func_manage">群功能管理</string>
-    <string name="manager_setting">管理员设置</string>
-    <string name="tips_new_social_manage7">仅群主和管理员可以发言</string>
-    <string name="more_group_func">更多群功能</string>
-    <string name="cant_sendVoice">禁止发语音</string>
-    <string name="current_group_nick">本群昵称</string>
-    <string name="trans_group">转让群</string>
-    <string name="enabled">已开启</string>
-    <string name="ban_send_voice">禁止发语音确认</string>
-    <string name="ban_send_voice1">是否确定操作禁止发送语音功能</string>
-    <string name="ban_send_voice_open">禁止发语音已开启</string>
-    <string name="ban_send_voice_close">禁止发语音已关闭</string>
-    <string name="is_confirm_disband_group">是否确定解散社群</string>
-    <string name="is_confirm_exit_group1">是否确定退出社群</string>
-    <string name="fold">收起</string>
-    <string name="no_authorization">暂无权限</string>
-    <string name="clear_local_history">清空聊天记录</string>
-    <string name="is_clear_all_conversation_history">将清空所有群内成员的聊天记录！</string>
-    <string name="wechat_cast">微信直播</string>
-    <string name="video_cast">视频直播</string>
-    <string name="audio_cast">语音直播</string>
-    <string name="go_for_service">有疑问？请联系客服</string>
-    <string name="create_cast">创建直播</string>
-    <string name="choose_cast_type">请选择直播类型</string>
-    <string name="developing1">暂未开放</string>
-    <string name="create_cast_step1">上传直播封面</string>
-    <string name="create_cast_step2">直播主题</string>
-    <string name="create_cast_step3">直播日期与时间</string>
-    <string name="create_cast_step4">直播详情内容与详情页</string>
-    <string name="input_cast_theme">请输入直播主题…</string>
-    <string name="select_cast_date">选择直播日期</string>
-    <string name="select_cast_time">选择直播时间</string>
-    <string name="upload_cast_thumb">请上传直播封面</string>
-    <string name="setup_cast_title">请输入直播主题</string>
-    <string name="setup_cast_date">请设置直播日期</string>
-    <string name="setup_cast_time">请设置直播时间</string>
-    <string name="input_cast_detail">请输入直播详情</string>
-    <string name="x_month_x_day">%1$s月%2$s日</string>
-    <string name="x_colon_x" translatable="false">%1$s:%2$s</string>
-    <string name="choose_date">选择日期</string>
     <string name="upload_fail">上传失败，请稍后重试</string>
 
-    <string name="remove_order" translatable="false">确认取消订单?</string>
-    <string name="buy" translatable="false">购买</string>
-    <string name="sell" translatable="false">出售</string>
-    <string name="transaction_type" translatable="false">交易类型</string>
-    <string name="transaction_status" translatable="false">交易状态</string>
-    <string name="for_the_payment" translatable="false">待付款</string>
-    <string name="payment_has_been" translatable="false">已付款</string>
-    <string name="has_been_completed" translatable="false">已完成</string>
-    <string name="has_been_cancelled" translatable="false">已取消</string>
-    <string name="in_the_complaint" translatable="false">申诉中</string>
-    <string name="waiting_to_put_money" translatable="false">待放币</string>
-    <string name="not_to_put_money" translatable="false">未放币</string>
-    <string name="reset" translatable="false">重置</string>
-    <string name="determine" translatable="false">确定</string>
-    <string name="the_complaint" translatable="false">申诉</string>
-    <string name="appeal_content" translatable="false">申诉内容</string>
-    <string name="edit_the_appeal" translatable="false">请填写订单号以及您需要申诉的信息...</string>
-    <string name="tv_upload_documents" translatable="false">上传凭证</string>
-    <string name="add_image" translatable="false">(请上传一张图片)</string>
-    <string name="submit" translatable="false">提交</string>
-    <string name="set_add_image" translatable="false">请选择上传图片</string>
-    <string name="appeal_message" translatable="false">请输入申诉信息</string>
-    <string name="has_been_submitted" translatable="false">提交成功</string>
-    <string name="order_info_by_type" translatable="false">订单记录</string>
-    <string name="buy_coin_prompt" translatable="false">买方当日累计%1$s笔取消，将会限制当天的买入功能；  本服务由IXX交易所提供，交易0手续费；</string>
-    <string name="quick_buy_coins" translatable="false">一键购币</string>
-    <string name="buying_patterns" translatable="false">按数量购买</string>
-    <string name="purchase_coin" translatable="false">购买金额</string>
-    <string name="purchase_coin_hint" translatable="false">请输入购买金额</string>
-    <string name="purchase_quantity" translatable="false">购买数量</string>
-    <string name="purchase_amount_hint" translatable="false">请输入购买数量</string>
-    <string name="buying_coin" translatable="false">按金额购买</string>
-    <string name="buy_coins_prompt" translatable="false">输入金额不能大于%1$sCNY。</string>
-    <string name="buy_amount_prompt" translatable="false">最大购买数量为%1$s%2$s</string>
-    <string name="buy_coins_prompt2" translatable="false">输入金额不能小于最小限额</string>
-    <string name="buy_amount_prompt2" translatable="false">最小购买数量为%1$s%2$s</string>
-    <string name="the_unit_price" translatable="false">单价约%1$s %2$s/%3$s</string>
-    <string name="limit" translatable="false">限额: %1$s~%2$s CNY</string>
-    <string name="wechat_pay" translatable="false">微信支付</string>
-    <string name="pay_treasure" translatable="false">支付宝</string>
+    <string name="remove_order" >确认取消订单?</string>
+    <string name="buy" >购买</string>
+    <string name="sell" >出售</string>
+    <string name="transaction_type" >交易类型</string>
+    <string name="transaction_status" >交易状态</string>
+    <string name="for_the_payment" >待付款</string>
+    <string name="payment_has_been" >已付款</string>
+    <string name="has_been_completed" >已完成</string>
+    <string name="has_been_cancelled" >已取消</string>
+    <string name="in_the_complaint" >申诉中</string>
+    <string name="waiting_to_put_money" >待放币</string>
+    <string name="not_to_put_money" >未放币</string>
+    <string name="reset" >重置</string>
+    <string name="determine" >确定</string>
+    <string name="the_complaint" >申诉</string>
+    <string name="appeal_content" >申诉内容</string>
+    <string name="edit_the_appeal" >请填写订单号以及您需要申诉的信息...</string>
+    <string name="tv_upload_documents" >上传凭证</string>
+    <string name="add_image" >(请上传一张图片)</string>
+    <string name="submit" >提交</string>
+    <string name="set_add_image" >请选择上传图片</string>
+    <string name="appeal_message" >请输入申诉信息</string>
+    <string name="order_info_by_type" >订单记录</string>
+    <string name="buy_coin_prompt" >买方当日累计%1$s笔取消，将会限制当天的买入功能；  本服务由IXX交易所提供，交易0手续费；</string>
+    <string name="quick_buy_coins" >一键购币</string>
+    <string name="buying_patterns" >按数量购买</string>
+    <string name="purchase_coin" >购买金额</string>
+    <string name="purchase_coin_hint" >请输入购买金额</string>
+    <string name="purchase_quantity" >购买数量</string>
+    <string name="purchase_amount_hint" >请输入购买数量</string>
+    <string name="buying_coin" >按金额购买</string>
+    <string name="buy_coins_prompt" >输入金额不能大于%1$sCNY。</string>
+    <string name="buy_amount_prompt" >最大购买数量为%1$s%2$s</string>
+    <string name="buy_coins_prompt2" >输入金额不能小于最小限额</string>
+    <string name="buy_amount_prompt2" >最小购买数量为%1$s%2$s</string>
+    <string name="the_unit_price" >单价约%1$s %2$s/%3$s</string>
+    <string name="limit" >限额: %1$s~%2$s CNY</string>
+    <string name="wechat_pay" >微信支付</string>
+    <string name="pay_treasure" >支付宝</string>
     <string name="bank_card">银行卡</string>
-    <string name="buy_coin" translatable="false">购买 %1$s</string>
-    <string name="payment_way" translatable="false">选择付款方式</string>
-    <string name="payment_way2" translatable="false">付款方式:</string>
-    <string name="price" translatable="false">单价:</string>
-    <string name="amount" translatable="false">购买数量:</string>
-    <string name="total" translatable="false">实付金额:</string>
-    <string name="Determine_to_buy" translatable="false">确定购买</string>
-    <string name="transaction_number" translatable="false">交易次数</string>
-    <string name="completion" translatable="false">完成率</string>
-    <string name="speed" translatable="false">平均放行(分钟)</string>
-    <string name="senior_certification" translatable="false">高级认证</string>
-    <string name="the_phone_authentication" translatable="false">手机认证</string>
-    <string name="email_authentication" translatable="false">邮箱认证</string>
-    <string name="business_details" translatable="false">商家详情</string>
-    <string name="registration_time" translatable="false">注册时间: %1$s</string>
-    <string name="to_buy" translatable="false">我要买</string>
-    <string name="to_sell" translatable="false">我要卖</string>
-    <string name="the_order_details" translatable="false">订单详情</string>
-    <string name="no_payment" translatable="false">未付款</string>
-    <string name="the_payee" translatable="false">收款人</string>
-    <string name="payee_account_number" translatable="false">收款人账号</string>
-    <string name="remark" translatable="false">收款人备注</string>
-    <string name="warm_prompt" translatable="false">温馨提示</string>
-    <string name="prompt" translatable="false">如您已向卖家线下转账付款，请务必点击“已完成付款”按钮，否则有可能造成您的资金损失！</string>
-    <string name="payment_is_done" translatable="false">已完成付款</string>
-    <string name="order_a_timeout" translatable="false">订单超时</string>
-    <string name="already_timeout" translatable="false">已经超时</string>
-    <string name="order_number" translatable="false">订单号:%1$s</string>
-    <string name="bank_card_payment" translatable="false">银行卡支付</string>
-    <string name="payee_card_number" translatable="false">收款人银行卡号</string>
-    <string name="merchants_remark" translatable="false">商家备注</string>
-    <string name="alipay_pay" translatable="false">支付宝支付</string>
-    <string name="payment_reminder" translatable="false">如您已付款，请务必点击“已完成付款”。否则有可能造成您的资金损失！</string>
-    <string name="confirm_to_leave_the_pay" translatable="false">确认离开支付</string>
-    <string name="remove_order_remind" translatable="false">单天最多取消%1$s次订单，超过%2$s次后，单天不可再下单！</string>
-    <string name="unit_price" translatable="false">单价(CNY)</string>
-    <string name="the_number" translatable="false">数量</string>
-    <string name="total_amount" translatable="false">交易总额(CNY)</string>
-    <string name="timeout" translatable="false">未放币</string>
-    <string name="waiting_to_put_money2" translatable="false">待商家放币</string>
-    <string name="coin_timeout" translatable="false">商家放币超时</string>
-    <string name="coin_timeout2" translatable="false">商家未放币，已超时</string>
-    <string name="waiting_for_payment" translatable="false">待买家付款</string>
-    <string name="complete_the_transaction" translatable="false">交易完成</string>
-    <string name="fifteen_minutes" translatable="false">15分钟内可自主</string>
-    <string name="cancel_the_order" translatable="false">取消订单</string>
-    <string name="purchase_details" translatable="false">购买详情</string>
-    <string name="deal_price" translatable="false">交易总价</string>
-    <string name="deal_unit_price" translatable="false">交易单价</string>
-    <string name="the_number_of_deals" translatable="false">交易数量</string>
-    <string name="order_time" translatable="false">下单时间</string>
-    <string name="vendor_name" translatable="false">商家名称</string>
-    <string name="merchant_account" translatable="false">商家账号</string>
-    <string name="go_to_the_payment" translatable="false">去付款</string>
-    <string name="no_data" translatable="false">暂无数据</string>
+    <string name="buy_coin" >购买 %1$s</string>
+    <string name="payment_way" >选择付款方式</string>
+    <string name="payment_way2" >付款方式:</string>
+    <string name="price" >单价:</string>
+    <string name="amount" >购买数量:</string>
+    <string name="total" >实付金额:</string>
+    <string name="Determine_to_buy" >确定购买</string>
+    <string name="transaction_number" >交易次数</string>
+    <string name="completion" >完成率</string>
+    <string name="speed" >平均放行(分钟)</string>
+    <string name="senior_certification" >高级认证</string>
+    <string name="the_phone_authentication" >手机认证</string>
+    <string name="email_authentication" >邮箱认证</string>
+    <string name="business_details" >商家详情</string>
+    <string name="registration_time" >注册时间: %1$s</string>
+    <string name="to_buy" >我要买</string>
+    <string name="to_sell" >我要卖</string>
+    <string name="the_order_details" >订单详情</string>
+    <string name="no_payment" >未付款</string>
+    <string name="the_payee" >收款人</string>
+    <string name="payee_account_number" >收款人账号</string>
+    <string name="remark" >收款人备注</string>
+    <string name="warm_prompt" >温馨提示</string>
+    <string name="prompt" >如您已向卖家线下转账付款，请务必点击“已完成付款”按钮，否则有可能造成您的资金损失！</string>
+    <string name="payment_is_done" >已完成付款</string>
+    <string name="order_a_timeout" >订单超时</string>
+    <string name="already_timeout" >已经超时</string>
+    <string name="order_number" >订单号:%1$s</string>
+    <string name="bank_card_payment" >银行卡支付</string>
+    <string name="payee_card_number" >收款人银行卡号</string>
+    <string name="merchants_remark" >商家备注</string>
+    <string name="alipay_pay" >支付宝支付</string>
+    <string name="payment_reminder" >如您已付款，请务必点击“已完成付款”。否则有可能造成您的资金损失！</string>
+    <string name="confirm_to_leave_the_pay" >确认离开支付</string>
+    <string name="remove_order_remind" >单天最多取消%1$s次订单，超过%2$s次后，单天不可再下单！</string>
+    <string name="unit_price" >单价(CNY)</string>
+    <string name="the_number" >数量</string>
+    <string name="total_amount" >交易总额(CNY)</string>
+    <string name="timeout" >未放币</string>
+    <string name="waiting_to_put_money2" >待商家放币</string>
+    <string name="coin_timeout2" >商家未放币，已超时</string>
+    <string name="waiting_for_payment" >待买家付款</string>
+    <string name="complete_the_transaction" >交易完成</string>
+    <string name="fifteen_minutes" >15分钟内可自主</string>
+    <string name="cancel_the_order" >取消订单</string>
+    <string name="purchase_details" >购买详情</string>
+    <string name="deal_price" >交易总价</string>
+    <string name="deal_unit_price" >交易单价</string>
+    <string name="the_number_of_deals" >交易数量</string>
+    <string name="order_time" >下单时间</string>
+    <string name="vendor_name" >商家名称</string>
+    <string name="merchant_account" >商家账号</string>
+    <string name="go_to_the_payment" >去付款</string>
+    <string name="no_data" >暂无数据</string>
     <string name="buyer_cancel">买家取消</string>
     <string name="seller_to_cancel">卖家取消</string>
-    <string name="blacklist">加入黑名单</string>
-    <string name="remove_blacklist">移出黑名单</string>
-    <string name="remove_mute">解除禁言</string>
-    <string name="cast_title_view"><![CDATA[查看>>]]></string>
-    <string name="voice_forbidden1">禁止发送语音</string>
-    <string name="open_ban_sendvoice">禁止发语音已开启</string>
-    <string name="open_ban_all">全员禁言已开启</string>
-    <string name="close_ban_all">全员禁言已关闭</string>
-    <string name="close_ban_sendvoice">禁止发语音已关闭</string>
-    <string name="confirm_close_cast">是否确定结束直播？</string>
-    <string name="current_chatroom_over">当前直播已结束</string>
-    <string name="msg_forbidden">本会话已开启全员禁言</string>
-    <string name="tips_wechatcast_card">社群正在直播,讲的特别好,再不来看就晚了。</string>
-    <string name="share_cast_card">[海浪直播]</string>
-    <string name="cast_topic1">主题:%1$s</string>
-    <string name="watch_nums">观看人数:</string>
-    <string name="modify2"><![CDATA[编辑 >]]></string>
     <string name="nick1">昵称:%1$s</string>
-    <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
-    <string name="share_tip">分享获得更多领取机会~</string>
-    <string name="sharefail">分享失败</string>
-    <string name="parseimg">处理图片中…</string>
     <string name="force_recall_update">禁言+撤回</string>
-    <string name="special_chat">不能包含特殊字符</string>
-    <string name="groupqr">群二维码</string>
     <string name="sharecode">分享二维码</string>
     <string name="savetophone">保存二维码</string>
     <string name="joined">加入</string>
-    <string name="timeup">时间已到</string>
     <string name="change_password">修改密码</string>
     <string name="billing_message_type">未完善</string>
     <string name="prompt_message">为了保证订单尽快交易，请完善所有的收款信息，并确认所填信息的正确性。</string>
-    <string name="sale_cancel">订单已取消</string>
-    <string name="orderid">单号</string>
-    <string name="price_reference">参考价格</string>
-    <string name="count">数量</string>
-    <string name="moneyCount">金额</string>
-    <string name="butPayType">付款方式</string>
-    <string name="commit_successful">提交成功</string>
-    <string name="commit_label">我们会尽快审核，给您反馈</string>
-    <string name="tobepayed">需支付</string>
-    <string name="wechatPay">微信支付</string>
-    <string name="receiver">收款人</string>
-    <string name="receiverAccount">收款账号</string>
-    <string name="receiverQR">收款二维码</string>
-    <string name="receiverBank">收款银行</string>
-    <string name="payTips1">请尽快向上面账号自行转账</string>
-    <string name="singleprice">单价</string>
-    <string name="orderTime">订单时间</string>
-    <string name="paySign">支付凭证</string>
-    <string name="unUpload">未上传</string>
     <string name="buy_complete">我已完成支付</string>
-    <string name="cancel_order">取消订单</string>
-    <string name="buyIn15MinuteLimit">请在15分钟内完成支付</string>
-    <string name="wait_for_others_to_buy">等待其他用户来购买~</string>
-    <string name="salecointype">出售币种</string>
-    <string name="saleCount">出售数量</string>
-    <string name="saleTotalPrice">出售金额</string>
-    <string name="salePayType">收款方式</string>
-    <string name="orders_mine">我的订单</string>
-    <string name="buy_in">买入</string>
-    <string name="sell_out">出售</string>
-    <string name="purchase_currency">购买币种</string>
-    <string name="current_reference_price">当前参考价格</string>
-    <string name="exchange1_buy2">购买数量</string>
-    <string name="choosecount">请输入数量</string>
-    <string name="xianliang_xuantian">限量(选填)</string>
-    <string name="input_minbuy">最小购买数量</string>
-    <string name="input_maxbuy">最大购买数量</string>
-    <string name="exchange1_buy3">需支付金额</string>
-    <string name="exchangetips">实际出售额以买入时的汇率进行计算</string>
-    <string name="paytype">支付方式</string>
     <string name="not_perfection">未完善</string>
-    <string name="installalipay">未安装支付宝，请自行转账</string>
-    <string name="not_perfect">收款信息未完善</string>
-    <string name="alipay">支付宝</string>
     <string name="bankcard">银行卡</string>
-    <string name="onprocing">进行中</string>
-    <string name="done">已完成</string>
-    <string name="single_number_label">单号</string>
-    <string name="currency_of_sale">出售币种</string>
-    <string name="proposed_price">参考价格</string>
-    <string name="quantity_of_sale">出售数量</string>
-    <string name="sale_amount">出售金额</string>
-    <string name="payment_method">收款方式</string>
-    <string name="tradeCancel">已取消</string>
-    <string name="orderprice">订单价格</string>
-    <string name="price_single">单价</string>
-    <string name="paytime">付款时间</string>
-    <string name="closetime">结束时间</string>
-    <string name="tradeFailed">交易失败</string>
-    <string name="paytype1">付款方式</string>
-    <string name="reason">原因</string>
-    <string name="sale_reject">卖家拒绝审核</string>
-    <string name="buy_done">买家已完成支付</string>
-    <string name="buyer">买家</string>
-    <string name="money_received">钱已到账，通过审核</string>
-    <string name="money_notreceived">钱未到账，拒绝审核</string>
     <string name="receipt_type_name">账号</string>
     <string name="commit_btn">提交</string>
     <string name="collection_information">收款信息</string>
-    <string name="input_shensu">请填写您需要申诉的信息…</string>
     <string name="uploadSign">上传凭证</string>
-    <string name="verified_prompt">请填写证件上的真实名称、证件类型及证件号</string>
-    <string name="verified_prompt_1">拍摄证件照，确保证件照上的名称及证件号清晰可见</string>
-    <string name="front_photo_of_the_document">证件正面照</string>
-    <string name="reverse_photo_of_the_document">证件反面照</string>
-    <string name="hand_held_passport_photo">手持证件照</string>
-    <string name="wait_for_others_to_judge">等待对方审核</string>
-    <string name="paytotal">支付总金额</string>
-    <string name="collection_and_payment1">收款方式</string>
-    <string name="add_buddy">加好友</string>
-    <string name="contact_him">联系他</string>
-    <string name="waiting_audit_prompt">提示:系统已经帮您通知了对方账户,若对方还未及时处理可以拨打电话与对方沟通.</string>
-    <string name="wait_for_buy_to_pay">买家正在支付，请稍等</string>
-    <string name="exchange_list_type">待对方审核</string>
     <string name="time">时间</string>
     <string name="pay_type_update_successful">已完善</string>
     <string name="wechat_info">微信信息</string>
@@ -1316,7 +681,6 @@
     <string name="balance">资产</string>
     <string name="tradeCenter">第三方交易所</string>
     <string name="linesService">生态服务</string>
-
     <string name="trade1">Nogex交易所</string>
     <string name="trade2">OKEX交易所</string>
     <string name="trade3">非币网交易所</string>
