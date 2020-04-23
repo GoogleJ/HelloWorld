@@ -51,7 +51,6 @@ public class UserInfoActivity extends BaseActivity {
     String type = "type";
     int changeNick = 2;
     int changeSign = 1;
-    int changeEmail = 3;
     private RelativeLayout rlEmial;
     private RelativeLayout rlPhone;
     private TextView tvUserInfoSex;

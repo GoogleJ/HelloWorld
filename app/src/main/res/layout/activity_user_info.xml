@@ -304,7 +304,8 @@
             <RelativeLayout
                 android:id="@+id/rlEmail"
                 style="@style/RLayoutStyle"
-                android:onClick="changeEmail">
+                android:onClick="changeEmail"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvMailTitle"
