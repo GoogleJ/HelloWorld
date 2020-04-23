@@ -1095,7 +1095,7 @@
     <string name="limit" translatable="false">限额: %1$s~%2$s CNY</string>
     <string name="wechat_pay" translatable="false">微信支付</string>
     <string name="pay_treasure" translatable="false">支付宝</string>
-    <string name="bank_card" translatable="false">银行卡</string>
+    <string name="bank_card">银行卡</string>
     <string name="buy_coin" translatable="false">购买 %1$s</string>
     <string name="payment_way" translatable="false">选择付款方式</string>
     <string name="payment_way2" translatable="false">付款方式:</string>
@@ -1348,6 +1348,7 @@
     <string name="tips_bank">预计24小时到账</string>
     <string name="upnum">提现金额</string>
     <string name="input_upnum">请输入提现金额</string>
+    <string name="unbind">解绑</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

@@ -84,7 +84,7 @@
             android:background="@null"
             android:gravity="end"
             android:imeOptions="actionNext"
-            android:inputType="text"
+            android:inputType="number"
             android:lines="1"
             android:hint="@string/input_skin"
             android:textColor="@color/black"

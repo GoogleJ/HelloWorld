@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -12,185 +11,145 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:clipChildren="false"
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
+
+                <ImageView
+                    android:id="@+id/ivQR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:padding="2dp"
+                    android:src="@drawable/mine_new_scan"
+                    android:tint="#6D7278" />
 
                 <LinearLayout
+                    android:id="@+id/llMineTop"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:background="@drawable/mine_topbg"
-                    android:clipChildren="false"
-                    android:orientation="vertical"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="36dp">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/ivQR"
+                    <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:padding="6dp"
-                        android:src="@drawable/mine_new_scan" />
+                        android:layout_marginStart="16dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/ivHead"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp" />
+
+                    </FrameLayout>
 
                     <LinearLayout
-                        android:id="@+id/llMineTop"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/ivHead"
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                app:civ_border_color="@color/white"
-                                app:civ_border_width="1dp" />
-
-                            <ImageView
-                                android:id="@+id/ivMineAuthSign"
-                                android:layout_width="19dp"
-                                android:layout_height="19dp"
-                                android:layout_gravity="end|bottom"
-                                android:src="@drawable/mine_new_verified"
-                                android:visibility="invisible" />
-
-                        </FrameLayout>
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="64dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp">
 
                             <TextView
                                 android:id="@+id/tvNick"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginEnd="2dp"
+                                android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:lines="1"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:textSize="19sp"
                                 android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/tvMochatID"
+                            <ImageView
+                                android:id="@+id/ivMineAuthSign"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:lines="1"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/tvSign"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:lines="1"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/mine_new_verified"
+                                android:visibility="invisible" />
 
                         </LinearLayout>
 
-                        <ImageView
-                            android:layout_marginStart="16dp"
+                        <TextView
+                            android:id="@+id/tvMochatID"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="32dp"
-                            android:src="@drawable/ic_end"
-                            android:tint="@color/white" />
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:textColor="#6D7278"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tvSign"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:textColor="#6D7278"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_end"
+                        android:tint="#D9D9D9" />
+
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/ivBlockWallet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-88dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/bg_blockwallet" />
-
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llRedFall"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="32dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:transformPivotX="32dp"
-                android:visibility="gone">
+        </LinearLayout>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="144dp"
-                    android:background="#EBC700" />
-
-                <ImageView
-                    android:id="@+id/ivRedFall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-16dp"
-                    android:src="@drawable/ic_mine_redfall" />
-
-                <TextView
-                    android:id="@+id/tvMindRedCountDown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="-16dp"
-                    android:layout_marginEnd="14dp"
-                    android:background="@drawable/shape_mine_redfall"
-                    android:gravity="center"
-                    android:text="Go"
-                    android:textColor="#FF4848"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-        </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#F2F3F5" />
 
         <LinearLayout
-            android:id="@+id/llMine7"
+            android:id="@+id/llMine1"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_marginTop="8dp"
             android:gravity="center_vertical"
-            android:paddingStart="24dp"
+            android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/mine_new7" />
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_llmine1" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="@string/rewardmot"
-                android:textColor="#4A494A"
-                android:textSize="15sp" />
+                android:text="@string/wallet"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -202,8 +161,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="48dp"
             android:background="#E5E5E5" />
 
         <LinearLayout
@@ -211,22 +169,23 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center_vertical"
-            android:paddingStart="24dp"
+            android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/mine_new2" />
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_llmine2" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="@string/cooperate"
-                android:textColor="#4A494A"
-                android:textSize="15sp" />
+                android:text="@string/moexchange"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -238,31 +197,31 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="48dp"
             android:background="#E5E5E5" />
 
         <LinearLayout
-            android:id="@+id/llMineInvite"
+            android:id="@+id/llMine3"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center_vertical"
-            android:paddingStart="24dp"
+            android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_mine_invite" />
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_llmine3" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="@string/invite_friends1"
-                android:textColor="#4A494A"
-                android:textSize="15sp" />
+                android:text="@string/real_name_authentication"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -274,8 +233,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="48dp"
             android:background="#E5E5E5" />
 
         <LinearLayout
@@ -283,22 +241,23 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center_vertical"
-            android:paddingStart="24dp"
+            android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/mine_new4" />
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_llmine4" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="@string/online_customer_service"
-                android:textColor="#4A494A"
-                android:textSize="15sp" />
+                android:text="@string/bank_card"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -310,8 +269,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="48dp"
             android:background="#E5E5E5" />
 
         <LinearLayout
@@ -319,22 +277,23 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center_vertical"
-            android:paddingStart="24dp"
+            android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/mine_new5" />
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_llmine5" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="@string/safesetting"
-                android:textColor="#4A494A"
-                android:textSize="15sp" />
+                android:text="@string/setting"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -342,6 +301,12 @@
                 android:src="@drawable/ic_mine_rightarrow" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="48dp"
+            android:background="#E5E5E5" />
 
     </LinearLayout>
 

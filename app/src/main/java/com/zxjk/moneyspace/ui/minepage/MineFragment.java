@@ -1,11 +1,6 @@
 package com.zxjk.moneyspace.ui.minepage;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,39 +8,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.Utils;
+import com.alibaba.security.rp.RPSDK;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle3.android.FragmentEvent;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.zxjk.moneyspace.Application;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxException;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
-import com.zxjk.moneyspace.ui.HomeActivity;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
-import com.zxjk.moneyspace.ui.minepage.wallet.WalletActivity;
+import com.zxjk.moneyspace.ui.minepage.wallet.BalanceLeftActivity;
 import com.zxjk.moneyspace.ui.msgpage.MyQrCodeActivity;
-import com.zxjk.moneyspace.ui.widget.dialog.ConfirmDialog;
-import com.zxjk.moneyspace.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.moneyspace.utils.CommonUtils;
-import com.zxjk.moneyspace.utils.ShareUtil;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
     private CircleImageView ivHead;
@@ -53,13 +39,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private TextView tvNick;
     private TextView tvMochatID;
     private TextView tvSign;
-    private LinearLayout llRedFall;
-    private ImageView ivRedFall;
-    private TextView tvMindRedCountDown;
-
-    private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
-
-    private Disposable go;
 
     @Nullable
     @Override
@@ -71,18 +50,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         tvNick = view.findViewById(R.id.tvNick);
         tvMochatID = view.findViewById(R.id.tvMochatID);
         tvSign = view.findViewById(R.id.tvSign);
-        llRedFall = view.findViewById(R.id.llRedFall);
-        ivRedFall = view.findViewById(R.id.ivRedFall);
-        tvMindRedCountDown = view.findViewById(R.id.tvMindRedCountDown);
 
         view.findViewById(R.id.llMineTop).setOnClickListener(this);
-        view.findViewById(R.id.ivBlockWallet).setOnClickListener(this);
+        view.findViewById(R.id.llMine1).setOnClickListener(this);
         view.findViewById(R.id.llMine2).setOnClickListener(this);
+        view.findViewById(R.id.llMine3).setOnClickListener(this);
         view.findViewById(R.id.llMine4).setOnClickListener(this);
         view.findViewById(R.id.llMine5).setOnClickListener(this);
-        view.findViewById(R.id.llMine7).setOnClickListener(this);
         view.findViewById(R.id.ivQR).setOnClickListener(this);
-        view.findViewById(R.id.llMineInvite).setOnClickListener(this);
 
         return view;
     }
@@ -111,20 +86,46 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         tvMochatID.setText(getString(R.string.mochatid) + Constant.currentUser.getDuoduoId());
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llMineTop:
                 startActivity(new Intent(getActivity(), UserInfoActivity.class));
                 break;
-            case R.id.ivBlockWallet:
-                startActivity(new Intent(getActivity(), WalletActivity.class));
+            case R.id.llMine1:
+                startActivity(new Intent(getActivity(), BalanceLeftActivity.class));
                 break;
             case R.id.llMine2:
-                startActivity(new Intent(getActivity(), CooperateActivity.class));
+
+                break;
+            case R.id.llMine3:
+                if (Constant.currentUser.getIsAuthentication().equals("2")) {
+                    ToastUtils.showShort(R.string.verifying_pleasewait);
+                } else if (Constant.currentUser.getIsAuthentication().equals("0")) {
+                    ToastUtils.showShort(R.string.authen_true);
+                } else {
+                    Api api = ServiceFactory.getInstance().getBaseService(Api.class);
+                    api.getAuthToken()
+                            .compose(bindUntilEvent(FragmentEvent.DESTROY))
+                            .compose(RxSchedulers.normalTrans())
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                            .flatMap(s -> Observable.create(emitter ->
+                                    RPSDK.start(s, getActivity(), (audit, s1) -> {
+                                        if (audit == RPSDK.AUDIT.AUDIT_PASS || audit == RPSDK.AUDIT.AUDIT_FAIL) {
+                                            emitter.onNext(true);
+                                        } else {
+                                            emitter.onError(new RxException.ParamsException("认证失败,请稍后尝试", 100));
+                                        }
+                                    })))
+                            .observeOn(Schedulers.io())
+                            .flatMap(b -> api.initAuthData())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(s -> Constant.currentUser.setIsAuthentication("0"), this::handleApiError);
+                }
                 break;
             case R.id.llMine4:
-                startActivity(new Intent(getActivity(), OnlineServiceActivity.class));
+                startActivity(new Intent(getActivity(), BankCardActivity.class));
                 break;
             case R.id.llMine5:
                 startActivity(new Intent(getActivity(), SettingActivity.class));

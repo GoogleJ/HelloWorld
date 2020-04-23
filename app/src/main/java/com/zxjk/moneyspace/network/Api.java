@@ -686,4 +686,8 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> cnyWithdraw(@Field("withdrawNum") String withdrawNum,@Field("payPwd") String payPwd);
 
+    @POST("duoduo/customer/deleteCustomerBankInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> deleteCustomerBankInfo(@Field("payPwd") String payPwd);
+
 }

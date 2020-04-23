@@ -22,6 +22,7 @@ public class BindCNYCardActivity extends BaseActivity {
 
     private boolean fromBalance;
     private boolean fromBalance1;
+    private boolean fromBind;
 
     private EditText etBank;
     private EditText etBankCard;
@@ -35,6 +36,7 @@ public class BindCNYCardActivity extends BaseActivity {
 
         fromBalance = getIntent().getBooleanExtra("fromBalance", false);
         fromBalance1 = getIntent().getBooleanExtra("fromBalance1", false);
+        fromBind = getIntent().getBooleanExtra("fromBind", false);
 
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.bindbank);
@@ -78,6 +80,16 @@ public class BindCNYCardActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
+                    if (fromBind) {
+                        Intent intent = new Intent();
+                        intent.putExtra("bank", request.getBank());
+                        intent.putExtra("num", request.getBankNum());
+                        setResult(1, intent);
+                        finish();
+
+                        return;
+                    }
+
                     if (fromBalance) {
                         startActivity(new Intent(this, CNYUpActivity.class));
                     }

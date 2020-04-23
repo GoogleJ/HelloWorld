@@ -620,11 +620,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabSelected(int position) {
-        if (position == 3) {
-            setTrasnferStatusBar(true);
-        } else {
-            setLightStatusBar(true);
-        }
         switch (position) {
             case 0:
                 switchFragment(msgFragment);
@@ -654,6 +649,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
             VibrateUtils.vibrate(50);
         }
+
         if (mFragment != fragment) {
             if (!fragment.isAdded()) {
                 getSupportFragmentManager().beginTransaction().hide(mFragment)
