@@ -11,7 +11,6 @@ import com.alibaba.security.rp.RPSDK;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.tencent.mmkv.MMKV;
-import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -105,7 +104,6 @@ public class Application extends android.app.Application {
 
         RPSDK.initialize(getApplicationContext());
 
-        QbSdk.initX5Environment(this, null);
     }
 
     public WebDataUtils getWebDataUtils() {
