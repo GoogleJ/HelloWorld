@@ -440,7 +440,7 @@
 
                 <data
                     android:host="com.zxjk.moneyspace"
-                    android:pathPrefix="/conversationlist/"
+                    android:pathPrefix="/conversationlist"
                     android:scheme="rong" />
             </intent-filter>
         </activity> <!-- 会话页 -->

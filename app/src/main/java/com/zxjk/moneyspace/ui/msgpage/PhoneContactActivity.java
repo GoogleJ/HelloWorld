@@ -112,7 +112,7 @@ public class PhoneContactActivity extends BaseActivity implements TextWatcher {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(PhoneContactActivity.this)))
                     .subscribe(friendInfoResponses1 -> {
                         if (friendInfoResponses1.size() == 0) {
-                            sendSMS("您的好友在Hilamg给您留言了啦，赶快注册去查看吧。" + Constant.APP_DOWNLOAD_URL, position);
+                            sendSMS("您的好友在MoneySpace给您留言啦，赶快注册去查看吧。" + Constant.APP_DOWNLOAD_URL, position);
                         } else {
                             CommonUtils.resolveFriendList(PhoneContactActivity.this, friendInfoResponses1.get(0).getId());
                         }
