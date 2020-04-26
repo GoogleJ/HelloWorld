@@ -2,13 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_aboutbackground"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp">
+        android:layout_height="50dp">
 
         <FrameLayout
             android:id="@+id/rl_back"
@@ -56,26 +55,22 @@
 
         <ImageView
             android:id="@+id/about_icon"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
             android:layout_gravity="center"
             android:layout_marginTop="56dp"
-            android:src="@drawable/about_logo_icon1" />
+            android:src="@drawable/ic_about_icon" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="56dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:gravity="center"
             android:text="@string/mochat"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/black"
             android:textSize="22sp"
-            android:textStyle="bold|italic" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -88,23 +83,17 @@
                 style="@style/textStyle"
                 android:layout_marginStart="15dp"
                 android:text="@string/versionV"
-                android:textColor="#FFFEFE"
-                android:textStyle="bold" />
+                android:textColor="#6D7278"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/tv_versionName"
                 style="@style/textStyle"
                 android:layout_marginEnd="15dp"
-                android:textColor="#FFFEFE" />
+                android:textColor="#6D7278"
+                android:textSize="13sp" />
 
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="30dp"
-            android:src="@drawable/about_logo_icon2" />
 
     </LinearLayout>
 
