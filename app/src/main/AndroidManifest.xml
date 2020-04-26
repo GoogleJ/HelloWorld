@@ -57,14 +57,42 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.minepage.BankCardActivity"></activity>
-        <activity android:name=".ui.SuccessActivity2" />
-        <activity android:name=".ui.SuccessActivity1" />
-        <activity android:name=".ui.walletpage.CNYUpConfirm2Activity" />
-        <activity android:name=".ui.walletpage.BindCNYCardActivity" />
-        <activity android:name=".ui.walletpage.CNYUpConfirm1Activity" />
-        <activity android:name=".ui.walletpage.CNYDownActivity" />
-        <activity android:name=".ui.walletpage.CNYUpActivity" />
+        <activity
+            android:name=".ui.minepage.BankCardActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.minepage.wallet.ChooseCoinActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SuccessActivity2"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SuccessActivity1"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.walletpage.CNYUpConfirm2Activity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.walletpage.BindCNYCardActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.walletpage.CNYUpConfirm1Activity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.walletpage.CNYDownActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.walletpage.CNYUpActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.UserFirstSetupPaypassActivity"
             android:launchMode="singleTop"
@@ -504,7 +532,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="cf78026d76c3b2dcd0a8384061970712" />
+            android:value="c6759f48c0cf3bffc5adc0dcf80f7a76" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -655,8 +655,8 @@
     <string name="complete_payinfo">已完善</string>
     <string name="uncomplete_payinfo">未完善</string>
     <string name="notAuthentication">未完善</string>
-    <string name="login_byemail">邮箱登陆</string>
-    <string name="login_byphone">手机号登陆</string>
+    <string name="login_byemail">邮箱登录</string>
+    <string name="login_byphone">手机号登录</string>
     <string name="hello">您好，</string>
     <string name="input_email">请输入邮箱账号</string>
     <string name="input_wrong">输入有误，请重试</string>
@@ -668,7 +668,7 @@
     <string name="verify_paypass">验证交易密码</string>
     <string name="verify_paypass1">请再次输入您的交易密码</string>
     <string name="input_pay_pwd">请输入支付密码</string>
-    <string name="email_label">邮箱登陆</string>
+    <string name="email_label">邮箱登录</string>
     <string name="sendred">发红包</string>
     <string name="control_red">尾数指定</string>
     <string name="control_red1">最后一位数</string>

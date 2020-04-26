@@ -86,7 +86,7 @@
                 android:background="@drawable/shape_dialog_confirm"
                 android:gravity="center"
                 android:text="@string/ok"
-                android:textColor="@color/colorTheme"
+                android:textColor="@color/color3"
                 android:textSize="15.5sp"
                 android:textStyle="bold" />
         </LinearLayout>

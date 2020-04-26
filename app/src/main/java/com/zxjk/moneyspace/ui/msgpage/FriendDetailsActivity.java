@@ -38,6 +38,7 @@ import com.zxjk.moneyspace.utils.GlideUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.callkit.RongCallKit;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.IRongCallback;
@@ -220,7 +221,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         });
     }
 
-    @OnClick({R.id.tv_sendMessage, R.id.iv_headPortrait})
+    @OnClick({R.id.tv_sendMessage, R.id.iv_headPortrait, R.id.btn_call})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -236,6 +237,9 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 RongIM.getInstance().startPrivateChat(this, friendInfoResponse.getId(), friendInfoResponse.getNick());
+                break;
+            case R.id.btn_call:
+                RongCallKit.startSingleCall(this, friendInfoResponse.getId(), RongCallKit.CallMediaType.CALL_MEDIA_TYPE_AUDIO);
                 break;
         }
     }

@@ -148,8 +148,6 @@
 
         </RelativeLayout>
 
-        <include layout="@layout/layout_line" />
-
         <RelativeLayout
             android:id="@+id/rlEmail"
             style="@style/RLayoutStyle"

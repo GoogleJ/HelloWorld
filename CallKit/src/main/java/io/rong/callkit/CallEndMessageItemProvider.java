@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import io.rong.calllib.RongCallCommon;
 import io.rong.calllib.RongCallSession;
 import io.rong.calllib.message.CallSTerminateMessage;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
-import io.rong.imkit.widget.AutoLinkTextView;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.utilities.OptionsPopupDialog;
@@ -38,16 +38,15 @@ import static io.rong.calllib.RongCallCommon.CallDisconnectedReason.OTHER_DEVICE
 @ProviderTag(messageContent = CallSTerminateMessage.class, showSummaryWithName = false, showProgress = false, showWarning = false, showReadState = false)
 public class CallEndMessageItemProvider extends IContainerItemProvider.MessageProvider<CallSTerminateMessage> {
     private static class ViewHolder {
-        AutoLinkTextView message;
+        TextView message;
     }
-
 
     @Override
     public View newView(Context context, ViewGroup group) {
         View view = LayoutInflater.from(context).inflate(R.layout.rc_item_text_message, null);
 
         ViewHolder holder = new ViewHolder();
-        holder.message = (AutoLinkTextView) view.findViewById(android.R.id.text1);
+        holder.message = view.findViewById(android.R.id.text1);
         view.setTag(holder);
         return view;
     }
