@@ -211,19 +211,15 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:background="@drawable/shape_stroke_theme_4"
-                android:gravity="center"
+            <Button
+                style="@style/BtnStyle"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:onClick="unLogin"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:text="@string/logout1"
-                android:textColor="@color/colorTheme"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textSize="17sp" />
 
         </LinearLayout>
 

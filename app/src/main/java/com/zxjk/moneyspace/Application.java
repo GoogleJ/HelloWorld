@@ -100,7 +100,7 @@ public class Application extends android.app.Application {
         registerConnectionStatusListener();
 
         //Umeng
-//        initUmeng();
+        initUmeng();
 
         RPSDK.initialize(getApplicationContext());
 
@@ -111,13 +111,13 @@ public class Application extends android.app.Application {
     }
 
     private void initUmeng() {
-        UMConfigure.init(this, "5e215672cb23d2eb7f0000dc", "Hilamg_official", UMConfigure.DEVICE_TYPE_PHONE, null);
+        UMConfigure.init(this, "5ea422eb978eea07c030370b", "MoneySpace", UMConfigure.DEVICE_TYPE_PHONE, null);
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         UMConfigure.setProcessEvent(true);
         MobclickAgent.setCatchUncaughtExceptions(!BuildConfig.enableLog);
 
         PlatformConfig.setWeixin("wx022863eb70b07dcf", "ed5bd6099c398f443a1eadc9a8bda259");
-        PlatformConfig.setQQZone("101838814", "2133a77b5e0abc441ca9646089399898");
+        PlatformConfig.setQQZone("101869365", "c11728cf363bfa3f25add422b6fc691");
     }
 
     private void registerConnectionStatusListener() {

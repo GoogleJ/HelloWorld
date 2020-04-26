@@ -121,14 +121,14 @@ public class ServiceFactory {
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 })
-                .hostnameVerifier((hostname, session) -> BuildConfig.enableLog || hostname.equals("mochart.ztoken.cn"))
+                .hostnameVerifier((hostname, session) -> BuildConfig.enableLog || hostname.equals("moneyspace.ztok.net"))
                 .readTimeout(8, TimeUnit.SECONDS)
                 .writeTimeout(8, TimeUnit.SECONDS)
                 .build();
 
         //buildApi
         retrofit = new Retrofit.Builder().baseUrl(Constant.BASE_URL)
-                .client(OkHttpClientUtil.getSSLClient(client, Utils.getApp(), "cacert.cer"))
+                .client(OkHttpClientUtil.getSSLClient(client, Utils.getApp(), "moneyspace.cer"))
                 .addConverterFactory(BasicConvertFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(GsonUtils.getGson(false)))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
