@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/bg_about"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -68,7 +68,7 @@
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:text="@string/mochat"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -83,7 +83,7 @@
                 style="@style/textStyle"
                 android:layout_marginStart="15dp"
                 android:text="@string/versionV"
-                android:textColor="#6D7278"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
 
             <TextView
