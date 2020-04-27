@@ -9,7 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.alibaba.security.rp.RPSDK;
+import com.alibaba.security.cloud.CloudRealIdentityTrigger;
+import com.alibaba.security.realidentity.ALRealIdentityResult;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
@@ -168,8 +169,8 @@ public class SettingActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .flatMap(s -> Observable.create(emitter ->
-                                RPSDK.start(s, SettingActivity.this, (audit, s1) -> {
-                                    if (audit == RPSDK.AUDIT.AUDIT_PASS || audit == RPSDK.AUDIT.AUDIT_FAIL) {
+                                CloudRealIdentityTrigger.start(SettingActivity.this, s, (audit, s1) -> {
+                                    if (audit == ALRealIdentityResult.AUDIT_PASS) {
                                         emitter.onNext(true);
                                     } else {
                                         emitter.onError(new RxException.ParamsException("认证失败,请稍后尝试", 100));
