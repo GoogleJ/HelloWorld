@@ -75,8 +75,7 @@
             <include layout="@layout/layout_line10" />
 
             <RelativeLayout
-                style="@style/RLayoutStyle"
-                android:onClick="groupQR">
+                style="@style/RLayoutStyle">
 
                 <TextView
                     android:layout_width="wrap_content"

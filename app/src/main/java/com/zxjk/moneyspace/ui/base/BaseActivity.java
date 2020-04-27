@@ -206,6 +206,7 @@ public class BaseActivity extends RxAppCompatActivity {
             // 重复登录，挤掉线
             back2Login();
         }
+
         ToastUtils.showShort(RxException.getMessage(throwable));
     }
 

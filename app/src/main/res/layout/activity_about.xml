@@ -21,7 +21,7 @@
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ico_back"
                 android:tint="#cacaca" />
-
+it
         </FrameLayout>
 
         <TextView

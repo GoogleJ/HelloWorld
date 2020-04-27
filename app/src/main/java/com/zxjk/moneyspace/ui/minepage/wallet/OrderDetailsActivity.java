@@ -276,9 +276,7 @@ public class OrderDetailsActivity extends BaseActivity {
                 tv.setText(style);
                 holder.setText(R.id.tv_title, R.string.confirm_to_leave_the_pay);
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
-                holder.setOnClickListener(R.id.tv_ok, v -> {
-                    finish();
-                });
+                holder.setOnClickListener(R.id.tv_ok, v -> finish());
             }
         }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
     }
