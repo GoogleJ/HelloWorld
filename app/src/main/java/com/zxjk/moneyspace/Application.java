@@ -164,16 +164,12 @@ public class Application extends android.app.Application {
     }
 
     private void initOSS() {
-        String AK = "LTAI3V54BzteDdTi";
-        String SK = "h59RLWudf6XMXO4bSqSOwsK3nBHXSK";
+        String AK = "LTAI4GBkDjePy5rh4zyYkqMc";
+        String SK = "s6ZFZRGX0gAqf7qc2Qa7Ow5GzAOU8T";
         OSSPlainTextAKSKCredentialProvider ossPlainTextAKSKCredentialProvider =
                 new OSSPlainTextAKSKCredentialProvider(AK, SK);
-        String endpoint;
-        if (BuildConfig.DEBUG) {
-            endpoint = "oss-cn-beijing.aliyuncs.com";
-        } else {
-            endpoint = "oss-cn-hongkong.aliyuncs.com";
-        }
+
+        String endpoint = "oss-cn-hongkong.aliyuncs.com";
         oss = new OSSClient(this, endpoint, ossPlainTextAKSKCredentialProvider);
     }
 
