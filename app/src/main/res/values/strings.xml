@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MoneySpace</string>
+    <string name="app_name" translatable="false">MoneySpace</string>
     <string name="edit_code_tip">请输入正确的验证码</string>
     <string name="text_get_code">获取验证码</string>
     <string name="edit_mobile_tip">请输入正确的手机号</string>
@@ -45,7 +45,7 @@
     <string name="wechat">微信</string>
     <string name="hilamg">MoneySpace</string>
     <string name="m_red_envelopes_label">鸿运当头，大吉大利</string>
-    <string name="m_red_envelopes_money_text">0.00</string>
+    <string name="m_red_envelopes_money_text" translatable="false">0.00</string>
     <string name="m_red_envelopes_commit_btn">塞进红包</string>
     <string name="m_transfer_commit_btn">确认转账</string>
     <string name="m_successful_transfer_title_bar">转账详情</string>
@@ -339,10 +339,8 @@
     <string name="m_group_chat">群组</string>
     <string name="no_qunzu">暂无群组</string>
     <string name="less_min">红包金额不能小于0.00001</string>
-    <string name="pay_money">付费金额</string>
     <string name="money1">单个金额</string>
     <string name="money2">总金额</string>
-    <string name="input_zhengshu">请输入金额</string>
     <string name="newredtip">领取新人进群红包</string>
     <string name="receive_success">领取成功</string>
     <string name="redtip3">已转入钱包余额，请查收！</string>
@@ -363,7 +361,6 @@
     <string name="inpu_search_group">请输入社群关键字</string>
     <string name="emptylist">什么也没找到</string>
     <string name="join">加入</string>
-    <string name="ok1">好的</string>
     <string name="emptylist1">暂无记录</string>
     <string name="tradeDetail">交易详情</string>
     <string name="pay_address">付款地址</string>
@@ -478,14 +475,14 @@
     <string name="change_socialname_to">社群改名为%1$s</string>
     <string name="authenfail">认证未通过</string>
     <string name="xxx_join_dissection">\"%1$s\"加入了讨论组</string>
-    <string name="groupname_num">%1$s(%2$s)</string>
+    <string name="groupname_num" translatable="false">%1$s(%2$s)</string>
     <string name="total_xx_contact">共 %1$s 位联系人</string>
     <string name="xx_receive_xx_red">%1$s领取了%2$s的红包</string>
     <string name="you">你</string>
     <string name="is_confirm_delete_group">是否确定解散该群</string>
     <string name="is_confirm_exit_group">是否确定退出该群</string>
     <string name="is_clear_conversation_history">确定要清空当前聊天记录吗？</string>
-    <string name="zero_value">0.0000</string>
+    <string name="zero_value" translatable="false">0.0000</string>
     <string name="group_total_member_count">本群共%1$s人</string>
     <string name="can_user_value_symbol">可用%1$s%2$s</string>
     <string name="second">秒</string>
@@ -519,7 +516,7 @@
     <string name="upgrade3">已升级</string>
     <string name="confirm_upgrade_social">是否确定升级该群</string>
     <string name="account">账号</string>
-    <string name="country_phone">+%1$s</string>
+    <string name="country_phone" translatable="false">+%1$s</string>
     <string name="unknown">未知</string>
     <string name="upload_fail">上传失败，请稍后重试</string>
 
@@ -529,7 +526,6 @@
     <string name="transaction_type">交易类型</string>
     <string name="transaction_status">交易状态</string>
     <string name="for_the_payment">待付款</string>
-    <string name="payment_has_been">已付款</string>
     <string name="has_been_completed">已完成</string>
     <string name="has_been_cancelled">已取消</string>
     <string name="in_the_complaint">申诉中</string>
@@ -546,20 +542,11 @@
     <string name="set_add_image">请选择上传图片</string>
     <string name="appeal_message">请输入申诉信息</string>
     <string name="order_info_by_type">订单记录</string>
-    <string name="buy_coin_prompt">买方当日累计%1$s笔取消，将会限制当天的买入功能；  本服务由IXX交易所提供，交易0手续费；</string>
     <string name="quick_buy_coins">一键购币</string>
-    <string name="buying_patterns">按数量购买</string>
     <string name="purchase_coin">购买金额</string>
     <string name="purchase_coin_hint">请输入购买金额</string>
-    <string name="purchase_quantity">购买数量</string>
     <string name="purchase_amount_hint">请输入购买数量</string>
-    <string name="buying_coin">按金额购买</string>
-    <string name="buy_coins_prompt">输入金额不能大于%1$sCNY。</string>
-    <string name="buy_amount_prompt">最大购买数量为%1$s%2$s</string>
-    <string name="buy_coins_prompt2">输入金额不能小于最小限额</string>
-    <string name="buy_amount_prompt2">最小购买数量为%1$s%2$s</string>
     <string name="the_unit_price">单价约%1$s %2$s/%3$s</string>
-    <string name="limit">限额: %1$s~%2$s CNY</string>
     <string name="wechat_pay">微信支付</string>
     <string name="pay_treasure">支付宝</string>
     <string name="bank_card">银行卡</string>
@@ -584,7 +571,6 @@
     <string name="no_payment">未付款</string>
     <string name="the_payee">收款人</string>
     <string name="payee_account_number">收款人账号</string>
-    <string name="remark">收款人备注</string>
     <string name="warm_prompt">温馨提示</string>
     <string name="prompt">如您已向卖家线下转账付款，请务必点击“已完成付款”按钮，否则有可能造成您的资金损失！</string>
     <string name="payment_is_done">已完成付款</string>
@@ -598,7 +584,6 @@
     <string name="payment_reminder">如您已付款，请务必点击“已完成付款”。否则有可能造成您的资金损失！</string>
     <string name="confirm_to_leave_the_pay">确认离开支付</string>
     <string name="remove_order_remind">单天最多取消%1$s次订单，超过%2$s次后，单天不可再下单！</string>
-    <string name="unit_price">单价(CNY)</string>
     <string name="the_number">数量</string>
     <string name="total_amount">交易总额(CNY)</string>
     <string name="timeout">未放币</string>
@@ -614,11 +599,9 @@
     <string name="the_number_of_deals">交易数量</string>
     <string name="order_time">下单时间</string>
     <string name="vendor_name">商家名称</string>
-    <string name="merchant_account">商家账号</string>
     <string name="go_to_the_payment">去付款</string>
     <string name="no_data">暂无数据</string>
     <string name="buyer_cancel">买家取消</string>
-    <string name="seller_to_cancel">卖家取消</string>
     <string name="nick1">昵称:%1$s</string>
     <string name="force_recall_update">禁言+撤回</string>
     <string name="sharecode">分享二维码</string>
