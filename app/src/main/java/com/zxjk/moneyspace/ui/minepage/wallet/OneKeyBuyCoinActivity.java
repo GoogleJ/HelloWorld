@@ -23,7 +23,6 @@ import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
-import com.zxjk.moneyspace.ui.widget.ImagePagerIndicator;
 import com.zxjk.moneyspace.ui.widget.MsgTitleView;
 import com.zxjk.moneyspace.utils.CommonUtils;
 
@@ -59,7 +58,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_key_buy_coin);
         setTrasnferStatusBar(true);
-        setStatusBar();
+
         getCustomerIdentity(0);
 
         initView();
@@ -83,14 +82,6 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
             startActivity(intent);
         });
     }
-
-    protected void setStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().setStatusBarColor(Color.parseColor("#272E3F"));//设置状态栏颜色
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-    }
-
 
     private void initData() {
         initIndicator(1);
@@ -190,12 +181,16 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
                 if (tvSpeedy.getBackground() != null) {
                     return;
                 }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                }
                 initIndicator(1);
 
                 ImageView img = findViewById(R.id.img_back);
                 img.setColorFilter(getResources().getColor(R.color.main_list_divider, null));
                 imgOrderList.setImageResource(R.drawable.ic_end_order2);
-                llOneKey.setBackground(getResources().getDrawable(R.color.color3, null));
+                llOneKey.setBackgroundColor(Color.parseColor("#272E3F"));
                 tvSelfSelection.setBackground(null);
                 tvSpeedy.setBackground(getResources().getDrawable(R.drawable.shape_self_select_backgroud, null));
                 tvSpeedy.setTextColor(Color.parseColor("#FFFFFF"));
@@ -210,6 +205,11 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
                 if (tvSelfSelection.getBackground() != null) {
                     return;
                 }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
+
                 initIndicator(2);
 
                 img = findViewById(R.id.img_back);

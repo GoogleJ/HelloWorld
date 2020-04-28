@@ -66,6 +66,7 @@
             android:gravity="center"
             android:onClick="email"
             android:text="@string/login_byemail"
+            android:layout_marginBottom="40dp"
             android:textColor="#333333"
             android:textSize="18sp"
             android:textStyle="bold" />

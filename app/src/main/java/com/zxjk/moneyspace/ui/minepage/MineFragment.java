@@ -25,6 +25,7 @@ import com.zxjk.moneyspace.network.rx.RxException;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
 import com.zxjk.moneyspace.ui.minepage.wallet.BalanceLeftActivity;
+import com.zxjk.moneyspace.ui.minepage.wallet.OneKeyBuyCoinActivity;
 import com.zxjk.moneyspace.ui.msgpage.MyQrCodeActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
 
@@ -97,7 +98,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), BalanceLeftActivity.class));
                 break;
             case R.id.llMine2:
-
+                startActivity(new Intent(getActivity(), OneKeyBuyCoinActivity.class));
                 break;
             case R.id.llMine3:
                 if (Constant.currentUser.getIsAuthentication().equals("2")) {

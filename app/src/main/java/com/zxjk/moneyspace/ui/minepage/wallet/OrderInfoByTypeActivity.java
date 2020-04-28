@@ -222,11 +222,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             }
         });
 
-        swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            page = 0;
-            onRefreshLayout();
-        });
+
 
         adapter = new BaseQuickAdapter<GetOrderInfoByTypeResponse, BaseViewHolder>(R.layout.item_order_info_by_type) {
             @Override
@@ -254,7 +250,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                             style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen, null)), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             tv.setText(style);
                         } else {
-                            text = "出售" + item.getCurrency();
+                            text = getString(R.string.sell1, item.getCurrency());
                             style = new SpannableStringBuilder(text);
                             style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.the_order_state, null)), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             tv.setText(style);
@@ -279,7 +275,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                             style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen, null)), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             tv.setText(style);
                         } else {
-                            text = "出售" + item.getCurrency();
+                            text = getString(R.string.sell1, item.getCurrency());
                             style = new SpannableStringBuilder(text);
                             style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.the_order_state, null)), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                             tv.setText(style);

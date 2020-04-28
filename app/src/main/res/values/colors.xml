@@ -64,9 +64,9 @@
     <color name="background_color1">#EDEDEE</color>
     <color name="m_item_msg_message_number">#EA2222</color>
     <color name="color_yellow_red">#FF872F</color>
-    <color name="color1">#6D7278</color>
-    <color name="color2">#9E9E9E</color>
-    <color name="color3">#272E3F</color>
+<!--    <color name="color1">#6D7278</color>-->
+<!--    <color name="color2">#9E9E9E</color>-->
+<!--    <color name="color3">#272E3F</color>-->
 
     <color name="color1">#272E3F</color>
     <color name="color2">#B9C0C9</color>

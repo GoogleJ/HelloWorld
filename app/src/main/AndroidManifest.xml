@@ -57,9 +57,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.PayAliActivity"></activity>
-        <activity android:name=".ui.minepage.wallet.ConfirmUserSellActivity"></activity>
-        <activity android:name=".ui.minepage.wallet.AcceptorOrderActivity" />
+        <activity
+            android:name=".ui.PayAliActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.minepage.wallet.ConfirmUserSellActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.minepage.wallet.AcceptorOrderActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.minepage.BankCardActivity"
             android:launchMode="singleTop"
