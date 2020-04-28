@@ -3,141 +3,383 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.minepage.wallet.BuyCoinViewPagerFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.minepage.wallet.BuyCoinViewPagerFragment">
 
-    <TextView
-        android:id="@+id/tv_purchase_amount"
-        android:text="@string/purchase_coin"
-        android:textColor="#8EA0AC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp" />
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp">
-        <EditText
-            android:id="@+id/et_purchase_amount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/purchase_coin_hint"
-            android:textColorHint="#E9E9EB"
-            android:textStyle="bold"
-            android:background="@null"
-            android:textSize="18sp"
-            android:inputType="numberDecimal"/>
-        <TextView
-            android:id="@+id/tv_buy_patterns"
-            android:text="CNY"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/colorD" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp">
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:paddingBottom="10dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_purchase_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/purchase_coin"
+                android:textColor="#272E3F"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_purchase_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/purchase_coin_hint"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="#E9E9EB"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_buy_patterns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="CNY"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_maximum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/shape_black_border"
+                    android:padding="5dp"
+                    android:text="最大"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorD" />
+
+            <LinearLayout
+                android:id="@+id/ll_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="8dp"
+                    android:background="@color/colorE" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="单价"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_unit_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="请输入单价"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="#E9E9EB"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tv_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/colorD" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_unit_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#8EA0AC"/>
-            <TextView
-                android:id="@+id/tv_limit"
-                android:layout_width="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="#8EA0AC" />
+
+            <LinearLayout
+                android:id="@+id/ll_limit"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColor="#8EA0AC"/>
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="8dp"
+                    android:background="@color/colorE" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="限量"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_minimum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="最小购买数量"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="#E9E9EB"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="~"
+                        android:textColor="@color/black" />
+
+                    <EditText
+                        android:id="@+id/et_maximum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="最大购买数量"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="#E9E9EB"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/colorD" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="8dp"
+                    android:background="@color/colorE" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_receive_or_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_receive_or_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收款方式"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/ll_pay_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tv_bank_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_downcoin1"
+                            android:drawableTop="@drawable/ic_otc_bank_card"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:paddingTop="24dp"
+                            android:paddingBottom="24dp"
+                            android:text="银行卡"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:id="@+id/img1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|bottom"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tv_ali_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_downcoin1"
+                            android:drawableTop="@drawable/ic_otc_ali_pay"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:paddingTop="24dp"
+                            android:paddingBottom="24dp"
+                            android:text="支付宝"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:id="@+id/img2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|bottom"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tv_WeChat"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/shape_downcoin1"
+                            android:drawableTop="@drawable/ic_otc_wechat"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:paddingTop="24dp"
+                            android:paddingBottom="24dp"
+                            android:text="微信"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:id="@+id/img3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|bottom"
+                            android:src="@drawable/ic_check"
+                            android:visibility="gone" />
+                    </FrameLayout>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rc_pay_type"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_buy_coin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_4182f9_5"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_buy_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/quick_buy_coins"
+                    android:textColor="#E7C39B"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-        <TextView
-            android:text="@string/buying_patterns"
-            android:id="@+id/tv_buy_coin_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:gravity="end"
-            android:drawableStart="@drawable/buy_coin_switch"
-            android:drawablePadding="8dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_buy_coin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:gravity="center"
-        android:background="@drawable/shape_4182f9_5"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="@string/quick_buy_coins"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:drawableStart="@drawable/lightning"
-            android:drawablePadding="8dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="top"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/exclamation_mark"
-            android:layout_marginTop="4dp"/>
-
-        <TextView
-            android:id="@+id/buy_coin_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineSpacingExtra="6dp"
-            android:textColor="#8EA0AC"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
 
 </LinearLayout>

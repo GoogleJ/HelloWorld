@@ -1,76 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.minepage.wallet.OneKeyBuyCoinActivity"
+
     android:orientation="vertical"
-    android:background="#1E65E0">
+    tools:context=".ui.minepage.wallet.OneKeyBuyCoinActivity">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/ll_one_key"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#272E3F">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="28dp">
 
-        <FrameLayout
-            android:id="@+id/rl_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp">
+            <FrameLayout
+                android:id="@+id/rl_back"
+                android:layout_width="50dp"
+                android:layout_height="50dp">
 
-            <ImageView
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ico_back"
+                    android:tint="#cacaca" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ico_back"
-                android:tint="#cacaca" />
+                android:layout_centerInParent="true"
+                android:textColor="#cacaca"
+                android:textSize="18sp" />
 
-        </FrameLayout>
+            <LinearLayout
+                android:id="@+id/rl_end"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shape_white_oval_border"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
-        <TextView
-            android:id="@+id/tv_title"
+                <TextView
+                    android:id="@+id/tv_speedy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_self_select_backgroud"
+                    android:gravity="center"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="快捷区"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_self_selection"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="自选区"
+                    android:textColor="#9E9E9E" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#cacaca"
-            android:textSize="18sp" />
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal">
 
-        <FrameLayout
-            android:id="@+id/rl_end"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true">
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/img_order_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ic_end_order" />
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_end_order2" />
+        </LinearLayout>
 
-        </FrameLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_white_top8" />
 
-    </RelativeLayout>
-
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        app:tabTextColor="#7CA9E3"
-        app:tabSelectedTextColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="scrollable"
-        app:tabTextAppearance="@style/TabLayoutTextSize_two"
-        app:tabBackground="@android:color/transparent"
-        app:tabRippleColor="@android:color/transparent"/>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_white_top8"/>
+    </LinearLayout>
 
 </LinearLayout>

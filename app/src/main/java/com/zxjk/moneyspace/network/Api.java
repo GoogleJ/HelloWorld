@@ -11,6 +11,7 @@ import com.zxjk.moneyspace.bean.response.BlockChainNewsBean;
 import com.zxjk.moneyspace.bean.response.ByBoinsResponse;
 import com.zxjk.moneyspace.bean.response.CnyRechargeResponse;
 import com.zxjk.moneyspace.bean.response.CommunityCultureResponse;
+import com.zxjk.moneyspace.bean.response.ConfirmSellOrBuy;
 import com.zxjk.moneyspace.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.moneyspace.bean.response.EditCommunityResponse;
 import com.zxjk.moneyspace.bean.response.FindHailangResponse;
@@ -18,6 +19,7 @@ import com.zxjk.moneyspace.bean.response.FriendInfoResponse;
 import com.zxjk.moneyspace.bean.response.GenerateMnemonicResponse;
 import com.zxjk.moneyspace.bean.response.GetAppVersionResponse;
 import com.zxjk.moneyspace.bean.response.GetBalanceInfoResponse;
+import com.zxjk.moneyspace.bean.response.GetBuyList;
 import com.zxjk.moneyspace.bean.response.GetCarouselMap;
 import com.zxjk.moneyspace.bean.response.GetChatRoomInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetCustomerBankInfoResponse;
@@ -26,6 +28,8 @@ import com.zxjk.moneyspace.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupChatInfoByGroupIdResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetMainSymbolByCustomerIdBean;
+import com.zxjk.moneyspace.bean.response.GetOTCSymbolInfo;
+import com.zxjk.moneyspace.bean.response.GetOrderInfoById;
 import com.zxjk.moneyspace.bean.response.GetOrderInfoByTypeResponse;
 import com.zxjk.moneyspace.bean.response.GetParentSymbolBean;
 import com.zxjk.moneyspace.bean.response.GetPaymentListBean;
@@ -34,7 +38,6 @@ import com.zxjk.moneyspace.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetRedPackageRecordResponse;
 import com.zxjk.moneyspace.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.moneyspace.bean.response.GetSerialBean;
-import com.zxjk.moneyspace.bean.response.GetSymbolInfo;
 import com.zxjk.moneyspace.bean.response.GetSymbolSerialResponse;
 import com.zxjk.moneyspace.bean.response.GetTransferAllResponse;
 import com.zxjk.moneyspace.bean.response.GetUpgradeGroupsResponnse;
@@ -54,6 +57,7 @@ import com.zxjk.moneyspace.bean.response.SearchCommunityResponse;
 import com.zxjk.moneyspace.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.moneyspace.bean.response.TransferResponse;
 import com.zxjk.moneyspace.bean.response.UpdateGroupInfoResponse;
+import com.zxjk.moneyspace.bean.response.UserSellResponse;
 import com.zxjk.moneyspace.bean.response.WalletChainInfosResponse;
 
 import java.util.ArrayList;
@@ -576,8 +580,9 @@ public interface Api {
     @POST("duoduo/walletBalance/balanceAssetManage")
     Observable<BaseResponse<List<BalanceAssetManageBean>>> balanceAssetManage();
 
-    @POST("duoduo/purchase/getSymbolInfo")
-    Observable<BaseResponse<GetSymbolInfo>> getSymbolInfo();
+    @FormUrlEncoded
+    @POST("duoduo/exchange/getOTCSymbolInfo")
+    Observable<BaseResponse<GetOTCSymbolInfo>> getOTCSymbolInfo(@Field("nonce") String nonce);
 
     @FormUrlEncoded
     @POST("otc/active/find/hailang")
@@ -617,32 +622,30 @@ public interface Api {
                                                               @Field("user_id") String userId);
 
     @FormUrlEncoded
-    @POST("duoduo/purchase/getOrderInfoByType")
-    Observable<BaseResponse<GetOrderInfoByTypeResponse>> getOrderInfoByType(@Field("page") String page,
-                                                                            @Field("offset") String offset,
-                                                                            @Field("side") String side,
-                                                                            @Field("state") String state);
+    @POST("duoduo/exchange/getOrderList")
+    Observable<BaseResponse<List<GetOrderInfoByTypeResponse>>> getOrderInfoByType(@Field("nonce") String nonce,
+                                                                                  @Field("status") String status,
+                                                                                  @Field("buyOrSell") String buyOrSell);
 
     @FormUrlEncoded
     @POST("duoduo/live/getGroupLiveGoingInfo")
     Observable<BaseResponse<List<GetChatRoomInfoResponse>>> getGroupLiveGoingInfo(@Field("groupId") String groupId);
 
     @FormUrlEncoded
-    @POST("duoduo/purchase/orderInfo")
-    Observable<BaseResponse<ByBoinsResponse>> orderInfo(@Field("nonce") String nonce,
-                                                        @Field("trans_id") String trans_id,
-                                                        @Field("user_id") String user_id,
-                                                        @Field("paymentType") String paymentType,
-                                                        @Field("createTime") String createTime);
+    @POST("duoduo/exchange/getOrderInfoById")
+    Observable<BaseResponse<GetOrderInfoById>> getOrderInfoById(@Field("nonce") String nonce,
+                                                                @Field("bothOrderId") String bothOrderId,
+                                                                @Field("buyOrderId") String buyOrderId,
+                                                                @Field("sellOrderId") String sellOrderId,
+                                                                @Field("buyOrSell") String buyOrSell);
 
     @FormUrlEncoded
-    @POST("duoduo/purchase/orderAppeal")
-    Observable<BaseResponse<String>> orderAppeal(@Field("img") String img,
+    @POST("duoduo/exchange/addAppeal")
+    Observable<BaseResponse<String>> orderAppeal(@Field("appealReason") String appealReason,
+                                                 @Field("bothOrderId") String bothOrderId,
                                                  @Field("nonce") String nonce,
-                                                 @Field("phone") String phone,
-                                                 @Field("reason") String reason,
-                                                 @Field("trans_id") String trans_id,
-                                                 @Field("user_id") String user_id);
+                                                 @Field("picture") String picture,
+                                                 @Field("plaintiffId") String plaintiffId);
 
     @POST("duoduo/live/getOnlineUsers")
     @FormUrlEncoded
@@ -694,5 +697,122 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> addSubmitOrder(@Field("payPwd") String payPwd, @Field("qrcode") String qrcode, @Field("payAmount") String payAmount
             , @Field("currency") String currency);
+
+    @POST("duoduo/customer/getCustomerIdentity")
+    Observable<BaseResponse<String>> getCustomerIdentity();
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/userBuy")
+    Observable<BaseResponse<GetOrderInfoById>> userBuy(@Field("nonce") String nonce,
+                                                       @Field("number") String number,
+                                                       @Field("currency") String currency,
+                                                       @Field("payType") String payType);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/acceptorBuy")
+    Observable<BaseResponse<String>> acceptorBuy(@Field("currency") String nonce,
+                                                 @Field("maxNum") String number,
+                                                 @Field("minNum") String currency,
+                                                 @Field("nonce") String payType,
+                                                 @Field("number") String payPwd,
+                                                 @Field("payPwd") String price,
+                                                 @Field("payType") String minNum,
+                                                 @Field("price") String maxNum);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/acceptorSell")
+    Observable<BaseResponse<String>> acceptorSell(@Field("currency") String nonce,
+                                                  @Field("maxNum") String number,
+                                                  @Field("minNum") String currency,
+                                                  @Field("nonce") String payType,
+                                                  @Field("number") String payPwd,
+                                                  @Field("payPwd") String price,
+                                                  @Field("payType") String minNum,
+                                                  @Field("price") String maxNum);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/acceptorCloseSell")
+    Observable<BaseResponse<String>> acceptorCloseSell(@Field("sellOrderId") String sellOrderId,
+                                                       @Field("nonce") String nonce);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/acceptorCancelBuy")
+    Observable<BaseResponse<String>> acceptorCancelBuy(@Field("nonce") String buyOrderId,
+                                                       @Field("buyOrderId") String nonce);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/userSell")
+    Observable<BaseResponse<UserSellResponse>> userSell(@Field("nonce") String nonce,
+                                                        @Field("number") String number,
+                                                        @Field("currency") String currency,
+                                                        @Field("payType") String payType);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/confirmUserSell")
+    Observable<BaseResponse<GetOrderInfoById>> confirmUserSell(@Field("buyOrderId") String buyOrderId,
+                                                     @Field("payType") String payType,
+                                                     @Field("nonce") String nonce,
+                                                     @Field("number") String number,
+                                                     @Field("payPwd") String payPwd);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/getBuyList")
+    Observable<BaseResponse<List<GetBuyList>>> getBuyList(@Field("currency") String currency,
+                                                          @Field("nonce") String nonce,
+                                                          @Field("pageNoStr") String pageNoStr,
+                                                          @Field("pageSizeStr") String pageSizeStr);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/getSellList")
+    Observable<BaseResponse<List<GetBuyList>>> getSellList(@Field("currency") String currency,
+                                                           @Field("nonce") String nonce,
+                                                           @Field("pageNoStr") String pageNoStr,
+                                                           @Field("pageSizeStr") String pageSizeStr);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/userConfirmBuy")
+    Observable<BaseResponse<GetOrderInfoById>> userConfirmBuy(@Field("sellOrderId") String sellOrderId,
+                                                              @Field("payType") String payType,
+                                                              @Field("nonce") String nonce,
+                                                              @Field("number") String number);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/userConfirmPay")
+    Observable<BaseResponse<String>> userConfirmPay(@Field("bothOrderId") String bothOrderId,
+                                                    @Field("nonce") String nonce,
+                                                    @Field("payPwd") String payPwd);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/addAppeal")
+    Observable<BaseResponse<String>> addAppeal(@Field("appealReason") String appealReason,
+                                               @Field("bothOrderId") String bothOrderId,
+                                               @Field("nonce") String nonce,
+                                               @Field("picture") String picture,
+                                               @Field("plaintiffId") String plaintiffId);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/userCancelledBuy")
+    Observable<BaseResponse<String>> userCancelledBuy(@Field("bothOrderId") String bothOrderId,
+                                                      @Field("nonce") String nonce);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/userConfirmDeposit")
+    Observable<BaseResponse<String>> userConfirmDeposit(@Field("bothOrderId") String bothOrderId,
+                                                        @Field("nonce") String nonce,
+                                                        @Field("payPwd") String payPwd);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/acceptorConfirmDeposit")
+    Observable<BaseResponse<String>> acceptorConfirmDeposit(@Field("bothOrderId") String bothOrderId,
+                                                            @Field("nonce") String nonce,
+                                                            @Field("payPwd") String payPwd);
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/acceptorConfirmPay")
+    Observable<BaseResponse<String>> acceptorConfirmPay(@Field("bothOrderId") String bothOrderId,
+                                                            @Field("nonce") String nonce,
+                                                            @Field("payPwd") String payPwd);
+
+
 
 }

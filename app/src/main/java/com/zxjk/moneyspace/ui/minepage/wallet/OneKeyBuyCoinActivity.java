@@ -1,30 +1,57 @@
 package com.zxjk.moneyspace.ui.minepage.wallet;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
+import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.ui.widget.ImagePagerIndicator;
+import com.zxjk.moneyspace.ui.widget.MsgTitleView;
+import com.zxjk.moneyspace.utils.CommonUtils;
 
-public class OneKeyBuyCoinActivity extends BaseActivity {
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 
-    private TabLayout tabLayout;
+import static net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator.MODE_WRAP_CONTENT;
+
+public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickListener {
+
+    private String customerIdentity;
     private ViewPager viewPager;
-
+    private MagicIndicator indicator;
+    private TextView tvSelfSelection;
+    private TextView tvSpeedy;
+    private LinearLayout llOneKey;
+    private ImageView imgOrderList;
     private int mTitles[] = {
             R.string.to_buy, R.string.to_sell};
 
+    public void setCustomerIdentity(String customerIdentity) {
+        this.customerIdentity = customerIdentity;
+    }
 
     @SuppressLint("CheckResult")
     @Override
@@ -32,87 +59,169 @@ public class OneKeyBuyCoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_key_buy_coin);
         setTrasnferStatusBar(true);
+        setStatusBar();
+        getCustomerIdentity(0);
 
         initView();
 
         initData();
     }
 
-
     private void initView() {
-        tabLayout = findViewById(R.id.tabLayout);
+        indicator = findViewById(R.id.indicator);
         viewPager = findViewById(R.id.viewpager);
-        findViewById(R.id.rl_back).setOnClickListener(v -> {
-            finish();
-        });
-        findViewById(R.id.rl_end).setOnClickListener(v -> {
-            startActivity(new Intent(this,OrderInfoByTypeActivity.class));
+        tvSelfSelection = findViewById(R.id.tv_self_selection);
+        tvSpeedy = findViewById(R.id.tv_speedy);
+        llOneKey = findViewById(R.id.ll_one_key);
+        imgOrderList = findViewById(R.id.img_order_list);
+        findViewById(R.id.tv_speedy).setOnClickListener(this::onClick);
+        findViewById(R.id.tv_self_selection).setOnClickListener(this::onClick);
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        findViewById(R.id.img_order_list).setOnClickListener(v -> {
+            Intent intent = new Intent(this, OrderInfoByTypeActivity.class);
+            intent.putExtra("customerIdentity", customerIdentity);
+            startActivity(intent);
         });
     }
 
+    protected void setStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().setStatusBarColor(Color.parseColor("#272E3F"));//设置状态栏颜色
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
+
     private void initData() {
+        initIndicator(1);
 
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return position == 0 ? new BuyCoinFragment() : new SellCoinFragment();
-            }
+        ViewPagerHelper.bind(indicator, viewPager);
+    }
 
+    private void initIndicator(int type) {
+        final int finalType =type;
+        CommonNavigator navigator = new CommonNavigator(this);
+        navigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
-                return 2;
+                return mTitles.length;
             }
 
             @Override
-            public CharSequence getPageTitle(int position) {
-                return getString(mTitles[position]);
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                MsgTitleView titleView = new MsgTitleView(context);
+                titleView.setOnClickListener(view -> viewPager.setCurrentItem(index));
+                titleView.getTitleView().setText(mTitles[index]);
+                titleView.getBadgeView().setVisibility(View.INVISIBLE);
+
+                if (finalType  == 1) {
+                    titleView.setupNormalColor(Color.parseColor("#6D7278"));
+                    titleView.setupSelectColor(Color.parseColor("#ffffff"));
+                } else {
+                    titleView.setupSelectColor(Color.parseColor("#272E3F"));
+                    titleView.setupNormalColor(Color.parseColor("#6D7278"));
+                }
+
+                return titleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator indicator = new LinePagerIndicator(context);
+                indicator.setMode(MODE_WRAP_CONTENT);
+                indicator.setYOffset(-CommonUtils.dip2px(context,4));
+                return indicator;
             }
         });
+        indicator.setNavigator(navigator);
+        indicator.getNavigator().notifyDataSetChanged();
+    }
 
-        for (int i=0;i<2;i++){
-            TabLayout.Tab tab = tabLayout.newTab();
-            View inflate = View.inflate(this, R.layout.tablayout_title_text, null);
-            TextView textView = inflate.findViewById(R.id.text1);
-            textView.setText(mTitles[i]);
-            tab.setCustomView(textView);
-            textView.setGravity(Gravity.BOTTOM);
-            tabLayout.addTab(tab);
+    @SuppressLint("CheckResult")
+    private void getCustomerIdentity(int type) {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getCustomerIdentity()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(d -> {
+                    if (d.equals("0")) {
+                        findViewById(R.id.rl_end).setVisibility(View.VISIBLE);
+                    }
+
+                    viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+                        @NonNull
+                        @Override
+                        public Fragment getItem(int position) {
+                            BuyCoinFragment buyCoinFragment = BuyCoinFragment.newInstance(d, position, type);
+
+                            return position == 0 ? buyCoinFragment : buyCoinFragment;
+                        }
+
+                        @Override
+                        public int getCount() {
+                            return 2;
+                        }
+
+                        @Override
+                        public CharSequence getPageTitle(int position) {
+                            return getString(mTitles[position]);
+                        }
+
+                        @Override
+                        public int getItemPosition(Object object) {
+                            return POSITION_NONE;
+                        }
+                    });
+                    customerIdentity = null;
+                    setCustomerIdentity(d);
+                }, this::handleApiError);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_speedy:
+                if (customerIdentity.equals("1")) {
+                    ToastUtils.showShort("暂未开放,敬请期待");
+                    return;
+                }
+                if (tvSpeedy.getBackground() != null) {
+                    return;
+                }
+                initIndicator(1);
+
+                ImageView img = findViewById(R.id.img_back);
+                img.setColorFilter(getResources().getColor(R.color.main_list_divider, null));
+                imgOrderList.setImageResource(R.drawable.ic_end_order2);
+                llOneKey.setBackground(getResources().getDrawable(R.color.color3, null));
+                tvSelfSelection.setBackground(null);
+                tvSpeedy.setBackground(getResources().getDrawable(R.drawable.shape_self_select_backgroud, null));
+                tvSpeedy.setTextColor(Color.parseColor("#FFFFFF"));
+                tvSelfSelection.setTextColor(Color.parseColor("#6D7278"));
+                getCustomerIdentity(0);
+                break;
+            case R.id.tv_self_selection:
+                if (customerIdentity.equals("1")) {
+                    ToastUtils.showShort("暂未开放,敬请期待");
+                    return;
+                }
+                if (tvSelfSelection.getBackground() != null) {
+                    return;
+                }
+                initIndicator(2);
+
+                img = findViewById(R.id.img_back);
+                img.setColorFilter(Color.parseColor("#272E3F"));
+                imgOrderList.setImageResource(R.drawable.ic_end_order);
+                llOneKey.setBackgroundColor(Color.parseColor("#F9F9F9"));
+                tvSelfSelection.setBackground(getResources().getDrawable(R.drawable.shape_self_select2, null));
+                tvSpeedy.setBackground(null);
+                tvSpeedy.setTextColor(Color.parseColor("#6D7278"));
+                tvSelfSelection.setTextColor(Color.parseColor("#272E3F"));
+                getCustomerIdentity(1);
+                break;
         }
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                View view = tab.getCustomView();
-                if (null == view) {
-                    tab.setCustomView(R.layout.tablayout_title_text);
-                }
-                TextView textView = tab.getCustomView().findViewById(R.id.text1);
-                textView.setTextColor(getResources().getColor(R.color.white,null));
-                textView.setText(tab.getText());
-                textView.setTextAppearance( R.style.TabLayoutTextSize);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View view = tab.getCustomView();
-                if (null == view) {
-                    tab.setCustomView(R.layout.tablayout_title_text);
-                }
-                TextView textView = tab.getCustomView().findViewById(R.id.text1);
-                textView.setText(tab.getText());
-                textView.setTextColor(Color.parseColor("#7CA9E3"));
-                textView.setTextAppearance(R.style.TabLayoutTextSize_two);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        tabLayout.setupWithViewPager(viewPager);
-
     }
 }

@@ -21,7 +21,7 @@ public class Constant {
 
     public static final String OTC_URL = "http://47.244.186.74:9090/";//test
     public static final String USERID = "2384480";
-    public static final String SECRET = "90b75bbfa1759902b846a31e9049469e755d01cb240bd1e9a204622f2696d254";
+    public static final String SECRET = "D1230808098DE048DB81365E714B01B8";
     public static final String KEY = "e5ecd4f49f58a81b9271b1fa35e5042f";
 
 //    public static final String OTC_URL = "https://api.ixex.io/";//release
@@ -52,6 +52,7 @@ public class Constant {
     public static Message tempMsg;
     //分享群二维码
     public static Bitmap shareGroupQR;
+    public static String defaultRenegeNumber = "";
 
     public static void clear() {
         Constant.token = "";
@@ -60,6 +61,7 @@ public class Constant {
         currentUser = null;
         tempMsg = null;
         shareGroupQR = null;
+        defaultRenegeNumber = "";
     }
 
 }

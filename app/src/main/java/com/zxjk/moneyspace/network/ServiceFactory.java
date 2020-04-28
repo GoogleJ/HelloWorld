@@ -183,9 +183,7 @@ public class ServiceFactory {
                             .header("Accept-Language", Constant.language)
                             .header("phoneUuid", Constant.phoneUuid)
                             .header("systemType", "1")
-                            .header("key", Constant.KEY)
-                            .header("sign", sign)
-                            .header("version", "2.0");
+                            .header("sign", sign);
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 })

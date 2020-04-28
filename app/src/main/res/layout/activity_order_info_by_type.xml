@@ -54,17 +54,10 @@
 
     <include layout="@layout/layout_line" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rl_order_info_by_type"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:overScrollMode="never"
+            android:background="@drawable/shape_white_top8"/>
 </LinearLayout>

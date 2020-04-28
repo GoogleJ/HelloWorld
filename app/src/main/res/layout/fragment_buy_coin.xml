@@ -15,8 +15,8 @@
         app:tabMode="scrollable"
         app:tabBackground="@android:color/transparent"
         app:tabRippleColor="@android:color/transparent"
-        app:tabTextColor="#8EA0AC"
-        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabSelectedTextColor="#272E3F"
+        app:tabIndicatorColor="#272E3F"
         app:tabIndicatorFullWidth="false" />
     <View
         android:layout_width="match_parent"

@@ -51,7 +51,9 @@
         </RelativeLayout>
 
     </LinearLayout>
+
     <include layout="@layout/layout_line" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -131,14 +133,14 @@
                     style="@style/select_style"
                     android:background="@drawable/shape_checkbox_item2"
                     android:tag="rd1"
-                    android:text="@string/payment_has_been" />
+                    android:text="@string/has_been_cancelled" />
 
                 <CheckBox
                     android:id="@+id/radio5"
                     style="@style/select_style"
                     android:background="@drawable/shape_checkbox_item2"
                     android:tag="rd1"
-                    android:text="@string/has_been_completed" />
+                    android:text="待放币" />
 
             </LinearLayout>
 
@@ -154,7 +156,7 @@
                     style="@style/select_style"
                     android:background="@drawable/shape_checkbox_item2"
                     android:tag="rd1"
-                    android:text="@string/has_been_cancelled" />
+                    android:text="@string/not_to_put_money" />
 
                 <CheckBox
                     android:id="@+id/radio7"
@@ -168,10 +170,32 @@
                     style="@style/select_style"
                     android:background="@drawable/shape_checkbox_item2"
                     android:tag="rd1"
-                    android:text="@string/not_to_put_money" />
-
+                    android:text="@string/has_been_completed" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_filtrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/radio10"
+                    style="@style/select_style"
+                    android:background="@drawable/shape_checkbox_item2"
+                    android:tag="rd1"
+                    android:text="交易中" />
+
+                <CheckBox
+                    android:id="@+id/radio9"
+                    style="@style/select_style"
+                    android:background="@drawable/shape_checkbox_item2"
+                    android:tag="rd1"
+                    android:text="挂单中" />
+
+                <CheckBox style="@style/select_style" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -186,11 +210,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="#BDD5FF"
+                android:background="#E7C39B"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="@string/reset"
-                android:textColor="@color/white"
+                android:textColor="#272E3F"
                 android:textSize="18sp" />
 
             <TextView
@@ -198,11 +222,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="#272E3F"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="@string/determine"
-                android:textColor="@color/white"
+                android:textColor="#E7C39B"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -214,6 +238,3 @@
     </LinearLayout>
 
 </LinearLayout>
-
-
-

@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.ByBoinsResponse;
+import com.zxjk.moneyspace.bean.response.GetOrderInfoById;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
@@ -29,7 +30,7 @@ import java.io.File;
 import java.util.Collections;
 
 public class TheAppealActivity extends BaseActivity {
-    private ByBoinsResponse byBoinsResponse;
+    private GetOrderInfoById getOrderInfoById;
 
     private EditText etSocialSlogan;
     private ImageView ivAddImages;
@@ -61,7 +62,7 @@ public class TheAppealActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void initData() {
-        byBoinsResponse = (ByBoinsResponse) getIntent().getSerializableExtra("ByBoinsResponse");
+        getOrderInfoById = (GetOrderInfoById) getIntent().getSerializableExtra("GetOrderInfoById");
         ivAddImages.setOnClickListener(v -> TakePicUtil.albumPhoto(TheAppealActivity.this));
         ivDeleteImage.setOnClickListener(v -> {
             ivAddImages.setImageResource(R.drawable.ic_add_images);
@@ -82,31 +83,23 @@ public class TheAppealActivity extends BaseActivity {
             long timeStampSec = System.currentTimeMillis() / 1000;
             timestamp = String.format("%010d", timeStampSec);
 
-            String secret = "img=" + imageAddress +
+            String secret = "appealReason=" + etSocialSlogan.getText().toString() +
+                    "&bothOrderId=" + getOrderInfoById.getBothOrderId() +
                     "&nonce=" + timestamp +
-                    "&phone=" + Constant.currentUser.getMobile() +
-                    "&reason=" + etSocialSlogan.getText() +
-                    "&trans_id=" + byBoinsResponse.getTransId() +
-                    "&user_id=" + Constant.USERID + Constant.SECRET;
+                    "&picture=" + imageAddress +
+                    "&plaintiffId=" + Constant.userId + Constant.SECRET;
             sign = Sha256.getSHA256(secret);
             ServiceFactory.getInstance().otcService(Constant.BASE_URL, sign, Api.class)
-                    .orderAppeal(imageAddress, timestamp, Constant.currentUser.getMobile(), String.valueOf(etSocialSlogan.getText()),byBoinsResponse.getTransId(),Constant.USERID)
+                    .addAppeal(etSocialSlogan.getText().toString(),
+                            getOrderInfoById.getBothOrderId(),
+                            timestamp,
+                            imageAddress,
+                            Constant.userId)
                     .compose(bindToLifecycle())
-                    .flatMap(paymentDoneResponse -> {
-                        String secret1 = "nonce=" + timestamp +
-                                "&trans_id=" + byBoinsResponse.getTransId() +
-                                "&user_id=" + Constant.USERID + Constant.SECRET;
-                        sign = Sha256.getSHA256(secret1);
-                        return ServiceFactory.getInstance().otcService(Constant.BASE_URL, sign, Api.class)
-                                .orderInfo(timestamp, byBoinsResponse.getTransId(), Constant.USERID, byBoinsResponse.getPaymentType(), byBoinsResponse.getCreateTime());
-                    })
+                    .compose(RxSchedulers.otc())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .compose(RxSchedulers.normalTrans())
                     .subscribe(s -> {
-                        Intent intent = new Intent(this, PurchaseDetailsActivity.class);
-                        intent.putExtra("ByBoinsResponse", s);
-                        startActivity(intent);
-                        finish();
+                        ToastUtils.showShort("反馈了");
                     }, this::handleApiError);
         });
     }

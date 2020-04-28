@@ -13,13 +13,8 @@ public class MsgTitleView extends CommonPagerTitleView {
     private TextView badgeView;
     private TextView titleView;
 
-    public TextView getBadgeView() {
-        return badgeView;
-    }
-
-    public TextView getTitleView() {
-        return titleView;
-    }
+    private int selectColor = -12222;
+    private int normalColor = -12222;
 
     public MsgTitleView(Context context) {
         super(context);
@@ -31,14 +26,41 @@ public class MsgTitleView extends CommonPagerTitleView {
         titleView = inflate.findViewById(R.id.tvTitle);
     }
 
+    public TextView getBadgeView() {
+        return badgeView;
+    }
+
+    public TextView getTitleView() {
+        return titleView;
+    }
+
+    public void setupSelectColor(int color) {
+        selectColor = color;
+    }
+
+    public void setupNormalColor(int color) {
+        normalColor = color;
+    }
+
+    public void setTextColor(int color) {
+        titleView.setTextColor(color);
+    }
+
     @Override
     public void onSelected(int index, int totalCount) {
         titleView.getPaint().setFakeBoldText(true);
+        if (-12222 != selectColor) {
+            titleView.setTextColor(selectColor);
+        }
     }
 
     @Override
     public void onDeselected(int index, int totalCount) {
         titleView.getPaint().setFakeBoldText(false);
+
+        if (-12222 != normalColor) {
+            titleView.setTextColor(normalColor);
+        }
     }
 
     @Override

@@ -146,7 +146,9 @@ public class UpdateUserInfoActivity extends BaseActivity {
                         intent.putExtra("result", sign);
                         setResult(2, intent);
                         finish();
-                    }, this::handleApiError);
+                    }, throwable -> {
+                        handleApiError(throwable);
+                    });
             return;
         }
 
