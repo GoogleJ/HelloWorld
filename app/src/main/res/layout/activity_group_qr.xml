@@ -98,11 +98,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
         android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipChildren="false"
             android:orientation="vertical">
 
             <LinearLayout
@@ -164,6 +166,7 @@
                 android:layout_marginStart="72dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="72dp"
+                android:layout_marginBottom="40dp"
                 android:gravity="center_horizontal">
 
                 <TextView

@@ -39,7 +39,6 @@ public class Constant {
     public static final int CODE_OTC_TIMEOUT = 60030;
 
     public static final String LOCAL_CHANNEL_ID = "rc_notification_id";
-    public static final String ACTION_BROADCAST1 = "Action:Broadcast:blockWalletCreated";
     public static final String ACTION_BROADCAST2 = "Action:Broadcast:rongMsgArrive";
     public static String HEAD_LOCATION = "86";
     public static String userId = "";

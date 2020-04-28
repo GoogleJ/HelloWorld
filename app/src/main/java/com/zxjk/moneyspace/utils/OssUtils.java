@@ -33,10 +33,10 @@ public class OssUtils {
         String fileName = Constant.userId + System.currentTimeMillis() + fileTail;
         PutObjectRequest put;
         if (BuildConfig.enableLog) {
-            put = new PutObjectRequest("zhongxingjike1", "upload/" +
+            put = new PutObjectRequest("moneyspace", "upload/" +
                     fileName, filePath);
         } else {
-            put = new PutObjectRequest("zhongxingjike2", "upload/" +
+            put = new PutObjectRequest("moneyspace", "upload/" +
                     fileName, filePath);
         }
 
@@ -67,10 +67,10 @@ public class OssUtils {
         String fileName = Constant.userId + System.currentTimeMillis();
         PutObjectRequest put;
         if (BuildConfig.enableLog) {
-            put = new PutObjectRequest("zhongxingjike1", "upload/" +
+            put = new PutObjectRequest("moneyspace", "upload/" +
                     fileName, filePath);
         } else {
-            put = new PutObjectRequest("zhongxingjike2", "upload/" +
+            put = new PutObjectRequest("moneyspace", "upload/" +
                     fileName, filePath);
         }
         if (progressCallBack != null) {
