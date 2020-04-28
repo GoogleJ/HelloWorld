@@ -21,9 +21,9 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.zxjk.moneyspace.ui.msgpage.GroupQRActivity;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.ui.PayAliActivity;
 import com.zxjk.moneyspace.ui.WebActivity;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.minepage.scanuri.Action1;
@@ -99,6 +99,13 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         rt.play();
 
+        if (!TextUtils.isEmpty(result) && result.contains("qr.alipay.com") || result.contains("QR.ALIPAY.COM")) {
+            Intent intent = new Intent(this, PayAliActivity.class);
+            intent.putExtra("qrdata", result);
+            startActivity(intent);
+            return;
+        }
+
         if (!TextUtils.isEmpty(actionType)) {
             if (actionType.equals(ACTION_IMPORT_WALLET)) {
                 Intent resultIntent = new Intent();
@@ -149,7 +156,6 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
                     finish();
                     return;
                 }
-
                 CommonUtils.resolveFriendList(this, userId, true);
             } else if (action.equals("action3")) {
                 BaseUri<GroupQRActivity.GroupQRData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<GroupQRActivity.GroupQRData>>() {

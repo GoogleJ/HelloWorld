@@ -936,29 +936,30 @@ public class ConversationActivity extends BaseActivity {
 
                                                         boolean formWechatCast = message.getConversationType().equals(Conversation.ConversationType.CHATROOM);
 
-                                                        if (!message.getSenderUserId().equals(Constant.userId)) {
+                                                        if (s2.getRedPackageInfo() != null && s2.getCustomerInfo() != null && s2.getSendCustomerInfo() != null) {
+                                                            if (!message.getSenderUserId().equals(Constant.userId)) {
 
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
-                                                                    getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
-                                                            );
-                                                            RongIM.getInstance().sendDirectionalMessage(
-                                                                    formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
-                                                                    targetId, message1, new String[]{message.getSenderUserId()}
-                                                                    , null, null, null);
-                                                        } else {
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)));
-                                                            RongIM.getInstance().sendDirectionalMessage(
-                                                                    formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
-                                                                    targetId, message1, new String[]{Constant.userId}
-                                                                    , null, null, null);
+                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
+                                                                        getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
+                                                                );
+                                                                RongIM.getInstance().sendDirectionalMessage(
+                                                                        formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                        targetId, message1, new String[]{message.getSenderUserId()}
+                                                                        , null, null, null);
+                                                            } else {
+                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)));
+                                                                RongIM.getInstance().sendDirectionalMessage(
+                                                                        formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                        targetId, message1, new String[]{Constant.userId}
+                                                                        , null, null, null);
+                                                            }
                                                         }
 
                                                         Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
                                                         intent1.putExtra("id", redPacketMessage.getRedId());
                                                         intent1.putExtra("isGame", redPacketMessage.getIsGame());
-
                                                         startActivity(intent1);
-                                                    }, ConversationActivity.this::handleApiError));
+                                                    }, throwable -> handleApiError(throwable)));
 
                                             UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
                                             if (userInfo == null) {
