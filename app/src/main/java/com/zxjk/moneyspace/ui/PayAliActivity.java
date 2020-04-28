@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.GetPaymentListBean;
 import com.zxjk.moneyspace.network.Api;
@@ -21,8 +23,10 @@ import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.minepage.wallet.ChooseCoinActivity;
+import com.zxjk.moneyspace.ui.widget.NewPayBoard;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.GlideUtil;
+import com.zxjk.moneyspace.utils.MD5Utils;
 import com.zxjk.moneyspace.utils.MoneyValueFilter;
 
 import java.util.ArrayList;
@@ -74,8 +78,22 @@ public class PayAliActivity extends BaseActivity {
     }
 
     public void pay(View view) {
-        //todo pay money
+        if (TextUtils.isEmpty(etMoney.getText().toString().trim())) {
+            ToastUtils.showShort(R.string.input_empty);
+            return;
+        }
 
+        new NewPayBoard(this)
+                .show(pwd -> ServiceFactory.getInstance().getBaseService(Api.class)
+                        .addSubmitOrder(MD5Utils.getMD5(pwd), qrdata, etMoney.getText().toString().trim(), result.getSymbol())
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .subscribe(s -> {
+                            ToastUtils.showShort(R.string.paysuccess);
+                            finish();
+                        }, this::handleApiError)
+                );
     }
 
     public void chooseCoin(View view) {

@@ -719,6 +719,7 @@
     <string name="money3">金额</string>
     <string name="confirm_pay">确认付款</string>
     <string name="tipssss">钱包资产可直接转账到支付宝</string>
+    <string name="paysuccess">支付成功，请在订单列表中查看记录</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

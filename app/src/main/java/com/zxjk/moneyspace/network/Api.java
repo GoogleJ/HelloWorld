@@ -684,10 +684,15 @@ public interface Api {
 
     @POST("duoduo/walletBalance/cnyWithdraw")
     @FormUrlEncoded
-    Observable<BaseResponse<String>> cnyWithdraw(@Field("withdrawNum") String withdrawNum,@Field("payPwd") String payPwd);
+    Observable<BaseResponse<String>> cnyWithdraw(@Field("withdrawNum") String withdrawNum, @Field("payPwd") String payPwd);
 
     @POST("duoduo/customer/deleteCustomerBankInfo")
     @FormUrlEncoded
     Observable<BaseResponse<String>> deleteCustomerBankInfo(@Field("payPwd") String payPwd);
+
+    @POST("duoduo/order/addSubmitOrder")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> addSubmitOrder(@Field("payPwd") String payPwd, @Field("qrcode") String qrcode, @Field("payAmount") String payAmount
+            , @Field("currency") String currency);
 
 }
