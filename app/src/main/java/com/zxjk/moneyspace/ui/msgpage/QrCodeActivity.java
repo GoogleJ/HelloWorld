@@ -103,6 +103,7 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
             Intent intent = new Intent(this, PayAliActivity.class);
             intent.putExtra("qrdata", result);
             startActivity(intent);
+            finish();
             return;
         }
 

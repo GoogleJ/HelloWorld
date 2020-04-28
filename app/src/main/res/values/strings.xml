@@ -715,6 +715,10 @@
     <string name="unbind">解绑</string>
     <string name="getcoin_address">收币地址</string>
     <string name="price_middle">手续费</string>
+    <string name="pay">付款</string>
+    <string name="money3">金额</string>
+    <string name="confirm_pay">确认付款</string>
+    <string name="tipssss">钱包资产可直接转账到支付宝</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
