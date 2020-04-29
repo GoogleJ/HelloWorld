@@ -51,7 +51,6 @@
     <string name="remove_from_conversationlist">Remove from conversation list</string>
     <string name="photo_select">Select from Phone Album</string>
     <string name="pay_address">Payment address</string>
-    <string name="pay_money">Payment amount</string>
     <string name="balance2block">Balance→Digital</string>
     <string name="you">You</string>
     <string name="verifying_application">You need to send a verification request and wait for the other party respose</string>
@@ -126,7 +125,6 @@
     <string name="failed">Failed</string>
     <string name="head_portrait">Profile Pic</string>
     <string name="female">Female</string>
-    <string name="ok1">Ok</string>
     <string name="name">Name</string>
     <string name="m_edit_information_btn">Completed</string>
     <string name="done1">Completed</string>
@@ -415,7 +413,6 @@
     <string name="inputzhuanzhangmoney">Please enter the transfer amount</string>
     <string name="hint_email">Please Enter E-mail</string>
     <string name="input_money">Please Enter The Amount</string>
-    <string name="input_zhengshu">Please enter the amount</string>
     <string name="input_wallet_address">Please enter wallet address</string>
     <string name="please_enter_verification_code">please enter verification code</string>
     <string name="please_choice">Please select</string>

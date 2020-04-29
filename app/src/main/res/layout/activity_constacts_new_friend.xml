@@ -14,7 +14,7 @@
         android:paddingEnd="8dp"
         android:text="@string/address_list"
         android:textColor="@color/msgTitle"
-        android:textSize="19sp"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <FrameLayout
