@@ -52,7 +52,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/shape_white_oval_border"
                 android:orientation="horizontal"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_speedy"

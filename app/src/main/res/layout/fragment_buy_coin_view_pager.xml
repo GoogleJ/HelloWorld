@@ -68,7 +68,7 @@
                     android:layout_marginStart="8dp"
                     android:background="@drawable/shape_black_border"
                     android:padding="5dp"
-                    android:text="最大"
+                    android:text="@string/max"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="单价"
+                    android:text="@string/price2"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -118,7 +118,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="请输入单价"
+                        android:hint="@string/hint"
                         android:inputType="numberDecimal"
                         android:textColorHint="#E9E9EB"
                         android:textSize="18sp"
@@ -192,7 +192,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="最小购买数量"
+                        android:hint="@string/hint2"
                         android:inputType="numberDecimal"
                         android:textColorHint="#E9E9EB"
                         android:textSize="18sp"
@@ -212,7 +212,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="最大购买数量"
+                        android:hint="@string/hint3"
                         android:inputType="numberDecimal"
                         android:textColorHint="#E9E9EB"
                         android:textSize="18sp"
@@ -247,11 +247,21 @@
                     android:id="@+id/tv_receive_or_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="收款方式"
+                    android:text="@string/payment_term"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/tv_billing_message"
+                    android:text="@string/billing_message"
+                    android:textColor="#4585F5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:visibility="gone"/>
                 <LinearLayout
                     android:id="@+id/ll_pay_type"
                     android:layout_width="match_parent"
@@ -275,7 +285,7 @@
                             android:gravity="center"
                             android:paddingTop="24dp"
                             android:paddingBottom="24dp"
-                            android:text="银行卡"
+                            android:text="@string/bank_card"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -304,7 +314,7 @@
                             android:gravity="center"
                             android:paddingTop="24dp"
                             android:paddingBottom="24dp"
-                            android:text="支付宝"
+                            android:text="@string/alipay_pay"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -334,7 +344,7 @@
                             android:gravity="center"
                             android:paddingTop="24dp"
                             android:paddingBottom="24dp"
-                            android:text="微信"
+                            android:text="@string/wechat"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 

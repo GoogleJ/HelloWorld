@@ -136,7 +136,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(d -> {
-                    if (d.equals("0")) {
+                    if (d.getIdentity().equals("0")) {
                         findViewById(R.id.rl_end).setVisibility(View.VISIBLE);
                     }
 
@@ -165,7 +165,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
                         }
                     });
                     customerIdentity = null;
-                    setCustomerIdentity(d);
+                    setCustomerIdentity(d.getIdentity());
                 }, this::handleApiError);
     }
 

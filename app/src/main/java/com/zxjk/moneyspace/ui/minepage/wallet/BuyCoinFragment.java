@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.GetCustomerIdentity;
 import com.zxjk.moneyspace.bean.response.GetOTCSymbolInfo;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
@@ -40,12 +41,16 @@ public class BuyCoinFragment extends BaseFragment {
     private String sign;
     private int count;
     private int type;
+    private GetOTCSymbolInfo getOTCSymbolInfo;
+    private GetCustomerIdentity getCustomerIdentity;
+    private BuyCoinViewPagerFragment buyCoinViewPagerFragment;
+    private SelfSelectionFragment selfSelectionFragment;
 
-    public static BuyCoinFragment newInstance(String customerIdentity, int count, int type) {
+    public static BuyCoinFragment newInstance(GetCustomerIdentity getCustomerIdentity, int count, int type) {
 
         BuyCoinFragment fragment = new BuyCoinFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("CustomerIdentity", customerIdentity);
+        bundle.putSerializable("GetCustomerIdentity", getCustomerIdentity);
         bundle.putInt("count", count);
         bundle.putInt("type", type);
         fragment.setArguments(bundle);
@@ -87,7 +92,7 @@ public class BuyCoinFragment extends BaseFragment {
     }
 
     private void initData() {
-
+        getCustomerIdentity = (GetCustomerIdentity)getArguments().getSerializable("GetCustomerIdentity");
         customerIdentity = getArguments().getString("CustomerIdentity");
         count = getArguments().getInt("count");
         type = getArguments().getInt("type");
@@ -105,48 +110,37 @@ public class BuyCoinFragment extends BaseFragment {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getContext())))
                 .subscribe(getOTCSymbolInfo -> {
                             setPagerTitle(getOTCSymbolInfo);
+                            this.getOTCSymbolInfo = getOTCSymbolInfo;
                             Constant.defaultRenegeNumber = getOTCSymbolInfo.getDefaultRenegeNumber();
                         },
                         this::handleApiError);
     }
 
     private void setPagerTitle(GetOTCSymbolInfo getOTCSymbolInfo) {
-        if (type == 0) {
-            for (int i = 0; i < getOTCSymbolInfo.getCurrencyList().size(); i++) {
-                if (fragments.size() != 0) {
-                    fragments.clear();
-                }
-                BuyCoinViewPagerFragment fragment = BuyCoinViewPagerFragment.newInstance(getOTCSymbolInfo.getCurrencyList().get(i).getCurrency(),
-                        getOTCSymbolInfo.getCurrencyList().get(i).getPrice(),
-                        getOTCSymbolInfo.getCurrencyList().get(i).getRate(),
-                        getOTCSymbolInfo.getCurrencyList().get(i).getBalance(),
-                        customerIdentity,
-                        count,
-                        getOTCSymbolInfo.getPayInfoList());
-                fragments.add(fragment);
-            }
-        } else {
-            for (int i = 0; i < getOTCSymbolInfo.getCurrencyList().size(); i++) {
-                if (fragments.size() != 0) {
-                    fragments.clear();
-                }
-                SelfSelectionFragment fragment = SelfSelectionFragment.newInstance(getOTCSymbolInfo.getCurrencyList().get(i).getCurrency(),
-                        count,customerIdentity);
 
-                fragments.add(fragment);
-            }
-        }
 
         buyViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                return fragments.get(position);
+                if (type == 0) {
+                    buyCoinViewPagerFragment = BuyCoinViewPagerFragment.newInstance(getOTCSymbolInfo.getCurrencyList().get(position).getCurrency(),
+                            getOTCSymbolInfo.getCurrencyList().get(position).getPrice(),
+                            getOTCSymbolInfo.getCurrencyList().get(position).getRate(),
+                            getOTCSymbolInfo.getCurrencyList().get(position).getBalance(),
+                            getCustomerIdentity.getIdentity(),
+                            count,
+                            getOTCSymbolInfo.getPayInfoList());
+                } else {
+                    selfSelectionFragment = SelfSelectionFragment.newInstance(getOTCSymbolInfo.getCurrencyList().get(position).getCurrency(),
+                            count, getCustomerIdentity.getIdentity());
+                }
+                return type == 0 ? buyCoinViewPagerFragment : selfSelectionFragment;
             }
 
             @Override
             public int getCount() {
-                return fragments.size();
+                return getOTCSymbolInfo.getCurrencyList().size();
             }
         });
 

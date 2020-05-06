@@ -11,7 +11,6 @@ import com.zxjk.moneyspace.bean.response.BlockChainNewsBean;
 import com.zxjk.moneyspace.bean.response.ByBoinsResponse;
 import com.zxjk.moneyspace.bean.response.CnyRechargeResponse;
 import com.zxjk.moneyspace.bean.response.CommunityCultureResponse;
-import com.zxjk.moneyspace.bean.response.ConfirmSellOrBuy;
 import com.zxjk.moneyspace.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.moneyspace.bean.response.EditCommunityResponse;
 import com.zxjk.moneyspace.bean.response.FindHailangResponse;
@@ -24,6 +23,7 @@ import com.zxjk.moneyspace.bean.response.GetCarouselMap;
 import com.zxjk.moneyspace.bean.response.GetChatRoomInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetCustomerBankInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetCustomerBasicInfoByIdResponse;
+import com.zxjk.moneyspace.bean.response.GetCustomerIdentity;
 import com.zxjk.moneyspace.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupChatInfoByGroupIdResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupRedPackageInfoResponse;
@@ -699,7 +699,7 @@ public interface Api {
             , @Field("currency") String currency);
 
     @POST("duoduo/customer/getCustomerIdentity")
-    Observable<BaseResponse<String>> getCustomerIdentity();
+    Observable<BaseResponse<GetCustomerIdentity>> getCustomerIdentity();
 
     @FormUrlEncoded
     @POST("duoduo/exchange/userBuy")
@@ -728,7 +728,8 @@ public interface Api {
                                                   @Field("number") String payPwd,
                                                   @Field("payPwd") String price,
                                                   @Field("payType") String minNum,
-                                                  @Field("price") String maxNum);
+                                                  @Field("price") String maxNum,
+                                                  @Field("rate") String rate);
 
     @FormUrlEncoded
     @POST("duoduo/exchange/acceptorCloseSell")
@@ -750,10 +751,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("duoduo/exchange/confirmUserSell")
     Observable<BaseResponse<GetOrderInfoById>> confirmUserSell(@Field("buyOrderId") String buyOrderId,
-                                                     @Field("payType") String payType,
-                                                     @Field("nonce") String nonce,
-                                                     @Field("number") String number,
-                                                     @Field("payPwd") String payPwd);
+                                                               @Field("payType") String payType,
+                                                               @Field("nonce") String nonce,
+                                                               @Field("number") String number,
+                                                               @Field("payPwd") String payPwd);
 
     @FormUrlEncoded
     @POST("duoduo/exchange/getBuyList")
@@ -810,9 +811,8 @@ public interface Api {
     @FormUrlEncoded
     @POST("duoduo/exchange/acceptorConfirmPay")
     Observable<BaseResponse<String>> acceptorConfirmPay(@Field("bothOrderId") String bothOrderId,
-                                                            @Field("nonce") String nonce,
-                                                            @Field("payPwd") String payPwd);
-
+                                                        @Field("nonce") String nonce,
+                                                        @Field("payPwd") String payPwd);
 
 
 }

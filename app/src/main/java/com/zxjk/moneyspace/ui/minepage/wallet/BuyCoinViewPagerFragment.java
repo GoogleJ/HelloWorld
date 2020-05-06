@@ -37,6 +37,7 @@ import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
+import com.zxjk.moneyspace.ui.minepage.BillingMessageActivity;
 import com.zxjk.moneyspace.ui.widget.PayPsdInputView;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.MD5Utils;
@@ -111,6 +112,8 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
     private BaseQuickAdapter<GetOTCSymbolInfo.PayInfoListBean, BaseViewHolder> payTypeAdapter;
 
     private String preferentialPrice;
+    private TextView tvBillingMessage;
+
 
     private NumberFormat nf;
     private String amountScale;
@@ -185,24 +188,24 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
         llPayType = rootView.findViewById(R.id.ll_pay_type);
 
         tvCurrency = rootView.findViewById(R.id.tv_currency);
+        tvBillingMessage = rootView.findViewById(R.id.tv_billing_message);
 
         tvMaximum.setOnClickListener(v -> etPurchaseAmount.setText(balance));
         tvBuyPatterns.setText(currency);
         tvCurrency.setText("CNY/" + currency);
         if (customerIdentity.equals("1")) {
-            ToastUtils.showShort("承兑商");
             //承兑商
             if (count == 0) {
-                tvPurchaseAmount.setText("购买数量");
-                etPurchaseAmount.setHint("请输入购买数量");
-                tvBuyCoin.setText("发布购买订单");
+                tvPurchaseAmount.setText(R.string.amount2);
+                etPurchaseAmount.setHint(R.string.purchase_amount_hint);
+                tvBuyCoin.setText(R.string.buy_order);
                 tvMaximum.setVisibility(View.GONE);
                 rcPayType.setVisibility(View.GONE);
                 llPayType.setVisibility(View.VISIBLE);
             } else {
-                tvPurchaseAmount.setText("出售数量");
-                etPurchaseAmount.setHint("请输入出售数量");
-                tvBuyCoin.setText("发布出售订单");
+                tvPurchaseAmount.setText(R.string.sell_amout);
+                etPurchaseAmount.setHint(R.string.hint4);
+                tvBuyCoin.setText(R.string.sell_order2);
                 rcPayType.setVisibility(View.VISIBLE);
                 llPayType.setVisibility(View.GONE);
             }
@@ -213,14 +216,14 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
             if (count == 0) {
                 llReceiveOrPay.setVisibility(View.GONE);
                 tvMaximum.setVisibility(View.GONE);
-                tvPurchaseAmount.setText("购买数量");
-                etPurchaseAmount.setHint("请输入购买数量");
+                tvPurchaseAmount.setText(R.string.amount2);
+                etPurchaseAmount.setHint(R.string.purchase_amount_hint);
                 rcPayType.setVisibility(View.GONE);
                 llPayType.setVisibility(View.VISIBLE);
             } else {
-                tvPurchaseAmount.setText("出售数量");
-                etPurchaseAmount.setHint("请输入出售数量");
-                tvBuyCoin.setText("出售");
+                tvPurchaseAmount.setText(R.string.sell_amout);
+                etPurchaseAmount.setHint(R.string.hint4);
+                tvBuyCoin.setText(R.string.sell);
                 rcPayType.setVisibility(View.VISIBLE);
                 llPayType.setVisibility(View.GONE);
             }
@@ -254,7 +257,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
 
                 if (s.contains(".")) {
                     if (integerDigits2 > 0) {
-                        etPurchaseAmount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(integerDigits2 + decimalDigits2 + 1)});
+                        etUnitPrice.setFilters(new InputFilter[]{new InputFilter.LengthFilter(integerDigits2 + decimalDigits2 + 1)});
                     }
                     if (s.length() - 1 - s.indexOf(".") > decimalDigits2) {
                         s = s.substring(0,
@@ -263,7 +266,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
                     }
                 } else {
                     if (integerDigits2 > 0) {
-                        etPurchaseAmount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(integerDigits2 + 1)});
+                        etUnitPrice.setFilters(new InputFilter[]{new InputFilter.LengthFilter(integerDigits2 + 1)});
                         if (s.length() > integerDigits2) {
                             s = s.substring(0, integerDigits2);
                             editable.replace(0, editable.length(), s.trim());
@@ -334,11 +337,11 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
             protected void convert(BaseViewHolder helper, GetOTCSymbolInfo.PayInfoListBean item) {
                 TextView textView = helper.getView(R.id.tv_bank_card);
                 if (item.getPayType().equals("1")) {
-                    setDrawables(getResources().getDrawable(R.drawable.ic_otc_wechat, null), textView, "微信");
+                    setDrawables(getResources().getDrawable(R.drawable.ic_otc_wechat, null), textView, getString(R.string.wechat));
                 } else if (item.getPayType().equals("2")) {
-                    setDrawables(getResources().getDrawable(R.drawable.ic_otc_ali_pay, null), textView, "支付宝");
+                    setDrawables(getResources().getDrawable(R.drawable.ic_otc_ali_pay, null), textView, getString(R.string.pay_treasure));
                 } else {
-                    setDrawables(getResources().getDrawable(R.drawable.ic_otc_bank_card, null), textView, "银行卡");
+                    setDrawables(getResources().getDrawable(R.drawable.ic_otc_bank_card, null), textView, getString(R.string.bank_card));
                 }
             }
         };
@@ -346,15 +349,26 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
             if (view.findViewById(R.id.img1).getVisibility() == View.GONE) {
                 view.findViewById(R.id.img1).setVisibility(View.VISIBLE);
                 paytype.add(String.valueOf(position + 1));
-            } else {
+            } else if (view.findViewById(R.id.img1).getVisibility() == View.VISIBLE) {
                 view.findViewById(R.id.img1).setVisibility(View.GONE);
-                paytype.remove(position);
+                paytype.remove(String.valueOf(position + 1));
             }
         });
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         rcPayType.setLayoutManager(layoutManager);
         rcPayType.setAdapter(payTypeAdapter);
         payTypeAdapter.setNewData(payInfoList);
+        if (payInfoList.size() == 0) {
+            tvBillingMessage.setVisibility(View.VISIBLE);
+            tvBillingMessage.setOnClickListener(v -> {
+                String isAuthentication = Constant.currentUser.getIsAuthentication();
+                if ("2".equals(isAuthentication)) {
+                    ToastUtils.showShort(R.string.waitAuthentication);
+                } else {
+                    startActivity(new Intent(getActivity(), BillingMessageActivity.class));
+                }
+            });
+        }
     }
 
     private void setSign() {
@@ -418,7 +432,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
 
         TextView tvTitle = byCoinsOrAmount.findViewById(R.id.tv_title);
         if (count != 0) {
-            tvTitle.setText("确认出售");
+            tvTitle.setText(R.string.confirm_to_sell);
         }
         TextView tvTermOfPayment = byCoinsOrAmount.findViewById(R.id.tv_terms_of_payment);
         if (TermOfPayment == 3) {
@@ -494,25 +508,25 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
             case R.id.ll_buy_coin:
                 if (customerIdentity.equals("1")) {
                     if (TextUtils.isEmpty(etPurchaseAmount.getText())) {
-                        ToastUtils.showShort("请输入交易数量");
+                        ToastUtils.showShort(getString(R.string.toast1));
                         showSoftInputFromWindow(etPurchaseAmount);
                         return;
                     } else {
                         if (!TextUtils.isEmpty(etMinimum.getText().toString())
                                 && Float.valueOf(etMinimum.getText().toString()) > Float.valueOf(etPurchaseAmount.getText().toString())) {
-                            ToastUtils.showShort("最小购买量不能大于交易数量！");
+                            ToastUtils.showShort(getString(R.string.toast2));
                             etMinimum.setText("");
                             showSoftInputFromWindow(etMinimum);
                             return;
                         } else if (!TextUtils.isEmpty(etMaximum.getText().toString())
                                 && Float.valueOf(etMaximum.getText().toString()) > Float.valueOf(etPurchaseAmount.getText().toString())) {
-                            ToastUtils.showShort("最大购买量不能大于交易数量！");
+                            ToastUtils.showShort(getString(R.string.toast3));
                             etMaximum.setText(etPurchaseAmount.getText());
                             return;
                         } else if (!TextUtils.isEmpty(etMinimum.getText().toString())
                                 && !TextUtils.isEmpty(etMaximum.getText().toString())
                                 && Float.valueOf(etMinimum.getText().toString()) > Float.valueOf(etMaximum.getText().toString())) {
-                            ToastUtils.showShort("最大购买量不能小于最小购买量！");
+                            ToastUtils.showShort(getString(R.string.toast4));
                             etMinimum.setText("1");
                             etMaximum.setText(etPurchaseAmount.getText());
                             return;
@@ -520,37 +534,37 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
                     }
 
                     if (TextUtils.isEmpty(etUnitPrice.getText())) {
-                        ToastUtils.showShort("请输入单价");
+                        ToastUtils.showShort(getString(R.string.hint));
                         showSoftInputFromWindow(etUnitPrice);
                         return;
                     } else if (Float.valueOf(etUnitPrice.getText().toString()) < Float.valueOf(price)) {
-                        ToastUtils.showShort("单价不能小于" + price);
+                        ToastUtils.showShort(getString(R.string.toast5, price));
                         showSoftInputFromWindow(etUnitPrice);
                         return;
                     }
 
                     if (TextUtils.isEmpty(etMinimum.getText())) {
-                        ToastUtils.showShort("请输入最小购买数量");
+                        ToastUtils.showShort(getString(R.string.toast6));
                         showSoftInputFromWindow(etMinimum);
                         return;
                     }
                     if (TextUtils.isEmpty(etMaximum.getText())) {
-                        ToastUtils.showShort("请输入最大购买数量");
+                        ToastUtils.showShort(getString(R.string.toast7));
                         showSoftInputFromWindow(etMaximum);
                         return;
                     }
                     if (paytype.isEmpty()) {
                         if (count == 0) {
-                            ToastUtils.showShort("请选择付款方式");
+                            ToastUtils.showShort(getString(R.string.toast8));
                             return;
                         } else {
-                            ToastUtils.showShort("请选择收款方式");
+                            ToastUtils.showShort(getString(R.string.toast9));
                             return;
                         }
                     }
 
                     if (payInfoList.isEmpty()) {
-                        ToastUtils.showShort("您还未添加收/付款方式，请先去完善\n收/付款方式！");
+                        ToastUtils.showShort(getString(R.string.toast10));
                         return;
                     }
                 }
@@ -588,7 +602,18 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
                             buyCoinType.findViewById(R.id.ll_pay).setVisibility(View.VISIBLE);
                         }
                     } else {
+                        if (TextUtils.isEmpty(etPurchaseAmount.getText())) {
+                            ToastUtils.showShort(getString(R.string.toast1));
+                            showSoftInputFromWindow(etPurchaseAmount);
+                            return;
+                        }
+                        paymentType = "";
                         paymentType = StringUtil.join(paytype, ",");
+                        if (TextUtils.isEmpty(paymentType)) {
+                            ToastUtils.showShort(getString(R.string.toast11));
+                            return;
+                        }
+
                         String secret = "currency=" + currency +
                                 "&nonce=" + timestamp +
                                 "&number=" + etPurchaseAmount.getText().toString() +
@@ -762,9 +787,19 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
                             },
                             this::handleApiError);
         } else {
+            secret = "currency=" + currency +
+                    "&maxNum=" + maximums +
+                    "&minNum=" + minimum +
+                    "&nonce=" + timestamp +
+                    "&number=" + etPurchaseAmount.getText().toString() +
+                    "&payPwd=" + MD5Utils.getMD5(pwd) +
+                    "&payType=" + paymentType +
+                    "&price=" + etUnitPrice.getText().toString() +
+                    "&rate=" + rate +Constant.SECRET;
+            sign = Sha256.getSHA256(secret);
             ServiceFactory.getInstance().otcService(Constant.BASE_URL, sign, Api.class)
                     .acceptorSell(currency, etMaximum.getText().toString(), etMinimum.getText().toString(), timestamp,
-                            etPurchaseAmount.getText().toString(), MD5Utils.getMD5(pwd), paymentType, etUnitPrice.getText().toString())
+                            etPurchaseAmount.getText().toString(), MD5Utils.getMD5(pwd), paymentType, etUnitPrice.getText().toString(), rate)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getContext())))
@@ -783,7 +818,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
                         intent.putExtras(bundle);
                         getActivity().startActivity(intent);
                         byCoinsOrAmount.dismiss();
-                    });
+                    }, this::handleApiError);
         }
     }
 
@@ -808,7 +843,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
                 .compose(RxSchedulers.otc())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getContext())))
                 .subscribe(s -> {
-                    ToastUtils.showShort("出售成功");
+                    ToastUtils.showShort(getString(R.string.toast12));
 
                 }, this::handleApiError);
     }

@@ -264,10 +264,10 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     if (getOrderInfoById.getBuyOrSell().equals("0")) {
                         tvBuyer1.setText("卖家昵称");
                         tvBuyer2.setText("卖家账号");
-                        tvBusinessName.setText(getOrderInfoById.getSellNick());
+                        tvBusinessName.setText(getOrderInfoById.getRealName());
                     } else {
                         tvBuyer1.setText("买家昵称");
-                        tvBuyer2.setText("买家账号");
+                        tvBuyer2.setText("买家实名");
                         tvBusinessName.setText(getOrderInfoById.getBuyNick());
                     }
                 }
@@ -282,12 +282,12 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     tvBuyer1.setText("卖家昵称");
                     tvBuyer2.setText("卖家账号");
                     tvBusinessName.setText(getOrderInfoById.getSellNick());
-                    tvRemark.setText(getOrderInfoById.getSellDuoduoId());
+                    tvRemark.setText(getOrderInfoById.getRealName());
                 } else {
                     tvBuyer1.setText("买家昵称");
                     tvBuyer2.setText("买家实名");
                     tvBusinessName.setText(getOrderInfoById.getBuyNick());
-                    tvRemark.setText(getOrderInfoById.getBuyDuoduoId());
+                    tvRemark.setText(getOrderInfoById.getRealName());
                 }
             } else if (getOrderInfoById.getStatus().equals("2")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, getString(R.string.has_been_cancelled));
@@ -305,6 +305,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     tvPayment.setText(R.string.the_complaint);
                     tvPayment.setVisibility(View.VISIBLE);
                     llCancelTheOrder.setVisibility(View.GONE);
+                    llUserConfirmDeposit.setVisibility(View.GONE);
                 } else {
                     setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, "未放币");
                     tvPayment.setVisibility(View.GONE);
@@ -356,18 +357,18 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvBuyer1.setText("买家昵称");
                 tvBuyer2.setText("买家实名");
                 tvBusinessName.setText(getOrderInfoById.getBuyNick());
-                tvRemark.setText(getOrderInfoById.getBuyDuoduoId());
+                tvRemark.setText(getOrderInfoById.getRealName());
             }
         }
 
         if (getOrderInfoById.getPayType().equals("1")) {
-            setDrawables(getResources().getDrawable(R.drawable.ic_otc_wechat, null), tvPaymentType, "微信支付");
+            setDrawables(getResources().getDrawable(R.drawable.ic_otc_wechat, null), tvPaymentType, getString(R.string.wechat_pay));
 //            tvRemark.setText(getOrderInfoById.getWechatNick());
         } else if (getOrderInfoById.getPayType().equals("2")) {
-            setDrawables(getResources().getDrawable(R.drawable.ic_otc_ali_pay, null), tvPaymentType, "支付宝");
+            setDrawables(getResources().getDrawable(R.drawable.ic_otc_ali_pay, null), tvPaymentType, getString(R.string.pay_treasure));
 //            tvRemark.setText(getOrderInfoById.getZhifubaoNumber());
         } else {
-            setDrawables(getResources().getDrawable(R.drawable.ic_otc_bank_card, null), tvPaymentType, "银行卡");
+            setDrawables(getResources().getDrawable(R.drawable.ic_otc_bank_card, null), tvPaymentType, getString(R.string.bank_card));
 //            tvRemark.setText(getOrderInfoById.getPayNumber());
         }
 

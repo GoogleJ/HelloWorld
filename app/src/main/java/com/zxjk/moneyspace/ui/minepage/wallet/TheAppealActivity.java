@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
-import com.zxjk.moneyspace.bean.response.ByBoinsResponse;
 import com.zxjk.moneyspace.bean.response.GetOrderInfoById;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
@@ -53,7 +52,7 @@ public class TheAppealActivity extends BaseActivity {
     }
 
     private void initView() {
-        etSocialSlogan=findViewById(R.id.etSocialSlogan);
+        etSocialSlogan = findViewById(R.id.etSocialSlogan);
         ivAddImages = findViewById(R.id.iv_add_images);
         tvSubmit = findViewById(R.id.tv_submit);
         ivDeleteImage = findViewById(R.id.iv_delete_image);
@@ -71,7 +70,7 @@ public class TheAppealActivity extends BaseActivity {
         });
 
         tvSubmit.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(etSocialSlogan.getText())){
+            if (TextUtils.isEmpty(etSocialSlogan.getText())) {
                 ToastUtils.showShort(R.string.appeal_message);
                 return;
             }
@@ -99,7 +98,8 @@ public class TheAppealActivity extends BaseActivity {
                     .compose(RxSchedulers.otc())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .subscribe(s -> {
-                        ToastUtils.showShort("反馈了");
+                        ToastUtils.showShort("已提交反馈");
+                        finish();
                     }, this::handleApiError);
         });
     }

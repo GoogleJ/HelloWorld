@@ -704,6 +704,33 @@
     <string name="tipssss">钱包资产可直接转账到支付宝</string>
     <string name="paysuccess">支付成功，请在订单列表中查看记录</string>
     <string name="sell1">出售 %1$s</string>
+    <string name="billing_message">请先完善收款信息</string>
+    <string name="payment_term">收款方式</string>
+    <string name="max">最大</string>
+    <string name="price2">单价</string>
+    <string name="hint">请输入单价</string>
+    <string name="hint2">最小购买数量</string>
+    <string name="hint3">最大购买数量</string>
+    <string name="acceptor">承兑商</string>
+    <string name="amount2">购买数量</string>
+    <string name="buy_order">发布购买订单</string>
+    <string name="sell_amout">出售数量</string>
+    <string name="hint4">请输入出售数量</string>
+    <string name="sell_order2">发布出售订单</string>
+    <string name="confirm_to_sell">确认出售</string>
+    <string name="toast1">请输入交易数量</string>
+    <string name="toast2">最小购买量不能大于交易数量！</string>
+    <string name="toast3">最大购买量不能大于交易数量！</string>
+    <string name="toast4">最大购买量不能小于最小购买量！</string>
+    <string name="toast5">单价不能小于%1$s</string>
+    <string name="toast6">请输入最小购买数量</string>
+    <string name="toast7">请输入最大购买数量</string>
+    <string name="toast8">请选择付款方式</string>
+    <string name="toast9">请选择收款方式</string>
+    <string name="toast10">您还未添加收/付款方式，请先去完善 收/付款方式！</string>
+    <string name="toast11">未添加收收款方式</string>
+    <string name="toast12">出售成功</string>
+    <string name="pay_password">请输入支付密码</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

@@ -80,6 +80,7 @@ public class OrderDetailsActivity extends BaseActivity {
     private String timestamp;
     private Boolean payment = true;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,26 +145,29 @@ public class OrderDetailsActivity extends BaseActivity {
         if (byBoinsResponse.getPayType().equals("3")) {
             tvPaymentType.setText(R.string.bank_card_payment);
             setDrawables(getResources().getDrawable(R.drawable.bank_card2, null), null, tvPaymentType);
-            tvNumber.setText(byBoinsResponse.getReceiptNumber());
+
             tvPaymentType2.setText(R.string.payee_card_number);
             llBankName.setVisibility(View.VISIBLE);
-            llBranchBankName.setVisibility(View.VISIBLE);
             tvBankName.setText(byBoinsResponse.getOpenBank());
-//            tvBranchBankName.setText(byBoinsResponse.getSubBranch());
-            tvRemark1.setText(R.string.merchants_remark);
+            tvPrice.setText(byBoinsResponse.getRealName());
+            tvBankName.setText(byBoinsResponse.getOpenBank());
+            tvNumber.setText(byBoinsResponse.getPayNumber());
         } else if (byBoinsResponse.getPayType().equals("2")) {
             tvPaymentType.setText(R.string.alipay_pay);
             setDrawables(getResources().getDrawable(R.drawable.pay_treasure, null), getResources().getDrawable(R.drawable.ic_qr_code_small, null), tvPaymentType);
-            tvNumber.setText(byBoinsResponse.getReceiptNumber());
+            tvNumber.setText(byBoinsResponse.getZhifubaoNumber());
+            tvPrice.setText(byBoinsResponse.getRealName());
         } else {
             tvPaymentType.setText(R.string.wechat_pay);
             setDrawables(getResources().getDrawable(R.drawable.wechat, null), getResources().getDrawable(R.drawable.ic_qr_code_small, null), tvPaymentType);
-            tvNumber.setText(byBoinsResponse.getWechatNick());
+
             tvNick.setVisibility(View.GONE);
             llBankName.setVisibility(View.GONE);
+            tvNumber.setText(byBoinsResponse.getWechatNick());
+            tvPrice.setText(byBoinsResponse.getRealName());
         }
 
-        tvPrice.setText(byBoinsResponse.getNick());
+
 
         tvPaymentType.setOnClickListener(v -> {
 

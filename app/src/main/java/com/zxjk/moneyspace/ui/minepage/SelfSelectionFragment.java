@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -80,6 +81,8 @@ public class SelfSelectionFragment extends BaseFragment {
     private String number1;
     private String number2;
     private String customerIdentity;
+    private int decimalDigits2 = 4;// 小数的位数
+    private int integerDigits2 = 10;// 整数的位数
 
     public static SelfSelectionFragment newInstance(String currency, int count, String customerIdentity) {
 
@@ -282,7 +285,7 @@ public class SelfSelectionFragment extends BaseFragment {
         EditText etSellCount;
         TextView tvCurrency2;
         TextView tvCountAll;
-        TextView tv_limit;
+        TextView tvLimit;
         TextView tvUnSaleNum;
         TextView tvMoney;
         TextView tvBuyCoin;
@@ -298,7 +301,7 @@ public class SelfSelectionFragment extends BaseFragment {
         etSellCount = byCoinSelfSelectionPopup.findViewById(R.id.et_sell_count);
         tvCurrency2 = byCoinSelfSelectionPopup.findViewById(R.id.tv_currency2);
         tvCountAll = byCoinSelfSelectionPopup.findViewById(R.id.tv_count_all);
-        tv_limit = byCoinSelfSelectionPopup.findViewById(R.id.tv_limit);
+        tvLimit = byCoinSelfSelectionPopup.findViewById(R.id.tv_limit);
         tvUnSaleNum = byCoinSelfSelectionPopup.findViewById(R.id.tv_un_sale_num);
         tvBuyCoin = byCoinSelfSelectionPopup.findViewById(R.id.tv_buy_coin);
         tvMoney = byCoinSelfSelectionPopup.findViewById(R.id.tv_money);
@@ -310,7 +313,7 @@ public class SelfSelectionFragment extends BaseFragment {
             tvCountAll.setOnClickListener(v -> etSellCount.setText(getBuyList.getUnBoughtNum()));
         }
         tvCurrency2.setText(currency);
-        tv_limit.setText("限量" + getBuyList.getMinNum() + "-" + getBuyList.getMaxNum());
+        tvLimit.setText("限量" + getBuyList.getMinNum() + "-" + getBuyList.getMaxNum());
         tvCurrency.setText(currency);
         tvPrice.setText(getBuyList.getPrice());
         tvUnSaleNum.setText("0.0000" + currency);
@@ -318,6 +321,10 @@ public class SelfSelectionFragment extends BaseFragment {
         tvBuyCoin.setOnClickListener(v -> {
             if (TextUtils.isEmpty(etSellCount.getText().toString())) {
                 ToastUtils.showShort("请输入数量");
+                return;
+            }
+            if (Float.valueOf(etSellCount.getText().toString()) < Float.valueOf(getBuyList.getMinNum()) || Float.valueOf(etSellCount.getText().toString()) > Float.valueOf(getBuyList.getMaxNum())) {
+                ToastUtils.showShort("请在限量范围内取值");
                 return;
             }
             number2 = number1;
@@ -346,8 +353,39 @@ public class SelfSelectionFragment extends BaseFragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                number1 = s.toString();
+            public void afterTextChanged(Editable editable) {
+                //EdtiText输入整数和小数位数限制
+                String s = editable.toString();
+
+                if (s.contains(".")) {
+                    if (integerDigits2 > 0) {
+                        etSellCount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(integerDigits2 + decimalDigits2 + 1)});
+                    }
+                    if (s.length() - 1 - s.indexOf(".") > decimalDigits2) {
+                        s = s.substring(0,
+                                s.indexOf(".") + decimalDigits2 + 1);
+                        editable.replace(0, editable.length(), s.trim());
+                    }
+                } else {
+                    if (integerDigits2 > 0) {
+                        etSellCount.setFilters(new InputFilter[]{new InputFilter.LengthFilter(integerDigits2 + 1)});
+                        if (s.length() > integerDigits2) {
+                            s = s.substring(0, integerDigits2);
+                            editable.replace(0, editable.length(), s.trim());
+                        }
+                    }
+                }
+                if (s.trim().equals(".")) {
+                    s = "0" + s;
+                    editable.replace(0, editable.length(), s.trim());
+                }
+                if (s.startsWith("0")
+                        && s.trim().length() > 1) {
+                    if (!s.substring(1, 2).equals(".")) {
+                        editable.replace(0, editable.length(), "0");
+                    }
+                }
+                number1 = editable.toString();
                 if (!TextUtils.isEmpty(number1)) {
                     tvUnSaleNum.setText(number1 + currency);
                     money = String.valueOf(Float.valueOf(getBuyList.getPrice()) * Float.valueOf(number1));
@@ -446,9 +484,12 @@ public class SelfSelectionFragment extends BaseFragment {
         tvPrice.setText(getBuyList.getPrice() + "\u0020" + "CNY" + "/" + getBuyList.getCurrency());
         TextView tvAmount = confirmPopup.findViewById(R.id.tv_amount);
         TextView tvTitle = confirmPopup.findViewById(R.id.tv_title);
+        TextView btToBuy = confirmPopup.findViewById(R.id.bt_to_buy);
         if (count == 0) {
             tvTitle.setText("确认购买");
+            btToBuy.setText("确认购买");
         } else {
+            btToBuy.setText("确认出售");
             tvTitle.setText("确认出售");
         }
         tvAmount.setText(number2);
@@ -554,7 +595,7 @@ public class SelfSelectionFragment extends BaseFragment {
                     bundle.putString("customerIdentity", customerIdentity);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }, this::handleApiError);
+                });
     }
 
     @SuppressLint("CheckResult")

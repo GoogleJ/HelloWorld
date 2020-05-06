@@ -192,7 +192,7 @@
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
                             android:orientation="horizontal"
-                            android:visibility="visible">
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -234,7 +234,7 @@
                             android:drawableStart="@drawable/ic_prompt"
                             android:drawablePadding="8dp"
                             android:text="@string/warm_prompt"
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="#4885F8" />
 
                         <TextView
                             android:layout_width="wrap_content"

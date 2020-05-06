@@ -122,12 +122,11 @@
 
             </RelativeLayout>
 
-            <!--            <include layout="@layout/layout_line" />-->
+            <include layout="@layout/layout_line" />
 
             <RelativeLayout
                 android:id="@+id/rl_collectionInformation"
-                style="@style/RLayoutStyle"
-                android:visibility="gone">
+                style="@style/RLayoutStyle">
 
                 <TextView
                     style="@style/textStyle"

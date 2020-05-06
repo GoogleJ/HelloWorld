@@ -189,7 +189,7 @@ public class SettingActivity extends BaseActivity {
         findViewById(R.id.rl_collectionInformation).setOnClickListener(v -> {
             String isAuthentication = Constant.currentUser.getIsAuthentication();
             if ("0".equals(isAuthentication)) {
-                startActivity(new Intent(SettingActivity.this, com.zxjk.moneyspace.ui.minepage.BillingMessageActivity.class));
+                startActivity(new Intent(SettingActivity.this, BillingMessageActivity.class));
             } else if ("2".equals(isAuthentication)) {
                 ToastUtils.showShort(R.string.waitAuthentication);
             } else {
