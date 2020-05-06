@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
-import com.zxjk.moneyspace.ui.findpage.NewsDetailActivity;
+import com.zxjk.moneyspace.ui.msgpage.AgreeGroupChatActivity;
+import com.zxjk.moneyspace.utils.CommonUtils;
 
 public class BrowsableActivity extends BaseActivity {
 
@@ -18,28 +18,15 @@ public class BrowsableActivity extends BaseActivity {
             String action = getIntent().getData().getQueryParameter("action");
             if (!TextUtils.isEmpty(action)) {
                 switch (action) {
-                    case "default":
-                        if (Constant.currentUser != null) {
-                            Intent intent = new Intent(this, HomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        } else {
-                            startActivity(new Intent(this, WelcomeActivity.class));
-                        }
+                    case "joinGroup":
+                        String groupId = getIntent().getData().getQueryParameter("groupId");
+                        Intent intent = new Intent(this, AgreeGroupChatActivity.class);
+                        intent.putExtra("groupId", groupId);
+                        startActivity(intent);
                         break;
-                    case "sharenews":
-                        String url = getIntent().getData().getQueryParameter("url");
-                        if (Constant.currentUser != null) {
-                            if (!TextUtils.isEmpty(url)) {
-                                Intent intent = new Intent(this, NewsDetailActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("url", url);
-                                intent.putExtra("title", "新闻");
-                                startActivity(intent);
-                            }
-                        } else {
-                            startActivity(new Intent(this, WelcomeActivity.class));
-                        }
+                    case "addFriend":
+                        String userId = getIntent().getData().getQueryParameter("id");
+                        CommonUtils.resolveFriendList(this, userId, false);
                         break;
                 }
             }
