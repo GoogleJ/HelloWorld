@@ -105,14 +105,14 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
 
         webSettings = mWebView.getSettings();
         webSettings.setLoadsImagesAutomatically(true);
-
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setAppCacheEnabled(true);
 //        webSettings.setMixedContentMode(WebSettings.);
 
 //设置自适应屏幕，两者合用
         webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
         webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
 
-        webSettings.setUseWideViewPort(true);
         //允许js代码
         webSettings.setJavaScriptEnabled(true);
         //允许SessionStorage/LocalStorage存储

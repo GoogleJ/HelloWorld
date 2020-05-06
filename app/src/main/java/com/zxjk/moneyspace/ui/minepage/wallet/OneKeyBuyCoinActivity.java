@@ -175,7 +175,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.tv_speedy:
                 if (customerIdentity.equals("1")) {
-                    ToastUtils.showShort("暂未开放,敬请期待");
+                    ToastUtils.showShort(R.string.developing);
                     return;
                 }
                 if (tvSpeedy.getBackground() != null) {
@@ -199,7 +199,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.tv_self_selection:
                 if (customerIdentity.equals("1")) {
-                    ToastUtils.showShort("暂未开放,敬请期待");
+                    ToastUtils.showShort(R.string.developing);
                     return;
                 }
                 if (tvSelfSelection.getBackground() != null) {

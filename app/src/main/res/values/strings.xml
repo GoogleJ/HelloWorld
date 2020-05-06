@@ -312,7 +312,7 @@
     <string name="newestVersion">已经是最新版本</string>
     <string name="choose_a_new_owner_title">选择新群主</string>
     <string name="inputoldpsd">输入旧密码</string>
-    <string name="moexchange">交易所</string>
+    <string name="moexchange">一键购币</string>
     <string name="prompt_logo_red">红包</string>
     <string name="shoukuanbizhong">收款币种</string>
     <string name="shoukuanjine">收款金额</string>
@@ -664,16 +664,17 @@
     <string name="balance">资产</string>
     <string name="tradeCenter">第三方交易所</string>
     <string name="linesService">生态服务</string>
-    <string name="trade1">Nogex交易所</string>
+    <string name="trade1">火币交易所</string>
     <string name="trade2">OKEX交易所</string>
-    <string name="trade3">非币网交易所</string>
-    <string name="trade4">Nogex交易所</string>
-    <string name="trade5">OKEX交易所</string>
-    <string name="trade6">嘀嘀打车</string>
-    <string name="trade7">话费充值</string>
-    <string name="trade8">商城</string>
-    <string name="trade9">生活缴费</string>
+    <string name="trade3">Coinbase Pro</string>
+    <string name="trade4">币安交易所</string>
+    <string name="trade5">ZB交易所</string>
+    <string name="trade6">余币宝</string>
+    <string name="trade7">期货</string>
+    <string name="trade8">外汇</string>
+    <string name="trade9">矿机</string>
     <string name="trade10">游戏</string>
+    <string name="trade12">BitMEX</string>
     <string name="chongzhi">充值</string>
     <string name="tixian">提现</string>
     <string name="cnyupmoney">充值金额</string>
@@ -732,6 +733,28 @@
     <string name="toast12">出售成功</string>
     <string name="pay_password">请输入支付密码</string>
     <string name="centermoneyis">手续费%1$s</string>
+    <string name="ecology">生态</string>
+    <string name="entry_orders">挂单中</string>
+    <string name="in_transaction">交易中</string>
+    <string name="the_appeal_to_complete">申诉完成</string>
+    <string name="speed2">放行</string>
+    <string name="buyer_nickname">买家昵称</string>
+    <string name="buyer_autonym">买家实名</string>
+    <string name="order_completion">订单已完成</string>
+    <string name="limit">限量</string>
+    <string name="seller_nickname">卖家昵称</string>
+    <string name="seller_autonym">卖家账号</string>
+    <string name="spees3">请放行</string>
+    <string name="check_payment">请查收对方付款</string>
+    <string name="overtime_put_the_coin">待卖家放币，已超时</string>
+    <string name="overtime_cancel">超时系统取消</string>
+    <string name="selling_success">放行成功</string>
+    <string name="toast13">已提交反馈</string>
+    <string name="toast14">付款成功</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ecoloey">生态</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

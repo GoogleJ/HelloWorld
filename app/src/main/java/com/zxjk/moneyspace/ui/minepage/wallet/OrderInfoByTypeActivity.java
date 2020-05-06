@@ -262,10 +262,10 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                             tvPaymentState.setText(R.string.has_been_cancelled);
                             tvPaymentState.setTextColor(getResources().getColor(R.color.textcolor3, null));
                         } else if (item.getStatus().equals("8")) {
-                            tvPaymentState.setText("挂单中");
+                            tvPaymentState.setText(R.string.entry_orders);
                             tvPaymentState.setTextColor(getResources().getColor(R.color.color_yellow_red, null));
                         } else if (item.getStatus().equals("9")) {
-                            tvPaymentState.setText("交易中");
+                            tvPaymentState.setText(R.string.in_transaction);
                             tvPaymentState.setTextColor(getResources().getColor(R.color.colorPrimary, null));
                         }
                     } else {
@@ -293,7 +293,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                             tvPaymentState.setText(R.string.timeout);
                             tvPaymentState.setTextColor(getResources().getColor(R.color.the_order_state, null));
                         } else if (item.getStatus().equals("5")) {
-                            tvPaymentState.setText("申诉完成");
+                            tvPaymentState.setText(R.string.the_appeal_to_complete);
                             tvPaymentState.setTextColor(getResources().getColor(R.color.textcolor3, null));
                         } else if (item.getStatus().equals("6")) {
                             tvPaymentState.setText(R.string.in_the_complaint);

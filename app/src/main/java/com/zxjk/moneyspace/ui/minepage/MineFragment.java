@@ -25,6 +25,7 @@ import com.zxjk.moneyspace.network.rx.RxException;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
 import com.zxjk.moneyspace.ui.minepage.wallet.BalanceLeftActivity;
+import com.zxjk.moneyspace.ui.minepage.wallet.EcologyActivity;
 import com.zxjk.moneyspace.ui.minepage.wallet.OneKeyBuyCoinActivity;
 import com.zxjk.moneyspace.ui.msgpage.MyQrCodeActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
@@ -59,6 +60,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.llMine4).setOnClickListener(this);
         view.findViewById(R.id.llMine5).setOnClickListener(this);
         view.findViewById(R.id.ivQR).setOnClickListener(this);
+        view.findViewById(R.id.llMine6).setOnClickListener(this);
 
         return view;
     }
@@ -133,6 +135,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.ivQR:
                 startActivity(new Intent(getActivity(), MyQrCodeActivity.class));
+                break;
+            case R.id.llMine6:
+                startActivity(new Intent(getActivity(), EcologyActivity.class));
                 break;
             default:
         }

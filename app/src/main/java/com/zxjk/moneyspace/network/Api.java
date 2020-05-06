@@ -24,6 +24,7 @@ import com.zxjk.moneyspace.bean.response.GetChatRoomInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetCustomerBankInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetCustomerBasicInfoByIdResponse;
 import com.zxjk.moneyspace.bean.response.GetCustomerIdentity;
+import com.zxjk.moneyspace.bean.response.GetEcologyByType;
 import com.zxjk.moneyspace.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupChatInfoByGroupIdResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupRedPackageInfoResponse;
@@ -818,4 +819,7 @@ public interface Api {
     Observable<BaseResponse<String>> getCnyWithdrawRate();
 
 
+    @FormUrlEncoded
+    @POST("duoduo/ecology/getEcologyByType")
+    Observable<BaseResponse<List<GetEcologyByType>>> getEcologyByType(@Field("type") String type);
 }

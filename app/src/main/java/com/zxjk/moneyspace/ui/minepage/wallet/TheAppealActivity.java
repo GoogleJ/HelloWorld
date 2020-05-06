@@ -98,7 +98,7 @@ public class TheAppealActivity extends BaseActivity {
                     .compose(RxSchedulers.otc())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .subscribe(s -> {
-                        ToastUtils.showShort("已提交反馈");
+                        ToastUtils.showShort(getString(R.string.toast13));
                         finish();
                     }, this::handleApiError);
         });

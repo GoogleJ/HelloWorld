@@ -22,6 +22,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.security.biometrics.build.G;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -29,6 +30,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.FindHailangResponse;
+import com.zxjk.moneyspace.bean.response.GetCustomerIdentity;
 import com.zxjk.moneyspace.bean.response.GetOTCSymbolInfo;
 import com.zxjk.moneyspace.bean.response.GetOrderInfoById;
 import com.zxjk.moneyspace.bean.response.UserBuyResponse;
@@ -88,6 +90,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
     private ImageView img1;
     private ImageView img2;
     private ImageView img3;
+    private TextView tv1;
 
     private GetOrderInfoById confirmSellOrBuy;
     private TextView tvCurrency;
@@ -118,6 +121,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
     private NumberFormat nf;
     private String amountScale;
     private String customerIdentity;
+    private GetCustomerIdentity getCustomerIdentity;
     private String currency;
     private String price;
     private String rate;
@@ -127,7 +131,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
     private UserBuyResponse userBuy;
     private List<GetOTCSymbolInfo.PayInfoListBean> payInfoList = new ArrayList<>();
 
-    public static BuyCoinViewPagerFragment newInstance(String currency, String price, String rate, String balance, String customerIdentity, int count, List<GetOTCSymbolInfo.PayInfoListBean> payInfoList) {
+    public static BuyCoinViewPagerFragment newInstance(String currency, String price, String rate, String balance, GetCustomerIdentity customerIdentity, int count, List<GetOTCSymbolInfo.PayInfoListBean> payInfoList) {
 
         BuyCoinViewPagerFragment fragment = new BuyCoinViewPagerFragment();
         Bundle bundle = new Bundle();
@@ -135,7 +139,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
         bundle.putString("price", price);
         bundle.putString("rate", rate);
         bundle.putString("balance", balance);
-        bundle.putString("customerIdentity", customerIdentity);
+        bundle.putSerializable("getCustomerIdentity", customerIdentity);
         bundle.putInt("count", count);
         bundle.putSerializable("payInfoList", (Serializable) payInfoList);
         fragment.setArguments(bundle);
@@ -151,7 +155,8 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
         price = getArguments().getString("price");
         rate = getArguments().getString("rate");
         balance = getArguments().getString("balance");
-        customerIdentity = getArguments().getString("customerIdentity");
+        getCustomerIdentity = (GetCustomerIdentity)getArguments().getSerializable("getCustomerIdentity");
+        customerIdentity = getCustomerIdentity.getIdentity();
         count = getArguments().getInt("count");
         payInfoList = (List<GetOTCSymbolInfo.PayInfoListBean>) getArguments().getSerializable("payInfoList");
 
@@ -187,6 +192,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
         rcPayType = rootView.findViewById(R.id.rc_pay_type);
         llPayType = rootView.findViewById(R.id.ll_pay_type);
 
+        tv1 = rootView.findViewById(R.id.tv1);
         tvCurrency = rootView.findViewById(R.id.tv_currency);
         tvBillingMessage = rootView.findViewById(R.id.tv_billing_message);
 
@@ -202,12 +208,14 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
                 tvMaximum.setVisibility(View.GONE);
                 rcPayType.setVisibility(View.GONE);
                 llPayType.setVisibility(View.VISIBLE);
+                tv1.setText("最大购买数量 :"+getCustomerIdentity.getMaxBuyNum()+currency);
             } else {
                 tvPurchaseAmount.setText(R.string.sell_amout);
                 etPurchaseAmount.setHint(R.string.hint4);
                 tvBuyCoin.setText(R.string.sell_order2);
                 rcPayType.setVisibility(View.VISIBLE);
                 llPayType.setVisibility(View.GONE);
+                tv1.setText("出售最大数量 :"+getCustomerIdentity.getMaxSaleNum()+currency);
             }
         } else if (customerIdentity.equals("0")) {
             //普通用户

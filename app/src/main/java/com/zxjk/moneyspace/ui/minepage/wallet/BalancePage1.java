@@ -1,5 +1,6 @@
 package com.zxjk.moneyspace.ui.minepage.wallet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.ui.WebActivity;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
 
 public class BalancePage1 extends BaseFragment implements View.OnClickListener {
@@ -23,7 +25,7 @@ public class BalancePage1 extends BaseFragment implements View.OnClickListener {
     private TextView tv7;
     private TextView tv8;
     private TextView tv9;
-    private TextView tv10;
+    private TextView tv12;
 
     @Nullable
     @Override
@@ -39,7 +41,7 @@ public class BalancePage1 extends BaseFragment implements View.OnClickListener {
         tv7 = rootView.findViewById(R.id.tv7);
         tv8 = rootView.findViewById(R.id.tv8);
         tv9 = rootView.findViewById(R.id.tv9);
-        tv10 = rootView.findViewById(R.id.tv10);
+        tv12 = rootView.findViewById(R.id.tv12);
 
         tv1.setOnClickListener(this);
         tv2.setOnClickListener(this);
@@ -50,13 +52,37 @@ public class BalancePage1 extends BaseFragment implements View.OnClickListener {
         tv7.setOnClickListener(this);
         tv8.setOnClickListener(this);
         tv9.setOnClickListener(this);
-        tv10.setOnClickListener(this);
+        tv12.setOnClickListener(this);
 
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
-        ToastUtils.showShort(R.string.developing);
+        Intent intent = new Intent(getContext(), WebActivity.class);
+        Bundle bundle = new Bundle();
+        switch (v.getId()) {
+            case R.id.tv1:
+                bundle.putString("url", "https://www.huobi.me/zh-cn/markets/");
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+                break;
+            case R.id.tv2:
+                bundle.putString("url", "https://www.binancezh.com/cn/markets");
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+                break;
+            case R.id.tv3:
+            case R.id.tv4:
+            case R.id.tv5:
+            case R.id.tv6:
+            case R.id.tv7:
+            case R.id.tv8:
+            case R.id.tv9:
+            case R.id.tv12:
+                ToastUtils.showShort(R.string.developing);
+                break;
+        }
+
     }
 }

@@ -330,7 +330,7 @@ public class OrderDetailsActivity extends BaseActivity {
                                 .compose(RxSchedulers.otc())
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(OrderDetailsActivity.this)))
                                 .subscribe(s -> {
-                                    ToastUtils.showShort("付款成功");
+                                    ToastUtils.showShort(getString(R.string.toast14));
                                     byCoinsOrAmount.dismiss();
                                     finish();
                                 }, throwable -> handleApiError(throwable));
@@ -348,7 +348,7 @@ public class OrderDetailsActivity extends BaseActivity {
                                 .compose(RxSchedulers.otc())
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(OrderDetailsActivity.this)))
                                 .subscribe(s -> {
-                                    ToastUtils.showShort("付款成功");
+                                    ToastUtils.showShort(getString(R.string.toast14));
                                     byCoinsOrAmount.dismiss();
                                     finish();
                                 }, throwable -> handleApiError(throwable));

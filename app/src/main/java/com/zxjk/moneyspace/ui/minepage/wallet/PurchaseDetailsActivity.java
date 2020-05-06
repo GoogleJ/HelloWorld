@@ -153,32 +153,32 @@ public class PurchaseDetailsActivity extends BaseActivity {
             if (getOrderInfoById.getStatus().equals("7")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_accelerate, null), tvPaymentStatus, getString(R.string.complete_the_transaction));
                 tvPayment.setVisibility(View.INVISIBLE);
-                setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, "订单已完成");
+                setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.order_completion));
                 tvCancelTheOrder.setVisibility(View.GONE);
-                tvBuyer1.setText("买家昵称");
-                tvBuyer2.setText("买家实名");
+                tvBuyer1.setText(R.string.buyer_nickname);
+                tvBuyer2.setText(R.string.buyer_autonym);
                 tvRemark.setText(getOrderInfoById.getRealName());
             } else if (getOrderInfoById.getStatus().equals("1")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, getString(R.string.has_been_cancelled));
                 tvPayment.setVisibility(View.INVISIBLE);
                 tv1.setVisibility(View.GONE);
                 tvCancelTheOrder.setVisibility(View.GONE);
-                tvBuyer1.setText("限量");
+                tvBuyer1.setText(R.string.limit);
                 tvBusinessName.setText(getOrderInfoById.getMinNum() + "-" + getOrderInfoById.getMaxNum());
                 findViewById(R.id.ll_nick).setVisibility(View.GONE);
                 if (getOrderInfoById.getBuyOrSell().equals("0")) {
-                    tvBuyer1.setText("卖家昵称");
-                    tvBuyer2.setText("卖家账号");
+                    tvBuyer1.setText(R.string.seller_nickname);
+                    tvBuyer2.setText(R.string.seller_autonym);
                 } else {
-                    tvBuyer1.setText("买家昵称");
-                    tvBuyer2.setText("买家账号");
+                    tvBuyer1.setText(R.string.buyer_nickname);
+                    tvBuyer2.setText(R.string.buyer_autonym);
                 }
                 llUserConfirmDeposit.setVisibility(View.GONE);
             } else if (getOrderInfoById.getStatus().equals("9")) {
-                setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, "交易中");
+                setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.in_transaction));
                 tvPayment.setVisibility(View.INVISIBLE);
 
-                setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, "待付款");
+                setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.for_the_payment));
             }
         } else {
             if (getOrderInfoById.getStatus().equals("3")) {
@@ -186,8 +186,8 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvRemark.setText(getOrderInfoById.getSellDuoduoId());
 
                 if (getOrderInfoById.getBuyOrSell().equals("0")) {
-                    tvBuyer1.setText("卖家昵称");
-                    tvBuyer2.setText("卖家账号");
+                    tvBuyer1.setText(R.string.seller_nickname);
+                    tvBuyer2.setText(R.string.seller_autonym);
                     tvBusinessName.setText(getOrderInfoById.getSellNick());
                     setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.waiting_to_put_money2));
                     tvPayment.setVisibility(View.INVISIBLE);
@@ -195,12 +195,12 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     tvPayment.setVisibility(View.GONE);
                     llUserConfirmDeposit.setVisibility(View.GONE);
                 } else {
-                    tvBuyer1.setText("买家昵称");
-                    tvBuyer2.setText("买家实名");
+                    tvBuyer1.setText(R.string.buyer_nickname);
+                    tvBuyer2.setText(R.string.buyer_autonym);
                     tvBusinessName.setText(getOrderInfoById.getBuyNick());
-                    setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, "请放行");
+                    setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.spees3));
                     tvPayment.setVisibility(View.INVISIBLE);
-                    setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, "请查收对方付款");
+                    setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.check_payment));
                     llUserConfirmDeposit.setVisibility(View.VISIBLE);
                     tvDispatchRelease.setBackground(getResources().getDrawable(R.drawable.shape_4182f9_5, null));
                     tvDispatchRelease.setTextColor(Color.parseColor("#E7C39B"));
@@ -220,7 +220,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             long second = (total - l) % 60;
                             tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + (second - 1)) : second))));
                             if (total == 0 || l == total - 1) {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, "待卖家放币，已超时");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.overtime_put_the_coin));
                                 llCancelTheOrder.setVisibility(View.GONE);
                                 tvPayment.setText(getString(R.string.the_complaint));
                             }
@@ -229,9 +229,9 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
             } else if (getOrderInfoById.getStatus().equals("0")) {
                 if (count.equals("0")) {
-                    setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, "待买家付款");
+                    setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.waiting_for_payment));
                     tv1.setText(getString(R.string.fifteen_minutes));
-                    tvCancelTheOrder.setText("取消订单");
+                    tvCancelTheOrder.setText(R.string.cancel_the_order);
                     tvCancelTheOrder.setVisibility(View.VISIBLE);
                     llUserConfirmDeposit.setVisibility(View.GONE);
                 } else {
@@ -260,14 +260,14 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                 }
                             }, t -> {
                             });
-                    setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, "待付款");
+                    setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.for_the_payment));
                     if (getOrderInfoById.getBuyOrSell().equals("0")) {
-                        tvBuyer1.setText("卖家昵称");
-                        tvBuyer2.setText("卖家账号");
+                        tvBuyer1.setText(R.string.seller_nickname);
+                        tvBuyer2.setText(R.string.seller_autonym);
                         tvBusinessName.setText(getOrderInfoById.getRealName());
                     } else {
-                        tvBuyer1.setText("买家昵称");
-                        tvBuyer2.setText("买家实名");
+                        tvBuyer1.setText(R.string.buyer_nickname);
+                        tvBuyer2.setText(R.string.buyer_autonym);
                         tvBusinessName.setText(getOrderInfoById.getBuyNick());
                     }
                 }
@@ -279,13 +279,13 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvCancelTheOrder.setText(getString(R.string.buyer_cancel));
                 llUserConfirmDeposit.setVisibility(View.GONE);
                 if (getOrderInfoById.getBuyOrSell().equals("0")) {
-                    tvBuyer1.setText("卖家昵称");
-                    tvBuyer2.setText("卖家账号");
+                    tvBuyer1.setText(R.string.seller_nickname);
+                    tvBuyer2.setText(R.string.seller_autonym);
                     tvBusinessName.setText(getOrderInfoById.getSellNick());
                     tvRemark.setText(getOrderInfoById.getRealName());
                 } else {
-                    tvBuyer1.setText("买家昵称");
-                    tvBuyer2.setText("买家实名");
+                    tvBuyer1.setText(R.string.buyer_nickname);
+                    tvBuyer2.setText(R.string.buyer_autonym);
                     tvBusinessName.setText(getOrderInfoById.getBuyNick());
                     tvRemark.setText(getOrderInfoById.getRealName());
                 }
@@ -294,7 +294,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvPayment.setVisibility(View.GONE);
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.no_payment));
                 tvCancelTheOrder.setVisibility(View.VISIBLE);
-                tvCancelTheOrder.setText("超时系统取消");
+                tvCancelTheOrder.setText(R.string.overtime_cancel);
             } else if (getOrderInfoById.getStatus().equals("4")) {
                 TextView tvAppeal = findViewById(R.id.tv_appeal);
                 tvAppeal.setBackgroundColor(getResources().getColor(R.color.color_yellow_red, null));
@@ -307,14 +307,14 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     llCancelTheOrder.setVisibility(View.GONE);
                     llUserConfirmDeposit.setVisibility(View.GONE);
                 } else {
-                    setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, "未放币");
+                    setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.not_to_put_money));
                     tvPayment.setVisibility(View.GONE);
                     llCancelTheOrder.setVisibility(View.GONE);
                     llUserConfirmDeposit.setVisibility(View.VISIBLE);
                 }
 
             } else if (getOrderInfoById.getStatus().equals("5")) {
-                setDrawables(getResources().getDrawable(R.drawable.ic_accelerate, null), tvPaymentStatus, "申诉完成");
+                setDrawables(getResources().getDrawable(R.drawable.ic_accelerate, null), tvPaymentStatus, getString(R.string.the_appeal_to_complete));
                 tvPayment.setVisibility(View.GONE);
                 llCancelTheOrder.setVisibility(View.GONE);
             } else if (getOrderInfoById.getStatus().equals("6")) {
@@ -325,7 +325,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 setDrawables(getResources().getDrawable(R.drawable.ic_accelerate, null), tvPaymentStatus, getString(R.string.complete_the_transaction));
                 tvPayment.setVisibility(View.GONE);
                 tv1.setVisibility(View.GONE);
-                tvCancelTheOrder.setText("订单已完成");
+                tvCancelTheOrder.setText(R.string.order_completion);
                 tvCancelTheOrder.setVisibility(View.GONE);
                 llUserConfirmDeposit.setVisibility(View.GONE);
             }
@@ -349,13 +349,13 @@ public class PurchaseDetailsActivity extends BaseActivity {
         }
         if (!getOrderInfoById.getStatus().equals("1")) {
             if (getOrderInfoById.getBuyOrSell().equals("0")) {
-                tvBuyer1.setText("卖家昵称");
-                tvBuyer2.setText("卖家账号");
+                tvBuyer1.setText(R.string.seller_nickname);
+                tvBuyer2.setText(R.string.seller_autonym);
                 tvBusinessName.setText(getOrderInfoById.getSellNick());
                 tvRemark.setText(getOrderInfoById.getSellDuoduoId());
             } else {
-                tvBuyer1.setText("买家昵称");
-                tvBuyer2.setText("买家实名");
+                tvBuyer1.setText(R.string.buyer_nickname);
+                tvBuyer2.setText(R.string.buyer_autonym);
                 tvBusinessName.setText(getOrderInfoById.getBuyNick());
                 tvRemark.setText(getOrderInfoById.getRealName());
             }
@@ -541,7 +541,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             .compose(RxSchedulers.ioObserver())
                             .compose(bindToLifecycle())
                             .subscribe(data -> {
-                                ToastUtils.showShort("放行成功");
+                                ToastUtils.showShort(getString(R.string.selling_success));
                                 finish();
                             }, PurchaseDetailsActivity.this::handleApiError);
                 } else {
@@ -556,14 +556,12 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             .compose(RxSchedulers.ioObserver())
                             .compose(bindToLifecycle())
                             .subscribe(data -> {
-                                ToastUtils.showShort("放行成功");
+                                ToastUtils.showShort(getString(R.string.selling_success));
                                 finish();
                             }, PurchaseDetailsActivity.this::handleApiError);
                 }
-
             }
         });
-
 
         editText.setFocusable(true);
         editText.setFocusableInTouchMode(true);

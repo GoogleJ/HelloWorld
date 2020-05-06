@@ -118,7 +118,6 @@ public class BuyCoinFragment extends BaseFragment {
 
     private void setPagerTitle(GetOTCSymbolInfo getOTCSymbolInfo) {
 
-
         buyViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
@@ -128,7 +127,7 @@ public class BuyCoinFragment extends BaseFragment {
                             getOTCSymbolInfo.getCurrencyList().get(position).getPrice(),
                             getOTCSymbolInfo.getCurrencyList().get(position).getRate(),
                             getOTCSymbolInfo.getCurrencyList().get(position).getBalance(),
-                            getCustomerIdentity.getIdentity(),
+                            getCustomerIdentity,
                             count,
                             getOTCSymbolInfo.getPayInfoList());
                 } else {

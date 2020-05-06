@@ -57,6 +57,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.minepage.wallet.EcologyActivity"></activity>
         <activity
             android:name=".ui.PayAliActivity"
             android:launchMode="singleTop"
@@ -94,15 +95,15 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.zxjk.moneyspace.ui.minepage.BillingMessageActivity"
+            android:name=".ui.minepage.BillingMessageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zxjk.moneyspace.ui.minepage.ReceiptTypeActivity"
+            android:name=".ui.minepage.ReceiptTypeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.walletpage.CNYUpConfirm1Activity"
             android:launchMode="singleTop"
