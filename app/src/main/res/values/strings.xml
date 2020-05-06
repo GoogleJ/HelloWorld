@@ -731,6 +731,7 @@
     <string name="toast11">未添加收收款方式</string>
     <string name="toast12">出售成功</string>
     <string name="pay_password">请输入支付密码</string>
+    <string name="centermoneyis">手续费%1$s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

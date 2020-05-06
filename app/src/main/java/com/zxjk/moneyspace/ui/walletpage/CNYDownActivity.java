@@ -26,6 +26,7 @@ import com.zxjk.moneyspace.utils.MoneyValueFilter;
 public class CNYDownActivity extends BaseActivity {
 
     private TextView tvBank;
+    private TextView tvCenterMoney;
     private EditText et;
 
     @SuppressLint("CheckResult")
@@ -39,9 +40,22 @@ public class CNYDownActivity extends BaseActivity {
         title.setText(R.string.tixian);
 
         tvBank = findViewById(R.id.tvBank);
+        tvCenterMoney = findViewById(R.id.tvCenterMoney);
+
         et = findViewById(R.id.et);
 
         et.setFilters((new InputFilter[]{new MoneyValueFilter().setDigits(2)}));
+
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getCnyWithdrawRate()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver())
+                .subscribe(s -> {
+                    tvCenterMoney.setVisibility(View.VISIBLE);
+                    tvCenterMoney.setText(getString(R.string.centermoneyis, s));
+                }, t -> {
+                });
 
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getCustomerBankInfo()

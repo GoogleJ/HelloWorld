@@ -814,5 +814,8 @@ public interface Api {
                                                         @Field("nonce") String nonce,
                                                         @Field("payPwd") String payPwd);
 
+    @POST("duoduo/walletBalance/getCnyWithdrawRate")
+    Observable<BaseResponse<String>> getCnyWithdrawRate();
+
 
 }
