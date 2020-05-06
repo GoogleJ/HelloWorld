@@ -38,7 +38,6 @@ public class AgreeGroupChatActivity extends BaseActivity {
     private TextView tvGroupName;
     private TextView joinGroupBtn;
 
-    private String groupName;
     private GroupResponse groupResponse;
     private boolean canJoin;
 
@@ -54,9 +53,8 @@ public class AgreeGroupChatActivity extends BaseActivity {
         groupHeader = findViewById(R.id.group_headers);
         tvGroupName = findViewById(R.id.group_chat_name);
         joinGroupBtn = findViewById(R.id.join_a_group_chat);
-        String inviterId = getIntent().getStringExtra("inviterId");
+
         String groupId = getIntent().getStringExtra("groupId");
-        groupName = getIntent().getStringExtra("groupName");
 
         boolean overtime = getIntent().getBooleanExtra("overtime", false);
         if (overtime) {
@@ -94,13 +92,13 @@ public class AgreeGroupChatActivity extends BaseActivity {
                     }
 
                     ImageUtil.loadGroupPortrait(groupHeader, s, 80, 2);
-                    tvGroupName.setText(getString(R.string.groupname_num, groupName, String.valueOf(list.size())));
+                    tvGroupName.setText(getString(R.string.groupname_num, groupResponse.getGroupInfo().getGroupNikeName(), String.valueOf(list.size())));
                     joinGroupBtn.setOnClickListener(v -> {
                         if (canJoin) {
                             ToastUtils.showShort(getString(R.string.group_max_number));
                             return;
                         }
-                        enterGroup(groupId, inviterId, Constant.userId);
+                        enterGroup(groupId, "", Constant.userId);
                     });
                 }, this::handleApiError);
     }
@@ -120,7 +118,6 @@ public class AgreeGroupChatActivity extends BaseActivity {
                     }
 
                     //发送进群灰条
-
                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(
                             getString(R.string.xxx_join_dissection, Constant.currentUser.getNick())
                     );
@@ -130,7 +127,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
                     Intent intent = new Intent(AgreeGroupChatActivity.this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    RongIM.getInstance().startGroupChat(AgreeGroupChatActivity.this, groupId, groupName);
+                    RongIM.getInstance().startGroupChat(AgreeGroupChatActivity.this, groupId, groupResponse.getGroupInfo().getGroupNikeName());
                 }, this::handleApiError);
     }
 }

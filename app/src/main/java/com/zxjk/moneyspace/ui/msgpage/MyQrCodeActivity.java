@@ -10,12 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.google.gson.Gson;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
-import com.zxjk.moneyspace.ui.minepage.scanuri.BaseUri;
+import com.zxjk.moneyspace.utils.AesUtil;
 import com.zxjk.moneyspace.utils.GlideUtil;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
@@ -31,7 +30,6 @@ public class MyQrCodeActivity extends BaseActivity {
     private TextView tvUserName;
     private TextView tvLocation;
     private ImageView ivHead;
-    private BaseUri uri = new BaseUri("action2");
     private String uri2Code;
 
     @Override
@@ -53,8 +51,7 @@ public class MyQrCodeActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         tv_title.setText(getString(R.string.qr_code));
-        uri.data = Constant.userId;
-        uri2Code = new Gson().toJson(uri);
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId);
 
         tvUserName.setText(Constant.currentUser.getNick());
         tvLocation.setText(Constant.currentUser.getAddress());

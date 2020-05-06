@@ -28,6 +28,7 @@ import com.zxjk.moneyspace.ui.WebActivity;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.minepage.scanuri.Action1;
 import com.zxjk.moneyspace.ui.minepage.scanuri.BaseUri;
+import com.zxjk.moneyspace.utils.AesUtil;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.GlideUtil;
 import com.zxjk.moneyspace.utils.TakePicUtil;
@@ -98,6 +99,8 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     public void onScanQRCodeSuccess(String result) {
         Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         rt.play();
+
+        if (parseShareResult(result)) return;
 
         if (!TextUtils.isEmpty(result) && result.contains("qr.alipay.com") || result.contains("QR.ALIPAY.COM")) {
             Intent intent = new Intent(this, PayAliActivity.class);
@@ -175,6 +178,36 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(l -> zxingview.startSpot());
         }
+    }
+
+    private boolean parseShareResult(String result) {
+        if (result.contains(Constant.APP_SHARE_URL)) {
+            try {
+                String[] shareStrings = result.split("\\?");
+
+                String decryptResult = AesUtil.getInstance().decrypt(shareStrings[1]);
+
+                if (decryptResult.contains("groupId")) {
+                    //groupQR
+                    String groupId = decryptResult.split("=")[1];
+
+                    Intent intent = new Intent(this, AgreeGroupChatActivity.class);
+                    intent.putExtra("groupId", groupId);
+
+                    startActivity(intent);
+                    finish();
+                } else {
+                    //userQR
+                    String userId = decryptResult.split("=")[1];
+                    CommonUtils.resolveFriendList(this, userId, true);
+                }
+            } catch (Exception e) {
+                return false;
+            }
+
+            return true;
+        }
+        return false;
     }
 
     @Override

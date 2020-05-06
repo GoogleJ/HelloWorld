@@ -11,7 +11,7 @@
     <string name="current_receive">(Claimed %1$s/%2$s)</string>
     <string name="group_card">[Group card]</string>
     <string name="transfer">[Transfer]</string>
-    <string name="xxx_join_dissection">%1$s enter the discussion group</string>
+    <string name="xxx_join_dissection">%1$s enter the group</string>
     <string name="update_group_limit_tips3">1. Group owners and administrators can upgrade the group size by paying. \ n2. After the group size is upgraded, the transfer group and the maximum number are retained.</string>
     <string name="m_transfer_pending_return_text">Receiver to confirm within 24th, if not returned back to you</string>
     <string name="m_transfer_info_caveat_text">Not confirmed within 24 hours, will be returned to sender </string>

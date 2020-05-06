@@ -474,7 +474,7 @@
     <string name="authening">认证中</string>
     <string name="change_socialname_to">社群改名为%1$s</string>
     <string name="authenfail">认证未通过</string>
-    <string name="xxx_join_dissection">\"%1$s\"加入了讨论组</string>
+    <string name="xxx_join_dissection">\"%1$s\"加入了本群</string>
     <string name="groupname_num" translatable="false">%1$s(%2$s)</string>
     <string name="total_xx_contact">共 %1$s 位联系人</string>
     <string name="xx_receive_xx_red">%1$s领取了%2$s的红包</string>

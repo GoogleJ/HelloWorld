@@ -13,8 +13,8 @@ public class AesUtil {
      * 此处使用AES-128-CBC加密模式，key需要为16位。
      */
 
-    private static String sKey = "kfyuiIUHigIUHIiI";
-    private static String ivParameter = "ikhgJvjhVJHfHGFf";
+    private static String sKey = "kfCCIUHigIUHAiI1";
+    private static String ivParameter = "ikhgJvAAAAfHGAFf";
     private static final String ENCODINGFORMAT = "utf-8";
     private static AesUtil instance = null;
 
@@ -58,36 +58,6 @@ public class AesUtil {
     }
 
     /**
-     * 加密
-     *
-     * @param sSrc
-     * @return
-     */
-    public String encrypt(String sSrc) {
-        try {
-            return encrypt(sSrc, ENCODINGFORMAT, sKey, ivParameter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 解密
-     *
-     * @param sSrc
-     * @return
-     */
-    public String decrypt(String sSrc) {
-        try {
-            return decrypt(sSrc, ENCODINGFORMAT, sKey, ivParameter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
      * 解密
      *
      * @param sSrc
@@ -115,5 +85,35 @@ public class AesUtil {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 加密
+     *
+     * @param sSrc
+     * @return
+     */
+    public String encrypt(String sSrc) {
+        try {
+            return encrypt(sSrc, ENCODINGFORMAT, sKey, ivParameter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 解密
+     *
+     * @param sSrc
+     * @return
+     */
+    public String decrypt(String sSrc) {
+        try {
+            return decrypt(sSrc, ENCODINGFORMAT, sKey, ivParameter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

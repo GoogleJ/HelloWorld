@@ -12,13 +12,12 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.google.gson.Gson;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.GroupResponse;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
-import com.zxjk.moneyspace.ui.minepage.scanuri.BaseUri;
+import com.zxjk.moneyspace.utils.AesUtil;
 import com.zxjk.moneyspace.utils.ImageUtil;
 import com.zxjk.moneyspace.utils.SaveImageUtil;
 
@@ -35,7 +34,6 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
 public class GroupQRActivity extends BaseActivity {
-    private BaseUri uri = new BaseUri("action3");
     private String uri2Code;
 
     private CircleImageView ivHead;
@@ -56,11 +54,7 @@ public class GroupQRActivity extends BaseActivity {
 
         GroupResponse data = (GroupResponse) getIntent().getSerializableExtra("data");
 
-        uri.data = new GroupQRData();
-        ((GroupQRData) uri.data).groupId = data.getGroupInfo().getId();
-        ((GroupQRData) uri.data).inviterId = Constant.userId;
-        ((GroupQRData) uri.data).groupName = data.getGroupInfo().getGroupNikeName();
-        uri2Code = new Gson().toJson(uri);
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("groupId=" + data.getGroupInfo().getId());
 
         ((TextView) findViewById(R.id.tv_title)).setText(R.string.group_qr);
 
