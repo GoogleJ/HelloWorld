@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,6 +70,7 @@ public class SelfSelectionFragment extends BaseFragment {
     private TranslateAnimation dismissAnimation;
     private List<GetBuyList> getBuyList = new ArrayList<>();
     private PayPsdInputView editText;
+    private View inflate;
 
     private int count;
     private int page = 0;
@@ -211,6 +213,13 @@ public class SelfSelectionFragment extends BaseFragment {
                 getSellList();
             }
         }, recyclerView);
+
+        inflate = LayoutInflater.from(getActivity()).inflate(R.layout.empty_publicgroup, null, false);
+        TextView tv = inflate.findViewById(R.id.tv);
+        ImageView iv = inflate.findViewById(R.id.iv);
+        iv.setImageResource(R.drawable.ic_empty_orders);
+        tv.setText(getString(R.string.no_data));
+
     }
 
     @SuppressLint("CheckResult")
@@ -242,6 +251,9 @@ public class SelfSelectionFragment extends BaseFragment {
                         } else {
                             adapter.loadMoreEnd(false);
                         }
+                    }
+                    if(s.size() == 0){
+                        adapter.setEmptyView(inflate);
                     }
                 }, this::handleApiError);
     }
@@ -275,6 +287,9 @@ public class SelfSelectionFragment extends BaseFragment {
                         } else {
                             adapter.loadMoreEnd(false);
                         }
+                    }
+                    if(s.size() == 0){
+                        adapter.setEmptyView(inflate);
                     }
                 }, this::handleApiError);
     }
@@ -595,7 +610,7 @@ public class SelfSelectionFragment extends BaseFragment {
                     bundle.putString("customerIdentity", customerIdentity);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                });
+                }, this::handleApiError);
     }
 
     @SuppressLint("CheckResult")
@@ -663,6 +678,22 @@ public class SelfSelectionFragment extends BaseFragment {
 
         public void setPayType(String payType) {
             this.payType = payType;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(swipeRefreshLayout != null){
+            swipeRefreshLayout.setRefreshing(true);
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+                page = 0;
+                if (count == 0) {
+                    getBuyList();
+                } else {
+                    getSellList();
+                }
+            });
         }
     }
 }
