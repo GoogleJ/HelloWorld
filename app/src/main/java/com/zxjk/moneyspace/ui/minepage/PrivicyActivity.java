@@ -37,7 +37,7 @@ public class PrivicyActivity extends BaseActivity {
         switch2 = findViewById(R.id.switch2);
         switch3 = findViewById(R.id.switch3);
 
-        if (Constant.currentUser.getIsShowRealname().equals("1")) {
+        if ("1".equals(Constant.currentUser.getIsShowRealname())) {
             switch2.setChecked(false);
         } else {
             switch2.setChecked(true);
@@ -49,14 +49,14 @@ public class PrivicyActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
-                    Constant.currentUser.setIsShowRealname(Constant.currentUser.getIsShowRealname().equals("1") ? "0" : "1");
+                    Constant.currentUser.setIsShowRealname("1".equals(Constant.currentUser.getIsShowRealname()) ? "0" : "1");
                     MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                 }, this::handleApiError));
     }
 
     @Override
     public void handleApiError(Throwable throwable) {
-        if (Constant.currentUser.getIsShowRealname().equals("1")) {
+        if ("1".equals(Constant.currentUser.getIsShowRealname())) {
             switch2.setChecked(false);
         } else {
             switch2.setChecked(true);
