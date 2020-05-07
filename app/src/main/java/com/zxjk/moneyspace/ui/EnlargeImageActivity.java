@@ -44,11 +44,15 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
+import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.minepage.scanuri.Action1;
 import com.zxjk.moneyspace.ui.minepage.scanuri.BaseUri;
+import com.zxjk.moneyspace.ui.msgpage.AgreeGroupChatActivity;
+import com.zxjk.moneyspace.ui.msgpage.GroupQRActivity;
 import com.zxjk.moneyspace.ui.msgpage.TransferActivity;
+import com.zxjk.moneyspace.utils.AesUtil;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.SaveImageUtil;
 
@@ -165,6 +169,16 @@ public class EnlargeImageActivity extends BaseActivity {
 
             @SuppressLint("CheckResult")
             private void parseResult(String result) {
+                if (parseShareResult(result)) return;
+
+                if (!TextUtils.isEmpty(result) && result.contains("qr.alipay.com") || result.contains("QR.ALIPAY.COM")) {
+                    Intent intent = new Intent(EnlargeImageActivity.this, PayAliActivity.class);
+                    intent.putExtra("qrdata", result);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+
                 String regexUrl = "^https?:/{2}\\w.+$";
                 if (RegexUtils.isMatch(regexUrl, result)) {
                     Intent intent = new Intent(EnlargeImageActivity.this, WebActivity.class);
@@ -173,6 +187,7 @@ public class EnlargeImageActivity extends BaseActivity {
                     finish();
                     return;
                 }
+
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     Object schem = jsonObject.opt("schem");
@@ -181,12 +196,13 @@ public class EnlargeImageActivity extends BaseActivity {
                     }
 
                     Object action = jsonObject.opt("action");
+
                     if (action.equals("action1")) {
                         BaseUri<Action1> uri = new Gson().fromJson(result, new TypeToken<BaseUri<Action1>>() {
                         }.getType());
                         Intent intent = new Intent(EnlargeImageActivity.this, TransferActivity.class);
                         intent.putExtra("fromScan", true);
-                        intent.putExtra("money", uri.data.money);
+                        intent.putExtra("betMoney", uri.data.money);
                         intent.putExtra("userId", uri.data.userId);
                         intent.putExtra("symbol", uri.data.symbol);
                         intent.putExtra("logo", uri.data.logo);
@@ -195,16 +211,60 @@ public class EnlargeImageActivity extends BaseActivity {
                     } else if (action.equals("action2")) {
                         BaseUri<String> uri = new Gson().fromJson(result, new TypeToken<BaseUri<String>>() {
                         }.getType());
+
                         String userId = uri.data;
-                        CommonUtils.resolveFriendList(EnlargeImageActivity.this, userId);
+
+                        if (userId.equals(Constant.userId)) {
+                            //扫到了自己的二维码
+                            finish();
+                            return;
+                        }
+                        CommonUtils.resolveFriendList(EnlargeImageActivity.this, userId, true);
                     } else if (action.equals("action3")) {
-                        ToastUtils.showShort(R.string.decode_qr_failure);
+                        BaseUri<GroupQRActivity.GroupQRData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<GroupQRActivity.GroupQRData>>() {
+                        }.getType());
+                        Intent intent = new Intent(EnlargeImageActivity.this, AgreeGroupChatActivity.class);
+                        intent.putExtra("inviterId", uri.data.inviterId);
+                        intent.putExtra("groupId", uri.data.groupId);
+                        intent.putExtra("groupName", uri.data.groupName);
+                        startActivity(intent);
+                        finish();
                     }
                 } catch (Exception e) {
                     ToastUtils.showShort(R.string.decode_qr_failure);
                 }
             }
         }.execute();
+    }
+
+    private boolean parseShareResult(String result) {
+        if (result.contains(Constant.APP_SHARE_URL)) {
+            try {
+                String[] shareStrings = result.split("\\?");
+
+                String decryptResult = AesUtil.getInstance().decrypt(shareStrings[1]);
+
+                if (decryptResult.contains("groupId")) {
+                    //groupQR
+                    String groupId = decryptResult.split("=")[1];
+
+                    Intent intent = new Intent(this, AgreeGroupChatActivity.class);
+                    intent.putExtra("groupId", groupId);
+
+                    startActivity(intent);
+                    finish();
+                } else {
+                    //userQR
+                    String userId = decryptResult.split("=")[1];
+                    CommonUtils.resolveFriendList(this, userId, true);
+                }
+            } catch (Exception e) {
+                return false;
+            }
+
+            return true;
+        }
+        return false;
     }
 
     private float getInitImageScale(Bitmap bitmap) {
