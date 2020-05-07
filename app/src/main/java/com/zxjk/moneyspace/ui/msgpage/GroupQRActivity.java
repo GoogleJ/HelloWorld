@@ -11,7 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.ToastUtils;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.response.GroupResponse;
@@ -19,7 +20,7 @@ import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.utils.AesUtil;
 import com.zxjk.moneyspace.utils.ImageUtil;
-import com.zxjk.moneyspace.utils.SaveImageUtil;
+import com.zxjk.moneyspace.utils.ShareUtil;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
@@ -62,7 +63,7 @@ public class GroupQRActivity extends BaseActivity {
 
         getCodeBitmap();
 
-        save2Phone();
+        share2Wechat();
 
         loadHead(data);
 
@@ -71,22 +72,14 @@ public class GroupQRActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
 
-    private void save2Phone() {
-        getPermisson(findViewById(R.id.savetophone), g -> {
-            if (bitmap == null) {
-                return;
-            }
-
-            ivRecipetImg.buildDrawingCache();
-
-            SaveImageUtil.get().savePic(ivRecipetImg.getDrawingCache(), success -> {
-                if (success) {
-                    ToastUtils.showShort(R.string.savesucceed);
-                    return;
-                }
-                ToastUtils.showShort(R.string.savefailed);
-            });
-        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+    private void share2Wechat() {
+        getPermisson(findViewById(R.id.savetophone), granted -> {
+            UMWeb umWeb = new UMWeb(uri2Code);
+            umWeb.setTitle("入群通知");
+            umWeb.setDescription("快加入我们的MoneySpace群");
+            umWeb.setThumb(new UMImage(this, R.drawable.ic_shareeeee));
+            ShareUtil.shareLink(this, umWeb);
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
     private void loadHead(GroupResponse data) {

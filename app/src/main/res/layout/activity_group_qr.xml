@@ -187,9 +187,9 @@
                     android:id="@+id/savetophone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_groupqr_save"
+                    android:drawableTop="@drawable/ic_groupqr_wechat"
                     android:drawablePadding="10dp"
-                    android:text="@string/savetophone"
+                    android:text="@string/share2wechat"
                     android:textColor="@color/white" />
 
             </LinearLayout>
