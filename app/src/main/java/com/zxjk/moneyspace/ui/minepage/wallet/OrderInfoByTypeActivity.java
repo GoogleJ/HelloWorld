@@ -18,7 +18,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.moneyspace.Constant;
@@ -62,6 +64,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     private int page = 0;
     private int numsPerPage = 10;
     private String customerIdentity;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     private void initView() {
         rlOrderInfoByType = findViewById(R.id.rl_order_info_by_type);
         tvScreening = findViewById(R.id.tv_screening);
+        swipeRefreshLayout = findViewById(R.id.refresh_layout);
         customerIdentity = getIntent().getStringExtra("customerIdentity");
         findViewById(R.id.rl_back).setOnClickListener(v -> {
             finish();
@@ -84,6 +88,11 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     }
 
     private void initData() {
+        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            onRefreshLayout();
+        });
         onRefreshLayout();
         tvScreening.setOnClickListener(v -> {
 
@@ -163,10 +172,13 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                                 }
                                 onRefreshLayout();
                             }, false)
-                            .withClick(R.id.tv_determine, v1 -> {
-                                onRefreshLayout();
-                            }, true)
+                            .withClick(R.id.tv_determine, v1 -> OrderInfoByTypeActivity.this.onRefreshLayout(), true)
                             .withClick(R.id.view1, null, true)
+                            .withClick(R.id.tv_screening, v12 -> {
+                                OrderPop.dismiss();
+                            }).withClick(R.id.rl_back, v13 -> {
+                                OrderPop.dismiss();
+                            })
                     ).show();
             if (side.equals("0")) {
                 CheckBox radio1 = OrderPop.findViewById(R.id.radio1);
@@ -352,15 +364,16 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                         Intent intent;
                         String orderId;
                         if (TextUtils.isEmpty(s.getBothOrderId())) {
-
                             if (listBean.getBuyOrSell().equals("0")) {
                                 orderId = listBean.getBuyOrderId();
                             } else {
                                 orderId = listBean.getSellOrderId();
                             }
+
                             if (!listBean.getStatus().equals("8")) {
                                 intent = new Intent(this, PurchaseDetailsActivity.class);
                                 s.setBuyOrSell(listBean.getBuyOrSell());
+                                s.setIsSystems(customerIdentity);
                                 intent.putExtra("GetOrderInfoById", s);
                                 intent.putExtra("orderId", orderId);
                                 intent.putExtra("count", listBean.getBuyOrSell());
@@ -416,7 +429,8 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                 .getOrderInfoByType(timestamp, state, side)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.ioObserver())
+                .doOnTerminate(() -> (swipeRefreshLayout).setRefreshing(false))
                 .subscribe(d ->
                         {
                             adapter.setNewData(d);

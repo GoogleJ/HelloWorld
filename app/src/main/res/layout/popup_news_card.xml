@@ -86,7 +86,6 @@
                 android:text="@string/qq"
                 android:textColor="@color/textcolor3" />
 
-
             <TextView
                 android:id="@+id/tv5"
                 android:drawableTop="@drawable/ic_invite_share5"

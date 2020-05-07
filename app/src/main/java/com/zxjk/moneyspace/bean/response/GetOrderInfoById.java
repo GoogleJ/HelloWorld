@@ -52,7 +52,15 @@ public class GetOrderInfoById implements Serializable {
     private String sellPayType;
     private String payPwd;
     private String realName;
+    private String remainingAmount;
 
+    public String getRemainingAmount() {
+        return remainingAmount;
+    }
+
+    public void setRemainingAmount(String remainingAmount) {
+        this.remainingAmount = remainingAmount;
+    }
 
     public String getBuyId() {
         return buyId;

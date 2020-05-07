@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
 
+import com.alibaba.security.biometrics.build.G;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
@@ -74,6 +75,10 @@ public class PurchaseDetailsActivity extends BaseActivity {
     private TextView tvBuyer2;
     private TextView tvAppeal;
     private TextView tvDispatchRelease;
+    private TextView tvAppealResule;
+    private TextView tv2;
+    private TextView tvRemainingAmount;
+    private LinearLayout llRemainingAmount;
 
     private String sign;
     private String timestamp;
@@ -119,7 +124,10 @@ public class PurchaseDetailsActivity extends BaseActivity {
         tvBuyer2 = findViewById(R.id.tv_buyer2);
         tvAppeal = findViewById(R.id.tv_appeal);
         tvDispatchRelease = findViewById(R.id.tv_dispatch_release);
-
+        tvAppealResule = findViewById(R.id.tv_appeal_result);
+        tv2 = findViewById(R.id.tv2);
+        tvRemainingAmount = findViewById(R.id.tv_remaining_amount);
+        llRemainingAmount = findViewById(R.id.ll_remaining_amount);
         findViewById(R.id.rl_back).setOnClickListener(v ->
                 finish()
         );
@@ -155,9 +163,12 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvPayment.setVisibility(View.INVISIBLE);
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.order_completion));
                 tvCancelTheOrder.setVisibility(View.GONE);
+                llRemainingAmount.setVisibility(View.VISIBLE);
+                tvRemainingAmount.setText(getOrderInfoById.getRemainingAmount() + " " + getOrderInfoById.getCurrency());
                 tvBuyer1.setText(R.string.buyer_nickname);
                 tvBuyer2.setText(R.string.buyer_autonym);
                 tvRemark.setText(getOrderInfoById.getRealName());
+                llUserConfirmDeposit.setVisibility(View.GONE);
             } else if (getOrderInfoById.getStatus().equals("1")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, getString(R.string.has_been_cancelled));
                 tvPayment.setVisibility(View.INVISIBLE);
@@ -166,6 +177,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvBuyer1.setText(R.string.limit);
                 tvBusinessName.setText(getOrderInfoById.getMinNum() + "-" + getOrderInfoById.getMaxNum());
                 findViewById(R.id.ll_nick).setVisibility(View.GONE);
+                tv2.setText("取消数量");
                 if (getOrderInfoById.getBuyOrSell().equals("0")) {
                     tvBuyer1.setText(R.string.seller_nickname);
                     tvBuyer2.setText(R.string.seller_autonym);
@@ -177,8 +189,11 @@ public class PurchaseDetailsActivity extends BaseActivity {
             } else if (getOrderInfoById.getStatus().equals("9")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.in_transaction));
                 tvPayment.setVisibility(View.INVISIBLE);
-
+                llRemainingAmount.setVisibility(View.VISIBLE);
+                tvRemainingAmount.setText(getOrderInfoById.getRemainingAmount() + " " + getOrderInfoById.getCurrency());
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.for_the_payment));
+                llUserConfirmDeposit.setVisibility(View.GONE);
+                tvCancelTheOrder.setVisibility(View.GONE);
             }
         } else {
             if (getOrderInfoById.getStatus().equals("3")) {
@@ -212,7 +227,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 long l1 = (System.currentTimeMillis() - Long.parseLong(getOrderInfoById.getCreateTime())) / 1000;
                 long total = ((900 - l1) <= 0 ? 0 : (900 - l1)) + 15;
                 Observable.interval(0, 1, TimeUnit.SECONDS)
-                        .take(total + 10)
+                        .take(total)
                         .observeOn(AndroidSchedulers.mainThread())
                         .compose(bindToLifecycle())
                         .subscribe(l -> {
@@ -235,12 +250,13 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     tvCancelTheOrder.setVisibility(View.VISIBLE);
                     llUserConfirmDeposit.setVisibility(View.GONE);
                 } else {
-                    tvCancelTheOrder.setVisibility(View.GONE);
+                    findViewById(R.id.tv1).setVisibility(View.GONE);
+                    tvCancelTheOrder.setVisibility(View.VISIBLE);
                     llUserConfirmDeposit.setVisibility(View.VISIBLE);
                     long l1 = (System.currentTimeMillis() - Long.parseLong(getOrderInfoById.getCreateTime())) / 1000;
                     long total = ((900 - l1) <= 0 ? 0 : (900 - l1)) + 15;
                     Observable.interval(0, 1, TimeUnit.SECONDS)
-                            .take(total + 10)
+                            .take(total)
                             .observeOn(AndroidSchedulers.mainThread())
                             .compose(bindToLifecycle())
                             .subscribe(l -> {
@@ -261,19 +277,21 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             }, t -> {
                             });
                     setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.for_the_payment));
-                    if (getOrderInfoById.getBuyOrSell().equals("0")) {
-                        tvBuyer1.setText(R.string.seller_nickname);
-                        tvBuyer2.setText(R.string.seller_autonym);
-                        tvBusinessName.setText(getOrderInfoById.getRealName());
-                    } else {
-                        tvBuyer1.setText(R.string.buyer_nickname);
-                        tvBuyer2.setText(R.string.buyer_autonym);
-                        tvBusinessName.setText(getOrderInfoById.getBuyNick());
-                    }
+                    llUserConfirmDeposit.setVisibility(View.GONE);
+                }
+                if (getOrderInfoById.getBuyOrSell().equals("0")) {
+                    tvBuyer1.setText(R.string.seller_nickname);
+                    tvBuyer2.setText(R.string.seller_autonym);
+                    tvBusinessName.setText(getOrderInfoById.getRealName());
+                } else {
+                    tvBuyer1.setText(R.string.buyer_nickname);
+                    tvBuyer2.setText(R.string.buyer_autonym);
+                    tvBusinessName.setText(getOrderInfoById.getBuyNick());
                 }
             } else if (getOrderInfoById.getStatus().equals("1")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, getString(R.string.has_been_cancelled));
                 tvPayment.setVisibility(View.GONE);
+
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.no_payment));
                 tvCancelTheOrder.setVisibility(View.VISIBLE);
                 tvCancelTheOrder.setText(getString(R.string.buyer_cancel));
@@ -296,10 +314,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvCancelTheOrder.setVisibility(View.VISIBLE);
                 tvCancelTheOrder.setText(R.string.overtime_cancel);
             } else if (getOrderInfoById.getStatus().equals("4")) {
-                TextView tvAppeal = findViewById(R.id.tv_appeal);
-                tvAppeal.setBackgroundColor(getResources().getColor(R.color.color_yellow_red, null));
-                tvAppeal.setTextColor(getResources().getColor(R.color.black, null));
-                tvAppeal.setAlpha(1);
+
                 if (getOrderInfoById.getIsSystems().equals("0")) {
                     setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.coin_timeout2));
                     tvPayment.setText(R.string.the_complaint);
@@ -310,17 +325,28 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.not_to_put_money));
                     tvPayment.setVisibility(View.GONE);
                     llCancelTheOrder.setVisibility(View.GONE);
-                    llUserConfirmDeposit.setVisibility(View.VISIBLE);
+                    llUserConfirmDeposit.setVisibility(View.GONE);
+                    findViewById(R.id.tv_appeal).setVisibility(View.GONE);
+                    tvPayment.setVisibility(View.VISIBLE);
+                    tvPayment.setText(R.string.the_complaint);
                 }
 
             } else if (getOrderInfoById.getStatus().equals("5")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_accelerate, null), tvPaymentStatus, getString(R.string.the_appeal_to_complete));
                 tvPayment.setVisibility(View.GONE);
                 llCancelTheOrder.setVisibility(View.GONE);
+                llUserConfirmDeposit.setVisibility(View.GONE);
+                findViewById(R.id.ll_appeal_result).setVisibility(View.VISIBLE);
+                if (getOrderInfoById.getAppealResult().equals("0")) {
+                    tvAppealResule.setText("已放币");
+                } else {
+                    tvAppealResule.setText("已退还卖方余额钱包");
+                }
             } else if (getOrderInfoById.getStatus().equals("6")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.in_the_complaint));
                 tvPayment.setVisibility(View.GONE);
                 llCancelTheOrder.setVisibility(View.GONE);
+                llUserConfirmDeposit.setVisibility(View.GONE);
             } else if (getOrderInfoById.getStatus().equals("7")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_accelerate, null), tvPaymentStatus, getString(R.string.complete_the_transaction));
                 tvPayment.setVisibility(View.GONE);
@@ -375,12 +401,17 @@ public class PurchaseDetailsActivity extends BaseActivity {
 //        tvBusinessName.setText(getOrderInfoById.getSellNick());
 
         tvPayment.setOnClickListener(v -> {
-            Intent intent = new Intent(this, OrderDetailsActivity.class);
 
-            intent.putExtra("GetOrderInfoById", getOrderInfoById);
-            intent.putExtra("customerIdentity", customerIdentity);
-            startActivity(intent);
-            finish();
+                Intent intent;
+                if (tvPayment.getText().equals("申诉")) {
+                    intent = new Intent(this, TheAppealActivity.class);
+                } else {
+                    intent = new Intent(this, OrderDetailsActivity.class);
+                }
+                intent.putExtra("GetOrderInfoById", getOrderInfoById);
+                intent.putExtra("customerIdentity", customerIdentity);
+                startActivity(intent);
+                finish();
         });
 
         tvTheOrderNumber.setOnClickListener(v -> {
@@ -400,7 +431,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
         tvAppeal.setOnClickListener(v -> {
             Intent intent;
-            if (getOrderInfoById.getBuyOrSell().equals("1") && getOrderInfoById.getStatus().equals("3") ||getOrderInfoById.getStatus().equals("4")) {
+            if (getOrderInfoById.getBuyOrSell().equals("1") && getOrderInfoById.getStatus().equals("3") || getOrderInfoById.getStatus().equals("4")) {
 
                 intent = new Intent(this, TheAppealActivity.class);
                 intent.putExtra("GetOrderInfoById", getOrderInfoById);

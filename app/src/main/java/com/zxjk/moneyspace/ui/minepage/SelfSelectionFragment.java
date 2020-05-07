@@ -680,5 +680,11 @@ public class SelfSelectionFragment extends BaseFragment {
             this.payType = payType;
         }
     }
-    
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        page = 0;
+        initData();
+    }
 }
