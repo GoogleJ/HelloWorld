@@ -57,7 +57,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.minepage.wallet.EcologyActivity"></activity>
+        <activity android:name=".ui.minepage.LanguageActivity"></activity>
+        <activity android:name=".ui.minepage.wallet.EcologyActivity" />
         <activity
             android:name=".ui.PayAliActivity"
             android:launchMode="singleTop"
@@ -467,10 +468,10 @@
         <activity
             android:name=".ui.BrowsableActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" >
-
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -478,7 +479,6 @@
                     android:host="web"
                     android:scheme="ms" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.WelcomeActivity"

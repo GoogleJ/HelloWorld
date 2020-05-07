@@ -195,10 +195,12 @@
 
             </RelativeLayout>
 
+            <include layout="@layout/layout_line" />
+
             <RelativeLayout
                 android:id="@+id/rl_languageSwitch"
                 style="@style/RLayoutStyle"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     style="@style/textStyle"

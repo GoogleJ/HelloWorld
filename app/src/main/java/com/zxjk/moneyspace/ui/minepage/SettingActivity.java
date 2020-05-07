@@ -188,12 +188,10 @@ public class SettingActivity extends BaseActivity {
         //收款信息
         findViewById(R.id.rl_collectionInformation).setOnClickListener(v -> {
             String isAuthentication = Constant.currentUser.getIsAuthentication();
-            if ("0".equals(isAuthentication)) {
-                startActivity(new Intent(SettingActivity.this, BillingMessageActivity.class));
-            } else if ("2".equals(isAuthentication)) {
+            if ("2".equals(isAuthentication)) {
                 ToastUtils.showShort(R.string.waitAuthentication);
             } else {
-                ToastUtils.showShort(R.string.notAuthentication);
+                startActivity(new Intent(SettingActivity.this, BillingMessageActivity.class));
             }
         });
         //意见反馈
@@ -204,7 +202,7 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(SettingActivity.this, AboutActivity.class)));
         //语言切换
         findViewById(R.id.rl_languageSwitch).setOnClickListener(v -> {
-
+            startActivity(new Intent(SettingActivity.this, LanguageActivity.class));
         });
     }
 

@@ -5,12 +5,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
+import com.zxjk.moneyspace.utils.LanguageUtil;
 
 public class SaasLoginSelectActivity extends BaseActivity {
+    private TextView tvLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,16 @@ public class SaasLoginSelectActivity extends BaseActivity {
             getWindow().setAttributes(lp);
         }
         setContentView(R.layout.activity_saas_login_select);
+        tvLanguage = findViewById(R.id.tv_language);
+        tvLanguage.setOnClickListener(v -> {
+            if ("english".equals(LanguageUtil.getInstance(this).getCurrentLanguage())) {
+                LanguageUtil.getInstance(this).changeLanguage(LanguageUtil.CHINESE);
+            } else {
+                LanguageUtil.getInstance(this).changeLanguage(LanguageUtil.ENGLISH);
+            }
+            finish();
+            startActivity(new Intent(this, SaasLoginSelectActivity.class));
+        });
     }
 
     public void phone(View view) {

@@ -15,9 +15,33 @@
         tools:context=".ui.SaasLoginSelectActivity">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_white_oval_border"
+                android:paddingStart="12dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:text="@string/language_switch"
+                android:textColor="#6D7278" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
             <ImageView
@@ -62,11 +86,11 @@
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="40dp"
             android:background="@drawable/shape_theme11"
             android:gravity="center"
             android:onClick="email"
             android:text="@string/login_byemail"
-            android:layout_marginBottom="40dp"
             android:textColor="#333333"
             android:textSize="18sp"
             android:textStyle="bold" />
