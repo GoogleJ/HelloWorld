@@ -680,20 +680,5 @@ public class SelfSelectionFragment extends BaseFragment {
             this.payType = payType;
         }
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(swipeRefreshLayout != null){
-            swipeRefreshLayout.setRefreshing(true);
-            swipeRefreshLayout.setOnRefreshListener(() -> {
-                page = 0;
-                if (count == 0) {
-                    getBuyList();
-                } else {
-                    getSellList();
-                }
-            });
-        }
-    }
+    
 }
