@@ -24,6 +24,7 @@ import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.ui.widget.MsgTitleView;
+import com.zxjk.moneyspace.utils.ClickUtils;
 import com.zxjk.moneyspace.utils.CommonUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -45,6 +46,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
     private TextView tvSpeedy;
     private LinearLayout llOneKey;
     private ImageView imgOrderList;
+    private static int ONCLICKID = 1;
     private int mTitles[] = {
             R.string.to_buy, R.string.to_sell};
 
@@ -90,7 +92,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initIndicator(int type) {
-        final int finalType =type;
+        final int finalType = type;
         CommonNavigator navigator = new CommonNavigator(this);
         navigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
@@ -105,7 +107,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
                 titleView.getTitleView().setText(mTitles[index]);
                 titleView.getBadgeView().setVisibility(View.INVISIBLE);
 
-                if (finalType  == 1) {
+                if (finalType == 1) {
                     titleView.setupNormalColor(Color.parseColor("#6D7278"));
                     titleView.setupSelectColor(Color.parseColor("#ffffff"));
                 } else {
@@ -120,7 +122,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setMode(MODE_WRAP_CONTENT);
-                indicator.setYOffset(-CommonUtils.dip2px(context,4));
+                indicator.setYOffset(-CommonUtils.dip2px(context, 4));
                 return indicator;
             }
         });
@@ -174,54 +176,60 @@ public class OneKeyBuyCoinActivity extends BaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_speedy:
-                if (customerIdentity.equals("1")) {
-                    ToastUtils.showShort(R.string.developing);
-                    return;
-                }
-                if (tvSpeedy.getBackground() != null) {
-                    return;
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-                }
-                initIndicator(1);
-
                 ImageView img = findViewById(R.id.img_back);
-                img.setColorFilter(getResources().getColor(R.color.main_list_divider, null));
-                imgOrderList.setImageResource(R.drawable.ic_end_order2);
-                llOneKey.setBackgroundColor(Color.parseColor("#272E3F"));
-                tvSelfSelection.setBackground(null);
-                tvSpeedy.setBackground(getResources().getDrawable(R.drawable.shape_self_select_backgroud, null));
-                tvSpeedy.setTextColor(Color.parseColor("#FFFFFF"));
-                tvSelfSelection.setTextColor(Color.parseColor("#6D7278"));
-                getCustomerIdentity(0);
-                break;
+                if (!ClickUtils.isFastDoubleClick(ONCLICKID)) {
+                    if (customerIdentity.equals("1")) {
+                        ToastUtils.showShort(R.string.developing);
+                        return;
+                    }
+                    if (tvSpeedy.getBackground() != null) {
+                        return;
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                    }
+                    initIndicator(1);
+
+
+                    img.setColorFilter(getResources().getColor(R.color.main_list_divider, null));
+                    imgOrderList.setImageResource(R.drawable.ic_end_order2);
+                    llOneKey.setBackgroundColor(Color.parseColor("#272E3F"));
+                    tvSelfSelection.setBackground(null);
+                    tvSpeedy.setBackground(getResources().getDrawable(R.drawable.shape_self_select_backgroud, null));
+                    tvSpeedy.setTextColor(Color.parseColor("#FFFFFF"));
+                    tvSelfSelection.setTextColor(Color.parseColor("#6D7278"));
+                    getCustomerIdentity(0);
+                    break;
+                }
             case R.id.tv_self_selection:
-                if (customerIdentity.equals("1")) {
-                    ToastUtils.showShort(R.string.developing);
-                    return;
-                }
-                if (tvSelfSelection.getBackground() != null) {
-                    return;
+                if (!ClickUtils.isFastDoubleClick(ONCLICKID)) {
+                    if (customerIdentity.equals("1")) {
+                        ToastUtils.showShort(R.string.developing);
+                        return;
+                    }
+                    if (tvSelfSelection.getBackground() != null) {
+                        return;
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    }
+
+                    initIndicator(2);
+
+                    img = findViewById(R.id.img_back);
+                    img.setColorFilter(Color.parseColor("#272E3F"));
+                    imgOrderList.setImageResource(R.drawable.ic_end_order);
+                    llOneKey.setBackgroundColor(Color.parseColor("#F9F9F9"));
+                    tvSelfSelection.setBackground(getResources().getDrawable(R.drawable.shape_self_select2, null));
+                    tvSpeedy.setBackground(null);
+                    tvSpeedy.setTextColor(Color.parseColor("#6D7278"));
+                    tvSelfSelection.setTextColor(Color.parseColor("#272E3F"));
+                    getCustomerIdentity(1);
+                    break;
                 }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                }
-
-                initIndicator(2);
-
-                img = findViewById(R.id.img_back);
-                img.setColorFilter(Color.parseColor("#272E3F"));
-                imgOrderList.setImageResource(R.drawable.ic_end_order);
-                llOneKey.setBackgroundColor(Color.parseColor("#F9F9F9"));
-                tvSelfSelection.setBackground(getResources().getDrawable(R.drawable.shape_self_select2, null));
-                tvSpeedy.setBackground(null);
-                tvSpeedy.setTextColor(Color.parseColor("#6D7278"));
-                tvSelfSelection.setTextColor(Color.parseColor("#272E3F"));
-                getCustomerIdentity(1);
-                break;
         }
     }
 }

@@ -22,7 +22,7 @@
             android:drawableStart="@drawable/ic_wechat"
             android:drawablePadding="15dp"
             android:gravity="center"
-            android:text="微信" />
+            android:text="@string/wechat" />
 
         <TextView
             android:id="@+id/tv_perfection_wechat"
@@ -62,7 +62,7 @@
             android:drawableStart="@drawable/ic_alipay"
             android:drawablePadding="15dp"
             android:gravity="center"
-            android:text="支付宝" />
+            android:text="@string/pay_treasure" />
 
         <TextView
             android:id="@+id/tv_perfection_alipay"
@@ -102,7 +102,7 @@
             android:drawableStart="@drawable/ic_bank"
             android:drawablePadding="15dp"
             android:gravity="center"
-            android:text="银行卡" />
+            android:text="@string/bank_card" />
 
         <TextView
             android:id="@+id/tv_perfection_bank"

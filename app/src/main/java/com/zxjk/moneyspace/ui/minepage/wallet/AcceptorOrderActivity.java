@@ -172,7 +172,7 @@ public class AcceptorOrderActivity extends BaseActivity {
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(d ->
                                 {
-                                    ToastUtils.showShort("挂单取消成功！");
+                                    ToastUtils.showShort(getString(R.string.the_order_was_cancelled_successfully));
                                     finish();
                                 },
                                 this::handleApiError);
@@ -187,7 +187,7 @@ public class AcceptorOrderActivity extends BaseActivity {
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(d ->
                                 {
-                                    ToastUtils.showShort("挂单取消成功！");
+                                    ToastUtils.showShort(getString(R.string.the_order_was_cancelled_successfully));
                                     finish();
                                 },
                                 this::handleApiError);

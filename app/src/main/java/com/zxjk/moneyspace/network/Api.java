@@ -823,4 +823,12 @@ public interface Api {
     @FormUrlEncoded
     @POST("duoduo/ecology/getEcologyByType")
     Observable<BaseResponse<List<GetEcologyByType>>> getEcologyByType(@Field("type") String type);
+
+
+    @FormUrlEncoded
+    @POST("duoduo/exchange/acceptorCancelPay")
+    Observable<BaseResponse<String>> acceptorCancelPay(@Field("bothOrderId") String bothOrderId,
+                                                      @Field("nonce") String nonce);
+
+
 }

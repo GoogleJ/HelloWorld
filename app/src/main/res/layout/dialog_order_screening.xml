@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="订单记录"
+                android:text="@string/order_info_by_type"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -140,7 +140,7 @@
                     style="@style/select_style"
                     android:background="@drawable/shape_checkbox_item2"
                     android:tag="rd1"
-                    android:text="待放币" />
+                    android:text="@string/waiting_to_put_money" />
 
             </LinearLayout>
 
@@ -149,7 +149,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal">
-
 
                 <CheckBox
                     android:id="@+id/radio6"
@@ -185,14 +184,14 @@
                     style="@style/select_style"
                     android:background="@drawable/shape_checkbox_item2"
                     android:tag="rd1"
-                    android:text="交易中" />
+                    android:text="@string/in_transaction" />
 
                 <CheckBox
                     android:id="@+id/radio9"
                     style="@style/select_style"
                     android:background="@drawable/shape_checkbox_item2"
                     android:tag="rd1"
-                    android:text="挂单中" />
+                    android:text="@string/entry_orders" />
 
                 <CheckBox style="@style/select_style" />
             </LinearLayout>

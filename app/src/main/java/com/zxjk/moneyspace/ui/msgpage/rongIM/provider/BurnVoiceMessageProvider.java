@@ -100,7 +100,7 @@ public class BurnVoiceMessageProvider extends IContainerItemProvider.MessageProv
             }
 
             if (!AudioPlayManager.getInstance().isInNormalMode(view.getContext()) && AudioPlayManager.getInstance().isInVOIPMode(view.getContext())) {
-                Toast.makeText(view.getContext(), view.getContext().getString(string.rc_voip_occupying), Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), view.getContext().getString(R.string.rc_voip_occupying), Toast.LENGTH_SHORT).show();
             } else {
                 holder.unread.setVisibility(View.GONE);
                 boolean listened = message.getMessage().getReceivedStatus().isListened();
@@ -201,7 +201,7 @@ public class BurnVoiceMessageProvider extends IContainerItemProvider.MessageProv
     }
 
     public Spannable getContentSummary(Context context, VoiceMessage data) {
-        return new SpannableString(context.getString(string.rc_message_content_voice));
+        return new SpannableString(context.getString(R.string.rc_message_content_voice));
     }
 
     @TargetApi(8)

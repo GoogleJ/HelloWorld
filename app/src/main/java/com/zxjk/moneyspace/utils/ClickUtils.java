@@ -2,7 +2,7 @@ package com.zxjk.moneyspace.utils;
 
 public class ClickUtils {
     private static long lastClickTime = 0;
-    private static long DIFF = 450;
+    private static long DIFF = 850;
     private static int lastButtonId = -1;
 
     /**

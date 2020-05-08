@@ -147,18 +147,18 @@ public class SelfSelectionFragment extends BaseFragment {
             @Override
             protected void convert(BaseViewHolder helper, GetBuyList item) {
                 helper.setText(R.id.tv_nick, item.getNick()).
-                        setText(R.id.tv_un_sale_num, "数量:" + item.getUnBoughtNum() + currency).
-                        setText(R.id.tv_limit, "限量:" + item.getMinNum() + "-" + item.getMaxNum()).
+                        setText(R.id.tv_un_sale_num, getString(R.string.the_number2) + item.getUnBoughtNum() + currency).
+                        setText(R.id.tv_limit, getString(R.string.limit2) + item.getMinNum() + "-" + item.getMaxNum()).
                         setText(R.id.tv_price, item.getPrice());
                 TextView tvBuyCoin = helper.getView(R.id.tv_buy_coin);
                 TextView tvUnSaleNum = helper.getView(R.id.tv_un_sale_num);
                 if (count == 0) {
-                    tvUnSaleNum.setText("数量:" + item.getUnSaleNum() + currency);
+                    tvUnSaleNum.setText(getString(R.string.the_number2) + item.getUnSaleNum() + currency);
                 } else {
                     tvBuyCoin.setBackground(getResources().getDrawable(R.drawable.shape_self_select, null));
                     tvBuyCoin.setTextColor(getResources().getColor(R.color.black, null));
-                    tvUnSaleNum.setText("数量:" + item.getUnBoughtNum() + currency);
-                    tvBuyCoin.setText("出售");
+                    tvUnSaleNum.setText(getString(R.string.the_number2) + item.getUnBoughtNum() + currency);
+                    tvBuyCoin.setText(R.string.sell);
                 }
                 String getPayType = item.getPayType();
                 String[] strArr = getPayType.split(",");
@@ -328,18 +328,18 @@ public class SelfSelectionFragment extends BaseFragment {
             tvCountAll.setOnClickListener(v -> etSellCount.setText(getBuyList.getUnBoughtNum()));
         }
         tvCurrency2.setText(currency);
-        tvLimit.setText("限量" + getBuyList.getMinNum() + "-" + getBuyList.getMaxNum());
-        tvCurrency.setText(currency);
+        tvLimit.setText(getString(R.string.limit) + getBuyList.getMinNum() + "-" + getBuyList.getMaxNum());
+        tvCurrency.setText(getString(R.string.sell)+currency);
         tvPrice.setText(getBuyList.getPrice());
         tvUnSaleNum.setText("0.0000" + currency);
 
         tvBuyCoin.setOnClickListener(v -> {
             if (TextUtils.isEmpty(etSellCount.getText().toString())) {
-                ToastUtils.showShort("请输入数量");
+                ToastUtils.showShort(getString(R.string.please_enter_quantity));
                 return;
             }
             if (Float.valueOf(etSellCount.getText().toString()) < Float.valueOf(getBuyList.getMinNum()) || Float.valueOf(etSellCount.getText().toString()) > Float.valueOf(getBuyList.getMaxNum())) {
-                ToastUtils.showShort("请在限量范围内取值");
+                ToastUtils.showShort(getString(R.string.please_evaluate_within_the_limit));
                 return;
             }
             number2 = number1;
@@ -501,11 +501,11 @@ public class SelfSelectionFragment extends BaseFragment {
         TextView tvTitle = confirmPopup.findViewById(R.id.tv_title);
         TextView btToBuy = confirmPopup.findViewById(R.id.bt_to_buy);
         if (count == 0) {
-            tvTitle.setText("确认购买");
-            btToBuy.setText("确认购买");
+            tvTitle.setText(R.string.confirm_the_purchase);
+            btToBuy.setText(R.string.confirm_the_purchase);
         } else {
-            btToBuy.setText("确认出售");
-            tvTitle.setText("确认出售");
+            btToBuy.setText(R.string.confirm_to_sell);
+            tvTitle.setText(R.string.confirm_to_sell);
         }
         tvAmount.setText(number2);
         TextView tvTotal = confirmPopup.findViewById(R.id.tv_total);

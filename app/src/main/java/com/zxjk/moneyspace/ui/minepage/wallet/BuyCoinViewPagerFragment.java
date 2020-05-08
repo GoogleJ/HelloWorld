@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -207,14 +208,14 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
                 tvMaximum.setVisibility(View.GONE);
                 rcPayType.setVisibility(View.GONE);
                 llPayType.setVisibility(View.VISIBLE);
-                tv1.setText("最大购买数量 :" + getCustomerIdentity.getMaxBuyNum() + currency);
+                tv1.setText(getString(R.string.maximum_purchase_quantity) + getCustomerIdentity.getMaxBuyNum() + currency);
             } else {
                 tvPurchaseAmount.setText(R.string.sell_amout);
                 etPurchaseAmount.setHint(R.string.hint4);
                 tvBuyCoin.setText(R.string.sell_order2);
                 rcPayType.setVisibility(View.VISIBLE);
                 llPayType.setVisibility(View.GONE);
-                tv1.setText("出售最大数量 :" + getCustomerIdentity.getMaxSaleNum() + currency);
+                tv1.setText(getString(R.string.maximum_quantity_sold) + getCustomerIdentity.getMaxSaleNum() + currency);
             }
         } else if (customerIdentity.equals("0")) {
             //普通用户
@@ -340,14 +341,15 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
         });
 
         payTypeAdapter = new BaseQuickAdapter<GetOTCSymbolInfo.PayInfoListBean, BaseViewHolder>(R.layout.rc_item_paytype) {
+
             @Override
             protected void convert(BaseViewHolder helper, GetOTCSymbolInfo.PayInfoListBean item) {
                 TextView textView = helper.getView(R.id.tv_bank_card);
                 if (item.getPayType().equals("1")) {
                     setDrawables(getResources().getDrawable(R.drawable.ic_otc_wechat, null), textView, getString(R.string.wechat));
                 } else if (item.getPayType().equals("2")) {
-                    setDrawables(getResources().getDrawable(R.drawable.ic_otc_ali_pay, null), textView, getString(R.string.pay_treasure));
-                } else {
+                    setDrawables(getResources().getDrawable(R.drawable.ic_otc_ali_pay, null), textView, getString(R.string.alipay_pay));
+                } else if (item.getPayType().equals("3")){
                     setDrawables(getResources().getDrawable(R.drawable.ic_otc_bank_card, null), textView, getString(R.string.bank_card));
                 }
             }
@@ -355,10 +357,10 @@ public class BuyCoinViewPagerFragment extends BaseFragment implements View.OnCli
         payTypeAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (view.findViewById(R.id.img1).getVisibility() == View.GONE) {
                 view.findViewById(R.id.img1).setVisibility(View.VISIBLE);
-                paytype.add(String.valueOf(position + 1));
+                paytype.add(payInfoList.get(position).getPayType());
             } else if (view.findViewById(R.id.img1).getVisibility() == View.VISIBLE) {
                 view.findViewById(R.id.img1).setVisibility(View.GONE);
-                paytype.remove(String.valueOf(position + 1));
+                paytype.remove(payInfoList.get(position).getPayType());
             }
         });
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);

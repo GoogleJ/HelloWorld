@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -173,7 +174,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvPayment.setVisibility(View.INVISIBLE);
                 tv1.setVisibility(View.GONE);
                 tvCancelTheOrder.setVisibility(View.GONE);
-                tvBuyer1.setText(R.string.limit);
+                tvBuyer1.setText("限量");
                 tvBusinessName.setText(getOrderInfoById.getMinNum() + "-" + getOrderInfoById.getMaxNum());
                 findViewById(R.id.ll_nick).setVisibility(View.GONE);
                 tv2.setText("取消数量");
@@ -224,15 +225,17 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     tvAppeal.setAlpha(1);
                 }
                 long l1 = (System.currentTimeMillis() - Long.parseLong(getOrderInfoById.getCreateTime())) / 1000;
-                long total = ((900 - l1) <= 0 ? 0 : (900 - l1)) + 15;
+                long total = ((900 - l1) <= 0 ? 0 : (900 - l1));
                 Observable.interval(0, 1, TimeUnit.SECONDS)
                         .take(total)
                         .observeOn(AndroidSchedulers.mainThread())
                         .compose(bindToLifecycle())
                         .subscribe(l -> {
+
                             long minute = (total - l) / 60;
                             long second = (total - l) % 60;
-                            tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + (second - 1)) : second))));
+
+                            tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + second) : second))));
                             if (total == 0 || l == total - 1) {
                                 setDrawables(getResources().getDrawable(R.drawable.ic_wait, null), tvPaymentStatus, getString(R.string.overtime_put_the_coin));
                                 llCancelTheOrder.setVisibility(View.GONE);
@@ -253,7 +256,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     tvCancelTheOrder.setVisibility(View.VISIBLE);
                     llUserConfirmDeposit.setVisibility(View.VISIBLE);
                     long l1 = (System.currentTimeMillis() - Long.parseLong(getOrderInfoById.getCreateTime())) / 1000;
-                    long total = ((900 - l1) <= 0 ? 0 : (900 - l1)) + 15;
+                    long total = ((900 - l1) <= 0 ? 0 : (900 - l1));
                     Observable.interval(0, 1, TimeUnit.SECONDS)
                             .take(total)
                             .observeOn(AndroidSchedulers.mainThread())
@@ -262,7 +265,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
                                 long minute = (total - l) / 60;
                                 long second = (total - l) % 60;
-                                tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + (second - 1)) : second))));
+                                tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + second) : second))));
                                 if (total == 0 || l == total - 1) {
                                     TextView tvAppeal = findViewById(R.id.tv_appeal);
                                     tvAppeal.setBackgroundColor(getResources().getColor(R.color.color_yellow_red, null));
@@ -312,6 +315,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.no_payment));
                 tvCancelTheOrder.setVisibility(View.VISIBLE);
                 tvCancelTheOrder.setText(R.string.overtime_cancel);
+                llUserConfirmDeposit.setVisibility(View.GONE);
             } else if (getOrderInfoById.getStatus().equals("4")) {
 
                 if (getOrderInfoById.getIsSystems().equals("0")) {
@@ -401,16 +405,16 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
         tvPayment.setOnClickListener(v -> {
 
-                Intent intent;
-                if (tvPayment.getText().equals("申诉")) {
-                    intent = new Intent(this, TheAppealActivity.class);
-                } else {
-                    intent = new Intent(this, OrderDetailsActivity.class);
-                }
-                intent.putExtra("GetOrderInfoById", getOrderInfoById);
-                intent.putExtra("customerIdentity", customerIdentity);
-                startActivity(intent);
-                finish();
+            Intent intent;
+            if (tvPayment.getText().equals("申诉")) {
+                intent = new Intent(this, TheAppealActivity.class);
+            } else {
+                intent = new Intent(this, OrderDetailsActivity.class);
+            }
+            intent.putExtra("GetOrderInfoById", getOrderInfoById);
+            intent.putExtra("customerIdentity", customerIdentity);
+            startActivity(intent);
+            finish();
         });
 
         tvTheOrderNumber.setOnClickListener(v -> {
@@ -469,16 +473,30 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             "&nonce=" + timestamp + Constant.SECRET;
                     sign = Sha256.getSHA256(secret);
 
-                    ServiceFactory.getInstance().otcService(Constant.BASE_URL, sign, Api.class)
-                            .userCancelledBuy(getOrderInfoById.getBothOrderId(), timestamp)
-                            .compose(RxSchedulers.otc())
-                            .compose(RxSchedulers.ioObserver())
-                            .compose(bindToLifecycle())
-                            .subscribe(data -> {
+                    if (getOrderInfoById.getIsSystems().equals("0")) {
+                        ServiceFactory.getInstance().otcService(Constant.BASE_URL, sign, Api.class)
+                                .userCancelledBuy(getOrderInfoById.getBothOrderId(), timestamp)
+                                .compose(RxSchedulers.otc())
+                                .compose(RxSchedulers.ioObserver())
+                                .compose(bindToLifecycle())
+                                .subscribe(data -> {
 
-                                ToastUtils.showShort(data);
+                                    ToastUtils.showShort(data);
 
-                            }, PurchaseDetailsActivity.this::handleApiError);
+                                }, PurchaseDetailsActivity.this::handleApiError);
+                    } else {
+                        ServiceFactory.getInstance().otcService(Constant.BASE_URL, sign, Api.class)
+                                .acceptorCancelPay(getOrderInfoById.getBothOrderId(), timestamp)
+                                .compose(RxSchedulers.otc())
+                                .compose(RxSchedulers.ioObserver())
+                                .compose(bindToLifecycle())
+                                .subscribe(data -> {
+
+                                    ToastUtils.showShort(data);
+
+                                }, PurchaseDetailsActivity.this::handleApiError);
+                    }
+
                     finish();
                     dialog.dismiss();
                 });

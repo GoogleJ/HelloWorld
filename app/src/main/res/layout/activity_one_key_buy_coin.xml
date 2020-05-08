@@ -62,7 +62,7 @@
                     android:gravity="center"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="快捷区"
+                    android:text="@string/quick_area"
                     android:textColor="@color/white" />
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="自选区"
+                    android:text="@string/optional"
                     android:textColor="#9E9E9E" />
             </LinearLayout>
         </RelativeLayout>

@@ -132,7 +132,7 @@ public class NewsDetailActivity extends BaseActivity {
     private void shareTo(int plantform) {
         currentUrl = currentUrl + "&share=share";
         UMWeb link = new UMWeb(currentUrl);
-        link.setTitle("Hilamg新闻");
+        link.setTitle("MoneySpace");
         link.setDescription(title);
 
         SHARE_MEDIA platform = null;

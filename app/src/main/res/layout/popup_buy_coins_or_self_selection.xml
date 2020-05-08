@@ -59,7 +59,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="单价"
+                    android:text="@string/price2"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="请输入出售数量"
+                    android:hint="@string/hint4"
                     android:inputType="numberDecimal"
                     android:textColorHint="#E9E9EB"
                     android:textSize="18sp"
@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="全部"
+                    android:text="@string/all"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -150,7 +150,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="交易数量 " />
+                android:text="@string/the_number_of_deals" />
 
             <View
                 android:layout_width="0dp"
@@ -176,7 +176,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="实收款" />
+                android:text="@string/total_funds_received" />
 
             <View
                 android:layout_width="0dp"
@@ -201,7 +201,7 @@
             android:gravity="center"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:text="下单"
+            android:text="@string/place_an_order"
             android:textColor="#E7C39B" />
     </LinearLayout>
 

@@ -41,22 +41,22 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
             viewHolder.contentTextView.setText(content.getMessage());
         }
         if (!TextUtils.isEmpty(content.getExtra())) {
-            if (content.getExtra().contains("焚")) {
+            if (content.getExtra().contains(v.getContext().getString(R.string.burn))) {
                 viewHolder.iv_start.setVisibility(View.VISIBLE);
                 viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_burn);
-            } else if (content.getExtra().contains("截屏通知")) {
+            } else if (content.getExtra().contains(v.getContext().getString(R.string.screenshots_to_inform))) {
                 viewHolder.iv_start.setVisibility(View.VISIBLE);
                 viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_capture);
-            } else if (content.getExtra().contains("端对端加密")) {
+            } else if (content.getExtra().contains(v.getContext().getString(R.string.End_to_end_encryption))) {
                 viewHolder.iv_start.setVisibility(View.VISIBLE);
                 viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_lock);
-            } else if (content.getExtra().equals("对方截取了屏幕")) {
+            } else if (content.getExtra().equals(v.getContext().getString(R.string.the_other_person_intercepts_the_screen))) {
                 viewHolder.iv_start.setVisibility(View.GONE);
                 if (message.getMessageDirection() == Message.MessageDirection.SEND) {
                     v.setVisibility(View.GONE);
                     RongIM.getInstance().deleteMessages(new int[]{message.getMessageId()}, null);
                 }
-            } else if (content.getExtra().contains("慢速模式")) {
+            } else if (content.getExtra().contains(v.getContext().getString(R.string.the_slow_mode))) {
                 viewHolder.iv_start.setVisibility(View.VISIBLE);
                 viewHolder.iv_start.setImageResource(R.drawable.ic_msg_notifation_slowmode);
             }
@@ -70,7 +70,7 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
     }
 
     public Spannable getContentSummary(Context context, InformationNotificationMessage data) {
-        return data != null && !TextUtils.isEmpty(data.getMessage()) ? (data.getMessage().equals("对方截取了屏幕") ? null : new SpannableString(data.getMessage())) : null;
+        return data != null && !TextUtils.isEmpty(data.getMessage()) ? (data.getMessage().equals(context.getString(R.string.the_other_person_intercepts_the_screen)) ? null : new SpannableString(data.getMessage())) : null;
     }
 
     public void onItemClick(View view, int position, InformationNotificationMessage content, UIMessage message) {
