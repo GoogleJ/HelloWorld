@@ -57,7 +57,7 @@
     <string name="m_expired_envelopes_info">查看领取详情 ></string>
     <string name="m_add_my_way_title_bar">添加我的方式</string>
     <string name="m_add_my_way_duoduo_id">MoneySpace号</string>
-    <string name="m_add_my_way_phone_id">手机号</string>
+    <string name="m_add_my_way_phone_id">可通过手机号被添加</string>
     <string name="m_add_my_way_group_chat_text">群聊</string>
     <string name="m_add_my_way_qrcode_text">二维码</string>
     <string name="m_add_my_way_business_carde_text">名片</string>

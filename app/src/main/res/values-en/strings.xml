@@ -192,7 +192,7 @@
     <string name="open_capturescreen_success">Screenshot notification is on</string>
     <string name="area">Area</string>
     <string name="mobile_phone">Phone</string>
-    <string name="m_add_my_way_phone_id">Mobile</string>
+    <string name="m_add_my_way_phone_id">Added by phone</string>
     <string name="phone_number_label">Mobile</string>
     <string name="m_add_friend_contact_label_1">Phone contacts</string>
     <string name="phone_friend">Phone contacts</string>
