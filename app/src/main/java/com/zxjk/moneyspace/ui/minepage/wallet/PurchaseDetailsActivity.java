@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
 
-import com.alibaba.security.biometrics.build.G;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;

@@ -65,7 +65,7 @@ public class CNYUpActivity extends BaseActivity {
                     tv.setTextColor(Color.parseColor("#6D7278"));
                 }
 
-                tv.setText(values[helper.getAdapterPosition()]);
+                tv.setText(values[helper.getAdapterPosition()] + "元");
 
             }
         };

@@ -533,7 +533,8 @@ public interface Api {
     Observable<BaseResponse<String>> getBalanceInfoByAddress(@Field("walletAddress") String walletAddress, @Field("coinType") String coinType, @Field("parentSymbol") String parentSymbol, @Field("contractAddress") String contractAddress, @Field("tokenDecimal") String tokenDecimal);
 
     @POST("duoduo/customer/getAuthToken")
-    Observable<BaseResponse<String>> getAuthToken();
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> getAuthToken(@Field("info") String info, @Field("name") String name, @Field("card") String card);
 
     @POST("duoduo/community/searchCommunity")
     @FormUrlEncoded

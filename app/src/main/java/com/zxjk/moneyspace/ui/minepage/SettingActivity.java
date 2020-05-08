@@ -9,29 +9,25 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.alibaba.security.cloud.CloudRealIdentityTrigger;
-import com.alibaba.security.realidentity.ALRealIdentityResult;
+import androidx.annotation.Nullable;
+
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
-import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
-import com.zxjk.moneyspace.network.rx.RxException;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.SaasLoginSelectActivity;
+import com.zxjk.moneyspace.ui.ShiRenActivity;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.MMKVUtils;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
@@ -163,26 +159,7 @@ public class SettingActivity extends BaseActivity {
             } else if (Constant.currentUser.getIsAuthentication().equals("0")) {
                 ToastUtils.showShort(R.string.authen_true);
             } else {
-                Api api = ServiceFactory.getInstance().getBaseService(Api.class);
-                api.getAuthToken()
-                        .compose(bindUntilEvent(ActivityEvent.DESTROY))
-                        .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                        .flatMap(s -> Observable.create(emitter ->
-                                CloudRealIdentityTrigger.start(SettingActivity.this, s, (audit, s1) -> {
-                                    if (audit == ALRealIdentityResult.AUDIT_PASS) {
-                                        emitter.onNext(true);
-                                    } else {
-                                        emitter.onError(new RxException.ParamsException("认证失败,请稍后尝试", 100));
-                                    }
-                                })))
-                        .observeOn(Schedulers.io())
-                        .flatMap(b -> api.initAuthData())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(s -> {
-                            Constant.currentUser.setIsAuthentication("0");
-                            tv_authentication.setText(CommonUtils.getAuthenticate(Constant.currentUser.getIsAuthentication()));
-                        }, this::handleApiError);
+                startActivityForResult(new Intent(this, ShiRenActivity.class), 399);
             }
         });
         //收款信息
@@ -273,6 +250,16 @@ public class SettingActivity extends BaseActivity {
                                 break;
                         }
                     }, this::handleApiError);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 399 && resultCode == 1) {
+            Constant.currentUser.setIsAuthentication("0");
+            tv_authentication.setText(CommonUtils.getAuthenticate(Constant.currentUser.getIsAuthentication()));
         }
     }
 }

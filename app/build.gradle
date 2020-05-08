@@ -67,9 +67,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation(name: 'rpsdk-4.0.0', ext: 'aar')
-    implementation(name: 'SecurityBodySDK-external-release-5.4.112-preInstall', ext: 'aar')
-    implementation(name: 'SecurityGuardSDK-external-release-5.4.193-preInstall', ext: 'aar')
+    implementation(name: 'android-aliyunface-sdk-release-1.1.8', ext: 'aar')
 
     //Rxlifecycle
     implementation 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
@@ -108,7 +106,7 @@ dependencies {
     implementation 'com.ashokvarma.android:bottom-navigation-bar:1.3.1'
 
     //AliyunOSS
-    implementation 'com.aliyun.dpa:oss-android-sdk:2.9.2'
+//    implementation 'com.aliyun.dpa:oss-android-sdk:2.9.2'
 
     //Utils
     implementation 'com.blankj:utilcodex:1.26.0'

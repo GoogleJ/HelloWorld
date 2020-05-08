@@ -7,7 +7,7 @@ import android.content.Intent;
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
-import com.alibaba.security.cloud.CloudRealIdentityTrigger;
+import com.aliyun.aliyunface.api.ZIMFacade;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.tencent.mmkv.MMKV;
@@ -102,7 +102,7 @@ public class Application extends android.app.Application {
         //Umeng
         initUmeng();
 
-        CloudRealIdentityTrigger.initialize(this);
+        ZIMFacade.install(this);
     }
 
     public WebDataUtils getWebDataUtils() {

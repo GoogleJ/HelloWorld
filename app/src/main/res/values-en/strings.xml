@@ -498,4 +498,6 @@
     <string name="select_file">" Please choose to send the file!"</string>
     <string name="upload_fail">上传失败，请稍后重试</string>
     <string name="share2wechat">wechat</string>
+    <string name="input_name">Name</string>
+    <string name="input_card">Please enter the ID number</string>
 </resources>

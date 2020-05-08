@@ -13,27 +13,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.alibaba.security.rp.RPSDK;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
-import com.trello.rxlifecycle3.android.FragmentEvent;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
-import com.zxjk.moneyspace.network.Api;
-import com.zxjk.moneyspace.network.ServiceFactory;
-import com.zxjk.moneyspace.network.rx.RxException;
-import com.zxjk.moneyspace.network.rx.RxSchedulers;
+import com.zxjk.moneyspace.ui.ShiRenActivity;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
 import com.zxjk.moneyspace.ui.minepage.wallet.BalanceLeftActivity;
 import com.zxjk.moneyspace.ui.minepage.wallet.EcologyActivity;
 import com.zxjk.moneyspace.ui.minepage.wallet.OneKeyBuyCoinActivity;
 import com.zxjk.moneyspace.ui.msgpage.MyQrCodeActivity;
-import com.zxjk.moneyspace.utils.CommonUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
     private CircleImageView ivHead;
@@ -108,23 +99,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 } else if (Constant.currentUser.getIsAuthentication().equals("0")) {
                     ToastUtils.showShort(R.string.authen_true);
                 } else {
-                    Api api = ServiceFactory.getInstance().getBaseService(Api.class);
-                    api.getAuthToken()
-                            .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                            .compose(RxSchedulers.normalTrans())
-                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
-                            .flatMap(s -> Observable.create(emitter ->
-                                    RPSDK.start(s, getActivity(), (audit, s1) -> {
-                                        if (audit == RPSDK.AUDIT.AUDIT_PASS || audit == RPSDK.AUDIT.AUDIT_FAIL) {
-                                            emitter.onNext(true);
-                                        } else {
-                                            emitter.onError(new RxException.ParamsException("认证失败,请稍后尝试", 100));
-                                        }
-                                    })))
-                            .observeOn(Schedulers.io())
-                            .flatMap(b -> api.initAuthData())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(s -> Constant.currentUser.setIsAuthentication("0"), this::handleApiError);
+                    startActivityForResult(new Intent(getContext(), ShiRenActivity.class), 399);
                 }
                 break;
             case R.id.llMine4:
@@ -140,6 +115,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), EcologyActivity.class));
                 break;
             default:
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 399 && resultCode == 1) {
+            Constant.currentUser.setIsAuthentication("0");
         }
     }
 }
