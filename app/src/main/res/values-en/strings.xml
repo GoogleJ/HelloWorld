@@ -17,9 +17,9 @@
     <string name="m_transfer_info_caveat_text">Not confirmed within 24 hours, will be returned to sender </string>
     <string name="mochat">MoneySpace</string>
     <string name="m_add_my_way_duoduo_id">MoneySpace ID</string>
-    <string name="duoduo_id">HilamID:</string>
-    <string name="duoduo_acount">HilamID:</string>
-    <string name="mochatid">HilamID:</string>
+    <string name="duoduo_id">MoneySpaceID:</string>
+    <string name="duoduo_acount">MoneySpaceID:</string>
+    <string name="mochatid">MoneySpaceID:</string>
     <string name="prompt_logo_red">MoneySpace Red envelope</string>
     <string name="duo_duo_account">MoneySpace</string>
     <string name="transfer_prompt_logo">MoneySpace Transfer</string>
@@ -770,4 +770,6 @@
     <string name="cancellation_of_order">cancellation of order </string>
     <string name="input_name">Name</string>
     <string name="input_card">Please enter the ID number</string>
+    <string name="order_number2">OrderId:</string>
+    <string name="group_qr1">Scan to enter group</string>
 </resources>
