@@ -102,6 +102,14 @@ public class PrivacyRedPacketActivity extends BaseActivity {
                         GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
                         tvCoin.setText(result.getSymbol());
                         etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
+
+                        int moneyNums;
+                        if (result.getSymbol().equals("CNY")) {
+                            moneyNums = 2;
+                        } else {
+                            moneyNums = 4;
+                        }
+                        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(moneyNums)});
                     }, t -> {
                         handleApiError(t);
                         finish();
@@ -113,8 +121,6 @@ public class PrivacyRedPacketActivity extends BaseActivity {
         etMoney = findViewById(R.id.etMoney);
         etBless = findViewById(R.id.etBless);
         flTop = findViewById(R.id.flTop);
-
-        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5)});
 
         BarUtils.addMarginTopEqualStatusBarHeight(flTop);
     }
@@ -203,6 +209,14 @@ public class PrivacyRedPacketActivity extends BaseActivity {
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             tvCoin.setText(result.getSymbol());
             etMoney.setHint("可用" + result.getBalance() + result.getSymbol());
+
+            int moneyNums;
+            if (result.getSymbol().equals("CNY")) {
+                moneyNums = 2;
+            } else {
+                moneyNums = 4;
+            }
+            etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(moneyNums)});
         }
     }
 }
