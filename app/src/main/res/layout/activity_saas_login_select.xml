@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
         tools:context=".ui.SaasLoginSelectActivity">
 
         <LinearLayout
@@ -31,9 +31,9 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_white_oval_border"
                 android:paddingStart="12dp"
-                android:paddingTop="8dp"
+                android:paddingTop="4dp"
                 android:paddingEnd="12dp"
-                android:paddingBottom="8dp"
+                android:paddingBottom="4dp"
                 android:text="@string/language_switch"
                 android:textColor="#6D7278" />
         </LinearLayout>
