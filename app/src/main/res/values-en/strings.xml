@@ -772,4 +772,7 @@
     <string name="input_card">Please enter the ID number</string>
     <string name="order_number2">OrderId:</string>
     <string name="group_qr1">Scan to enter group</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
 </resources>
