@@ -778,6 +778,12 @@
     <string name="order_number2">订单号:</string>
     <string name="payment_way3">付款方式</string>
     <string name="cancellation_of_order">取消挂单</string>
+    <string name="financial">金融</string>
+    <string name="public_benefit">公益</string>
+    <string name="mall">商城</string>
+    <string name="travel">旅游</string>
+    <string name="game">游戏</string>
+    <string name="life_services">生活服务</string>
     <string name="input_name">请输入姓名</string>
     <string name="input_card">请输入身份证号码</string>
 

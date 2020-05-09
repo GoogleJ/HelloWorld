@@ -13,7 +13,7 @@ import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 
 public class EcologyActivity extends BaseActivity {
-    private String[] ecologyByTypes = {"金融", "公益", "商城", "旅游", "游戏", "生活服务"};
+    private int[] ecologyByTypes = {R.string.financial, R.string.public_benefit, R.string.mall, R.string.travel, R.string.game, R.string.life_services};
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -37,14 +37,13 @@ public class EcologyActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void initData() {
 
-
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                EcologyFragment ecologyFragment = EcologyFragment.newInstance(position);
-                return ecologyFragment;
-            }
+                    viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(),FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT ) {
+                        @NonNull
+                        @Override
+                        public Fragment getItem(int position) {
+                            EcologyFragment ecologyFragment = EcologyFragment.newInstance(position);
+                            return ecologyFragment;
+                        }
 
             @Override
             public int getCount() {

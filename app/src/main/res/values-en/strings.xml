@@ -768,6 +768,12 @@
     <string name="the_slow_mode">The slow mode</string>
     <string name="payment_way3">payment method</string>
     <string name="cancellation_of_order">cancellation of order </string>
+    <string name="financial">Financial</string>
+    <string name="public_benefit">PublicBenefit</string>
+    <string name="mall">Mall</string>
+    <string name="travel">Travel</string>
+    <string name="game">Game</string>
+    <string name="life_services">LifeServices</string>
     <string name="input_name">Name</string>
     <string name="input_card">Please enter the ID number</string>
     <string name="order_number2">OrderId:</string>
