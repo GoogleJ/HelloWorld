@@ -56,14 +56,14 @@ public class ShiRenActivity extends BaseActivity {
         api.getAuthToken(ZIMFacade.getMetaInfos(this), name, card)
                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(certifyId -> Observable.create(emitter -> {
                     ZIMFacade zimFacade = ZIMFacadeBuilder.create(this);
                     zimFacade.verify(certifyId, true, response -> {
                                 if (null != response && 1000 == response.code) {
                                     // 认证成功
                                     emitter.onNext(true);
-                                    ToastUtils.showShort("认证成功");
                                 } else {
                                     // 认证失败
                                     emitter.onError(new RxException.ParamsException("认证失败,请稍后尝试", 100));
@@ -74,10 +74,14 @@ public class ShiRenActivity extends BaseActivity {
                 }))
                 .observeOn(Schedulers.io())
                 .flatMap(b -> api.initAuthData())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
+                    ToastUtils.showShort("认证成功");
                     setResult(1);
                     finish();
-                }, this::handleApiError);
+                }, t -> {
+                    handleApiError(t);
+                    finish();
+                });
     }
 }
