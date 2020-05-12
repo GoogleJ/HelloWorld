@@ -797,4 +797,8 @@ public interface Api {
 
     @POST("duoduo/purchase/getOpenPurchaseStatus")
     Observable<BaseResponse<String>> getOpenPurchaseStatus();
+
+    @POST("duoduo/customer/feedback")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> feedback(@Field("content") String content);
 }

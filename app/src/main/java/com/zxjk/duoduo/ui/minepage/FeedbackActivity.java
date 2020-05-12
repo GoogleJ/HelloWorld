@@ -1,14 +1,21 @@
 package com.zxjk.duoduo.ui.minepage;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.utils.CommonUtils;
 
 public class FeedbackActivity extends BaseActivity {
     EditText feedbackEdit;
@@ -20,6 +27,7 @@ public class FeedbackActivity extends BaseActivity {
         initView();
     }
 
+    @SuppressLint("CheckResult")
     private void initView() {
         TextView tv_title = findViewById(R.id.tv_title);
         TextView tv_commit = findViewById(R.id.tv_commit);
@@ -27,7 +35,7 @@ public class FeedbackActivity extends BaseActivity {
 
         feedbackEdit.postDelayed(() -> {
             feedbackEdit.requestFocus();
-            InputMethodManager manager = ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE));
+            InputMethodManager manager = ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
             if (manager != null) manager.showSoftInput(feedbackEdit, 0);
         }, 200);
 
@@ -39,8 +47,15 @@ public class FeedbackActivity extends BaseActivity {
             if (feedbackEdit.getText().toString().isEmpty()) {
                 ToastUtils.showShort(getString(R.string.please_enter_feedback_comments));
             } else {
-                ToastUtils.showShort(getString(R.string.transfer_commit_successful));
-                finish();
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .feedback(feedbackEdit.getText().toString().trim())
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .subscribe(s -> {
+                            ToastUtils.showShort(getString(R.string.transfer_commit_successful));
+                            finish();
+                        }, this::handleApiError);
             }
         });
     }
