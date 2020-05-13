@@ -92,7 +92,6 @@ public class RewardMotActivity extends BaseActivity {
         adapter2 = new BaseQuickAdapter<GetSignListResponse.PointsListBean, BaseViewHolder>(R.layout.linearlayout_reward_sign_tesk) {
             @Override
             protected void convert(BaseViewHolder helper, GetSignListResponse.PointsListBean p) {
-
                 TextView mTvRewardTaskTitle = helper.getView(R.id.tv_reward_task_title);
                 TextView mTvRewardTaskContent = helper.getView(R.id.tv_reward_task_content);
                 TextView mTvRewardTaskNumber = helper.getView(R.id.tv_reward_task_number);
@@ -177,7 +176,7 @@ public class RewardMotActivity extends BaseActivity {
                             .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
                             .compose(RxSchedulers.normalTrans())
                             .subscribe(s -> {
-                                showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips3, p.getPoints()));
+                                showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips3,s.getReceivePoint(), s.getSymbol()));
                                 signListResponse.setPointsList(s.getPointsList());
                                 List<GetSignListResponse.PointsListBean> pointsList;
                                 pointsList = s.getPointsList();
@@ -264,7 +263,7 @@ public class RewardMotActivity extends BaseActivity {
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
                                 .compose(RxSchedulers.normalTrans())
                                 .subscribe(c -> {
-                                    showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips3, b.getRepay()));
+                                    showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips5, b.getRepay()));
                                     adapter1.setNewData(c.getCustomerSign());
                                     tvSignDays.setText(getString(R.string.xx_day1, String.valueOf(c.getCount())));
                                 }, RewardMotActivity.this::handleApiError);
@@ -279,7 +278,7 @@ public class RewardMotActivity extends BaseActivity {
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
                                 .compose(RxSchedulers.normalTrans())
                                 .subscribe(c -> {
-                                    showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips3, b.getRepay()));
+                                    showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips5, b.getRepay()));
                                     adapter1.setNewData(c.getCustomerSign());
                                     tvSignDays.setText(getString(R.string.xx_day1, String.valueOf(c.getCount())));
                                 }, RewardMotActivity.this::handleApiError);

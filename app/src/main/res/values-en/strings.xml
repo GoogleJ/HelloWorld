@@ -3,7 +3,8 @@
     <string name="openburn1">Burn after reading\</string>
     <string name="popmap_map2">Gouda Map</string>
     <string name="xx_day1">%1$s days</string>
-    <string name="rewardtips3">%1$sUSDT has been deposited into the balance wallet~</string>
+    <string name="rewardtips3">%1$s%2$s has been deposited into the balance wallet~</string>
+    <string name="rewardtips5">%1$sUSDThas been deposited into the balance wallet~</string>
     <string name="xxx_red_total_xxx">%1$sred envelope,totally %2$s</string>
     <string name="xx_trade">%1$s transaction</string>
     <string name="person1">%1$s people</string>
@@ -129,7 +130,7 @@
     <string name="changegroupname">Modify group name</string>
     <string name="wallet_manage_detail_tips1">Modify wallet name</string>
     <string name="change_walletname">Modify wallet name</string>
-    <string name="activity_tip4">Do tasks to earn more USDT</string>
+    <string name="activity_tip4">Do tasks to earn more </string>
     <string name="chongbi">Deposit</string>
     <string name="downcoin_nums">Deposit amount</string>
     <string name="up_count_less_zero">Deposit amount cannot be less than 0</string>

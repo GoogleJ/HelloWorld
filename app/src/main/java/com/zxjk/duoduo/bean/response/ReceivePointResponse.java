@@ -4,7 +4,25 @@ import java.util.List;
 
 public class ReceivePointResponse {
     private String money;
+    private String receivePoint;
+    private String symbol;
     private List<GetSignListResponse.PointsListBean> pointsList;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getReceivePoint() {
+        return receivePoint;
+    }
+
+    public void setReceivePoint(String receivePoint) {
+        this.receivePoint = receivePoint;
+    }
 
     public String getMoney() {
         return money;

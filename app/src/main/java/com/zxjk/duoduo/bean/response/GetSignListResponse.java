@@ -68,6 +68,15 @@ public class GetSignListResponse {
         private int number;
         private String icon;
         private String points;
+        private String symbol;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
         public String getPoints() {
             return points;

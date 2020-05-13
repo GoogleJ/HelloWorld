@@ -811,7 +811,7 @@
     <string name="activity_tip1">누적 체크인</string>
     <string name="activity_tip2">획득(USDT)</string>
     <string name="activity_tip3">연속 서명하면 USDT 많이 획득</string>
-    <string name="activity_tip4">임무하면 USDT 많이 획득</string>
+    <string name="activity_tip4">임무하면 USDT 많이 획득 </string>
     <string name="enter_social_tips1">사군에 가입한 후 더 많은 사군 공간의 정보를 볼수있습니다</string>
     <string name="pay_to_group">이 사군는 비용을 지불하고 가입할수있습니다,본인 지불 필요합니다</string>
     <string name="secret_chat">밀담</string>
@@ -871,7 +871,8 @@
     <string name="cant_receive">수령 불가</string>
     <string name="rewardTips1">일일%1$d회(%2$d/%3$d)</string>
     <string name="rewardtips2">축아합니다</string>
-    <string name="rewardtips3">%1$sUSDT잔금 지갑에 저장하였습니다~</string>
+    <string name="rewardtips3">%1$s%2$s잔금 지갑에 저장하였습니다~</string>
+    <string name="rewardtips5">%1$sUSDT잔금 지갑에 저장하였습니다~</string>
     <string name="xx_day">%1$s일째</string>
     <string name="xx_day1">%1$s일째</string>
     <string name="rewardtips4">내일 서명하면 %1$s USDT 를 얻을 수 있음</string>
