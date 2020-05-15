@@ -47,10 +47,10 @@ public class CreateChooseCastTypeActivity extends BaseActivity {
 
     public void video(View view) {
         ToastUtils.showShort(R.string.developing);
-//        chooseFlag = 2;
-//        ivCheck1.setVisibility(View.INVISIBLE);
-//        ivCheck2.setVisibility(View.VISIBLE);
-//        ivCheck3.setVisibility(View.INVISIBLE);
+        chooseFlag = 2;
+        ivCheck1.setVisibility(View.INVISIBLE);
+        ivCheck2.setVisibility(View.VISIBLE);
+        ivCheck3.setVisibility(View.INVISIBLE);
     }
 
     public void audio(View view) {
@@ -76,6 +76,7 @@ public class CreateChooseCastTypeActivity extends BaseActivity {
                 .subscribe(s -> {
                     Intent intent = new Intent(this, CreateWechatCastActivity.class);
                     intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
+                    intent.putExtra("chooseFlag",chooseFlag);
                     startActivity(intent);
                     finish();
                 }, this::handleApiError);

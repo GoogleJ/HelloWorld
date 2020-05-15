@@ -109,6 +109,7 @@ public class CreateWechatCastActivity extends BaseActivity {
     private String title;
     private long startTimeStamp;
     private String detailUrl;
+    private String chooseFlag;
 
     private ArrayList<String> dateList = new ArrayList<>(3);
     private ArrayList<String> timeList1 = new ArrayList<>();
@@ -127,6 +128,7 @@ public class CreateWechatCastActivity extends BaseActivity {
     }
 
     private void initData() {
+        chooseFlag = getIntent().getStringExtra("chooseFlag");
         rlStep1.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
