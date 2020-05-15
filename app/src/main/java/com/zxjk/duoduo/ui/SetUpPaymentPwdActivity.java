@@ -3,7 +3,6 @@ package com.zxjk.duoduo.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,26 +15,24 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.walletpage.LoginAuthorizationActivity;
 import com.zxjk.duoduo.ui.widget.KeyboardPopupWindow;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
-import com.zxjk.duoduo.utils.MMKVUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.UserInfo;
+
+import static com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity.ACTION_LOGINAUTHORIZATIONSWICH;
+import static com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
 
 @SuppressLint("CheckResult")
 @RequiresApi(api = Build.VERSION_CODES.M)
@@ -50,8 +47,8 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
     boolean firstLogin;
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    private boolean isUiCreated = false;
     KeyboardPopupWindow popupWindow;
+    private boolean isUiCreated = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,7 +143,27 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
                 .subscribe(s -> {
                     if (firstLogin) {
                         ToastUtils.showShort(R.string.setsuccess);
-                        MMKVUtils.getInstance().enCode("isLogin", true);
+
+                        String action = getIntent().getStringExtra("action");
+                        if (!TextUtils.isEmpty(action)) {
+                            switch (action) {
+                                case ACTION_THIRDPARTLOGINACCESS:
+                                    Intent intent = new Intent(this, LoginAuthorizationActivity.class);
+                                    intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
+                                    intent.putExtra("appId", getIntent().getStringExtra("appId"));
+                                    intent.putExtra("randomStr", getIntent().getStringExtra("randomStr"));
+                                    intent.putExtra("sign", getIntent().getStringExtra("sign"));
+                                    startActivity(intent);
+                                    finish();
+                                    break;
+                                case ACTION_LOGINAUTHORIZATIONSWICH:
+                                    startActivity(new Intent(this, HomeActivity.class));
+                                    finish();
+                                    break;
+                            }
+                            return;
+                        }
+
                         Intent intent = new Intent(SetUpPaymentPwdActivity.this, HomeActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);

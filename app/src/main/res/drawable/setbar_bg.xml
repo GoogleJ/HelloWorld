@@ -5,5 +5,5 @@
     <solid android:color="#FFFFFF"/>
     <!-- 边框色 -->
     <stroke android:width="1dip" android:color="#EDEDED" />
-    <corners android:radius="5dp" />
+    <corners android:radius="4dp" />
 </shape>
