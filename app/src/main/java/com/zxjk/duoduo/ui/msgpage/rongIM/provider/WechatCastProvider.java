@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.WechatCastMessage;
-import com.zxjk.duoduo.ui.webcast.WechatCastDetailActivity;
+import com.zxjk.duoduo.ui.cast.WechatCastDetailActivity;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import io.rong.imkit.model.ProviderTag;

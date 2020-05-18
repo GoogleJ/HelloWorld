@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".ui.minepage.wallet.UpDownCoinResultActivity">
+    tools:context=".ui.wallet.UpDownCoinResultActivity">
 
     <include layout="@layout/layout_title_back" />
 

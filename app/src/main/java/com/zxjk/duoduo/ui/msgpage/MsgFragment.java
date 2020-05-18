@@ -21,7 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.socialspace.SocialPage;
-import com.zxjk.duoduo.ui.walletpage.RecipetQRActivity;
+import com.zxjk.duoduo.ui.wallet.RecipetQRActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.MsgTitleView;
 

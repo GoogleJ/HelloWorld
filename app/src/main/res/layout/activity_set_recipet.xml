@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F4F4F4"
     android:orientation="vertical"
-    tools:context=".ui.walletpage.SetRecipetActivity">
+    tools:context=".ui.wallet.SetRecipetActivity">
 
     <include layout="@layout/layout_title_back" />
 

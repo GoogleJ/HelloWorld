@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#F6F5FB"
     android:orientation="vertical"
-    tools:context=".ui.minepage.wallet.CreateWalletActivity">
+    tools:context=".ui.wallet.CreateWalletActivity">
 
     <include layout="@layout/layout_title_back" />
 

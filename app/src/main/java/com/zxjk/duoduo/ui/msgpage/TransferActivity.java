@@ -27,7 +27,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.minepage.wallet.ChooseCoinActivity;
+import com.zxjk.duoduo.ui.wallet.ChooseCoinActivity;
 import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;

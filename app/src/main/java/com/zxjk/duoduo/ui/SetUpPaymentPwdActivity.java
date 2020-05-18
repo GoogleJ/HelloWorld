@@ -21,7 +21,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.walletpage.LoginAuthorizationActivity;
+import com.zxjk.duoduo.ui.externalfunc.LoginAuthorizationActivity;
 import com.zxjk.duoduo.ui.widget.KeyboardPopupWindow;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -31,8 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity.ACTION_LOGINAUTHORIZATIONSWICH;
-import static com.zxjk.duoduo.ui.walletpage.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
+import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_LOGINAUTHORIZATIONSWICH;
+import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
 
 @SuppressLint("CheckResult")
 @RequiresApi(api = Build.VERSION_CODES.M)

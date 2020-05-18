@@ -33,7 +33,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
-import com.zxjk.duoduo.ui.minepage.wallet.WalletActivity;
+import com.zxjk.duoduo.ui.wallet.WalletActivity;
 import com.zxjk.duoduo.ui.msgpage.MyQrCodeActivity;
 import com.zxjk.duoduo.ui.widget.dialog.ConfirmDialog;
 import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;

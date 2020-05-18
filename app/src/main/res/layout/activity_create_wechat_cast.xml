@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clipChildren="false"
     android:orientation="vertical"
-    tools:context=".ui.webcast.CreateWechatCastActivity">
+    tools:context=".ui.cast.CreateWechatCastActivity">
 
     <ScrollView
         android:layout_width="match_parent"

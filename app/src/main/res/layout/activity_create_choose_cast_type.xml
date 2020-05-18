@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#F2F3F5"
     android:orientation="vertical"
-    tools:context=".ui.webcast.CreateChooseCastTypeActivity">
+    tools:context=".ui.cast.CreateChooseCastTypeActivity">
 
     <include layout="@layout/layout_title_back" />
 

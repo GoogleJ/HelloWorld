@@ -1213,6 +1213,7 @@
     <string name="special_chat">不能包含特殊字符</string>
     <string name="clearance">已清空聊天记录</string>
     <string name="receiveRed">红包已领取</string>
+    <string name="havent_register_goto_hilamg">用户未注册，请先使用hilamg注册后使用</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

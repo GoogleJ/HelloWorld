@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
 import androidx.fragment.app.Fragment;
 
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.ui.webcast.CreateChooseCastTypeActivity;
+import com.zxjk.duoduo.ui.cast.CreateChooseCastTypeActivity;
 
 import io.rong.imkit.RongExtension;
 import io.rong.imkit.plugin.IPluginModule;
