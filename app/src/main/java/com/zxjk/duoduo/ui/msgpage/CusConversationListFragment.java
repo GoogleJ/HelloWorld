@@ -22,7 +22,7 @@ import com.zxjk.duoduo.db.Cast;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.msgpage.rongIM.CusConversationListAdapter;
+import com.zxjk.duoduo.rongIM.CusConversationListAdapter;
 import com.zxjk.duoduo.ui.cast.CastListActivity;
 
 import java.util.ArrayList;

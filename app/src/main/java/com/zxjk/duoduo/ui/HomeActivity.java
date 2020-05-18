@@ -61,8 +61,8 @@ import com.zxjk.duoduo.ui.minepage.MineFragment;
 import com.zxjk.duoduo.ui.msgpage.ContactFragment;
 import com.zxjk.duoduo.ui.msgpage.MsgFragment;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
-import com.zxjk.duoduo.ui.msgpage.rongIM.GroupConversationProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.PrivateConversationProvider;
+import com.zxjk.duoduo.rongIM.GroupConversationProvider;
+import com.zxjk.duoduo.rongIM.PrivateConversationProvider;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
 

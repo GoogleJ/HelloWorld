@@ -27,9 +27,9 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.SelectForCardAdapter;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.WechatCastMessage;
+import com.zxjk.duoduo.rongIM.message.BusinessCardMessage;
+import com.zxjk.duoduo.rongIM.message.NewsCardMessage;
+import com.zxjk.duoduo.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 

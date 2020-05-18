@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/conversation"
-        android:name="com.zxjk.duoduo.ui.msgpage.rongIM.CusConversationFragment"
+        android:name="com.zxjk.duoduo.rongIM.CusConversationFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
