@@ -65,6 +65,7 @@ import com.zxjk.duoduo.bean.response.ReleaseRecord;
 import com.zxjk.duoduo.bean.response.ReleaseRecordDetails;
 import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
+import com.zxjk.duoduo.bean.response.ThirdPartyPaymentOrderResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
@@ -801,4 +802,12 @@ public interface Api {
     @POST("duoduo/customer/feedback")
     @FormUrlEncoded
     Observable<BaseResponse<String>> feedback(@Field("content") String content);
+
+    @POST("duoduo/customer/getThirdPartyPaymentOrder")
+    @FormUrlEncoded
+    Observable<BaseResponse<ThirdPartyPaymentOrderResponse>> getThirdPartyPaymentOrder(@Field("orderId") String orderId);
+
+    @POST("duoduo/customer/thirdPartyPayment")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> thirdPartyPayment(@Field("orderId") String orderId, @Field("payPwd") String payPwd);
 }

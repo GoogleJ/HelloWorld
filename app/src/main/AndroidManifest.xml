@@ -57,7 +57,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.externalfunc.PayConfirmActivity"></activity>
+        <activity android:name=".ui.externalfunc.ThirdPartPayResultActivity"></activity>
+        <activity android:name=".ui.externalfunc.PayConfirmActivity" />
         <activity
             android:name=".ui.cast.WechatChatRoomManageActivity"
             android:launchMode="singleTop"
