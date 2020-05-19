@@ -74,10 +74,16 @@ public class BrowsableActivity extends BaseActivity {
 
                         break;
                     case "pay":
-                        Intent intent = new Intent(this, ThirdPartLoginActivity.class);
-                        intent.putExtra("action", ACTION_PAY);
-                        intent.putExtra("orderId", getIntent().getData().getQueryParameter("orderId"));
-                        startActivity(intent);
+                        if (null == Constant.currentUser || TextUtils.isEmpty(Constant.token)) {
+                            Intent intent = new Intent(this, ThirdPartLoginActivity.class);
+                            intent.putExtra("action", ACTION_PAY);
+                            intent.putExtra("orderId", getIntent().getData().getQueryParameter("orderId"));
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(this, PayConfirmActivity.class);
+                            intent.putExtra("orderId", getIntent().getData().getQueryParameter("orderId"));
+                            startActivity(intent);
+                        }
                         break;
                 }
             }

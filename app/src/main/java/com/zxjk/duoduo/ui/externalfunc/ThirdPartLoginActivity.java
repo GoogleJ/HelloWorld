@@ -253,10 +253,11 @@ public class ThirdPartLoginActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .subscribe(c -> CommonUtils.initDialog(this).show());
 
-        RongIM.connect(Constant.token, new RongIMClient.ConnectCallback() {
+        RongIM.connect(Constant.currentUser.getRongToken(), new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
                 CommonUtils.destoryDialog();
+                ToastUtils.showShort(R.string.connect_failed);
             }
 
             @Override

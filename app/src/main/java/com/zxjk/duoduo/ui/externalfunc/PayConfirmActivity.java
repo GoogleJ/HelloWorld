@@ -24,6 +24,7 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
 
+import razerdp.basepopup.BasePopupWindow;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
@@ -64,7 +65,14 @@ public class PayConfirmActivity extends BaseActivity {
                                     .backgroundColor(Color.parseColor("#80000000"))
                                     .gravity(Gravity.BOTTOM)
                                     .withShowAnimation(showAnimation)
-                                    .withDismissAnimation(dismissAnimation))
+                                    .withDismissAnimation(dismissAnimation)
+                                    .dismissListener(new BasePopupWindow.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss() {
+                                            ToastUtils.showShort(R.string.cancel_pay);
+                                            finish();
+                                        }
+                                    }))
                             .build();
 
                     ImageView ivIcon1 = popView.findViewById(R.id.ivIcon1);
@@ -93,7 +101,12 @@ public class PayConfirmActivity extends BaseActivity {
                     } else {
                         tvPayment.setText(getString(R.string.pay_left, r.getSymbol(), r.getBalance()));
                     }
-                }, this::handleApiError);
+
+                    popView.showPopupWindow();
+                }, t -> {
+                    handleApiError(t);
+                    finish();
+                });
 
     }
 

@@ -1219,6 +1219,7 @@
     <string name="pay_left">%1$s (扣除后剩余:%2$s)</string>
     <string name="pay_detail">付款详情</string>
     <string name="back2Bussiness">返回商家</string>
+    <string name="cancel_pay">取消支付</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
