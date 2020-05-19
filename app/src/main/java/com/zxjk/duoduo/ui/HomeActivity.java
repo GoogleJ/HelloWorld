@@ -110,7 +110,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private int msgCount1;
 
     private BurnAfterReadMessageLocalBeanDao dao;
-    private long max1;
+    private long updateProgress;
 
     @Override
     protected void onDestroy() {
@@ -580,7 +580,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
                                 downloadOrInstall(tvUpdate, flUpgrade, data);
                             }
-                        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
+                        }).setDimAmount(0.5f).setOutCancel("0".equals(response.data.getIsEnforcement())).show(getSupportFragmentManager());
                     } else if (showTip) {
                         ToastUtils.showShort(R.string.newestVersion);
                     }
@@ -595,13 +595,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             ServiceFactory.downloadFile(data.getVersion(), data.getUpdateAddress(), new ServiceFactory.DownloadListener() {
                 @Override
                 public void onStart(long max) {
-                    max1 = max;
+                    updateProgress = max;
                     ToastUtils.showShort(R.string.update_start);
                 }
 
                 @Override
                 public void onProgress(long progress) {
-                    runOnUiThread(() -> tvUpdate.setText((int) ((float) progress / max1 * 100) + "%"));
+                    runOnUiThread(() -> tvUpdate.setText((int) ((float) progress / updateProgress * 100) + "%"));
                 }
 
                 @Override
