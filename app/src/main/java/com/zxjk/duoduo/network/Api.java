@@ -67,6 +67,7 @@ import com.zxjk.duoduo.bean.response.ReceivePointResponse;
 import com.zxjk.duoduo.bean.response.RedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReleaseRecord;
 import com.zxjk.duoduo.bean.response.ReleaseRecordDetails;
+import com.zxjk.duoduo.bean.response.RewardCodeResponse;
 import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.ThirdPartyPaymentOrderResponse;
@@ -825,6 +826,11 @@ public interface Api {
     @POST("duoduo/customer/thirdPartyPayment")
     @FormUrlEncoded
     Observable<BaseResponse<String>> thirdPartyPayment(@Field("orderId") String orderId, @Field("payPwd") String payPwd);
+
+    @POST("duoduo/redPackage/getRewardCode")
+    @FormUrlEncoded
+    Observable<BaseResponse<RewardCodeResponse>> getRewardCode(@Field("code") String code);
+}
 
     @POST("duoduo/live/enableOpenVideoLive")
     Observable<BaseResponse<String>> enableOpenVideoLive();

@@ -1258,6 +1258,10 @@
     <string name="empty_nosearch6">暂无推荐社群</string>
     <string name="official_service">官方服务</string>
     <string name="other_service">其他服务</string>
+    <string name="rewardCode">口令红包</string>
+    <string name="tips_rewardcode">添加Hilamg运营官(Hilamg号：3937354)\n了解更多领取红包口令活动详情</string>
+    <string name="input_rewardcode">输入口令领红包</string>
+    <string name="rewardcode_symbol_tips">%1$s口令红包</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
