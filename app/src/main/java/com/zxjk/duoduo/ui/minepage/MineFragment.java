@@ -9,9 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 import com.trello.rxlifecycle3.android.FragmentEvent;
@@ -38,6 +42,7 @@ import com.zxjk.duoduo.ui.msgpage.MyQrCodeActivity;
 import com.zxjk.duoduo.ui.widget.dialog.ConfirmDialog;
 import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.ShareUtil;
 
 import java.text.SimpleDateFormat;
@@ -48,6 +53,9 @@ import java.util.concurrent.TimeUnit;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
+import razerdp.widget.QuickPopup;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
     private CircleImageView ivHead;
@@ -85,6 +93,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.llMine4).setOnClickListener(this);
         view.findViewById(R.id.llMine5).setOnClickListener(this);
         view.findViewById(R.id.llMine7).setOnClickListener(this);
+        view.findViewById(R.id.llMine8).setOnClickListener(this);
         view.findViewById(R.id.ivQR).setOnClickListener(this);
         view.findViewById(R.id.llMineInvite).setOnClickListener(this);
 
@@ -231,7 +240,61 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.ivQR:
                 startActivity(new Intent(getActivity(), MyQrCodeActivity.class));
                 break;
+            case R.id.llMine8:
+                showRewardCodePop();
+                break;
             default:
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private void showRewardCodePop() {
+        QuickPopup rewardPop = QuickPopupBuilder.with(getContext())
+                .contentView(R.layout.pop_rewardcode)
+                .config(new QuickPopupConfig()
+                        .gravity(Gravity.CENTER)
+                        .blurBackground(true)
+                        .dismissOnOutSideTouch(true)
+                        .fadeInAndOut(true)
+                        .withClick(R.id.ivClose, null, true))
+                .build();
+
+        EditText et = rewardPop.findViewById(R.id.et);
+        ImageView ivOpen = rewardPop.findViewById(R.id.ivOpen);
+        LinearLayout llInput = rewardPop.findViewById(R.id.llInput);
+        ViewStub stubResult = rewardPop.findViewById(R.id.stubResult);
+
+        ivOpen.setOnClickListener(v -> {
+            if (null == et) {
+                return;
+            }
+
+            if (TextUtils.isEmpty(et.getText().toString().trim())) {
+                ToastUtils.showShort(R.string.input_empty);
+                return;
+            }
+
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getRewardCode(et.getText().toString().trim())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                    .subscribe(r -> {
+                        llInput.setVisibility(View.GONE);
+                        View resultPopView = stubResult.inflate();
+
+                        ImageView ivLogo = resultPopView.findViewById(R.id.ivLogo);
+                        TextView tvSymbolText = resultPopView.findViewById(R.id.tvSymbolText);
+                        TextView tvMoney = resultPopView.findViewById(R.id.tvMoney);
+                        TextView tvSymbol = resultPopView.findViewById(R.id.tvSymbol);
+
+                        tvSymbol.setText(r.getSymbol());
+                        tvMoney.setText(r.getNum());
+                        tvSymbolText.setText(getString(R.string.rewardcode_symbol_tips, r.getSymbol()));
+                        GlideUtil.loadCircleImg(ivLogo, r.getLogo());
+                    }, this::handleApiError);
+        });
+
+        rewardPop.showPopupWindow();
     }
 }

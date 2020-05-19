@@ -1211,6 +1211,10 @@
     <string name="force_recall_update">禁言+撤回</string>
     <string name="special_chat">不能包含特殊字符</string>
     <string name="clearance">已清空聊天记录</string>
+    <string name="rewardCode">口令红包</string>
+    <string name="tips_rewardcode">添加Hilamg运营官(Hilamg号：3937354)\n了解更多领取红包口令活动详情</string>
+    <string name="input_rewardcode">输入口令领红包</string>
+    <string name="rewardcode_symbol_tips">%1$s口令红包</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

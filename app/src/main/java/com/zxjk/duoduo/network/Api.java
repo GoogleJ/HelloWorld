@@ -63,6 +63,7 @@ import com.zxjk.duoduo.bean.response.ReceivePointResponse;
 import com.zxjk.duoduo.bean.response.RedPackageResponse;
 import com.zxjk.duoduo.bean.response.ReleaseRecord;
 import com.zxjk.duoduo.bean.response.ReleaseRecordDetails;
+import com.zxjk.duoduo.bean.response.RewardCodeResponse;
 import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
@@ -797,4 +798,8 @@ public interface Api {
 
     @POST("duoduo/purchase/getOpenPurchaseStatus")
     Observable<BaseResponse<String>> getOpenPurchaseStatus();
+
+    @POST("duoduo/redPackage/getRewardCode")
+    @FormUrlEncoded
+    Observable<BaseResponse<RewardCodeResponse>> getRewardCode(@Field("code") String code);
 }
