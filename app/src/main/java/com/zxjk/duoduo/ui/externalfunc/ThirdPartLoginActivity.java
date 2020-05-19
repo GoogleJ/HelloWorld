@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.externalfunc;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -22,6 +23,7 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.CountryEntity;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -333,6 +335,15 @@ public class ThirdPartLoginActivity extends BaseActivity {
                 ToastUtils.showShort(R.string.connect_failed);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200 && resultCode == Activity.RESULT_OK && data != null) {
+            CountryEntity countryEntity = (CountryEntity) data.getSerializableExtra("country");
+            mTvThirdPartContrary.setText(getString(R.string.country_phone, (countryEntity != null ? countryEntity.countryCode : "86")));
+        }
     }
 
 }

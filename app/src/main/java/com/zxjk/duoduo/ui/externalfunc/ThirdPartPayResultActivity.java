@@ -27,7 +27,7 @@ public class ThirdPartPayResultActivity extends BaseActivity {
         TextView tvSymbol = findViewById(R.id.tvSymbol);
         ImageView ivSymbol = findViewById(R.id.ivSymbol);
 
-        tvMoney.setText(r.getAmount());
+        tvMoney.setText("-" + r.getAmount());
         tvSymbol.setText(r.getSymbol());
         GlideUtil.loadCircleImg(ivSymbol, r.getSymbolLogo());
     }
