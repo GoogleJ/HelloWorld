@@ -97,6 +97,8 @@ public class WechatCastDetailActivity extends BaseActivity {
 
     private String roomId;
     private boolean fromCreate;
+    private String chooseFlag;
+    private String livePlayBack;
 
     private GetChatRoomInfoResponse info;
 
@@ -109,6 +111,8 @@ public class WechatCastDetailActivity extends BaseActivity {
 
         roomId = getIntent().getStringExtra("roomId");
         fromCreate = getIntent().getBooleanExtra("fromCreate", false);
+        chooseFlag = getIntent().getStringExtra("chooseFlag");
+        livePlayBack = getIntent().getStringExtra("livePlayBack");
 
         stub = findViewById(R.id.stub);
         flRetry = findViewById(R.id.flRetry);
@@ -135,6 +139,13 @@ public class WechatCastDetailActivity extends BaseActivity {
         tvBottom1 = view.findViewById(R.id.tvBottom1);
         dividerBottom = view.findViewById(R.id.dividerBottom);
         tvBottom2 = view.findViewById(R.id.tvBottom2);
+        if (!TextUtils.isEmpty(chooseFlag) && chooseFlag.equals("1")) {
+            tvBottom1.setText("推流地址");
+            tvBottom2.setText("进入直播");
+        }
+        if (!TextUtils.isEmpty(livePlayBack)) {
+
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -155,14 +166,18 @@ public class WechatCastDetailActivity extends BaseActivity {
                 })
                 .subscribe(r -> {
                     info = r;
-                    if (!TextUtils.isEmpty(info.getRoomStatus()) &&
-                            (info.getRoomStatus().equals("3") || info.getRoomStatus().equals("2"))) {
-                        ToastUtils.showShort(R.string.cant_view_cast);
-                        finish();
-                    }
+//                    if (!TextUtils.isEmpty(info.getRoomStatus()) &&
+//                            (info.getRoomStatus().equals("3") || info.getRoomStatus().equals("2"))) {
+//                        ToastUtils.showShort(R.string.cant_view_cast);
+//                        finish();
+//                    }
 
+                    chooseFlag = r.getLiveType();
                     initView(stub.inflate());
-
+                    if (!TextUtils.isEmpty(chooseFlag) && chooseFlag.equals("1")) {
+                        tvBottom1.setText("推流地址");
+                        tvBottom2.setText("进入直播");
+                    }
                     updateUIByStatus();
                 }, this::handleApiError);
     }
@@ -348,11 +363,26 @@ public class WechatCastDetailActivity extends BaseActivity {
         finish();
     }
 
+    @SuppressLint("CheckResult")
     public void viewCast(View view) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        startActivity(new Intent(this, CastListActivity.class));
+        if (!TextUtils.isEmpty(chooseFlag) && chooseFlag.equals("1")) {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getVideoInfo(roomId)
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(s -> {
+                        Intent intent = new Intent(this, VideoAddressActivity.class);
+                        intent.putExtra("rtmpAdd", s.getRtmpAdd());
+                        intent.putExtra("liveCode", s.getLiveCode());
+                        startActivity(intent);
+                    }, this::handleApiError);
+        } else {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            startActivity(new Intent(this, CastListActivity.class));
+        }
     }
 
     private void updateUIByStatus() {
@@ -368,9 +398,11 @@ public class WechatCastDetailActivity extends BaseActivity {
         if (fromCreate) {
             return;
         }
+        if (chooseFlag.equals("0")) {
+            dividerBottom.setVisibility(View.GONE);
+            tvBottom1.setVisibility(View.GONE);
+        }
 
-        dividerBottom.setVisibility(View.GONE);
-        tvBottom1.setVisibility(View.GONE);
 
         flEnd.setVisibility(View.VISIBLE);
         tvModify.setVisibility(View.GONE);
@@ -399,6 +431,8 @@ public class WechatCastDetailActivity extends BaseActivity {
                 tvBottom2.setText(R.string.cast_recall);
                 tvTips.setText(R.string.cast_over);
                 flEnd.setVisibility(View.GONE);
+                dividerBottom.setVisibility(View.GONE);
+                tvBottom1.setVisibility(View.GONE);
                 break;
         }
     }
@@ -450,17 +484,26 @@ public class WechatCastDetailActivity extends BaseActivity {
                             if (s.equals("3") || s.equals("0")) {
                                 ToastUtils.showShort(R.string.cant_view_cast1);
                             } else {
-                                Intent intent = new Intent(this, HomeActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon().appendPath("conversation").appendPath(Conversation.ConversationType.CHATROOM.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", roomId).build();
-                                intent = new Intent("android.intent.action.VIEW", uri);
-                                intent.putExtra("chatRoomOwnerId", info.getRoomOwnerId());
-                                intent.putExtra("chatRoomStatus", s);
-                                intent.putExtra("chatRoomName", info.getRoomName());
-                                intent.putExtra("groupId", info.getGroupId());
-                                intent.putExtra("castTopic", info.getTopic());
-                                startActivity(intent);
+                                if (!TextUtils.isEmpty(livePlayBack)) {
+                                    Intent intent = new Intent(this,LivePlayBackActivity.class);
+                                    intent.putExtra("playUrl",info.getPlayUrl());
+                                    startActivity(intent);
+                                } else {
+                                    Intent intent = new Intent(this, HomeActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon().appendPath("conversation").appendPath(Conversation.ConversationType.CHATROOM.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", roomId).build();
+                                    intent = new Intent("android.intent.action.VIEW", uri);
+                                    intent.putExtra("chatRoomOwnerId", info.getRoomOwnerId());
+                                    intent.putExtra("chatRoomStatus", s);
+                                    intent.putExtra("chatRoomName", info.getRoomName());
+                                    intent.putExtra("groupId", info.getGroupId());
+                                    intent.putExtra("castTopic", info.getTopic());
+                                    intent.putExtra("liveType", info.getLiveType());
+                                    intent.putExtra("playUrl", info.getPlayUrl());
+                                    startActivity(intent);
+                                }
+
                             }
                         }, this::handleApiError);
             } else {

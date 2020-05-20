@@ -200,6 +200,7 @@ public class SocialHomeActivity extends BaseActivity {
         args.putString("groupId", groupId);
         args.putBoolean("canModify", fromConversation != null && (fromConversation.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || fromConversation.getIsAdmin().equals("1")));
         socialCalturePage.setArguments(args);
+        dynamicsPage.setArguments(args);
     }
 
     @SuppressLint("CheckResult")

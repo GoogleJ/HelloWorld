@@ -12,6 +12,12 @@
         android:layout_height="wrap_content"
         android:layout="@layout/layout_conversation_casting" />
 
+    <ViewStub
+        android:id="@+id/stubVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/layout_conversation_casting_video" />
+
     <fragment
         android:id="@+id/conversation"
         android:name="com.zxjk.duoduo.rongIM.CusConversationFragment"

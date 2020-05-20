@@ -104,6 +104,7 @@ public class CreateWechatCastActivity extends BaseActivity {
     private ImageView ivContent4;
 
     private TextView tvBottom;
+    private LinearLayout llBottom2;
 
     private String thumbUrl;
     private String title;
@@ -128,7 +129,7 @@ public class CreateWechatCastActivity extends BaseActivity {
     }
 
     private void initData() {
-        chooseFlag = getIntent().getStringExtra("chooseFlag");
+
         rlStep1.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -213,58 +214,88 @@ public class CreateWechatCastActivity extends BaseActivity {
         ivContent4 = findViewById(R.id.ivContent4);
 
         tvBottom = findViewById(R.id.tvBottom);
+        llBottom2 = findViewById(R.id.ll_bottom2);
+        chooseFlag = getIntent().getStringExtra("chooseFlag");
+    }
+
+    public void next(View view) {
+        if (stepFlag == 4) {
+            createLive();
+            return;
+        }else if(stepFlag == 3){
+            if (chooseFlag.equals("1")) {
+                tvBottom.setVisibility(View.GONE);
+                llBottom2.setVisibility(View.VISIBLE);
+            } else {
+                tvBottom.setVisibility(View.VISIBLE);
+                llBottom2.setVisibility(View.GONE);
+            }
+            updateUIByStep(true);
+            return;
+        }
+            updateUIByStep(true);
+    }
+
+
+    @SuppressLint("CheckResult")
+    public void mobileTerminal(View view) {
+        ToastUtils.showShort("手机端直播暂未开发");
+    }
+
+    public void pcLive(View view) {
+        createLive();
     }
 
     @SuppressLint("CheckResult")
-    public void next(View view) {
-        if (stepFlag == 4) {
-            String detail = etStep4.getText().toString().trim();
-            if (TextUtils.isEmpty(detail)) {
-                ToastUtils.showShort(R.string.input_cast_detail);
-                return;
-            }
-            if (TextUtils.isEmpty(detailUrl)) {
-                ToastUtils.showShort(R.string.setup_cast_detailimg);
-                return;
-            }
+    private void createLive() {
 
-            CreateLiveRequest request = new CreateLiveRequest();
-            request.setGroupId(getIntent().getStringExtra("groupId"));
-            request.setLiveDetails(detail);
-            request.setLiveContentImg(detailUrl);
-            request.setTopic(title);
-            request.setLivePoster(thumbUrl);
-            request.setStartTime(String.valueOf(startTimeStamp));
-
-            Group groupInfo = RongUserInfoManager.getInstance().getGroupInfo(getIntent().getStringExtra("groupId"));
-            if (groupInfo != null) {
-                String groupInfoName = groupInfo.getName();
-                if (!TextUtils.isEmpty(groupInfoName)) {
-                    request.setGroupNikeName(groupInfoName.replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
-                }
-            }
-
-            ServiceFactory.getInstance().getBaseService(Api.class)
-                    .createLive(GsonUtils.toJson(request))
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                    .subscribe(s -> {
-                        Cast cast = new Cast();
-                        cast.setRoomId(s);
-                        cast.setType("1");
-                        cast.setStartTimeStamp(startTimeStamp);
-                        Application.daoSession.getCastDao().insertOrReplace(cast);
-
-                        Intent intent = new Intent(this, WechatCastDetailActivity.class);
-                        intent.putExtra("roomId", s);
-                        intent.putExtra("fromCreate", true);
-                        startActivity(intent);
-                        finish();
-                    }, this::handleApiError);
+        String detail = etStep4.getText().toString().trim();
+        if (TextUtils.isEmpty(detail)) {
+            ToastUtils.showShort(R.string.input_cast_detail);
             return;
         }
-        updateUIByStep(true);
+        if (TextUtils.isEmpty(detailUrl)) {
+            ToastUtils.showShort(R.string.setup_cast_detailimg);
+            return;
+        }
+
+        CreateLiveRequest request = new CreateLiveRequest();
+        request.setGroupId(getIntent().getStringExtra("groupId"));
+        request.setLiveDetails(detail);
+        request.setLiveContentImg(detailUrl);
+        request.setTopic(title);
+        request.setLivePoster(thumbUrl);
+        request.setStartTime(String.valueOf(startTimeStamp));
+        request.setLiveType(chooseFlag);
+
+        Group groupInfo = RongUserInfoManager.getInstance().getGroupInfo(getIntent().getStringExtra("groupId"));
+        if (groupInfo != null) {
+            String groupInfoName = groupInfo.getName();
+            if (!TextUtils.isEmpty(groupInfoName)) {
+                request.setGroupNikeName(groupInfoName.replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
+            }
+        }
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .createLive(GsonUtils.toJson(request), chooseFlag)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(s -> {
+                    Cast cast = new Cast();
+                    cast.setRoomId(s);
+                    cast.setType(chooseFlag);
+                    cast.setStartTimeStamp(startTimeStamp);
+                    Application.daoSession.getCastDao().insertOrReplace(cast);
+
+                    Intent intent = new Intent(this, WechatCastDetailActivity.class);
+                    intent.putExtra("roomId", s);
+                    if(!chooseFlag.equals("1")){
+                        intent.putExtra("fromCreate", true);
+                    }
+                    intent.putExtra("chooseFlag",chooseFlag);
+                    startActivity(intent);
+                    finish();
+                }, this::handleApiError);
     }
 
     public void selectTime(View view) {
@@ -395,6 +426,8 @@ public class CreateWechatCastActivity extends BaseActivity {
         } else {
             vf.showPrevious();
             stepFlag -= 1;
+            tvBottom.setVisibility(View.VISIBLE);
+            llBottom2.setVisibility(View.GONE);
         }
 
         isFlipping = true;

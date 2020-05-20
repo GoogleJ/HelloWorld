@@ -31,6 +31,7 @@ public class CastListActivity extends BaseActivity {
 
     private RecyclerView recycler;
     private BaseQuickAdapter<CastListBean, BaseViewHolder> adapter;
+    private String chooseFlag;
 
     @SuppressLint("CheckResult")
     @Override
@@ -41,6 +42,7 @@ public class CastListActivity extends BaseActivity {
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
+        chooseFlag = getIntent().getStringExtra("chooseFlag");
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.castlist);
 
@@ -70,6 +72,7 @@ public class CastListActivity extends BaseActivity {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(this, WechatCastDetailActivity.class);
             intent.putExtra("roomId", ((CastListBean) adapter.getData().get(position)).getRoomId());
+            intent.putExtra("chooseFlag",chooseFlag);
             startActivity(intent);
         });
 

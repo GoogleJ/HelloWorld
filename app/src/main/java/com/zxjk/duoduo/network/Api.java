@@ -17,6 +17,7 @@ import com.zxjk.duoduo.bean.response.CommunityFilesListResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.CommunityVideoListResponse;
+import com.zxjk.duoduo.bean.response.GetCreateLiveResponse;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.EditCommunityResponse;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
@@ -33,6 +34,7 @@ import com.zxjk.duoduo.bean.response.GetGroupChatInfoByGroupIdResponse;
 import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
+import com.zxjk.duoduo.bean.response.GetLiveInfoByGroupIdResponse;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.bean.response.GetOrderInfoByTypeResponse;
 import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
@@ -47,6 +49,7 @@ import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetUInvitationUrlBean;
 import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
 import com.zxjk.duoduo.bean.response.GetVicinityResponse;
+import com.zxjk.duoduo.bean.response.GetVideoInfoResponse;
 import com.zxjk.duoduo.bean.response.GroupChatResponse;
 import com.zxjk.duoduo.bean.response.GroupManagementInfoBean;
 import com.zxjk.duoduo.bean.response.GroupResponse;
@@ -802,6 +805,16 @@ public interface Api {
     @POST("duoduo/customer/feedback")
     @FormUrlEncoded
     Observable<BaseResponse<String>> feedback(@Field("content") String content);
+
+
+    @POST("duoduo/live/getVideoInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetVideoInfoResponse>> getVideoInfo(@Field("roomId") String roomId);
+
+    @POST("duoduo/live/getLiveInfoByGroupId")
+    @FormUrlEncoded
+    Observable<BaseResponse<ArrayList<GetLiveInfoByGroupIdResponse>>> getLiveInfoByGroupId(@Field("groupId") String groupId);
+
 
     @POST("duoduo/customer/getThirdPartyPaymentOrder")
     @FormUrlEncoded

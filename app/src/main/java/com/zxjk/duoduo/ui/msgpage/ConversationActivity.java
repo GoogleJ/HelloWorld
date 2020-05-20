@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
@@ -25,6 +28,8 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.pili.pldroid.player.widget.PLVideoTextureView;
+import com.pili.pldroid.player.widget.PLVideoView;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Application;
@@ -155,6 +160,20 @@ public class ConversationActivity extends BaseActivity {
      */
     private Disposable screenCapture;
     private SocialLocalBean socialLocalBean;
+
+
+    private TextView fullScreen;
+    private TextView fullScreen2;
+    private TextView fullScreen3;
+    private TextView tvNumberOfPeople;
+    private TextView tvNumberOfPeople2;
+    private TextView tvNumberOfPeople3;
+
+    private PLVideoTextureView mVideoView;
+    private int mOrientation;
+    private AlbumOrientationEventListener mAlbumOrientationEventListener;
+    private RelativeLayout rlVideo;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -781,20 +800,85 @@ public class ConversationActivity extends BaseActivity {
 
                             handleChatRoom();
 
-                            ViewStub casting = findViewById(R.id.stubCasting);
-                            View inflate = casting.inflate();
-                            inflate.findViewById(R.id.lottieCasting).setVisibility(View.GONE);
-                            TextView tv1 = inflate.findViewById(R.id.tvTips1);
-                            TextView tv2 = inflate.findViewById(R.id.tvTips2);
+                            String liveType = getIntent().getStringExtra("liveType");
 
-                            tv1.setTextColor(Color.parseColor("#999999"));
-                            tv2.setTextColor(Color.parseColor("#FB6E5D"));
-                            tv1.setText(R.string.watch_nums);
+                            if (!TextUtils.isEmpty(liveType) && liveType.equals("0")) {
+                                ViewStub casting = findViewById(R.id.stubCasting);
+                                View inflate = casting.inflate();
+                                chatRoomLive(inflate);
+                            } else if (!TextUtils.isEmpty(liveType) && liveType.equals("1")) {
+                                ViewStub stubVideo = findViewById(R.id.stubVideo);
+                                View stubVideoInflate = stubVideo.inflate();
+                                chatRoomLive(stubVideoInflate);
 
-                            TextView tvCastTopic = inflate.findViewById(R.id.tvCastTopic);
-                            tvCastTopic.setText(getString(R.string.cast_topic1, getIntent().getStringExtra("castTopic")));
+                                fullScreen = stubVideoInflate.findViewById(R.id.full_screen);
+                                fullScreen2 = stubVideoInflate.findViewById(R.id.full_screen2);
+                                fullScreen3 = stubVideoInflate.findViewById(R.id.full_screen3);
+                                tvNumberOfPeople = stubVideoInflate.findViewById(R.id.tv_number_of_people);
+                                tvNumberOfPeople2 = findViewById(R.id.tv_number_of_people2);
+                                tvNumberOfPeople3 = findViewById(R.id.tv_number_of_people3);
 
-                            upgradeWatchNumsForWechatCast(tv2);
+                                mVideoView = stubVideoInflate.findViewById(R.id.PLVideoTextureView);
+                                rlVideo = stubVideoInflate.findViewById(R.id.rl_video);
+
+                                View loadingView = stubVideoInflate.findViewById(R.id.LoadingView);
+                                mVideoView.setBufferingIndicator(loadingView);
+
+                                mVideoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_PAVED_PARENT);
+
+                                mVideoView.setVideoPath("rtmp://58.200.131.2:1935/livetv/hunantv");
+                                mVideoView.start();
+
+                                fullScreen.setOnClickListener(v -> {
+                                    if (i != 1) {
+                                        i = 1;
+                                        mVideoView.setDisplayOrientation(270);
+                                        fullScreen.setVisibility(View.GONE);
+                                        fullScreen2.setVisibility(View.VISIBLE);
+                                        fullScreen3.setVisibility(View.GONE);
+                                        tvNumberOfPeople.setVisibility(View.GONE);
+                                        tvNumberOfPeople2.setVisibility(View.VISIBLE);
+                                        tvNumberOfPeople3.setVisibility(View.GONE);
+                                    } else {
+                                        i = 0;
+                                        mVideoView.setDisplayOrientation(0);
+                                        fullScreen.setVisibility(View.VISIBLE);
+                                        fullScreen2.setVisibility(View.GONE);
+                                        fullScreen3.setVisibility(View.GONE);
+                                        tvNumberOfPeople.setVisibility(View.VISIBLE);
+                                        tvNumberOfPeople2.setVisibility(View.GONE);
+                                        tvNumberOfPeople3.setVisibility(View.GONE);
+                                    }
+                                });
+
+                                fullScreen2.setOnClickListener(v -> {
+                                    i = 0;
+                                    mVideoView.setDisplayOrientation(0);
+                                    fullScreen.setVisibility(View.VISIBLE);
+                                    fullScreen2.setVisibility(View.GONE);
+                                    fullScreen3.setVisibility(View.GONE);
+                                    tvNumberOfPeople.setVisibility(View.VISIBLE);
+                                    tvNumberOfPeople2.setVisibility(View.GONE);
+                                    tvNumberOfPeople3.setVisibility(View.GONE);
+                                });
+
+
+                                fullScreen3.setOnClickListener(v -> {
+                                    i = 0;
+                                    mVideoView.setDisplayOrientation(0);
+                                    fullScreen.setVisibility(View.VISIBLE);
+                                    fullScreen2.setVisibility(View.GONE);
+                                    fullScreen3.setVisibility(View.GONE);
+                                    tvNumberOfPeople.setVisibility(View.VISIBLE);
+                                    tvNumberOfPeople2.setVisibility(View.GONE);
+                                    tvNumberOfPeople3.setVisibility(View.GONE);
+                                });
+
+                                mAlbumOrientationEventListener = new AlbumOrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL);
+                                if (mAlbumOrientationEventListener.canDetectOrientation()) {
+                                    mAlbumOrientationEventListener.enable();
+                                }
+                            }
                         }, t -> {
                             handleApiError(t);
                             finish();
@@ -802,6 +886,31 @@ public class ConversationActivity extends BaseActivity {
 
                 break;
         }
+    }
+
+    private void setDrawables(Drawable drawable, TextView textView, String text) {
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable
+                .getMinimumHeight());// 设置边界
+        if (!TextUtils.isEmpty(text)) {
+            textView.setText(text);
+        }
+        textView.setCompoundDrawables(drawable, null, null, null);
+        textView.setCompoundDrawablePadding(8);
+    }
+
+    private void chatRoomLive(View inflate) {
+        inflate.findViewById(R.id.lottieCasting).setVisibility(View.GONE);
+        TextView tv1 = inflate.findViewById(R.id.tvTips1);
+        TextView tv2 = inflate.findViewById(R.id.tvTips2);
+
+        tv1.setTextColor(Color.parseColor("#999999"));
+        tv2.setTextColor(Color.parseColor("#FB6E5D"));
+        tv1.setText(R.string.watch_nums);
+
+        TextView tvCastTopic = inflate.findViewById(R.id.tvCastTopic);
+        tvCastTopic.setText(getString(R.string.cast_topic1, getIntent().getStringExtra("castTopic")));
+
+        upgradeWatchNumsForWechatCast(tv2);
     }
 
     private void upgradeWatchNumsForWechatCast(TextView tvNums) {
@@ -813,7 +922,11 @@ public class ConversationActivity extends BaseActivity {
                 .flatMap((Function<String, ObservableSource<?>>) s -> {
                     if (!TextUtils.isEmpty(s)) {
                         tvNums.setText(s);
+                        setDrawables(getResources().getDrawable(R.drawable.ic_numberofpeople,null),tvNumberOfPeople,s);
+                        setDrawables(getResources().getDrawable(R.drawable.ic_numberofpeople,null),tvNumberOfPeople2,s);
+                        setDrawables(getResources().getDrawable(R.drawable.ic_numberofpeople,null),tvNumberOfPeople3,s);
                     }
+
                     return Observable.timer(30, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).compose(bindUntilEvent(ActivityEvent.DESTROY));
                 })
                 .subscribe(s -> upgradeWatchNumsForWechatCast(tvNums), t -> {
@@ -1381,12 +1494,16 @@ public class ConversationActivity extends BaseActivity {
         if (fragment == null || !fragment.onBackPressed()) {
             super.onBackPressed();
         }
+
     }
 
     @Override
     protected void onDestroy() {
         if (rongMsgReceiver != null) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(rongMsgReceiver);
+        }
+        if (mVideoView != null) {
+            mVideoView.stopPlayback();
         }
         onSendMessageListener = null;
         typingStatusListener = null;
@@ -1395,5 +1512,47 @@ public class ConversationActivity extends BaseActivity {
         RongIM.getInstance().setSendMessageListener(null);
         RongIM.setConversationClickListener(null);
         super.onDestroy();
+    }
+
+    private class AlbumOrientationEventListener extends OrientationEventListener {
+        public AlbumOrientationEventListener(Context context) {
+            super(context);
+        }
+
+        public AlbumOrientationEventListener(Context context, int rate) {
+            super(context, rate);
+        }
+
+        @Override
+        public void onOrientationChanged(int orientation) {
+            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+                return;
+            }
+
+            int newOrientation = ((orientation + 45) / 90 * 90) % 360;
+            if (newOrientation != mOrientation) {
+                mOrientation = newOrientation;
+                if (i == 1) {
+                    if (mOrientation != 0 && mOrientation != 180) {
+                        mVideoView.setDisplayOrientation(mOrientation);
+                        if (mOrientation == 270) {
+                            fullScreen.setVisibility(View.GONE);
+                            fullScreen2.setVisibility(View.VISIBLE);
+                            fullScreen3.setVisibility(View.GONE);
+                            tvNumberOfPeople.setVisibility(View.GONE);
+                            tvNumberOfPeople2.setVisibility(View.VISIBLE);
+                            tvNumberOfPeople3.setVisibility(View.GONE);
+                        } else {
+                            fullScreen.setVisibility(View.GONE);
+                            fullScreen2.setVisibility(View.GONE);
+                            fullScreen3.setVisibility(View.VISIBLE);
+                            tvNumberOfPeople.setVisibility(View.GONE);
+                            tvNumberOfPeople2.setVisibility(View.GONE);
+                            tvNumberOfPeople3.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

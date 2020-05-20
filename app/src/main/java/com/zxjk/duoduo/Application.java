@@ -141,6 +141,7 @@ public class Application extends android.app.Application {
         initSmallVideo();
 
         QbSdk.initX5Environment(this, null);
+
     }
 
     public WebDataUtils getWebDataUtils() {

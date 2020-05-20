@@ -132,7 +132,6 @@ dependencies {
 
     //视频压缩
     implementation 'com.mabeijianxi:small-video-record2:2.0.3@aar'
-
     implementation 'com.artifex.mupdf:viewer:1.15.0'
 
     //glide
@@ -206,8 +205,11 @@ dependencies {
     implementation 'tyrantgit:explosionfield:1.0.1'
 
     //debugtools
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
-//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-//    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
 
+    //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
+
+    //    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    //    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
+    implementation files('libs/pldroid-player-2.1.9.jar')
 }

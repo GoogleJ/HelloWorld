@@ -8,6 +8,15 @@ public class CreateLiveRequest {
     private String liveContentImg;
     private String startTime;
     private String groupNikeName;
+    private String liveType;
+
+    public String getLiveType() {
+        return liveType;
+    }
+
+    public void setLiveType(String liveType) {
+        this.liveType = liveType;
+    }
 
     public String getGroupNikeName() {
         return groupNikeName;
