@@ -22,9 +22,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private int mTitles[] = {
-            R.string.to_buy, R.string.to_sell};
-
+    private int mTitles[] = {R.string.to_buy, R.string.to_sell};
 
     @SuppressLint("CheckResult")
     @Override
@@ -38,20 +36,15 @@ public class OneKeyBuyCoinActivity extends BaseActivity {
         initData();
     }
 
-
     private void initView() {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewpager);
-        findViewById(R.id.rl_back).setOnClickListener(v -> {
-            finish();
-        });
-        findViewById(R.id.rl_end).setOnClickListener(v -> {
-            startActivity(new Intent(this,OrderInfoByTypeActivity.class));
-        });
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+
+        findViewById(R.id.rl_end).setOnClickListener(v -> startActivity(new Intent(this, OrderInfoByTypeActivity.class)));
     }
 
     private void initData() {
-
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
@@ -70,7 +63,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity {
             }
         });
 
-        for (int i=0;i<2;i++){
+        for (int i = 0; i < 2; i++) {
             TabLayout.Tab tab = tabLayout.newTab();
             View inflate = View.inflate(this, R.layout.tablayout_title_text, null);
             TextView textView = inflate.findViewById(R.id.text1);
@@ -89,9 +82,9 @@ public class OneKeyBuyCoinActivity extends BaseActivity {
                     tab.setCustomView(R.layout.tablayout_title_text);
                 }
                 TextView textView = tab.getCustomView().findViewById(R.id.text1);
-                textView.setTextColor(getResources().getColor(R.color.white,null));
+                textView.setTextColor(getResources().getColor(R.color.white, null));
                 textView.setText(tab.getText());
-                textView.setTextAppearance( R.style.TabLayoutTextSize);
+                textView.setTextAppearance(R.style.TabLayoutTextSize);
             }
 
             @Override
@@ -108,7 +101,6 @@ public class OneKeyBuyCoinActivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 

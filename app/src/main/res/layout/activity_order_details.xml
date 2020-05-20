@@ -8,22 +8,22 @@
     android:orientation="vertical"
     tools:context=".ui.wallet.PurchaseDetailsActivity">
 
-
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/purchase_details_backgroud"/>
+                android:background="@drawable/purchase_details_backgroud" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,8 +85,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:textColor="@color/white" />
-                </LinearLayout>
 
+                </LinearLayout>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -318,7 +318,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:background="#FFFFFF"
                     android:orientation="horizontal">
 
                     <TextView
@@ -342,19 +341,13 @@
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
-
-    <LinearLayout
-        android:id="@+id/ll_title_bar"
+    <RelativeLayout
+        android:id="@+id/rl_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="26dp">
+        android:background="@color/colorPrimary">
 
             <FrameLayout
                 android:id="@+id/rl_back"
@@ -372,16 +365,16 @@
 
             </FrameLayout>
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/the_order_details"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/the_order_details"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>

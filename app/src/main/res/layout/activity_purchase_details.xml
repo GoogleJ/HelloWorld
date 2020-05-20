@@ -7,15 +7,18 @@
     android:background="@color/background_color"
     tools:context=".ui.wallet.PurchaseDetailsActivity">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +51,7 @@
                         android:layout_marginTop="8dp"
                         android:drawableEnd="@drawable/ic_copy1"
                         android:drawablePadding="8dp"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
 
 
                     <LinearLayout
@@ -63,9 +66,9 @@
                             android:id="@+id/tv1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:text="@string/fifteen_minutes"
-                            android:textColor="#ABD0FA"
-                            android:gravity="center"/>
+                            android:textColor="#ABD0FA" />
 
                         <TextView
                             android:id="@+id/tv_cancel_the_order"
@@ -73,9 +76,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:text="@string/cancel_the_order"
-                            android:textColor="@color/white"/>
-                    </LinearLayout>
+                            android:textColor="@color/white" />
 
+                    </LinearLayout>
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -218,7 +221,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -308,7 +310,7 @@
                             android:layout_marginStart="8dp"
                             android:drawableEnd="@drawable/ic_right_arrow"
                             android:drawablePadding="8dp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/black" />
                     </LinearLayout>
 
                     <View
@@ -353,58 +355,54 @@
                         android:layout_marginEnd="48dp"
                         android:layout_marginBottom="16dp"
                         android:background="@drawable/shape_4182f9_5"
+                        android:foreground="?selectableItemBackgroundBorderless"
                         android:gravity="center"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
                         android:text="@string/go_to_the_payment"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:foreground="?selectableItemBackgroundBorderless"/>
+                        android:textSize="18sp" />
+
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
+
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/ll_title_bar"
+    <RelativeLayout
+        android:id="@+id/rl_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/colorPrimary">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:id="@+id/rl_back"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="26dp">
+            android:foreground="?selectableItemBackgroundBorderless">
 
-            <FrameLayout
-                android:id="@+id/rl_back"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:foreground="?selectableItemBackgroundBorderless">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ico_back_white"
-                    android:tint="#cacaca" />
-
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/tv_title"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/purchase_details"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ico_back_white"
+                android:tint="#cacaca" />
 
+        </FrameLayout>
 
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/purchase_details"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>

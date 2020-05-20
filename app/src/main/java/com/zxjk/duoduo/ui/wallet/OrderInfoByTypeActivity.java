@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -30,7 +29,6 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.Sha256;
 
 import java.text.SimpleDateFormat;
@@ -44,7 +42,6 @@ import razerdp.widget.QuickPopup;
 
 @SuppressLint("CheckResult")
 public class OrderInfoByTypeActivity extends BaseActivity {
-
     private RecyclerView rlOrderInfoByType;
     private BaseQuickAdapter<GetOrderInfoByTypeResponse.ListBean, BaseViewHolder> adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -73,23 +70,20 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         initView();
 
         initData();
-
     }
 
     private void initView() {
         rlOrderInfoByType = findViewById(R.id.rl_order_info_by_type);
         swipeRefreshLayout = findViewById(R.id.refresh_layout);
         tvScreening = findViewById(R.id.tv_screening);
-        findViewById(R.id.rl_back).setOnClickListener(v -> {
-            finish();
-        });
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
 
     private void initData() {
         swipeRefreshLayout.setRefreshing(true);
         onRefreshLayout();
-        tvScreening.setOnClickListener(v -> {
 
+        tvScreening.setOnClickListener(v -> {
             orderPop = QuickPopupBuilder.with(this)
                     .contentView(R.layout.dialog_order_screening)
                     .config(new QuickPopupConfig()
@@ -140,10 +134,12 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                                     chb.setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                                 }
                                 page = 0;
+                                swipeRefreshLayout.setRefreshing(true);
                                 onRefreshLayout();
                             }, false)
                             .withClick(R.id.tv_determine, v1 -> {
                                 page = 0;
+                                swipeRefreshLayout.setRefreshing(true);
                                 onRefreshLayout();
                             }, true)
                             .withClick(R.id.view1, null, true)
@@ -166,7 +162,6 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             checkBoxs.add(orderPop.findViewById(R.id.radio6));
             checkBoxs.add(orderPop.findViewById(R.id.radio7));
             checkBoxs.add(orderPop.findViewById(R.id.radio8));
-
 
             if (state.equals("1")) {
                 setCheckBox(R.id.radio3);
@@ -233,7 +228,6 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                 } else {
                     tvPaymentState.setText(R.string.unknown);
                 }
-
             }
         };
 
@@ -266,16 +260,12 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                     }, this::handleApiError);
         });
 
-        rlOrderInfoByType.setAdapter(adapter);
-        rlOrderInfoByType.setItemAnimator(new DefaultItemAnimator());
-        rlOrderInfoByType.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-        adapter.setLoadMoreView(new NewsLoadMoreView());
         adapter.setEnableLoadMore(true);
         adapter.setOnLoadMoreListener(OrderInfoByTypeActivity.this::onRefreshLayout, rlOrderInfoByType);
-    }
 
+        rlOrderInfoByType.setLayoutManager(new LinearLayoutManager(this));
+        rlOrderInfoByType.setAdapter(adapter);
+    }
 
     private void onRefreshLayout() {
         api.getOrderInfoByType(String.valueOf(page), String.valueOf(numsPerPage), side, state)
@@ -284,7 +274,6 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver())
                 .doOnTerminate(() -> (swipeRefreshLayout).setRefreshing(false))
                 .subscribe(s -> {
-
                     page += 1;
                     if (page == 1) {
                         adapter.setNewData(s.getList());
@@ -310,11 +299,11 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         cb.setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
     }
 
-
     @Override
     protected void onRestart() {
         super.onRestart();
         page = 0;
+        swipeRefreshLayout.setRefreshing(true);
         onRefreshLayout();
     }
 }

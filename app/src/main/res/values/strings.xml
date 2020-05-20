@@ -1127,7 +1127,7 @@
     <string name="wechat_pay" translatable="false">微信支付</string>
     <string name="pay_treasure" translatable="false">支付宝</string>
     <string name="bank_card" translatable="false">银行卡</string>
-    <string name="buy_coin" translatable="false">购买 %1$s</string>
+    <string name="buy_coin" translatable="false">购买%1$s</string>
     <string name="payment_way" translatable="false">选择付款方式</string>
     <string name="payment_way2" translatable="false">付款方式:</string>
     <string name="price" translatable="false">单价:</string>

@@ -14,10 +14,11 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.core.widget.NestedScrollView;
-
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
@@ -43,8 +44,6 @@ import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
 
-import static tyrantgit.explosionfield.Utils.dp2Px;
-
 @SuppressLint("CheckResult")
 public class OrderDetailsActivity extends BaseActivity {
 
@@ -63,8 +62,8 @@ public class OrderDetailsActivity extends BaseActivity {
     private TextView tvRemark2;
     private TextView tvPayment;
     private TextView tvPaymentType2;
-    private NestedScrollView scrollView;
-    private LinearLayout llTitleBar;
+    private ScrollView scrollView;
+    private RelativeLayout rlTitleBar;
 
     private String sign;
     private String timestamp;
@@ -74,10 +73,11 @@ public class OrderDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
-        setTrasnferStatusBar(true);
 
+        setLightStatusBar(true);
+        BarUtils.setStatusBarColor(this, Color.parseColor("#4585F5"));
         initView();
-
+        rlTitleBar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         initData();
     }
 
@@ -97,15 +97,13 @@ public class OrderDetailsActivity extends BaseActivity {
         tvPayment = findViewById(R.id.tv_payment);
         tvPaymentType2 = findViewById(R.id.tv_payment_type2);
         scrollView = findViewById(R.id.scrollview);
-        llTitleBar = findViewById(R.id.ll_title_bar);
-        findViewById(R.id.rl_back).setOnClickListener(v -> {
-            onBackDialog();
-        });
+        rlTitleBar = findViewById(R.id.rl_title_bar);
+
+        findViewById(R.id.rl_back).setOnClickListener(v -> onBackDialog());
     }
 
     private void initData() {
         byBoinsResponse = (ByBoinsResponse) getIntent().getSerializableExtra("ByBoinsResponse");
-
 
         long l1 = (System.currentTimeMillis() - Long.parseLong(byBoinsResponse.getCreateTime())) / 1000;
         long total = (900 - l1) <= 0 ? 0 : (900 - l1);
@@ -116,10 +114,11 @@ public class OrderDetailsActivity extends BaseActivity {
                 .subscribe(l -> {
                     long minute = (total - l) / 60;
                     long second = (total - l) % 60;
-                    tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + second) : second))));
+                    tvCancelTheOrder.setText(minute + ":" + (second == 0 ? "00" : (second < 10 ? ("0" + second) : second)));
                     if (total == 0 || l == total - 1) {
                         ToastUtils.showShort(getString(R.string.order_a_timeout));
                         tvCancelTheOrder.setText(R.string.already_timeout);
+                        tvPayment.setText(R.string.already_timeout);
                         tvPayment.getBackground().setAlpha(180);
                         payment = false;
                     }
@@ -214,34 +213,7 @@ public class OrderDetailsActivity extends BaseActivity {
                         }, this::handleApiError);
             }
         });
-
-
-        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (nestedScrollView, i, i1, i2, i3) -> {
-
-            int height = dp2Px(45);
-
-            if (i1 <= height) {
-                float scale = (float) i1 / height;
-                float alpha = scale * 255;
-                llTitleBar.setBackgroundColor(Color.argb((int) alpha, 0, 0, 0));
-            } else {
-                llTitleBar.setBackgroundResource(R.color.colorPrimary);
-            }
-
-            if (i1 <= 0) {
-                llTitleBar.setBackgroundColor(Color.argb(0, 79, 139, 242));
-            } else if (i1 > 0 && i1 < height) {
-                float scale = (float) i1 / height;
-                float alpha = (255 * scale);
-                llTitleBar.setBackgroundColor(Color.argb((int) alpha, 79, 139, 242));
-            } else {
-                llTitleBar.setBackgroundColor(Color.argb(255, 79, 139, 242));
-            }
-
-        });
-
     }
-
 
     private void setDrawables(Drawable drawable, Drawable drawable2, TextView textView) {
         Drawable drawables = drawable;
@@ -255,7 +227,6 @@ public class OrderDetailsActivity extends BaseActivity {
         textView.setCompoundDrawablePadding(8);
     }
 
-
     private void copyText(String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
@@ -265,7 +236,6 @@ public class OrderDetailsActivity extends BaseActivity {
 
         ToastUtils.showShort(R.string.duplicated_to_clipboard);
     }
-
 
     private void onBackDialog() {
         String text = getString(R.string.payment_reminder);

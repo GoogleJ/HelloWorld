@@ -11,10 +11,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.core.widget.NestedScrollView;
-
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
@@ -37,8 +38,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-import static tyrantgit.explosionfield.Utils.dp2Px;
-
 @SuppressLint("CheckResult")
 public class PurchaseDetailsActivity extends BaseActivity {
     private ByBoinsResponse byBoinsResponse;
@@ -58,8 +57,8 @@ public class PurchaseDetailsActivity extends BaseActivity {
     private TextView tvPayment;
     private LinearLayout llCancelTheOrder;
     private TextView tv1;
-    private NestedScrollView scrollView;
-    private LinearLayout llTitleBar;
+    private ScrollView scrollView;
+    private RelativeLayout rlTitleBar;
 
     private String sign;
     private String timestamp;
@@ -71,12 +70,12 @@ public class PurchaseDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_details);
-        setTrasnferStatusBar(true);
 
+        setLightStatusBar(true);
+        BarUtils.setStatusBarColor(this, Color.parseColor("#4585F5"));
         initView();
-
+        rlTitleBar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         initData();
-
     }
 
     private void initView() {
@@ -96,39 +95,15 @@ public class PurchaseDetailsActivity extends BaseActivity {
         llCancelTheOrder = findViewById(R.id.ll_cancel_the_order);
         tv1 = findViewById(R.id.tv1);
         scrollView = findViewById(R.id.scrollview);
-        llTitleBar = findViewById(R.id.ll_title_bar);
+        rlTitleBar = findViewById(R.id.rl_title_bar);
 
         findViewById(R.id.rl_back).setOnClickListener(v ->
                 finish()
         );
 
-        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (nestedScrollView, i, i1, i2, i3) -> {
-
-            int height = dp2Px(45);
-
-            if (i1 <= height) {
-                float scale = (float) i1 / height;
-                float alpha = scale * 255;
-                llTitleBar.setBackgroundColor(Color.argb((int) alpha, 0, 0, 0));
-            } else {
-                llTitleBar.setBackgroundResource(R.color.colorPrimary);
-            }
-
-            if (i1 <= 0) {
-                llTitleBar.setBackgroundColor(Color.argb(0, 79, 139, 242));
-            } else if (i1 > 0 && i1 < height) {
-                float scale = (float) i1 / height;
-                float alpha = (255 * scale);
-                llTitleBar.setBackgroundColor(Color.argb((int) alpha, 79, 139, 242));
-            } else {
-                llTitleBar.setBackgroundColor(Color.argb(255, 79, 139, 242));
-            }
-
-        });
     }
 
     private void initData() {
-
         if (isJump) {
             byBoinsResponse = (ByBoinsResponse) getIntent().getExtras().getSerializable("ByBoinsResponse");
         }
@@ -142,15 +117,16 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.waiting_to_put_money));
 
                 long l1 = (System.currentTimeMillis() - Long.parseLong(byBoinsResponse.getPayTime())) / 1000;
-                long total = ((900 - l1) <= 0 ? 0 : (900 - l1)) + 15;
+
+                long total = (900 - l1) <= 0 ? 0 : (900 - l1);
                 Observable.interval(0, 1, TimeUnit.SECONDS)
-                        .take(total + 10)
+                        .take(total)
                         .observeOn(AndroidSchedulers.mainThread())
                         .compose(bindToLifecycle())
                         .subscribe(l -> {
                             long minute = (total - l) / 60;
                             long second = (total - l) % 60;
-                            tvCancelTheOrder.setText(minute + ":" + (second == 60 ? "00" : ((second < 10 ? ("0" + (second - 1)) : second))));
+                            tvCancelTheOrder.setText(minute + ":" + (second == 0 ? "00" : (second < 10 ? ("0" + (second - 1)) : second)));
                             if (total == 0 || l == total - 1) {
                                 orderInfo();
                             }
@@ -167,7 +143,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 tvPayment.setVisibility(View.INVISIBLE);
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.buyer_cancel));
                 tvCancelTheOrder.setVisibility(View.GONE);
-            }else if(byBoinsResponse.getState().equals("5") ){
+            } else if (byBoinsResponse.getState().equals("5")) {
                 setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, getString(R.string.has_been_cancelled));
                 tvPayment.setVisibility(View.INVISIBLE);
                 setDrawables(getResources().getDrawable(R.drawable.ic_waiting, null), tv1, getString(R.string.seller_to_cancel));
@@ -193,7 +169,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
             }
         }
 
-
         tvTheOrderNumber.setText(getString(R.string.order_number, byBoinsResponse.getTransId()));
         tvTotal.setText(byBoinsResponse.getTotal());
         tvPrice.setText(byBoinsResponse.getPrice() + "\u0020" + byBoinsResponse.getCurrencyType() + "/" + byBoinsResponse.getCurrency());
@@ -211,7 +186,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
         } else {
             setDrawables(getResources().getDrawable(R.drawable.wechat, null), tvPaymentType, getString(R.string.wechat_pay));
         }
-
 
         tvBusinessName.setText(byBoinsResponse.getBusinessName());
         tvOtherUserId.setText(byBoinsResponse.getOtherUserId());
@@ -251,7 +225,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
         });
     }
 
-
     private void setDrawables(Drawable drawable, TextView textView, String text) {
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable
                 .getMinimumHeight());// 设置边界
@@ -269,7 +242,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 holder.setText(R.id.tv_content, getString(R.string.remove_order_remind, defaultRenegeNumber, defaultRenegeNumber));
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                 holder.setOnClickListener(R.id.tv_ok, v -> {
-
                     long timeStampSec = System.currentTimeMillis() / 1000;
                     timestamp = String.format("%010d", timeStampSec);
 
@@ -281,18 +253,13 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             .compose(RxSchedulers.otc())
                             .compose(RxSchedulers.ioObserver())
                             .compose(bindToLifecycle())
-                            .subscribe(data -> {
-                                if (TextUtils.isEmpty(data)) {
-                                    ToastUtils.showShort(data);
-                                }
-                            }, PurchaseDetailsActivity.this::handleApiError);
-                    finish();
+                            .subscribe(s -> finish(), PurchaseDetailsActivity.this::handleApiError);
+
                     dialog.dismiss();
                 });
             }
         }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
     }
-
 
     private void orderInfo() {
         long timeStampSec = System.currentTimeMillis() / 1000;
