@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.cast;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class WechatChatRoomManageActivity extends BaseActivity {
     private Switch sw3;
 
     private String roomId;
+    private String liveType;
     private WechatChatRoomPermission chatRoomPermission;
 
     @SuppressLint("CheckResult")
@@ -53,6 +55,12 @@ public class WechatChatRoomManageActivity extends BaseActivity {
         sw2 = findViewById(R.id.sw2);
         sw3 = findViewById(R.id.sw3);
 
+        liveType = getIntent().getStringExtra("liveType");
+
+        if(!TextUtils.isEmpty(liveType) && liveType.equals("1")){
+            findViewById(R.id.ll_chat1).setVisibility(View.GONE);
+            findViewById(R.id.ll_chat2).setVisibility(View.GONE);
+        }
         roomId = getIntent().getStringExtra("roomId");
 
         ServiceFactory.getInstance().getBaseService(Api.class)

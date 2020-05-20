@@ -711,7 +711,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("duoduo/live/createLive")
-    Observable<BaseResponse<String>> createLive(@Field("chatRoom") String chatRoom);
+    Observable<BaseResponse<String>> createLive(@Field("chatRoom") String chatRoom,@Field("liveType") String liveType);
 
     @FormUrlEncoded
     @POST("duoduo/chatRoom/getChatRoomInfo")
@@ -823,4 +823,8 @@ public interface Api {
     @POST("duoduo/customer/thirdPartyPayment")
     @FormUrlEncoded
     Observable<BaseResponse<String>> thirdPartyPayment(@Field("orderId") String orderId, @Field("payPwd") String payPwd);
+
+    @POST("duoduo/live/enableOpenVideoLive")
+    Observable<BaseResponse<String>> enableOpenVideoLive();
+
 }

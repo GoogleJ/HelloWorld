@@ -49,6 +49,8 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
+import com.zxjk.duoduo.ui.webcast.LivePlayBackActivity;
+import com.zxjk.duoduo.ui.webcast.VideoAddressActivity;
 import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
@@ -485,7 +487,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                                 ToastUtils.showShort(R.string.cant_view_cast1);
                             } else {
                                 if (!TextUtils.isEmpty(livePlayBack)) {
-                                    Intent intent = new Intent(this,LivePlayBackActivity.class);
+                                    Intent intent = new Intent(this, LivePlayBackActivity.class);
                                     intent.putExtra("playUrl",info.getPlayUrl());
                                     startActivity(intent);
                                 } else {

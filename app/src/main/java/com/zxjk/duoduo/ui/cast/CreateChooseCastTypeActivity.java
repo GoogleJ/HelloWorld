@@ -45,11 +45,24 @@ public class CreateChooseCastTypeActivity extends BaseActivity {
         ivCheck3.setVisibility(View.INVISIBLE);
     }
 
+
+    @SuppressLint("CheckResult")
     public void video(View view) {
-        chooseFlag = 1;
-        ivCheck1.setVisibility(View.INVISIBLE);
-        ivCheck2.setVisibility(View.VISIBLE);
-        ivCheck3.setVisibility(View.INVISIBLE);
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .enableOpenVideoLive()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(s -> {
+                    if (s.equals("1")) {
+                        chooseFlag = 1;
+                        ivCheck1.setVisibility(View.INVISIBLE);
+                        ivCheck2.setVisibility(View.VISIBLE);
+                        ivCheck3.setVisibility(View.INVISIBLE);
+                    } else {
+                        ToastUtils.showShort(R.string.developing);
+                    }
+                }, this::handleApiError);
     }
 
     public void audio(View view) {
@@ -75,7 +88,7 @@ public class CreateChooseCastTypeActivity extends BaseActivity {
                 .subscribe(s -> {
                     Intent intent = new Intent(this, CreateWechatCastActivity.class);
                     intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
-                    intent.putExtra("chooseFlag",String.valueOf(chooseFlag));
+                    intent.putExtra("chooseFlag", String.valueOf(chooseFlag));
                     startActivity(intent);
                     finish();
                 }, this::handleApiError);

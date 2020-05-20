@@ -959,8 +959,10 @@ public class ConversationActivity extends BaseActivity {
         rl_end.setVisibility(View.VISIBLE);
         if (Constant.userId.equals(ownerId)) {
             rl_end.setOnClickListener(v -> {
+
                 Intent intent = new Intent(this, WechatChatRoomManageActivity.class);
                 intent.putExtra("roomId", targetId);
+                intent.putExtra("liveType",getIntent().getStringExtra("liveType"));
                 startActivity(intent);
             });
             iv_end.setImageResource(R.drawable.ic_title_end_chatroom_manage);

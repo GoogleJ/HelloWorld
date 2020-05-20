@@ -15,23 +15,18 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.umeng.commonsdk.debug.I;
-import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetLiveInfoByGroupIdResponse;
-import com.zxjk.duoduo.db.Cast;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
-import com.zxjk.duoduo.ui.webcast.WechatCastDetailActivity;
+import com.zxjk.duoduo.ui.cast.WechatCastDetailActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.text.SimpleDateFormat;
@@ -60,7 +55,7 @@ public class DynamicsPage extends BaseFragment {
         adapter = new BaseQuickAdapter<GetLiveInfoByGroupIdResponse, BaseViewHolder>(R.layout.item_dynamics_page) {
             @Override
             protected void convert(BaseViewHolder helper, GetLiveInfoByGroupIdResponse item) {
-                helper.setText(R.id.tv_topic,item.getTopic());
+                helper.setText(R.id.tv_topic, item.getTopic());
                 TextView tvStartTime = helper.getView(R.id.tv_start_time);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String sd = sdf.format(new Date(Long.parseLong(item.getStartTime())));
@@ -86,11 +81,11 @@ public class DynamicsPage extends BaseFragment {
         recycler.setAdapter(adapter);
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            GetLiveInfoByGroupIdResponse getLiveInfoByGroupIdResponse = (GetLiveInfoByGroupIdResponse)adapter.getData().get(position);
-            Intent intent = new Intent(getContext(),WechatCastDetailActivity.class);
-            intent.putExtra("roomId",getLiveInfoByGroupIdResponse.getRoomId());
-            intent.putExtra("chooseFlag","1");
-            intent.putExtra("livePlayBack","1");
+            GetLiveInfoByGroupIdResponse getLiveInfoByGroupIdResponse = (GetLiveInfoByGroupIdResponse) adapter.getData().get(position);
+            Intent intent = new Intent(getContext(), WechatCastDetailActivity.class);
+            intent.putExtra("roomId", getLiveInfoByGroupIdResponse.getRoomId());
+            intent.putExtra("chooseFlag", "1");
+            intent.putExtra("livePlayBack", "1");
             startActivity(intent);
             getActivity().finish();
         });
