@@ -1215,7 +1215,7 @@
     <string name="receiveRed">红包已领取</string>
     <string name="havent_register_goto_hilamg">用户未注册，请先使用hilamg注册后使用</string>
     <string name="paySuccess">支付成功</string>
-    <string name="current_left">%1$s (当前剩余:%2$s)</string>
+    <string name="current_left">%1$s (余额不足,剩余:%2$s)</string>
     <string name="pay_left">%1$s (扣除后剩余:%2$s)</string>
     <string name="pay_detail">付款详情</string>
     <string name="back2Bussiness">返回商家</string>
