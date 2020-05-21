@@ -7,12 +7,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_margin="16dp">
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
@@ -21,7 +21,8 @@
             <TextView
                 android:id="@+id/tv_topic"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:text="CYTT中国财富"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -31,14 +32,13 @@
             <TextView
                 android:id="@+id/tv_start_time"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:textSize="16sp"
                 android:text="2020-03-12 10:35:00"
+                android:gravity="bottom"
                 android:textColor="#999999" />
         </LinearLayout>
-
-
 
         <ImageView
             android:id="@+id/tv_live_poster"

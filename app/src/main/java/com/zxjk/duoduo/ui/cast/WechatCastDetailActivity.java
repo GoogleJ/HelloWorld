@@ -165,11 +165,12 @@ public class WechatCastDetailActivity extends BaseActivity {
                 .doOnError(t -> {
                     lottie.setVisibility(View.GONE);
                     tvRetry.setVisibility(View.VISIBLE);
+                    finish();
                 })
                 .subscribe(r -> {
                     info = r;
 //                    if (!TextUtils.isEmpty(info.getRoomStatus()) &&
-//                            (info.getRoomStatus().equals("3") || info.getRoomStatus().equals("2"))) {
+//                            info.getRoomStatus().equals("3")) {
 //                        ToastUtils.showShort(R.string.cant_view_cast);
 //                        finish();
 //                    }
@@ -177,7 +178,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                     chooseFlag = r.getLiveType();
                     initView(stub.inflate());
                     if (!TextUtils.isEmpty(chooseFlag) && chooseFlag.equals("1")) {
-                        if(!info.getRoomOwnerId().equals(Constant.userId)){
+                        if (!info.getRoomOwnerId().equals(Constant.userId)) {
                             tvBottom1.setVisibility(View.GONE);
                             dividerBottom.setVisibility(View.GONE);
                         }
@@ -318,7 +319,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                         intent.putExtra("roomId", info.getRoomId());
                         intent.putExtra("icon", info.getCommunityLogo());
                         intent.putExtra("title", info.getTopic());
-                        intent.putExtra("type",info.getLiveType());
+                        intent.putExtra("type", info.getLiveType());
                         intent.putParcelableArrayListExtra("data", (ArrayList<? extends Parcelable>) conversations);
                         startActivity(intent);
                     }
@@ -493,7 +494,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                             } else {
                                 if (!TextUtils.isEmpty(livePlayBack)) {
                                     Intent intent = new Intent(this, LivePlayBackActivity.class);
-                                    intent.putExtra("playUrl",info.getPlayUrl());
+                                    intent.putExtra("playUrl", info.getPlayUrl());
                                     startActivity(intent);
                                 } else {
                                     Intent intent = new Intent(this, HomeActivity.class);

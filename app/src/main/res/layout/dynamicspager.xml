@@ -12,6 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/shape_white_8"
-        android:overScrollMode="never" />
+        android:overScrollMode="never"
+        android:layout_marginBottom="8dp"/>
 
 </LinearLayout>

@@ -48,22 +48,21 @@ public class CreateChooseCastTypeActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void video(View view) {
-        chooseFlag = 1;
-        ivCheck1.setVisibility(View.INVISIBLE);
-        ivCheck2.setVisibility(View.VISIBLE);
-        ivCheck3.setVisibility(View.INVISIBLE);
-//        ServiceFactory.getInstance().getBaseService(Api.class)
-//                .enableOpenVideoLive()
-//                .compose(bindToLifecycle())
-//                .compose(RxSchedulers.normalTrans())
-//                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-//                .subscribe(s -> {
-//                    if (s.equals("1")) {
-//
-//                    } else {
-//                        ToastUtils.showShort(R.string.developing);
-//                    }
-//                }, this::handleApiError);
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .enableOpenVideoLive()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(s -> {
+                    if (s.equals("1")) {
+                        chooseFlag = 1;
+                        ivCheck1.setVisibility(View.INVISIBLE);
+                        ivCheck2.setVisibility(View.VISIBLE);
+                        ivCheck3.setVisibility(View.INVISIBLE);
+                    } else {
+                        ToastUtils.showShort(R.string.developing);
+                    }
+                }, this::handleApiError);
     }
 
     public void audio(View view) {

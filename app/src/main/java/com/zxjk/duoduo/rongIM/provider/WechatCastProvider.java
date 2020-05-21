@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.ui.cast.WechatCastDetailActivity;
@@ -39,9 +38,9 @@ public class WechatCastProvider extends IContainerItemProvider.MessageProvider<W
         }
 
         holder.title.setText(wechatCastMessage.getTitle());
-        if(wechatCastMessage.getType().equals("0")){
+        if (wechatCastMessage.getType().equals("0")) {
             holder.tv1.setText(R.string.wechat_cast);
-        }else if(wechatCastMessage.getType().equals("1")){
+        } else if (wechatCastMessage.getType().equals("1")) {
             holder.tv1.setText(R.string.video_cast);
         }
 

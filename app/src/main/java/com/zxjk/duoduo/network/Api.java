@@ -806,7 +806,6 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> feedback(@Field("content") String content);
 
-
     @POST("duoduo/live/getVideoInfo")
     @FormUrlEncoded
     Observable<BaseResponse<GetVideoInfoResponse>> getVideoInfo(@Field("roomId") String roomId);
@@ -814,7 +813,6 @@ public interface Api {
     @POST("duoduo/live/getLiveInfoByGroupId")
     @FormUrlEncoded
     Observable<BaseResponse<ArrayList<GetLiveInfoByGroupIdResponse>>> getLiveInfoByGroupId(@Field("groupId") String groupId);
-
 
     @POST("duoduo/customer/getThirdPartyPaymentOrder")
     @FormUrlEncoded
