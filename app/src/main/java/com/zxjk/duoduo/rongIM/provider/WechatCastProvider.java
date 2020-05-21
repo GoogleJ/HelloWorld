@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.ui.cast.WechatCastDetailActivity;
@@ -38,6 +39,12 @@ public class WechatCastProvider extends IContainerItemProvider.MessageProvider<W
         }
 
         holder.title.setText(wechatCastMessage.getTitle());
+        if(wechatCastMessage.getType().equals("0")){
+            holder.tv1.setText(R.string.wechat_cast);
+        }else if(wechatCastMessage.getType().equals("1")){
+            holder.tv1.setText(R.string.video_cast);
+        }
+
         GlideUtil.loadCornerImg(holder.icon, wechatCastMessage.getIcon(), 1);
     }
 
@@ -66,6 +73,7 @@ public class WechatCastProvider extends IContainerItemProvider.MessageProvider<W
         holder.icon = view.findViewById(R.id.news_card_icon);
         holder.sendLayout = view.findViewById(R.id.news_card_send_layout);
         holder.llHilamg = view.findViewById(R.id.ll_hilamg);
+        holder.tv1 = view.findViewById(R.id.tv1);
         view.setTag(holder);
         return view;
     }
@@ -75,5 +83,6 @@ public class WechatCastProvider extends IContainerItemProvider.MessageProvider<W
         ImageView icon;
         LinearLayout llHilamg;
         LinearLayout sendLayout;
+        TextView tv1;
     }
 }

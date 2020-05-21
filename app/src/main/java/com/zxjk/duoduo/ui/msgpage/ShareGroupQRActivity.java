@@ -153,7 +153,7 @@ public class ShareGroupQRActivity extends BaseActivity {
         CommonUtils.initDialog(this).show();
         WechatCastMessage content = new WechatCastMessage();
         content.setRoomID(getIntent().getStringExtra("roomId"));
-        content.setType("0");
+        content.setType(getIntent().getStringExtra("type"));
         content.setIcon(getIntent().getStringExtra("icon"));
         content.setTitle(getIntent().getStringExtra("title"));
         Message message = Message.obtain(data.get(position).getTargetId(), data.get(position).getConversationType(), content);

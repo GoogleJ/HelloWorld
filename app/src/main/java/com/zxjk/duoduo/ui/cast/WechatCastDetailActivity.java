@@ -177,6 +177,10 @@ public class WechatCastDetailActivity extends BaseActivity {
                     chooseFlag = r.getLiveType();
                     initView(stub.inflate());
                     if (!TextUtils.isEmpty(chooseFlag) && chooseFlag.equals("1")) {
+                        if(!info.getRoomOwnerId().equals(Constant.userId)){
+                            tvBottom1.setVisibility(View.GONE);
+                            dividerBottom.setVisibility(View.GONE);
+                        }
                         tvBottom1.setText("推流地址");
                         tvBottom2.setText("进入直播");
                     }
@@ -314,6 +318,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                         intent.putExtra("roomId", info.getRoomId());
                         intent.putExtra("icon", info.getCommunityLogo());
                         intent.putExtra("title", info.getTopic());
+                        intent.putExtra("type",info.getLiveType());
                         intent.putParcelableArrayListExtra("data", (ArrayList<? extends Parcelable>) conversations);
                         startActivity(intent);
                     }

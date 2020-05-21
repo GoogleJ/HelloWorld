@@ -43,6 +43,8 @@ public class VideoAddressActivity extends BaseActivity {
         rtmpAdd = getIntent().getStringExtra("rtmpAdd");
         liveCode = getIntent().getStringExtra("liveCode");
 
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+
         findViewById(R.id.tv_copy).setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("text", tvRtmpAdd.getText());
