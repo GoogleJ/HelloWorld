@@ -239,6 +239,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                 if (info != null && info.getRoomStatus().equals("0")) {
                     Intent intent = new Intent(this, ModifyWechatCastActivity.class);
                     intent.putExtra("info", info);
+                    intent.putExtra("chooseFlag",chooseFlag);
                     startActivityForResult(intent, 1);
                 } else {
                     ToastUtils.showShort(R.string.cant_modify_inprogress_cast);
@@ -500,6 +501,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                                     Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon().appendPath("conversation").appendPath(Conversation.ConversationType.CHATROOM.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", roomId).build();
                                     intent = new Intent("android.intent.action.VIEW", uri);
                                     intent.putExtra("chatRoomOwnerId", info.getRoomOwnerId());
+                                    intent.putExtra("roomOwnerId",info.getRoomOwnerId());
                                     intent.putExtra("chatRoomStatus", s);
                                     intent.putExtra("groupNikeName",info.getGroupNikeName());
                                     intent.putExtra("chatRoomName", info.getRoomName());

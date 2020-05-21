@@ -758,7 +758,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("duoduo/live/modifyLive")
-    Observable<BaseResponse<String>> modifyLive(@Field("chatRoom") String chatRoom);
+    Observable<BaseResponse<String>> modifyLive(@Field("chatRoom") String chatRoom,@Field("liveType") String liveType);
 
     @FormUrlEncoded
     @POST("duoduo/live/endLive")

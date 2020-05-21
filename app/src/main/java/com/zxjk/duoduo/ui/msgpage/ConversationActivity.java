@@ -853,6 +853,14 @@ public class ConversationActivity extends BaseActivity {
                                     }
                                 });
 
+                                String s = Constant.USERID;
+                                String ss = getIntent().getStringExtra("roomOwnerId");
+                                if(!Constant.USERID.equals(getIntent().getStringExtra("roomOwnerId"))){
+                                    extension.setInputBarStyle(InputBar.Style.STYLE_EXTENSION_CONTAINER);
+                                }else {
+                                    extension.setInputBarStyle(InputBar.Style.STYLE_CONTAINER);
+                                }
+
                                 mAlbumOrientationEventListener = new AlbumOrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL);
                                 if (mAlbumOrientationEventListener.canDetectOrientation()) {
                                     mAlbumOrientationEventListener.enable();

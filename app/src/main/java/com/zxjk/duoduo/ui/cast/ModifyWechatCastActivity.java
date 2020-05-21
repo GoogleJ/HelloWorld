@@ -198,8 +198,10 @@ public class ModifyWechatCastActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void save(View view) {
+        info.setTopic(etTitle.getText().toString());
+        info.setLiveDetails(etDetail.getText().toString());
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .modifyLive(GsonUtils.toJson(info))
+                .modifyLive(GsonUtils.toJson(info),info.getLiveType())
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
