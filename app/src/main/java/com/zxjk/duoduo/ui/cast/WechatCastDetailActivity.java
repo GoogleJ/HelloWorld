@@ -145,9 +145,6 @@ public class WechatCastDetailActivity extends BaseActivity {
             tvBottom1.setText("推流地址");
             tvBottom2.setText("进入直播");
         }
-        if (!TextUtils.isEmpty(livePlayBack)) {
-
-        }
     }
 
     @SuppressLint("CheckResult")
@@ -492,7 +489,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                             if (s.equals("3") || s.equals("0")) {
                                 ToastUtils.showShort(R.string.cant_view_cast1);
                             } else {
-                                if (!TextUtils.isEmpty(livePlayBack)) {
+                                if (!TextUtils.isEmpty(livePlayBack) || info.getRoomStatus().equals("2")) {
                                     Intent intent = new Intent(this, LivePlayBackActivity.class);
                                     intent.putExtra("playUrl", info.getPlayUrl());
                                     startActivity(intent);
@@ -504,11 +501,13 @@ public class WechatCastDetailActivity extends BaseActivity {
                                     intent = new Intent("android.intent.action.VIEW", uri);
                                     intent.putExtra("chatRoomOwnerId", info.getRoomOwnerId());
                                     intent.putExtra("chatRoomStatus", s);
+                                    intent.putExtra("groupNikeName",info.getGroupNikeName());
                                     intent.putExtra("chatRoomName", info.getRoomName());
                                     intent.putExtra("groupId", info.getGroupId());
                                     intent.putExtra("castTopic", info.getTopic());
                                     intent.putExtra("liveType", info.getLiveType());
                                     intent.putExtra("playUrl", info.getPlayUrl());
+                                    intent.putExtra("topic",info.getTopic());
                                     startActivity(intent);
                                 }
 

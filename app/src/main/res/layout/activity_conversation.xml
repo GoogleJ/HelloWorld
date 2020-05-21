@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title_back" />
+    <include
+        android:id="@+id/title" layout="@layout/layout_title_back" />
 
     <ViewStub
         android:id="@+id/stubCasting"

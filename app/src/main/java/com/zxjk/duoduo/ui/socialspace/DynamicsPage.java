@@ -87,7 +87,6 @@ public class DynamicsPage extends BaseFragment {
             intent.putExtra("chooseFlag", "1");
             intent.putExtra("livePlayBack", "1");
             startActivity(intent);
-            getActivity().finish();
         });
 
         ServiceFactory.getInstance().getBaseService(Api.class)

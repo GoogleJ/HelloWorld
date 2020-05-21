@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <View
@@ -11,6 +11,7 @@
         android:background="#E5E5E5" />
 
     <LinearLayout
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FAFAFA"
@@ -58,7 +59,6 @@
     </LinearLayout>
 
 
-
     <RelativeLayout
         android:id="@+id/rl_video"
         android:layout_width="match_parent"
@@ -77,6 +77,36 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" />
 
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ico_back_white"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:text="主题：CYTT中国财富讲"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/img_back"
+            android:layout_marginStart="16dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_group_nike_name"
+            android:text="CYTT中国社群"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/PLVideoTextureView"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
         <TextView
             android:id="@+id/full_screen"
             android:layout_width="wrap_content"
@@ -86,60 +116,17 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/ic_full_screen" />
+
         <TextView
             android:id="@+id/tv_number_of_people"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_alignBottom="@+id/PLVideoTextureView"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:id="@+id/full_screen2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/PLVideoTextureView"
             android:layout_alignBottom="@+id/PLVideoTextureView"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/ic_full_screen"
-            android:visibility="gone" />
+            android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/tv_number_of_people2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_alignStart="@+id/PLVideoTextureView"
-            android:layout_alignTop="@+id/PLVideoTextureView"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:rotation="90"
-            android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/full_screen3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/PLVideoTextureView"
-            android:layout_alignEnd="@+id/PLVideoTextureView"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/ic_full_screen"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_number_of_people3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_alignEnd="@+id/PLVideoTextureView"
-            android:layout_alignBottom="@+id/PLVideoTextureView"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:rotation="270"
-            android:visibility="gone"/>
     </RelativeLayout>
 
 </LinearLayout>

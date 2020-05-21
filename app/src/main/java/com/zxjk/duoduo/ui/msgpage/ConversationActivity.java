@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.hardware.SensorManager;
@@ -51,8 +53,6 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.EnlargeImageActivity;
-import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.rongIM.CusConversationFragment;
 import com.zxjk.duoduo.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.rongIM.message.CusEmoteTabMessage;
@@ -66,9 +66,11 @@ import com.zxjk.duoduo.rongIM.plugin.FilePlugin;
 import com.zxjk.duoduo.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.rongIM.plugin.SightPlugin;
 import com.zxjk.duoduo.rongIM.plugin.TransferPlugin;
-import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
+import com.zxjk.duoduo.ui.EnlargeImageActivity;
+import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.cast.WechatCastDetailActivity;
 import com.zxjk.duoduo.ui.cast.WechatChatRoomManageActivity;
+import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
@@ -161,19 +163,13 @@ public class ConversationActivity extends BaseActivity {
     private Disposable screenCapture;
     private SocialLocalBean socialLocalBean;
 
-
     private TextView fullScreen;
-    private TextView fullScreen2;
-    private TextView fullScreen3;
     private TextView tvNumberOfPeople;
-    private TextView tvNumberOfPeople2;
-    private TextView tvNumberOfPeople3;
 
     private PLVideoTextureView mVideoView;
     private int mOrientation;
     private AlbumOrientationEventListener mAlbumOrientationEventListener;
-    private RelativeLayout rlVideo;
-    private int i;
+    private Boolean orientationType = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +180,7 @@ public class ConversationActivity extends BaseActivity {
         initDao();
 
         setContentView(R.layout.activity_conversation);
+
 
         List<String> pathSegments = getIntent().getData().getPathSegments();
         conversationType = pathSegments.get(pathSegments.size() - 1);
@@ -812,14 +809,9 @@ public class ConversationActivity extends BaseActivity {
                                 chatRoomLive(stubVideoInflate);
 
                                 fullScreen = stubVideoInflate.findViewById(R.id.full_screen);
-                                fullScreen2 = stubVideoInflate.findViewById(R.id.full_screen2);
-                                fullScreen3 = stubVideoInflate.findViewById(R.id.full_screen3);
                                 tvNumberOfPeople = stubVideoInflate.findViewById(R.id.tv_number_of_people);
-                                tvNumberOfPeople2 = findViewById(R.id.tv_number_of_people2);
-                                tvNumberOfPeople3 = findViewById(R.id.tv_number_of_people3);
 
                                 mVideoView = stubVideoInflate.findViewById(R.id.PLVideoTextureView);
-                                rlVideo = stubVideoInflate.findViewById(R.id.rl_video);
 
                                 View loadingView = stubVideoInflate.findViewById(R.id.LoadingView);
                                 mVideoView.setBufferingIndicator(loadingView);
@@ -829,49 +821,36 @@ public class ConversationActivity extends BaseActivity {
                                 mVideoView.setVideoPath("rtmp://58.200.131.2:1935/livetv/hunantv");
                                 mVideoView.start();
 
+                                stubVideoInflate.findViewById(R.id.img_back).setOnClickListener(v -> {
+                                    stubVideoInflate.findViewById(R.id.ll1).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.conversation).setVisibility(View.VISIBLE);
+                                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                                });
+
+                                TextView tvTitle = stubVideoInflate.findViewById(R.id.tv_title);
+                                tvTitle.setText("主题:" + getIntent().getStringExtra("topic"));
+                                TextView tvGroupNikeName = stubVideoInflate.findViewById(R.id.tv_group_nike_name);
+                                tvGroupNikeName.setText(getIntent().getStringExtra("groupNikeName"));
+
                                 fullScreen.setOnClickListener(v -> {
-                                    if (i != 1) {
-                                        i = 1;
-                                        mVideoView.setDisplayOrientation(270);
-                                        fullScreen.setVisibility(View.GONE);
-                                        fullScreen2.setVisibility(View.VISIBLE);
-                                        fullScreen3.setVisibility(View.GONE);
-                                        tvNumberOfPeople.setVisibility(View.GONE);
-                                        tvNumberOfPeople2.setVisibility(View.VISIBLE);
-                                        tvNumberOfPeople3.setVisibility(View.GONE);
+                                    int orientation = getRequestedOrientation();
+                                    if (orientation == 0 || orientation == 8 || orientation == 9) {
+                                        orientationType = false;
+                                        exitFullScreen();
+                                        stubVideoInflate.findViewById(R.id.ll1).setVisibility(View.VISIBLE);
+                                        findViewById(R.id.conversation).setVisibility(View.VISIBLE);
+                                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                                        findViewById(R.id.title).setVisibility(View.VISIBLE);
+                                        tvGroupNikeName.setVisibility(View.GONE);
                                     } else {
-                                        i = 0;
-                                        mVideoView.setDisplayOrientation(0);
-                                        fullScreen.setVisibility(View.VISIBLE);
-                                        fullScreen2.setVisibility(View.GONE);
-                                        fullScreen3.setVisibility(View.GONE);
-                                        tvNumberOfPeople.setVisibility(View.VISIBLE);
-                                        tvNumberOfPeople2.setVisibility(View.GONE);
-                                        tvNumberOfPeople3.setVisibility(View.GONE);
+                                        orientationType = true;
+                                        setFullScreen();
+                                        stubVideoInflate.findViewById(R.id.ll1).setVisibility(View.GONE);
+                                        findViewById(R.id.conversation).setVisibility(View.GONE);
+                                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                                        findViewById(R.id.title).setVisibility(View.GONE);
+                                        tvGroupNikeName.setVisibility(View.VISIBLE);
                                     }
-                                });
-
-                                fullScreen2.setOnClickListener(v -> {
-                                    i = 0;
-                                    mVideoView.setDisplayOrientation(0);
-                                    fullScreen.setVisibility(View.VISIBLE);
-                                    fullScreen2.setVisibility(View.GONE);
-                                    fullScreen3.setVisibility(View.GONE);
-                                    tvNumberOfPeople.setVisibility(View.VISIBLE);
-                                    tvNumberOfPeople2.setVisibility(View.GONE);
-                                    tvNumberOfPeople3.setVisibility(View.GONE);
-                                });
-
-
-                                fullScreen3.setOnClickListener(v -> {
-                                    i = 0;
-                                    mVideoView.setDisplayOrientation(0);
-                                    fullScreen.setVisibility(View.VISIBLE);
-                                    fullScreen2.setVisibility(View.GONE);
-                                    fullScreen3.setVisibility(View.GONE);
-                                    tvNumberOfPeople.setVisibility(View.VISIBLE);
-                                    tvNumberOfPeople2.setVisibility(View.GONE);
-                                    tvNumberOfPeople3.setVisibility(View.GONE);
                                 });
 
                                 mAlbumOrientationEventListener = new AlbumOrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL);
@@ -887,6 +866,24 @@ public class ConversationActivity extends BaseActivity {
                 break;
         }
     }
+
+
+    private void setFullScreen() {
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        getWindow().setAttributes(params);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN); // Activity全屏显示，且状态栏被覆盖掉
+    }
+
+    private void exitFullScreen() {
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setAttributes(params);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN); // Activity全屏显示，但是状态栏不会被覆盖掉，而是正常显示，只是Activity顶端布局会被覆盖住
+    }
+
 
     private void setDrawables(Drawable drawable, TextView textView, String text) {
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable
@@ -922,9 +919,7 @@ public class ConversationActivity extends BaseActivity {
                 .flatMap((Function<String, ObservableSource<?>>) s -> {
                     if (!TextUtils.isEmpty(s)) {
                         tvNums.setText(s);
-                        setDrawables(getResources().getDrawable(R.drawable.ic_numberofpeople,null),tvNumberOfPeople,s);
-                        setDrawables(getResources().getDrawable(R.drawable.ic_numberofpeople,null),tvNumberOfPeople2,s);
-                        setDrawables(getResources().getDrawable(R.drawable.ic_numberofpeople,null),tvNumberOfPeople3,s);
+                        setDrawables(getResources().getDrawable(R.drawable.ic_numberofpeople, null), tvNumberOfPeople, s);
                     }
 
                     return Observable.timer(30, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).compose(bindUntilEvent(ActivityEvent.DESTROY));
@@ -962,7 +957,7 @@ public class ConversationActivity extends BaseActivity {
 
                 Intent intent = new Intent(this, WechatChatRoomManageActivity.class);
                 intent.putExtra("roomId", targetId);
-                intent.putExtra("liveType",getIntent().getStringExtra("liveType"));
+                intent.putExtra("liveType", getIntent().getStringExtra("liveType"));
                 startActivity(intent);
             });
             iv_end.setImageResource(R.drawable.ic_title_end_chatroom_manage);
@@ -1516,6 +1511,19 @@ public class ConversationActivity extends BaseActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // 当前为横屏
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+        }
+        // 当前为竖屏
+        else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+        }
+    }
+
     private class AlbumOrientationEventListener extends OrientationEventListener {
         public AlbumOrientationEventListener(Context context) {
             super(context);
@@ -1534,24 +1542,11 @@ public class ConversationActivity extends BaseActivity {
             int newOrientation = ((orientation + 45) / 90 * 90) % 360;
             if (newOrientation != mOrientation) {
                 mOrientation = newOrientation;
-                if (i == 1) {
-                    if (mOrientation != 0 && mOrientation != 180) {
-                        mVideoView.setDisplayOrientation(mOrientation);
-                        if (mOrientation == 270) {
-                            fullScreen.setVisibility(View.GONE);
-                            fullScreen2.setVisibility(View.VISIBLE);
-                            fullScreen3.setVisibility(View.GONE);
-                            tvNumberOfPeople.setVisibility(View.GONE);
-                            tvNumberOfPeople2.setVisibility(View.VISIBLE);
-                            tvNumberOfPeople3.setVisibility(View.GONE);
-                        } else {
-                            fullScreen.setVisibility(View.GONE);
-                            fullScreen2.setVisibility(View.GONE);
-                            fullScreen3.setVisibility(View.VISIBLE);
-                            tvNumberOfPeople.setVisibility(View.GONE);
-                            tvNumberOfPeople2.setVisibility(View.GONE);
-                            tvNumberOfPeople3.setVisibility(View.VISIBLE);
-                        }
+                if (orientationType) {
+                    if (mOrientation == 90) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                    } else if (mOrientation == 270) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     }
                 }
             }
