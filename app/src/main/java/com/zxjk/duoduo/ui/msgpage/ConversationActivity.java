@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.bumptech.glide.Glide;
 import com.pili.pldroid.player.widget.PLVideoTextureView;
 import com.pili.pldroid.player.widget.PLVideoView;
 import com.trello.rxlifecycle3.android.ActivityEvent;
@@ -83,6 +85,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
@@ -180,7 +183,6 @@ public class ConversationActivity extends BaseActivity {
         initDao();
 
         setContentView(R.layout.activity_conversation);
-
 
         List<String> pathSegments = getIntent().getData().getPathSegments();
         conversationType = pathSegments.get(pathSegments.size() - 1);
@@ -818,19 +820,29 @@ public class ConversationActivity extends BaseActivity {
 
                                 mVideoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_PAVED_PARENT);
 
-                                mVideoView.setVideoPath("rtmp://58.200.131.2:1935/livetv/hunantv");
+                                String url = getIntent().getStringExtra("playUrl");
+                                mVideoView.setVideoPath(getIntent().getStringExtra("playUrl"));
                                 mVideoView.start();
 
-                                stubVideoInflate.findViewById(R.id.img_back).setOnClickListener(v -> {
-                                    stubVideoInflate.findViewById(R.id.ll1).setVisibility(View.VISIBLE);
-                                    findViewById(R.id.conversation).setVisibility(View.VISIBLE);
-                                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                                });
 
                                 TextView tvTitle = stubVideoInflate.findViewById(R.id.tv_title);
                                 tvTitle.setText("主题:" + getIntent().getStringExtra("topic"));
+                                LinearLayout ll_GroupNikeName = stubVideoInflate.findViewById(R.id.ll_group_nike_name);
                                 TextView tvGroupNikeName = stubVideoInflate.findViewById(R.id.tv_group_nike_name);
                                 tvGroupNikeName.setText(getIntent().getStringExtra("groupNikeName"));
+                                CircleImageView ivHead = stubVideoInflate.findViewById(R.id.ivHead);
+                                Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(ivHead);
+
+                                stubVideoInflate.findViewById(R.id.img_back).setOnClickListener(v -> {
+                                    orientationType = false;
+                                    exitFullScreen();
+                                    stubVideoInflate.findViewById(R.id.ll1).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.conversation).setVisibility(View.VISIBLE);
+                                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                                    findViewById(R.id.title).setVisibility(View.VISIBLE);
+                                    ll_GroupNikeName.setVisibility(View.GONE);
+                                    stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.GONE);
+                                });
 
                                 fullScreen.setOnClickListener(v -> {
                                     int orientation = getRequestedOrientation();
@@ -841,7 +853,8 @@ public class ConversationActivity extends BaseActivity {
                                         findViewById(R.id.conversation).setVisibility(View.VISIBLE);
                                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                                         findViewById(R.id.title).setVisibility(View.VISIBLE);
-                                        tvGroupNikeName.setVisibility(View.GONE);
+                                        ll_GroupNikeName.setVisibility(View.GONE);
+                                        stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.GONE);
                                     } else {
                                         orientationType = true;
                                         setFullScreen();
@@ -849,15 +862,16 @@ public class ConversationActivity extends BaseActivity {
                                         findViewById(R.id.conversation).setVisibility(View.GONE);
                                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                                         findViewById(R.id.title).setVisibility(View.GONE);
-                                        tvGroupNikeName.setVisibility(View.VISIBLE);
+                                        ll_GroupNikeName.setVisibility(View.VISIBLE);
+                                        stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.VISIBLE);
                                     }
                                 });
 
                                 String s = Constant.USERID;
                                 String ss = getIntent().getStringExtra("roomOwnerId");
-                                if(!Constant.USERID.equals(getIntent().getStringExtra("roomOwnerId"))){
+                                if (!Constant.USERID.equals(getIntent().getStringExtra("roomOwnerId"))) {
                                     extension.setInputBarStyle(InputBar.Style.STYLE_EXTENSION_CONTAINER);
-                                }else {
+                                } else {
                                     extension.setInputBarStyle(InputBar.Style.STYLE_CONTAINER);
                                 }
 
