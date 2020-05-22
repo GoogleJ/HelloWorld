@@ -773,6 +773,7 @@ public class SocialHomeActivity extends BaseActivity {
         Intent intent = new Intent(this, SocialQRCodeActivity.class);
         intent.putExtra("type", "3");
         intent.putExtra("data", response);
+        intent.putExtra("groupId",groupId);
         startActivityForResult(intent, REQUEST_NOTICE);
     }
 

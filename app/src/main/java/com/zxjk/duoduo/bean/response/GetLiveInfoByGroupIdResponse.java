@@ -14,7 +14,7 @@ public class GetLiveInfoByGroupIdResponse {
     private String topic;
     private String livePoster;
     private String startTime;
-    private String playUrl;
+    private String playBackUrl;
 
     public String getRoomId() {
         return roomId;
@@ -49,10 +49,10 @@ public class GetLiveInfoByGroupIdResponse {
     }
 
     public String getPlayUrl() {
-        return playUrl;
+        return playBackUrl;
     }
 
     public void setPlayUrl(String playUrl) {
-        this.playUrl = playUrl;
+        this.playBackUrl = playUrl;
     }
 }

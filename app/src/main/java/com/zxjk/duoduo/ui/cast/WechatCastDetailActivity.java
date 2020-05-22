@@ -101,6 +101,7 @@ public class WechatCastDetailActivity extends BaseActivity {
     private boolean fromCreate;
     private String chooseFlag;
     private String livePlayBack;
+    private String playBackUrl;
 
     private GetChatRoomInfoResponse info;
 
@@ -115,6 +116,7 @@ public class WechatCastDetailActivity extends BaseActivity {
         fromCreate = getIntent().getBooleanExtra("fromCreate", false);
         chooseFlag = getIntent().getStringExtra("chooseFlag");
         livePlayBack = getIntent().getStringExtra("livePlayBack");
+        playBackUrl = getIntent().getStringExtra("playBackUrl");
 
         stub = findViewById(R.id.stub);
         flRetry = findViewById(R.id.flRetry);
@@ -492,7 +494,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                             } else {
                                 if (!TextUtils.isEmpty(livePlayBack) || info.getRoomStatus().equals("2")) {
                                     Intent intent = new Intent(this, LivePlayBackActivity.class);
-                                    intent.putExtra("playUrl", info.getPlayUrl());
+                                    intent.putExtra("playBackUrl", playBackUrl);
                                     startActivity(intent);
                                 } else {
                                     Intent intent = new Intent(this, HomeActivity.class);

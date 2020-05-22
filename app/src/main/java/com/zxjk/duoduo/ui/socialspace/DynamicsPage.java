@@ -86,6 +86,7 @@ public class DynamicsPage extends BaseFragment {
             intent.putExtra("roomId", getLiveInfoByGroupIdResponse.getRoomId());
             intent.putExtra("chooseFlag", "1");
             intent.putExtra("livePlayBack", "1");
+            intent.putExtra("playBackUrl",getLiveInfoByGroupIdResponse.getPlayUrl());
             startActivity(intent);
         });
 

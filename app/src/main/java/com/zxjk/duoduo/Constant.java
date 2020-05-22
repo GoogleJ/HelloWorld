@@ -32,7 +32,7 @@ public class Constant {
 
     public static final String APP_CODE = "fb0e95b069f74f29a2f972f9454d7d1a";
     public static final String APP_DOWNLOAD_URL = "https://f.mokerr.com/hilamg";
-
+    public static final String APP_SHARE_URL = "http://hilamg-share.zhumengxuanang.com/?";
 
     public static final int CODE_SUCCESS = 0;
     public static final int CODE_UNLOGIN = 601;

@@ -19,6 +19,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
@@ -66,8 +67,7 @@ public class MyQrCodeActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         tv_title.setText(getString(R.string.qr_code));
-        uri.data = Constant.userId;
-        uri2Code = new Gson().toJson(uri);
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId);
 
         tvUserName.setText(Constant.currentUser.getNick());
         tvLocation.setText(Constant.currentUser.getAddress());

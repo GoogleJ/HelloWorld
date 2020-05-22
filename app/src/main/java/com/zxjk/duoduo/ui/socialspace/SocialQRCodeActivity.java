@@ -21,7 +21,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.gson.Gson;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
@@ -29,6 +28,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.SaveImageUtil;
 
@@ -65,6 +65,7 @@ public class SocialQRCodeActivity extends BaseActivity {
     private BaseUri uri = new BaseUri("action4");
     private String uri2Code;
     private Bitmap bitmap2;
+    private Bitmap bitmap;
 
     @SuppressLint("CheckResult")
     @Override
@@ -99,7 +100,7 @@ public class SocialQRCodeActivity extends BaseActivity {
         ((QRCodeData) uri.data).inviterId = data.getCode();
         ((QRCodeData) uri.data).groupName = data.getName();
         ((QRCodeData) uri.data).groupId = data.getGroupId();
-        uri2Code = new Gson().toJson(uri);
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId + "&groupId="+ getIntent().getStringExtra("groupId") + "&type="+"0");
 
         getCodeBitmap();
 
@@ -203,8 +204,6 @@ public class SocialQRCodeActivity extends BaseActivity {
             }
         });
     }
-
-    private Bitmap bitmap;
 
     //bitmap二维码
     @SuppressLint("CheckResult")

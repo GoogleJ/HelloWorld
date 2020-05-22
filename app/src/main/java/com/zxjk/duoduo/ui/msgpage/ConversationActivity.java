@@ -806,6 +806,7 @@ public class ConversationActivity extends BaseActivity {
                                 View inflate = casting.inflate();
                                 chatRoomLive(inflate);
                             } else if (!TextUtils.isEmpty(liveType) && liveType.equals("1")) {
+
                                 ViewStub stubVideo = findViewById(R.id.stubVideo);
                                 View stubVideoInflate = stubVideo.inflate();
                                 chatRoomLive(stubVideoInflate);
@@ -836,7 +837,6 @@ public class ConversationActivity extends BaseActivity {
                                 stubVideoInflate.findViewById(R.id.img_back).setOnClickListener(v -> {
                                     orientationType = false;
                                     exitFullScreen();
-                                    stubVideoInflate.findViewById(R.id.ll1).setVisibility(View.VISIBLE);
                                     findViewById(R.id.conversation).setVisibility(View.VISIBLE);
                                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                                     findViewById(R.id.title).setVisibility(View.VISIBLE);
@@ -849,7 +849,6 @@ public class ConversationActivity extends BaseActivity {
                                     if (orientation == 0 || orientation == 8 || orientation == 9) {
                                         orientationType = false;
                                         exitFullScreen();
-                                        stubVideoInflate.findViewById(R.id.ll1).setVisibility(View.VISIBLE);
                                         findViewById(R.id.conversation).setVisibility(View.VISIBLE);
                                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                                         findViewById(R.id.title).setVisibility(View.VISIBLE);
@@ -858,7 +857,6 @@ public class ConversationActivity extends BaseActivity {
                                     } else {
                                         orientationType = true;
                                         setFullScreen();
-                                        stubVideoInflate.findViewById(R.id.ll1).setVisibility(View.GONE);
                                         findViewById(R.id.conversation).setVisibility(View.GONE);
                                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                                         findViewById(R.id.title).setVisibility(View.GONE);
@@ -867,9 +865,7 @@ public class ConversationActivity extends BaseActivity {
                                     }
                                 });
 
-                                String s = Constant.USERID;
-                                String ss = getIntent().getStringExtra("roomOwnerId");
-                                if (!Constant.USERID.equals(getIntent().getStringExtra("roomOwnerId"))) {
+                                if (Constant.userId.equals(getIntent().getStringExtra("roomOwnerId"))) {
                                     extension.setInputBarStyle(InputBar.Style.STYLE_EXTENSION_CONTAINER);
                                 } else {
                                     extension.setInputBarStyle(InputBar.Style.STYLE_CONTAINER);
@@ -1127,7 +1123,8 @@ public class ConversationActivity extends BaseActivity {
             }
             if (groupInfo.getGroupInfo().getGroupType().equals("1") &&
                     (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) ||
-                            groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenWxLive().equals("1"))) {
+                            groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenWxLive().equals("1")||
+                            groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenVideo().equals("1"))) {
                 pluginModules.add(new CastPlugin());
             }
         }

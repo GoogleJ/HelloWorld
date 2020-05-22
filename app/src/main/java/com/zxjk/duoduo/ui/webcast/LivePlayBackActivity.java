@@ -32,7 +32,7 @@ public class LivePlayBackActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_live_play_back);
         setTrasnferStatusBar(true);
-        playUrl = getIntent().getStringExtra("playUrl");
+        playUrl = getIntent().getStringExtra("playBackUrl");
 
         mVideoView = findViewById(R.id.PLVideoTextureView);
         ll_back = findViewById(R.id.ll_back);
@@ -43,7 +43,7 @@ public class LivePlayBackActivity extends BaseActivity {
 
         mVideoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_PAVED_PARENT);
 
-        mVideoView.setVideoPath("rtmp://58.200.131.2:1935/livetv/hunantv");
+        mVideoView.setVideoPath(playUrl);
         mVideoView.setDisplayOrientation(270);
         mVideoView.start();
 
