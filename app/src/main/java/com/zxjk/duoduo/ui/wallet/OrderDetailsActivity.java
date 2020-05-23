@@ -75,7 +75,7 @@ public class OrderDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_order_details);
 
         setLightStatusBar(true);
-        BarUtils.setStatusBarColor(this, Color.parseColor("#4585F5"));
+        BarUtils.setStatusBarColor(this, Color.parseColor("#0083BF"));
         initView();
         rlTitleBar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         initData();

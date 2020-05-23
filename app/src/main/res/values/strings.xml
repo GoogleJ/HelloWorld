@@ -881,8 +881,7 @@
     <string name="received1">已被领取</string>
     <string name="home_bottom1">消息</string>
     <string name="home_bottom2">通讯录</string>
-    <string name="home_bottom3">发现</string>
-    <string name="home_bottom4">我的</string>
+    <string name="home_bottom3">钱包</string>
     <string name="send_sms_to">验证码已发送至%1$s</string>
     <string name="nodata_pleasewait_upgrade">暂无数据源，敬请期待</string>
     <string name="income">收入:%1$s%2$s</string>
@@ -1221,6 +1220,7 @@
     <string name="back2Bussiness">返回商家</string>
     <string name="cancel_pay">取消支付</string>
     <string name="check_update">检查更新</string>
+    <string name="transfer1">转发</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

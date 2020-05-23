@@ -180,7 +180,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             orderPop.showPopupWindow(v);
         });
 
-        swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
+        swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#0083BF"));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             page = 0;
             onRefreshLayout();

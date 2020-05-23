@@ -194,7 +194,6 @@
     <string name="go_finish">Complete</string>
     <string name="wrong_param_data">Parameter error!</string>
     <string name="send_message">Send message</string>
-    <string name="home_bottom3">Find</string>
     <string name="slowMode_time">Speaking interval:%1$s%2$s</string>
     <string name="speech_interval_1">Interval: 1 second</string>
     <string name="send_group_chat">Start</string>
@@ -372,7 +371,6 @@
     <string name="social_remark">My Alias in community</string>
     <string name="secretTips">I have read and agree</string>
     <string name="read_and_agree">I have read and agree</string>
-    <string name="home_bottom4">Me</string>
     <string name="personal_code">My QR Code</string>
     <string name="my_qr_code">QR code</string>
     <string name="qr_code">QR</string>

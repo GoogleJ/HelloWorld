@@ -106,7 +106,7 @@
                 android:drawableEnd="@drawable/ic_teskrightarrow"
                 android:drawablePadding="4dp"
                 android:layout_marginEnd="16dp"
-                android:textColor="#4585F5"/>
+                android:textColor="#0083BF"/>
         </LinearLayout>
 
     </LinearLayout>

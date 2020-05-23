@@ -529,7 +529,7 @@ public class NewsPager extends BaseFragment {
             adapter.setOnLoadMoreListener(() -> loadmore(position, finalType), recycler);
 
             container.addView(swipeRefreshLayout);
-            swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
+            swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#0083BF"));
 
             swipeRefreshLayout.setEnabled(false);
             if (position == 0 || position == 1 || position == 2) {

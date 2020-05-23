@@ -88,7 +88,7 @@ public class GroupRedPacketActivity extends BaseActivity {
         setTrasnferStatusBar(true);
 
         color1 = Color.parseColor("#FFFFFF");
-        color2 = Color.parseColor("#4585F5");
+        color2 = Color.parseColor("#0083BF");
 
         ivCoinIcon = findViewById(R.id.ivCoinIcon);
         ivCoinIcon2 = findViewById(R.id.ivCoinIcon2);
