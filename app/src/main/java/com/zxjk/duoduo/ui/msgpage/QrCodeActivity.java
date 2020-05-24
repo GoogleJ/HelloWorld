@@ -6,8 +6,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +31,7 @@ import com.zxjk.duoduo.ui.minepage.scanuri.Action1;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialQRCodeActivity;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.TakePicUtil;
@@ -80,7 +83,7 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         super.onCreate(savedInstanceState);
         ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_qr_code);
-        
+
         initUI();
 
         actionType = getIntent().getStringExtra("actionType");
@@ -99,6 +102,33 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
     public void onScanQRCodeSuccess(String result) {
         Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         rt.play();
+
+
+        String resultUri = result.substring(0, result.indexOf("?") + 1);
+
+        if (resultUri.equals("http://hilamg-share.zhumengxuanang.com/?")) {
+
+            String userIdJiequ = result.substring(result.indexOf("?") + 1);
+
+            resultUri += AesUtil.getInstance().decrypt(userIdJiequ);
+            Uri uri = Uri.parse(resultUri);
+            String id= uri.getQueryParameter("id");
+            String groupId= uri.getQueryParameter("groupId");
+            String type= uri.getQueryParameter("type");
+
+
+            Log.i("tag", type);
+            if(TextUtils.isEmpty(type)){
+                resultUri = "hilamg://web/?action=addFriend&id="+id;
+            }else if(type.equals("1")){
+                resultUri = "hilamg://web/?action=joinCommunity&id="+id+"&groupId="+groupId;
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(resultUri));
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         if (!TextUtils.isEmpty(actionType)) {
             if (actionType.equals(ACTION_IMPORT_WALLET)) {

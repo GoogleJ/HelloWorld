@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -100,7 +101,8 @@ public class SocialQRCodeActivity extends BaseActivity {
         ((QRCodeData) uri.data).inviterId = data.getCode();
         ((QRCodeData) uri.data).groupName = data.getName();
         ((QRCodeData) uri.data).groupId = data.getGroupId();
-        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId + "&groupId="+ getIntent().getStringExtra("groupId") + "&type="+"0");
+
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId + "&groupId="+ getIntent().getStringExtra("groupId") + "&type="+"1");
 
         getCodeBitmap();
 

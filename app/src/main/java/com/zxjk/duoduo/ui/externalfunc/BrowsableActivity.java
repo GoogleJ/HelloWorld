@@ -11,11 +11,16 @@ import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.WelcomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.NewsDetailActivity;
+import com.zxjk.duoduo.ui.msgpage.AddFriendDetailsActivity;
+import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 
 import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_PAY;
 import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
 
 public class BrowsableActivity extends BaseActivity {
+
+    private String id;
+    private String groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,28 @@ public class BrowsableActivity extends BaseActivity {
                         } else {
                             Intent intent = new Intent(this, PayConfirmActivity.class);
                             intent.putExtra("orderId", getIntent().getData().getQueryParameter("orderId"));
+                            startActivity(intent);
+                        }
+                        break;
+                    case "addFriend":
+                        id = getIntent().getData().getQueryParameter("id");
+                        if(!TextUtils.isEmpty(id)){
+                            Intent intent = new Intent(this, AddFriendDetailsActivity.class);
+                            intent.putExtra("friendId",id);
+                            startActivity(intent);
+                        }
+                        break;
+                    case "joinGroup":
+                        id = getIntent().getData().getQueryParameter("id");
+                        groupId = getIntent().getData().getQueryParameter("groupId");
+
+                        break;
+                    case "joinCommunity":
+                        id = getIntent().getData().getQueryParameter("id");
+                        groupId = getIntent().getData().getQueryParameter("groupId");
+                        if(!TextUtils.isEmpty(id) && !TextUtils.isEmpty(groupId)){
+                            Intent intent = new Intent(this, SocialHomeActivity.class);
+                            intent.putExtra("id",groupId);
                             startActivity(intent);
                         }
                         break;
