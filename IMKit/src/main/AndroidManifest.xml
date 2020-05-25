@@ -30,24 +30,6 @@
     <application>
 
         <activity
-            android:name="io.rong.imkit.plugin.location.AMapLocationActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.rong.imkit.plugin.location.AMapLocationActivity2D"
-            android:screenOrientation="portrait" />
-
-        <activity android:name="io.rong.imkit.plugin.location.AMapPreviewActivity" />
-        <activity android:name="io.rong.imkit.plugin.location.AMapPreviewActivity2D" />
-
-        <activity android:name="io.rong.imkit.plugin.location.AMapRealTimeActivity" />
-        <activity android:name="io.rong.imkit.plugin.location.AMapRealTimeActivity2D" />
-
-        <activity
-            android:name="io.rong.imkit.plugin.location.SearchLocationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity
             android:name="io.rong.imkit.plugin.image.PictureSelectorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
