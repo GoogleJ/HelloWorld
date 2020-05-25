@@ -116,8 +116,6 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
             String groupId= uri.getQueryParameter("groupId");
             String type= uri.getQueryParameter("type");
 
-
-            Log.i("tag", type);
             if(TextUtils.isEmpty(type)){
                 resultUri = "hilamg://web/?action=addFriend&id="+id;
             }else if(type.equals("1")){

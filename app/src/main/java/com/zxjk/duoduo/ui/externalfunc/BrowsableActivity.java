@@ -1,18 +1,26 @@
 package com.zxjk.duoduo.ui.externalfunc;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.LoginResponse;
 import com.zxjk.duoduo.ui.HomeActivity;
+import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.WelcomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.NewsDetailActivity;
 import com.zxjk.duoduo.ui.msgpage.AddFriendDetailsActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
+import com.zxjk.duoduo.utils.MMKVUtils;
+
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.UserInfo;
 
 import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_PAY;
 import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
@@ -91,11 +99,16 @@ public class BrowsableActivity extends BaseActivity {
                         }
                         break;
                     case "addFriend":
-                        id = getIntent().getData().getQueryParameter("id");
-                        if(!TextUtils.isEmpty(id)){
-                            Intent intent = new Intent(this, AddFriendDetailsActivity.class);
-                            intent.putExtra("friendId",id);
-                            startActivity(intent);
+                        if (MMKVUtils.getInstance().decodeBool("isLogin")) {
+                            id = getIntent().getData().getQueryParameter("id");
+                            if (!TextUtils.isEmpty(id)) {
+                                Intent intent = new Intent(this, AddFriendDetailsActivity.class);
+                                intent.putExtra("friendId", id);
+                                startActivity(intent);
+                            }
+                        } else {
+                            startActivity(new Intent(this, NewLoginActivity.class));
+                            finish();
                         }
                         break;
                     case "joinGroup":
@@ -106,9 +119,9 @@ public class BrowsableActivity extends BaseActivity {
                     case "joinCommunity":
                         id = getIntent().getData().getQueryParameter("id");
                         groupId = getIntent().getData().getQueryParameter("groupId");
-                        if(!TextUtils.isEmpty(id) && !TextUtils.isEmpty(groupId)){
+                        if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(groupId)) {
                             Intent intent = new Intent(this, SocialHomeActivity.class);
-                            intent.putExtra("id",groupId);
+                            intent.putExtra("id", groupId);
                             startActivity(intent);
                         }
                         break;
@@ -117,4 +130,52 @@ public class BrowsableActivity extends BaseActivity {
             finish();
         }
     }
+
+    private void goLoginByServer() {
+        LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
+        if (login != null) {
+            Constant.currentUser = login;
+            Constant.token = login.getToken();
+            Constant.userId = login.getId();
+            // 连接融云
+            RongIM.connect(login.getRongToken(), new RongIMClient.ConnectCallback() {
+
+                @Override
+                public void onTokenIncorrect() {
+                    MMKVUtils.getInstance().enCode("isLogin", false);
+                    Constant.clear();
+                    ToastUtils.showShort(getString(R.string.login_again));
+                    Intent intent = new Intent(BrowsableActivity.this, NewLoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onSuccess(String userid) {
+                    UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
+                    RongIM.getInstance().setCurrentUserInfo(userInfo);
+                    startActivity(new Intent(BrowsableActivity.this, HomeActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+                    MMKVUtils.getInstance().enCode("isLogin", false);
+                    Constant.clear();
+                    ToastUtils.showShort(getString(R.string.login_again));
+                    Intent intent = new Intent(BrowsableActivity.this, NewLoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        } else {
+            ToastUtils.showShort(getString(R.string.login_again));
+            MMKVUtils.getInstance().enCode("isLogin", false);
+            startActivity(new Intent(this, NewLoginActivity.class));
+            finish();
+        }
+    }
+
 }

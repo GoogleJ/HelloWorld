@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -45,6 +47,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
@@ -80,6 +83,11 @@ public class NewLoginActivity extends BaseActivity {
 
     private TransitionSet anim;
     private boolean isAniming;
+    private String copyContent;
+    private String inviteId = "";
+    private String groupId;
+    private String type;
+    private String resultUri;
 
     /**
      * 0：输入手机号
@@ -281,8 +289,45 @@ public class NewLoginActivity extends BaseActivity {
             ToastUtils.showShort(R.string.please_enter_verification_code);
             return;
         }
+        ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = clipboardManager.getPrimaryClip();
+        if (null != clipData && clipData.getItemCount() > 0) {
+            ClipData.Item item = clipData.getItemAt(0);
+            if (null != item) {
+                copyContent = item.getText().toString().trim();
+                if (copyContent.trim().indexOf("http://hilamg-share.zhumengxuanang.com/") != -1) {
+                    resultUri = copyContent.substring(0, copyContent.indexOf("?") + 1);
+
+                    if (resultUri.equals("http://hilamg-share.zhumengxuanang.com/?")) {
+
+                        String userIdJiequ = copyContent.substring(copyContent.indexOf("?") + 1);
+
+                        resultUri += AesUtil.getInstance().decrypt(userIdJiequ);
+
+                        Uri uri = Uri.parse(resultUri);
+                        inviteId = uri.getQueryParameter("id");
+                        groupId = uri.getQueryParameter("groupId");
+                        type = uri.getQueryParameter("type");
+
+                        if (TextUtils.isEmpty(type)) {
+                            resultUri = "hilamg://web/?action=addFriend&id=" + inviteId;
+                        } else if (type.equals("1")) {
+                            resultUri = "hilamg://web/?action=joinCommunity&id=" + inviteId + "&groupId=" + groupId;
+                        }
+                    }
+                }
+                if (clipboardManager != null) {
+                    try {
+                        clipboardManager.setPrimaryClip(clipboardManager.getPrimaryClip());
+                        clipboardManager.setPrimaryClip(ClipData.newPlainText("", ""));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString())
+                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(), inviteId,groupId)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
@@ -337,33 +382,56 @@ public class NewLoginActivity extends BaseActivity {
                 RongIM.getInstance().setCurrentUserInfo(userInfo);
 
                 if (equals) {
-                    if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
-                        MMKVUtils.getInstance().enCode("appFirstLogin", true);
-                        Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
-                        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
-                                , ivIcon, "appicon");
-                        intent.putExtra("setupPayPass", true);
-                        startActivity(intent, activityOptionsCompat.toBundle());
-                    } else {
+                    if (!TextUtils.isEmpty(resultUri)) {
                         Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
                         intent.putExtra("firstLogin", true);
+                        intent.putExtra("resultUri",resultUri);
                         startActivity(intent);
                         finish();
+                    }else {
+                        if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
+                            MMKVUtils.getInstance().enCode("appFirstLogin", true);
+                            Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
+                            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
+                                    , ivIcon, "appicon");
+                            intent.putExtra("setupPayPass", true);
+                            startActivity(intent, activityOptionsCompat.toBundle());
+                        } else {
+                            Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
+                            intent.putExtra("firstLogin", true);
+                            intent.putExtra("resultUri",resultUri);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
+
                     return;
                 }
 
                 MMKVUtils.getInstance().enCode("isLogin", true);
-
-                if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
-                    MMKVUtils.getInstance().enCode("appFirstLogin", true);
-                    Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
-                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
-                            , ivIcon, "appicon");
-                    startActivity(intent, activityOptionsCompat.toBundle());
-                } else {
-                    startActivity(new Intent(NewLoginActivity.this, HomeActivity.class));
+                if (!TextUtils.isEmpty(resultUri)) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(resultUri));
+                    startActivity(intent);
                     finish();
+                } else {
+                    if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
+                        if (!TextUtils.isEmpty(resultUri)) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(resultUri));
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            MMKVUtils.getInstance().enCode("appFirstLogin", true);
+                            Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
+                            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
+                                    , ivIcon, "appicon");
+                            startActivity(intent, activityOptionsCompat.toBundle());
+                        }
+                    } else {
+                        startActivity(new Intent(NewLoginActivity.this, HomeActivity.class));
+                        finish();
+                    }
                 }
 
             }
@@ -397,6 +465,20 @@ public class NewLoginActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if (receiver != null) unregisterReceiver(receiver);
+
+        super.onDestroy();
+    }
+
+    private String parseSms(String msg) {
+        String regEx = "[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(msg);
+        return m.replaceAll("").trim().substring(0, 6);
+    }
+
     class MSGReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -413,19 +495,5 @@ public class NewLoginActivity extends BaseActivity {
                 if (content.contains("Hilamg")) ppivVerify.setText(parseSms(content));
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (receiver != null) unregisterReceiver(receiver);
-
-        super.onDestroy();
-    }
-
-    private String parseSms(String msg) {
-        String regEx = "[^0-9]";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(msg);
-        return m.replaceAll("").trim().substring(0, 6);
     }
 }

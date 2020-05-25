@@ -436,7 +436,10 @@ public interface Api {
 
     @POST("duoduo/customer/appUserRegisterAndLogin")
     @FormUrlEncoded
-    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile, @Field("securityCode") String securityCode);
+    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile,
+                                                                    @Field("securityCode") String securityCode,
+                                                                    @Field("inviteId") String inviteId,
+                                                                    @Field("inviteId") String communityId);
 
     @POST("duoduo/group/getUpgradeGroups")
     @FormUrlEncoded

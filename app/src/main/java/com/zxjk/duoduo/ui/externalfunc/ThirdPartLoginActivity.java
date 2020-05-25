@@ -236,7 +236,7 @@ public class ThirdPartLoginActivity extends BaseActivity {
         }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .appUserRegisterAndLogin(phone, mEtVerificationCode.getText().toString())
+                .appUserRegisterAndLogin(phone, mEtVerificationCode.getText().toString(),"","")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
