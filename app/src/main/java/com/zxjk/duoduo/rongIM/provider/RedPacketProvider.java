@@ -18,7 +18,7 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 
-@ProviderTag(messageContent = RedPacketMessage.class)
+@ProviderTag(messageContent = RedPacketMessage.class,showPortrait = false)
 public class RedPacketProvider extends IContainerItemProvider.MessageProvider<RedPacketMessage> {
 
     class ViewHolder {

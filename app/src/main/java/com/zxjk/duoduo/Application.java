@@ -18,8 +18,9 @@ import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
+import com.wanjian.sak.SAK;
+import com.wanjian.sak.config.Config;
 import com.zxjk.duoduo.bean.DaoSession;
-import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.rongIM.BasePluginExtensionModule;
 import com.zxjk.duoduo.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.rongIM.message.CusEmoteTabMessage;
@@ -44,6 +45,7 @@ import com.zxjk.duoduo.rongIM.provider.SocialGroupCardProvider;
 import com.zxjk.duoduo.rongIM.provider.SystemMessageProvider;
 import com.zxjk.duoduo.rongIM.provider.TransferProvider;
 import com.zxjk.duoduo.rongIM.provider.WechatCastProvider;
+import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.utils.LanguageUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.MyCrashHandler;
@@ -142,6 +144,7 @@ public class Application extends android.app.Application {
 
         QbSdk.initX5Environment(this, null);
 
+        SAK.init(this, new Config.Build(this).build());
     }
 
     public WebDataUtils getWebDataUtils() {

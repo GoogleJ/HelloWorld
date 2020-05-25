@@ -27,7 +27,9 @@ import io.rong.message.utils.BitmapUtil;
 @ProviderTag(
         messageContent = ImageMessage.class,
         showProgress = false,
-        showReadState = true)
+        showReadState = true,
+        showPortrait = false
+)
 public class BurnImageMessageItemProvider extends IContainerItemProvider.MessageProvider<ImageMessage> {
 
     public BurnImageMessageItemProvider() {

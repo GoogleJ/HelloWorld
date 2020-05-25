@@ -20,7 +20,7 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 
-@ProviderTag(messageContent = TransferMessage.class)
+@ProviderTag(messageContent = TransferMessage.class,showPortrait = false)
 public class TransferProvider extends IContainerItemProvider.MessageProvider<TransferMessage> {
     class ViewHolder {
         TextView remark;

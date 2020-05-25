@@ -44,13 +44,11 @@ import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.SendUrlAndsendImgBean;
 import com.zxjk.duoduo.bean.SlowModeLocalBeanDao;
-import com.zxjk.duoduo.bean.SocialLocalBeanDao;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.bean.response.WechatChatRoomPermission;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
 import com.zxjk.duoduo.db.SlowModeLocalBean;
-import com.zxjk.duoduo.db.SocialLocalBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxException;
@@ -158,13 +156,11 @@ public class ConversationActivity extends BaseActivity {
      */
     private BurnAfterReadMessageLocalBeanDao burnMsgDao;
     private SlowModeLocalBeanDao slowModeLocalBeanDao;
-    private SocialLocalBeanDao socialLocalBeanDao;
 
     /**
      * 截屏disposable
      */
     private Disposable screenCapture;
-    private SocialLocalBean socialLocalBean;
 
     private TextView fullScreen;
     private TextView tvNumberOfPeople;
@@ -251,7 +247,6 @@ public class ConversationActivity extends BaseActivity {
 
         burnMsgDao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
         slowModeLocalBeanDao = Application.daoSession.getSlowModeLocalBeanDao();
-        socialLocalBeanDao = Application.daoSession.getSocialLocalBeanDao();
     }
 
     /**
@@ -994,7 +989,7 @@ public class ConversationActivity extends BaseActivity {
                 intent.putExtra("id", getIntent().getStringExtra("groupId"));
                 startActivity(intent);
             });
-            iv_end.setImageResource(R.drawable.ic_social_title_end);
+            iv_end.setImageResource(R.drawable.ic_social_end);
 
             extension.setInputBarStyle(InputBar.Style.STYLE_SWITCH_CONTAINER);
             extension.hideMoreActionLayout();
@@ -1123,7 +1118,7 @@ public class ConversationActivity extends BaseActivity {
             }
             if (groupInfo.getGroupInfo().getGroupType().equals("1") &&
                     (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) ||
-                            groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenWxLive().equals("1")||
+                            groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenWxLive().equals("1") ||
                             groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenVideo().equals("1"))) {
                 pluginModules.add(new CastPlugin());
             }
@@ -1424,7 +1419,6 @@ public class ConversationActivity extends BaseActivity {
         RelativeLayout rl_end = findViewById(R.id.rl_end);
         rl_end.setVisibility(View.VISIBLE);
         rl_end.setOnClickListener(v -> detail());
-        View dotSocialContentUpdate = findViewById(R.id.dotSocialContentUpdate);
 
         tvTitle.setText(targetUserInfo == null ?
                 (groupInfo == null ? (Constant.currentUser.getNick())
@@ -1439,14 +1433,8 @@ public class ConversationActivity extends BaseActivity {
         //group logic
         if (groupInfo != null && groupInfo.getGroupInfo().getGroupType().equals("1")) {
             ImageView iv_end = findViewById(R.id.iv_end);
-            iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_title_end));
+            iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_end));
             rl_end.setOnClickListener(v -> {
-                dotSocialContentUpdate.setVisibility(View.GONE);
-                if (socialLocalBean != null) {
-                    socialLocalBean.setContentLastModifyTime(groupInfo.getCommunityUpdateTime());
-                    socialLocalBeanDao.update(socialLocalBean);
-                }
-
                 Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("group", groupInfo);
                 intent.putExtra("id", targetId);
@@ -1454,31 +1442,11 @@ public class ConversationActivity extends BaseActivity {
             });
             tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
             tvTitle.setOnClickListener(v -> {
-                dotSocialContentUpdate.setVisibility(View.GONE);
-                if (socialLocalBean != null) {
-                    socialLocalBean.setContentLastModifyTime(groupInfo.getCommunityUpdateTime());
-                    socialLocalBeanDao.update(socialLocalBean);
-                }
-
                 Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("group", groupInfo);
                 intent.putExtra("id", targetId);
                 startActivityForResult(intent, 1000);
             });
-
-            List<SocialLocalBean> social =
-                    socialLocalBeanDao.queryBuilder()
-                            .where(SocialLocalBeanDao.Properties.GroupId.eq(targetId)).build().list();
-            if (social.size() != 0) {
-                socialLocalBean = social.get(0);
-                if (!socialLocalBean.getContentLastModifyTime().equals(groupInfo.getCommunityUpdateTime())) {
-                    dotSocialContentUpdate.setVisibility(View.VISIBLE);
-                }
-            } else {
-                dotSocialContentUpdate.setVisibility(View.VISIBLE);
-                socialLocalBean = new SocialLocalBean(targetId, "0");
-                socialLocalBeanDao.insert(socialLocalBean);
-            }
         }
 
         registerOnTitleChange();

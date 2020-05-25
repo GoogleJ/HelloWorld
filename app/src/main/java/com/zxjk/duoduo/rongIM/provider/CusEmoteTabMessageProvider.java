@@ -37,7 +37,9 @@ import io.rong.imlib.model.Message;
 @ProviderTag(
         messageContent = CusEmoteTabMessage.class,
         showProgress = false,
-        showReadState = true)
+        showReadState = true,
+        showPortrait = false
+)
 public class CusEmoteTabMessageProvider extends IContainerItemProvider.MessageProvider<CusEmoteTabMessage> {
     private int[] tabIds = new int[]{io.rong.imkit.R.drawable.emoji1_1, io.rong.imkit.R.drawable.emoji1_2,
             io.rong.imkit.R.drawable.emoji1_3, io.rong.imkit.R.drawable.emoji1_4, io.rong.imkit.R.drawable.emoji1_5,

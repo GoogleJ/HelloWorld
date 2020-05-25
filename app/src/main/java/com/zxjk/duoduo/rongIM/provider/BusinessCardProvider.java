@@ -21,7 +21,9 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 
-@ProviderTag(messageContent = BusinessCardMessage.class)
+@ProviderTag(messageContent = BusinessCardMessage.class,
+        showPortrait = false
+)
 public class BusinessCardProvider extends IContainerItemProvider.MessageProvider<BusinessCardMessage> {
 
     class ViewHolder {

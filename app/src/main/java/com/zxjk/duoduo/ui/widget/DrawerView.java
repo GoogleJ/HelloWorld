@@ -6,16 +6,15 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewConfigurationCompat;
 
 public class DrawerView extends FrameLayout {
 
@@ -32,7 +31,7 @@ public class DrawerView extends FrameLayout {
     private float contentMinAlpha = 0.4f;
 
     //改变开关状态需要的总时间
-    private int animTime = 250;
+    private int animTime = 200;
 
     //展开状态内容区域scale值
     private float contentMinScale = 0.8f;
@@ -46,9 +45,6 @@ public class DrawerView extends FrameLayout {
     //关闭状态菜单区域向左偏移像素值
     private int menuOffset = 0;
 
-    //用户触发横向滑动操作的最小像素值
-    private float inScrollFlag;
-
     //横向滑动最大像素值
     private int totalScrollDistance;
 
@@ -61,19 +57,10 @@ public class DrawerView extends FrameLayout {
     //上次移动的X坐标
     private float preMoveX = -1f;
 
-    //当前是否可打开
-    private boolean openable = true;
+    //measureflag
+    private boolean measured;
 
     private Region contentRegionWhenOpen;
-
-    private OnStateChangeListener onStateChangeListener;
-
-    public static final int STATE_OPEN = 1;
-    public static final int STATE_CLOSE = 2;
-
-    public interface OnStateChangeListener {
-        void onStateChange(int state);
-    }
 
     public DrawerView(@NonNull Context context) {
         this(context, null);
@@ -86,16 +73,7 @@ public class DrawerView extends FrameLayout {
     public DrawerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        inScrollFlag = ViewConfigurationCompat.getScaledHorizontalScrollFactor(ViewConfiguration.get(context), context);
         velocityTracker = VelocityTracker.obtain();
-    }
-
-    public void setOpenable(boolean openable) {
-        this.openable = openable;
-    }
-
-    public void setOnStateChangeListener(OnStateChangeListener onStateChangeListener) {
-        this.onStateChangeListener = onStateChangeListener;
     }
 
     @Override
@@ -109,78 +87,52 @@ public class DrawerView extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
-
-        contentScrollDistance = totalScrollDistance = (int) (getMeasuredWidth() - getMeasuredWidth() * contentShowScaleWhenOpen);
-        menuOffset = getMeasuredWidth() / 4;
-        maxTransitionZ = 24;
+        if (!measured) {
+            measured = true;
+            contentScrollDistance = totalScrollDistance = (int) (getMeasuredWidth() - getMeasuredWidth() * contentShowScaleWhenOpen);
+            menuOffset = getMeasuredWidth() / 4;
+            maxTransitionZ = 24;
+        }
     }
-
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+
 //            menu.setPadding(-menuOffset, 0, 0, 0);
-        menu.layout(left - menuOffset, top, right - menuOffset, bottom);
+        content.layout(left, top, right, bottom);
+        menu.layout(-menuOffset, 0, right - menuOffset, bottom);
+
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        super.onInterceptTouchEvent(ev);
-//
-//        switch (ev.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                actionDownX = ev.getX();
-//                preMoveX = -1;
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                if (!openable) return false;
-//                float distance = ev.getX() - actionDownX;
-//                boolean isRightMove = distance > inScrollFlag && distance > 0;
-//
-//                if (!isOpened && isRightMove) {
-//                    //关闭状态，向右滑动（打开）
-//                    return true;
-//                } else if (isOpened && !isRightMove) {
-//                    //打开状态，向左滑动（关闭）
-//                    return true;
-//                }
-//        }
-//        return false;
-
-        if (contentScrollDistance != 0 && contentScrollDistance != totalScrollDistance) {
-            return true;
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (contentRegionWhenOpen == null && isOpened) {
+            contentRegionWhenOpen = new Region();
+            Rect rect = new Rect();
+            content.getHitRect(rect);
+            contentRegionWhenOpen.set(rect);
         }
 
-        if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-            if (contentRegionWhenOpen == null && isOpened) {
-                contentRegionWhenOpen = new Region();
-                Rect rect = new Rect();
-                content.getHitRect(rect);
-                contentRegionWhenOpen.set(rect);
-            }
-
-            if (isOpened) {
-                if (contentRegionWhenOpen.contains((int) ev.getX(), (int) ev.getY())) {
-                    return true;
-                }
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (contentScrollDistance != 0 && contentScrollDistance != totalScrollDistance) {
+                return true;
             }
         }
 
-        return super.onInterceptTouchEvent(ev);
+        if (isOpened && contentScrollDistance == 0 && contentRegionWhenOpen.contains((int) ev.getX(), (int) ev.getY())) {
+            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+                return true;
+            } else if (ev.getAction() == MotionEvent.ACTION_UP) {
+                close();
+            }
+        }
+
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (isOpened) {
-                if (contentRegionWhenOpen.contains((int) event.getX(), (int) event.getY())) {
-                    close();
-                    return true;
-                }
-            }
-        }
         return super.onTouchEvent(event);
     }
 
@@ -254,6 +206,7 @@ public class DrawerView extends FrameLayout {
                 } else {
                     moveLeft(totalScrollDistance * fraction - contentScrollDistance);
                 }
+                Log.e("dddd", "s" + contentScrollDistance);
             }
         });
 

@@ -52,7 +52,8 @@ import io.rong.message.HQVoiceMessage;
 
 @ProviderTag(
         messageContent = HQVoiceMessage.class,
-        showReadState = true
+        showReadState = true,
+        showPortrait = false
 )
 public class BurnHQVoiceMessageProvider extends MessageProvider<HQVoiceMessage> {
     private static final String TAG = "BurnHQVoiceMessageProvider";

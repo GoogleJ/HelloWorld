@@ -42,7 +42,8 @@ import io.rong.message.VoiceMessage;
 
 @ProviderTag(
         messageContent = VoiceMessage.class,
-        showReadState = true
+        showReadState = true,
+        showPortrait = false
 )
 public class BurnVoiceMessageProvider extends IContainerItemProvider.MessageProvider<VoiceMessage> {
 

@@ -22,7 +22,7 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 
-@ProviderTag(messageContent = WechatCastMessage.class)
+@ProviderTag(messageContent = WechatCastMessage.class, showPortrait = false)
 public class WechatCastProvider extends IContainerItemProvider.MessageProvider<WechatCastMessage> {
 
     @Override

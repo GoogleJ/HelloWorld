@@ -24,7 +24,8 @@ import io.rong.message.TextMessage;
 
 @ProviderTag(
         messageContent = TextMessage.class,
-        showReadState = true
+        showReadState = true,
+        showPortrait = false
 )
 public class BurnTextMessageProvider extends IContainerItemProvider.MessageProvider<TextMessage> {
     public BurnTextMessageProvider() {

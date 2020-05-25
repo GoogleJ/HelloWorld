@@ -26,7 +26,7 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 
-@ProviderTag(messageContent = GroupCardMessage.class)
+@ProviderTag(messageContent = GroupCardMessage.class,showPortrait = false)
 public class GroupCardProvider extends IContainerItemProvider.MessageProvider<GroupCardMessage> {
 
     public GroupCardProvider() {

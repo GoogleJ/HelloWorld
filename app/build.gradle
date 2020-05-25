@@ -204,6 +204,9 @@ dependencies {
     //点击爆炸
     implementation 'tyrantgit:explosionfield:1.0.1'
 
+    //UI debuger
+    implementation 'com.wanjian:sak:2.0.2'
+
     //debugtools
 
     //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'

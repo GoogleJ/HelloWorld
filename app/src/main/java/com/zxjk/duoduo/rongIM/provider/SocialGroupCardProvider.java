@@ -23,7 +23,7 @@ import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 
-@ProviderTag(messageContent = SocialGroupCardMessage.class)
+@ProviderTag(messageContent = SocialGroupCardMessage.class,showPortrait = false)
 public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvider<SocialGroupCardMessage> {
     private int itemSize;
 
