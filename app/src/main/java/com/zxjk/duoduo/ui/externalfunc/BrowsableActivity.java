@@ -117,12 +117,17 @@ public class BrowsableActivity extends BaseActivity {
 
                         break;
                     case "joinCommunity":
-                        id = getIntent().getData().getQueryParameter("id");
-                        groupId = getIntent().getData().getQueryParameter("groupId");
-                        if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(groupId)) {
-                            Intent intent = new Intent(this, SocialHomeActivity.class);
-                            intent.putExtra("id", groupId);
-                            startActivity(intent);
+                        if (MMKVUtils.getInstance().decodeBool("isLogin")) {
+                            id = getIntent().getData().getQueryParameter("id");
+                            groupId = getIntent().getData().getQueryParameter("groupId");
+                            if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(groupId)) {
+                                Intent intent = new Intent(this, SocialHomeActivity.class);
+                                intent.putExtra("id", groupId);
+                                startActivity(intent);
+                            }
+                        } else {
+                            startActivity(new Intent(this, NewLoginActivity.class));
+                            finish();
                         }
                         break;
                 }
@@ -177,5 +182,4 @@ public class BrowsableActivity extends BaseActivity {
             finish();
         }
     }
-
 }

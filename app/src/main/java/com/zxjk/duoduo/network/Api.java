@@ -439,7 +439,7 @@ public interface Api {
     Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile,
                                                                     @Field("securityCode") String securityCode,
                                                                     @Field("inviteId") String inviteId,
-                                                                    @Field("inviteId") String communityId);
+                                                                    @Field("communityId") String communityId);
 
     @POST("duoduo/group/getUpgradeGroups")
     @FormUrlEncoded
