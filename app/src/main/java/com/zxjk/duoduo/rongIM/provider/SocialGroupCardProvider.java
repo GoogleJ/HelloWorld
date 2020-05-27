@@ -28,7 +28,7 @@ public class SocialGroupCardProvider extends IContainerItemProvider.MessageProvi
     private int itemSize;
 
     public SocialGroupCardProvider() {
-        itemSize = (int) (ScreenUtils.getScreenWidth() * 0.45f);
+        itemSize = (int) (ScreenUtils.getScreenWidth() * 0.35f);
     }
 
     @Override

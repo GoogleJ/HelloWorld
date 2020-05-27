@@ -11,6 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.blankj.utilcode.util.GsonUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.ConversationInfo;
@@ -74,6 +76,7 @@ public class BurnTextMessageProvider extends IContainerItemProvider.MessageProvi
         }
         BurnTextMessageProvider.ViewHolder holder = (BurnTextMessageProvider.ViewHolder) v.getTag();
         if (data.getMessageDirection() == Message.MessageDirection.SEND) {
+            holder.message.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
             holder.content.setBackgroundResource(io.rong.imkit.R.drawable.shape_rc_bubble_right);
             if (conversationInfo != null && conversationInfo.getMessageBurnTime() != -1) {
                 holder.ivFireRight.setVisibility(View.VISIBLE);
@@ -83,6 +86,7 @@ public class BurnTextMessageProvider extends IContainerItemProvider.MessageProvi
                 holder.ivFireLeft.setVisibility(View.INVISIBLE);
             }
         } else {
+            holder.message.setTextColor(ContextCompat.getColor(v.getContext(), R.color.new_textcolor1));
             holder.content.setBackgroundResource(io.rong.imkit.R.drawable.shape_rc_bubble_left);
             if (conversationInfo != null && conversationInfo.getMessageBurnTime() != -1) {
                 holder.ivFireRight.setVisibility(View.INVISIBLE);

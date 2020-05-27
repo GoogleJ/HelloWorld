@@ -43,6 +43,6 @@
     <color name="color_list_item_hover">#DFDFDD</color>
 
     <color name="rc_voip_check_disable">#1f4a76</color>
-    <color name="rc_voip_check_enable">#0099ff</color>
+    <color name="rc_voip_check_enable">#0083BF</color>
 
 </resources>

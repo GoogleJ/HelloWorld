@@ -2,7 +2,7 @@
 <resources>
     <color name="themecolor">#4B4D5B</color>
     <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
+    <color name="black">#272E3F</color>
     <color name="business_card_duoduo_id">#B5B5B5</color>
     <color name="colorPrimary">#0083BF</color>
     <color name="colorPrimaryDark">#0083BF</color>
@@ -38,8 +38,8 @@
     <color name="grey">#D3D3D3</color>
     <color name="pop_color1">#4B4D5B</color>
     <color name="pop_color3">#D2D2D2</color>
-    <color name="background_color">#f8f8f8</color>
-    <color name="theme_color">#4B4D5B</color>
+    <color name="background_color">#F3F5F7</color>
+    <color name="theme_color">#272E3F</color>
     <color name="text_color2">#999999</color>
     <color name="text_color3">#333333</color>
     <color name="view_color">#D8D8D8</color>
@@ -59,5 +59,7 @@
     <color name="backupwordUnable">#83B0FF</color>
     <color name="title_offcial">#415686</color>
     <color name="color5c">#FF5C5C</color>
+
+    <color name="new_textcolor1">#272E3F</color>
 
 </resources>

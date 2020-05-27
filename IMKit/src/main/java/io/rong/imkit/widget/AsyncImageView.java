@@ -19,6 +19,7 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
@@ -243,14 +244,17 @@ public class AsyncImageView extends ImageView {
             File file = new File(imageUri.getPath());
             if (!file.exists()) {
                 ImageViewAware imageViewAware = new ImageViewAware(this);
-                ImageLoader.getInstance().displayImage(imageUri.toString(), imageViewAware, options, (ImageLoadingListener) null, (ImageLoadingProgressListener) null);
+                ImageLoader.getInstance().displayImage(imageUri.toString(), imageViewAware, options, null, null);
             } else {
                 Bitmap bitmap = this.getBitmap(imageUri);
                 if (bitmap != null) {
                     this.setLayoutParam(bitmap);
+//                    if (!isCircle && mCornerRadius != 0) {
+//                        bitmap = getRoundCornerBitmap(bitmap, mCornerRadius, 0,0);
+//                    }
                     this.setImageBitmap(bitmap);
                 } else {
-                    this.setImageBitmap((Bitmap) null);
+                    this.setImageBitmap(null);
                     LayoutParams params = this.getLayoutParams();
                     params.height = RongUtils.dip2px(80.0F);
                     params.width = RongUtils.dip2px(110.0F);
@@ -382,6 +386,24 @@ public class AsyncImageView extends ImageView {
         return bitmap;
     }
 
+    public Bitmap getRoundCornerBitmap(Bitmap bitmap, float roundPx, int width, int height) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
     private DisplayImageOptions createDisplayImageOptions(int defaultResId, boolean cacheInMemory) {
         return this.createDisplayImageOptions(defaultResId, cacheInMemory, (Object) null);
     }
@@ -430,39 +452,41 @@ public class AsyncImageView extends ImageView {
     private void setLayoutParam(Bitmap bitmap) {
         float width = (float) bitmap.getWidth();
         float height = (float) bitmap.getHeight();
-        int minSize = 100;
         if (this.minShortSideSize > 0.0F) {
-            if (width > this.minShortSideSize && height > this.minShortSideSize) {
-                LayoutParams params = this.getLayoutParams();
-                params.height = (int) height;
-                params.width = (int) width;
-                this.setLayoutParams(params);
-            } else {
-                float scale = width / height;
-                int finalWidth;
-                int finalHeight;
+            float scale = width / height;
+            if (width < this.minShortSideSize || height < this.minShortSideSize) {
+                //有一条边小于最短值
                 if (scale > 1.0F) {
-                    finalHeight = (int) (this.minShortSideSize / scale);
-                    if (finalHeight < minSize) {
-                        finalHeight = minSize;
-                    }
-
-                    finalWidth = (int) this.minShortSideSize;
+                    //宽大于高，宽最大为最短值的1.4倍
+//                    if (scale > 1.4f) {
+//                        width = (int) (this.minShortSideSize * 1.4f);
+//                    } else {
+                        width = (int) (this.minShortSideSize * scale);
+//                    }
+                    height = (int) this.minShortSideSize;
                 } else {
-                    finalHeight = (int) this.minShortSideSize;
-                    finalWidth = (int) (this.minShortSideSize * scale);
-                    if (finalWidth < minSize) {
-                        finalWidth = minSize;
-                    }
+                    //宽小于高，高最大为最短值的1.8倍
+                    height = (int) (this.minShortSideSize / scale);
+//                    if (height > minShortSideSize * 1.8f) {
+//                        height = (int) (minShortSideSize * 1.8f);
+//                    }
+                    width = (int) this.minShortSideSize;
                 }
-
-                LayoutParams params = this.getLayoutParams();
-                params.height = finalHeight;
-                params.width = finalWidth;
-                this.setLayoutParams(params);
+            } else {
+                //两边都大于最短值，最大值不能超过最小值的1.6倍
+//                if (width > 1.6f * minShortSideSize) {
+//                    width = 1.6f * minShortSideSize;
+//                }
+//                if (height > 1.6f * minShortSideSize) {
+//                    height = 1.6f * minShortSideSize;
+//                }
             }
-        }
 
+            LayoutParams params = this.getLayoutParams();
+            params.height = (int) height;
+            params.width = (int) width;
+            this.setLayoutParams(params);
+        }
     }
 
     public void setLayoutParam(int width, int height) {

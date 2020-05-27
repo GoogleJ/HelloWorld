@@ -38,10 +38,8 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
         ViewHolder holder = (ViewHolder) view.getTag();
 
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {
-            holder.sendLayout.setBackgroundResource(io.rong.imkit.R.drawable.shape_rc_bubble_left);
             holder.llHilamg.setGravity(Gravity.START);
         } else {
-            holder.sendLayout.setBackgroundResource(io.rong.imkit.R.drawable.shape_rc_bubble_right_white);
             holder.llHilamg.setGravity(Gravity.END);
         }
 

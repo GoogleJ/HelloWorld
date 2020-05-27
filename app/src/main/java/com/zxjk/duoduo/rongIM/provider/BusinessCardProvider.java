@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxjk.duoduo.Constant;
@@ -19,7 +18,6 @@ import com.zxjk.duoduo.utils.GlideUtil;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
-import io.rong.imlib.model.Message;
 
 @ProviderTag(messageContent = BusinessCardMessage.class,
         showPortrait = false
@@ -30,18 +28,11 @@ public class BusinessCardProvider extends IContainerItemProvider.MessageProvider
         TextView userName;
         TextView duoduoId;
         ImageView heardImage;
-        LinearLayout sendLayout;
     }
 
     @Override
     public void bindView(View view, int i, BusinessCardMessage businessCardMessage, UIMessage uiMessage) {
         ViewHolder holder = (ViewHolder) view.getTag();
-
-        if (uiMessage.getMessageDirection() == Message.MessageDirection.SEND) {
-            holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_user);
-        } else {
-            holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_friend);
-        }
 
         holder.userName.setText(businessCardMessage.getName());
         holder.duoduoId.setText(businessCardMessage.getDuoduo());
@@ -69,7 +60,6 @@ public class BusinessCardProvider extends IContainerItemProvider.MessageProvider
         holder.userName = view.findViewById(R.id.business_card_user_name);
         holder.duoduoId = view.findViewById(R.id.business_card_duoduo_id);
         holder.heardImage = view.findViewById(R.id.business_card_header);
-        holder.sendLayout = view.findViewById(R.id.transfer_send_layout);
         view.setTag(holder);
         return view;
     }

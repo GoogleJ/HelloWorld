@@ -5,11 +5,13 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.zxjk.duoduo.R;
 
@@ -36,32 +38,28 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
     public void bindView(View v, int position, InformationNotificationMessage content, UIMessage message) {
         MInfoNotificationMsgItemProvider.ViewHolder viewHolder = (MInfoNotificationMsgItemProvider.ViewHolder) v.getTag();
         v.setVisibility(View.VISIBLE);
-        viewHolder.iv_start.setVisibility(View.GONE);
         if (content != null && !TextUtils.isEmpty(content.getMessage())) {
             viewHolder.contentTextView.setText(content.getMessage());
         }
         if (!TextUtils.isEmpty(content.getExtra())) {
-            if (content.getExtra().contains("焚")) {
-                viewHolder.iv_start.setVisibility(View.VISIBLE);
-                viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_burn);
+            if (content.getExtra().contains(v.getContext().getString(R.string.burn_after_read))) {
+                String origin = content.getMessage();
+                if (!origin.contains(v.getContext().getString(R.string.closeburn))) {
+                    SpannableString spannableString = new SpannableString(origin);
+                    spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(v.getContext(), R.color.colorTheme)),
+                            15, origin.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    viewHolder.contentTextView.setText(spannableString);
+                }
             } else if (content.getExtra().contains("截屏通知")) {
-                viewHolder.iv_start.setVisibility(View.VISIBLE);
-                viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_capture);
-            } else if (content.getExtra().contains("端对端加密")) {
-                viewHolder.iv_start.setVisibility(View.VISIBLE);
-                viewHolder.iv_start.setImageResource(io.rong.imkit.R.drawable.ic_msg_notifation_lock);
+
             } else if (content.getExtra().equals("对方截取了屏幕")) {
-                viewHolder.iv_start.setVisibility(View.GONE);
                 if (message.getMessageDirection() == Message.MessageDirection.SEND) {
                     v.setVisibility(View.GONE);
                     RongIM.getInstance().deleteMessages(new int[]{message.getMessageId()}, null);
                 }
             } else if (content.getExtra().contains("慢速模式")) {
-                viewHolder.iv_start.setVisibility(View.VISIBLE);
-                viewHolder.iv_start.setImageResource(R.drawable.ic_msg_notifation_slowmode);
+
             }
-        } else {
-            viewHolder.iv_start.setVisibility(View.GONE);
         }
     }
 
@@ -83,7 +81,6 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
         View view = LayoutInflater.from(context).inflate(io.rong.imkit.R.layout.rc_item_information_notification_message, null);
         MInfoNotificationMsgItemProvider.ViewHolder viewHolder = new MInfoNotificationMsgItemProvider.ViewHolder();
         viewHolder.contentTextView = view.findViewById(io.rong.imkit.R.id.rc_msg);
-        viewHolder.iv_start = view.findViewById(io.rong.imkit.R.id.iv_start);
         viewHolder.contentTextView.setMovementMethod(LinkMovementMethod.getInstance());
         view.setTag(viewHolder);
         return view;
@@ -91,7 +88,6 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
 
     private static class ViewHolder {
         TextView contentTextView;
-        ImageView iv_start;
 
         private ViewHolder() {
         }

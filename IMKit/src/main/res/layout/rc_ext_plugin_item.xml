@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/rc_ext_plugin_icon"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_gravity="center_horizontal" />
 
     <TextView
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="4.5dp"
         android:gravity="center"
         android:maxWidth="75dp"
         android:maxLines="1"

@@ -50,6 +50,7 @@
                     android:ellipsize="end"
                     android:lineSpacingExtra="4dp"
                     android:maxLines="1"
+                    android:layout_centerVertical="true"
                     android:textColor="@color/text_color3"
                     android:textSize="16sp" />
 
@@ -66,14 +67,14 @@
                     android:ellipsize="end"
                     android:gravity="start"
                     android:lines="1"
+                    android:visibility="gone"
                     android:textColor="@color/text_color2"
                     android:textSize="14sp" />
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_line" />
-
             <RelativeLayout
+                android:layout_marginTop="10dp"
                 android:id="@+id/rl_add"
                 style="@style/RLayoutStyle">
 
@@ -82,7 +83,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:drawableStart="@drawable/information_icon_add_defualt"
                     android:drawablePadding="6dp"
                     android:text="@string/add_new_member"
                     android:textColor="@color/theme_color"

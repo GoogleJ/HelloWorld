@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_message_notification_base"
+    android:orientation="vertical"
+    android:paddingLeft="32dp"
+    android:paddingTop="16dp"
+    android:paddingRight="32dp"
+    android:paddingBottom="16dp">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/you_have_invite"
+            android:textColor="#6E7F93"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="#0083BF"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/join_a_secret_chat"
+            android:textColor="#6E7F93"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll"
+        android:layout_marginStart="-7dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/secret_chat1"
+        android:textColor="#6D7278"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv"
+        android:orientation="vertical"
+        android:paddingLeft="0.5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:drawableLeft="@drawable/ic_fakec2c_lock"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical"
+            android:text="@string/fakec2ctips1"
+            android:textColor="#6D7278"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:drawableLeft="@drawable/ic_fakec2c_lock"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical"
+            android:text="@string/fakec2ctips2"
+            android:textColor="#6D7278"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:drawableLeft="@drawable/ic_fakec2c_lock"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical"
+            android:text="@string/fakec2ctips3"
+            android:textColor="#6D7278"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_fakec2c_lock"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical"
+            android:text="@string/fakec2ctips4"
+            android:textColor="#6D7278"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

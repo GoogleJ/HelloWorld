@@ -11,34 +11,28 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import io.rong.imkit.R.drawable;
 import io.rong.imkit.R.id;
 import io.rong.imkit.R.layout;
 import io.rong.imkit.R.string;
-import io.rong.imkit.RongIM;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.utils.FileTypeUtils;
 import io.rong.imkit.widget.EllipsizeTextView;
 import io.rong.imkit.widget.provider.IContainerItemProvider.MessageProvider;
-import io.rong.imlib.RongIMClient.ErrorCode;
-import io.rong.imlib.RongIMClient.OperationCallback;
-import io.rong.imlib.model.Message.MessageDirection;
 import io.rong.imlib.model.Message.SentStatus;
 import io.rong.message.FileMessage;
 
 @ProviderTag(
         messageContent = FileMessage.class,
         showProgress = false,
-        showReadState = true
+        showReadState = true,
+        showPortrait = false
 )
 public class FileMessageItemProvider extends MessageProvider<FileMessage> {
     private static final String TAG = "FileMessageItemProvider";
@@ -47,61 +41,30 @@ public class FileMessageItemProvider extends MessageProvider<FileMessage> {
     }
 
     public View newView(Context context, ViewGroup group) {
-        View view = LayoutInflater.from(context).inflate(layout.rc_item_file_message, (ViewGroup) null);
+        View view = LayoutInflater.from(context).inflate(layout.rc_item_file_message, group, false);
         FileMessageItemProvider.ViewHolder holder = new FileMessageItemProvider.ViewHolder();
-        holder.message = (LinearLayout) view.findViewById(id.rc_message);
+        holder.message = (RelativeLayout) view.findViewById(id.rc_message);
         holder.fileTypeImage = (ImageView) view.findViewById(id.rc_msg_iv_file_type_image);
         holder.fileName = (EllipsizeTextView) view.findViewById(id.rc_msg_tv_file_name);
         holder.fileSize = (TextView) view.findViewById(id.rc_msg_tv_file_size);
         holder.fileUploadProgress = (ProgressBar) view.findViewById(id.rc_msg_pb_file_upload_progress);
-        holder.cancelButton = (RelativeLayout) view.findViewById(id.rc_btn_cancel);
-        holder.canceledMessage = (TextView) view.findViewById(id.rc_msg_canceled);
         view.setTag(holder);
         return view;
     }
 
     public void bindView(View v, int position, FileMessage content, final UIMessage message) {
         final FileMessageItemProvider.ViewHolder holder = (FileMessageItemProvider.ViewHolder) v.getTag();
-        if (message.getMessageDirection() == MessageDirection.SEND) {
-            holder.message.setBackgroundResource(drawable.rc_ic_bubble_right_file);
-        } else {
-            holder.message.setBackgroundResource(drawable.rc_ic_bubble_left_file);
-        }
-
         holder.fileName.setAdaptiveText(content.getName());
         long fileSizeBytes = content.getSize();
         holder.fileSize.setText(FileTypeUtils.formatFileSize(fileSizeBytes));
         holder.fileTypeImage.setImageResource(FileTypeUtils.fileTypeImageId(content.getName()));
         if (message.getSentStatus().equals(SentStatus.SENDING) && message.getProgress() < 100) {
-            holder.fileUploadProgress.setVisibility(0);
-            holder.cancelButton.setVisibility(0);
-            holder.canceledMessage.setVisibility(4);
+            holder.fileUploadProgress.setVisibility(View.VISIBLE);
             holder.fileUploadProgress.setProgress(message.getProgress());
         } else {
-            if (message.getSentStatus().equals(SentStatus.CANCELED)) {
-                holder.canceledMessage.setVisibility(0);
-            } else {
-                holder.canceledMessage.setVisibility(4);
-            }
-
-            holder.fileUploadProgress.setVisibility(4);
-            holder.cancelButton.setVisibility(8);
+            holder.fileUploadProgress.setVisibility(View.GONE);
         }
 
-        holder.cancelButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                RongIM.getInstance().cancelSendMediaMessage(message.getMessage(), new OperationCallback() {
-                    public void onSuccess() {
-                        holder.canceledMessage.setVisibility(0);
-                        holder.fileUploadProgress.setVisibility(4);
-                        holder.cancelButton.setVisibility(8);
-                    }
-
-                    public void onError(ErrorCode errorCode) {
-                    }
-                });
-            }
-        });
     }
 
     public Spannable getContentSummary(FileMessage data) {
@@ -125,11 +88,9 @@ public class FileMessageItemProvider extends MessageProvider<FileMessage> {
     }
 
     private static class ViewHolder {
-        RelativeLayout cancelButton;
-        LinearLayout message;
+        RelativeLayout message;
         EllipsizeTextView fileName;
         TextView fileSize;
-        TextView canceledMessage;
         ImageView fileTypeImage;
         ProgressBar fileUploadProgress;
 

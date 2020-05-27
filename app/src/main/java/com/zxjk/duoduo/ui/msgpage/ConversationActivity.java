@@ -56,6 +56,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.rongIM.CusConversationFragment;
 import com.zxjk.duoduo.rongIM.message.BusinessCardMessage;
 import com.zxjk.duoduo.rongIM.message.CusEmoteTabMessage;
+import com.zxjk.duoduo.rongIM.message.FakeC2CMessage;
 import com.zxjk.duoduo.rongIM.message.GroupCardMessage;
 import com.zxjk.duoduo.rongIM.message.NewsCardMessage;
 import com.zxjk.duoduo.rongIM.message.RedPacketMessage;
@@ -73,6 +74,7 @@ import com.zxjk.duoduo.ui.cast.WechatChatRoomManageActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
 
 import java.util.ArrayList;
@@ -210,11 +212,9 @@ public class ConversationActivity extends BaseActivity {
         setMaxMessageSelectedCount();
 
         handleBurnAfterReadForReceivers();
-
-        sendFakeC2CMsg();
     }
 
-    private void sendFakeC2CMsg() {
+    private void sendFakeC2CMsg(String name) {
         if (!conversationType.equals("private")) {
             return;
         }
@@ -223,12 +223,11 @@ public class ConversationActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Conversation conversation) {
                         if (conversation == null || conversation.getLatestMessage() == null) {
-                            InformationNotificationMessage message = InformationNotificationMessage.obtain(getString(R.string.current_conversation_secret));
-                            message.setExtra(getString(R.string.current_conversation_secret));
+                            FakeC2CMessage message = new FakeC2CMessage();
+                            message.setName(name);
                             RongIM.getInstance().insertIncomingMessage(
                                     Conversation.ConversationType.PRIVATE,
-                                    targetId, Constant.userId, new Message.ReceivedStatus(1), message, null
-                            );
+                                    targetId, Constant.userId, new Message.ReceivedStatus(1), message, null);
                         }
                     }
 
@@ -718,7 +717,12 @@ public class ConversationActivity extends BaseActivity {
                                         Uri.parse(response.getCustomerForChat().getHeadPortrait()));
                                 RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
                             }
+
                             handlePrivate();
+
+                            if (targetUserInfo != null) {
+                                sendFakeC2CMsg(targetUserInfo.getName());
+                            }
                         }, this::handleApiError);
                 break;
             case "group":
@@ -1415,6 +1419,9 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void initView() {
+        ImageView ivHead = findViewById(R.id.ivHead);
+        TextView tvTitleTips = findViewById(R.id.tvTitleTips);
+
         tvTitle = findViewById(R.id.tv_title);
         RelativeLayout rl_end = findViewById(R.id.rl_end);
         rl_end.setVisibility(View.VISIBLE);
@@ -1429,9 +1436,15 @@ public class ConversationActivity extends BaseActivity {
         if (targetId.equals(Constant.userId)) {
             rl_end.setVisibility(View.GONE);
         }
+        if (targetUserInfo != null) {
+            findViewById(R.id.ivLock).setVisibility(View.VISIBLE);
+            tvTitleTips.setText(R.string.tips_conversation_private);
+            GlideUtil.loadCircleImg(ivHead, targetUserInfo.getPortraitUri().toString());
+        }
 
         //group logic
         if (groupInfo != null && groupInfo.getGroupInfo().getGroupType().equals("1")) {
+            findViewById(R.id.ivSocialDetail).setVisibility(View.VISIBLE);
             ImageView iv_end = findViewById(R.id.iv_end);
             iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_end));
             rl_end.setOnClickListener(v -> {
@@ -1441,12 +1454,15 @@ public class ConversationActivity extends BaseActivity {
                 startActivityForResult(intent, 1000);
             });
             tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
-            tvTitle.setOnClickListener(v -> {
+            findViewById(R.id.ll).setOnClickListener(v -> {
                 Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("group", groupInfo);
                 intent.putExtra("id", targetId);
                 startActivityForResult(intent, 1000);
             });
+
+            tvTitleTips.setText(R.string.tips_conversation_group);
+            GlideUtil.loadCircleImg(ivHead, groupInfo.getGroupInfo().getHeadPortrait());
         }
 
         registerOnTitleChange();

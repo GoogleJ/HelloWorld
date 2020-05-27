@@ -7,8 +7,8 @@
 
     <TextView
         android:id="@id/rc_msg"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="#75000000"
         android:gravity="center"
@@ -20,8 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        app:RCCornerRadius="4dp"
         app:RCMask="true"
-        app:RCMinShortSideSize="120dp" />
+        app:RCMinShortSideSize="150dp"
+        app:RCShape="square" />
 
     <FrameLayout
         android:id="@+id/rc_destruct_click"

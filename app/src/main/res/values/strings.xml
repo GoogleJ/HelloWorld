@@ -361,7 +361,7 @@
     <string name="please_set_money1">收款金额不能为0</string>
     <string name="myqr">扫一扫二维码，加我好友</string>
     <string name="duplicated_login">账号在其他设备登录，请重新登录</string>
-    <string name="openburn">开启了</string>
+    <string name="openburn">开启了阅后即焚，计时器设定为</string>
     <string name="openburn1">\"阅后即焚\"</string>
     <string name="open_burn_success">阅后即焚开启成功</string>
     <string name="close_burn_success">阅后即焚已关闭</string>
@@ -919,7 +919,7 @@
     <string name="my_hilamg_code">我的Hilamg号:%1$s</string>
     <string name="total_xx_contact">共 %1$s 位联系人</string>
     <string name="xx_receive_xx_red">%1$s领取了%2$s的红包</string>
-    <string name="you">你</string>
+    <string name="you">您</string>
     <string name="drop_record">空投记录</string>
     <string name="choose_time">选择时间</string>
     <string name="value_value_value" translatable="false">%1$s-%2$s-%3$s</string>
@@ -1221,6 +1221,16 @@
     <string name="cancel_pay">取消支付</string>
     <string name="check_update">检查更新</string>
     <string name="transfer1">转发</string>
+    <string name="c2cmessaging">已开启加密对话</string>
+    <string name="you_have_invite">您已邀请</string>
+    <string name="join_a_secret_chat">加入加密对话</string>
+    <string name="secret_chat1">【加密对话】</string>
+    <string name="fakec2ctips1">使用端到端加密</string>
+    <string name="fakec2ctips2">服务器不保留聊天记录</string>
+    <string name="fakec2ctips3">支持阅后即焚</string>
+    <string name="fakec2ctips4">支持对方截屏通知提醒</string>
+    <string name="tips_conversation_private">端对端加密保护中...</string>
+    <string name="tips_conversation_group">查看社群资料</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

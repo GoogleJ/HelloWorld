@@ -2,6 +2,7 @@ package com.zxjk.duoduo.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -43,6 +44,25 @@ public class GlideUtil {
 
     public static void loadCornerImg(ImageView iv, String url, int radius, RequestListener<Bitmap> listener) {
         loadImage(iv, url, LOAD_CORNER, radius, listener);
+    }
+
+    public static void loadCornerImg(ImageView iv, Uri uri, int radius) {
+        loadImage(iv, uri, LOAD_CORNER, radius, null);
+    }
+
+    private static void loadImage(ImageView iv, Uri uri, int mode, int radius, RequestListener<Bitmap> listener) {
+        if (null == uri) {
+            iv.setImageResource(R.drawable.errorimg_head);
+            return;
+        }
+
+        RequestManager manager = Glide.with(iv.getContext());
+        if (listener != null) {
+            manager.asBitmap().listener(listener)
+                    .load(uri).apply(getRequestOptions(iv.getContext(), mode, radius)).into(iv);
+            return;
+        }
+        manager.load(uri).transition(DrawableTransitionOptions.withCrossFade()).apply(getRequestOptions(iv.getContext(), mode, radius)).into(iv);
     }
 
     //加载图片实现方法 Glide 可设置加载回调返回bitmap

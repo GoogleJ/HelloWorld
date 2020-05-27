@@ -13,12 +13,11 @@
         android:id="@id/rc_time"
         style="@style/RCTheme.MessageTime"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_vertical" />
+        android:layout_marginBottom="20dp"
+        android:gravity="center" />
 
     <LinearLayout
         android:id="@+id/ll_message_check"

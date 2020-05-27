@@ -56,13 +56,14 @@ public class BurnImageMessageItemProvider extends IContainerItemProvider.Message
     }
 
     public void bindView(View v, int position, ImageMessage content, UIMessage message) {
+        v.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_no_right_new);
+
         ConversationInfo conversationInfo = null;
         if (!TextUtils.isEmpty(content.getExtra())) {
             conversationInfo = GsonUtils.fromJson(content.getExtra(), ConversationInfo.class);
         }
         BurnImageMessageItemProvider.ViewHolder holder = (BurnImageMessageItemProvider.ViewHolder) v.getTag();
         if (message.getMessageDirection() == Message.MessageDirection.SEND) {
-            v.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_no_right);
             if (conversationInfo != null && conversationInfo.getMessageBurnTime() != -1) {
                 holder.ivFireRight.setVisibility(View.VISIBLE);
                 holder.ivFireLeft.setVisibility(View.INVISIBLE);
@@ -71,7 +72,6 @@ public class BurnImageMessageItemProvider extends IContainerItemProvider.Message
                 holder.ivFireLeft.setVisibility(View.INVISIBLE);
             }
         } else {
-            v.setBackgroundResource(io.rong.imkit.R.drawable.rc_ic_bubble_no_left);
             if (conversationInfo != null && conversationInfo.getMessageBurnTime() != -1) {
                 holder.ivFireRight.setVisibility(View.INVISIBLE);
                 holder.ivFireLeft.setVisibility(View.VISIBLE);

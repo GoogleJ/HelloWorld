@@ -60,7 +60,8 @@ import io.rong.message.SightMessage;
 @ProviderTag(
         messageContent = SightMessage.class,
         showProgress = false,
-        showReadState = true
+        showReadState = true,
+        showPortrait = false
 )
 public class SightMessageItemProvider extends MessageProvider<SightMessage> {
     private static final String TAG = "Sight-SightMessageItemProvider";
@@ -123,14 +124,13 @@ public class SightMessageItemProvider extends MessageProvider<SightMessage> {
         SightMessageItemProvider.ViewHolder holder = (SightMessageItemProvider.ViewHolder) v.getTag();
         int progress;
         if (message.getMessageDirection() == MessageDirection.SEND) {
-            holder.message.setBackgroundResource(drawable.rc_ic_bubble_no_right);
             progress = (int) v.getContext().getResources().getDimension(dimen.rc_dimen_size_12);
             holder.duration.setPadding(0, 0, progress, 0);
         } else {
-            holder.message.setBackgroundResource(drawable.rc_ic_bubble_no_left);
             progress = (int) v.getContext().getResources().getDimension(dimen.rc_dimen_size_6);
             holder.duration.setPadding(0, 0, progress, 0);
         }
+        holder.message.setBackgroundResource(R.drawable.rc_ic_bubble_no_right_new);
 
         progress = message.getProgress();
         SentStatus status = message.getSentStatus();

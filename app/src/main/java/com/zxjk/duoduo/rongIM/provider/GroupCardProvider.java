@@ -8,13 +8,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.ui.msgpage.AgreeGroupChatActivity;
 import com.zxjk.duoduo.rongIM.message.GroupCardMessage;
+import com.zxjk.duoduo.ui.msgpage.AgreeGroupChatActivity;
 import com.zxjk.duoduo.utils.ImageUtil;
 
 import java.util.Arrays;
@@ -24,9 +23,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
-import io.rong.imlib.model.Message;
 
-@ProviderTag(messageContent = GroupCardMessage.class,showPortrait = false)
+@ProviderTag(messageContent = GroupCardMessage.class, showPortrait = false)
 public class GroupCardProvider extends IContainerItemProvider.MessageProvider<GroupCardMessage> {
 
     public GroupCardProvider() {
@@ -35,12 +33,6 @@ public class GroupCardProvider extends IContainerItemProvider.MessageProvider<Gr
     @Override
     public void bindView(View view, int i, GroupCardMessage groupCardMessage, UIMessage uiMessage) {
         ViewHolder holder = (ViewHolder) view.getTag();
-        if (uiMessage.getMessageDirection() == Message.MessageDirection.SEND) {
-            //消息方向，自己发送的
-            holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_user);
-        } else {
-            holder.sendLayout.setBackgroundResource(R.drawable.icon_business_card_friend);
-        }
 
         List<String> headUrls = Arrays.asList(groupCardMessage.getIcon().split(","));
 
@@ -82,7 +74,6 @@ public class GroupCardProvider extends IContainerItemProvider.MessageProvider<Gr
     public View newView(Context context, ViewGroup viewGroup) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_group_card, viewGroup, false);
         GroupCardProvider.ViewHolder holder = new GroupCardProvider.ViewHolder();
-        holder.sendLayout = view.findViewById(R.id.sendlayout);
         holder.content = view.findViewById(R.id.content);
         holder.nineImg = view.findViewById(R.id.nineImg);
         view.setTag(holder);
@@ -90,7 +81,6 @@ public class GroupCardProvider extends IContainerItemProvider.MessageProvider<Gr
     }
 
     class ViewHolder {
-        private LinearLayout sendLayout;
         private TextView content;
         private CircleImageView nineImg;
     }

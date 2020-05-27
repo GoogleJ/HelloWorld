@@ -5,7 +5,6 @@
 
 package io.rong.imkit.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +16,6 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Rect;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -51,7 +49,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -114,13 +111,10 @@ import io.rong.imkit.model.Event.changeDestructionReadTimeEvent;
 import io.rong.imkit.model.GroupUserInfo;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.plugin.IPluginModule;
-import io.rong.imkit.plugin.location.IRealTimeLocationStateListener;
 import io.rong.imkit.plugin.location.IUserInfoProvider;
 import io.rong.imkit.recallEdit.RecallEditManager;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imkit.utilities.PermissionCheckUtil;
-import io.rong.imkit.utilities.PromptPopupDialog;
-import io.rong.imkit.utilities.PromptPopupDialog.OnPromptButtonClickedListener;
 import io.rong.imkit.utils.ForwardManager;
 import io.rong.imkit.utils.SystemUtils;
 import io.rong.imkit.voiceMessageDownload.AutoDownloadEntry;
@@ -160,7 +154,6 @@ import io.rong.imlib.RongIMClient.ResultCallback;
 import io.rong.imlib.RongIMClient.SendImageMessageCallback;
 import io.rong.imlib.common.DeviceUtils;
 import io.rong.imlib.destruct.MessageBufferPool;
-import io.rong.imlib.location.RealTimeLocationConstant.RealTimeLocationStatus;
 import io.rong.imlib.location.message.RealTimeLocationStartMessage;
 import io.rong.imlib.model.CSCustomServiceInfo;
 import io.rong.imlib.model.CSGroupItem;
@@ -271,7 +264,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             if (ConversationFragment.this.mUnreadMsgLayout != null && ConversationFragment.this.mUnreadMsgLayout.getVisibility() == 0 && ConversationFragment.this.firstUnreadMessage != null) {
-                int firstPosition = ConversationFragment.this.mListAdapter.findPosition((long)ConversationFragment.this.firstUnreadMessage.getMessageId());
+                int firstPosition = ConversationFragment.this.mListAdapter.findPosition((long) ConversationFragment.this.firstUnreadMessage.getMessageId());
                 if (firstVisibleItem <= firstPosition) {
                     TranslateAnimation animation = new TranslateAnimation(0.0F, 700.0F, 0.0F, 0.0F);
                     animation.setDuration(700L);
@@ -330,8 +323,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 ConversationFragment.this.mCSNeedToQuit = config.quitSuspendType.equals(CSQuitSuspendType.SUSPEND);
             }
 
-            for(int i = 0; i < ConversationFragment.this.mListAdapter.getCount(); ++i) {
-                UIMessage uiMessage = (UIMessage)ConversationFragment.this.mListAdapter.getItem(i);
+            for (int i = 0; i < ConversationFragment.this.mListAdapter.getCount(); ++i) {
+                UIMessage uiMessage = (UIMessage) ConversationFragment.this.mListAdapter.getItem(i);
                 if (uiMessage.getContent() instanceof CSPullLeaveMessage) {
                     uiMessage.setCsConfig(config);
                 }
@@ -438,11 +431,11 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(layout.rc_fr_conversation, container, false);
-        this.mRongExtension = (RongExtension)view.findViewById(id.rc_extension);
+        this.mRongExtension = (RongExtension) view.findViewById(id.rc_extension);
         this.mRongExtension.setFragment(this);
         this.mOffsetLimit = 70.0F * this.getActivity().getResources().getDisplayMetrics().density;
         this.mMsgListView = this.findViewById(view, id.rc_layout_msg_list);
-        this.mList = (AutoRefreshListView)this.findViewById(this.mMsgListView, id.rc_list);
+        this.mList = (AutoRefreshListView) this.findViewById(this.mMsgListView, id.rc_list);
         this.mList.requestDisallowInterceptTouchEvent(true);
         this.mList.setMode(Mode.BOTH);
         this.mListAdapter = this.onResolveAdapter(this.getActivity());
@@ -487,8 +480,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             }
         });
         if (RongContext.getInstance().getNewMessageState()) {
-            this.mNewMessageTextView = (TextView)this.findViewById(view, id.rc_new_message_number);
-            this.mNewMessageBtn = (ImageButton)this.findViewById(view, id.rc_new_message_count);
+            this.mNewMessageTextView = (TextView) this.findViewById(view, id.rc_new_message_number);
+            this.mNewMessageBtn = (ImageButton) this.findViewById(view, id.rc_new_message_count);
             this.mNewMessageBtn.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
                     ConversationFragment.this.mList.setSelection(ConversationFragment.this.mList.getCount());
@@ -500,8 +493,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         }
 
         if (RongContext.getInstance().getUnreadMessageState()) {
-            this.mUnreadMsgLayout = (LinearLayout)this.findViewById(this.mMsgListView, id.rc_unread_message_layout);
-            this.mUnreadMsgCountTv = (TextView)this.findViewById(this.mMsgListView, id.rc_unread_message_count);
+            this.mUnreadMsgLayout = (LinearLayout) this.findViewById(this.mMsgListView, id.rc_unread_message_layout);
+            this.mUnreadMsgCountTv = (TextView) this.findViewById(this.mMsgListView, id.rc_unread_message_count);
         }
 
         this.mList.addOnScrollListener(this);
@@ -510,7 +503,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 RongIMClient.getInstance().deleteMessages(new int[]{data.getMessageId()}, new ResultCallback<Boolean>() {
                     public void onSuccess(Boolean aBoolean) {
                         if (aBoolean && data != null) {
-                            int mPosition = ConversationFragment.this.mListAdapter.findPosition((long)data.getMessageId());
+                            int mPosition = ConversationFragment.this.mListAdapter.findPosition((long) data.getMessageId());
                             if (mPosition >= 0) {
                                 ConversationFragment.this.mListAdapter.remove(mPosition);
                             }
@@ -545,7 +538,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 view.getWindowVisibleDisplayFrame(r);
                 int screenHeight = view.getRootView().getHeight();
                 int keypadHeight = screenHeight - r.bottom;
-                if ((double)keypadHeight > (double)screenHeight * 0.15D) {
+                if ((double) keypadHeight > (double) screenHeight * 0.15D) {
                     view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     if (ConversationFragment.this.mNewMessageCount > 0 && ConversationFragment.this.mNewMessageBtn != null) {
                         ConversationFragment.this.mNewMessageCount = 0;
@@ -621,7 +614,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             SharedPreferences sp = this.getActivity().getSharedPreferences("RongKitConfig", 0);
             long sendReadReceiptTime = sp.getLong(this.getSavedReadReceiptTimeName(), 0L);
             if (sendReadReceiptTime > 0L) {
-                RongIMClient.getInstance().sendReadReceiptMessage(this.mConversationType, this.mTargetId, sendReadReceiptTime, (ISendMessageCallback)null);
+                RongIMClient.getInstance().sendReadReceiptMessage(this.mConversationType, this.mTargetId, sendReadReceiptTime, (ISendMessageCallback) null);
             }
         }
 
@@ -650,8 +643,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     }
 
     public void setMoreActionState(UIMessage message) {
-        for(int i = 0; i < this.mListAdapter.getCount(); ++i) {
-            ((UIMessage)this.mListAdapter.getItem(i)).setChecked(false);
+        for (int i = 0; i < this.mListAdapter.getCount(); ++i) {
+            ((UIMessage) this.mListAdapter.getItem(i)).setChecked(false);
         }
 
         this.mListAdapter.setMessageCheckedChanged(new OnMessageCheckedChanged() {
@@ -759,9 +752,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             });
             this.mCurrentConversationInfo = ConversationInfo.obtain(this.mConversationType, this.mTargetId);
             RongContext.getInstance().registerConversationInfo(this.mCurrentConversationInfo);
-            this.mNotificationContainer = (LinearLayout)this.mMsgListView.findViewById(id.rc_notification_container);
+            this.mNotificationContainer = (LinearLayout) this.mMsgListView.findViewById(id.rc_notification_container);
             if (this.mConversationType.equals(ConversationType.CUSTOMER_SERVICE) && this.getActivity() != null && this.getActivity().getIntent() != null && this.getActivity().getIntent().getData() != null) {
-                this.mCustomUserInfo = (CSCustomServiceInfo)this.getActivity().getIntent().getParcelableExtra("customServiceInfo");
+                this.mCustomUserInfo = (CSCustomServiceInfo) this.getActivity().getIntent().getParcelableExtra("customServiceInfo");
             }
 
             if (this.mConversationType.equals(ConversationType.CHATROOM)) {
@@ -824,7 +817,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 PublicServiceCommandMessage msg = new PublicServiceCommandMessage();
                 msg.setCommand(PublicServiceMenuItemType.Entry.getMessage());
                 Message message = Message.obtain(this.mTargetId, this.mConversationType, msg);
-                RongIMClient.getInstance().sendMessage(message, (String)null, (String)null, new ISendMessageCallback() {
+                RongIMClient.getInstance().sendMessage(message, (String) null, (String) null, new ISendMessageCallback() {
                     public void onAttached(Message message) {
                     }
 
@@ -882,7 +875,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                         }
 
                         if (ConversationFragment.this.mSyncReadStatus && (!ConversationFragment.this.mReadRec && ConversationFragment.this.mConversationType == ConversationType.PRIVATE || ConversationFragment.this.mConversationType == ConversationType.GROUP || ConversationFragment.this.mConversationType == ConversationType.DISCUSSION || ConversationFragment.this.mConversationType == ConversationType.PUBLIC_SERVICE)) {
-                            RongIMClient.getInstance().syncConversationReadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, conversation.getSentTime(), (OperationCallback)null);
+                            RongIMClient.getInstance().syncConversationReadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, conversation.getSentTime(), (OperationCallback) null);
                         }
                     }
 
@@ -897,11 +890,11 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                                 }
 
                                 ConversationFragment.this.refreshUnreadUI();
-                                RongIM.getInstance().clearMessagesUnreadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, (ResultCallback)null);
+                                RongIM.getInstance().clearMessagesUnreadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, (ResultCallback) null);
                             }
 
                             public void onError(ErrorCode e) {
-                                RongIM.getInstance().clearMessagesUnreadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, (ResultCallback)null);
+                                RongIM.getInstance().clearMessagesUnreadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, (ResultCallback) null);
                             }
                         });
                     }
@@ -930,7 +923,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                                             RLog.e("ConversationFragment", "firstUnreadMessage is null");
                                         } else {
                                             ConversationFragment.this.indexMessageTime = ConversationFragment.this.firstUnreadMessage.getSentTime();
-                                            int position = ConversationFragment.this.mListAdapter.findPosition((long)ConversationFragment.this.firstUnreadMessage.getMessageId());
+                                            int position = ConversationFragment.this.mListAdapter.findPosition((long) ConversationFragment.this.firstUnreadMessage.getMessageId());
                                             if (position == 0) {
                                                 ConversationFragment.this.mList.setSelection(position);
                                             } else if (position > 0) {
@@ -1000,15 +993,15 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             this.mPublicServiceProfile = publicServiceProfile;
             Iterator var5 = items.iterator();
 
-            while(var5.hasNext()) {
-                PublicServiceMenuItem item = (PublicServiceMenuItem)var5.next();
+            while (var5.hasNext()) {
+                PublicServiceMenuItem item = (PublicServiceMenuItem) var5.next();
                 InputMenu inputMenu = new InputMenu();
                 inputMenu.title = item.getName();
                 inputMenu.subMenuList = new ArrayList();
                 Iterator var8 = item.getSubMenuItems().iterator();
 
-                while(var8.hasNext()) {
-                    PublicServiceMenuItem i = (PublicServiceMenuItem)var8.next();
+                while (var8.hasNext()) {
+                    PublicServiceMenuItem i = (PublicServiceMenuItem) var8.next();
                     inputMenu.subMenuList.add(i.getName());
                 }
 
@@ -1049,23 +1042,23 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     public void onResendItemClick(Message message) {
         if (message.getContent() instanceof ImageMessage) {
-            ImageMessage imageMessage = (ImageMessage)message.getContent();
+            ImageMessage imageMessage = (ImageMessage) message.getContent();
             if (imageMessage.getRemoteUri() != null && !imageMessage.getRemoteUri().toString().startsWith("file")) {
-                RongIM.getInstance().sendMessage(message, (String)null, (String)null, (ISendMediaMessageCallback)null);
+                RongIM.getInstance().sendMessage(message, (String) null, (String) null, (ISendMediaMessageCallback) null);
             } else {
-                RongIM.getInstance().sendImageMessage(message, (String)null, (String)null, (SendImageMessageCallback)null);
+                RongIM.getInstance().sendImageMessage(message, (String) null, (String) null, (SendImageMessageCallback) null);
             }
         } else if (message.getContent() instanceof LocationMessage) {
-            RongIM.getInstance().sendLocationMessage(message, (String)null, (String)null, (ISendMessageCallback)null);
+            RongIM.getInstance().sendLocationMessage(message, (String) null, (String) null, (ISendMessageCallback) null);
         } else if (message.getContent() instanceof MediaMessageContent) {
-            MediaMessageContent mediaMessageContent = (MediaMessageContent)message.getContent();
+            MediaMessageContent mediaMessageContent = (MediaMessageContent) message.getContent();
             if (mediaMessageContent.getMediaUrl() != null) {
-                RongIM.getInstance().sendMessage(message, (String)null, (String)null, (ISendMediaMessageCallback)null);
+                RongIM.getInstance().sendMessage(message, (String) null, (String) null, (ISendMediaMessageCallback) null);
             } else {
-                RongIM.getInstance().sendMediaMessage(message, (String)null, (String)null, (ISendMediaMessageCallback)null);
+                RongIM.getInstance().sendMediaMessage(message, (String) null, (String) null, (ISendMediaMessageCallback) null);
             }
         } else {
-            RongIM.getInstance().sendMessage(message, (String)null, (String)null, (ISendMessageCallback)null);
+            RongIM.getInstance().sendMessage(message, (String) null, (String) null, (ISendMessageCallback) null);
         }
 
     }
@@ -1080,26 +1073,26 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             List<String> singleDataList = new ArrayList();
             singleDataList.clear();
 
-            for(int i = 0; i < groupList.size(); ++i) {
-                if (((CSGroupItem)groupList.get(i)).getOnline()) {
-                    singleDataList.add(((CSGroupItem)groupList.get(i)).getName());
+            for (int i = 0; i < groupList.size(); ++i) {
+                if (((CSGroupItem) groupList.get(i)).getOnline()) {
+                    singleDataList.add(((CSGroupItem) groupList.get(i)).getName());
                 }
             }
 
             if (singleDataList.size() == 0) {
-                RongIMClient.getInstance().selectCustomServiceGroup(this.mTargetId, (String)null);
+                RongIMClient.getInstance().selectCustomServiceGroup(this.mTargetId, (String) null);
             } else {
                 final SingleChoiceDialog singleChoiceDialog = new SingleChoiceDialog(this.getActivity(), singleDataList);
                 singleChoiceDialog.setTitle(this.getActivity().getResources().getString(string.rc_cs_select_group));
                 singleChoiceDialog.setOnOKButtonListener(new android.content.DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         int selItem = singleChoiceDialog.getSelectItem();
-                        RongIMClient.getInstance().selectCustomServiceGroup(ConversationFragment.this.mTargetId, ((CSGroupItem)groupList.get(selItem)).getId());
+                        RongIMClient.getInstance().selectCustomServiceGroup(ConversationFragment.this.mTargetId, ((CSGroupItem) groupList.get(selItem)).getId());
                     }
                 });
                 singleChoiceDialog.setOnCancelButtonListener(new android.content.DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        RongIMClient.getInstance().selectCustomServiceGroup(ConversationFragment.this.mTargetId, (String)null);
+                        RongIMClient.getInstance().selectCustomServiceGroup(ConversationFragment.this.mTargetId, (String) null);
                     }
                 });
                 singleChoiceDialog.show();
@@ -1109,7 +1102,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     private void csQuit(String msg) {
         if (this.getHandler() != null) {
-            this.getHandler().removeCallbacksAndMessages((Object)null);
+            this.getHandler().removeCallbacksAndMessages((Object) null);
         }
 
         if (this.mEvaluateDialg == null) {
@@ -1133,7 +1126,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         }
 
         if (this.getHandler() != null) {
-            this.getHandler().removeCallbacksAndMessages((Object)null);
+            this.getHandler().removeCallbacksAndMessages((Object) null);
         }
 
         if (this.mEvaluateDialg == null) {
@@ -1192,15 +1185,15 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     }
 
     private void destroy() {
-        RongIM.getInstance().clearMessagesUnreadStatus(this.mConversationType, this.mTargetId, (ResultCallback)null);
+        RongIM.getInstance().clearMessagesUnreadStatus(this.mConversationType, this.mTargetId, (ResultCallback) null);
         if (this.getHandler() != null) {
-            this.getHandler().removeCallbacksAndMessages((Object)null);
+            this.getHandler().removeCallbacksAndMessages((Object) null);
         }
 
         if (this.mConversationType.equals(ConversationType.CHATROOM)) {
             SendImageManager.getInstance().cancelSendingImages(this.mConversationType, this.mTargetId);
             SendMediaManager.getInstance().cancelSendingMedia(this.mConversationType, this.mTargetId);
-            RongIM.getInstance().quitChatRoom(this.mTargetId, (OperationCallback)null);
+            RongIM.getInstance().quitChatRoom(this.mTargetId, (OperationCallback) null);
         }
 
         if (this.mConversationType.equals(ConversationType.CUSTOMER_SERVICE) && this.mCSNeedToQuit) {
@@ -1208,7 +1201,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         }
 
         if (this.mSyncReadStatus && this.mSyncReadStatusMsgTime > 0L && (this.mConversationType.equals(ConversationType.DISCUSSION) || this.mConversationType.equals(ConversationType.GROUP))) {
-            RongIMClient.getInstance().syncConversationReadStatus(this.mConversationType, this.mTargetId, this.mSyncReadStatusMsgTime, (OperationCallback)null);
+            RongIMClient.getInstance().syncConversationReadStatus(this.mConversationType, this.mTargetId, this.mSyncReadStatusMsgTime, (OperationCallback) null);
         }
 
         EventBus.getDefault().unregister(this);
@@ -1240,7 +1233,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         String mentionInfo = RongMentionManager.getInstance().getMentionBlockInfo();
         String saveDraft = DraftHelper.encode(text, mentionInfo);
         if (TextUtils.isEmpty(text) && !TextUtils.isEmpty(this.mDraft) || !TextUtils.isEmpty(text) && TextUtils.isEmpty(this.mDraft) || !TextUtils.isEmpty(text) && !TextUtils.isEmpty(this.mDraft) && !text.equals(this.mDraft)) {
-            RongIMClient.getInstance().saveTextMessageDraft(this.mConversationType, this.mTargetId, saveDraft, (ResultCallback)null);
+            RongIMClient.getInstance().saveTextMessageDraft(this.mConversationType, this.mTargetId, saveDraft, (ResultCallback) null);
             DraftEvent draft = new DraftEvent(this.mConversationType, this.mTargetId, text);
             RongContext.getInstance().getEventBus().post(draft);
         }
@@ -1283,11 +1276,11 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     public boolean handleMessage(android.os.Message msg) {
         InformationNotificationMessage info;
-        switch(msg.what) {
+        switch (msg.what) {
             case 0:
                 if (this.isActivityExist() && this.mCustomServiceConfig != null) {
                     info = new InformationNotificationMessage(this.mCustomServiceConfig.userTipWord);
-                    RongIM.getInstance().insertMessage(ConversationType.CUSTOMER_SERVICE, this.mTargetId, this.mTargetId, info, System.currentTimeMillis(), (ResultCallback)null);
+                    RongIM.getInstance().insertMessage(ConversationType.CUSTOMER_SERVICE, this.mTargetId, this.mTargetId, info, System.currentTimeMillis(), (ResultCallback) null);
                     return true;
                 }
 
@@ -1295,7 +1288,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             case 1:
                 if (this.isActivityExist() && this.mCustomServiceConfig != null) {
                     info = new InformationNotificationMessage(this.mCustomServiceConfig.adminTipWord);
-                    RongIM.getInstance().insertMessage(ConversationType.CUSTOMER_SERVICE, this.mTargetId, this.mTargetId, info, System.currentTimeMillis(), (ResultCallback)null);
+                    RongIM.getInstance().insertMessage(ConversationType.CUSTOMER_SERVICE, this.mTargetId, this.mTargetId, info, System.currentTimeMillis(), (ResultCallback) null);
                     return true;
                 }
 
@@ -1316,7 +1309,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         alertDialog.show();
         Window window = alertDialog.getWindow();
         window.setContentView(layout.rc_cs_alert_warning);
-        TextView tv = (TextView)window.findViewById(id.rc_cs_msg);
+        TextView tv = (TextView) window.findViewById(id.rc_cs_msg);
         tv.setText(msg);
         window.findViewById(id.rc_btn_ok).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -1342,11 +1335,11 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             alertDialog.show();
             Window window = alertDialog.getWindow();
             window.setContentView(layout.rc_cs_alert_warning);
-            TextView tv = (TextView)window.findViewById(id.rc_cs_msg);
+            TextView tv = (TextView) window.findViewById(id.rc_cs_msg);
             tv.setText(msg);
             window.findViewById(id.rc_btn_ok).setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService("input_method");
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService("input_method");
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     alertDialog.dismiss();
                     if (evaluate) {
@@ -1377,8 +1370,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     RLog.e("ConversationFragment", "onCustomServiceEvaluation", var10);
                 }
 
-                if (currentTime - this.csEnterTime < (long)(interval * 1000) && !isPullEva) {
-                    InputMethodManager imm = (InputMethodManager)this.getActivity().getSystemService("input_method");
+                if (currentTime - this.csEnterTime < (long) (interval * 1000) && !isPullEva) {
+                    InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService("input_method");
                     if (imm != null && imm.isActive() && this.getActivity().getCurrentFocus() != null && this.getActivity().getCurrentFocus().getWindowToken() != null) {
                         imm.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(), 2);
                     }
@@ -1436,7 +1429,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 if (length <= 20) {
                     time = 10L;
                 } else {
-                    time = Math.round((double)(length - 20) * 0.5D + 10.0D);
+                    time = Math.round((double) (length - 20) * 0.5D + 10.0D);
                 }
 
                 textMessage.setDestructTime(time);
@@ -1448,7 +1441,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             }
 
             Message message = Message.obtain(this.mTargetId, this.mConversationType, textMessage);
-            RongIM.getInstance().sendMessage(message, this.mRongExtension.isFireStatus() ? this.getContext().getString(string.rc_message_content_burn) : null, (String)null, (ISendMessageCallback)null);
+            RongIM.getInstance().sendMessage(message, this.mRongExtension.isFireStatus() ? this.getContext().getString(string.rc_message_content_burn) : null, (String) null, (ISendMessageCallback) null);
         } else {
             RLog.e("ConversationFragment", "text content must not be null");
         }
@@ -1458,11 +1451,11 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         boolean fireStatus = this.mRongExtension.isFireStatus();
         Iterator var4 = selectedMedias.entrySet().iterator();
 
-        while(var4.hasNext()) {
-            Entry<String, Integer> media = (Entry)var4.next();
-            int mediaType = (Integer)media.getValue();
-            String mediaUri = (String)media.getKey();
-            switch(mediaType) {
+        while (var4.hasNext()) {
+            Entry<String, Integer> media = (Entry) var4.next();
+            int mediaType = (Integer) media.getValue();
+            String mediaUri = (String) media.getKey();
+            switch (mediaType) {
                 case 1:
                     SendImageManager.getInstance().sendImages(this.mConversationType, this.mTargetId, Collections.singletonList(Uri.parse(mediaUri)), origin, fireStatus, 30L);
                     if (this.mConversationType.equals(ConversationType.PRIVATE)) {
@@ -1485,7 +1478,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     public void onLocationResult(double lat, double lng, String poi, Uri thumb) {
         LocationMessage locationMessage = LocationMessage.obtain(lat, lng, poi, thumb);
         Message message = Message.obtain(this.mTargetId, this.mConversationType, locationMessage);
-        RongIM.getInstance().sendLocationMessage(message, (String)null, (String)null, (ISendMessageCallback)null);
+        RongIM.getInstance().sendLocationMessage(message, (String) null, (String) null, (ISendMessageCallback) null);
         if (this.mConversationType.equals(ConversationType.PRIVATE)) {
             RongIMClient.getInstance().sendTypingStatus(this.mConversationType, this.mTargetId, "RC:LBSMsg");
         }
@@ -1517,20 +1510,20 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 AudioRecordManager.getInstance().startRecord(v.getRootView(), this.mConversationType, this.mTargetId, this.mRongExtension.isFireStatus(), this.mRongExtension.isFireStatus() ? 10L : 0L);
                 this.mLastTouchY = event.getY();
                 this.mUpDirection = false;
-                ((Button)v).setText(string.rc_audio_input_hover);
+                ((Button) v).setText(string.rc_audio_input_hover);
             } else if (event.getAction() == 2) {
                 if (this.mLastTouchY - event.getY() > this.mOffsetLimit && !this.mUpDirection) {
                     AudioRecordManager.getInstance().willCancelRecord();
                     this.mUpDirection = true;
-                    ((Button)v).setText(string.rc_audio_input);
+                    ((Button) v).setText(string.rc_audio_input);
                 } else if (event.getY() - this.mLastTouchY > -this.mOffsetLimit && this.mUpDirection) {
                     AudioRecordManager.getInstance().continueRecord();
                     this.mUpDirection = false;
-                    ((Button)v).setText(string.rc_audio_input_hover);
+                    ((Button) v).setText(string.rc_audio_input_hover);
                 }
             } else if (event.getAction() == 1 || event.getAction() == 3) {
                 AudioRecordManager.getInstance().stopRecord();
-                ((Button)v).setText(string.rc_audio_input);
+                ((Button) v).setText(string.rc_audio_input);
             }
 
             if (this.mConversationType.equals(ConversationType.PRIVATE)) {
@@ -1588,7 +1581,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getKeyCode() == 67 && event.getAction() == 0) {
-            EditText editText = (EditText)v;
+            EditText editText = (EditText) v;
             int cursorPos = editText.getSelectionStart();
             RongMentionManager.getInstance().onDeleteClick(this.mConversationType, this.mTargetId, editText, cursorPos);
         }
@@ -1598,9 +1591,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     public void onMenuClick(int root, int sub) {
         if (this.mPublicServiceProfile != null) {
-            PublicServiceMenuItem item = (PublicServiceMenuItem)this.mPublicServiceProfile.getMenu().getMenuItems().get(root);
+            PublicServiceMenuItem item = (PublicServiceMenuItem) this.mPublicServiceProfile.getMenu().getMenuItems().get(root);
             if (sub >= 0) {
-                item = (PublicServiceMenuItem)item.getSubMenuItems().get(sub);
+                item = (PublicServiceMenuItem) item.getSubMenuItems().get(sub);
             }
 
             if (item.getType().equals(PublicServiceMenuItemType.View)) {
@@ -1616,7 +1609,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             }
 
             PublicServiceCommandMessage msg = PublicServiceCommandMessage.obtain(item);
-            RongIMClient.getInstance().sendMessage(this.mConversationType, this.mTargetId, msg, (String)null, (String)null, new ISendMessageCallback() {
+            RongIMClient.getInstance().sendMessage(this.mConversationType, this.mTargetId, msg, (String) null, (String) null, new ISendMessageCallback() {
                 public void onAttached(Message message) {
                 }
 
@@ -1637,7 +1630,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         if (!TextUtils.isEmpty(phrases) && !TextUtils.isEmpty(phrases.trim())) {
             TextMessage textMessage = TextMessage.obtain(phrases);
             Message message = Message.obtain(this.mTargetId, this.mConversationType, textMessage);
-            RongIM.getInstance().sendMessage(message, (String)null, (String)null, (ISendMessageCallback)null);
+            RongIM.getInstance().sendMessage(message, (String) null, (String) null, (ISendMessageCallback) null);
             this.mRongExtension.collapseExtension();
         } else {
             RLog.e("ConversationFragment", "text content must not be null");
@@ -1678,9 +1671,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     public void onEventMainThread(ReadReceiptRequestEvent event) {
         RLog.d("ConversationFragment", "ReadReceiptRequestEvent");
         if ((this.mConversationType.equals(ConversationType.GROUP) || this.mConversationType.equals(ConversationType.DISCUSSION)) && RongContext.getInstance().isReadReceiptConversationType(event.getConversationType()) && event.getConversationType().equals(this.mConversationType) && event.getTargetId().equals(this.mTargetId)) {
-            for(int i = 0; i < this.mListAdapter.getCount(); ++i) {
-                if (((UIMessage)this.mListAdapter.getItem(i)).getUId().equals(event.getMessageUId())) {
-                    final UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(i);
+            for (int i = 0; i < this.mListAdapter.getCount(); ++i) {
+                if (((UIMessage) this.mListAdapter.getItem(i)).getUId().equals(event.getMessageUId())) {
+                    final UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(i);
                     ReadReceiptInfo readReceiptInfo = uiMessage.getReadReceiptInfo();
                     if (readReceiptInfo == null) {
                         readReceiptInfo = new ReadReceiptInfo();
@@ -1694,7 +1687,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     readReceiptInfo.setIsReadReceiptMessage(true);
                     readReceiptInfo.setHasRespond(false);
                     List<Message> messageList = new ArrayList();
-                    messageList.add(((UIMessage)this.mListAdapter.getItem(i)).getMessage());
+                    messageList.add(((UIMessage) this.mListAdapter.getItem(i)).getMessage());
                     RongIMClient.getInstance().sendReadReceiptResponse(event.getConversationType(), event.getTargetId(), messageList, new OperationCallback() {
                         public void onSuccess() {
                             uiMessage.getReadReceiptInfo().setHasRespond(true);
@@ -1714,9 +1707,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     public void onEventMainThread(ReadReceiptResponseEvent event) {
         RLog.d("ConversationFragment", "ReadReceiptResponseEvent");
         if ((this.mConversationType.equals(ConversationType.GROUP) || this.mConversationType.equals(ConversationType.DISCUSSION)) && RongContext.getInstance().isReadReceiptConversationType(event.getConversationType()) && event.getConversationType().equals(this.mConversationType) && event.getTargetId().equals(this.mTargetId)) {
-            for(int i = 0; i < this.mListAdapter.getCount(); ++i) {
-                if (((UIMessage)this.mListAdapter.getItem(i)).getUId().equals(event.getMessageUId())) {
-                    UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(i);
+            for (int i = 0; i < this.mListAdapter.getCount(); ++i) {
+                if (((UIMessage) this.mListAdapter.getItem(i)).getUId().equals(event.getMessageUId())) {
+                    UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(i);
                     ReadReceiptInfo readReceiptInfo = uiMessage.getReadReceiptInfo();
                     if (readReceiptInfo == null) {
                         readReceiptInfo = new ReadReceiptInfo();
@@ -1743,20 +1736,20 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         if (deleteEvent.getMessageIds() != null) {
             Iterator var2 = deleteEvent.getMessageIds().iterator();
 
-            while(var2.hasNext()) {
-                int messageId = (Integer)var2.next();
-                int position = this.mListAdapter.findPosition((long)messageId);
+            while (var2.hasNext()) {
+                int messageId = (Integer) var2.next();
+                int position = this.mListAdapter.findPosition((long) messageId);
                 if (position >= 0) {
-                    UIMessage message = (UIMessage)this.mListAdapter.getItem(position);
+                    UIMessage message = (UIMessage) this.mListAdapter.getItem(position);
                     if (message.getContent() instanceof VoiceMessage && AudioPlayManager.getInstance().isPlaying()) {
-                        VoiceMessage voiceMessage = (VoiceMessage)message.getContent();
+                        VoiceMessage voiceMessage = (VoiceMessage) message.getContent();
                         if (voiceMessage.getUri().equals(AudioPlayManager.getInstance().getPlayingUri())) {
                             AudioPlayManager.getInstance().stopPlay();
                         }
                     }
 
                     if (message.getContent() instanceof HQVoiceMessage && AudioPlayManager.getInstance().isPlaying()) {
-                        HQVoiceMessage voiceMessage = (HQVoiceMessage)message.getContent();
+                        HQVoiceMessage voiceMessage = (HQVoiceMessage) message.getContent();
                         if (voiceMessage.getLocalPath().equals(AudioPlayManager.getInstance().getPlayingUri())) {
                             AudioPlayManager.getInstance().stopPlay();
                         }
@@ -1792,18 +1785,18 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         RLog.d("ConversationFragment", "MessageRecallEvent");
         if (event.isRecallSuccess()) {
             RecallNotificationMessage recallNotificationMessage = event.getRecallNotificationMessage();
-            int position = this.mListAdapter.findPosition((long)event.getMessageId());
+            int position = this.mListAdapter.findPosition((long) event.getMessageId());
             if (position != -1) {
-                UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(position);
+                UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(position);
                 if (uiMessage.getMessage().getContent() instanceof VoiceMessage || uiMessage.getMessage().getContent() instanceof HQVoiceMessage) {
                     AudioPlayManager.getInstance().stopPlay();
                 }
 
                 if (uiMessage.getMessage().getContent() instanceof FileMessage) {
-                    RongIM.getInstance().cancelDownloadMediaMessage(uiMessage.getMessage(), (OperationCallback)null);
+                    RongIM.getInstance().cancelDownloadMediaMessage(uiMessage.getMessage(), (OperationCallback) null);
                 }
 
-                ((UIMessage)this.mListAdapter.getItem(position)).setContent(recallNotificationMessage);
+                ((UIMessage) this.mListAdapter.getItem(position)).setContent(recallNotificationMessage);
                 int first = this.mList.getFirstVisiblePosition();
                 int last = this.mList.getLastVisiblePosition();
                 int listPos = this.getPositionInListView(position);
@@ -1819,22 +1812,22 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     public void onEventMainThread(RemoteMessageRecallEvent event) {
         RLog.d("ConversationFragment", "RemoteMessageRecallEvent");
-        int position = this.mListAdapter.findPosition((long)event.getMessageId());
+        int position = this.mListAdapter.findPosition((long) event.getMessageId());
         int first = this.mList.getFirstVisiblePosition();
         int last = this.mList.getLastVisiblePosition();
         if (position >= 0) {
-            this.updateNewMessageCountIfNeed(((UIMessage)this.mListAdapter.getItem(position)).getMessage(), false);
+            this.updateNewMessageCountIfNeed(((UIMessage) this.mListAdapter.getItem(position)).getMessage(), false);
             if (event.getRecallNotificationMessage() == null) {
                 this.mListAdapter.remove(position);
                 this.mListAdapter.notifyDataSetChanged();
                 return;
             }
 
-            UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(position);
+            UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(position);
             MessageContent content = uiMessage.getMessage().getContent();
             if (!(content instanceof VoiceMessage) && !(content instanceof HQVoiceMessage)) {
                 if (content instanceof FileMessage || content instanceof GIFMessage || content instanceof SightMessage) {
-                    RongIM.getInstance().cancelDownloadMediaMessage(uiMessage.getMessage(), (OperationCallback)null);
+                    RongIM.getInstance().cancelDownloadMediaMessage(uiMessage.getMessage(), (OperationCallback) null);
                 }
             } else {
                 AudioPlayManager.getInstance().stopPlay();
@@ -1852,14 +1845,14 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     public void onEventMainThread(Message msg) {
         RLog.d("ConversationFragment", "Event message : " + msg.getMessageId() + ", " + msg.getObjectName() + ", " + msg.getSentStatus());
         if (this.mTargetId.equals(msg.getTargetId()) && this.mConversationType.equals(msg.getConversationType()) && msg.getMessageId() > 0) {
-            int position = this.mListAdapter.findPosition((long)msg.getMessageId());
+            int position = this.mListAdapter.findPosition((long) msg.getMessageId());
             if (position >= 0) {
                 if (msg.getSentStatus().equals(SentStatus.FAILED)) {
                     long serverTime = msg.getSentTime() - RongIMClient.getInstance().getDeltaTime();
                     msg.setSentTime(serverTime);
                 }
 
-                ((UIMessage)this.mListAdapter.getItem(position)).setMessage(msg);
+                ((UIMessage) this.mListAdapter.getItem(position)).setMessage(msg);
                 this.mListAdapter.getView(position, this.getListViewChildAt(position), this.mList);
             } else {
                 UIMessage uiMessage = UIMessage.obtain(msg);
@@ -1878,7 +1871,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                 this.mListAdapter.notifyDataSetChanged();
             }
 
-            MessageTag msgTag = (MessageTag)msg.getContent().getClass().getAnnotation(MessageTag.class);
+            MessageTag msgTag = (MessageTag) msg.getContent().getClass().getAnnotation(MessageTag.class);
             if (this.mNewMessageCount <= 0 && (msgTag != null && msgTag.flag() == 3 || this.mList.getLastVisiblePosition() == this.mList.getCount() - this.mList.getHeaderViewsCount() - 1 || this.isSelfSendMessage(msg))) {
                 this.mList.setTranscriptMode(2);
                 this.mList.post(new Runnable() {
@@ -1916,7 +1909,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             boolean sendReadReceiptFailed = sp.getBoolean(this.getSavedReadReceiptStatusName(), false);
             long sendReadReceiptTime = sp.getLong(this.getSavedReadReceiptTimeName(), 0L);
             if (status.equals(ConnectionStatus.CONNECTED) && sendReadReceiptFailed) {
-                RongIMClient.getInstance().sendReadReceiptMessage(this.mConversationType, this.mTargetId, sendReadReceiptTime, (ISendMessageCallback)null);
+                RongIMClient.getInstance().sendReadReceiptMessage(this.mConversationType, this.mTargetId, sendReadReceiptTime, (ISendMessageCallback) null);
                 this.removeSendReadReceiptStatusToSp();
             }
         }
@@ -1927,9 +1920,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         Message message = event.getMessage();
         if (message != null && !message.getMessageDirection().equals(MessageDirection.RECEIVE)) {
             RLog.d("ConversationFragment", "MessageSentStatusEvent event : " + event.getMessage().getMessageId() + ", " + event.getSentStatus());
-            int position = this.mListAdapter.findPosition((long)message.getMessageId());
+            int position = this.mListAdapter.findPosition((long) message.getMessageId());
             if (position >= 0) {
-                ((UIMessage)this.mListAdapter.getItem(position)).setSentStatus(event.getSentStatus());
+                ((UIMessage) this.mListAdapter.getItem(position)).setSentStatus(event.getSentStatus());
                 this.mListAdapter.getView(position, this.getListViewChildAt(position), this.mList);
             }
 
@@ -1942,16 +1935,16 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         Message msg = event.getMessage();
         RLog.d("ConversationFragment", "FileMessageEvent message : " + msg.getMessageId() + ", " + msg.getObjectName() + ", " + msg.getSentStatus());
         if (this.mTargetId.equals(msg.getTargetId()) && this.mConversationType.equals(msg.getConversationType()) && msg.getMessageId() > 0 && msg.getContent() instanceof MediaMessageContent) {
-            int position = this.mListAdapter.findPosition((long)msg.getMessageId());
+            int position = this.mListAdapter.findPosition((long) msg.getMessageId());
             if (position >= 0) {
-                UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(position);
+                UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(position);
                 uiMessage.setMessage(msg);
                 uiMessage.setProgress(event.getProgress());
                 if (msg.getContent() instanceof FileMessage) {
-                    ((FileMessage)msg.getContent()).progress = event.getProgress();
+                    ((FileMessage) msg.getContent()).progress = event.getProgress();
                 }
 
-                ((UIMessage)this.mListAdapter.getItem(position)).setMessage(msg);
+                ((UIMessage) this.mListAdapter.getItem(position)).setMessage(msg);
                 int first = this.mList.getFirstVisiblePosition();
                 int last = this.mList.getLastVisiblePosition();
                 if (position >= first && position <= last) {
@@ -1969,8 +1962,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             int first = this.mList.getFirstVisiblePosition();
             int last = this.mList.getLastVisiblePosition();
 
-            for(int i = 0; i < count; ++i) {
-                UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(i);
+            for (int i = 0; i < count; ++i) {
+                UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(i);
                 if (uiMessage.getSenderUserId().equals(groupUserInfo.getUserId())) {
                     uiMessage.setNickName(true);
                     UserInfo userInfo = uiMessage.getUserInfo();
@@ -2057,7 +2050,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     }
 
                     if (!this.mReadRec && this.mSyncReadStatus) {
-                        RongIMClient.getInstance().syncConversationReadStatus(message.getConversationType(), message.getTargetId(), message.getSentTime(), (OperationCallback)null);
+                        RongIMClient.getInstance().syncConversationReadStatus(message.getConversationType(), message.getTargetId(), message.getSentTime(), (OperationCallback) null);
                     }
                 }
             }
@@ -2069,7 +2062,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             if (message.getMessageId() > 0) {
                 if (!SystemUtils.isInBackground(this.getActivity())) {
                     message.getReceivedStatus().setRead();
-                    RongIMClient.getInstance().setMessageReceivedStatus(message.getMessageId(), message.getReceivedStatus(), (ResultCallback)null);
+                    RongIMClient.getInstance().setMessageReceivedStatus(message.getMessageId(), message.getReceivedStatus(), (ResultCallback) null);
                     if (message.getMessageDirection().equals(MessageDirection.RECEIVE)) {
                         UnReadMessageManager.getInstance().onMessageReceivedStatusChanged();
                     }
@@ -2090,8 +2083,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     public void onEventMainThread(changeDestructionReadTimeEvent event) {
         Message message = event.message;
         if (message != null && this.mConversationType == ConversationType.PRIVATE && event.message.getContent().isDestruct()) {
-            int messagePosition = this.mListAdapter.findPosition((long)message.getMessageId());
-            ((UIMessage)this.mListAdapter.getItem(messagePosition)).getMessage().setReadTime(message.getReadTime());
+            int messagePosition = this.mListAdapter.findPosition((long) message.getMessageId());
+            ((UIMessage) this.mListAdapter.getItem(messagePosition)).getMessage().setReadTime(message.getReadTime());
             this.mListAdapter.notifyDataSetChanged();
         }
 
@@ -2168,9 +2161,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         RLog.i("ConversationFragment", "PlayAudioEvent");
         int first = this.mList.getFirstVisiblePosition();
         int last = this.mList.getLastVisiblePosition();
-        int position = this.mListAdapter.findPosition((long)event.messageId);
+        int position = this.mListAdapter.findPosition((long) event.messageId);
         if (event.continuously && position >= 0) {
-            while(true) {
+            while (true) {
                 UIMessage uiMessage;
                 do {
                     do {
@@ -2180,9 +2173,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
                         ++position;
                         ++first;
-                        uiMessage = (UIMessage)this.mListAdapter.getItem(position);
-                    } while(uiMessage == null);
-                } while(!(uiMessage.getContent() instanceof VoiceMessage) && !(uiMessage.getMessage().getContent() instanceof HQVoiceMessage));
+                        uiMessage = (UIMessage) this.mListAdapter.getItem(position);
+                    } while (uiMessage == null);
+                } while (!(uiMessage.getContent() instanceof VoiceMessage) && !(uiMessage.getMessage().getContent() instanceof HQVoiceMessage));
 
                 if (uiMessage.getMessageDirection().equals(MessageDirection.RECEIVE) && !uiMessage.getReceivedStatus().isListened() && !uiMessage.getContent().isDestruct()) {
                     uiMessage.continuePlayAudio = true;
@@ -2205,9 +2198,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
             int first = this.mList.getFirstVisiblePosition();
 
-            for(int last = this.mList.getLastVisiblePosition(); first <= last; ++first) {
+            for (int last = this.mList.getLastVisiblePosition(); first <= last; ++first) {
                 int position = this.getPositionInAdapter(first);
-                UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(position);
+                UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(position);
                 if (uiMessage != null && uiMessage.getMessageId() == event.getMessage().getMessageId() && (event.getProgress() != uiMessage.getProgress() || event.getProgress() == 100)) {
                     uiMessage.setProgress(event.getProgress());
                     if (this.isResumed()) {
@@ -2235,8 +2228,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         int first = this.mList.getFirstVisiblePosition();
         int last = this.mList.getLastVisiblePosition();
 
-        for(int i = 0; i < this.mListAdapter.getCount(); ++i) {
-            UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(i);
+        for (int i = 0; i < this.mListAdapter.getCount(); ++i) {
+            UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(i);
             if (userInfo.getUserId().equals(uiMessage.getSenderUserId()) && !uiMessage.isNickName()) {
                 if (uiMessage.getConversationType().equals(ConversationType.CUSTOMER_SERVICE) && uiMessage.getMessage() != null && uiMessage.getMessage().getContent() != null && uiMessage.getMessage().getContent().getUserInfo() != null) {
                     uiMessage.setUserInfo(uiMessage.getMessage().getContent().getUserInfo());
@@ -2258,9 +2251,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         if (publicServiceProfile != null && this.mConversationType.equals(publicServiceProfile.getConversationType()) && this.mTargetId.equals(publicServiceProfile.getTargetId())) {
             int first = this.mList.getFirstVisiblePosition();
 
-            for(int last = this.mList.getLastVisiblePosition(); first <= last; ++first) {
+            for (int last = this.mList.getLastVisiblePosition(); first <= last; ++first) {
                 int position = this.getPositionInAdapter(first);
-                UIMessage message = (UIMessage)this.mListAdapter.getItem(position);
+                UIMessage message = (UIMessage) this.mListAdapter.getItem(position);
                 if (message != null && (TextUtils.isEmpty(message.getTargetId()) || publicServiceProfile.getTargetId().equals(message.getTargetId()))) {
                     this.mListAdapter.getView(position, this.getListViewChildAt(position), this.mList);
                 }
@@ -2274,11 +2267,11 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
     public void onEventMainThread(ReadReceiptEvent event) {
         RLog.i("ConversationFragment", "ReadReceiptEvent");
         if (RongContext.getInstance().isReadReceiptConversationType(event.getMessage().getConversationType()) && this.mTargetId.equals(event.getMessage().getTargetId()) && this.mConversationType.equals(event.getMessage().getConversationType()) && event.getMessage().getMessageDirection().equals(MessageDirection.RECEIVE)) {
-            ReadReceiptMessage content = (ReadReceiptMessage)event.getMessage().getContent();
+            ReadReceiptMessage content = (ReadReceiptMessage) event.getMessage().getContent();
             long ntfTime = content.getLastMessageSendTime();
 
-            for(int i = this.mListAdapter.getCount() - 1; i >= 0; --i) {
-                UIMessage uiMessage = (UIMessage)this.mListAdapter.getItem(i);
+            for (int i = this.mListAdapter.getCount() - 1; i >= 0; --i) {
+                UIMessage uiMessage = (UIMessage) this.mListAdapter.getItem(i);
                 if (uiMessage.getMessageDirection().equals(MessageDirection.SEND) && uiMessage.getSentStatus() == SentStatus.SENT && ntfTime >= uiMessage.getSentTime()) {
                     uiMessage.setSentStatus(SentStatus.READ);
                     int first = this.mList.getFirstVisiblePosition();
@@ -2302,7 +2295,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         if (message != null && message.getConversationType() == this.mConversationType && this.mTargetId.equals(message.getTargetId())) {
             MessageContent messageContent = message.getContent();
             if (messageContent instanceof RecallNotificationMessage) {
-                String content = ((RecallNotificationMessage)messageContent).getRecallContent();
+                String content = ((RecallNotificationMessage) messageContent).getRecallContent();
                 if (!TextUtils.isEmpty(content)) {
                     this.insertToEditText(content, this.mRongExtension.getInputEditText());
                     this.mRongExtension.showSoftInput();
@@ -2360,7 +2353,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     }
 
                     if (messages != null && messages.size() > 0 && ConversationFragment.this.mHasMoreLocalMessagesDown) {
-                        ConversationFragment.this.indexMessageTime = ((Message)messages.get(0)).getSentTime();
+                        ConversationFragment.this.indexMessageTime = ((Message) messages.get(0)).getSentTime();
                     } else {
                         ConversationFragment.this.indexMessageTime = 0L;
                     }
@@ -2388,9 +2381,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             List<Message> destructionMessages = new ArrayList();
             Iterator var6 = messages.iterator();
 
-            while(true) {
-                while(var6.hasNext()) {
-                    Message message = (Message)var6.next();
+            while (true) {
+                while (var6.hasNext()) {
+                    Message message = (Message) var6.next();
                     if (message.getContent().isDestruct() && message.getReadTime() > 0L) {
                         if (!message.getMessageDirection().equals(MessageDirection.RECEIVE)) {
                             destructionMessages.add(message);
@@ -2442,10 +2435,10 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         if (messageId < 0) {
             if (this.mListAdapter.getCount() == 0) {
                 count = -1;
-            } else if (((UIMessage)this.mListAdapter.getItem(0)).getMessage().getContent() instanceof HistoryDividerMessage) {
+            } else if (((UIMessage) this.mListAdapter.getItem(0)).getMessage().getContent() instanceof HistoryDividerMessage) {
                 count = this.firstUnreadMessage.getMessageId();
             } else {
-                count = ((UIMessage)this.mListAdapter.getItem(0)).getMessageId();
+                count = ((UIMessage) this.mListAdapter.getItem(0)).getMessageId();
             }
         }
 
@@ -2454,7 +2447,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         this.getHistoryMessage(conversationType, targetId, count, getHistoryCount, direction, new IHistoryDataResultCallback<List<Message>>() {
             public void onResult(List<Message> messages) {
                 if (ConversationFragment.this.mConversation == null && messages != null && messages.size() > 0) {
-                    RongIMClient.getInstance().sendReadReceiptMessage(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, System.currentTimeMillis() - RongIMClient.getInstance().getDeltaTime(), (ISendMessageCallback)null);
+                    RongIMClient.getInstance().sendReadReceiptMessage(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, System.currentTimeMillis() - RongIMClient.getInstance().getDeltaTime(), (ISendMessageCallback) null);
                 }
 
                 int msgCount = messages == null ? 0 : messages.size();
@@ -2477,23 +2470,23 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     DestructionCmdMessage destructionCmdMessage = new DestructionCmdMessage();
                     Iterator var6 = messages.iterator();
 
-                    while(var6.hasNext()) {
-                        Message message = (Message)var6.next();
+                    while (var6.hasNext()) {
+                        Message message = (Message) var6.next();
                         HQVoiceMsgDownloadManager.getInstance().enqueue(ConversationFragment.this, new AutoDownloadEntry(message, DownloadPriority.HIGH));
                         if (message.getMessageDirection() == MessageDirection.RECEIVE && message.getContent().isDestruct() && !TextUtils.isEmpty(message.getUId()) && message.getReadTime() <= 0L) {
-                            DestructionTag destructionTag = (DestructionTag)message.getContent().getClass().getAnnotation(DestructionTag.class);
+                            DestructionTag destructionTag = (DestructionTag) message.getContent().getClass().getAnnotation(DestructionTag.class);
                             if (destructionTag != null && destructionTag.destructionFlag() == 1) {
                                 destructionCmdMessage.getBurnMessageUIds().add(message.getUId());
                                 long serverTime = System.currentTimeMillis() - RongIMClient.getInstance().getDeltaTime();
-                                RongIMClient.getInstance().setMessageReadTime((long)message.getMessageId(), serverTime, (OperationCallback)null);
+                                RongIMClient.getInstance().setMessageReadTime((long) message.getMessageId(), serverTime, (OperationCallback) null);
                                 message.setReadTime(serverTime);
                             }
                         }
 
                         boolean contains = false;
 
-                        for(int i = 0; i < ConversationFragment.this.mListAdapter.getCount(); ++i) {
-                            contains = ((UIMessage)ConversationFragment.this.mListAdapter.getItem(i)).getMessageId() == message.getMessageId();
+                        for (int i = 0; i < ConversationFragment.this.mListAdapter.getCount(); ++i) {
+                            contains = ((UIMessage) ConversationFragment.this.mListAdapter.getItem(i)).getMessageId() == message.getMessageId();
                             if (contains) {
                                 break;
                             }
@@ -2544,16 +2537,16 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     if (this.conversationUnreadCount <= 10) {
                         hisMessage = Message.obtain(this.mTargetId, this.mConversationType, HistoryDividerMessage.obtain(this.getResources().getString(string.rc_new_message_divider_content)));
                         hisUIMessage = UIMessage.obtain(hisMessage);
-                        insertPosition = this.mListAdapter.findPosition((long)this.firstUnreadMessage.getMessageId());
+                        insertPosition = this.mListAdapter.findPosition((long) this.firstUnreadMessage.getMessageId());
                         if (insertPosition == 0) {
                             msgList = RongIM.getInstance().getHistoryMessages(this.mConversationType, this.mTargetId, this.firstUnreadMessage.getMessageId(), 1);
                             if (msgList != null && msgList.size() == 1) {
-                                hisUIMessage.setSentTime(((Message)msgList.get(0)).getSentTime());
+                                hisUIMessage.setSentTime(((Message) msgList.get(0)).getSentTime());
                                 this.mListAdapter.add(hisUIMessage, insertPosition);
                                 historyDividerInserted = true;
                             }
                         } else if (insertPosition > 0) {
-                            hisUIMessage.setSentTime(((UIMessage)this.mListAdapter.getItem(insertPosition - 1)).getSentTime());
+                            hisUIMessage.setSentTime(((UIMessage) this.mListAdapter.getItem(insertPosition - 1)).getSentTime());
                             this.mListAdapter.add(hisUIMessage, insertPosition);
                             historyDividerInserted = true;
                         }
@@ -2562,9 +2555,9 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     } else if (this.conversationUnreadCount < this.mListAdapter.getCount() && this.isAdded()) {
                         hisMessage = Message.obtain(this.mTargetId, this.mConversationType, HistoryDividerMessage.obtain(this.getResources().getString(string.rc_new_message_divider_content)));
                         hisUIMessage = UIMessage.obtain(hisMessage);
-                        insertPosition = this.mListAdapter.findPosition((long)this.firstUnreadMessage.getMessageId());
+                        insertPosition = this.mListAdapter.findPosition((long) this.firstUnreadMessage.getMessageId());
                         if (insertPosition > 0) {
-                            hisUIMessage.setSentTime(((UIMessage)this.mListAdapter.getItem(insertPosition - 1)).getSentTime());
+                            hisUIMessage.setSentTime(((UIMessage) this.mListAdapter.getItem(insertPosition - 1)).getSentTime());
                             this.mListAdapter.add(hisUIMessage, insertPosition);
                             historyDividerInserted = true;
                         }
@@ -2578,12 +2571,12 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     if (!historyDividerInserted && this.getActivity() != null && this.isAdded()) {
                         hisMessage = Message.obtain(this.mTargetId, this.mConversationType, HistoryDividerMessage.obtain(this.getActivity().getResources().getString(string.rc_new_message_divider_content)));
                         hisUIMessage = UIMessage.obtain(hisMessage);
-                        insertPosition = this.mListAdapter.findPosition((long)this.firstUnreadMessage.getMessageId());
+                        insertPosition = this.mListAdapter.findPosition((long) this.firstUnreadMessage.getMessageId());
                         if (insertPosition == 0) {
                             msgList = RongIM.getInstance().getHistoryMessages(this.mConversationType, this.mTargetId, this.firstUnreadMessage.getMessageId(), 1);
                             long sentTime = 0L;
                             if (msgList != null && msgList.size() == 1) {
-                                sentTime = ((Message)msgList.get(0)).getSentTime();
+                                sentTime = ((Message) msgList.get(0)).getSentTime();
                             }
 
                             if (sentTime > 0L) {
@@ -2591,7 +2584,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                                 this.mListAdapter.add(hisUIMessage, insertPosition);
                             }
                         } else if (insertPosition > 0) {
-                            hisUIMessage.setSentTime(((UIMessage)this.mListAdapter.getItem(insertPosition - 1)).getSentTime());
+                            hisUIMessage.setSentTime(((UIMessage) this.mListAdapter.getItem(insertPosition - 1)).getSentTime());
                             this.mListAdapter.add(hisUIMessage, insertPosition);
                         }
                     }
@@ -2608,7 +2601,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             this.mListAdapter.notifyDataSetChanged();
             int selected;
             if (this.mLastMentionMsgId > 0) {
-                selected = this.mListAdapter.findPosition((long)this.mLastMentionMsgId);
+                selected = this.mListAdapter.findPosition((long) this.mLastMentionMsgId);
                 this.mList.setSelection(selected);
                 this.mLastMentionMsgId = 0;
             } else if (2 == scrollMode) {
@@ -2622,8 +2615,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             } else if (direction == ConversationFragment.LoadMessageDirection.DOWN) {
                 selected = this.mList.getSelectedItemPosition();
                 if (selected <= 0) {
-                    for(int i = 0; i < this.mListAdapter.getCount(); ++i) {
-                        if (((UIMessage)this.mListAdapter.getItem(i)).getSentTime() == this.indexMessageTime) {
+                    for (int i = 0; i < this.mListAdapter.getCount(); ++i) {
+                        if (((UIMessage) this.mListAdapter.getItem(i)).getSentTime() == this.indexMessageTime) {
                             this.mList.setSelection(i);
                             break;
                         }
@@ -2685,21 +2678,21 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             getHistoryCount = reqCount;
         }
 
-        long dateTime = this.mListAdapter.getCount() == 0 ? 0L : ((UIMessage)this.mListAdapter.getItem(0)).getSentTime();
+        long dateTime = this.mListAdapter.getCount() == 0 ? 0L : ((UIMessage) this.mListAdapter.getItem(0)).getSentTime();
         this.getRemoteHistoryMessages(conversationType, targetId, dateTime, getHistoryCount, new IHistoryDataResultCallback<List<Message>>() {
             public void onResult(List<Message> messages) {
                 RLog.i("ConversationFragment", "getRemoteHistoryMessages " + (messages == null ? 0 : messages.size()));
                 Message lastMessage = null;
                 if (messages != null && messages.size() > 0) {
                     if (ConversationFragment.this.mListAdapter.getCount() == 0) {
-                        lastMessage = (Message)messages.get(0);
+                        lastMessage = (Message) messages.get(0);
                     }
 
                     List<UIMessage> remoteListx = new ArrayList();
                     Iterator var4 = messages.iterator();
 
-                    while(var4.hasNext()) {
-                        Message message = (Message)var4.next();
+                    while (var4.hasNext()) {
+                        Message message = (Message) var4.next();
                         HQVoiceMsgDownloadManager.getInstance().enqueue(ConversationFragment.this, new AutoDownloadEntry(message, DownloadPriority.HIGH));
                         if (message.getMessageId() > 0) {
                             UIMessage uiMessage = UIMessage.obtain(message);
@@ -2719,8 +2712,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     if (remoteList != null && remoteList.size() > 0) {
                         var4 = remoteList.iterator();
 
-                        while(var4.hasNext()) {
-                            UIMessage uiMessagex = (UIMessage)var4.next();
+                        while (var4.hasNext()) {
+                            UIMessage uiMessagex = (UIMessage) var4.next();
                             uiMessagex.setSentStatus(SentStatus.READ);
                             ConversationFragment.this.mListAdapter.add(uiMessagex, 0);
                         }
@@ -2752,13 +2745,13 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
         if (this.mListAdapter.getCount() > 0) {
             destList = new ArrayList();
 
-            for(int i = 0; i < this.mListAdapter.getCount(); ++i) {
+            for (int i = 0; i < this.mListAdapter.getCount(); ++i) {
                 Iterator var4 = srcList.iterator();
 
-                while(var4.hasNext()) {
-                    UIMessage msg = (UIMessage)var4.next();
-                    if (!((List)destList).contains(msg) && msg.getMessageId() != ((UIMessage)this.mListAdapter.getItem(i)).getMessageId()) {
-                        ((List)destList).add(msg);
+                while (var4.hasNext()) {
+                    UIMessage msg = (UIMessage) var4.next();
+                    if (!((List) destList).contains(msg) && msg.getMessageId() != ((UIMessage) this.mListAdapter.getItem(i)).getMessageId()) {
+                        ((List) destList).add(msg);
                     }
                 }
             }
@@ -2766,15 +2759,15 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             destList = srcList;
         }
 
-        return (List)destList;
+        return (List) destList;
     }
 
     private void getLastMentionedMessageId(ConversationType conversationType, String targetId) {
         RongIMClient.getInstance().getUnreadMentionedMessages(conversationType, targetId, new ResultCallback<List<Message>>() {
             public void onSuccess(List<Message> messages) {
                 if (messages != null && messages.size() > 0) {
-                    ConversationFragment.this.mLastMentionMsgId = ((Message)messages.get(0)).getMessageId();
-                    int index = ConversationFragment.this.mListAdapter.findPosition((long)ConversationFragment.this.mLastMentionMsgId);
+                    ConversationFragment.this.mLastMentionMsgId = ((Message) messages.get(0)).getMessageId();
+                    int index = ConversationFragment.this.mListAdapter.findPosition((long) ConversationFragment.this.mLastMentionMsgId);
                     RLog.i("ConversationFragment", "getLastMentionedMessageId " + ConversationFragment.this.mLastMentionMsgId + " " + index);
                     if (ConversationFragment.this.mLastMentionMsgId > 0 && index >= 0) {
                         ConversationFragment.this.mList.setSelection(index);
@@ -2782,11 +2775,11 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
                     }
                 }
 
-                RongIM.getInstance().clearMessagesUnreadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, (ResultCallback)null);
+                RongIM.getInstance().clearMessagesUnreadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, (ResultCallback) null);
             }
 
             public void onError(ErrorCode e) {
-                RongIM.getInstance().clearMessagesUnreadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, (ResultCallback)null);
+                RongIM.getInstance().clearMessagesUnreadStatus(ConversationFragment.this.mConversationType, ConversationFragment.this.mTargetId, (ResultCallback) null);
             }
         });
     }
@@ -2796,8 +2789,8 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             List<Message> responseMessageList = new ArrayList();
             Iterator var3 = messages.iterator();
 
-            while(var3.hasNext()) {
-                Message message = (Message)var3.next();
+            while (var3.hasNext()) {
+                Message message = (Message) var3.next();
                 ReadReceiptInfo readReceiptInfo = message.getReadReceiptInfo();
                 if (readReceiptInfo != null && readReceiptInfo.isReadReceiptMessage() && !readReceiptInfo.hasRespond()) {
                     responseMessageList.add(message);
@@ -2805,7 +2798,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
             }
 
             if (responseMessageList.size() > 0) {
-                RongIMClient.getInstance().sendReadReceiptResponse(this.mConversationType, this.mTargetId, responseMessageList, (OperationCallback)null);
+                RongIMClient.getInstance().sendReadReceiptResponse(this.mConversationType, this.mTargetId, responseMessageList, (OperationCallback) null);
             }
         }
 
@@ -2874,7 +2867,7 @@ public class ConversationFragment extends UriFragment implements OnScrollListene
 
     private void startTimer(int event, int interval) {
         this.getHandler().removeMessages(event);
-        this.getHandler().sendEmptyMessageDelayed(event, (long)interval);
+        this.getHandler().sendEmptyMessageDelayed(event, (long) interval);
     }
 
     private void stopTimer(int event) {
