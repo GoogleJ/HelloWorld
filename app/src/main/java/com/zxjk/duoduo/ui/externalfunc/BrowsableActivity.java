@@ -20,7 +20,6 @@ import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.WelcomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.findpage.NewsDetailActivity;
 import com.zxjk.duoduo.ui.msgpage.AddFriendDetailsActivity;
 import com.zxjk.duoduo.ui.msgpage.FriendDetailsActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
