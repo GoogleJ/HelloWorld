@@ -16,6 +16,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.ZoomActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -47,11 +48,14 @@ public class AddFriendDetailsActivity extends BaseActivity {
     TextView tvAddAddressBook;
 
     private String imageUrl;
+    private String isQR;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_information);
+
+        isQR = getIntent().getStringExtra("isQR");
 
         ButterKnife.bind(this);
 
@@ -84,7 +88,9 @@ public class AddFriendDetailsActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
-                finish();
+
+                    finish();
+
                 break;
             case R.id.tv_addAddressBook:
                 Intent intent = new Intent(this, VerificationActivity.class);
@@ -99,6 +105,14 @@ public class AddFriendDetailsActivity extends BaseActivity {
                         ActivityOptionsCompat.makeSceneTransitionAnimation(this,
                                 ivHeadPortrait, "img").toBundle());
                 break;
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (!TextUtils.isEmpty(isQR)) {
+            startActivity(new Intent(this, HomeActivity.class));
         }
     }
 }

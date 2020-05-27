@@ -80,6 +80,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     FriendInfoResponse friendInfoResponse;
     private RelativeLayout rl_end;
     private QuickPopup menuPop;
+    private String isQR;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +93,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initFriendIntent() {
+        isQR = getIntent().getStringExtra("isQR");
         String friendId = getIntent().getStringExtra("friendId");
         if (TextUtils.isEmpty(friendId)) {
             finish();
@@ -148,10 +150,14 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         ButterKnife.bind(this);
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.personal_details));
-        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        findViewById(R.id.rl_back).setOnClickListener(v -> {
+                finish();
+        });
         rl_end = findViewById(R.id.rl_end);
         rl_end.setVisibility(View.VISIBLE);
         rl_end.setOnClickListener(v -> {
+
+
             if (menuPop == null) {
                 menuPop = QuickPopupBuilder.with(this)
                         .contentView(R.layout.popup_window_people_information)
@@ -276,5 +282,8 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         intent.putExtra("remark", tvNickname.getText().toString());
         setResult(1000, intent);
         super.finish();
+        if (!TextUtils.isEmpty(isQR)) {
+            startActivity(new Intent(this, HomeActivity.class));
+        }
     }
 }

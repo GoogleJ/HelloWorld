@@ -1,5 +1,9 @@
 package com.zxjk.duoduo.ui.externalfunc;
 
+import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,13 +13,18 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.LoginResponse;
+import com.zxjk.duoduo.network.Api;
+import com.zxjk.duoduo.network.ServiceFactory;
+import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.WelcomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.NewsDetailActivity;
 import com.zxjk.duoduo.ui.msgpage.AddFriendDetailsActivity;
+import com.zxjk.duoduo.ui.msgpage.FriendDetailsActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
+import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
 import io.rong.imkit.RongIM;
@@ -30,6 +39,7 @@ public class BrowsableActivity extends BaseActivity {
     private String id;
     private String groupId;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,9 +112,26 @@ public class BrowsableActivity extends BaseActivity {
                         if (MMKVUtils.getInstance().decodeBool("isLogin")) {
                             id = getIntent().getData().getQueryParameter("id");
                             if (!TextUtils.isEmpty(id)) {
-                                Intent intent = new Intent(this, AddFriendDetailsActivity.class);
-                                intent.putExtra("friendId", id);
-                                startActivity(intent);
+                                ServiceFactory.getInstance().getBaseService(Api.class)
+                                        .getFriendInfoById(id)
+                                        .compose(bindToLifecycle())
+                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                                        .compose(RxSchedulers.normalTrans())
+                                        .subscribe(r -> {
+                                            if (r.getIsFriend().equals("0")) {
+                                                Intent intent = new Intent(this, AddFriendDetailsActivity.class);
+                                                intent.putExtra("friendId", id);
+                                                intent.putExtra("isQR","1");
+                                                startActivity(intent);
+                                                ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                                clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
+                                            }else {
+                                                Intent intent = new Intent(this, FriendDetailsActivity.class);
+                                                intent.putExtra("friendId", id);
+                                                intent.putExtra("isQR","1");
+                                                startActivity(intent);
+                                            }
+                                        }, this::handleApiError);
                             }
                         } else {
                             startActivity(new Intent(this, NewLoginActivity.class));
@@ -114,7 +141,6 @@ public class BrowsableActivity extends BaseActivity {
                     case "joinGroup":
                         id = getIntent().getData().getQueryParameter("id");
                         groupId = getIntent().getData().getQueryParameter("groupId");
-
                         break;
                     case "joinCommunity":
                         if (MMKVUtils.getInstance().decodeBool("isLogin")) {
@@ -123,7 +149,10 @@ public class BrowsableActivity extends BaseActivity {
                             if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(groupId)) {
                                 Intent intent = new Intent(this, SocialHomeActivity.class);
                                 intent.putExtra("id", groupId);
+                                intent.putExtra("isQR","1");
                                 startActivity(intent);
+                                ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
                             }
                         } else {
                             startActivity(new Intent(this, NewLoginActivity.class));

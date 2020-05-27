@@ -49,6 +49,7 @@ import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.ZoomActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
@@ -141,6 +142,7 @@ public class SocialHomeActivity extends BaseActivity {
 
     private String groupId;
     private int appbarHeight;
+    private String isQR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +155,7 @@ public class SocialHomeActivity extends BaseActivity {
 
         fromConversation = (GroupResponse) getIntent().getSerializableExtra("group");
         groupId = getIntent().getStringExtra("id");
+        isQR = getIntent().getStringExtra("isQR");
 
         initFragment();
 
@@ -781,7 +784,8 @@ public class SocialHomeActivity extends BaseActivity {
         if (ivToolBarStart.getVisibility() != View.VISIBLE) {
             return;
         }
-        finish();
+            finish();
+
     }
 
     @SuppressLint("CheckResult")
@@ -807,6 +811,9 @@ public class SocialHomeActivity extends BaseActivity {
             this.setResult(1000, intent);
         }
         super.finish();
+        if (!TextUtils.isEmpty(isQR)) {
+            startActivity(new Intent(this, HomeActivity.class));
+        }
     }
 
     @SuppressLint("CheckResult")

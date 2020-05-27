@@ -316,18 +316,12 @@ public class NewLoginActivity extends BaseActivity {
                         }
                     }
                 }
-                if (clipboardManager != null) {
-                    try {
-                        clipboardManager.setPrimaryClip(clipboardManager.getPrimaryClip());
-                        clipboardManager.setPrimaryClip(ClipData.newPlainText("", ""));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                clipboardManager.setPrimaryClip(clipboardManager.getPrimaryClip());
+                clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
             }
         }
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(), inviteId,groupId)
+                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(), inviteId, groupId)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
@@ -385,10 +379,10 @@ public class NewLoginActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(resultUri)) {
                         Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
                         intent.putExtra("firstLogin", true);
-                        intent.putExtra("resultUri",resultUri);
+                        intent.putExtra("resultUri", resultUri);
                         startActivity(intent);
                         finish();
-                    }else {
+                    } else {
                         if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
                             MMKVUtils.getInstance().enCode("appFirstLogin", true);
                             Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
@@ -399,7 +393,7 @@ public class NewLoginActivity extends BaseActivity {
                         } else {
                             Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
                             intent.putExtra("firstLogin", true);
-                            intent.putExtra("resultUri",resultUri);
+                            intent.putExtra("resultUri", resultUri);
                             startActivity(intent);
                             finish();
                         }
