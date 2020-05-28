@@ -64,6 +64,7 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.ContactFragment;
 import com.zxjk.duoduo.ui.msgpage.MsgFragment;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
+import com.zxjk.duoduo.ui.wallet.WalletFragment;
 import com.zxjk.duoduo.ui.widget.DrawerView;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
@@ -101,7 +102,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     public BadgeItem badgeItem2;
     private MsgFragment msgFragment;
     private ContactFragment contactFragment;
-    private FindFragment findFragment;
+    private WalletFragment findFragment;
     private RedFallActivityLocalBeanDao redFallActivityLocalBeanDao;
 
     private ViewPager pager;
@@ -638,7 +639,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private void initFragment() {
         msgFragment = new MsgFragment();
         contactFragment = new ContactFragment();
-        findFragment = new FindFragment();
+        findFragment = new WalletFragment();
 
         msgFragment.setOnHeadClick(() -> drawer.switchState());
 

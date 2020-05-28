@@ -1231,6 +1231,9 @@
     <string name="fakec2ctips4">支持对方截屏通知提醒</string>
     <string name="tips_conversation_private">端对端加密保护中...</string>
     <string name="tips_conversation_group">查看社群资料</string>
+    <string name="find_social">找社群</string>
+    <string name="add_friend">加好友</string>
+    <string name="create_social1">建社群</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

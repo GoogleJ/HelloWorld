@@ -1,7 +1,6 @@
 package com.zxjk.duoduo.rongIM.provider;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.Gravity;
@@ -21,7 +20,7 @@ import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
 import io.rong.imlib.model.Message;
 
-@ProviderTag(messageContent = NewsCardMessage.class,showPortrait = false)
+@ProviderTag(messageContent = NewsCardMessage.class, showPortrait = false)
 public class NewsCardProvider extends IContainerItemProvider.MessageProvider<NewsCardMessage> {
 
     class ViewHolder {
@@ -60,12 +59,12 @@ public class NewsCardProvider extends IContainerItemProvider.MessageProvider<New
 
     @Override
     public void onItemClick(View view, int i, NewsCardMessage newsCardMessage, UIMessage uiMessage) {
-        Intent intent = new Intent(view.getContext(), NewsDetailActivity.class);
-        intent.putExtra("title", newsCardMessage.getTitle());
-        intent.putExtra("url", newsCardMessage.getUrl());
-        intent.putExtra("icon", newsCardMessage.getIcon());
-        intent.putExtra("article", newsCardMessage.getContent());
-        view.getContext().startActivity(intent);
+//        Intent intent = new Intent(view.getContext(), NewsDetailActivity.class);
+//        intent.putExtra("title", newsCardMessage.getTitle());
+//        intent.putExtra("url", newsCardMessage.getUrl());
+//        intent.putExtra("icon", newsCardMessage.getIcon());
+//        intent.putExtra("article", newsCardMessage.getContent());
+//        view.getContext().startActivity(intent);
     }
 
     @Override

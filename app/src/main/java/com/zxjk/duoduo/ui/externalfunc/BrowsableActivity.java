@@ -56,20 +56,6 @@ public class BrowsableActivity extends BaseActivity {
                             startActivity(new Intent(this, WelcomeActivity.class));
                         }
                         break;
-                    case "sharenews":
-                        String url = getIntent().getData().getQueryParameter("url");
-                        if (Constant.currentUser != null) {
-                            if (!TextUtils.isEmpty(url)) {
-                                Intent intent = new Intent(this, NewsDetailActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("url", url);
-                                intent.putExtra("title", "新闻");
-                                startActivity(intent);
-                            }
-                        } else {
-                            startActivity(new Intent(this, WelcomeActivity.class));
-                        }
-                        break;
                     case "authorizationLogin":
                         String appid = getIntent().getData().getQueryParameter("appId");
                         String randomStr = getIntent().getData().getQueryParameter("randomStr");

@@ -249,9 +249,6 @@ public class AsyncImageView extends ImageView {
                 Bitmap bitmap = this.getBitmap(imageUri);
                 if (bitmap != null) {
                     this.setLayoutParam(bitmap);
-//                    if (!isCircle && mCornerRadius != 0) {
-//                        bitmap = getRoundCornerBitmap(bitmap, mCornerRadius, 0,0);
-//                    }
                     this.setImageBitmap(bitmap);
                 } else {
                     this.setImageBitmap(null);
@@ -458,28 +455,28 @@ public class AsyncImageView extends ImageView {
                 //有一条边小于最短值
                 if (scale > 1.0F) {
                     //宽大于高，宽最大为最短值的1.4倍
-//                    if (scale > 1.4f) {
-//                        width = (int) (this.minShortSideSize * 1.4f);
-//                    } else {
+                    if (scale > 1.4f) {
+                        width = (int) (this.minShortSideSize * 1.4f);
+                    } else {
                         width = (int) (this.minShortSideSize * scale);
-//                    }
+                    }
                     height = (int) this.minShortSideSize;
                 } else {
                     //宽小于高，高最大为最短值的1.8倍
                     height = (int) (this.minShortSideSize / scale);
-//                    if (height > minShortSideSize * 1.8f) {
-//                        height = (int) (minShortSideSize * 1.8f);
-//                    }
+                    if (height > minShortSideSize * 1.8f) {
+                        height = (int) (minShortSideSize * 1.8f);
+                    }
                     width = (int) this.minShortSideSize;
                 }
             } else {
                 //两边都大于最短值，最大值不能超过最小值的1.6倍
-//                if (width > 1.6f * minShortSideSize) {
-//                    width = 1.6f * minShortSideSize;
-//                }
-//                if (height > 1.6f * minShortSideSize) {
-//                    height = 1.6f * minShortSideSize;
-//                }
+                if (width > 1.6f * minShortSideSize) {
+                    width = 1.6f * minShortSideSize;
+                }
+                if (height > 1.6f * minShortSideSize) {
+                    height = 1.6f * minShortSideSize;
+                }
             }
 
             LayoutParams params = this.getLayoutParams();

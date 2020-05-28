@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -39,10 +40,139 @@
 
     </RelativeLayout>
 
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="com.zxjk.duoduo.ui.msgpage.CusConversationListFragment"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:clipChildren="false">
+
+        <fragment
+            android:id="@+id/listFragment"
+            android:name="com.zxjk.duoduo.ui.msgpage.CusConversationListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_plus_menu3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:scaleX="0.2"
+            android:scaleY="0.2">
+
+            <ImageView
+                android:id="@+id/img_plus_menu3"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:elevation="6dp"
+                android:foreground="?selectableItemBackground"
+                android:src="@drawable/plus_menu3" />
+
+            <TextView
+                android:id="@+id/tv_plus_menu3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/find_social"
+                android:textColor="#6D7278"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_plus_menu2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:scaleX="0.2"
+            android:scaleY="0.2">
+
+            <ImageView
+                android:id="@+id/img_plus_menu2"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:elevation="6dp"
+                android:foreground="?selectableItemBackground"
+                android:src="@drawable/plus_menu2" />
+
+            <TextView
+                android:id="@+id/tv_plus_menu2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/add_friend"
+                android:textColor="#6D7278"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_plus_menu1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:scaleX="0.2"
+            android:scaleY="0.2">
+
+            <ImageView
+                android:id="@+id/img_plus_menu1"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:elevation="6dp"
+                android:foreground="?selectableItemBackground"
+                android:src="@drawable/plus_menu1" />
+
+            <TextView
+                android:id="@+id/tv_plus_menu1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/create_social1"
+                android:textColor="#6D7278"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llRoot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_plus"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:background="#0083BF"
+                android:elevation="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/plus" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>
