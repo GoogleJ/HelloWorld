@@ -916,7 +916,7 @@
     <string name="authenfail">认证未通过</string>
     <string name="xxx_join_dissection">\"%1$s\"加入了讨论组</string>
     <string name="groupname_num" translatable="false">%1$s(%2$s)</string>
-    <string name="my_hilamg_code">我的Hilamg号:%1$s</string>
+    <string name="my_hilamg_code">我的Hilamg号:  %1$s</string>
     <string name="total_xx_contact">共 %1$s 位联系人</string>
     <string name="xx_receive_xx_red">%1$s领取了%2$s的红包</string>
     <string name="you">您</string>
@@ -1234,6 +1234,17 @@
     <string name="find_social">找社群</string>
     <string name="add_friend">加好友</string>
     <string name="create_social1">建社群</string>
+    <string name="friend">好友</string>
+    <string name="social">社群</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hilamgservice">Hilamg服务</string>
+    <string name="tourism">旅游</string>
+    <string name="getting_around">出行</string>
+    <string name="hotel">酒店</string>
+    <string name="word_of_command_red_packet">口令红包</string>
+    <string name="toast1">该服务暂未开通</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

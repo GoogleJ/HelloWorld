@@ -2,6 +2,7 @@ package com.zxjk.duoduo.ui.msgpage;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,8 +15,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
@@ -25,11 +30,25 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.findpage.MarketPager;
+import com.zxjk.duoduo.ui.findpage.NewsPager;
 import com.zxjk.duoduo.ui.minepage.InviterActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.BaseContactAdapter;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
+import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
+import com.zxjk.duoduo.ui.widget.MsgTitleView;
+import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.PinYinUtils;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,20 +61,18 @@ import butterknife.OnClick;
 import io.reactivex.functions.Function;
 
 public class ContactFragment extends BaseFragment {
-    @BindView(R.id.m_contact_recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.index_view)
-    IndexView indexView;
-    @BindView(R.id.m_constacts_dialog)
-    TextView constactsDialog;
+
+
     @BindView(R.id.layout_contract_head)
     View layout_contract_head;
     @BindView(R.id.llSearch)
     LinearLayout llSearch;
 
-    private BaseContactAdapter mAdapter;
+    private MagicIndicator indicator;
+    private ViewPager pager;
+
+    private int[] mTitleDataList = new int[]{R.string.friend, R.string.social};
     private View dotNewFriend;
-    private TextView footview;
 
     List<FriendInfoResponse> list = new ArrayList<>();
 
@@ -70,6 +87,18 @@ public class ContactFragment extends BaseFragment {
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
 
         TextView tvContactHilamgId = rootView.findViewById(R.id.tvContactHilamgId);
+
+        indicator = rootView.findViewById(R.id.indicator);
+
+        pager = rootView.findViewById(R.id.pager);
+
+
+        initIndicator();
+
+        initPager();
+
+        ViewPagerHelper.bind(indicator, pager);
+
         tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
         tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(getActivity(), MyQrCodeActivity.class)));
 
@@ -95,44 +124,59 @@ public class ContactFragment extends BaseFragment {
             getActivity().overridePendingTransition(0, 0);
         });
 
-        initRecycler();
 
         return rootView;
     }
 
-    private void initRecycler() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new BaseContactAdapter();
-        indexView.setShowTextDialog(constactsDialog);
-        indexView.setOnTouchingLetterChangedListener(letter -> {
-            for (int i = 0; i < list.size(); i++) {
-                String letters = list.get(i).getSortLetters();
-                if (letters.equals(letter)) {
-                    if (layout_contract_head.getVisibility() == View.VISIBLE) {
-                        mRecyclerView.scrollToPosition(i);
-                    } else {
-                        mRecyclerView.scrollToPosition(i + 1);
-                    }
-                    break;
-                }
+    private void initPager() {
+
+        pager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                return position == 0 ? new FriendListFragment() : new SociaListFragment();
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
             }
         });
 
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            FriendInfoResponse friendInfoResponse = mAdapter.getData().get(position);
-            Intent intent = new Intent(getActivity(), FriendDetailsActivity.class);
-            intent.putExtra("friendId", friendInfoResponse.getId());
-            startActivity(intent);
-        });
-        if (mAdapter.getData().size() == 0) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_app_null_type, null);
-            ImageView iv = view.findViewById(R.id.app_type);
-            iv.setImageResource(R.drawable.ic_emptyview_nofriend);
-            mAdapter.setEmptyView(view);
-        }
     }
+
+    private void initIndicator() {
+        CommonNavigator navigator = new CommonNavigator(getContext());
+        navigator.setAdapter(new CommonNavigatorAdapter() {
+            @Override
+            public int getCount() {
+                return mTitleDataList.length;
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, int index) {
+                SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
+                pagerTitleView.setTextSize(15.5f);
+                pagerTitleView.setNormalColor(ContextCompat.getColor(getContext(), R.color.c909399));
+                pagerTitleView.setSelectedColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
+                pagerTitleView.setText(mTitleDataList[index]);
+                pagerTitleView.setOnClickListener(v -> pager.setCurrentItem(index));
+                return pagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
+                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                linePagerIndicator.setColors(ContextCompat.getColor(getContext(), R.color.colorTheme));
+                return linePagerIndicator;
+            }
+        });
+
+
+        indicator.setNavigator(navigator);
+    }
+
 
     @OnClick({R.id.ll_contract_top1, R.id.ll_contract_top2})
     public void onViewClicked(View view) {
@@ -164,10 +208,6 @@ public class ContactFragment extends BaseFragment {
             headView = layout_contract_head;
         } else {
             layout_contract_head.setVisibility(View.GONE);
-            if (mAdapter.getHeaderLayoutCount() == 0) {
-                headView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_contract_head, null);
-                mAdapter.addHeaderView(headView);
-            }
         }
         ll_contract_top1 = headView.findViewById(R.id.ll_contract_top1);
         ll_contract_top2 = headView.findViewById(R.id.ll_contract_top2);
@@ -199,60 +239,11 @@ public class ContactFragment extends BaseFragment {
         ll_contract_top4.setOnClickListener(v -> startActivity(new Intent(getActivity(), InviterActivity.class)));
     }
 
-    private void initFoot() {
-        footview = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.layout_contract_foot, null);
-        footview.setId(R.id.tv);
-        if (mAdapter.getFooterLayoutCount() == 0) {
-            mAdapter.addFooterView(footview);
-        } else {
-            footview = mAdapter.getFooterLayout().findViewById(R.id.tv);
-        }
-        footview.setText(getString(R.string.total_xx_contact, String.valueOf(list.size())));
-    }
 
-    /**
-     * 获取好友列表
-     */
-    @SuppressLint("CheckResult")
-    private void getFriendListInfoById() {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getFriendListById()
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .map(friendInfoResponses -> {
-
-                    list = friendInfoResponses;
-
-                    mapList(list);
-
-                    return list;
-                })
-                .compose(RxSchedulers.ioObserver())
-
-                .subscribe(data -> {
-
-                    mAdapter.setNewData(list);
-
-                    initFoot();
-
-                    initHead(data.size() == 0);
-                }, this::handleApiError);
-    }
-
-    private void mapList(List<FriendInfoResponse> list) {
-        for (FriendInfoResponse f : list) {
-            f.setSortLetters(PinYinUtils.converterToFirstSpell(TextUtils.isEmpty(f.getRemark()) ? f.getNick() : f.getRemark()));
-        }
-        Comparator<FriendInfoResponse> comparator = (o1, o2) -> o1.getSortLetters().compareTo(o2.getSortLetters());
-        Collections.sort(list, comparator);
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdapter == null) {
-            return;
-        }
-        getFriendListInfoById();
+
     }
 }

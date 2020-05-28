@@ -61,9 +61,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.webcast.LivePlayBackActivity"></activity>
+        <activity android:name=".ui.findpage.HilamgServiceActivity"></activity>
+        <activity android:name=".ui.webcast.LivePlayBackActivity" />
         <activity android:name=".ui.webcast.VideoAddressActivity" />
-        <activity android:name=".ui.externalfunc.ThirdPartPayResultActivity"></activity>
+        <activity android:name=".ui.externalfunc.ThirdPartPayResultActivity" />
         <activity android:name=".ui.externalfunc.PayConfirmActivity" />
         <activity
             android:name=".ui.cast.WechatChatRoomManageActivity"
@@ -717,10 +718,10 @@
         </activity> <!-- 会话页 -->
         <activity
             android:name=".ui.msgpage.ConversationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

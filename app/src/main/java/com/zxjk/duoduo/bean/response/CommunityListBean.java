@@ -18,6 +18,15 @@ public class CommunityListBean {
     private String isPay;
     private String members;
     private String isInGroup;
+    private String introduction;
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
 
     public String getIsInGroup() {
         return isInGroup;

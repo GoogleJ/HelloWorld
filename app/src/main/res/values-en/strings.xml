@@ -374,7 +374,7 @@
     <string name="personal_code">My QR Code</string>
     <string name="my_qr_code">QR code</string>
     <string name="qr_code">QR</string>
-    <string name="my_hilamg_code">HilamgID:%1$s</string>
+    <string name="my_hilamg_code">HilamgID:  %1$s</string>
     <string name="invite_code">code</string>
     <string name="screen_capture_detect">Screenshot notification</string>
     <string name="close_capturescreen_success">Screenshot notification is off</string>
@@ -1023,4 +1023,12 @@
     <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
     <string name="special_chat">不能包含特殊字符</string>
     <string name="clearance">已清空</string>
+    <string name="friend">好友</string>
+    <string name="social">社群</string>
+    <string name="hilamgservice">Hilamg服务</string>
+    <string name="tourism">旅游</string>
+    <string name="getting_around">出行</string>
+    <string name="hotel">酒店</string>
+    <string name="word_of_command_red_packet">口令红包</string>
+    <string name="toast1">该服务暂未开通</string>
 </resources>
