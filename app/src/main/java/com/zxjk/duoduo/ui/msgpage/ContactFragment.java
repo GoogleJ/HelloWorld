@@ -1,15 +1,12 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,28 +15,15 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
-import com.zxjk.duoduo.ui.findpage.MarketPager;
-import com.zxjk.duoduo.ui.findpage.NewsPager;
 import com.zxjk.duoduo.ui.minepage.InviterActivity;
-import com.zxjk.duoduo.ui.msgpage.adapter.BaseContactAdapter;
-import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
-import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
-import com.zxjk.duoduo.ui.widget.MsgTitleView;
-import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
-import com.zxjk.duoduo.utils.PinYinUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -51,18 +35,13 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.functions.Function;
 
 public class ContactFragment extends BaseFragment {
-
-
     @BindView(R.id.layout_contract_head)
     View layout_contract_head;
     @BindView(R.id.llSearch)
@@ -238,7 +217,6 @@ public class ContactFragment extends BaseFragment {
 
         ll_contract_top4.setOnClickListener(v -> startActivity(new Intent(getActivity(), InviterActivity.class)));
     }
-
 
 
     @Override
