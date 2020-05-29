@@ -304,9 +304,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                     badgeItem2.setText(String.valueOf(newFriendCount));
                                 }
                             }
-                            if (contactFragment.getDotNewFriend() != null) {
-                                contactFragment.getDotNewFriend().setVisibility(View.VISIBLE);
-                            }
                         });
                         break;
                     case "agreeFriend":

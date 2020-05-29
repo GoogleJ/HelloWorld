@@ -4,7 +4,7 @@
     android:id="@+id/llTop"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.msgpage.SearchGroupActivity">
 
@@ -13,7 +13,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -33,7 +32,8 @@
             android:layout_marginEnd="24dp"
             android:background="@drawable/ic_search_delete"
             android:onClick="cancel"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
     </FrameLayout>
 
     <LinearLayout
@@ -72,7 +72,6 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
         android:overScrollMode="never"
         android:visibility="gone" />
 
@@ -80,6 +79,6 @@
         android:id="@+id/recycler2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
         android:overScrollMode="never" />
+
 </LinearLayout>

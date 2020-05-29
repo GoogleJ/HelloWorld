@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -20,14 +20,10 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.utils.GlideUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.rong.imkit.RongIM;
 
 public class SociaListFragment extends BaseFragment {
-
-    List<CommunityListBean> list = new ArrayList<>();
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private BaseQuickAdapter<CommunityListBean, BaseViewHolder> adapter;
 
@@ -44,13 +40,14 @@ public class SociaListFragment extends BaseFragment {
         return rootView;
     }
 
-
     private void initView() {
-        recyclerView = rootView.findViewById(R.id.recycler_view);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView;
+        recyclerView = swipeRefreshLayout.findViewById(R.id.recycler);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorTheme);
     }
 
     private void initData() {
-        communityList();
+        swipeRefreshLayout.setOnRefreshListener(this::communityList);
 
         adapter = new BaseQuickAdapter<CommunityListBean, BaseViewHolder>(R.layout.item_socia_list, null) {
             @Override
@@ -58,10 +55,9 @@ public class SociaListFragment extends BaseFragment {
                 helper.setText(R.id.group_nike_name, item.getCommunityName())
                         .setText(R.id.group_sign, item.getIntroduction())
                         .setText(R.id.group_owner_name, item.getOwnerNick())
-                        .setText(R.id.group_member, "成员" + item.getMembers());
+                        .setText(R.id.group_member, getString(R.string.member, item.getMembers()));
 
-                ImageView imageView = helper.getView(R.id.group_head_portrait);
-                GlideUtil.loadNormalImg(imageView, item.getCommunityLogo());
+                GlideUtil.loadCornerImg(helper.getView(R.id.group_head_portrait), item.getCommunityLogo(), 6);
             }
         };
 
@@ -70,10 +66,11 @@ public class SociaListFragment extends BaseFragment {
             RongIM.getInstance().startGroupChat(getContext(), b.getGroupId(), "");
         });
 
+        adapter.setEmptyView(LayoutInflater.from(getContext()).inflate(R.layout.empty_publicgroup, null, false));
+
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
-
     }
 
     @SuppressLint("CheckResult")
@@ -83,25 +80,22 @@ public class SociaListFragment extends BaseFragment {
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
-                .subscribe(s -> {
-
-                    list = s;
-                    if (list.size() == 0) {
-                        rootView.findViewById(R.id.llEmpty).setVisibility(View.VISIBLE);
-                    } else {
-                        rootView.findViewById(R.id.llEmpty).setVisibility(View.GONE);
+                .doOnSubscribe(disposable -> {
+                    if (null != swipeRefreshLayout) {
+                        swipeRefreshLayout.setRefreshing(true);
                     }
-                    adapter.setNewData(list);
-                }, this::handleApiError);
+                })
+                .doOnTerminate(() -> {
+                    if (null != swipeRefreshLayout) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                })
+                .subscribe(adapter::replaceData, this::handleApiError);
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
-        if (adapter == null) {
-            return;
-        }
         communityList();
     }
 }

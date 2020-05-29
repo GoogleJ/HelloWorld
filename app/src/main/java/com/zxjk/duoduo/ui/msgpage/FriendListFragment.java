@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
@@ -33,13 +34,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FriendListFragment extends BaseFragment {
-
     @BindView(R.id.m_contact_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.index_view)
     IndexView indexView;
     @BindView(R.id.m_constacts_dialog)
     TextView constactsDialog;
+    @BindView(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
+
     List<FriendInfoResponse> list = new ArrayList<>();
     private BaseContactAdapter mAdapter;
     private TextView footview;
@@ -47,86 +50,96 @@ public class FriendListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_friend_list, container, false);
+
         ButterKnife.bind(this, rootView);
+
+        refreshLayout.setOnRefreshListener(this::getFriendListInfoById);
+        refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTheme));
+
+        initIndexView();
+
         initRecycler();
 
         initFoot();
 
-        getFriendListInfoById();
         return rootView;
     }
 
-
-    private void initRecycler() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new BaseContactAdapter();
+    private void initIndexView() {
         indexView.setShowTextDialog(constactsDialog);
         indexView.setOnTouchingLetterChangedListener(letter -> {
             for (int i = 0; i < list.size(); i++) {
                 String letters = list.get(i).getSortLetters();
                 if (letters.equals(letter)) {
-                        mRecyclerView.scrollToPosition(i);
+                    mRecyclerView.scrollToPosition(i);
                     break;
                 }
             }
         });
+    }
 
-        mRecyclerView.setAdapter(mAdapter);
+    private void initRecycler() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mAdapter = new BaseContactAdapter();
+
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             FriendInfoResponse friendInfoResponse = mAdapter.getData().get(position);
             Intent intent = new Intent(getActivity(), FriendDetailsActivity.class);
             intent.putExtra("friendId", friendInfoResponse.getId());
             startActivity(intent);
         });
-        if (mAdapter.getData().size() == 0) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_app_null_type, null);
-            ImageView iv = view.findViewById(R.id.app_type);
-            iv.setImageResource(R.drawable.ic_emptyview_nofriend);
-            mAdapter.setEmptyView(view);
-        }
+
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_app_null_type, null);
+        ImageView iv = view.findViewById(R.id.app_type);
+        iv.setImageResource(R.drawable.ic_emptyview_nofriend);
+        mAdapter.setEmptyView(view);
+
+        mRecyclerView.setAdapter(mAdapter);
     }
 
-
     private void initFoot() {
-        footview = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.layout_contract_foot, null);
-        footview.setId(R.id.tv);
         if (mAdapter.getFooterLayoutCount() == 0) {
+            footview = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.layout_contract_foot, null);
+            footview.setId(R.id.tv);
             mAdapter.addFooterView(footview);
         } else {
             footview = mAdapter.getFooterLayout().findViewById(R.id.tv);
         }
+
+        if (footview == null) return;
+
         footview.setText(getString(R.string.total_xx_contact, String.valueOf(list.size())));
     }
 
-
-    /**
-     * 获取好友列表
-     */
     @SuppressLint("CheckResult")
     private void getFriendListInfoById() {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getFriendListById()
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
-                .map(friendInfoResponses -> {
-
-                    list = friendInfoResponses;
-
-                    mapList(list);
-
-                    return list;
+                .map(friendList -> {
+                    mapList(friendList);
+                    return friendList;
                 })
                 .compose(RxSchedulers.ioObserver())
-
-                .subscribe(data -> {
+                .doOnSubscribe(disposable -> {
+                    if (null != refreshLayout) {
+                        refreshLayout.setRefreshing(true);
+                    }
+                })
+                .doOnTerminate(() -> {
+                    if (null != refreshLayout) {
+                        refreshLayout.setRefreshing(false);
+                    }
+                })
+                .subscribe(friendList -> {
+                    list = friendList;
 
                     mAdapter.setNewData(list);
 
                     initFoot();
-
                 }, this::handleApiError);
     }
 
@@ -141,9 +154,6 @@ public class FriendListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdapter == null) {
-            return;
-        }
         getFriendListInfoById();
     }
 }

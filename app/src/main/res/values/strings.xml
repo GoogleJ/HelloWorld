@@ -1253,6 +1253,7 @@
     <string name="wechat_friends">微信邀请好友</string>
     <string name="recommend">推荐社群</string>
     <string name="refresh_recommend">换一组</string>
+    <string name="member">成员 %1$s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

@@ -104,7 +104,7 @@
     <!--搜索栏的样式-->
     <style name="SearchStyle3">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_height">34dp</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>

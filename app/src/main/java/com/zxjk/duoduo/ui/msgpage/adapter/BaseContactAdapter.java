@@ -34,7 +34,7 @@ public class BaseContactAdapter extends BaseQuickAdapter<FriendInfoResponse, Bas
         View view = helper.getView(R.id.tvFirstLetter);
         if (helper.getAdapterPosition() == 0) {
             view.setVisibility(View.VISIBLE);
-        } else if (item.getSortLetters().equals(getData().get(helper.getAdapterPosition()-1).getSortLetters())) {
+        } else if (item.getSortLetters().equals(getData().get(helper.getAdapterPosition() - 1).getSortLetters())) {
             view.setVisibility(View.GONE);
         } else {
             view.setVisibility(View.VISIBLE);

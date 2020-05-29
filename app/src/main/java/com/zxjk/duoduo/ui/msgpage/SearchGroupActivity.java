@@ -34,7 +34,6 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 public class SearchGroupActivity extends BaseActivity {
-
     private boolean hasSearch = false;
     private LinearLayout llTop;
     private RecyclerView recycler;
@@ -51,7 +50,6 @@ public class SearchGroupActivity extends BaseActivity {
     private RecyclerView recycler2;
     private int currPage = 1;
     private boolean isSet = false;
-    private boolean isCancel = true;
 
     @SuppressLint("CheckResult")
     @Override
@@ -96,7 +94,6 @@ public class SearchGroupActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(b -> {
-                            isCancel = false;
                             if (!hasSearch) recycler.setAdapter(adapter);
                             ll1.setVisibility(View.GONE);
                             recycler2.setVisibility(View.GONE);
@@ -112,12 +109,10 @@ public class SearchGroupActivity extends BaseActivity {
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -145,7 +140,7 @@ public class SearchGroupActivity extends BaseActivity {
                         .setText(R.id.group_sign, item.getIntroduction())
                         .setText(R.id.group_owner_name, "创建人: " + item.getOwnerNick())
                         .setText(R.id.tv_number_of_people, item.getMembers());
-                GlideUtil.loadNormalImg(helper.getView(R.id.group_head_portrait), item.getCommunityLogo());
+                GlideUtil.loadCornerImg(helper.getView(R.id.group_head_portrait), item.getCommunityLogo(), 6);
             }
         };
 
@@ -190,9 +185,7 @@ public class SearchGroupActivity extends BaseActivity {
         ll1.setVisibility(View.VISIBLE);
         currPage = 1;
         recommendCommunity();
-        isCancel = true;
         etSearch.setText("");
-
     }
 
     @Override
