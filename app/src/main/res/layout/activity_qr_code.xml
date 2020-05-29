@@ -65,7 +65,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="24dp"
                 android:text="@string/personal_code"
-                android:textColor="@color/textColor6" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

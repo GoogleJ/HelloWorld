@@ -33,7 +33,7 @@
             android:text="通讯录"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/ivScan"

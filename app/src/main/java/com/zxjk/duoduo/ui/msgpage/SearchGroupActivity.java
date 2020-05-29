@@ -3,8 +3,9 @@ package com.zxjk.duoduo.ui.msgpage;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -108,6 +109,27 @@ public class SearchGroupActivity extends BaseActivity {
             return false;
         });
 
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    findViewById(R.id.img_search_delete).setVisibility(View.GONE);
+                } else {
+                    findViewById(R.id.img_search_delete).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         recommendCommunity();
 
         searchCommunity();
@@ -163,15 +185,14 @@ public class SearchGroupActivity extends BaseActivity {
     }
 
     public void cancel(View view) {
-        if(!isCancel){
-            recycler.setVisibility(View.GONE);
-            recycler2.setVisibility(View.VISIBLE);
-            ll1.setVisibility(View.VISIBLE);
-            currPage = 1;
-            recommendCommunity();
-            isCancel = true;
-            etSearch.setText("");
-        }
+        recycler.setVisibility(View.GONE);
+        recycler2.setVisibility(View.VISIBLE);
+        ll1.setVisibility(View.VISIBLE);
+        currPage = 1;
+        recommendCommunity();
+        isCancel = true;
+        etSearch.setText("");
+
     }
 
     @Override
@@ -195,11 +216,9 @@ public class SearchGroupActivity extends BaseActivity {
 
                     if (isSet) {
                         adapter2.addData(s);
-                        Log.i("tag", "searchCommunity: " + "add");
                     } else {
                         isSet = true;
                         adapter2.setNewData(s);
-                        Log.i("tag", "searchCommunity: " + "set");
                     }
 
                 }, this::handleApiError);

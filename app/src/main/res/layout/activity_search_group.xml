@@ -9,7 +9,8 @@
     tools:context=".ui.msgpage.SearchGroupActivity">
 
     <include layout="@layout/layout_title_back" />
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -19,64 +20,66 @@
         <EditText
             android:id="@+id/etSearch"
             style="@style/SearchStyle"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_weight="1"
-            android:maxLength="20"
-            android:hint="@string/inpu_search_group" />
+            android:hint="@string/inpu_search_group"
+            android:maxLength="20" />
 
-        <TextView
+        <ImageView
+            android:id="@+id/img_search_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/ic_search_delete"
             android:onClick="cancel"
-            android:paddingStart="6dp"
-            android:paddingTop="6dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="6dp"
-            android:text="@string/cancel"
-            android:textColor="@color/colorTheme" />
-
-    </LinearLayout>
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
-            android:text="推荐社群"
-            android:textColor="#272E3F"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:textSize="16sp"/>
+            android:text="@string/recommend"
+            android:textColor="#272E3F"
+            android:textSize="16sp" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <TextView
-            android:text="换一组"
             android:id="@+id/tv_refresh_recommend"
-            android:drawableStart="@drawable/ic_refresh_recommend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#909399"
-            android:textSize="13sp"
-            android:gravity="center"
+            android:layout_marginEnd="16dp"
+            android:drawableStart="@drawable/ic_refresh_recommend"
             android:drawablePadding="8dp"
-            android:layout_marginEnd="16dp"/>
+            android:gravity="center"
+            android:text="@string/refresh_recommend"
+            android:textColor="#909399"
+            android:textSize="13sp" />
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
-        android:background="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFFFFF"
         android:overScrollMode="never"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler2"
-        android:background="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"/>
+        android:background="#FFFFFF"
+        android:overScrollMode="never" />
 </LinearLayout>

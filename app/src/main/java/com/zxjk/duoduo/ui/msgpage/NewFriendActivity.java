@@ -20,6 +20,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
@@ -64,6 +65,10 @@ public class NewFriendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_friend);
         ButterKnife.bind(this);
+
+        TextView tvContactHilamgId = findViewById(R.id.tvContactHilamgId);
+        tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
+        tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(this, MyQrCodeActivity.class)));
 
         getPermisson(findViewById(R.id.llPhoneNearBy), granted -> {
             if (!granted) {
@@ -129,6 +134,10 @@ public class NewFriendActivity extends BaseActivity {
         llSearch.setOnClickListener(v -> {
             startActivity(new Intent(NewFriendActivity.this, GlobalSearchActivity.class));
             overridePendingTransition(0, 0);
+        });
+
+        findViewById(R.id.llmay_know).setOnClickListener(v -> {
+            ToastUtils.showShort(R.string.developing1);
         });
 
         getPermisson(findViewById(R.id.llPhoneContract), g -> {

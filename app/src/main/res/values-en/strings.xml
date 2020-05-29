@@ -1031,4 +1031,8 @@
     <string name="hotel">酒店</string>
     <string name="word_of_command_red_packet">口令红包</string>
     <string name="toast1">该服务暂未开通</string>
+    <string name="may_know">可能认识的人</string>
+    <string name="wechat_friends">微信邀请好友</string>
+    <string name="recommend">推荐社群</string>
+    <string name="refresh_recommend">换一组</string>
 </resources>

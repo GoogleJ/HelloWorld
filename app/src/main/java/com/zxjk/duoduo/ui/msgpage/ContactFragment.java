@@ -160,7 +160,7 @@ public class ContactFragment extends BaseFragment {
         indicator.setNavigator(navigator);
     }
 
-    @OnClick({R.id.ll_contract_top1, R.id.ll_contract_top2})
+    @OnClick({R.id.ll_contract_top1, R.id.ll_contract_top2, R.id.ivScan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_contract_top1:
@@ -173,6 +173,9 @@ public class ContactFragment extends BaseFragment {
                 break;
             case R.id.ll_contract_top2:
                 startActivity(new Intent(getActivity(), GroupChatActivity.class));
+                break;
+            case R.id.ivScan:
+                startActivity(new Intent(getContext(),NewFriendActivity.class));
                 break;
         }
     }
@@ -217,7 +220,7 @@ public class ContactFragment extends BaseFragment {
         ll_contract_top3.setOnClickListener(v -> startActivity(new Intent(getActivity(), GroupChatActivity.class)));
 
         ll_contract_top4.setOnClickListener(v -> startActivity(new Intent(getActivity(), InviterActivity.class)));
-    }
+}
 
 
     @Override
