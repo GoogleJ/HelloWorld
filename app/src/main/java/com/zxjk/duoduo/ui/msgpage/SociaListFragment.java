@@ -49,17 +49,8 @@ public class SociaListFragment extends BaseFragment {
         recyclerView = rootView.findViewById(R.id.recycler_view);
     }
 
-    @SuppressLint("CheckResult")
     private void initData() {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .communityList()
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver())
-                .compose(RxSchedulers.normalTrans())
-                .subscribe(s -> {
-                    list = s;
-                    adapter.setNewData(list);
-                }, this::handleApiError);
+        communityList();
 
         adapter = new BaseQuickAdapter<CommunityListBean, BaseViewHolder>(R.layout.item_socia_list, null) {
             @Override
@@ -83,5 +74,34 @@ public class SociaListFragment extends BaseFragment {
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
 
+    }
+
+    @SuppressLint("CheckResult")
+    private void communityList() {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .communityList()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver())
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(s -> {
+
+                    list = s;
+                    if (list.size() == 0) {
+                        rootView.findViewById(R.id.llEmpty).setVisibility(View.VISIBLE);
+                    } else {
+                        rootView.findViewById(R.id.llEmpty).setVisibility(View.GONE);
+                    }
+                    adapter.setNewData(list);
+                }, this::handleApiError);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter == null) {
+            return;
+        }
+        communityList();
     }
 }

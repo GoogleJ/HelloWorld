@@ -39,6 +39,7 @@ import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.bean.response.GetOrderInfoByTypeResponse;
 import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
+import com.zxjk.duoduo.bean.response.GetRecommendCommunity;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.duoduo.bean.response.GetSerialBean;
@@ -827,5 +828,10 @@ public interface Api {
 
     @POST("duoduo/live/enableOpenVideoLive")
     Observable<BaseResponse<String>> enableOpenVideoLive();
+
+    @POST("duoduo/community/recommendCommunity")
+    @FormUrlEncoded
+    Observable<BaseResponse<ArrayList<GetRecommendCommunity>>> recommendCommunity(@Field("currPage") String currPage);
+
 
 }

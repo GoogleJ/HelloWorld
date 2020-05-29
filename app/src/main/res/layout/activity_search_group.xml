@@ -4,10 +4,11 @@
     android:id="@+id/llTop"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F5F7"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".ui.msgpage.SearchGroupActivity">
 
+    <include layout="@layout/layout_title_back" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,12 +38,45 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:text="推荐社群"
+            android:textColor="#272E3F"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="16sp"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="换一组"
+            android:id="@+id/tv_refresh_recommend"
+            android:drawableStart="@drawable/ic_refresh_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#909399"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:drawablePadding="8dp"
+            android:layout_marginEnd="16dp"/>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
+        android:background="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
-        android:paddingStart="6dp"
-        android:paddingEnd="6dp" />
-
+        android:visibility="gone"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler2"
+        android:background="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"/>
 </LinearLayout>

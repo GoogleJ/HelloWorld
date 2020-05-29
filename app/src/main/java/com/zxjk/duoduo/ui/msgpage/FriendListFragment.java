@@ -68,7 +68,7 @@ public class FriendListFragment extends BaseFragment {
             for (int i = 0; i < list.size(); i++) {
                 String letters = list.get(i).getSortLetters();
                 if (letters.equals(letter)) {
-                    ToastUtils.showShort(letters);
+                        mRecyclerView.scrollToPosition(i);
                     break;
                 }
             }
