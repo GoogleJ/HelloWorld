@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
@@ -62,6 +63,11 @@ public class ContactFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
+
+        View topmask = rootView.findViewById(R.id.topmask);
+        ViewGroup.LayoutParams layoutParams = topmask.getLayoutParams();
+        layoutParams.height = BarUtils.getStatusBarHeight();
+        topmask.setLayoutParams(layoutParams);
 
         TextView tvContactHilamgId = rootView.findViewById(R.id.tvContactHilamgId);
 

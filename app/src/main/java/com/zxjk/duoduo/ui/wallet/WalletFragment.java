@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
@@ -47,6 +48,10 @@ public class WalletFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.walletpage, container, false);
+
+        View appbar = rootView.findViewById(R.id.appbar);
+        appbar.setPadding(appbar.getPaddingStart(), appbar.getPaddingTop() + BarUtils.getStatusBarHeight(),
+                appbar.getPaddingEnd(), appbar.getPaddingBottom());
 
         ivShowOrHide = rootView.findViewById(R.id.ivShowOrHide);
         tvList = rootView.findViewById(R.id.tvList);

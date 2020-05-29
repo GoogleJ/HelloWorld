@@ -18,8 +18,6 @@ import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
-import com.wanjian.sak.SAK;
-import com.wanjian.sak.config.Config;
 import com.zxjk.duoduo.bean.DaoSession;
 import com.zxjk.duoduo.rongIM.BasePluginExtensionModule;
 import com.zxjk.duoduo.rongIM.message.BusinessCardMessage;
@@ -146,7 +144,6 @@ public class Application extends android.app.Application {
 
         QbSdk.initX5Environment(this, null);
 
-        SAK.init(this, new Config.Build(this).build());
     }
 
     public WebDataUtils getWebDataUtils() {

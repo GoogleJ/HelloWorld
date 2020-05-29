@@ -17,6 +17,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
@@ -61,11 +63,18 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.rongIM.GroupConversationProvider;
 import com.zxjk.duoduo.rongIM.PrivateConversationProvider;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.minepage.CooperateActivity;
+import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
+import com.zxjk.duoduo.ui.minepage.RewardMotActivity;
+import com.zxjk.duoduo.ui.minepage.SettingActivity;
+import com.zxjk.duoduo.ui.minepage.UserInfoActivity;
 import com.zxjk.duoduo.ui.msgpage.ContactFragment;
 import com.zxjk.duoduo.ui.msgpage.MsgFragment;
+import com.zxjk.duoduo.ui.msgpage.MyQrCodeActivity;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.wallet.WalletFragment;
 import com.zxjk.duoduo.ui.widget.DrawerView;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
 
@@ -132,6 +141,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BarUtils.transparentStatusBar(this);
 
         setContentView(R.layout.activity_home);
 
@@ -456,6 +467,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void initView() {
+        TextView tvNick = findViewById(R.id.tvNick);
+        TextView tvHilamgID = findViewById(R.id.tvHilamgID);
+        ImageView ivHead = findViewById(R.id.ivHead);
+        tvNick.setText(Constant.currentUser.getNick());
+        tvHilamgID.setText(getString(R.string.duoduo_id) + " " + Constant.currentUser.getDuoduoId());
+        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
+
         pager = findViewById(R.id.pager);
         drawer = findViewById(R.id.drawer);
         m_bottom_bar = findViewById(R.id.m_bottom_bar);
@@ -628,6 +646,30 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         return null;
     }
 
+    public void setting(View view) {
+        drawer.close(new Intent(this, SettingActivity.class));
+    }
+
+    public void myQR(View view) {
+        drawer.close(new Intent(this, MyQrCodeActivity.class));
+    }
+
+    public void setInfo(View view) {
+        drawer.close(new Intent(this, UserInfoActivity.class));
+    }
+
+    public void service(View view) {
+        drawer.close(new Intent(this, OnlineServiceActivity.class));
+    }
+
+    public void reward(View view) {
+        drawer.close(new Intent(this, RewardMotActivity.class));
+    }
+
+    public void coo(View view) {
+        drawer.close(new Intent(this, CooperateActivity.class));
+    }
+
     @Override
     public void onBackPressed() {
         Intent home = new Intent(Intent.ACTION_MAIN);
@@ -673,11 +715,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabSelected(int position) {
-//        if (position == 3) {
-//            setTrasnferStatusBar(true);
-//        } else {
-//            setLightStatusBar(true);
-//        }
         if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
             VibrateUtils.vibrate(50);
         }

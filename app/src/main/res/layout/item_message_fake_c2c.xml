@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_message_notification_base"
-    android:orientation="vertical"
-    android:paddingLeft="32dp"
-    android:paddingTop="16dp"
-    android:paddingRight="32dp"
-    android:paddingBottom="16dp">
+    android:paddingLeft="28dp"
+    android:paddingTop="14dp"
+    android:paddingRight="28dp"
+    android:paddingBottom="14dp">
 
     <LinearLayout
         android:id="@+id/ll"
@@ -55,7 +54,7 @@
         android:textSize="13sp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv"
         android:orientation="vertical"

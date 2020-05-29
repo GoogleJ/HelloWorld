@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseFragment;
@@ -71,6 +72,11 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void initView() {
+        View topmask = rootView.findViewById(R.id.topmask);
+        ViewGroup.LayoutParams layoutParams = topmask.getLayoutParams();
+        layoutParams.height = BarUtils.getStatusBarHeight();
+        topmask.setLayoutParams(layoutParams);
+
         List<Fragment> fragments = getChildFragmentManager().getFragments();
         listFragment = (CusConversationListFragment) fragments.get(0);
         ivHead = rootView.findViewById(R.id.ivHead);

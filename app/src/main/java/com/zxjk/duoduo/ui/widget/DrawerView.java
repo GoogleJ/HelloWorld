@@ -1,12 +1,14 @@
 package com.zxjk.duoduo.ui.widget;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -20,7 +22,7 @@ public class DrawerView extends FrameLayout {
 
     private VelocityTracker velocityTracker;
 
-    private View menu;
+    private ViewGroup menu;
     private View content;
     private View contentMask;
 
@@ -79,7 +81,7 @@ public class DrawerView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        menu = getChildAt(0);
+        menu = (ViewGroup) getChildAt(0);
         content = getChildAt(1);
         contentMask = ((ViewGroup) content).getChildAt(1);
     }
@@ -124,7 +126,7 @@ public class DrawerView extends FrameLayout {
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 return true;
             } else if (ev.getAction() == MotionEvent.ACTION_UP) {
-                close();
+                close(null);
             }
         }
 
@@ -188,29 +190,44 @@ public class DrawerView extends FrameLayout {
 //        return true;
 //    }
 
-    public void changeState() {
-        ValueAnimator openAnim;
+    public void changeState(Intent intent) {
+        ValueAnimator anim;
 
+        int origin = animTime;
+        if (intent != null) {
+            animTime = animTime / 2;
+        }
         if (isOpened) {
-            openAnim = ValueAnimator.ofFloat(contentScrollDistance * 1f / totalScrollDistance, 0f).setDuration((long) (animTime * contentScrollDistance * 1f / totalScrollDistance));
+            menu.setVisibility(VISIBLE);
+            anim = ValueAnimator.ofFloat(contentScrollDistance * 1f / totalScrollDistance, 0f).setDuration((long) (animTime * contentScrollDistance * 1f / totalScrollDistance));
         } else {
-            openAnim = ValueAnimator.ofFloat(contentScrollDistance * 1f / totalScrollDistance, 1f).setDuration((long) (animTime * (1f - contentScrollDistance * 1f / totalScrollDistance)));
+            anim = ValueAnimator.ofFloat(contentScrollDistance * 1f / totalScrollDistance, 1f).setDuration((long) (animTime * (1f - contentScrollDistance * 1f / totalScrollDistance)));
         }
 
-        openAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float fraction = (float) animation.getAnimatedValue();
-                if (isOpened) {
-                    moveRight(contentScrollDistance - totalScrollDistance * fraction);
-                } else {
-                    moveLeft(totalScrollDistance * fraction - contentScrollDistance);
-                }
-                Log.e("dddd", "s" + contentScrollDistance);
+        anim.addUpdateListener(animation -> {
+            float fraction = (float) animation.getAnimatedValue();
+            if (isOpened) {
+                moveRight(contentScrollDistance - totalScrollDistance * fraction);
+            } else {
+                moveLeft(totalScrollDistance * fraction - contentScrollDistance);
             }
         });
 
-        openAnim.start();
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                try {
+                    getContext().startActivity(intent);
+                    animTime = origin;
+                } catch (Exception e) {
+                }
+                if (!isOpened) {
+                    menu.setVisibility(GONE);
+                }
+            }
+        });
+
+        anim.start();
     }
 
     private void moveRight(float distance) {
@@ -287,17 +304,17 @@ public class DrawerView extends FrameLayout {
 
     public void switchState() {
         isOpened = !isOpened;
-        changeState();
+        changeState(null);
     }
 
     public void open() {
         isOpened = true;
-        changeState();
+        changeState(null);
     }
 
-    public void close() {
+    public void close(Intent intent) {
         isOpened = false;
-        changeState();
+        changeState(intent);
     }
 
     @Override
