@@ -36,11 +36,12 @@ public class RecipetQRActivity extends BaseActivity {
     private GetPaymentListBean result;
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();
 
-    private static final int QR_SIZE = 192;
+    private static final int QR_SIZE = 208;
 
+    private ImageView ivSymbol;
+    private TextView tvSymbol;
     private ImageView ivRecipetImg;
-    private ImageView ivHead;
-    private TextView tvMoney, tv_setMoney;
+    private TextView tv_setMoney;
     private BaseUri uri;
     private String uri2Code;
     private String money = "";
@@ -53,9 +54,9 @@ public class RecipetQRActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipet_qr);
         ivRecipetImg = findViewById(R.id.ivRecipetImg);
-        ivHead = findViewById(R.id.ivHead);
-        tvMoney = findViewById(R.id.tvMoney);
         tv_setMoney = findViewById(R.id.tv_setMoney);
+        ivSymbol = findViewById(R.id.ivSymbol);
+        tvSymbol = findViewById(R.id.tvSymbol);
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.receiptCode));
 
@@ -69,10 +70,10 @@ public class RecipetQRActivity extends BaseActivity {
                 .subscribe(list -> {
                     this.list.addAll(list);
                     result = list.get(0);
-                    GlideUtil.loadCircleImg(ivHead, result.getLogo());
                     initUri();
                     createBitmap();
-                    tvMoney.setText(result.getSymbol() + ">");
+                    tvSymbol.setText(result.getSymbol());
+                    GlideUtil.loadCircleImg(ivSymbol, result.getLogo());
                 }, t -> {
                     handleApiError(t);
                     finish();
@@ -115,7 +116,7 @@ public class RecipetQRActivity extends BaseActivity {
             startActivityForResult(intent, 1);
         } else {
             money = "";
-            tvMoney.setText(money + " " + result.getSymbol() + ">");
+            tvSymbol.setText(money + " " + result.getSymbol());
             initUri();
             getCodeBitmap();
             tv_setMoney.setText(getString(R.string.set_money));
@@ -138,8 +139,8 @@ public class RecipetQRActivity extends BaseActivity {
 
         if (requestCode == 2 && resultCode == 1) {
             result = data.getParcelableExtra("result");
-            GlideUtil.loadCircleImg(ivHead, result.getLogo());
-            tvMoney.setText(money + " " + result.getSymbol() + ">");
+            GlideUtil.loadCircleImg(ivSymbol, result.getLogo());
+            tvSymbol.setText(money + " " + result.getSymbol());
             initUri();
             getCodeBitmap();
             return;
@@ -147,7 +148,7 @@ public class RecipetQRActivity extends BaseActivity {
 
         if (requestCode == 1 && resultCode == 1) {
             money = data.getStringExtra("money");
-            tvMoney.setText(money + " " + result.getSymbol() + ">");
+            tvSymbol.setText(money + " " + result.getSymbol());
             initUri();
             getCodeBitmap();
             tv_setMoney.setText(getString(R.string.clear_money));
@@ -155,7 +156,7 @@ public class RecipetQRActivity extends BaseActivity {
         }
     }
 
-    public void chooseCoin(View view) {
+    public void chooseSymbol(View view) {
         Intent intent = new Intent(this, ChooseCoinActivity.class);
         intent.putExtra("data", list);
         startActivityForResult(intent, 2);

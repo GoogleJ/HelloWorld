@@ -1248,6 +1248,7 @@
     <string name="balancelist">账单</string>
     <string name="balance2btc">总账户资产折合(BTC)</string>
     <string name="cold_wallet">冷钱包</string>
+    <string name="tips_qr">无需加好友，扫二维码向我付款</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

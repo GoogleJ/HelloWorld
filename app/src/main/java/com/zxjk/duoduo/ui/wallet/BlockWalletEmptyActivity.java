@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -23,8 +22,6 @@ public class BlockWalletEmptyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block_wallet_empty);
 
-        TextView tvtitle = findViewById(R.id.tv_title);
-        tvtitle.setText(R.string.blockWallet);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         broadcastReceiver = new BroadcastReceiver() {
