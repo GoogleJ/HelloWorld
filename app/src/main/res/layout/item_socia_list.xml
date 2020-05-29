@@ -11,8 +11,7 @@
         android:layout_width="60dp"
         android:layout_height="66dp"
         android:src="@drawable/ic_hilamglogo"
-        android:scaleType="centerCrop"
-        android:layout_centerVertical="true"/>
+        android:scaleType="centerCrop"/>
 
     <LinearLayout
         android:id="@+id/ll1"
@@ -20,8 +19,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/group_head_portrait">
+        android:gravity="center_vertical"
+        android:layout_alignTop="@+id/group_head_portrait"
+        android:layout_alignBottom="@+id/group_head_portrait"
+        android:layout_toEndOf="@+id/group_head_portrait">
 
         <TextView
             android:id="@+id/group_nike_name"
@@ -73,9 +74,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:paddingTop="16dp"
         android:background="@color/divider"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/group_head_portrait"
-        android:layout_toRightOf="@+id/group_head_portrait"
+        android:layout_toEndOf="@+id/group_head_portrait"
         android:layout_marginStart="16dp"/>
 </RelativeLayout>

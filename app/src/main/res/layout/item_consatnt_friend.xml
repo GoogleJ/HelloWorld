@@ -42,7 +42,9 @@
             android:layout_toEndOf="@id/m_constants_header_icon"
             android:orientation="vertical"
             android:gravity="center_vertical"
-            android:paddingEnd="12dp">
+            android:paddingEnd="12dp"
+            android:layout_alignTop="@+id/m_constants_header_icon"
+            android:layout_alignBottom="@+id/m_constants_header_icon">
 
             <TextView
                 android:id="@+id/m_user_name"
