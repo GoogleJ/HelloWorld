@@ -60,9 +60,6 @@ public class SocialQRCodeActivity extends BaseActivity {
 
         initView();
 
-        TextView tvTitle = findViewById(R.id.tv_title);
-        tvTitle.setText(R.string.qrcodename);
-
         data = getIntent().getParcelableExtra("data");
         tvSocialName.setText(data.getName());
         tvSocialId.setText(getString(R.string.social_code) + data.getCode());
@@ -96,12 +93,12 @@ public class SocialQRCodeActivity extends BaseActivity {
         tvSocialName = findViewById(R.id.tvSocialName);
         ivHead = findViewById(R.id.ivHead);
         flContainer = findViewById(R.id.flContainer);
+
         CardView card = findViewById(R.id.card);
         card.setClipToOutline(false);
-    }
-
-    public void back(View view) {
-        finish();
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        TextView tvTitle = findViewById(R.id.tv_title);
+        tvTitle.setText(R.string.qrcodename);
     }
 
     public void share1(View view) {
