@@ -1,5 +1,6 @@
 package com.zxjk.duoduo.ui.msgpage;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,22 +35,22 @@ import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 public class SearchGroupActivity extends BaseActivity {
-    private boolean hasSearch = false;
-    private LinearLayout llTop;
-    private RecyclerView recycler;
-    private EditText etSearch;
-    private BaseQuickAdapter adapter;
     private Api api;
-    private LinearLayout ll1;
 
     private String searchWord;
     private int currentPage = 1;
     private int pageOffset = 10;
-
-    private BaseQuickAdapter adapter2;
-    private RecyclerView recycler2;
     private int currPage = 1;
-    private boolean isSet = false;
+
+    private LinearLayout llTop;
+    private EditText etSearch;
+    private ImageView ivRefresh;
+    private ImageView imgDelete;
+    private LinearLayout refreshRecommandLL;
+    private RecyclerView recycler;
+
+    private BaseQuickAdapter searchAdapter;
+    private BaseQuickAdapter recommandAdapter;
 
     @SuppressLint("CheckResult")
     @Override
@@ -59,27 +60,50 @@ public class SearchGroupActivity extends BaseActivity {
 
         api = ServiceFactory.getInstance().getBaseService(Api.class);
 
-        llTop = findViewById(R.id.llTop);
-        etSearch = findViewById(R.id.etSearch);
-        recycler = findViewById(R.id.recycler);
-        recycler2 = findViewById(R.id.recycler2);
-        ll1 = findViewById(R.id.ll1);
-        findViewById(R.id.tv_refresh_recommend).setOnClickListener(v -> {
-            if (!ClickUtils.isFastDoubleClick(R.id.tv_refresh_recommend)) {
-                recommendCommunity();
+        initView();
+
+        searchLogic();
+
+        initSearchAdapter();
+
+        initRecommandAdapter();
+
+        recommandSocial();
+
+//        etSearch.requestFocus();
+    }
+
+    private void initRecommandAdapter() {
+        recommandAdapter = new BaseQuickAdapter<GetRecommendCommunity, BaseViewHolder>(R.layout.item_publicgroup) {
+            @Override
+            protected void convert(BaseViewHolder helper, GetRecommendCommunity item) {
+                helper.setText(R.id.group_nike_name, item.getGroupNickName())
+                        .setText(R.id.group_sign, item.getIntroduction())
+                        .setText(R.id.group_owner_name, getString(R.string.creater, item.getNick()))
+                        .setText(R.id.tv_number_of_people, item.getMembersSize());
+                GlideUtil.loadCornerImg(helper.getView(R.id.group_head_portrait), item.getLogo(), 6);
             }
+        };
+
+        recommandAdapter.setOnItemClickListener((adapter, view, position) -> {
+            GetRecommendCommunity listBean = (GetRecommendCommunity) adapter.getData().get(position);
+            Intent intent = new Intent(SearchGroupActivity.this, SocialHomeActivity.class);
+            intent.putExtra("id", listBean.getGroupId());
+            startActivity(intent);
         });
 
-        findViewById(R.id.rl_back).setOnClickListener(v -> {
-            finish();
-        });
+        View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, llTop, false);
+        ImageView iv = emptyView.findViewById(R.id.iv);
+        TextView tv = emptyView.findViewById(R.id.tv);
+        iv.setImageResource(R.drawable.ic_empty_nosearch);
+        tv.setText(R.string.empty_nosearch6);
+        recommandAdapter.setEmptyView(emptyView);
 
-        TextView tvTitle = findViewById(R.id.tv_title);
-        tvTitle.setText("找社群");
+        recycler.setAdapter(recommandAdapter);
+    }
 
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-        recycler2.setLayoutManager(new LinearLayoutManager(this));
-
+    @SuppressLint("CheckResult")
+    private void searchLogic() {
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchWord = etSearch.getText().toString().trim();
@@ -94,12 +118,10 @@ public class SearchGroupActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(b -> {
-                            if (!hasSearch) recycler.setAdapter(adapter);
-                            ll1.setVisibility(View.GONE);
-                            recycler2.setVisibility(View.GONE);
-                            recycler.setVisibility(View.VISIBLE);
-                            adapter.setNewData(b.getList());
-                            adapter.disableLoadMoreIfNotFullPage();
+                            refreshRecommandLL.setVisibility(View.GONE);
+                            recycler.setAdapter(searchAdapter);
+                            searchAdapter.setNewData(b.getList());
+                            searchAdapter.disableLoadMoreIfNotFullPage();
                         }, this::handleApiError);
                 return true;
             }
@@ -118,33 +140,50 @@ public class SearchGroupActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(s.toString())) {
-                    findViewById(R.id.img_search_delete).setVisibility(View.GONE);
+                    imgDelete.setVisibility(View.GONE);
                 } else {
-                    findViewById(R.id.img_search_delete).setVisibility(View.VISIBLE);
+                    imgDelete.setVisibility(View.VISIBLE);
                 }
             }
         });
-
-        recommendCommunity();
-
-        searchCommunity();
-
-//        etSearch.requestFocus();
     }
 
-    private void searchCommunity() {
-        adapter = new BaseQuickAdapter<SearchCommunityResponse.ListBean, BaseViewHolder>(R.layout.item_publicgroup) {
+    private void initView() {
+        llTop = findViewById(R.id.llTop);
+        ivRefresh = findViewById(R.id.ivRefresh);
+        imgDelete = findViewById(R.id.img_search_delete);
+        etSearch = findViewById(R.id.etSearch);
+        recycler = findViewById(R.id.recycler);
+        refreshRecommandLL = findViewById(R.id.ll1);
+
+        findViewById(R.id.tv_refresh_recommend).setOnClickListener(v -> {
+            if (!ClickUtils.isFastDoubleClick(R.id.tv_refresh_recommend)) {
+                recommandSocial();
+                ObjectAnimator.ofFloat(ivRefresh, "rotation", 0, 365).start();
+            }
+        });
+
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+
+        TextView tvTitle = findViewById(R.id.tv_title);
+        tvTitle.setText(R.string.find_social);
+
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initSearchAdapter() {
+        searchAdapter = new BaseQuickAdapter<SearchCommunityResponse.ListBean, BaseViewHolder>(R.layout.item_publicgroup) {
             @Override
             protected void convert(BaseViewHolder helper, SearchCommunityResponse.ListBean item) {
                 helper.setText(R.id.group_nike_name, item.getCommunityName())
                         .setText(R.id.group_sign, item.getIntroduction())
-                        .setText(R.id.group_owner_name, "创建人: " + item.getOwnerNick())
+                        .setText(R.id.group_owner_name, getString(R.string.creater, item.getOwnerNick()))
                         .setText(R.id.tv_number_of_people, item.getMembers());
                 GlideUtil.loadCornerImg(helper.getView(R.id.group_head_portrait), item.getCommunityLogo(), 6);
             }
         };
 
-        adapter.setOnItemClickListener((adapter, view, position) -> {
+        searchAdapter.setOnItemClickListener((adapter, view, position) -> {
             SearchCommunityResponse.ListBean listBean = (SearchCommunityResponse.ListBean) adapter.getData().get(position);
             Intent intent = new Intent(SearchGroupActivity.this, SocialHomeActivity.class);
             intent.putExtra("id", listBean.getGroupId());
@@ -156,35 +195,34 @@ public class SearchGroupActivity extends BaseActivity {
         TextView tv = emptyView.findViewById(R.id.tv);
         iv.setImageResource(R.drawable.ic_empty_nosearch);
         tv.setText(R.string.empty_nosearch);
-        adapter.setEmptyView(emptyView);
+        searchAdapter.setEmptyView(emptyView);
 
-        adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(
+        searchAdapter.setEnableLoadMore(true);
+        searchAdapter.setOnLoadMoreListener(
                 () -> api.searchCommunity(searchWord, currentPage + 1, pageOffset)
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver())
                         .subscribe(b -> {
                             currentPage += 1;
-                            adapter.addData(b.getList());
+                            searchAdapter.addData(b.getList());
                             if (!b.isHasNextPage()) {
-                                adapter.loadMoreEnd();
+                                searchAdapter.loadMoreEnd();
                             } else {
-                                adapter.loadMoreComplete();
+                                searchAdapter.loadMoreComplete();
                             }
                         }, t -> {
                             handleApiError(t);
-                            adapter.loadMoreFail();
+                            searchAdapter.loadMoreFail();
                         })
                 , recycler);
     }
 
-    public void cancel(View view) {
-        recycler.setVisibility(View.GONE);
-        recycler2.setVisibility(View.VISIBLE);
-        ll1.setVisibility(View.VISIBLE);
+    public void cleanSearch(View view) {
+        recycler.setAdapter(recommandAdapter);
+        refreshRecommandLL.setVisibility(View.VISIBLE);
         currPage = 1;
-        recommendCommunity();
+        recommandSocial();
         etSearch.setText("");
     }
 
@@ -195,7 +233,7 @@ public class SearchGroupActivity extends BaseActivity {
     }
 
     @SuppressLint("CheckResult")
-    private void recommendCommunity() {
+    private void recommandSocial() {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .recommendCommunity(String.valueOf(currPage))
                 .compose(bindToLifecycle())
@@ -206,35 +244,8 @@ public class SearchGroupActivity extends BaseActivity {
                     if (currPage == 4) {
                         currPage = 1;
                     }
-
-                    if (isSet) {
-                        adapter2.addData(s);
-                    } else {
-                        isSet = true;
-                        adapter2.setNewData(s);
-                    }
-
+                    recommandAdapter.replaceData(s);
                 }, this::handleApiError);
-
-        adapter2 = new BaseQuickAdapter<GetRecommendCommunity, BaseViewHolder>(R.layout.item_publicgroup) {
-            @Override
-            protected void convert(BaseViewHolder helper, GetRecommendCommunity item) {
-                helper.setText(R.id.group_nike_name, item.getGroupNickName())
-                        .setText(R.id.group_sign, item.getIntroduction())
-                        .setText(R.id.group_owner_name, "创建人: " + item.getNick())
-                        .setText(R.id.tv_number_of_people, item.getMembersSize());
-                GlideUtil.loadNormalImg(helper.getView(R.id.group_head_portrait), item.getLogo());
-            }
-        };
-
-        adapter2.setOnItemClickListener((adapter, view, position) -> {
-            GetRecommendCommunity listBean = (GetRecommendCommunity) adapter.getData().get(position);
-            Intent intent = new Intent(SearchGroupActivity.this, SocialHomeActivity.class);
-            intent.putExtra("id", listBean.getGroupId());
-            startActivity(intent);
-        });
-
-        recycler2.setAdapter(adapter2);
     }
 
 }

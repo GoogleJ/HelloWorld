@@ -31,7 +31,7 @@
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="24dp"
             android:background="@drawable/ic_search_delete"
-            android:onClick="cancel"
+            android:onClick="cleanSearch"
             android:visibility="gone" />
 
     </FrameLayout>
@@ -40,14 +40,16 @@
         android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:text="@string/recommend"
-            android:textColor="#272E3F"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <View
@@ -55,30 +57,29 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
+        <ImageView
+            android:id="@+id/ivRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:src="@drawable/ic_refresh_recommend" />
+
         <TextView
             android:id="@+id/tv_refresh_recommend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:drawableStart="@drawable/ic_refresh_recommend"
-            android:drawablePadding="8dp"
             android:gravity="center"
             android:text="@string/refresh_recommend"
             android:textColor="#909399"
             android:textSize="13sp" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never" />
+        android:overScrollMode="never"/>
 
 </LinearLayout>
