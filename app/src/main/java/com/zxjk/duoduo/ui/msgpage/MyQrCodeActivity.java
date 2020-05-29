@@ -49,7 +49,6 @@ public class MyQrCodeActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BarUtils.setStatusBarColor(this, Color.parseColor("#F2F3F5"));
 
         setContentView(R.layout.activity_my_qr_code);
 

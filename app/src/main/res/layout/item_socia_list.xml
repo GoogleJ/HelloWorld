@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:orientation="horizontal">
+    android:layout_marginEnd="16dp">
 
-    <ImageView
+    <com.zxjk.duoduo.ui.widget.RoundImageView
         android:id="@+id/group_head_portrait"
-        android:layout_width="66dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_hilamglogo" />
+        android:layout_width="60dp"
+        android:layout_height="66dp"
+        android:src="@drawable/ic_hilamglogo"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"/>
 
     <LinearLayout
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/group_head_portrait">
 
         <TextView
             android:id="@+id/group_nike_name"
@@ -25,7 +29,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
-            android:text="A币圈大侠活动社群"
             android:textColor="#272E3F"
             android:textSize="16sp"
             android:textStyle="bold"/>
@@ -37,20 +40,42 @@
             android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:lines="1"
-            android:text="海浪最近发布一份报告《比特币的跃》123132132321321321321213212121" />
+            android:textColor="#909399" />
 
-        <TextView
-            android:id="@+id/group_owner_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="Mag . 成员 428"
-            android:textSize="13sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/divider" />
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp">
+            <TextView
+                android:id="@+id/group_owner_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:textColor="#909399"/>
+            <TextView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:background="@drawable/shape_dotgray"
+                android:layout_marginStart="6dp"
+                android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/group_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:layout_marginStart="6dp"
+                android:gravity="center"
+                android:textColor="#909399"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:paddingTop="16dp"
+        android:background="@color/divider"
+        android:layout_below="@+id/group_head_portrait"
+        android:layout_toRightOf="@+id/group_head_portrait"
+        android:layout_marginStart="16dp"/>
+</RelativeLayout>

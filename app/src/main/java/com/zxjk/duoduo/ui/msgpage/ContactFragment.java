@@ -46,14 +46,12 @@ public class ContactFragment extends BaseFragment {
     View layout_contract_head;
     @BindView(R.id.llSearch)
     LinearLayout llSearch;
-
+    List<FriendInfoResponse> list = new ArrayList<>();
     private MagicIndicator indicator;
     private ViewPager pager;
-
     private int[] mTitleDataList = new int[]{R.string.friend, R.string.social};
     private View dotNewFriend;
-
-    List<FriendInfoResponse> list = new ArrayList<>();
+    private View headView;
 
     public View getDotNewFriend() {
         return dotNewFriend;
@@ -103,7 +101,6 @@ public class ContactFragment extends BaseFragment {
             getActivity().overridePendingTransition(0, 0);
         });
 
-
         return rootView;
     }
 
@@ -135,7 +132,8 @@ public class ContactFragment extends BaseFragment {
             @Override
             public IPagerTitleView getTitleView(Context context, int index) {
                 SimplePagerTitleView pagerTitleView = new SimplePagerTitleView(context);
-                pagerTitleView.setTextSize(15.5f);
+                pagerTitleView.setTextSize(17f);
+
                 pagerTitleView.setNormalColor(ContextCompat.getColor(getContext(), R.color.c909399));
                 pagerTitleView.setSelectedColor(ContextCompat.getColor(getContext(), R.color.colorTheme));
                 pagerTitleView.setText(mTitleDataList[index]);
@@ -146,7 +144,7 @@ public class ContactFragment extends BaseFragment {
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
-                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                linePagerIndicator.setMode(LinePagerIndicator.MODE_MATCH_EDGE);
                 linePagerIndicator.setColors(ContextCompat.getColor(getContext(), R.color.colorTheme));
                 return linePagerIndicator;
             }
@@ -155,7 +153,6 @@ public class ContactFragment extends BaseFragment {
 
         indicator.setNavigator(navigator);
     }
-
 
     @OnClick({R.id.ll_contract_top1, R.id.ll_contract_top2})
     public void onViewClicked(View view) {
@@ -173,8 +170,6 @@ public class ContactFragment extends BaseFragment {
                 break;
         }
     }
-
-    private View headView;
 
     private void initHead(boolean isEmpty) {
         LinearLayout ll_contract_top1;

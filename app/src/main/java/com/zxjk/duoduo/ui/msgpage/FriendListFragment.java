@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
@@ -67,7 +68,7 @@ public class FriendListFragment extends BaseFragment {
             for (int i = 0; i < list.size(); i++) {
                 String letters = list.get(i).getSortLetters();
                 if (letters.equals(letter)) {
-
+                    ToastUtils.showShort(letters);
                     break;
                 }
             }
