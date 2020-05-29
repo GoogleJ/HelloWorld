@@ -11,16 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
 import com.zxjk.duoduo.utils.AesUtil;
-import com.zxjk.duoduo.utils.GlideUtil;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
@@ -38,7 +34,6 @@ public class MyQrCodeActivity extends BaseActivity {
     private CircleImageView ivHead;
     private CircleImageView ivHeadQR;
 
-    private BaseUri uri = new BaseUri("action2");
     private String uri2Code;
 
     public static void start(AppCompatActivity activity) {
