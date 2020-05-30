@@ -43,6 +43,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
+import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
@@ -231,6 +232,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .subscribe(s -> {
                                                     inflate.setVisibility(View.GONE);
 
+
                                                     indicatorTop.setVisibility(View.VISIBLE);
                                                     llSocialNotice.setVisibility(View.VISIBLE);
                                                     pagerOut.setVisibility(View.VISIBLE);
@@ -250,6 +252,8 @@ public class SocialHomeActivity extends BaseActivity {
                                                     membersBean.setIdentity("0");
                                                     response.setIdentity("0");
                                                     response.getMembers().add(membersBean);
+
+                                                    RongIM.getInstance().startGroupChat(this, groupId, "");
 
                                                     membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
                                                     }.getType());
@@ -289,7 +293,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                     membersBean.setIdentity("0");
                                                     response.setIdentity("0");
                                                     response.getMembers().add(membersBean);
-
+                                                    RongIM.getInstance().startGroupChat(this, groupId, "");
                                                     membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
                                                     }.getType());
                                                     initAdapter();

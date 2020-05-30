@@ -18,6 +18,7 @@ public class VideoAddressActivity extends BaseActivity {
     private TextView ToViewALive;
     private TextView tvLiveCode;
     private TextView tvRtmpAdd;
+    private TextView tvTitle;
     private String chooseFlag;
     private String rtmpAdd;
     private String liveCode;
@@ -42,8 +43,10 @@ public class VideoAddressActivity extends BaseActivity {
         chooseFlag = getIntent().getStringExtra("chooseFlag");
         rtmpAdd = getIntent().getStringExtra("rtmpAdd");
         liveCode = getIntent().getStringExtra("liveCode");
+        tvTitle = findViewById(R.id.tv_title);
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+        tvTitle.setText("推流地址");
 
         findViewById(R.id.tv_copy).setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);

@@ -163,9 +163,10 @@ public class AddressListSearchActivity extends BaseActivity {
         };
 
         socialAdapter.setOnItemClickListener((adapter, view, position) -> {
-            GetRecommendCommunity listBean = (GetRecommendCommunity) adapter.getData().get(position);
+            SearchCommunityResponse.ListBean listBean = (SearchCommunityResponse.ListBean) adapter.getData().get(position);
             Intent intent = new Intent(this, SocialHomeActivity.class);
             intent.putExtra("id", listBean.getGroupId());
+
             startActivity(intent);
         });
 

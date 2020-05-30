@@ -83,6 +83,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         mRecord = findViewById(R.id.tv_end);
         mRecord.setVisibility(View.VISIBLE);
+        mRecord.setTextColor(getResources().getColor(R.color.white,null));
         mRecord.setText(R.string.drop_record);
 
         sw = findViewById(R.id.sw);
