@@ -87,9 +87,9 @@
         android:paddingStart="16dp">
 
         <ImageView
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="12dp"
             android:src="@drawable/ic_home_menu_service1" />
 
         <TextView
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:text="@string/hilamg_service"
             android:textColor="#6D7278"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
     </LinearLayout>
 
@@ -109,9 +109,9 @@
         android:paddingStart="16dp">
 
         <ImageView
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="12dp"
             android:src="@drawable/ic_home_menu_invite" />
 
         <TextView
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:text="@string/invite_friends1"
             android:textColor="#6D7278"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
     </LinearLayout>
 
@@ -132,9 +132,9 @@
         android:paddingStart="16dp">
 
         <ImageView
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="12dp"
             android:src="@drawable/ic_home_menu_service" />
 
         <TextView
@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:text="@string/online_service"
             android:textColor="#6D7278"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
     </LinearLayout>
 
@@ -155,9 +155,9 @@
         android:paddingStart="16dp">
 
         <ImageView
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="12dp"
             android:src="@drawable/ic_home_menu_setting" />
 
         <TextView
@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:text="@string/safesetting"
             android:textColor="#6D7278"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
     </LinearLayout>
 
