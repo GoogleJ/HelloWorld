@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
@@ -20,6 +21,8 @@ public class BlockWalletEmptyActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BarUtils.transparentStatusBar(this);
         setContentView(R.layout.activity_block_wallet_empty);
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
@@ -33,6 +36,8 @@ public class BlockWalletEmptyActivity extends BaseActivity {
         IntentFilter intentFilter = new IntentFilter(Constant.ACTION_BROADCAST1);
 
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+
+        BarUtils.addMarginTopEqualStatusBarHeight(findViewById(R.id.rlTitle));
     }
 
     /**

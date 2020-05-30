@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/blockwallet_empty_bg"
         android:gravity="center_horizontal"
+        android:paddingTop="28dp"
         android:orientation="vertical">
 
         <ImageView

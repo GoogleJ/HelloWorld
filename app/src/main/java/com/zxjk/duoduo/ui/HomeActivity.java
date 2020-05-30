@@ -703,6 +703,14 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             }
         });
         pager.setOffscreenPageLimit(2);
+
+        pager.addOnPageChangeListener(
+                new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        m_bottom_bar.selectTab(position);
+                    }
+                });
     }
 
     @Override

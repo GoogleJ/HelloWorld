@@ -274,7 +274,7 @@ public class NewLoginActivity extends BaseActivity {
                 .getCode(phone, isChinaPhone)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
                 .subscribe(o -> {
                     String head = phone.substring(0, 3);
                     String tail = phone.substring(phone.length() - 4);
@@ -323,7 +323,7 @@ public class NewLoginActivity extends BaseActivity {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(), inviteId, groupId)
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(l -> {
                     Constant.token = l.getToken();
