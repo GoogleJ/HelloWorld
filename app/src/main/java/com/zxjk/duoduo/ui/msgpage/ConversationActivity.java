@@ -129,6 +129,7 @@ public class ConversationActivity extends BaseActivity {
     private CusConversationFragment fragment;
     private MessageListAdapter messageAdapter;
     private TextView tvTitle;
+    private LinearLayout llLoading;
 
     /**
      * 会话信息
@@ -186,6 +187,8 @@ public class ConversationActivity extends BaseActivity {
         conversationType = pathSegments.get(pathSegments.size() - 1);
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
+
+        llLoading = findViewById(R.id.llLoading);
 
         extension = findViewById(io.rong.imkit.R.id.rc_extension);
 
@@ -415,6 +418,11 @@ public class ConversationActivity extends BaseActivity {
         onSendMessageListener = new RongIM.OnSendMessageListener() {
             @Override
             public Message onSend(Message message) {
+                if (llLoading.getVisibility() == View.VISIBLE) {
+                    ToastUtils.showShort(R.string.loading_pleasewait);
+                    return null;
+                }
+
                 handleBurnAfterReadForSendersOnSend(message);
 
                 if (handleMsgForbiden(message)) {
@@ -703,17 +711,29 @@ public class ConversationActivity extends BaseActivity {
         RongIMClient.setTypingStatusListener(typingStatusListener);
     }
 
+    private Disposable loadingDisposable;
+
     private void handleBean() {
         targetId = getIntent().getData().getQueryParameter("targetId");
+
+        if (loadingDisposable == null) {
+            loadingDisposable = Observable.timer(700, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                    .subscribe(l -> llLoading.setVisibility(View.VISIBLE));
+        }
 
         switch (conversationType) {
             case "private":
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .personalChatConfig(targetId)
                         .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(RxSchedulers.ioObserver())
                         .compose(bindToLifecycle())
                         .subscribe(response -> {
+                            if (loadingDisposable != null && !loadingDisposable.isDisposed()) {
+                                loadingDisposable.dispose();
+                            }
+                            llLoading.setVisibility(View.GONE);
+
                             conversationInfo.setMessageBurnTime(response.getChatInfo().getIncinerationTime());
                             conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
                             conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
@@ -731,7 +751,7 @@ public class ConversationActivity extends BaseActivity {
                             if (targetUserInfo != null) {
                                 sendFakeC2CMsg(targetUserInfo.getName());
                             }
-                        }, this::handleApiError);
+                        }, t -> handleBean());
                 break;
             case "group":
                 ServiceFactory.getInstance().getBaseService(Api.class)
@@ -757,8 +777,13 @@ public class ConversationActivity extends BaseActivity {
                             }
                         })
                         .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(RxSchedulers.ioObserver())
                         .subscribe(groupInfo -> {
+                            if (loadingDisposable != null && !loadingDisposable.isDisposed()) {
+                                loadingDisposable.dispose();
+                            }
+                            llLoading.setVisibility(View.GONE);
+
                             handleNewReceiveRed(groupInfo);
 
                             handleGroupPlugin(groupInfo);
@@ -768,12 +793,7 @@ public class ConversationActivity extends BaseActivity {
                             handleGroupOwnerInit();
 
                             initView();
-                        }, t -> {
-                            extension.removeAllViews();
-                            handleApiError(t);
-                            RongIM.getInstance().removeConversation(Conversation.ConversationType.GROUP, targetId, null);
-                            finish();
-                        });
+                        }, t -> handleBean());
 
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getGroupLiveGoingInfo(targetId)
@@ -799,9 +819,14 @@ public class ConversationActivity extends BaseActivity {
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getRoomPermissionByRoomId(targetId)
                         .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(RxSchedulers.ioObserver())
                         .compose(RxSchedulers.normalTrans())
                         .subscribe(chatRoomPermission -> {
+                            if (loadingDisposable != null && !loadingDisposable.isDisposed()) {
+                                loadingDisposable.dispose();
+                            }
+                            llLoading.setVisibility(View.GONE);
+
                             this.chatRoomPermission = chatRoomPermission;
 
                             handleChatRoom();
@@ -828,10 +853,8 @@ public class ConversationActivity extends BaseActivity {
 
                                 mVideoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_PAVED_PARENT);
 
-                                String url = getIntent().getStringExtra("playUrl");
                                 mVideoView.setVideoPath(getIntent().getStringExtra("playUrl"));
                                 mVideoView.start();
-
 
                                 TextView tvTitle = stubVideoInflate.findViewById(R.id.tv_title);
                                 tvTitle.setText("主题:" + getIntent().getStringExtra("topic"));
@@ -883,15 +906,11 @@ public class ConversationActivity extends BaseActivity {
                                     mAlbumOrientationEventListener.enable();
                                 }
                             }
-                        }, t -> {
-                            handleApiError(t);
-                            finish();
-                        });
+                        }, t -> handleBean());
 
                 break;
         }
     }
-
 
     private void setFullScreen() {
         WindowManager.LayoutParams params = getWindow().getAttributes();

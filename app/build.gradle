@@ -119,7 +119,7 @@ dependencies {
     implementation 'com.blankj:utilcodex:1.26.0'
 
     //Loading
-    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
     //butterknife
     implementation 'com.jakewharton:butterknife:10.0.0'
