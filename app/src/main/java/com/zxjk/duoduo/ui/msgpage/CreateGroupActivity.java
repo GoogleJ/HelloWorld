@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
@@ -38,6 +42,7 @@ import com.zxjk.duoduo.rongIM.message.GroupCardMessage;
 import com.zxjk.duoduo.rongIM.message.SocialGroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
 import com.zxjk.duoduo.ui.widget.MaxWidthRecyclerView;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.PinYinUtils;
 
@@ -151,10 +156,15 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             handleAddMember();
             adapter2.setFromSocial(getIntent().getBooleanExtra("fromSocial", false));
             adapter2.setOnTitleClickListener(() -> {
-                Intent intent = new Intent(this, InviteForSocialActivity.class);
-                intent.putExtra("groupId", groupResponse.getGroupInfo().getId());
-                intent.putExtra("groupName", groupResponse.getGroupInfo().getGroupNikeName());
-                startActivity(intent);
+                String uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId + "&groupId=" + groupResponse.getGroupInfo().getId() + "&type=" + "1");
+
+                UMWeb link = new UMWeb(uri2Code);
+                link.setTitle("邀请你加入群聊");
+                link.setDescription("我在使用Hilamg，邀请你加\n" +
+                        "入“BTC官方交流社群”，快\n" +
+                        "来加入我们吧～");
+                link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo3));
+                new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
                 finish();
             });
         } else if (eventType == EVENT_DELETEMEMBER) {

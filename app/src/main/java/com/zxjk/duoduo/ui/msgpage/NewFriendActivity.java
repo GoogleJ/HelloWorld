@@ -20,6 +20,10 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
@@ -30,6 +34,7 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.NearByActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.NewFriendAdapter;
 import com.zxjk.duoduo.ui.msgpage.widget.dialog.DeleteFriendInformationDialog;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -58,6 +63,7 @@ public class NewFriendActivity extends BaseActivity {
 
     NewFriendAdapter mAdapter;
     DeleteFriendInformationDialog dialog;
+    private String uri2Code;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -65,6 +71,8 @@ public class NewFriendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_friend);
         ButterKnife.bind(this);
+
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId );
 
         TextView tvContactHilamgId = findViewById(R.id.tvContactHilamgId);
         tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
@@ -138,6 +146,16 @@ public class NewFriendActivity extends BaseActivity {
 
         findViewById(R.id.llmay_know).setOnClickListener(v -> {
             ToastUtils.showShort(R.string.developing1);
+        });
+
+        findViewById(R.id.llwechat).setOnClickListener(v -> {
+            UMWeb link = new UMWeb(uri2Code);
+            link.setTitle("我在使用Hilamg聊天");
+            link.setDescription("加密私聊、社群管理、数字\n" +
+                    "支付尽在Hilamg ，你也来\n" +
+                    "试试吧～");
+            link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo3));
+            new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
         });
 
         getPermisson(findViewById(R.id.llPhoneContract), g -> {
