@@ -116,11 +116,11 @@ public class SearchGroupActivity extends BaseActivity {
                 api.searchCommunity(searchWord, currentPage, pageOffset)
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
                         .subscribe(b -> {
                             refreshRecommandLL.setVisibility(View.GONE);
                             recycler.setAdapter(searchAdapter);
-                            searchAdapter.setNewData(b.getList());
+                            searchAdapter.replaceData(b.getList());
                             searchAdapter.disableLoadMoreIfNotFullPage();
                         }, this::handleApiError);
                 return true;
@@ -237,7 +237,7 @@ public class SearchGroupActivity extends BaseActivity {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .recommendCommunity(String.valueOf(currPage))
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
                     currPage += 1;

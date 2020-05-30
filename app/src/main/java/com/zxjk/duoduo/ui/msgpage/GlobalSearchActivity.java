@@ -25,15 +25,10 @@ import com.zxjk.duoduo.ui.msgpage.adapter.GlobalSearchAdapter;
 import com.zxjk.duoduo.ui.widget.NewsLoadMoreView;
 import com.zxjk.duoduo.utils.CommonUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 @SuppressLint("CheckResult")
 public class GlobalSearchActivity extends BaseActivity {
-    @BindView(R.id.m_search_edit)
-    EditText searchEdit;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
+    private EditText searchEdit;
 
     GlobalSearchAdapter mAdapter;
 
@@ -45,7 +40,8 @@ public class GlobalSearchActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_search);
-        ButterKnife.bind(this);
+        searchEdit = findViewById(R.id.m_search_edit);
+        mRecyclerView = findViewById(R.id.recycler_view);
         initData();
         initUI();
         searchEdit.requestFocus();
@@ -53,7 +49,6 @@ public class GlobalSearchActivity extends BaseActivity {
 
     private void initData() {
         searchEdit.setOnEditorActionListener((v, actionId, event) -> {
-            //搜索按键action
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 keyWord = searchEdit.getText().toString();
                 searchCustomerInfo(keyWord, true);
