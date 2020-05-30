@@ -5,8 +5,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -15,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,8 +35,10 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.utils.ClickUtils;
-import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SearchGroupActivity extends BaseActivity {
     private Api api;
@@ -71,14 +77,14 @@ public class SearchGroupActivity extends BaseActivity {
 
         recommandSocial();
 
-        if(!TextUtils.isEmpty(searchWord)){
+        if (!TextUtils.isEmpty(searchWord)) {
             etSearch.setText(searchWord);
             currentPage = 1;
             KeyboardUtils.hideSoftInput(SearchGroupActivity.this);
             api.searchCommunity(searchWord, currentPage, pageOffset)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                    .compose(RxSchedulers.ioObserver())
                     .subscribe(b -> {
                         refreshRecommandLL.setVisibility(View.GONE);
                         recycler.setAdapter(searchAdapter);
@@ -132,7 +138,7 @@ public class SearchGroupActivity extends BaseActivity {
                 api.searchCommunity(searchWord, currentPage, pageOffset)
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                        .compose(RxSchedulers.ioObserver())
                         .subscribe(b -> {
                             refreshRecommandLL.setVisibility(View.GONE);
                             recycler.setAdapter(searchAdapter);
@@ -195,6 +201,12 @@ public class SearchGroupActivity extends BaseActivity {
                         .setText(R.id.group_sign, item.getIntroduction())
                         .setText(R.id.group_owner_name, getString(R.string.creater, item.getOwnerNick()))
                         .setText(R.id.tv_number_of_people, item.getMembers());
+
+                if (item.getCommunityName().contains(searchWord)) {
+                    helper.setText(R.id.group_nike_name, matcherSearchText(ContextCompat.getColor(SearchGroupActivity.this, R.color.colorTheme),
+                            item.getCommunityName(), searchWord));
+                }
+
                 GlideUtil.loadCornerImg(helper.getView(R.id.group_head_portrait), item.getCommunityLogo(), 6);
             }
         };
@@ -253,7 +265,7 @@ public class SearchGroupActivity extends BaseActivity {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .recommendCommunity(String.valueOf(currPage))
                 .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
                     currPage += 1;
@@ -262,6 +274,18 @@ public class SearchGroupActivity extends BaseActivity {
                     }
                     recommandAdapter.replaceData(s);
                 }, this::handleApiError);
+    }
+
+    private SpannableString matcherSearchText(int color, String text, String keyword) {
+        SpannableString ss = new SpannableString(text);
+        Pattern pattern = Pattern.compile(keyword);
+        Matcher matcher = pattern.matcher(ss);
+        while (matcher.find()) {
+            int start = matcher.start();
+            int end = matcher.end();
+            ss.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return ss;
     }
 
 }
