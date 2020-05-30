@@ -600,6 +600,14 @@ public class ConversationActivity extends BaseActivity {
                         if (notificationMessage.getExtra().contains("慢速模式")) {
                             handleReceiveSlowMode(notificationMessage);
                         }
+
+                        if (groupInfo != null) {
+                            if (notificationMessage.getMessage().equals(getString(R.string.ban_add_friend_open))) {
+                                groupInfo.getGroupInfo().setBanFriend("1");
+                            } else if (notificationMessage.getMessage().equals(getString(R.string.ban_add_friend_close))) {
+                                groupInfo.getGroupInfo().setBanFriend("0");
+                            }
+                        }
                     }
                 } else if (message.getSenderUserId().equals(targetId)) {
                     String extra = "";
@@ -1162,7 +1170,11 @@ public class ConversationActivity extends BaseActivity {
             @Override
             public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
                 if (conversationType == Conversation.ConversationType.GROUP) {
-                    CommonUtils.resolveFriendList(ConversationActivity.this, userInfo.getUserId(), targetId);
+                    if (groupInfo != null && !TextUtils.isEmpty(groupInfo.getGroupInfo().getBanFriend())) {
+                        if (!groupInfo.getGroupInfo().getBanFriend().equals("1")) {
+                            CommonUtils.resolveFriendList(ConversationActivity.this, userInfo.getUserId(), targetId);
+                        }
+                    }
                 } else {
                     Intent intent = new Intent(ConversationActivity.this, FriendDetailsActivity.class);
                     intent.putExtra("friendId", userInfo.getUserId());
