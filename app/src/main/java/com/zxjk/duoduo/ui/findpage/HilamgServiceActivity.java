@@ -3,7 +3,14 @@ package com.zxjk.duoduo.ui.findpage;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewStub;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -20,48 +27,76 @@ import com.zxjk.duoduo.ui.minepage.RewardMotActivity;
 import com.zxjk.duoduo.ui.wallet.OneKeyBuyCoinActivity;
 import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 
-public class HilamgServiceActivity extends BaseActivity implements View.OnClickListener {
+import razerdp.basepopup.QuickPopupBuilder;
+import razerdp.basepopup.QuickPopupConfig;
+import razerdp.widget.QuickPopup;
 
-
+public class HilamgServiceActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hilamg_service);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv1:
-                startActivity(new Intent(this, RewardMotActivity.class));
-                break;
-            case R.id.tv2:
-                break;
-            case R.id.tv3:
-                payPhone();
-                break;
-            case R.id.tv4:
-                buyCoin();
-                break;
-            case R.id.tv5:
-                mall();
-                break;
-            case R.id.tv6:
-                startActivity(new Intent(this, CooperateActivity.class));
-                break;
-            case R.id.tv7:
-                break;
-            case R.id.tv8:
-                break;
-            case R.id.tv9:
-                ToastUtils.showShort(getString(R.string.toast1));
-                break;
-        }
+    public void reward(View view) {
+        startActivity(new Intent(this, RewardMotActivity.class));
     }
 
     @SuppressLint("CheckResult")
-    private void buyCoin() {
+    public void showRewardCodePop(View view) {
+        QuickPopup rewardPop = QuickPopupBuilder.with(this)
+                .contentView(R.layout.pop_rewardcode)
+                .config(new QuickPopupConfig()
+                        .gravity(Gravity.CENTER)
+                        .blurBackground(true)
+                        .dismissOnOutSideTouch(true)
+                        .fadeInAndOut(true)
+                        .withClick(R.id.ivClose, null, true))
+                .build();
+
+        EditText et = rewardPop.findViewById(R.id.et);
+        ImageView ivOpen = rewardPop.findViewById(R.id.ivOpen);
+        LinearLayout llInput = rewardPop.findViewById(R.id.llInput);
+        ViewStub stubResult = rewardPop.findViewById(R.id.stubResult);
+
+        ivOpen.setOnClickListener(v -> {
+            if (null == et) {
+                return;
+            }
+
+            if (TextUtils.isEmpty(et.getText().toString().trim())) {
+                ToastUtils.showShort(R.string.input_empty);
+                return;
+            }
+
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getRewardCode(et.getText().toString().trim())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(r -> {
+                        llInput.setVisibility(View.GONE);
+                        View resultPopView = stubResult.inflate();
+
+                        ImageView ivLogo = resultPopView.findViewById(R.id.ivLogo);
+                        TextView tvSymbolText = resultPopView.findViewById(R.id.tvSymbolText);
+                        TextView tvMoney = resultPopView.findViewById(R.id.tvMoney);
+                        TextView tvSymbol = resultPopView.findViewById(R.id.tvSymbol);
+
+                        tvSymbol.setText(r.getSymbol());
+                        tvMoney.setText(r.getNum());
+                        tvSymbolText.setText(getString(R.string.rewardcode_symbol_tips, r.getSymbol()));
+                        GlideUtil.loadCircleImg(ivLogo, r.getLogo());
+                    }, this::handleApiError);
+        });
+
+        rewardPop.showPopupWindow();
+    }
+
+    @SuppressLint("CheckResult")
+    public void buyCoin(View view) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getOpenPurchaseStatus()
                 .compose(bindToLifecycle())
@@ -77,7 +112,7 @@ public class HilamgServiceActivity extends BaseActivity implements View.OnClickL
                 }, this::handleApiError);
     }
 
-    private void payPhone() {
+    public void payPhone(View view) {
         String data = AesUtil.getInstance().encrypt(GsonUtils.toJson(new PayPhoneRequest(Constant.token, Constant.userId)));
         String url = "http://hilamg-recharge.ztoken.cn/?obj=" + data;
         Intent intent = new Intent(this, WebActivity.class);
@@ -87,7 +122,7 @@ public class HilamgServiceActivity extends BaseActivity implements View.OnClickL
     }
 
     @SuppressLint("CheckResult")
-    private void mall() {
+    public void mall(View view) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getShoppingUrl("1")
                 .compose(bindToLifecycle())
@@ -100,5 +135,17 @@ public class HilamgServiceActivity extends BaseActivity implements View.OnClickL
                     intent.putExtra("type", "mall");
                     startActivity(intent);
                 }, this::handleApiError);
+    }
+
+    public void coo(View view) {
+        startActivity(new Intent(this, CooperateActivity.class));
+    }
+
+    public void other(View view) {
+        ToastUtils.showShort(getString(R.string.toast1));
+    }
+
+    public void back(View view) {
+        finish();
     }
 }

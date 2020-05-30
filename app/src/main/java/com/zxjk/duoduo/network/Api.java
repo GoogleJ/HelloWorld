@@ -17,7 +17,6 @@ import com.zxjk.duoduo.bean.response.CommunityFilesListResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
 import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.CommunityVideoListResponse;
-import com.zxjk.duoduo.bean.response.GetCreateLiveResponse;
 import com.zxjk.duoduo.bean.response.CurrencyInfosByCustomerBean;
 import com.zxjk.duoduo.bean.response.EditCommunityResponse;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
@@ -716,7 +715,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("duoduo/live/createLive")
-    Observable<BaseResponse<String>> createLive(@Field("chatRoom") String chatRoom,@Field("liveType") String liveType);
+    Observable<BaseResponse<String>> createLive(@Field("chatRoom") String chatRoom, @Field("liveType") String liveType);
 
     @FormUrlEncoded
     @POST("duoduo/chatRoom/getChatRoomInfo")
@@ -763,7 +762,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("duoduo/live/modifyLive")
-    Observable<BaseResponse<String>> modifyLive(@Field("chatRoom") String chatRoom,@Field("liveType") String liveType);
+    Observable<BaseResponse<String>> modifyLive(@Field("chatRoom") String chatRoom, @Field("liveType") String liveType);
 
     @FormUrlEncoded
     @POST("duoduo/live/endLive")
@@ -830,7 +829,7 @@ public interface Api {
     @POST("duoduo/redPackage/getRewardCode")
     @FormUrlEncoded
     Observable<BaseResponse<RewardCodeResponse>> getRewardCode(@Field("code") String code);
-}
+
 
     @POST("duoduo/live/enableOpenVideoLive")
     Observable<BaseResponse<String>> enableOpenVideoLive();

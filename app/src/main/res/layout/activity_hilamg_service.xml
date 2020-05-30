@@ -18,6 +18,7 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:foreground="?android:selectableItemBackground"
+            android:onClick="back"
             android:scaleType="centerInside"
             android:src="@drawable/ico_back" />
 
@@ -57,6 +58,7 @@
             android:drawableTop="@drawable/ic_rewardmot"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="reward"
             android:text="@string/rewardmot"
             android:textColor="#6D7278" />
 
@@ -68,6 +70,7 @@
             android:drawableTop="@drawable/ic_word_of_command_red_packet"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="showRewardCodePop"
             android:text="@string/word_of_command_red_packet"
             android:textColor="#6D7278" />
 
@@ -79,6 +82,7 @@
             android:drawableTop="@drawable/ic_prepaid_refill"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="payPhone"
             android:text="@string/mojiaofei"
             android:textColor="#6D7278" />
 
@@ -99,6 +103,7 @@
             android:drawableTop="@drawable/ic_buycoinonekey"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="buyCoin"
             android:text="@string/buycoinonekey"
             android:textColor="#6D7278" />
 
@@ -110,6 +115,7 @@
             android:drawableTop="@drawable/ic_moshopping"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="mall"
             android:text="@string/moshopping"
             android:textColor="#6D7278" />
 
@@ -121,6 +127,7 @@
             android:drawableTop="@drawable/ic_cooperate"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="coo"
             android:text="@string/cooperate"
             android:textColor="#6D7278" />
 
@@ -151,9 +158,9 @@
             android:drawableTop="@drawable/ic_hotel"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="other"
             android:text="@string/hotel"
             android:textColor="#6D7278" />
-
 
         <TextView
             android:id="@+id/tv8"
@@ -163,6 +170,7 @@
             android:drawableTop="@drawable/ic_tourism"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="other"
             android:text="@string/tourism"
             android:textColor="#6D7278" />
 
@@ -174,6 +182,7 @@
             android:drawableTop="@drawable/ic_getting_around"
             android:drawablePadding="14dp"
             android:gravity="center"
+            android:onClick="other"
             android:text="@string/getting_around"
             android:textColor="#6D7278" />
 
