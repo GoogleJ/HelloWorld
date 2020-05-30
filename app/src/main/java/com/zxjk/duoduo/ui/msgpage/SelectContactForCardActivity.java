@@ -299,7 +299,7 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                         toId = userId;
                         cardUserId = listBean.getId();
                         cardUserNick = listBean.getNick();
-                        cardUserDuoDuoId = listBean.getDuoduoId();
+                        cardUserDuoDuoId = "Hilamg号: " + listBean.getDuoduoId();
                         cardUserPortrait = listBean.getHeadPortrait();
                     } else {
                         toId = listBean.getId();

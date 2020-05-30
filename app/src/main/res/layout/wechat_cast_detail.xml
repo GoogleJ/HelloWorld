@@ -7,7 +7,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white">
+        android:background="#0083BF">
 
         <FrameLayout
             android:layout_width="50dp"
@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/cast"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textSize="18sp" />
 
         <FrameLayout
@@ -58,7 +59,7 @@
             android:gravity="center"
             android:onClick="funcEnd"
             android:text="@string/modify1"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="15sp" />
 
     </FrameLayout>

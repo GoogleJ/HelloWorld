@@ -59,6 +59,7 @@ public class SearchGroupActivity extends BaseActivity {
         setContentView(R.layout.activity_search_group);
 
         api = ServiceFactory.getInstance().getBaseService(Api.class);
+        searchWord = getIntent().getStringExtra("searchText");
 
         initView();
 
@@ -70,6 +71,21 @@ public class SearchGroupActivity extends BaseActivity {
 
         recommandSocial();
 
+        if(!TextUtils.isEmpty(searchWord)){
+            etSearch.setText(searchWord);
+            currentPage = 1;
+            KeyboardUtils.hideSoftInput(SearchGroupActivity.this);
+            api.searchCommunity(searchWord, currentPage, pageOffset)
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                    .subscribe(b -> {
+                        refreshRecommandLL.setVisibility(View.GONE);
+                        recycler.setAdapter(searchAdapter);
+                        searchAdapter.replaceData(b.getList());
+                        searchAdapter.disableLoadMoreIfNotFullPage();
+                    }, this::handleApiError);
+        }
 //        etSearch.requestFocus();
     }
 

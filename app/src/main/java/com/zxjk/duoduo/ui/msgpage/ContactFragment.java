@@ -44,7 +44,7 @@ public class ContactFragment extends BaseFragment {
 
         llSearch = rootView.findViewById(R.id.llSearch);
         llSearch.setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), GlobalSearchActivity.class));
+            startActivity(new Intent(getContext(), AddressListSearchActivity.class));
             getActivity().overridePendingTransition(0, 0);
         });
 

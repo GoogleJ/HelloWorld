@@ -61,7 +61,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.findpage.HilamgServiceActivity"></activity>
+        <activity android:name=".ui.msgpage.AddressListSearchActivity"/>
+        <activity android:name=".ui.findpage.HilamgServiceActivity" />
         <activity android:name=".ui.webcast.LivePlayBackActivity" />
         <activity android:name=".ui.webcast.VideoAddressActivity" />
         <activity android:name=".ui.externalfunc.ThirdPartPayResultActivity" />

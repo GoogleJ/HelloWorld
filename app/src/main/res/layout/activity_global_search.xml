@@ -5,34 +5,32 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/layout_title_back" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:gravity="center_vertical">
 
         <EditText
             android:id="@+id/m_search_edit"
             style="@style/SearchStyle"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_weight="1"
-            android:hint="@string/input_empty"
-            android:maxLength="20" />
+            android:hint="@string/inpu_search_group"
+            android:maxLength="20"  />
 
-        <TextView
+        <ImageView
+            android:id="@+id/img_search_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/ic_search_delete"
             android:onClick="cancel"
-            android:paddingStart="6dp"
-            android:paddingTop="6dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="6dp"
-            android:text="@string/cancel"
-            android:textColor="@color/colorTheme" />
+            android:visibility="gone" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
