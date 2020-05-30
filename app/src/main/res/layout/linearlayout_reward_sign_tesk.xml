@@ -62,8 +62,6 @@
                 android:textColor="#FFFFFF"
                 android:gravity="center"
                 android:visibility="gone"
-                android:drawableStart="@drawable/ic_reward_receive_usdt"
-                android:drawablePadding="5dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"/>
             <TextView

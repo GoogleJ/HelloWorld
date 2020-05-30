@@ -1035,4 +1035,5 @@
     <string name="wechat_friends">微信邀请好友</string>
     <string name="recommend">推荐社群</string>
     <string name="refresh_recommend">换一组</string>
+    <string name="community_icon">社群图标</string>
 </resources>
