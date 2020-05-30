@@ -60,6 +60,8 @@ public class WechatChatRoomManageActivity extends BaseActivity {
         if(!TextUtils.isEmpty(liveType) && liveType.equals("1")){
             findViewById(R.id.ll_chat1).setVisibility(View.GONE);
             findViewById(R.id.ll_chat2).setVisibility(View.GONE);
+            findViewById(R.id.view_chat1).setVisibility(View.GONE);
+            findViewById(R.id.view_chat2).setVisibility(View.GONE);
         }
         roomId = getIntent().getStringExtra("roomId");
 

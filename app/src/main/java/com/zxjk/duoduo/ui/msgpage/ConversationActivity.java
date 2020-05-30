@@ -850,7 +850,7 @@ public class ConversationActivity extends BaseActivity {
                                         exitFullScreen();
                                         findViewById(R.id.conversation).setVisibility(View.VISIBLE);
                                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                                        findViewById(R.id.title).setVisibility(View.VISIBLE);
+                                        findViewById(R.id.rlTitle).setVisibility(View.VISIBLE);
                                         ll_GroupNikeName.setVisibility(View.GONE);
                                         stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.GONE);
                                     } else {
@@ -858,7 +858,7 @@ public class ConversationActivity extends BaseActivity {
                                         setFullScreen();
                                         findViewById(R.id.conversation).setVisibility(View.GONE);
                                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                                        findViewById(R.id.title).setVisibility(View.GONE);
+                                        findViewById(R.id.rlTitle).setVisibility(View.GONE);
                                         ll_GroupNikeName.setVisibility(View.VISIBLE);
                                         stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.VISIBLE);
                                     }

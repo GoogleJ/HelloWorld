@@ -77,11 +77,11 @@ public class LivePlayBackActivity extends BaseActivity {
                     if (mOrientation != 0 && mOrientation != 180) {
                         mVideoView.setDisplayOrientation(mOrientation);
                         if (mOrientation == 90) {
+                            ll_back.setVisibility(View.GONE);
+                            ll_back2.setVisibility(View.VISIBLE);
+                        } else {
                             ll_back.setVisibility(View.VISIBLE);
                             ll_back2.setVisibility(View.GONE);
-                        } else {
-                            ll_back2.setVisibility(View.VISIBLE);
-                            ll_back.setVisibility(View.GONE);
                         }
 
                 }

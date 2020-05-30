@@ -334,7 +334,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:focusable="false"
-                    android:text="0.0000"
+                    android:text="0.00000"
                     android:textColor="#9E9E9E"
                     android:textSize="35sp"
                     android:gravity="bottom"/>
