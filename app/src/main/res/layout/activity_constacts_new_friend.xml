@@ -36,14 +36,29 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/ivAdd"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_addfriend" />
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/ivAdd"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_addfriend" />
+
+            <View
+                android:id="@+id/dotNewFriend"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="end"
+                android:background="@drawable/shape_dot_red"
+                android:visibility="gone" />
+        </FrameLayout>
+
 
     </RelativeLayout>
 

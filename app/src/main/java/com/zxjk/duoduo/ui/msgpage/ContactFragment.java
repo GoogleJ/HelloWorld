@@ -19,8 +19,10 @@ import androidx.viewpager.widget.ViewPager;
 import com.blankj.utilcode.util.BarUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.widget.ContactTitleView;
+import com.zxjk.duoduo.utils.MMKVUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -35,6 +37,11 @@ public class ContactFragment extends BaseFragment {
     private MagicIndicator indicator;
     private ViewPager pager;
     private int[] mTitleDataList = new int[]{R.string.friend, R.string.social};
+    private View dotNewFriend;
+
+    public View getDotNewFriend(){
+        return dotNewFriend;
+    }
 
     @Nullable
     @Override
@@ -42,13 +49,27 @@ public class ContactFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
 
+        dotNewFriend= rootView.findViewById(R.id.dotNewFriend);
+
         llSearch = rootView.findViewById(R.id.llSearch);
         llSearch.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), AddressListSearchActivity.class));
             getActivity().overridePendingTransition(0, 0);
         });
 
-        rootView.findViewById(R.id.ivAdd).setOnClickListener(v -> startActivity(new Intent(getContext(), NewFriendActivity.class)));
+        rootView.findViewById(R.id.ivAdd).setOnClickListener(v -> {
+            ((HomeActivity) getActivity()).badgeItem2.hide();
+            MMKVUtils.getInstance().enCode("newFriendCount", 0);
+            dotNewFriend.setVisibility(View.INVISIBLE);
+            startActivity(new Intent(getContext(), NewFriendActivity.class));
+        });
+
+        long newFriendCount = MMKVUtils.getInstance().decodeLong("newFriendCount");
+        if (newFriendCount == 0) {
+            dotNewFriend.setVisibility(View.INVISIBLE);
+        } else {
+            dotNewFriend.setVisibility(View.VISIBLE);
+        }
 
         View topmask = rootView.findViewById(R.id.topmask);
         ViewGroup.LayoutParams layoutParams = topmask.getLayoutParams();
