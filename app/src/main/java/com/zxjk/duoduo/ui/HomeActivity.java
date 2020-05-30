@@ -60,8 +60,6 @@ import com.zxjk.duoduo.db.RedFallActivityLocalBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.rongIM.GroupConversationProvider;
-import com.zxjk.duoduo.rongIM.PrivateConversationProvider;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.findpage.HilamgServiceActivity;
 import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
@@ -87,7 +85,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
 import io.rong.imkit.mention.RongMentionManager;
@@ -164,9 +161,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initMessageLongClickAction();
 
         initGreenDaoSession();
-
-        RongContext.getInstance().registerConversationTemplate(new PrivateConversationProvider());
-        RongContext.getInstance().registerConversationTemplate(new GroupConversationProvider());
 
         initRongUserProvider();
 

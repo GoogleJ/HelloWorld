@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
+import androidx.core.content.ContextCompat;
+
 import io.rong.common.RLog;
 import io.rong.imkit.R;
 import io.rong.imkit.R.bool;
@@ -64,6 +66,9 @@ public class PrivateConversationProvider implements ConversationProvider<UIConve
         holder.content = (TextView) result.findViewById(id.rc_conversation_content);
         holder.notificationBlockImage = (ImageView) result.findViewById(id.rc_conversation_msg_block);
         holder.readStatus = (ImageView) result.findViewById(id.rc_conversation_status);
+        holder.ivSocialSign = (ImageView) result.findViewById(id.ivSocialSign);
+        holder.ivTop = (ImageView) result.findViewById(id.ivTop);
+        holder.tvUnreadCount = (TextView) result.findViewById(id.tvUnreadCount);
         result.setTag(holder);
         return result;
     }
@@ -153,7 +158,6 @@ public class PrivateConversationProvider implements ConversationProvider<UIConve
                 }
             });
         }
-
     }
 
     private void handleCommonContent(final PrivateConversationProvider.ViewHolder holder, UIConversation data) {
@@ -174,18 +178,37 @@ public class PrivateConversationProvider implements ConversationProvider<UIConve
                 }
             });
         }
-
     }
 
     public void bindView(View view, int position, UIConversation data) {
         PrivateConversationProvider.ViewHolder holder = (PrivateConversationProvider.ViewHolder) view.getTag();
         ProviderTag tag = null;
         if (data == null) {
-            holder.title.setText((CharSequence) null);
-            holder.time.setText((CharSequence) null);
-            holder.content.setText((CharSequence) null);
+            holder.title.setText(null);
+            holder.time.setText(null);
+            holder.content.setText(null);
         } else {
-            holder.title.setText(data.getUIConversationTitle());
+            if (data.isTop()) {
+                holder.ivTop.setVisibility(View.VISIBLE);
+            } else {
+                holder.ivTop.setVisibility(View.INVISIBLE);
+            }
+
+            if (data.getUIConversationTitle().contains("おれは人间をやめるぞ！ジョジョ―――ッ!")) {
+                holder.ivSocialSign.setVisibility(View.VISIBLE);
+                holder.title.setText(data.getUIConversationTitle().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""));
+            } else {
+                holder.title.setText(data.getUIConversationTitle());
+                holder.ivSocialSign.setVisibility(View.GONE);
+            }
+
+            UserInfo userInfo = RongUserInfoManager.getInstance().getUserInfo(data.getConversationTargetId());
+            if (userInfo != null && !TextUtils.isEmpty(userInfo.getExtra()) && userInfo.getExtra().equals("system")) {
+                holder.title.setTextColor(ContextCompat.getColor(view.getContext(), R.color.title_offcial));
+            } else {
+                holder.title.setTextColor(ContextCompat.getColor(view.getContext(), io.rong.imkit.R.color.rc_text_color_primary));
+            }
+
             String time = RongDateUtils.getConversationListFormatDate(data.getUIConversationTime(), view.getContext());
             holder.time.setText(time);
             if (TextUtils.isEmpty(data.getDraft()) && !data.getMentionedFlag()) {
@@ -243,8 +266,13 @@ public class PrivateConversationProvider implements ConversationProvider<UIConve
             ConversationNotificationStatus status = data.getNotificationStatus();
             if (status != null && status.equals(ConversationNotificationStatus.DO_NOT_DISTURB)) {
                 holder.notificationBlockImage.setVisibility(0);
+                holder.tvUnreadCount.setVisibility(View.GONE);
             } else {
                 holder.notificationBlockImage.setVisibility(8);
+                if (data.getUnReadMessageCount() > 0) {
+                    holder.tvUnreadCount.setVisibility(View.VISIBLE);
+                    holder.tvUnreadCount.setText(data.getUnReadMessageCount() + "");
+                }
             }
         }
 
@@ -270,6 +298,9 @@ public class PrivateConversationProvider implements ConversationProvider<UIConve
         public TextView content;
         public ImageView notificationBlockImage;
         public ImageView readStatus;
+        private ImageView ivSocialSign;
+        private ImageView ivTop;
+        private TextView tvUnreadCount;
 
         protected ViewHolder() {
         }
