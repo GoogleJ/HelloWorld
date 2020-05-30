@@ -1256,6 +1256,8 @@
     <string name="member">成员 %1$s</string>
     <string name="creater">创建人: %1$s</string>
     <string name="empty_nosearch6">暂无推荐社群</string>
+    <string name="official_service">官方服务</string>
+    <string name="other_service">其他服务</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

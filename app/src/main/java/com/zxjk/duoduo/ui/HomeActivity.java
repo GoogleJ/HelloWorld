@@ -63,9 +63,8 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.rongIM.GroupConversationProvider;
 import com.zxjk.duoduo.rongIM.PrivateConversationProvider;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.minepage.CooperateActivity;
+import com.zxjk.duoduo.ui.findpage.HilamgServiceActivity;
 import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
-import com.zxjk.duoduo.ui.minepage.RewardMotActivity;
 import com.zxjk.duoduo.ui.minepage.SettingActivity;
 import com.zxjk.duoduo.ui.minepage.UserInfoActivity;
 import com.zxjk.duoduo.ui.msgpage.ContactFragment;
@@ -659,12 +658,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         drawer.close(new Intent(this, OnlineServiceActivity.class));
     }
 
-    public void reward(View view) {
-        drawer.close(new Intent(this, RewardMotActivity.class));
-    }
-
-    public void coo(View view) {
-        drawer.close(new Intent(this, CooperateActivity.class));
+    public void hilamgService(View view) {
+        drawer.close(new Intent(this, HilamgServiceActivity.class));
     }
 
     @Override

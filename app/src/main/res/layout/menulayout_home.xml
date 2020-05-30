@@ -83,42 +83,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:gravity="center_vertical"
-        android:onClick="reward"
+        android:onClick="hilamgService"
         android:paddingStart="16dp">
 
         <ImageView
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_home_menu_reward" />
+            android:src="@drawable/ic_home_menu_service1" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/rewardmot"
-            android:textColor="#6D7278"
-            android:textSize="17sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:onClick="coo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp">
-
-        <ImageView
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_home_menu_coor" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cooperate"
+            android:text="@string/hilamg_service"
             android:textColor="#6D7278"
             android:textSize="17sp" />
 
