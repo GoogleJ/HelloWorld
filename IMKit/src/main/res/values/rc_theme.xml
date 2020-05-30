@@ -98,7 +98,7 @@
     <style name="RCTheme.Message.Username.TextView" parent="RCTheme.TextView">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/rc_message_user_name</item>
-        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingLeft">6dp</item>
     </style>
     <!--
     size:28px color:#999999

@@ -501,7 +501,7 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                     } else {
                         holder.contentView.setVisibility(0);
                         holder.layoutItem.setVisibility(0);
-                        holder.layoutItem.setPadding(RongUtils.dip2px(15.0F), RongUtils.dip2px(10.0F), RongUtils.dip2px(15.0F), RongUtils.dip2px(10.0F));
+                        holder.layoutItem.setPadding(RongUtils.dip2px(8.0F), RongUtils.dip2px(10.0F), RongUtils.dip2px(8.0F), RongUtils.dip2px(10.0F));
                     }
 
                     UserInfo userInfo;
@@ -637,6 +637,11 @@ public class MessageListAdapter extends BaseAdapter<UIMessage> {
                         } else {
                             holder.leftIconView.setVisibility(8);
                             holder.rightIconView.setVisibility(8);
+                        }
+
+                        if (data.getConversationType() == ConversationType.GROUP
+                                && !tag.centerInHorizontal()) {
+                            holder.leftIconView.setVisibility(View.VISIBLE);
                         }
 
                         if (!tag.centerInHorizontal()) {

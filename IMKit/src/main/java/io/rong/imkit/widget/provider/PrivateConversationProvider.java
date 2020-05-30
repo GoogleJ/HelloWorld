@@ -263,16 +263,19 @@ public class PrivateConversationProvider implements ConversationProvider<UIConve
                 holder.content.setCompoundDrawables((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
             }
 
+            if (data.getUnReadMessageCount() > 0) {
+                holder.tvUnreadCount.setVisibility(View.VISIBLE);
+                holder.tvUnreadCount.setText(data.getUnReadMessageCount() + "");
+            } else {
+                holder.tvUnreadCount.setVisibility(View.GONE);
+            }
+
             ConversationNotificationStatus status = data.getNotificationStatus();
             if (status != null && status.equals(ConversationNotificationStatus.DO_NOT_DISTURB)) {
                 holder.notificationBlockImage.setVisibility(0);
                 holder.tvUnreadCount.setVisibility(View.GONE);
             } else {
                 holder.notificationBlockImage.setVisibility(8);
-                if (data.getUnReadMessageCount() > 0) {
-                    holder.tvUnreadCount.setVisibility(View.VISIBLE);
-                    holder.tvUnreadCount.setText(data.getUnReadMessageCount() + "");
-                }
             }
         }
 

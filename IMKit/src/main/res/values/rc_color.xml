@@ -5,8 +5,8 @@
     <color name="rc_text_color_tertiary">#909399</color>
     <color name="rc_text_color_primary_inverse">@android:color/white</color>
     <color name="rc_normal_bg">#F3F5F7</color>
-    <color name="rc_message_user_name">#828282</color>
-    <color name="rc_rich_title">#000000</color>
+    <color name="rc_message_user_name">#6D7278</color>
+    <color name="rc_rich_title">#272E3F</color>
     <color name="rc_rich_content">#939393</color>
 
     <color name="rc_notification_bg">#D3D3D3</color>
