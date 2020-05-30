@@ -276,8 +276,8 @@ public class NewLoginActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
                 .subscribe(o -> {
-                    String head = phone.substring(0, 3);
-                    String tail = phone.substring(phone.length() - 4);
+                    String head = phoneText.substring(0, 3);
+                    String tail = phoneText.substring(phoneText.length() - 4);
                     tvTips.setText(getString(R.string.send_sms_to, tvContrary.getText().toString() + " " + head + "****" + tail));
                     changeState();
                 }, this::handleApiError);
