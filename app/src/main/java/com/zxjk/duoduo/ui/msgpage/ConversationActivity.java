@@ -173,6 +173,7 @@ public class ConversationActivity extends BaseActivity {
     private int mOrientation;
     private AlbumOrientationEventListener mAlbumOrientationEventListener;
     private Boolean orientationType = false;
+    private Disposable loadingDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -711,8 +712,6 @@ public class ConversationActivity extends BaseActivity {
         };
         RongIMClient.setTypingStatusListener(typingStatusListener);
     }
-
-    private Disposable loadingDisposable;
 
     private void handleBean() {
         targetId = getIntent().getData().getQueryParameter("targetId");
@@ -1469,6 +1468,7 @@ public class ConversationActivity extends BaseActivity {
         RelativeLayout rl_end = findViewById(R.id.rl_end);
         rl_end.setVisibility(View.VISIBLE);
         rl_end.setOnClickListener(v -> detail());
+        findViewById(R.id.ll).setOnClickListener(v -> detail());
 
         tvTitle.setText(targetUserInfo == null ?
                 (groupInfo == null ? (Constant.currentUser.getNick())
@@ -1491,9 +1491,8 @@ public class ConversationActivity extends BaseActivity {
             ImageView iv_end = findViewById(R.id.iv_end);
             iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_end));
             rl_end.setOnClickListener(v -> {
-                Intent intent = new Intent(this, SocialHomeActivity.class);
+                Intent intent = new Intent(this, NewSocialManageActivity.class);
                 intent.putExtra("group", groupInfo);
-                intent.putExtra("id", targetId);
                 startActivityForResult(intent, 1000);
             });
             tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
@@ -1519,9 +1518,9 @@ public class ConversationActivity extends BaseActivity {
             if (groupInfo != null) {
                 groupInfo = (GroupResponse) data.getSerializableExtra("group");
                 if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
-                    tvTitle.setText(data.getStringExtra("title"));
+                    tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
                 } else {
-                    tvTitle.setText(getString(R.string.groupname_num, data.getStringExtra("title"), groupInfo.getGroupInfo().getCustomerNumber()));
+                    tvTitle.setText(getString(R.string.groupname_num, groupInfo.getGroupInfo().getGroupNikeName(), groupInfo.getGroupInfo().getCustomerNumber()));
                 }
             }
         } else if (requestCode == 2000 && resultCode == 1000) {

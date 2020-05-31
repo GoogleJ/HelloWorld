@@ -43,7 +43,6 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.CommunityInfoResponse;
-import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
@@ -54,7 +53,6 @@ import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.ZoomActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
-import com.zxjk.duoduo.ui.msgpage.NewSocialManageActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -71,14 +69,12 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
@@ -583,10 +579,8 @@ public class SocialHomeActivity extends BaseActivity {
             if (absOffset <= minimumHeightForVisibleOverlappingContent) {
                 if (ivToolBarEnd.getVisibility() == View.GONE && fromConversation != null) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
-                    ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_white);
                 }
                 if (ivToolBarStart.getVisibility() == View.GONE) {
-                    ivToolBarStart.setImageResource(R.drawable.ic_social_back);
                     ivToolBarStart.setVisibility(View.VISIBLE);
                 }
                 if (tvTitle.getVisibility() == View.VISIBLE) {
@@ -611,11 +605,9 @@ public class SocialHomeActivity extends BaseActivity {
                 }
                 if (ivToolBarEnd.getVisibility() == View.GONE && fromConversation != null) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
-                    ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_black);
                 }
                 if (ivToolBarStart.getVisibility() == View.GONE) {
                     ivToolBarStart.setVisibility(View.VISIBLE);
-                    ivToolBarStart.setImageResource(R.drawable.ico_back);
                 }
             }
         });
@@ -789,18 +781,11 @@ public class SocialHomeActivity extends BaseActivity {
             return;
         }
             finish();
-
     }
 
     @SuppressLint("CheckResult")
     public void menu(View view) {
-        if (ivToolBarEnd.getVisibility() != View.VISIBLE || fromConversation == null) {
-            return;
-        }
-
-        Intent intent = new Intent(this, NewSocialManageActivity.class);
-        intent.putExtra("group", fromConversation);
-        startActivityForResult(intent, 1000);
+        QRCode(null);
     }
 
     public void fakeClick(View view) {
