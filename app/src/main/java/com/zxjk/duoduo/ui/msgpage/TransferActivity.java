@@ -70,7 +70,6 @@ public class TransferActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer);
-        setTrasnferStatusBar(true);
 
         ivHead = findViewById(R.id.ivHead);
         tvName = findViewById(R.id.tvName);

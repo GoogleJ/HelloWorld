@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f3f5"
+    android:background="@color/background_color"
     android:orientation="vertical"
     tools:context=".ui.msgpage.GroupRedPacketActivity">
 
@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_red_top"
-        android:orientation="vertical"
-        android:paddingTop="24dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,6 +73,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="50dp"
         android:background="@drawable/shape_white_16"
+        android:elevation="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -81,69 +81,71 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/shape_gray"
-            android:gravity="center">
 
-            <FrameLayout
-                android:id="@+id/fm1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:background="@drawable/shape_gray2"
-                android:onClick="top1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_gray"
+                android:gravity="center">
 
-                <ImageView
-                    android:id="@+id/ivtop1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                <FrameLayout
+                    android:id="@+id/fm1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/shape_gray2"
+                    android:onClick="top1">
 
-                <TextView
-                    android:id="@+id/tvtop1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="3dp"
-                    android:text="@string/pinshouqi"
-                    android:textColor="#0083BF"
-                    android:textSize="16sp" />
+                    <ImageView
+                        android:id="@+id/ivtop1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/tvtop1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="3dp"
+                        android:text="@string/pinshouqi"
+                        android:textColor="#0083BF"
+                        android:textSize="16sp" />
 
-            <FrameLayout
-                android:id="@+id/fm2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:background="@drawable/shape_gray1"
-                android:onClick="top2">
+                </FrameLayout>
 
-                <ImageView
-                    android:id="@+id/ivtop2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                <FrameLayout
+                    android:id="@+id/fm2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/shape_gray1"
+                    android:onClick="top2">
 
-                <TextView
-                    android:id="@+id/tvtop2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="3dp"
-                    android:text="@string/red_packet1"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    <ImageView
+                        android:id="@+id/ivtop2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/tvtop2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="3dp"
+                        android:text="@string/red_packet1"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
 
-        </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="#eeeeee" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -226,8 +228,8 @@
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
                     android:maxLength="15"
-                    android:textColor="#000000"
-                    android:textSize="15sp" />
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
 
             </LinearLayout>
 
@@ -323,9 +325,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_gravity="center"
                 android:layout_weight="0.4"
                 android:gravity="center"
-                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <EditText
@@ -334,19 +336,19 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:focusable="false"
+                    android:gravity="bottom"
                     android:text="0.00000"
                     android:textColor="#9E9E9E"
-                    android:textSize="35sp"
-                    android:gravity="bottom"/>
+                    android:textSize="35sp" />
 
                 <ImageView
-                    android:src="@drawable/ic_hilamglogo2"
                     android:id="@+id/ivCoinIcon2"
                     android:layout_width="25dp"
                     android:layout_height="20dp"
+                    android:layout_gravity="center"
                     android:layout_marginStart="6dp"
                     android:layout_marginEnd="6dp"
-                    android:layout_gravity="center"/>
+                    android:src="@drawable/ic_hilamglogo2" />
 
                 <TextView
                     android:id="@+id/tvCoin2"
@@ -368,16 +370,16 @@
             android:background="@drawable/shape_circular_bead_btn"
             android:foreground="?android:attr/selectableItemBackgroundBorderless"
             android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@color/white"
             android:onClick="sendRed"
-            android:text="@string/m_red_envelopes_commit_btn" />
+            android:text="@string/m_red_envelopes_commit_btn"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
             android:text="@string/red_packet_tips"
             android:textColor="#9EA0A4"
             android:textSize="13sp" />

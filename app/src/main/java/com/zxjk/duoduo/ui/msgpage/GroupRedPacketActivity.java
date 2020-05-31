@@ -85,7 +85,6 @@ public class GroupRedPacketActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_red_packet);
-        setTrasnferStatusBar(true);
 
         color1 = Color.parseColor("#FFFFFF");
         color2 = Color.parseColor("#0083BF");
