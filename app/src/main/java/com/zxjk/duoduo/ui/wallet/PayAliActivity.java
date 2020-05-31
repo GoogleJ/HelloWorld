@@ -19,7 +19,6 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetPaymentListBean;
 import com.zxjk.duoduo.bean.response.GetSymbolPrice;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -31,6 +30,7 @@ import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MD5Utils;
 import com.zxjk.duoduo.utils.MoneyValueFilter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class PayAliActivity extends BaseActivity {
@@ -40,6 +40,7 @@ public class PayAliActivity extends BaseActivity {
     private ImageView ivCoinIcon;
     private TextView tvCoin;
     private EditText etMoney;
+    private TextView tvVolumeDose;
 
     private GetSymbolPrice result;
     private ArrayList<GetSymbolPrice> list = new ArrayList<>();
@@ -58,8 +59,11 @@ public class PayAliActivity extends BaseActivity {
         ivCoinIcon = findViewById(R.id.ivCoinIcon);
         tvCoin = findViewById(R.id.tvCoin);
         etMoney = findViewById(R.id.etMoney);
+        tvVolumeDose = findViewById(R.id.tv_volume_dose);
 
         etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(2)});
+
+        etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(5), new InputFilter.LengthFilter(10)});
 
         etMoney.addTextChangedListener(new TextWatcher() {
             @Override
@@ -75,6 +79,16 @@ public class PayAliActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+                String editText = s.toString().trim();
+                if (TextUtils.isEmpty(editText)) {
+                    editText = "0.00000";
+                    tvVolumeDose.setText("≈ " + editText + result.getSymbol());
+                }else {
+                    BigDecimal num1 = new BigDecimal(editText);
+                    BigDecimal num2 = new BigDecimal(result.getPrice());
+                    BigDecimal volumeDose = num1.multiply(num2);
+                    tvVolumeDose.setText("≈ " + volumeDose.toString().trim() + result.getSymbol());
+                }
             }
         });
 
@@ -89,6 +103,7 @@ public class PayAliActivity extends BaseActivity {
                     result = list.get(0);
                     GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
                     tvCoin.setText(result.getSymbol());
+                    tvVolumeDose.setText("≈ 0.00000" + result.getSymbol());
                 }, t -> {
                     handleApiError(t);
                     finish();
@@ -118,7 +133,7 @@ public class PayAliActivity extends BaseActivity {
     public void chooseCoin(View view) {
         Intent intent = new Intent(this, ChooseCoinActivity.class);
         intent.putExtra("data", list);
-        startActivityForResult(intent, 1);
+        startActivity(intent);
     }
 
     public void back(View view) {
@@ -133,7 +148,7 @@ public class PayAliActivity extends BaseActivity {
             result = data.getParcelableExtra("result");
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             tvCoin.setText(result.getSymbol());
-            etMoney.setHint(getString(R.string.transLeft)  + result.getSymbol());
+            etMoney.setHint(getString(R.string.transLeft) + result.getSymbol());
         }
     }
 

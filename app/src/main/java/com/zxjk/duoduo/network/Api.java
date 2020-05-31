@@ -839,7 +839,7 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<ArrayList<GetRecommendCommunity>>> recommendCommunity(@Field("currPage") String currPage);
 
-    @POST("duoduo/community/addSubmitOrder")
+    @POST("duoduo/order/addSubmitOrder")
     @FormUrlEncoded
     Observable<BaseResponse<String>> addSubmitOrder(@Field("payPwd") String payPwd,
                                                     @Field("qrcode") String qrcode,

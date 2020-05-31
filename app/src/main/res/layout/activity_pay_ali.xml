@@ -137,6 +137,14 @@
             android:layout_height="0.5dp"
             android:background="#eeeeee" />
 
+        <TextView
+            android:text="≈ 0.00000"
+            android:id="@+id/tv_volume_dose"
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"/>
+
         <Button
             style="@style/BtnStyle"
             android:layout_marginStart="16dp"

@@ -1,6 +1,9 @@
 package com.zxjk.duoduo.bean.response;
 
-public class GetSymbolPrice {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class GetSymbolPrice implements Parcelable {
 
     /**
      * logo :
@@ -11,6 +14,24 @@ public class GetSymbolPrice {
     private String logo;
     private String symbol;
     private String price;
+
+    protected GetSymbolPrice(Parcel in) {
+        logo = in.readString();
+        symbol = in.readString();
+        price = in.readString();
+    }
+
+    public static final Creator<GetSymbolPrice> CREATOR = new Creator<GetSymbolPrice>() {
+        @Override
+        public GetSymbolPrice createFromParcel(Parcel in) {
+            return new GetSymbolPrice(in);
+        }
+
+        @Override
+        public GetSymbolPrice[] newArray(int size) {
+            return new GetSymbolPrice[size];
+        }
+    };
 
     public String getLogo() {
         return logo;
@@ -34,5 +55,17 @@ public class GetSymbolPrice {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(logo);
+        dest.writeString(symbol);
+        dest.writeString(price);
     }
 }
