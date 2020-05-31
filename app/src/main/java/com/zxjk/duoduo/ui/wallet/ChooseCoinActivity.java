@@ -12,7 +12,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
-import com.zxjk.duoduo.bean.response.GetSymbolPrice;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -22,7 +21,7 @@ public class ChooseCoinActivity extends BaseActivity {
 
     private RecyclerView recycler;
     private BaseQuickAdapter adapter;
-    private ArrayList<GetSymbolPrice> data;
+    private ArrayList<GetPaymentListBean> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +39,9 @@ public class ChooseCoinActivity extends BaseActivity {
 
         recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BaseQuickAdapter<GetSymbolPrice, BaseViewHolder>(R.layout.item_choose_cointype, data) {
+        adapter = new BaseQuickAdapter<GetPaymentListBean, BaseViewHolder>(R.layout.item_choose_cointype, data) {
             @Override
-            protected void convert(BaseViewHolder helper, GetSymbolPrice item) {
+            protected void convert(BaseViewHolder helper, GetPaymentListBean item) {
                 ImageView ivIcon = helper.getView(R.id.ivIcon);
                 GlideUtil.loadCircleImg(ivIcon,item.getLogo());
                 helper.setText(R.id.tvCoin, item.getSymbol());
@@ -52,7 +51,7 @@ public class ChooseCoinActivity extends BaseActivity {
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent();
-            intent.putExtra("result", (GetSymbolPrice) adapter.getData().get(position));
+            intent.putExtra("result", (GetPaymentListBean) adapter.getData().get(position));
             setResult(1, intent);
             finish();
         });

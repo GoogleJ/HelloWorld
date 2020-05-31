@@ -21,7 +21,7 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetSymbolPrice;
+import com.zxjk.duoduo.bean.response.GetPaymentListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -45,8 +45,8 @@ public class PayAliActivity extends BaseActivity {
     private EditText etMoney;
     private TextView tvVolumeDose;
 
-    private GetSymbolPrice result;
-    private ArrayList<GetSymbolPrice> list = new ArrayList<>();
+    private GetPaymentListBean result;
+    private ArrayList<GetPaymentListBean> list = new ArrayList<>();
 
     @SuppressLint("CheckResult")
     @Override
@@ -72,17 +72,14 @@ public class PayAliActivity extends BaseActivity {
         etMoney.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 String editText = s.toString().trim();
                 if (TextUtils.isEmpty(editText)) {
                     editText = "0.00000";
@@ -112,7 +109,6 @@ public class PayAliActivity extends BaseActivity {
                     handleApiError(t);
                     finish();
                 });
-
     }
 
     public void pay(View view) {

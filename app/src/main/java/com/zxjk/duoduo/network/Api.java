@@ -44,7 +44,6 @@ import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.duoduo.bean.response.GetSerialBean;
 import com.zxjk.duoduo.bean.response.GetSignListResponse;
 import com.zxjk.duoduo.bean.response.GetSymbolInfo;
-import com.zxjk.duoduo.bean.response.GetSymbolPrice;
 import com.zxjk.duoduo.bean.response.GetSymbolSerialResponse;
 import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetUInvitationUrlBean;
@@ -847,5 +846,5 @@ public interface Api {
                                                     @Field("currency") String currency);
 
     @POST("duoduo/order/getSymbolPrice")
-    Observable<BaseResponse<ArrayList<GetSymbolPrice>>> getSymbolPrice();
+    Observable<BaseResponse<ArrayList<GetPaymentListBean>>> getSymbolPrice();
 }
