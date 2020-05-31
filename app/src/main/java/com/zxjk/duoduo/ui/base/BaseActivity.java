@@ -247,7 +247,10 @@ public class BaseActivity extends RxAppCompatActivity {
 
     @Override
     public void finish() {
-        KeyboardUtils.hideSoftInput(this);
+        try {
+            KeyboardUtils.hideSoftInput(this);
+        } catch (Exception e) {
+        }
         super.finish();
     }
 
