@@ -61,13 +61,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.msgpage.AddressListSearchActivity"/>
+        <activity android:name=".ui.msgpage.AddressListSearchActivity" />
         <activity android:name=".ui.findpage.HilamgServiceActivity" />
         <activity android:name=".ui.webcast.LivePlayBackActivity" />
         <activity android:name=".ui.webcast.VideoAddressActivity" />
         <activity android:name=".ui.externalfunc.ThirdPartPayResultActivity" />
         <activity android:name=".ui.externalfunc.PayConfirmActivity" />
-        <activity android:name=".ui.wallet.PayAliActivity" />
+        <activity android:name=".ui.wallet.PayAliActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity
             android:name=".ui.cast.WechatChatRoomManageActivity"
             android:launchMode="singleTop"

@@ -66,6 +66,7 @@ import com.zxjk.duoduo.rongIM.plugin.CastPlugin;
 import com.zxjk.duoduo.rongIM.plugin.FilePlugin;
 import com.zxjk.duoduo.rongIM.plugin.RedPacketPlugin;
 import com.zxjk.duoduo.rongIM.plugin.SightPlugin;
+import com.zxjk.duoduo.rongIM.plugin.SocialApplicationPlugin;
 import com.zxjk.duoduo.rongIM.plugin.TransferPlugin;
 import com.zxjk.duoduo.ui.EnlargeImageActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
@@ -788,6 +789,8 @@ public class ConversationActivity extends BaseActivity {
 
                             handleGroupPlugin(groupInfo);
 
+                            handleGroupApplication();
+
                             this.groupInfo = groupInfo;
 
                             handleGroupOwnerInit();
@@ -910,6 +913,10 @@ public class ConversationActivity extends BaseActivity {
 
                 break;
         }
+    }
+
+    private void handleGroupApplication() {
+
     }
 
     private void setFullScreen() {
@@ -1156,6 +1163,8 @@ public class ConversationActivity extends BaseActivity {
                     }
                 }
             }
+            pluginModules.add(new SocialApplicationPlugin());
+
         }
     }
 

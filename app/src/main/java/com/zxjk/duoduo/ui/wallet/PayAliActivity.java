@@ -1,6 +1,7 @@
 package com.zxjk.duoduo.ui.wallet;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import com.zxjk.duoduo.utils.MD5Utils;
 import com.zxjk.duoduo.utils.MoneyValueFilter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class PayAliActivity extends BaseActivity {
@@ -50,7 +53,7 @@ public class PayAliActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_ali);
-        BarUtils.setStatusBarColor(this, Color.parseColor("#272E3F"));
+        BarUtils.transparentStatusBar(this);
         FrameLayout flTop = findViewById(R.id.flTop);
         BarUtils.addMarginTopEqualStatusBarHeight(flTop);
 
@@ -59,6 +62,7 @@ public class PayAliActivity extends BaseActivity {
         ivCoinIcon = findViewById(R.id.ivCoinIcon);
         tvCoin = findViewById(R.id.tvCoin);
         etMoney = findViewById(R.id.etMoney);
+
         tvVolumeDose = findViewById(R.id.tv_volume_dose);
 
         etMoney.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(2)});
@@ -86,7 +90,7 @@ public class PayAliActivity extends BaseActivity {
                 }else {
                     BigDecimal num1 = new BigDecimal(editText);
                     BigDecimal num2 = new BigDecimal(result.getPrice());
-                    BigDecimal volumeDose = num1.multiply(num2);
+                    BigDecimal volumeDose = num1.divide(num2,5,RoundingMode.CEILING);
                     tvVolumeDose.setText("≈ " + volumeDose.toString().trim() + result.getSymbol());
                 }
             }

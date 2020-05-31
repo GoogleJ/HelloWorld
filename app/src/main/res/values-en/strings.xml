@@ -1039,4 +1039,5 @@
     <string name="money3">金额</string>
     <string name="tipssss">钱包资产可直接转账到支付宝或微信</string>
     <string name="paysuccess">支付成功</string>
+    <string name="socialApplication">群应用</string>
 </resources>

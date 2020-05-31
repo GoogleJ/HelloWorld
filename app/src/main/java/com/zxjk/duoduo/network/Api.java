@@ -844,7 +844,7 @@ public interface Api {
     Observable<BaseResponse<String>> addSubmitOrder(@Field("payPwd") String payPwd,
                                                     @Field("qrcode") String qrcode,
                                                     @Field("payAmount") String payAmount,
-                                                    @Field("payPwd") String currency);
+                                                    @Field("currency") String currency);
 
     @POST("duoduo/order/getSymbolPrice")
     Observable<BaseResponse<ArrayList<GetSymbolPrice>>> getSymbolPrice();
