@@ -23,13 +23,13 @@ import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.base.BaseLazyFragment;
 import com.zxjk.duoduo.ui.minepage.DetailListActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
-public class WalletFragment extends BaseFragment {
+public class WalletFragment extends BaseLazyFragment {
     private final int REQUEST_ADD = 2;
 
     private ImageView ivShowOrHide;
@@ -109,13 +109,13 @@ public class WalletFragment extends BaseFragment {
                             }
                         }, this::handleApiError));
 
-        initData();
-
         return rootView;
     }
 
     @SuppressLint("CheckResult")
-    private void initData() {
+    @Override
+    public void loadData() {
+        super.loadData();
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getBalanceInfo()
                 .compose(bindToLifecycle())
@@ -150,7 +150,7 @@ public class WalletFragment extends BaseFragment {
         if (requestCode == REQUEST_ADD) {
             if (resultCode == 1) {
                 response = null;
-                initData();
+                loadData();
             }
         }
     }

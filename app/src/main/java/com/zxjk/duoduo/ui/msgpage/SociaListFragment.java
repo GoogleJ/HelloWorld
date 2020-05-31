@@ -17,12 +17,12 @@ import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.base.BaseLazyFragment;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import io.rong.imkit.RongIM;
 
-public class SociaListFragment extends BaseFragment {
+public class SociaListFragment extends BaseLazyFragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private BaseQuickAdapter<CommunityListBean, BaseViewHolder> adapter;
@@ -33,11 +33,16 @@ public class SociaListFragment extends BaseFragment {
 
         rootView = inflater.inflate(R.layout.fragment_socoa_list, container, false);
 
-        initView();
-
-        initData();
-
         return rootView;
+    }
+
+    @Override
+    public void loadData() {
+        super.loadData();
+
+        initView();
+        initData();
+        getCommunityList();
     }
 
     private void initView() {
@@ -47,7 +52,7 @@ public class SociaListFragment extends BaseFragment {
     }
 
     private void initData() {
-        swipeRefreshLayout.setOnRefreshListener(this::communityList);
+        swipeRefreshLayout.setOnRefreshListener(this::getCommunityList);
 
         adapter = new BaseQuickAdapter<CommunityListBean, BaseViewHolder>(R.layout.item_socia_list, null) {
             @Override
@@ -74,7 +79,7 @@ public class SociaListFragment extends BaseFragment {
     }
 
     @SuppressLint("CheckResult")
-    private void communityList() {
+    private void getCommunityList() {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .communityList()
                 .compose(bindToLifecycle())
@@ -91,11 +96,5 @@ public class SociaListFragment extends BaseFragment {
                     }
                 })
                 .subscribe(adapter::replaceData, this::handleApiError);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        communityList();
     }
 }

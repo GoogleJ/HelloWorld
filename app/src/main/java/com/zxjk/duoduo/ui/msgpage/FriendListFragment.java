@@ -20,7 +20,7 @@ import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.base.BaseLazyFragment;
 import com.zxjk.duoduo.ui.msgpage.adapter.BaseContactAdapter;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
 import com.zxjk.duoduo.utils.PinYinUtils;
@@ -33,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FriendListFragment extends BaseFragment {
+public class FriendListFragment extends BaseLazyFragment {
     @BindView(R.id.m_contact_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.index_view)
@@ -54,6 +54,12 @@ public class FriendListFragment extends BaseFragment {
 
         ButterKnife.bind(this, rootView);
 
+        return rootView;
+    }
+
+    @Override
+    public void loadData() {
+        super.loadData();
         refreshLayout.setOnRefreshListener(this::getFriendListInfoById);
         refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTheme));
 
@@ -63,7 +69,7 @@ public class FriendListFragment extends BaseFragment {
 
         initFoot();
 
-        return rootView;
+        getFriendListInfoById();
     }
 
     private void initIndexView() {
@@ -149,11 +155,5 @@ public class FriendListFragment extends BaseFragment {
         }
         Comparator<FriendInfoResponse> comparator = (o1, o2) -> o1.getSortLetters().compareTo(o2.getSortLetters());
         Collections.sort(list, comparator);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getFriendListInfoById();
     }
 }

@@ -20,7 +20,7 @@ import com.blankj.utilcode.util.BarUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.HomeActivity;
-import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.base.BaseLazyFragment;
 import com.zxjk.duoduo.ui.widget.ContactTitleView;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
@@ -32,14 +32,14 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 
-public class ContactFragment extends BaseFragment {
+public class ContactFragment extends BaseLazyFragment {
     private LinearLayout llSearch;
     private MagicIndicator indicator;
     private ViewPager pager;
     private int[] mTitleDataList = new int[]{R.string.friend, R.string.social};
     private View dotNewFriend;
 
-    public View getDotNewFriend(){
+    public View getDotNewFriend() {
         return dotNewFriend;
     }
 
@@ -49,7 +49,13 @@ public class ContactFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
 
-        dotNewFriend= rootView.findViewById(R.id.dotNewFriend);
+        return rootView;
+    }
+
+    @Override
+    public void loadData() {
+        super.loadData();
+        dotNewFriend = rootView.findViewById(R.id.dotNewFriend);
 
         llSearch = rootView.findViewById(R.id.llSearch);
         llSearch.setOnClickListener(v -> {
@@ -85,12 +91,10 @@ public class ContactFragment extends BaseFragment {
         initIndicator();
         initPager();
         ViewPagerHelper.bind(indicator, pager);
-
-        return rootView;
     }
 
     private void initPager() {
-        pager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT) {
+        pager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -102,7 +106,7 @@ public class ContactFragment extends BaseFragment {
                 return 2;
             }
         });
-        pager.setOffscreenPageLimit(3);
+        pager.setOffscreenPageLimit(2);
     }
 
     private void initIndicator() {

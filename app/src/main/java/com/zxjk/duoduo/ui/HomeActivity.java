@@ -677,7 +677,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         msgFragment.setOnHeadClick(() -> drawer.switchState());
 
-        pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT) {
+        pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -702,7 +702,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             }
         });
-        pager.setOffscreenPageLimit(2);
+        pager.setOffscreenPageLimit(3);
 
         pager.addOnPageChangeListener(
                 new ViewPager.SimpleOnPageChangeListener() {
