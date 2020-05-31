@@ -67,6 +67,7 @@
         <activity android:name=".ui.webcast.VideoAddressActivity" />
         <activity android:name=".ui.externalfunc.ThirdPartPayResultActivity" />
         <activity android:name=".ui.externalfunc.PayConfirmActivity" />
+        <activity android:name=".ui.wallet.PayAliActivity" />
         <activity
             android:name=".ui.cast.WechatChatRoomManageActivity"
             android:launchMode="singleTop"

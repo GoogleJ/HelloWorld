@@ -1265,6 +1265,9 @@
     <string name="community_icon">社群图标</string>
     <string name="loading_pleasewait">正在连接中，请稍后</string>
     <string name="loading1">连接中...</string>
+    <string name="money3">金额</string>
+    <string name="tipssss">钱包资产可直接转账到支付宝或微信</string>
+    <string name="paysuccess">支付成功</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

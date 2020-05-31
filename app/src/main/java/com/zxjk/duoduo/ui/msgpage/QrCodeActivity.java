@@ -31,6 +31,7 @@ import com.zxjk.duoduo.ui.minepage.scanuri.Action1;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialQRCodeActivity;
+import com.zxjk.duoduo.ui.wallet.PayAliActivity;
 import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
@@ -128,6 +129,15 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
             return;
         }
 
+        if (parseShareResult(result)) return;
+
+        if (!TextUtils.isEmpty(result) && result.contains("qr.alipay.com") || result.contains("QR.ALIPAY.COM")) {
+            Intent intent = new Intent(this, PayAliActivity.class);
+            intent.putExtra("qrdata", result);
+            startActivity(intent);
+            finish();
+            return;
+        }
         if (!TextUtils.isEmpty(actionType)) {
             if (actionType.equals(ACTION_IMPORT_WALLET)) {
                 Intent resultIntent = new Intent();
@@ -198,6 +208,37 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
                     .subscribe(l -> zxingview.startSpot());
         }
     }
+
+    private boolean parseShareResult(String result) {
+        if (result.contains(Constant.APP_SHARE_URL)) {
+            try {
+                String[] shareStrings = result.split("\\?");
+
+                String decryptResult = AesUtil.getInstance().decrypt(shareStrings[1]);
+
+                if (decryptResult.contains("groupId")) {
+                    //groupQR
+                    String groupId = decryptResult.split("=")[1];
+
+                    Intent intent = new Intent(this, AgreeGroupChatActivity.class);
+                    intent.putExtra("groupId", groupId);
+
+                    startActivity(intent);
+                    finish();
+                } else {
+                    //userQR
+                    String userId = decryptResult.split("=")[1];
+                    CommonUtils.resolveFriendList(this, userId, true);
+                }
+            } catch (Exception e) {
+                return false;
+            }
+
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void onCameraAmbientBrightnessChanged(boolean isDark) {
