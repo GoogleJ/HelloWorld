@@ -195,13 +195,7 @@ public class ConversationActivity extends BaseActivity {
         extension = findViewById(io.rong.imkit.R.id.rc_extension);
 
         if (conversationType.equals("system")) {
-            tvTitle = findViewById(R.id.tv_title);
-            targetId = getIntent().getData().getQueryParameter("targetId");
-            switch (targetId) {
-                case "38":
-                    tvTitle.setText(R.string.hilamg_official);
-                    break;
-            }
+            findViewById(R.id.ll).setVisibility(View.GONE);
             extension.removeAllViews();
             return;
         }
@@ -1478,6 +1472,7 @@ public class ConversationActivity extends BaseActivity {
         //private logic
         if (targetId.equals(Constant.userId)) {
             rl_end.setVisibility(View.GONE);
+            findViewById(R.id.ll).setVisibility(View.GONE);
         }
         if (targetUserInfo != null) {
             findViewById(R.id.ivLock).setVisibility(View.VISIBLE);
