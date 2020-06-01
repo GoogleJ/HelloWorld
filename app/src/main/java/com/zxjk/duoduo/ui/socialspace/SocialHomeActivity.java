@@ -78,10 +78,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
-import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
-import io.rong.message.InformationNotificationMessage;
 
 public class SocialHomeActivity extends BaseActivity {
 
@@ -226,34 +222,11 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .compose(RxSchedulers.normalTrans())
                                                 .subscribe(s -> {
-                                                    inflate.setVisibility(View.GONE);
-
-
-                                                    indicatorTop.setVisibility(View.VISIBLE);
-                                                    llSocialNotice.setVisibility(View.VISIBLE);
-                                                    pagerOut.setVisibility(View.VISIBLE);
-                                                    llInviteOrRemove.setVisibility(View.VISIBLE);
-
-                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"" + getString(R.string.enterSocial));
-                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
-                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-
-                                                    contentEnable = true;
-
-                                                    parseCaltureResult(s);
-
-                                                    CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
-                                                    membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
-                                                    membersBean.setIdentity("0");
-                                                    response.setIdentity("0");
-                                                    response.getMembers().add(membersBean);
-
+                                                    Intent intent = new Intent(this, HomeActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+                                                    finish();
                                                     RongIM.getInstance().startGroupChat(this, groupId, "");
-
-                                                    membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
-                                                    }.getType());
-                                                    initAdapter();
                                                 }, this::handleApiError));
                             } else if (r.getType().equals("pay")) {
                                 View inflate = viewStubPay.inflate();
@@ -269,30 +242,11 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.normalTrans())
                                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .subscribe(s -> {
-                                                    inflate.setVisibility(View.GONE);
-
-                                                    indicatorTop.setVisibility(View.VISIBLE);
-                                                    llSocialNotice.setVisibility(View.VISIBLE);
-                                                    pagerOut.setVisibility(View.VISIBLE);
-                                                    llInviteOrRemove.setVisibility(View.VISIBLE);
-
-                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"" + getString(R.string.enterSocial));
-                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
-                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-
-                                                    contentEnable = true;
-                                                    parseCaltureResult(s);
-
-                                                    CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
-                                                    membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
-                                                    membersBean.setIdentity("0");
-                                                    response.setIdentity("0");
-                                                    response.getMembers().add(membersBean);
+                                                    Intent intent = new Intent(this, HomeActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+                                                    finish();
                                                     RongIM.getInstance().startGroupChat(this, groupId, "");
-                                                    membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
-                                                    }.getType());
-                                                    initAdapter();
                                                 }, this::handleApiError)));
                             }
                         } else {
@@ -772,7 +726,7 @@ public class SocialHomeActivity extends BaseActivity {
         Intent intent = new Intent(this, SocialQRCodeActivity.class);
         intent.putExtra("type", "3");
         intent.putExtra("data", response);
-        intent.putExtra("groupId",groupId);
+        intent.putExtra("groupId", groupId);
         startActivityForResult(intent, REQUEST_NOTICE);
     }
 
@@ -780,7 +734,7 @@ public class SocialHomeActivity extends BaseActivity {
         if (ivToolBarStart.getVisibility() != View.VISIBLE) {
             return;
         }
-            finish();
+        finish();
     }
 
     @SuppressLint("CheckResult")
