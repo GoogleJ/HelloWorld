@@ -44,6 +44,10 @@ import com.shehuan.nicedialog.ViewHolder;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
@@ -71,6 +75,7 @@ import com.zxjk.duoduo.ui.msgpage.MyQrCodeActivity;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.wallet.WalletFragment;
 import com.zxjk.duoduo.ui.widget.DrawerView;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
@@ -656,6 +661,16 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     public void service(View view) {
         drawer.close(new Intent(this, OnlineServiceActivity.class));
+    }
+
+    public void invite(View view){
+        UMWeb link = new UMWeb(Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId ));
+        link.setTitle("我在使用Hilamg聊天");
+        link.setDescription("加密私聊、社群管理、数字\n" +
+                "支付尽在Hilamg ，你也来\n" +
+                "试试吧～");
+        link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo3));
+        new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
     }
 
     public void hilamgService(View view) {

@@ -239,7 +239,7 @@ public class CreateWechatCastActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void mobileTerminal(View view) {
-        ToastUtils.showShort("手机端直播暂未开发");
+        ToastUtils.showShort(getString(R.string.toast2));
     }
 
     public void pcLive(View view) {

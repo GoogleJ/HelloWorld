@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
+        android:background="#0083BF"
         android:orientation="horizontal">
 
         <FrameLayout
@@ -35,7 +36,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/edit_social_web"
-            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textColor="@color/white"
             android:textSize="17sp" />
 
         <TextView
@@ -45,7 +47,7 @@
             android:gravity="center"
             android:onClick="save"
             android:text="@string/save"
-            android:textColor="@color/colorTheme"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
     </LinearLayout>

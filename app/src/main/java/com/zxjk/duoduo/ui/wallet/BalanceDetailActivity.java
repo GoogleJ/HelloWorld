@@ -87,14 +87,14 @@ public class BalanceDetailActivity extends BaseActivity {
 
     @Override
     public void finish() {
-        if (fromTrade) {
-            overridePendingTransition(0, 0);
-            Intent intent = new Intent(this, BalanceLeftActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        } else {
+//        if (fromTrade) {
+//            overridePendingTransition(0, 0);
+//            Intent intent = new Intent(this, BalanceLeftActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(intent);
+//        } else {
             super.finish();
-        }
+//        }
     }
 
     private void initAdapter() {

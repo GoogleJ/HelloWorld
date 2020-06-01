@@ -865,7 +865,7 @@ public class ConversationActivity extends BaseActivity {
                                     exitFullScreen();
                                     findViewById(R.id.conversation).setVisibility(View.VISIBLE);
                                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                                    findViewById(R.id.title).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.rlTitle).setVisibility(View.VISIBLE);
                                     ll_GroupNikeName.setVisibility(View.GONE);
                                     stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.GONE);
                                 });
