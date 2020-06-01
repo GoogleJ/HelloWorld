@@ -204,7 +204,7 @@ public class AddressListSearchActivity extends BaseActivity {
                 break;
             }
         }
-        if (communityLists.size() <= 0) {
+
             View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
             emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
@@ -213,9 +213,9 @@ public class AddressListSearchActivity extends BaseActivity {
             app_type.setImageResource(R.drawable.ic_empty_nosearch);
             app_prompt_text.setText(R.string.empty_nosearch);
             socialAdapter.setEmptyView(emptyView);
-        } else {
+
             socialAdapter.setNewData(communityLists);
-        }
+
 
     }
 
@@ -238,7 +238,6 @@ public class AddressListSearchActivity extends BaseActivity {
             }
         }
 
-        if (friendInfoLists.size() <= 0) {
             View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
             emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
@@ -247,9 +246,9 @@ public class AddressListSearchActivity extends BaseActivity {
             app_type.setImageResource(R.drawable.ic_empty_nosearch);
             app_prompt_text.setText(getString(R.string.no_search));
             friendAdapter.setEmptyView(emptyView);
-        } else {
+
             friendAdapter.setNewData(friendInfoLists);
-        }
+
     }
 
     public void cancel(View view) {

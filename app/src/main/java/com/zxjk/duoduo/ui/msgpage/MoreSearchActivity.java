@@ -161,7 +161,6 @@ public class MoreSearchActivity extends BaseActivity {
             }
         }
 
-        if (friendInfoLists.isEmpty()) {
             View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
             emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
@@ -170,9 +169,7 @@ public class MoreSearchActivity extends BaseActivity {
             app_type.setImageResource(R.drawable.ic_empty_nosearch);
             app_prompt_text.setText(getString(R.string.no_search));
             friendListAdapter.setEmptyView(emptyView);
-        } else {
             friendListAdapter.setNewData(friendInfoLists);
-        }
     }
 
     private void searchSocialList(String keyWord) {
@@ -190,7 +187,6 @@ public class MoreSearchActivity extends BaseActivity {
                 break;
             }
         }
-        if (communityLists.isEmpty()) {
             View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
             emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
@@ -199,9 +195,7 @@ public class MoreSearchActivity extends BaseActivity {
             app_type.setImageResource(R.drawable.ic_empty_nosearch);
             app_prompt_text.setText(R.string.empty_nosearch);
             socialListAdapter.setEmptyView(emptyView);
-        } else {
             socialListAdapter.setNewData(communityLists);
-        }
     }
 
     private void initData() {
