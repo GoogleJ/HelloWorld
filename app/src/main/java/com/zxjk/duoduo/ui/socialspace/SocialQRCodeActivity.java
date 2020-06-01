@@ -122,7 +122,7 @@ public class SocialQRCodeActivity extends BaseActivity {
         UMWeb link = new UMWeb(uri2Code);
         link.setTitle("邀请你加入群聊");
         link.setDescription("邀请你加入“" + data.getName() + "”");
-        link.setThumb(new UMImage(this, R.mipmap.ic_launcher_round));
+        link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo2));
         new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
     }
 
@@ -130,7 +130,7 @@ public class SocialQRCodeActivity extends BaseActivity {
         UMWeb link = new UMWeb(uri2Code);
         link.setTitle("邀请你加入群聊");
         link.setDescription("邀请你加入“" + data.getName() + "”");
-        link.setThumb(new UMImage(this, R.mipmap.ic_launcher_round));
+        link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo2));
         new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).share();
     }
 
