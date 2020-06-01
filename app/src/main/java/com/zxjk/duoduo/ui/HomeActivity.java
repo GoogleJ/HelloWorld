@@ -669,7 +669,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         link.setDescription("加密私聊、社群管理、数字\n" +
                 "支付尽在Hilamg ，你也来\n" +
                 "试试吧～");
-        link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo3));
+        link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo4));
         new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
     }
 

@@ -106,7 +106,7 @@ public class ContactFragment extends BaseLazyFragment {
                 return 2;
             }
         });
-        pager.setOffscreenPageLimit(2);
+        pager.setOffscreenPageLimit(3);
     }
 
     private void initIndicator() {
