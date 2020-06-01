@@ -21,20 +21,19 @@
             <TextView
                 android:id="@+id/tv_topic"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="CYTT中国财富"
                 android:textColor="@color/black"
                 android:ellipsize="end"
-                android:layout_marginTop="8dp"
                 android:textSize="16sp"
-                android:maxLines="2"/>
+                android:maxLines="2"
+                android:layout_marginTop="8dp"/>
 
             <TextView
                 android:id="@+id/tv_start_time"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="2020-03-12 10:35:00"
                 android:gravity="bottom"
                 android:textColor="#999999"

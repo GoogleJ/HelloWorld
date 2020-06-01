@@ -265,7 +265,6 @@ public class SocialHomeActivity extends BaseActivity {
                     tvSocialName.setText(r.getName());
                     GlideUtil.loadNormalImg(ivBg, r.getBgi());
                     GlideUtil.loadNormalImg(ivHead, r.getLogo());
-                    tvTitle.setText(r.getName());
                     tvSocialCode.setText(getString(R.string.social_code) + r.getCode());
                     tvNotice.setText(r.getAnnouncement());
 

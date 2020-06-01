@@ -387,8 +387,9 @@
                             android:gravity="center"
                             android:singleLine="true"
                             android:textColor="#020818"
+                            android:textStyle="bold"
                             android:textSize="17sp"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/tvSocialCode"

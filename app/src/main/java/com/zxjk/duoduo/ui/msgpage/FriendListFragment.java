@@ -158,4 +158,10 @@ public class FriendListFragment extends BaseLazyFragment {
         Comparator<FriendInfoResponse> comparator = (o1, o2) -> o1.getSortLetters().compareTo(o2.getSortLetters());
         Collections.sort(list, comparator);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFriendListInfoById();
+    }
 }

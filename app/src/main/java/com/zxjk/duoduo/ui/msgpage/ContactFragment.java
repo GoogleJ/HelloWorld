@@ -139,4 +139,6 @@ public class ContactFragment extends BaseLazyFragment {
 
         indicator.setNavigator(navigator);
     }
+
+
 }
