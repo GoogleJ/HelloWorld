@@ -144,7 +144,7 @@ OBS下载地址：https://obsproject.com/\n
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/shape_3dcc9c_5"
+        android:background="@drawable/shape_theme"
         android:gravity="center"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"

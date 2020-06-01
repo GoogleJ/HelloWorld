@@ -347,7 +347,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:background="@drawable/shape_4182f9_5"
+                        android:background="@drawable/shape_theme"
                         android:gravity="center"
                         android:onClick="invite"
                         android:paddingTop="10dp"
