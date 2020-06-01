@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
@@ -23,6 +24,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseLazyFragment;
 import com.zxjk.duoduo.ui.msgpage.adapter.BaseContactAdapter;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
+import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.PinYinUtils;
 
 import java.util.ArrayList;
@@ -142,7 +144,7 @@ public class FriendListFragment extends BaseLazyFragment {
                 })
                 .subscribe(friendList -> {
                     list = friendList;
-
+                    MMKVUtils.getInstance().enCode("FriendInfoResponse", GsonUtils.toJson(friendList));
                     mAdapter.setNewData(list);
 
                     initFoot();

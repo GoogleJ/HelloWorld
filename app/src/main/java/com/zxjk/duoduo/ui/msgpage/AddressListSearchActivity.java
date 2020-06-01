@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -20,21 +19,22 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.google.gson.reflect.TypeToken;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
-import com.zxjk.duoduo.bean.response.GetRecommendCommunity;
-import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
-import com.zxjk.duoduo.network.Api;
-import com.zxjk.duoduo.network.ServiceFactory;
-import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.MMKVUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddressListSearchActivity extends BaseActivity {
     private RecyclerView recyclerViewFriend;
@@ -50,10 +50,27 @@ public class AddressListSearchActivity extends BaseActivity {
     private String pageSize = "3";
     private String keyWord;
 
+    private List<CommunityListBean> communityList;
+    private List<CommunityListBean> communityLists = new ArrayList<>();
+    private List<FriendInfoResponse> friendInfoList;
+    private List<FriendInfoResponse> friendInfoLists = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_list_search);
+
+        String CommunityListBean = MMKVUtils.getInstance().decodeString("CommunityListBean");
+        if (!TextUtils.isEmpty(CommunityListBean)) {
+            communityList = GsonUtils.fromJson(CommunityListBean, new TypeToken<List<CommunityListBean>>() {
+            }.getType());
+        }
+        String FriendInfoResponse = MMKVUtils.getInstance().decodeString("FriendInfoResponse");
+        if (!TextUtils.isEmpty(FriendInfoResponse)) {
+            friendInfoList = GsonUtils.fromJson(FriendInfoResponse, new TypeToken<List<FriendInfoResponse>>() {
+            }.getType());
+        }
 
         initView();
 
@@ -84,15 +101,16 @@ public class AddressListSearchActivity extends BaseActivity {
         tvTitle.setText(R.string.contact_search);
 
         findViewById(R.id.tv_more_friend).setOnClickListener(v -> {
-            Intent intent = new Intent(this, GlobalSearchActivity.class);
-            intent.putExtra("searchText",searchEdit.getText().toString());
+            Intent intent = new Intent(this, MoreSearchActivity.class);
+            intent.putExtra("searchText", searchEdit.getText().toString());
+            intent.putExtra("type","0");
             startActivity(intent);
         });
 
         findViewById(R.id.tv_more_social).setOnClickListener(v -> {
-            Intent intent = new Intent(this, SearchGroupActivity.class);
-
-            intent.putExtra("searchText",searchEdit.getText().toString());
+            Intent intent = new Intent(this, MoreSearchActivity.class);
+            intent.putExtra("searchText", searchEdit.getText().toString());
+            intent.putExtra("type","1");
             startActivity(intent);
         });
 
@@ -151,9 +169,9 @@ public class AddressListSearchActivity extends BaseActivity {
         recyclerViewFriend.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewFriend.setAdapter(friendAdapter);
 
-        socialAdapter = new BaseQuickAdapter<SearchCommunityResponse.ListBean, BaseViewHolder>(R.layout.item_publicgroup) {
+        socialAdapter = new BaseQuickAdapter<CommunityListBean, BaseViewHolder>(R.layout.item_publicgroup) {
             @Override
-            protected void convert(BaseViewHolder helper, SearchCommunityResponse.ListBean item) {
+            protected void convert(BaseViewHolder helper, CommunityListBean item) {
                 helper.setText(R.id.group_nike_name, item.getCommunityName())
                         .setText(R.id.group_sign, item.getIntroduction())
                         .setText(R.id.group_owner_name, getString(R.string.creater, item.getOwnerNick()))
@@ -163,13 +181,12 @@ public class AddressListSearchActivity extends BaseActivity {
         };
 
         socialAdapter.setOnItemClickListener((adapter, view, position) -> {
-            SearchCommunityResponse.ListBean listBean = (SearchCommunityResponse.ListBean) adapter.getData().get(position);
+            CommunityListBean listBean = (CommunityListBean) adapter.getData().get(position);
             Intent intent = new Intent(this, SocialHomeActivity.class);
             intent.putExtra("id", listBean.getGroupId());
 
             startActivity(intent);
         });
-
 
         recyclerViewSocial.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewSocial.setAdapter(socialAdapter);
@@ -178,49 +195,61 @@ public class AddressListSearchActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void searchCommunity(String data) {
+        communityLists.clear();
+        for (int i = 0; i < communityList.size(); i++) {
+            if (communityList.get(i).getCommunityName().contains(data)) {
+                communityLists.add(communityList.get(i));
+            }
+            if (communityLists.size() == 3) {
+                break;
+            }
+        }
+        if (communityLists.size() <= 0) {
+            View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
+            emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            ImageView app_type = emptyView.findViewById(R.id.app_type);
+            TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
+            app_type.setImageResource(R.drawable.ic_empty_nosearch);
+            app_prompt_text.setText(R.string.empty_nosearch);
+            socialAdapter.setEmptyView(emptyView);
+        } else {
+            socialAdapter.setNewData(communityLists);
+        }
 
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .searchCommunity(data, currentPage, Integer.valueOf(pageSize))
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
-                .subscribe(b -> {
-                    if (b.getList().size() <= 0) {
-                        View emptyView2 = LayoutInflater.from(this).inflate(R.layout.empty_publicgroup, llTop2, false);
-                        ImageView iv2 = emptyView2.findViewById(R.id.iv);
-                        TextView tv2 = emptyView2.findViewById(R.id.tv);
-                        iv2.setImageResource(R.drawable.ic_empty_nosearch);
-                        tv2.setText(R.string.empty_nosearch);
-                        socialAdapter.setEmptyView(emptyView2);
-                    } else {
-                        socialAdapter.setNewData(b.getList());
-                    }
-
-                }, this::handleApiError);
     }
 
     @SuppressLint("CheckResult")
     private void searchCustomerInfo(String data, boolean isSearch) {
+        friendInfoLists.clear();
 
-        KeyboardUtils.hideSoftInput(this);
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .searchCustomerInfo(data, currentPage + "", pageSize)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(isSearch ? CommonUtils.initDialog(this, getString(R.string.searching)) : null))
-                .compose(RxSchedulers.normalTrans())
-                .subscribe(list -> {
-                    if (list.size() <= 0) {
-                        View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
-                        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT));
-                        ImageView app_type = emptyView.findViewById(R.id.app_type);
-                        TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
-                        app_type.setImageResource(R.drawable.ic_empty_nosearch);
-                        app_prompt_text.setText(getString(R.string.no_search));
-                        friendAdapter.setEmptyView(emptyView);
-                    }
-                    friendAdapter.setNewData(list);
-                });
+        for (int i = 0; i < friendInfoList.size(); i++) {
+            if (!TextUtils.isEmpty(friendInfoList.get(i).getRemark())) {
+                if (friendInfoList.get(i).getRemark().contains(data)) {
+                    friendInfoLists.add(friendInfoList.get(i));
+                }
+            } else {
+                if (friendInfoList.get(i).getNick().contains(data)) {
+                    friendInfoLists.add(friendInfoList.get(i));
+                }
+            }
+            if (friendInfoLists.size() == 3) {
+                break;
+            }
+        }
+
+        if (friendInfoLists.size() <= 0) {
+            View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
+            emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            ImageView app_type = emptyView.findViewById(R.id.app_type);
+            TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
+            app_type.setImageResource(R.drawable.ic_empty_nosearch);
+            app_prompt_text.setText(getString(R.string.no_search));
+            friendAdapter.setEmptyView(emptyView);
+        } else {
+            friendAdapter.setNewData(friendInfoLists);
+        }
     }
 
     public void cancel(View view) {
