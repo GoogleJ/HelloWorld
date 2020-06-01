@@ -102,7 +102,7 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                     }
                                     String text = getString(R.string.current_receive, response.getRedPackageInfo().getReceiveCount(), String.valueOf(response.getRedPackageInfo().getNumber()));
                                     int number = response.getRedPackageInfo().getNumber();
-                                    tips.setText(getString(R.string.xxx_red_total_xxx, String.valueOf(number), response.getRedPackageInfo().getMoney() + response.getRedPackageInfo().getSymbol() + text));
+                                    tips.setText(getString(R.string.xxx_red_total_xxx, String.valueOf(number)) + text);
                                     adapter.setSymbol(response.getRedPackageInfo().getSymbol());
                                     adapter.setData(response.getCustomerInfo());
                                 }, this::handleApiError);

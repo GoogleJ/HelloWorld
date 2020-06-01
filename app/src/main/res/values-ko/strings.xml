@@ -914,7 +914,7 @@
     <string name="social_public1">사군 공개 기능 조작 여부</string>
     <string name="owner_open_slowmode">소유자가 느린 모드를 설정했으며 말하기 간격은 다음과 같습니다:%1$s%2$s</string>
     <string name="current_receive">(청구 된%1$s/%2$s)</string>
-    <string name="xxx_red_total_xxx">%1$s빨간 봉투,%2$s</string>
+    <string name="xxx_red_total_xxx">%1$s빨간 봉투</string>
     <string name="wait_for_xxx_confirm_receive">친구%1$s의 영수증 확인을 기다리십시오</string>
     <string name="red_money">빨간봉투 금액은%1$s,상대방 수령하기를 기자리다</string>
     <string name="red_money1">빨간봉투 금액은%1$s,상대방 수령하였습니다</string>

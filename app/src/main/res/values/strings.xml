@@ -954,7 +954,7 @@
     <string name="social_public1">是否确定操作社群公开功能</string>
     <string name="owner_open_slowmode">群主开启了慢速模式,发言间隔:%1$s%2$s</string>
     <string name="current_receive">（已领取%1$s/%2$s个）</string>
-    <string name="xxx_red_total_xxx">%1$s个红包，共%2$s</string>
+    <string name="xxx_red_total_xxx">%1$s个红包</string>
     <string name="wait_for_xxx_confirm_receive">待好友%1$s确认收款</string>
     <string name="red_money">红包金额%1$s,等待对方领取</string>
     <string name="red_money1">红包金额%1$s,已被领取</string>
