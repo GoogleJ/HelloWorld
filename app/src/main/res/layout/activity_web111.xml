@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_webview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-
-    <FrameLayout
-        android:id="@+id/fl_webview"
+    <LinearLayout
+        android:id="@+id/llTop"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
-        <com.zxjk.duoduo.ui.widget.ProgressView
-            android:id="@+id/pb_webview"
-            android:layout_width="match_parent"
-            android:layout_height="3dp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="back"
+            android:src="@drawable/fake"
+            android:visibility="invisible" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="back"
+            android:src="@drawable/fake" />
+
+    </LinearLayout>
+
+    <com.zxjk.duoduo.ui.widget.ProgressView
+        android:id="@+id/pb_webview"
+        android:layout_width="match_parent"
+        android:layout_height="3dp" />
+
+</FrameLayout>
+

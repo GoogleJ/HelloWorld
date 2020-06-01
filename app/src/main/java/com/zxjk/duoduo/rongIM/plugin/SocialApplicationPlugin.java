@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.view.View;
+import android.view.Gravity;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.EditListCommunityCultureResponse;
@@ -36,8 +35,6 @@ import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
 
 public class SocialApplicationPlugin extends BaseActivity implements IPluginModule {
-    private BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean,BaseViewHolder> adapter;
-    private RecyclerView recyclerView;
     @Override
     public Drawable obtainDrawable(Context context) {
         return context.getDrawable(R.drawable.ic_application);
@@ -51,44 +48,6 @@ public class SocialApplicationPlugin extends BaseActivity implements IPluginModu
     @SuppressLint("CheckResult")
     @Override
     public void onClick(Fragment fragment, RongExtension rongExtension) {
-
-
-        TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
-        showAnimation.setDuration(350);
-        TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
-        dismissAnimation.setDuration(500);
-        QuickPopup quickPopupBuilder = QuickPopupBuilder.with(fragment.getContext())
-                .contentView(R.layout.popup_social_application)
-                .config(new QuickPopupConfig()
-                        .withShowAnimation(showAnimation)
-                        .withDismissAnimation(dismissAnimation)
-                ).show();
-
-        ImageView img_pull_down = quickPopupBuilder.findViewById(R.id.img_pull_down);
-        img_pull_down.setOnClickListener(v -> quickPopupBuilder.dismiss());
-        recyclerView = quickPopupBuilder.findViewById(R.id.recycler_view);
-
-        adapter = new BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder>(R.layout.item_socialapplication) {
-            @Override
-            protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean item) {
-
-                ImageView ivAppIcon = helper.getView(R.id.ivAppIcon);
-                GlideUtil.loadNormalImg(ivAppIcon, item.getApplicationLogo());
-
-                helper.setText(R.id.tvTitle, item.getApplicationName());
-            }
-        };
-
-        adapter.setOnItemClickListener((adapter1, view, position) -> {
-            Intent intent = new Intent(fragment.getActivity(), WebActivity.class);
-            intent.putExtra("url",adapter.getData().get(position).getApplicationAddress());
-            intent.putExtra("title", adapter.getData().get(position).getApplicationName());
-            fragment.startActivity(intent);
-        });
-
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        recyclerView.setAdapter(adapter);
-
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .communityApplicationList(rongExtension.getTargetId())
                 .compose(bindToLifecycle())
@@ -106,11 +65,48 @@ public class SocialApplicationPlugin extends BaseActivity implements IPluginModu
                         applicationListBean.setIsOpen(r.getApplication().get(i).getIsOpen());
                         listBeans.add(applicationListBean);
                     }
+
+                    TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);
+                    showAnimation.setDuration(200);
+                    showAnimation.setInterpolator(new AccelerateInterpolator());
+                    TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, ScreenUtils.getScreenHeight());
+                    dismissAnimation.setDuration(400);
+                    QuickPopup popView = QuickPopupBuilder.with(fragment.getActivity())
+                            .contentView(R.layout.popup_social_application)
+                            .config(new QuickPopupConfig()
+                                    .withShowAnimation(showAnimation)
+                                    .withDismissAnimation(dismissAnimation)
+                                    .gravity(Gravity.BOTTOM)
+                            ).build();
+
+                    ImageView img_pull_down = popView.findViewById(R.id.img_pull_down);
+                    img_pull_down.setOnClickListener(v -> popView.dismiss());
+                    RecyclerView recyclerView = popView.findViewById(R.id.recycler_view);
+                    BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder> adapter
+                            = new BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder>(R.layout.item_socialapplication) {
+                        @Override
+                        protected void convert(BaseViewHolder helper, EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean item) {
+                            ImageView ivAppIcon = helper.getView(R.id.ivAppIcon);
+                            GlideUtil.loadNormalImg(ivAppIcon, item.getApplicationLogo());
+                            helper.setText(R.id.tvTitle, item.getApplicationName());
+                        }
+                    };
+
+                    adapter.setOnItemClickListener((adapter1, view, position) -> {
+                        Intent intent = new Intent(fragment.getActivity(), WebActivity.class);
+                        intent.putExtra("url", adapter.getData().get(position).getApplicationAddress());
+                        intent.putExtra("appName", adapter.getData().get(position).getApplicationName());
+                        intent.putExtra("fromSocialApp",true);
+                        fragment.startActivity(intent);
+                    });
+
+                    recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+                    recyclerView.setAdapter(adapter);
+
                     adapter.setNewData(listBeans);
+
+                    popView.showPopupWindow();
                 }, this::handleApiError);
-
-
-
     }
 
 }
