@@ -63,6 +63,7 @@ public class NewFriendActivity extends BaseActivity {
 
     NewFriendAdapter mAdapter;
     DeleteFriendInformationDialog dialog;
+    List<FriendInfoResponse> list = new ArrayList<>();
     private String uri2Code;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -72,7 +73,7 @@ public class NewFriendActivity extends BaseActivity {
         setContentView(R.layout.activity_new_friend);
         ButterKnife.bind(this);
 
-        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId );
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId);
 
         TextView tvContactHilamgId = findViewById(R.id.tvContactHilamgId);
         tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
@@ -103,8 +104,6 @@ public class NewFriendActivity extends BaseActivity {
         initUI();
     }
 
-    List<FriendInfoResponse> list = new ArrayList<>();
-
     protected void initUI() {
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.new_friend));
@@ -127,6 +126,15 @@ public class NewFriendActivity extends BaseActivity {
                 case R.id.m_add_btn_layout:
                     if (!isTrue) {
                         Intent intent = new Intent(NewFriendActivity.this, FriendDetailsActivity.class);
+                        intent.putExtra("friendId", mAdapter.getData().get(position).getId());
+                        startActivity(intent);
+                    }
+                    break;
+                case R.id.m_item_new_friend_icon:
+                case R.id.m_item_new_friend_message_label:
+                case R.id.m_item_new_friend_user_name_text:
+                    if (isTrue) {
+                        Intent intent = new Intent(NewFriendActivity.this, AddFriendDetailsActivity.class);
                         intent.putExtra("friendId", mAdapter.getData().get(position).getId());
                         startActivity(intent);
                     }

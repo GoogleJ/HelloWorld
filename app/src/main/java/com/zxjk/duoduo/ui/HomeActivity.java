@@ -478,13 +478,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         BadgeItem badgeItem = new BadgeItem();
         badgeItem.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.colorTheme)
+                .setBackgroundColorResource(R.color.red)
                 .setBorderWidth(0);
         badgeItem.setText("0");
 
         badgeItem2 = new BadgeItem();
         badgeItem2.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.colorTheme)
+                .setBackgroundColorResource(R.color.red)
                 .setBorderWidth(0);
 
         m_bottom_bar.setMode(BottomNavigationBar.MODE_FIXED);
