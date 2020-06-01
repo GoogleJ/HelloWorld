@@ -21,7 +21,7 @@
     <string name="de_actionbar_sub_group">"社群"</string>
     <string name="m_add_friend_contact_label_1">手机联系人</string>
     <string name="m_add_friend_scan_it_label_1">扫一扫</string>
-    <string name="m_personal_information_signature_text">添加到通讯录</string>
+    <string name="m_personal_information_signature_text">通过验证</string>
     <string name="m_verification_title_bar">验证申请</string>
     <string name="m_verification_send_btn">发送</string>
     <string name="m_item_contact_type_text">已添加</string>

@@ -12,10 +12,35 @@
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_pull_down" />
 
+    <LinearLayout
+        android:id="@+id/ll_customer_service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/social_app"
+            android:textColor="#272E3F"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:drawableStart="@drawable/ic_choose_cast_type_service"
+            android:drawablePadding="6dp"
+            android:text="联系客服开通更多应用"
+            android:textColor="#0083BF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="230dp"
         android:layout_marginTop="40dp"
         android:overScrollMode="never" />
 </LinearLayout>

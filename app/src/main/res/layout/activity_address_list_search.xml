@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -65,6 +65,7 @@
                 android:drawableEnd="@drawable/ic_next"
                 android:drawablePadding="8dp"
                 android:text="查看更多"
+                android:visibility="gone"
                 android:textColor="#6D7278" />
         </FrameLayout>
 
@@ -148,7 +149,8 @@
                     android:drawableEnd="@drawable/ic_next"
                     android:drawablePadding="8dp"
                     android:text="查看更多"
-                    android:textColor="#6D7278" />
+                    android:textColor="#6D7278"
+                    android:visibility="gone"/>
             </FrameLayout>
         </LinearLayout>
 

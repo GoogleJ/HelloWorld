@@ -1,10 +1,14 @@
 package com.zxjk.duoduo.rongIM.plugin;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.Gravity;
+import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -14,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
@@ -35,6 +40,9 @@ import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
 
 public class SocialApplicationPlugin extends BaseActivity implements IPluginModule {
+    private List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> listBeans;
+    private boolean isLongPress = true;
+
     @Override
     public Drawable obtainDrawable(Context context) {
         return context.getDrawable(R.drawable.ic_application);
@@ -54,7 +62,7 @@ public class SocialApplicationPlugin extends BaseActivity implements IPluginModu
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(fragment.getContext())))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
-                    List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> listBeans = r.getOfficialApplication();
+                    listBeans = r.getOfficialApplication();
                     for (int i = 0; i < r.getApplication().size(); i++) {
                         EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean applicationListBean = new EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean();
                         applicationListBean.setApplicationAddress(r.getApplication().get(i).getApplicationAddress());
@@ -80,7 +88,10 @@ public class SocialApplicationPlugin extends BaseActivity implements IPluginModu
                             ).build();
 
                     ImageView img_pull_down = popView.findViewById(R.id.img_pull_down);
-                    img_pull_down.setOnClickListener(v -> popView.dismiss());
+                    img_pull_down.setOnClickListener(v -> {
+                        isLongPress = true;
+                        popView.dismiss();
+                    });
                     RecyclerView recyclerView = popView.findViewById(R.id.recycler_view);
                     BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder> adapter
                             = new BaseQuickAdapter<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean, BaseViewHolder>(R.layout.item_socialapplication) {
@@ -92,12 +103,38 @@ public class SocialApplicationPlugin extends BaseActivity implements IPluginModu
                         }
                     };
 
+                    popView.findViewById(R.id.ll_customer_service).setOnClickListener(v -> {
+
+                    });
+
                     adapter.setOnItemClickListener((adapter1, view, position) -> {
-                        Intent intent = new Intent(fragment.getActivity(), WebActivity.class);
-                        intent.putExtra("url", adapter.getData().get(position).getApplicationAddress());
-                        intent.putExtra("appName", adapter.getData().get(position).getApplicationName());
-                        intent.putExtra("fromSocialApp",true);
-                        fragment.startActivity(intent);
+                        if (adapter.getData().get(position).getApplicationName().equals("编辑")) {
+                            ToastUtils.showShort("0000000..0000000");
+                        }
+                        if(isLongPress){
+                            Intent intent = new Intent(fragment.getActivity(), WebActivity.class);
+                            intent.putExtra("url", adapter.getData().get(position).getApplicationAddress());
+                            intent.putExtra("appName", adapter.getData().get(position).getApplicationName());
+                            intent.putExtra("fromSocialApp", true);
+                            fragment.startActivity(intent);
+                        }
+                    });
+
+                    adapter.setOnItemLongClickListener((adapter12, view, position) -> {
+                        if(isLongPress){
+                            Resources resources = fragment.getContext().getResources();
+                            Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                                    + resources.getResourcePackageName(R.drawable.ic_compile) + "/"
+                                    + resources.getResourceTypeName(R.drawable.ic_compile) + "/"
+                                    + resources.getResourceEntryName(R.drawable.ic_compile));
+                            EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean applicationListBean = new EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean();
+                            applicationListBean.setApplicationLogo(uri.toString());
+                            applicationListBean.setApplicationName("编辑");
+//                        listBeans.add(applicationListBean);
+                            adapter.addData(applicationListBean);
+                            isLongPress = false;
+                        }
+                        return false;
                     });
 
                     recyclerView.setLayoutManager(new GridLayoutManager(this, 4));

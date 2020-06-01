@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tvFirstLetter"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:paddingStart="16dp"
@@ -17,7 +17,8 @@
         android:text="A"
         android:textColor="#6D7278"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="visible"
+        android:background="#F2F3F6"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
@@ -19,6 +20,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.MMKVUtils;
 
 import io.rong.imkit.RongIM;
 
@@ -90,7 +92,10 @@ public class SociaListFragment extends BaseFragment {
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 })
-                .subscribe(adapter::replaceData, this::handleApiError);
+                .subscribe(data -> {
+                    MMKVUtils.getInstance().enCode("CommunityListBean", GsonUtils.toJson(data));
+                    adapter.replaceData(data);
+                }, this::handleApiError);
     }
 
     @Override

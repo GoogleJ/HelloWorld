@@ -48,9 +48,9 @@ public class MoreSearchActivity extends BaseActivity {
     private LinearLayout llSocial;
 
 
-    private List<CommunityListBean> communityList;
+    private List<CommunityListBean> communityList = new ArrayList<>();
     private List<CommunityListBean> communityLists = new ArrayList<>();
-    private List<FriendInfoResponse> friendInfoList;
+    private List<FriendInfoResponse> friendInfoList = new ArrayList<>();
     private List<FriendInfoResponse> friendInfoLists = new ArrayList<>();
 
     private String keyWord;
@@ -161,15 +161,15 @@ public class MoreSearchActivity extends BaseActivity {
             }
         }
 
-            View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
-            emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
-            ImageView app_type = emptyView.findViewById(R.id.app_type);
-            TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
-            app_type.setImageResource(R.drawable.ic_empty_nosearch);
-            app_prompt_text.setText(getString(R.string.no_search));
-            friendListAdapter.setEmptyView(emptyView);
-            friendListAdapter.setNewData(friendInfoLists);
+        View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        ImageView app_type = emptyView.findViewById(R.id.app_type);
+        TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
+        app_type.setImageResource(R.drawable.ic_empty_nosearch);
+        app_prompt_text.setText(getString(R.string.no_search));
+        friendListAdapter.setEmptyView(emptyView);
+        friendListAdapter.setNewData(friendInfoLists);
     }
 
     private void searchSocialList(String keyWord) {
@@ -187,15 +187,15 @@ public class MoreSearchActivity extends BaseActivity {
                 break;
             }
         }
-            View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
-            emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
-            ImageView app_type = emptyView.findViewById(R.id.app_type);
-            TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
-            app_type.setImageResource(R.drawable.ic_empty_nosearch);
-            app_prompt_text.setText(R.string.empty_nosearch);
-            socialListAdapter.setEmptyView(emptyView);
-            socialListAdapter.setNewData(communityLists);
+        View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        ImageView app_type = emptyView.findViewById(R.id.app_type);
+        TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
+        app_type.setImageResource(R.drawable.ic_empty_nosearch);
+        app_prompt_text.setText(R.string.empty_nosearch);
+        socialListAdapter.setEmptyView(emptyView);
+        socialListAdapter.setNewData(communityLists);
     }
 
     private void initData() {

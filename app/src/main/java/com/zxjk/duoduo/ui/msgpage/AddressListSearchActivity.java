@@ -50,9 +50,9 @@ public class AddressListSearchActivity extends BaseActivity {
     private String pageSize = "3";
     private String keyWord;
 
-    private List<CommunityListBean> communityList;
+    private List<CommunityListBean> communityList = new ArrayList<>();
     private List<CommunityListBean> communityLists = new ArrayList<>();
-    private List<FriendInfoResponse> friendInfoList;
+    private List<FriendInfoResponse> friendInfoList = new ArrayList<>();
     private List<FriendInfoResponse> friendInfoLists = new ArrayList<>();
 
 
@@ -103,14 +103,14 @@ public class AddressListSearchActivity extends BaseActivity {
         findViewById(R.id.tv_more_friend).setOnClickListener(v -> {
             Intent intent = new Intent(this, MoreSearchActivity.class);
             intent.putExtra("searchText", searchEdit.getText().toString());
-            intent.putExtra("type","0");
+            intent.putExtra("type", "0");
             startActivity(intent);
         });
 
         findViewById(R.id.tv_more_social).setOnClickListener(v -> {
             Intent intent = new Intent(this, MoreSearchActivity.class);
             intent.putExtra("searchText", searchEdit.getText().toString());
-            intent.putExtra("type","1");
+            intent.putExtra("type", "1");
             startActivity(intent);
         });
 
@@ -200,21 +200,26 @@ public class AddressListSearchActivity extends BaseActivity {
             if (communityList.get(i).getCommunityName().contains(data)) {
                 communityLists.add(communityList.get(i));
             }
+
             if (communityLists.size() == 3) {
+                findViewById(R.id.tv_more_social).setVisibility(View.VISIBLE);
                 break;
+            } else {
+                findViewById(R.id.tv_more_social).setVisibility(View.GONE);
             }
         }
 
-            View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
-            emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
-            ImageView app_type = emptyView.findViewById(R.id.app_type);
-            TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
-            app_type.setImageResource(R.drawable.ic_empty_nosearch);
-            app_prompt_text.setText(R.string.empty_nosearch);
-            socialAdapter.setEmptyView(emptyView);
 
-            socialAdapter.setNewData(communityLists);
+        View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        ImageView app_type = emptyView.findViewById(R.id.app_type);
+        TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
+        app_type.setImageResource(R.drawable.ic_empty_nosearch);
+        app_prompt_text.setText(R.string.empty_nosearch);
+        socialAdapter.setEmptyView(emptyView);
+
+        socialAdapter.setNewData(communityLists);
 
 
     }
@@ -234,20 +239,25 @@ public class AddressListSearchActivity extends BaseActivity {
                 }
             }
             if (friendInfoLists.size() == 3) {
+                findViewById(R.id.tv_more_friend).setVisibility(View.VISIBLE);
                 break;
+            } else {
+                findViewById(R.id.tv_more_friend).setVisibility(View.GONE);
             }
+
         }
 
-            View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
-            emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
-            ImageView app_type = emptyView.findViewById(R.id.app_type);
-            TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
-            app_type.setImageResource(R.drawable.ic_empty_nosearch);
-            app_prompt_text.setText(getString(R.string.no_search));
-            friendAdapter.setEmptyView(emptyView);
 
-            friendAdapter.setNewData(friendInfoLists);
+        View emptyView = getLayoutInflater().inflate(R.layout.view_app_null_type, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        ImageView app_type = emptyView.findViewById(R.id.app_type);
+        TextView app_prompt_text = emptyView.findViewById(R.id.app_prompt_text);
+        app_type.setImageResource(R.drawable.ic_empty_nosearch);
+        app_prompt_text.setText(getString(R.string.no_search));
+        friendAdapter.setEmptyView(emptyView);
+
+        friendAdapter.setNewData(friendInfoLists);
 
     }
 

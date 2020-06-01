@@ -1490,7 +1490,7 @@ public class ConversationActivity extends BaseActivity {
                 intent.putExtra("group", groupInfo);
                 startActivityForResult(intent, 1000);
             });
-            tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
+            tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName()+"("+groupInfo.getGroupInfo().getCustomerNumber()+")");
             findViewById(R.id.ll).setOnClickListener(v -> {
                 Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("group", groupInfo);
@@ -1498,6 +1498,12 @@ public class ConversationActivity extends BaseActivity {
                 startActivityForResult(intent, 1000);
             });
 
+            findViewById(R.id.ivHead).setOnClickListener(v -> {
+                Intent intent = new Intent(this, SocialHomeActivity.class);
+                intent.putExtra("group", groupInfo);
+                intent.putExtra("id", targetId);
+                startActivityForResult(intent, 1000);
+            });
             tvTitleTips.setText(R.string.tips_conversation_group);
             GlideUtil.loadCircleImg(ivHead, groupInfo.getGroupInfo().getHeadPortrait());
         }
@@ -1513,7 +1519,7 @@ public class ConversationActivity extends BaseActivity {
             if (groupInfo != null) {
                 groupInfo = (GroupResponse) data.getSerializableExtra("group");
                 if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
-                    tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
+                    tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName()+ "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
                 } else {
                     tvTitle.setText(getString(R.string.groupname_num, groupInfo.getGroupInfo().getGroupNikeName(), groupInfo.getGroupInfo().getCustomerNumber()));
                 }

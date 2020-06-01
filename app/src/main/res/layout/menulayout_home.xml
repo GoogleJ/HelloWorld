@@ -51,6 +51,7 @@
                         android:layout_weight="1"
                         android:drawablePadding="8dp"
                         android:ellipsize="end"
+                        android:maxEms="7"
                         android:lines="1"
                         android:textColor="@color/white"
                         android:textSize="20sp"
