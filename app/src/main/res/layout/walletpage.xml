@@ -56,10 +56,11 @@
 
             <TextView
                 android:id="@+id/tvMoney2BTC"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:lines="1"
+                android:singleLine="true"
                 android:textColor="@color/white"
                 android:textSize="33sp"
                 android:textStyle="bold" />
