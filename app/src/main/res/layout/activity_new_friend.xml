@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/layout_title_back" />
-
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -26,7 +24,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@android:color/white"
                 app:layout_scrollFlags="scroll">
 
                 <LinearLayout
@@ -125,7 +122,6 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_newfriend_nearby" />
 
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -134,14 +130,12 @@
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_mine_rightarrow" />
 
                 </LinearLayout>
-
 
                 <View
                     android:id="@+id/divider2"
@@ -169,7 +163,6 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_may_know" />
 
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -178,14 +171,12 @@
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_mine_rightarrow" />
 
                 </LinearLayout>
-
 
                 <View
                     android:id="@+id/divider3"
@@ -213,7 +204,6 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_wechat_friends" />
 
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -222,14 +212,15 @@
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_mine_rightarrow" />
 
                 </LinearLayout>
+
             </RelativeLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -243,8 +234,6 @@
                 android:textSize="12.5sp" />
         </com.google.android.material.appbar.AppBarLayout>
 
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/m_fragment_new_friend_recycler_view"
             android:layout_width="match_parent"
@@ -253,4 +242,5 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </LinearLayout>

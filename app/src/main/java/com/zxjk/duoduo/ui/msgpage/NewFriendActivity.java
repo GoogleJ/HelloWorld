@@ -117,29 +117,25 @@ public class NewFriendActivity extends BaseActivity {
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             FriendInfoResponse item = (FriendInfoResponse) adapter.getData().get(position);
             boolean isTrue = item.getStatus().equals("0");
-            switch (view.getId()) {
-                case R.id.m_item_new_friend_type_btn:
-                    if (isTrue) {
-                        addFriend(position, item.getNick(), item);
-                    }
-                    break;
-                case R.id.m_add_btn_layout:
-                    if (!isTrue) {
-                        Intent intent = new Intent(NewFriendActivity.this, FriendDetailsActivity.class);
-                        intent.putExtra("friendId", mAdapter.getData().get(position).getId());
-                        startActivity(intent);
-                    }
-                    break;
-                case R.id.m_item_new_friend_icon:
-                case R.id.m_item_new_friend_message_label:
-                case R.id.m_item_new_friend_user_name_text:
-                    if (isTrue) {
-                        Intent intent = new Intent(NewFriendActivity.this, AddFriendDetailsActivity.class);
-                        intent.putExtra("friendId", mAdapter.getData().get(position).getId());
-                        startActivity(intent);
-                    }
-                    break;
-                default:
+            if (view.getId() == R.id.m_item_new_friend_type_btn) {
+                if (isTrue) {
+                    addFriend(position, item.getNick(), item);
+                }
+            }
+        });
+
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            FriendInfoResponse item = (FriendInfoResponse) adapter.getData().get(position);
+            boolean isTrue = item.getStatus().equals("0");
+
+            if (isTrue) {
+                Intent intent = new Intent(NewFriendActivity.this, AddFriendDetailsActivity.class);
+                intent.putExtra("friendId", mAdapter.getData().get(position).getId());
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(NewFriendActivity.this, FriendDetailsActivity.class);
+                intent.putExtra("friendId", mAdapter.getData().get(position).getId());
+                startActivity(intent);
             }
         });
 
