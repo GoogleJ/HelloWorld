@@ -58,6 +58,7 @@
                 android:id="@+id/tvMoney2BTC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:lines="1"
                 android:textColor="@color/white"
                 android:textSize="33sp"
                 android:textStyle="bold" />
@@ -68,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="2dp"
+                android:lines="1"
                 android:textColor="#99ffffff" />
 
         </LinearLayout>
