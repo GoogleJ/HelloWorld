@@ -114,8 +114,8 @@ public class WalletFragment extends BaseLazyFragment {
 
     @SuppressLint("CheckResult")
     @Override
-    public void loadData() {
-        super.loadData();
+    public void onResume() {
+        super.onResume();
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getBalanceInfo()
                 .compose(bindToLifecycle())
