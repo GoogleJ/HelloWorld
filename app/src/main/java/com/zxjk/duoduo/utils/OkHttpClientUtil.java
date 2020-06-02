@@ -4,9 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.huawei.updatesdk.sdk.a.b.c;
-import com.zxjk.duoduo.R;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +17,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
@@ -28,7 +24,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import io.rong.imlib.statistics.CertificateTrustManager;
 import okhttp3.OkHttpClient;
 
 public class OkHttpClientUtil {
@@ -118,7 +113,7 @@ public class OkHttpClientUtil {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 inputStream.close();
             } catch (IOException e) {
@@ -172,9 +167,12 @@ public class OkHttpClientUtil {
         }
     }
 
-    public static OkHttpClient getSSLClient(OkHttpClient client, Context context, String assetsSSLFileName) {
-        InputStream inputStream = getStream(context, assetsSSLFileName);
-        return getSSLClientByInputStream(client, inputStream);
+    public static OkHttpClient getSSLClient(OkHttpClient client, Context context, String... assetsSSLFileName) {
+        InputStream[] streams = new InputStream[assetsSSLFileName.length];
+        for (int i = 0; i < assetsSSLFileName.length; i++) {
+            streams[i] = getStream(context, assetsSSLFileName[i]);
+        }
+        return getSSLClientByInputStream(client, streams);
     }
 
     public static OkHttpClient getSSLClientByCertificateString(OkHttpClient client, String certificate) {
@@ -198,7 +196,7 @@ public class OkHttpClientUtil {
         }
     }
 
-    private static OkHttpClient getSSLClientByInputStream(OkHttpClient client, InputStream inputStream) {
+    private static OkHttpClient getSSLClientByInputStream(OkHttpClient client, InputStream... inputStream) {
         if (inputStream != null) {
             SSLSocketFactory sslSocketFactory = setCertificates(inputStream);
             if (sslSocketFactory != null) {

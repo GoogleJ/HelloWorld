@@ -25,8 +25,8 @@ import androidx.fragment.app.Fragment;
 import com.blankj.utilcode.util.BarUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
-import com.zxjk.duoduo.ui.socialspace.CreateSocialActivity1;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -42,7 +42,7 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
     private List<LinearLayout> rootViewList = new ArrayList<>(3);
     private List<TextView> menuTvList = new ArrayList<>(3);
     private List<ImageView> menuImgList = new ArrayList<>(3);
-    private boolean menuOpenFlag = true;
+    private boolean menuOpenFlag = false;
     private int dp1;
     private int dp2;
     private long menuAnimTime = 200;
@@ -51,8 +51,6 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
     private ImageView ivScan;
     private ImageView ivHead;
     private CusConversationListFragment listFragment;
-
-    private OnHeadClick onHeadClick;
 
     @Nullable
     @Override
@@ -87,8 +85,9 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         }, Manifest.permission.CAMERA);
 
         ivHead.setOnClickListener(v -> {
-            if (onHeadClick != null) {
-                onHeadClick.onClick();
+            HomeActivity activity = (HomeActivity) getActivity();
+            if (activity != null) {
+                activity.onHeadClick();
             }
         });
 
@@ -108,9 +107,9 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
 
         rootView.findViewById(R.id.llRoot).setOnClickListener(v -> {
             if (menuOpenFlag) {
-                start();
-            } else {
                 close(null);
+            } else {
+                start();
             }
         });
     }
@@ -144,10 +143,6 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    public void setOnHeadClick(OnHeadClick onHeadClick) {
-        this.onHeadClick = onHeadClick;
-    }
-
     private void initOutLine() {
         imgPlus.setOutlineProvider(new ViewOutlineProvider() {
             @Override
@@ -169,34 +164,45 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private void start() {
+    public void start() {
+        if (menuOpenFlag) {
+            return;
+        }
         startAlpha();
         startRotation();
         startTranslationXAnim();
         startScale();
-        menuOpenFlag = !menuOpenFlag;
     }
 
-    private void close(Intent target) {
-        long originAnimTime = menuAnimTime;
-        if (target != null) {
-            menuAnimTime = 50;
+    public void close(Intent target) {
+        if (!menuOpenFlag) {
+            return;
         }
+
         closeAlpha(target);
         closeRotation();
         closeTranslationXAnim();
         closeScale();
-        menuOpenFlag = !menuOpenFlag;
-        menuAnimTime = originAnimTime;
     }
 
     private void startAlpha() {
         ObjectAnimator animator = ObjectAnimator.ofObject(imgPlus, "backgroundColor", new ArgbEvaluator(), 0xff0083BF, 0xff9EA0A4);
         animator.setDuration(menuAnimTime);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                menuOpenFlag = true;
+            }
+        });
         animator.start();
     }
 
     private void closeAlpha(Intent target) {
+        long originAnimTime = menuAnimTime;
+        if (target != null) {
+            menuAnimTime = 50;
+        }
+
         ObjectAnimator animator = ObjectAnimator.ofObject(imgPlus, "backgroundColor", new ArgbEvaluator(), 0xff9EA0A4, 0xff0083BF);
         animator.setDuration(menuAnimTime);
         animator.addListener(new AnimatorListenerAdapter() {
@@ -205,6 +211,8 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
                 if (null != target) {
                     startActivity(target);
                 }
+                menuOpenFlag = false;
+                menuAnimTime = originAnimTime;
             }
         });
         animator.start();
@@ -266,7 +274,4 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
     }
 
-    public interface OnHeadClick {
-        void onClick();
-    }
 }

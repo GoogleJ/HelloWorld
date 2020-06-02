@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -478,13 +479,14 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         BadgeItem badgeItem = new BadgeItem();
         badgeItem.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.colorTheme)
+                .setBackgroundColor("#FF4C48")
                 .setBorderWidth(0);
+
         badgeItem.setText("0");
 
         badgeItem2 = new BadgeItem();
         badgeItem2.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.colorTheme)
+                .setBackgroundColor("#FF4C48")
                 .setBorderWidth(0);
 
         m_bottom_bar.setMode(BottomNavigationBar.MODE_FIXED);
@@ -690,12 +692,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         contactFragment = new ContactFragment();
         findFragment = new WalletFragment();
 
-        msgFragment.setOnHeadClick(() -> {
-            tvNick.setText(Constant.currentUser.getNick());
-            GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
-            drawer.switchState();
-        });
-
         pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
@@ -770,4 +766,17 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         }
     }
 
+    public void onHeadClick() {
+        drawer.switchState();
+        tvNick.setText(Constant.currentUser.getNick());
+        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            msgFragment.close(null);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }
