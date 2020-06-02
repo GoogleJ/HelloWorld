@@ -17,12 +17,12 @@ import com.zxjk.duoduo.bean.response.CommunityListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.base.BaseFragment;
+import com.zxjk.duoduo.ui.base.BaseLazyFragment;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import io.rong.imkit.RongIM;
 
-public class SociaListFragment extends BaseFragment {
+public class SociaListFragment extends BaseLazyFragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private BaseQuickAdapter<CommunityListBean, BaseViewHolder> adapter;
@@ -33,22 +33,15 @@ public class SociaListFragment extends BaseFragment {
 
         rootView = inflater.inflate(R.layout.fragment_socoa_list, container, false);
 
-        initView();
-
-        initData();
+        initRecycler();
 
         return rootView;
     }
 
-    private void initView() {
+    private void initRecycler() {
         swipeRefreshLayout = (SwipeRefreshLayout) rootView;
-        recyclerView = swipeRefreshLayout.findViewById(R.id.recycler);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorTheme);
-    }
-
-    private void initData() {
-        swipeRefreshLayout.setOnRefreshListener(this::communityList);
-
+        recyclerView = swipeRefreshLayout.findViewById(R.id.recycler);
         adapter = new BaseQuickAdapter<CommunityListBean, BaseViewHolder>(R.layout.item_socia_list, null) {
             @Override
             protected void convert(BaseViewHolder helper, CommunityListBean item) {
@@ -73,20 +66,33 @@ public class SociaListFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void loadData() {
+        super.loadData();
+
+        initData();
+    }
+
+    private void initData() {
+        swipeRefreshLayout.setOnRefreshListener(() -> communityList(true));
+
+        communityList(true);
+    }
+
     @SuppressLint("CheckResult")
-    private void communityList() {
+    private void communityList(boolean refresh) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .communityList()
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
                 .doOnSubscribe(disposable -> {
-                    if (null != swipeRefreshLayout) {
+                    if (refresh && null != swipeRefreshLayout) {
                         swipeRefreshLayout.setRefreshing(true);
                     }
                 })
                 .doOnTerminate(() -> {
-                    if (null != swipeRefreshLayout) {
+                    if (refresh && null != swipeRefreshLayout) {
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 })
@@ -96,6 +102,8 @@ public class SociaListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        communityList();
+        if (!isFirstLoad) {
+            communityList(false);
+        }
     }
 }

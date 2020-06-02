@@ -49,13 +49,18 @@ public class ContactFragment extends BaseLazyFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = LayoutInflater.from(getContext()).inflate(R.layout.activity_constacts_new_friend, container, false);
 
+        View topmask = rootView.findViewById(R.id.topmask);
+        ViewGroup.LayoutParams layoutParams = topmask.getLayoutParams();
+        layoutParams.height = BarUtils.getStatusBarHeight();
+        topmask.setLayoutParams(layoutParams);
+        dotNewFriend = rootView.findViewById(R.id.dotNewFriend);
+
         return rootView;
     }
 
     @Override
     public void loadData() {
         super.loadData();
-        dotNewFriend = rootView.findViewById(R.id.dotNewFriend);
 
         llSearch = rootView.findViewById(R.id.llSearch);
         llSearch.setOnClickListener(v -> {
@@ -76,11 +81,6 @@ public class ContactFragment extends BaseLazyFragment {
         } else {
             dotNewFriend.setVisibility(View.VISIBLE);
         }
-
-        View topmask = rootView.findViewById(R.id.topmask);
-        ViewGroup.LayoutParams layoutParams = topmask.getLayoutParams();
-        layoutParams.height = BarUtils.getStatusBarHeight();
-        topmask.setLayoutParams(layoutParams);
 
         TextView tvContactHilamgId = rootView.findViewById(R.id.tvContactHilamgId);
         tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));

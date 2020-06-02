@@ -55,6 +55,7 @@ public class FriendListFragment extends BaseLazyFragment {
         rootView = inflater.inflate(R.layout.fragment_friend_list, container, false);
 
         ButterKnife.bind(this, rootView);
+        initRecycler();
 
         return rootView;
     }
@@ -62,16 +63,14 @@ public class FriendListFragment extends BaseLazyFragment {
     @Override
     public void loadData() {
         super.loadData();
-        refreshLayout.setOnRefreshListener(this::getFriendListInfoById);
+        refreshLayout.setOnRefreshListener(() -> getFriendListInfoById(true));
         refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorTheme));
 
         initIndexView();
 
-        initRecycler();
-
         initFoot();
 
-        getFriendListInfoById();
+        getFriendListInfoById(true);
     }
 
     private void initIndexView() {
@@ -122,7 +121,7 @@ public class FriendListFragment extends BaseLazyFragment {
     }
 
     @SuppressLint("CheckResult")
-    private void getFriendListInfoById() {
+    private void getFriendListInfoById(boolean refresh) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getFriendListById()
                 .compose(bindToLifecycle())
@@ -133,12 +132,12 @@ public class FriendListFragment extends BaseLazyFragment {
                 })
                 .compose(RxSchedulers.ioObserver())
                 .doOnSubscribe(disposable -> {
-                    if (null != refreshLayout) {
+                    if (refresh && null != refreshLayout) {
                         refreshLayout.setRefreshing(true);
                     }
                 })
                 .doOnTerminate(() -> {
-                    if (null != refreshLayout) {
+                    if (refresh && null != refreshLayout) {
                         refreshLayout.setRefreshing(false);
                     }
                 })
@@ -162,6 +161,8 @@ public class FriendListFragment extends BaseLazyFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getFriendListInfoById();
+        if (!isFirstLoad) {
+            getFriendListInfoById(false);
+        }
     }
 }

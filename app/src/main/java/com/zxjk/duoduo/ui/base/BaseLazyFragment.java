@@ -1,7 +1,7 @@
 package com.zxjk.duoduo.ui.base;
 
 public abstract class BaseLazyFragment extends BaseFragment {
-    private boolean isFirstLoad = true;
+    public boolean isFirstLoad = true;
 
     @Override
     public void onDestroyView() {

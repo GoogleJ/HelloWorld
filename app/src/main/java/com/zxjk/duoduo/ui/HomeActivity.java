@@ -117,6 +117,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     private ViewPager pager;
     private DrawerView drawer;
+    private TextView tvNick;
+    private ImageView ivHead;
     private BottomNavigationBar m_bottom_bar;
     private int msgCount1;
     private BurnAfterReadMessageLocalBeanDao dao;
@@ -465,12 +467,10 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void initView() {
-        TextView tvNick = findViewById(R.id.tvNick);
+        tvNick = findViewById(R.id.tvNick);
         TextView tvHilamgID = findViewById(R.id.tvHilamgID);
-        ImageView ivHead = findViewById(R.id.ivHead);
-        tvNick.setText(Constant.currentUser.getNick());
+        ivHead = findViewById(R.id.ivHead);
         tvHilamgID.setText(getString(R.string.duoduo_id) + " " + Constant.currentUser.getDuoduoId());
-        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
 
         pager = findViewById(R.id.pager);
         drawer = findViewById(R.id.drawer);
@@ -478,13 +478,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         BadgeItem badgeItem = new BadgeItem();
         badgeItem.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.red)
+                .setBackgroundColorResource(R.color.colorTheme)
                 .setBorderWidth(0);
         badgeItem.setText("0");
 
         badgeItem2 = new BadgeItem();
         badgeItem2.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.red)
+                .setBackgroundColorResource(R.color.colorTheme)
                 .setBorderWidth(0);
 
         m_bottom_bar.setMode(BottomNavigationBar.MODE_FIXED);
@@ -663,8 +663,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         drawer.close(new Intent(this, OnlineServiceActivity.class));
     }
 
-    public void invite(View view){
-        UMWeb link = new UMWeb(Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId ));
+    public void invite(View view) {
+        UMWeb link = new UMWeb(Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId));
         link.setTitle("我在使用Hilamg聊天");
         link.setDescription("加密私聊、社群管理、数字\n" +
                 "支付尽在Hilamg ，你也来\n" +
@@ -690,7 +690,11 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         contactFragment = new ContactFragment();
         findFragment = new WalletFragment();
 
-        msgFragment.setOnHeadClick(() -> drawer.switchState());
+        msgFragment.setOnHeadClick(() -> {
+            tvNick.setText(Constant.currentUser.getNick());
+            GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
+            drawer.switchState();
+        });
 
         pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull

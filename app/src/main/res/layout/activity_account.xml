@@ -7,9 +7,7 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <RelativeLayout
-        style="@style/RLayoutStyle"
-        android:layout_marginTop="10dp">
+    <RelativeLayout style="@style/RLayoutStyle">
 
         <TextView
             style="@style/textStyle"
