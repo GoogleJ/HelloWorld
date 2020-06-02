@@ -82,8 +82,6 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         ivHead = rootView.findViewById(R.id.ivHead);
         ivScan = rootView.findViewById(R.id.ivScan);
 
-        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
-
         getPermisson(ivScan, granted -> {
             if (granted) startActivity(new Intent(getActivity(), QrCodeActivity.class));
         }, Manifest.permission.CAMERA);
@@ -142,10 +140,6 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
                 close(new Intent(getContext(), SearchGroupActivity.class));
                 break;
         }
-    }
-
-    public interface OnHeadClick {
-        void onClick();
     }
 
     public void setOnHeadClick(OnHeadClick onHeadClick) {
@@ -264,4 +258,13 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
+    }
+
+    public interface OnHeadClick {
+        void onClick();
+    }
 }
