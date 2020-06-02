@@ -32,6 +32,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.WebActivity;
+import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialAppActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialCalturePage;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -49,8 +50,6 @@ import razerdp.widget.QuickPopup;
 public class SocialApplicationPlugin implements IPluginModule {
     public boolean isAdministrator;
     private List<EditListCommunityCultureResponse.ApplicationBean.ApplicationListBean> listBeans;
-    private boolean isLongPress = true;
-
 
     public SocialApplicationPlugin(boolean isAdministrator) {
         this.isAdministrator = isAdministrator;
@@ -117,7 +116,6 @@ public class SocialApplicationPlugin implements IPluginModule {
 
                     ImageView img_pull_down = popView.findViewById(R.id.img_pull_down);
                     img_pull_down.setOnClickListener(v -> {
-                        isLongPress = true;
                         popView.dismiss();
                     });
                     RecyclerView recyclerView = popView.findViewById(R.id.recycler_view);
@@ -133,7 +131,7 @@ public class SocialApplicationPlugin implements IPluginModule {
 
                     popView.findViewById(R.id.ll_customer_service).setVisibility(View.VISIBLE);
                     popView.findViewById(R.id.ll_customer_service).setOnClickListener(v -> {
-
+                        fragment.startActivity(new Intent(fragment.getActivity(), OnlineServiceActivity.class));
                     });
 
                     adapter.setOnItemClickListener((adapter1, view, position) -> {

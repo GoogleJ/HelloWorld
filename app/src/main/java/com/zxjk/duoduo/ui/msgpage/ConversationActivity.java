@@ -1004,7 +1004,7 @@ public class ConversationActivity extends BaseActivity {
                 intent.putExtra("liveType", getIntent().getStringExtra("liveType"));
                 startActivity(intent);
             });
-            iv_end.setImageResource(R.drawable.ic_title_end_chatroom_manage);
+            iv_end.setImageResource(R.drawable.ic_social_end);
 
             while (iterator.hasNext()) {
                 IPluginModule next = iterator.next();

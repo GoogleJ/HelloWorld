@@ -538,8 +538,8 @@ public class SocialHomeActivity extends BaseActivity {
                     ivToolBarStart.setVisibility(View.VISIBLE);
                 }
                 if (tvTitle.getVisibility() == View.VISIBLE) {
-                    tvTitle.setVisibility(View.INVISIBLE);
-                    tvSocialCode.setVisibility(View.INVISIBLE);
+                    tvTitle.setVisibility(View.VISIBLE);
+                    tvSocialCode.setVisibility(View.GONE);
                 }
             } else if (absOffset < totalScrollRange) {
                 if (ivToolBarEnd.getVisibility() == View.VISIBLE && fromConversation != null) {
