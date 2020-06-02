@@ -168,16 +168,17 @@ public class SocialAppEditActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
-                    if (isAdd) {
-                        Intent intent = new Intent();
-                        setResult(1, intent);
+//                    if (isAdd) {
+//                        Intent intent = new Intent();
+//                        setResult(1, intent);
+//                        finish();
+//                    } else {
+//                        Intent intent = new Intent();
+//                        setResult(1, intent);
+                    ToastUtils.showShort("添加成功");
                         finish();
-                    } else {
-                        Intent intent = new Intent();
-                        setResult(1, intent);
-                        finish();
-                    }
-                }, this::handleApiError);
+//                    }
+                });
     }
 
     @SuppressLint("CheckResult")
@@ -193,10 +194,11 @@ public class SocialAppEditActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
-                    Intent intent = new Intent();
-                    setResult(1, intent);
+//                    Intent intent = new Intent();
+//                    setResult(1, intent);
+                    ToastUtils.showShort("删除成功");
                     finish();
-                }, this::handleApiError);
+                });
     }
 
     public void back(View view) {

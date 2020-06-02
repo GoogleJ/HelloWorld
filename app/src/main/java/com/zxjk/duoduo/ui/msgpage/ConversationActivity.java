@@ -1156,7 +1156,12 @@ public class ConversationActivity extends BaseActivity {
                     }
                 }
             }
-            pluginModules.add(new SocialApplicationPlugin());
+
+            if (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || groupInfo.getIsAdmin().equals("1")) {
+                pluginModules.add(new SocialApplicationPlugin(true));
+            }else {
+                pluginModules.add(new SocialApplicationPlugin(false));
+            }
 
         }
     }
