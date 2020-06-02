@@ -216,6 +216,7 @@ public class SocialHomeActivity extends BaseActivity {
                             llInviteOrRemove.setVisibility(View.GONE);
                             if (r.getType().equals("free")) {
                                 View inflate = viewStubFree.inflate();
+                                ivToolBarEnd.setVisibility(View.GONE);
                                 inflate.findViewById(R.id.tvFunc).setOnClickListener(v ->
                                         api.enterGroup(groupId, "", Constant.userId)
                                                 .compose(bindToLifecycle())
@@ -250,6 +251,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                 }, this::handleApiError)));
                             }
                         } else {
+                            ivToolBarEnd.setVisibility(View.VISIBLE);
                             contentEnable = true;
                             parseCaltureResult(r);
                         }
@@ -268,7 +270,6 @@ public class SocialHomeActivity extends BaseActivity {
                     GlideUtil.loadNormalImg(ivHead, r.getLogo());
                     tvSocialCode.setText(getString(R.string.social_code) + r.getCode());
                     tvNotice.setText(r.getAnnouncement());
-
                     if (!TextUtils.isEmpty(r.getIdentity()) && !r.getIdentity().equals("0")) {
                         llRemoveMem.setVisibility(View.VISIBLE);
                     }
@@ -539,7 +540,7 @@ public class SocialHomeActivity extends BaseActivity {
                 }
                 if (tvTitle.getVisibility() == View.VISIBLE) {
                     tvTitle.setVisibility(View.VISIBLE);
-                    tvSocialCode.setVisibility(View.GONE);
+                    tvSocialCode.setVisibility(View.VISIBLE);
                 }
             } else if (absOffset < totalScrollRange) {
                 if (ivToolBarEnd.getVisibility() == View.VISIBLE && fromConversation != null) {

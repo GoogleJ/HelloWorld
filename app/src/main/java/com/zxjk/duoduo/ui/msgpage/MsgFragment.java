@@ -131,7 +131,9 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_plus_menu1:
-                close(new Intent(getContext(), CreateSocialActivity1.class));
+                Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
+                intent.putExtra("eventType", 1);
+                startActivity(intent);
                 break;
             case R.id.img_plus_menu2:
                 close(new Intent(getContext(), NewFriendActivity.class));
