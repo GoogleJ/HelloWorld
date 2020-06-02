@@ -93,6 +93,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="54dp"
+        android:backgroundTint="@color/rc_voip_check_enable"
         android:background="@drawable/rc_ac_btn_file_download_open_button"
         android:textColor="#ffffff"
         android:textSize="16sp"
