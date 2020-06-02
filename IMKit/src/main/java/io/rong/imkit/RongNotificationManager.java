@@ -7,7 +7,9 @@ package io.rong.imkit;
 
 import android.text.Spannable;
 import android.text.TextUtils;
+
 import java.util.concurrent.ConcurrentHashMap;
+
 import io.rong.common.RLog;
 import io.rong.imkit.R.string;
 import io.rong.imkit.model.ConversationKey;
@@ -38,6 +40,14 @@ public class RongNotificationManager {
     private RongNotificationManager() {
     }
 
+    public static RongNotificationManager getInstance() {
+        if (sS == null) {
+            sS = new RongNotificationManager();
+        }
+
+        return sS;
+    }
+
     public void init(RongContext context) {
         this.mContext = context;
         this.messageMap.clear();
@@ -45,14 +55,6 @@ public class RongNotificationManager {
             context.getEventBus().register(this);
         }
 
-    }
-
-    public static RongNotificationManager getInstance() {
-        if (sS == null) {
-            sS = new RongNotificationManager();
-        }
-
-        return sS;
     }
 
     public void onReceiveMessageFromApp(Message message) {
@@ -83,7 +85,7 @@ public class RongNotificationManager {
                         userInfo = RongUserInfoManager.getInstance().getUserInfo(message.getSenderUserId());
                         GroupUserInfo groupUserInfo = RongUserInfoManager.getInstance().getGroupUserInfo(message.getTargetId(), message.getSenderUserId());
                         if (groupInfo != null) {
-                            targetName = groupInfo.getName();
+                            targetName = groupInfo.getName().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", "");
                         }
 
                         if (groupUserInfo != null) {
@@ -255,7 +257,7 @@ public class RongNotificationManager {
                         return;
                     }
 
-                    targetName = groupInfo.getName();
+                    targetName = groupInfo.getName().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", "");
                     if (groupUserInfo != null) {
                         userName = groupUserInfo.getNickname();
                     }
@@ -329,7 +331,8 @@ public class RongNotificationManager {
             }
 
             String pushContent = userName + " : " + content.toString();
-            PushNotificationMessage pushMsg = this.transformToPushMessage(message, pushContent, groupInfo.getName(), "");
+
+            PushNotificationMessage pushMsg = this.transformToPushMessage(message, pushContent, groupInfo.getName().replace("おれは人间をやめるぞ！ジョジョ―――ッ!", ""), "");
             RongPushClient.sendNotification(this.mContext, pushMsg);
         }
 
