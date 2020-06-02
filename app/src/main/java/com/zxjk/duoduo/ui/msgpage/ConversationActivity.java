@@ -1335,20 +1335,22 @@ public class ConversationActivity extends BaseActivity {
 
                                                         boolean formWechatCast = message.getConversationType().equals(Conversation.ConversationType.CHATROOM);
 
-                                                        if (!message.getSenderUserId().equals(Constant.userId)) {
+                                                        if (s2.getRedPackageInfo() != null && s2.getCustomerInfo() != null && s2.getSendCustomerInfo() != null) {
+                                                            if (!message.getSenderUserId().equals(Constant.userId)) {
 
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
-                                                                    getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
-                                                            );
-                                                            RongIM.getInstance().sendDirectionalMessage(
-                                                                    formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
-                                                                    targetId, message1, new String[]{message.getSenderUserId()}
-                                                                    , null, null, null);
-                                                        } else {
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.receiveRed));
-                                                            RongIM.getInstance().insertIncomingMessage(
-                                                                    formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
-                                                                    targetId, Constant.userId, new Message.ReceivedStatus(1), message1, null);
+                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
+                                                                        getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
+                                                                );
+                                                                RongIM.getInstance().sendDirectionalMessage(
+                                                                        formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                        targetId, message1, new String[]{message.getSenderUserId()}
+                                                                        , null, null, null);
+                                                            } else {
+                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.receiveRed));
+                                                                RongIM.getInstance().insertIncomingMessage(
+                                                                        formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                        targetId, Constant.userId, new Message.ReceivedStatus(1), message1, null);
+                                                            }
                                                         }
 
                                                         Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
@@ -1490,7 +1492,7 @@ public class ConversationActivity extends BaseActivity {
                 intent.putExtra("group", groupInfo);
                 startActivityForResult(intent, 1000);
             });
-            tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName()+"("+groupInfo.getGroupInfo().getCustomerNumber()+")");
+            tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
             findViewById(R.id.ll).setOnClickListener(v -> {
                 Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("group", groupInfo);
@@ -1519,7 +1521,7 @@ public class ConversationActivity extends BaseActivity {
             if (groupInfo != null) {
                 groupInfo = (GroupResponse) data.getSerializableExtra("group");
                 if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
-                    tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName()+ "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
+                    tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
                 } else {
                     tvTitle.setText(getString(R.string.groupname_num, groupInfo.getGroupInfo().getGroupNikeName(), groupInfo.getGroupInfo().getCustomerNumber()));
                 }
