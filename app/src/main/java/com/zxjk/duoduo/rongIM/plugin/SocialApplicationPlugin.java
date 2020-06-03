@@ -69,7 +69,6 @@ public class SocialApplicationPlugin implements IPluginModule {
     @Override
     public void onClick(Fragment fragment, RongExtension rongExtension) {
         LifecycleProvider<Lifecycle.Event> provider = AndroidLifecycle.createLifecycleProvider(fragment.getActivity());
-        Log.i("tag", "onClick: " + isAdministrator);
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .communityApplicationList(rongExtension.getTargetId())
                 .compose(provider.bindToLifecycle())
@@ -129,7 +128,12 @@ public class SocialApplicationPlugin implements IPluginModule {
                         }
                     };
 
-                    popView.findViewById(R.id.ll_customer_service).setVisibility(View.VISIBLE);
+
+                    if(isAdministrator){
+                        popView.findViewById(R.id.ll_customer_service).setVisibility(View.VISIBLE);
+                    }else {
+                        popView.findViewById(R.id.ll_customer_service).setVisibility(View.GONE);
+                    }
                     popView.findViewById(R.id.ll_customer_service).setOnClickListener(v -> {
                         fragment.startActivity(new Intent(fragment.getActivity(), OnlineServiceActivity.class));
                     });
