@@ -107,6 +107,7 @@ public class BrowsableActivity extends BaseActivity {
                                                 Intent intent = new Intent(this, AddFriendDetailsActivity.class);
                                                 intent.putExtra("friendId", id);
                                                 intent.putExtra("isQR","1");
+                                                intent.putExtra("type","1");
                                                 startActivity(intent);
                                                 ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
                                                 clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));

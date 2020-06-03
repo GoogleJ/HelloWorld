@@ -131,7 +131,11 @@ public class NewFriendActivity extends BaseActivity {
             if (isTrue) {
                 Intent intent = new Intent(NewFriendActivity.this, AddFriendDetailsActivity.class);
                 intent.putExtra("friendId", mAdapter.getData().get(position).getId());
-                startActivity(intent);
+                intent.putExtra("position",position);
+                intent.putExtra("nick",item.getNick());
+                intent.putExtra("item",item);
+                intent.putExtra("type","0");
+                startActivityForResult(intent,1);
             } else {
                 Intent intent = new Intent(NewFriendActivity.this, FriendDetailsActivity.class);
                 intent.putExtra("friendId", mAdapter.getData().get(position).getId());
@@ -178,6 +182,7 @@ public class NewFriendActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
+                    list.clear();
                     list.addAll(s);
                     mAdapter.setNewData(s);
                 }, this::handleApiError);
@@ -209,6 +214,7 @@ public class NewFriendActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getMyFriendsWaiting();
         mAdapter.notifyDataSetChanged();
     }
 }

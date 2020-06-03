@@ -82,6 +82,15 @@ public class GroupResponse implements Serializable {
         private String openSlowModel = "0";
         private String openGlobalClean = "0";
         private boolean checked;
+        private String banFriend = "0";
+
+        public String getBanFriend() {
+            return banFriend;
+        }
+
+        public void setBanFriend(String banFriend) {
+            this.banFriend = banFriend;
+        }
 
         public String getId() {
             return id;

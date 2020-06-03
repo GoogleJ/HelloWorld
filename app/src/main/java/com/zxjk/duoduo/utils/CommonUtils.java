@@ -147,7 +147,7 @@ public class CommonUtils {
         Intent intent = new Intent(activity, AddFriendDetailsActivity.class);
         intent.putExtra("friendId", userId);
         intent.putExtra("groupId", groupId);
+        intent.putExtra("type","1");
         activity.startActivity(intent);
     }
-
 }

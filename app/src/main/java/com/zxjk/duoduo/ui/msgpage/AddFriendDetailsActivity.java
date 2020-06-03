@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -26,7 +29,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.userInfoCache.RongUserInfoManager;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
+import io.rong.message.CommandMessage;
+import io.rong.message.InformationNotificationMessage;
 
 @SuppressLint("CheckResult")
 public class AddFriendDetailsActivity extends BaseActivity {
@@ -61,6 +70,12 @@ public class AddFriendDetailsActivity extends BaseActivity {
 
         tvTitle.setText(R.string.personal_details);
 
+        if (getIntent().getStringExtra("type").equals("1")) {
+            tvAddAddressBook.setText("添加到通讯录");
+        }else {
+            tvAddAddressBook.setText(R.string.m_personal_information_signature_text);
+        }
+
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getCustomerInfoById(getIntent().getStringExtra("friendId"))
                 .compose(bindToLifecycle())
@@ -89,14 +104,19 @@ public class AddFriendDetailsActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.rl_back:
 
-                    finish();
+                finish();
 
                 break;
             case R.id.tv_addAddressBook:
-                Intent intent = new Intent(this, VerificationActivity.class);
-                intent.putExtra("friendId", getIntent().getStringExtra("friendId"));
-                intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
-                startActivity(intent);
+                if (getIntent().getStringExtra("type").equals("1")) {
+                    Intent intent = new Intent(this, VerificationActivity.class);
+                    intent.putExtra("friendId", getIntent().getStringExtra("friendId"));
+                    intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
+                    startActivity(intent);
+                }else {
+                    addFriend(getIntent().getStringExtra("nick"),(FriendInfoResponse)getIntent().getSerializableExtra("item"));
+                }
+
                 break;
             case R.id.iv_headPortrait:
                 Intent intent5 = new Intent(this, ZoomActivity.class);
@@ -106,6 +126,25 @@ public class AddFriendDetailsActivity extends BaseActivity {
                                 ivHeadPortrait, "img").toBundle());
                 break;
         }
+    }
+
+    public void addFriend(String markName, FriendInfoResponse item) {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .addFriend(item.getId(), markName)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(s -> {
+                    item.setStatus("2");
+                    RongUserInfoManager.getInstance().setUserInfo(new UserInfo(item.getId(), item.getNick(), Uri.parse(item.getHeadPortrait())));
+                    ToastUtils.showShort(getString(R.string.add_friend_successful));
+                    InformationNotificationMessage message = InformationNotificationMessage.obtain(getString(R.string.new_friend1));
+                    RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.PRIVATE, item.getId(), message, new String[]{item.getId()}, null, null, null);
+                    CommandMessage commandMessage = CommandMessage.obtain("agreeFriend", "");
+                    Message message1 = Message.obtain(item.getId(), Conversation.ConversationType.PRIVATE, commandMessage);
+                    RongIM.getInstance().sendMessage(message1, "", "", (IRongCallback.ISendMessageCallback) null);
+                    finish();
+                }, this::handleApiError);
     }
 
     @Override

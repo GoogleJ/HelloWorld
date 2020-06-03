@@ -46,7 +46,7 @@ public class UpDownCoinResultActivity extends BaseActivity {
     }
 
     public void back2Home(View view) {
-        Intent intent = new Intent(this, BalanceLeftActivity.class);
+        Intent intent = new Intent(this, BalanceDetailActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
