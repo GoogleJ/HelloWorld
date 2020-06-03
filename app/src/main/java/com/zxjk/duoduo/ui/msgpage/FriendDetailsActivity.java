@@ -151,7 +151,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.personal_details));
         findViewById(R.id.rl_back).setOnClickListener(v -> {
-                finish();
+            finish();
         });
         rl_end = findViewById(R.id.rl_end);
         rl_end.setVisibility(View.VISIBLE);
@@ -178,7 +178,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                                     intentCard.putExtra("userId", friendInfoResponse.getId());
                                     intentCard.putExtra("nick", friendInfoResponse.getNick());
                                     intentCard.putExtra("headPortrait", friendInfoResponse.getHeadPortrait());
-                                    intentCard.putExtra("duoduoId", friendInfoResponse.getDuoduoId());
+                                    intentCard.putExtra("duoduoId", getString(R.string.duoduo_acount) + friendInfoResponse.getDuoduoId());
                                     startActivity(intentCard);
                                 }, true)
                                 .withClick(R.id.delete_friend, child -> NiceDialog.init().setLayoutId(R.layout.layout_general_dialog).setConvertListener(new ViewConvertListener() {
