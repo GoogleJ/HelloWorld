@@ -94,7 +94,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
                     }
 
                     ImageUtil.loadGroupPortrait(groupHeader, s, 80, 2);
-                    tvGroupName.setText(getString(R.string.groupname_num, groupName, String.valueOf(list.size())));
+                    tvGroupName.setText(getString(R.string.groupname_num, groupResponse.getGroupInfo().getGroupNikeName(), String.valueOf(list.size())));
                     joinGroupBtn.setOnClickListener(v -> {
                         if (canJoin) {
                             ToastUtils.showShort(getString(R.string.group_max_number));

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -237,9 +238,14 @@ public class EnlargeImageActivity extends BaseActivity {
 
                 String decryptResult = AesUtil.getInstance().decrypt(shareStrings[1]);
 
+                String resultUri = "http://hilamg-share.zhumengxuanang.com/?"+decryptResult;
                 if (decryptResult.contains("groupId")) {
+
                     //groupQR
-                    String groupId = decryptResult.split("=")[1];
+//                    String groupId = decryptResult.split("=")[1];
+
+                    Uri uri = Uri.parse(resultUri);
+                    String groupId = uri.getQueryParameter("groupId");
 
                     Intent intent = new Intent(this, AgreeGroupChatActivity.class);
                     intent.putExtra("groupId", groupId);
@@ -248,7 +254,8 @@ public class EnlargeImageActivity extends BaseActivity {
                     finish();
                 } else {
                     //userQR
-                    String userId = decryptResult.split("=")[1];
+                    Uri uri = Uri.parse(resultUri);
+                    String userId = uri.getQueryParameter("id");
                     CommonUtils.resolveFriendList(this, userId, true);
                 }
             } catch (Exception e) {
