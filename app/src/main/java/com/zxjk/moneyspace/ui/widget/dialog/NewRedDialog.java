@@ -107,6 +107,9 @@ public class NewRedDialog extends Dialog {
         btnClose = view.findViewById(R.id.btnClose);
 
         tvShowDetail = view.findViewById(R.id.tvShowDetail);
+        view.findViewById(R.id.img_back).setOnClickListener(v -> {
+            dismiss();
+        });
 
         switch (dialogType) {
             case TYPE1_NORMAL:

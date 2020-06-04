@@ -16,11 +16,12 @@
         <TextView
             android:id="@+id/remark"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:ellipsize="end"
             android:lineSpacingExtra="2dp"
+            android:gravity="center"
             android:lines="2"
             android:text="@string/m_red_envelopes_label"
             android:textColor="@color/white" />
@@ -35,14 +36,15 @@
 
     <TextView
         android:id="@+id/prompt_logo"
+        android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_weight="1"
         android:gravity="bottom"
         android:paddingBottom="4dp"
         android:text="@string/prompt_logo_red"
         android:textColor="@color/textcolor3"
-        android:textSize="9sp" />
+        android:textSize="10sp" />
 
 </LinearLayout>

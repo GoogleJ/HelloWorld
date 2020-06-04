@@ -14,8 +14,8 @@ public class Constant {
     //省市区数据
     public static final String CITY_DATA = "china_city_data.json";
     //    阿里OSS上传地址
-    public static final String BASE_URL = "https://moneyspace.ztok.net/";  //release
-//    public static final String BASE_URL = "http://192.168.1.74:8086/";
+//    public static final String BASE_URL = "https://moneyspace.ztok.net/";  //release
+    public static final String BASE_URL = "http://192.168.1.19:8086/";
     public static final String OSS_URL = "https://moneyspace.oss-cn-hongkong.aliyuncs.com/upload/";
 
     public static final String SECRET = "D1230808098DE048DB81365E714B01B8";

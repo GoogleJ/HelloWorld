@@ -144,7 +144,7 @@ public class GroupRedPacketActivity extends BaseActivity {
             TransitionManager.beginDelayedTransition(llRoot, changeBounds);
 
             if (isChecked) {
-                llControl1.setVisibility(View.VISIBLE);
+//                llControl1.setVisibility(View.VISIBLE);
             } else {
                 llControl1.setVisibility(View.GONE);
             }
@@ -246,7 +246,7 @@ public class GroupRedPacketActivity extends BaseActivity {
             changeBounds.setInterpolator(new OvershootInterpolator());
 
             TransitionManager.beginDelayedTransition(llRoot, changeBounds);
-            llControl.setVisibility(View.VISIBLE);
+//            llControl.setVisibility(View.VISIBLE);
         }
 
         pin.setVisibility(View.VISIBLE);

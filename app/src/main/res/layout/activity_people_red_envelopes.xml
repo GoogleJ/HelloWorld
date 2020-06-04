@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="20dp"
-        android:text="0"
+        android:text="0000"
         android:textColor="@color/m_people_red_envelopes_title_bar"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -92,9 +92,8 @@
         android:layout_marginBottom="10dp"
         android:textColor="@color/m_people_red_envelopes_title_bar"
         android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/m_people_red_envelopes_money_text"
-        app:layout_constraintStart_toEndOf="@+id/m_people_red_envelopes_money_text"
-
-        />
+        app:layout_constraintStart_toEndOf="@+id/m_people_red_envelopes_money_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

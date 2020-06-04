@@ -15,14 +15,26 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.network.Api;
+import com.zxjk.moneyspace.network.ServiceFactory;
+import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.ShiRenActivity;
 import com.zxjk.moneyspace.ui.base.BaseFragment;
 import com.zxjk.moneyspace.ui.minepage.wallet.BalanceLeftActivity;
 import com.zxjk.moneyspace.ui.minepage.wallet.EcologyActivity;
 import com.zxjk.moneyspace.ui.minepage.wallet.OneKeyBuyCoinActivity;
 import com.zxjk.moneyspace.ui.msgpage.MyQrCodeActivity;
+import com.zxjk.moneyspace.ui.walletpage.BindCNYCardActivity;
+import com.zxjk.moneyspace.ui.walletpage.CNYUpActivity;
+import com.zxjk.moneyspace.ui.widget.dialog.ConfirmDialog;
+import com.zxjk.moneyspace.utils.AesUtil;
+import com.zxjk.moneyspace.utils.CommonUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -32,6 +44,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private TextView tvNick;
     private TextView tvMochatID;
     private TextView tvSign;
+    private String uri2Code;
 
     @Nullable
     @Override
@@ -52,6 +65,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.llMine5).setOnClickListener(this);
         view.findViewById(R.id.ivQR).setOnClickListener(this);
         view.findViewById(R.id.llMine6).setOnClickListener(this);
+        view.findViewById(R.id.llMine7).setOnClickListener(this);
+        view.findViewById(R.id.llMine8).setOnClickListener(this);
+        view.findViewById(R.id.llMine9).setOnClickListener(this);
+
 
         return view;
     }
@@ -113,6 +130,43 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.llMine6:
                 startActivity(new Intent(getActivity(), EcologyActivity.class));
+                break;
+            case R.id.llMine7:
+
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .isBandBankInfo()
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                        .subscribe(r -> {
+                            if ("0".equals(r)) {
+                                ConfirmDialog confirmDialog = new ConfirmDialog(getContext(), getString(R.string.hinttext), getString(R.string.nobank), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(getActivity(), BindCNYCardActivity.class);
+                                        intent.putExtra("fromBalance", true);
+                                        startActivity(intent);
+                                    }
+                                });
+                                confirmDialog.positiveText(getString(R.string.bindBank));
+                                confirmDialog.show();
+                            } else {
+                                startActivity(new Intent(getActivity(), CNYUpActivity.class));
+                            }
+                        }, this::handleApiError);
+                break;
+            case R.id.llMine8:
+                break;
+            case R.id.llMine9:
+                uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId);
+
+                UMWeb link = new UMWeb(uri2Code);
+                link.setTitle("我在使用MoneySpace聊天");
+                link.setDescription("加密私聊、社群管理、数字\n" +
+                        "支付尽在Hilamg ，你也来\n" +
+                        "试试吧～");
+                link.setThumb(new UMImage(getActivity(), R.drawable.ic_about_icon));
+                new ShareAction(getActivity()).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
                 break;
             default:
         }

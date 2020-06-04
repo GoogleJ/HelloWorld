@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp">
@@ -20,6 +21,7 @@
 
         <TextView
             android:id="@+id/tvNick"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -32,22 +34,37 @@
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
             android:layout_alignBottom="@id/ivHead"
             android:layout_toEndOf="@id/ivHead"
             android:textColor="@color/textcolor3" />
 
-        <TextView
-            android:id="@+id/tvMoney"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
             android:layout_toEndOf="@id/ivHead"
-            android:gravity="end"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@color/textcolor1" />
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/tvMoney"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="end"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/textcolor1"
+                android:layout_marginEnd="6dp"/>
+
+            <TextView
+                android:id="@+id/tv_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#272E3F" />
+        </LinearLayout>
 
     </RelativeLayout>
 

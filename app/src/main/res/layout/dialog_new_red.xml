@@ -14,8 +14,16 @@
         android:background="@drawable/new_red_dialog_bg1"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
+        <ImageView
+            android:id="@+id/img_back"
+            android:src="@drawable/guanbi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"/>
         <ImageView
             android:id="@+id/ivOPen"
             android:layout_width="wrap_content"

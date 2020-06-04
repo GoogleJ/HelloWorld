@@ -57,20 +57,35 @@
             android:textColor="@color/black"
             android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/tv_redEnvelope"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_below="@id/name"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="24dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/m_people_red_envelopes_title_bar"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:layout_marginEnd="24dp">
+
+            <TextView
+                android:id="@+id/tv_redEnvelope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/m_people_red_envelopes_title_bar"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_red_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/m_people_red_envelopes_title_bar"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </RelativeLayout>
 

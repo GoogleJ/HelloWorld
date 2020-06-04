@@ -313,7 +313,7 @@
     <string name="choose_a_new_owner_title">选择新群主</string>
     <string name="inputoldpsd">输入旧密码</string>
     <string name="moexchange">一键购币</string>
-    <string name="prompt_logo_red">红包</string>
+    <string name="prompt_logo_red">Money Space红包</string>
     <string name="shoukuanbizhong">收款币种</string>
     <string name="shoukuanjine">收款金额</string>
     <string name="please_set_money1">收款金额不能为0</string>
@@ -733,7 +733,7 @@
     <string name="toast12">出售成功</string>
     <string name="pay_password">请输入支付密码</string>
     <string name="centermoneyis">手续费%1$s</string>
-    <string name="ecology">生态</string>
+    <string name="ecology">第三方应用</string>
     <string name="entry_orders">挂单中</string>
     <string name="in_transaction">交易中</string>
     <string name="the_appeal_to_complete">申诉完成</string>

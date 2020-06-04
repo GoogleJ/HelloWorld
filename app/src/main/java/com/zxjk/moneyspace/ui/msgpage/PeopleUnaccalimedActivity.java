@@ -28,13 +28,14 @@ import java.util.ArrayList;
 
 public class PeopleUnaccalimedActivity extends BaseActivity {
     private TextView title;
-    private TextView tv_end;
+    private ImageView tv_end;
     private ImageView head;
     private TextView name;
     private TextView tips;
     private RecyclerView recycler;
     private boolean isShow;
     private TextView tv_redEnvelope;
+    private TextView tv_red_symbol;
     private String isGame;
 
     @SuppressLint({"CheckResult", "SetTextI18n"})
@@ -53,6 +54,7 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
         name = findViewById(R.id.name);
         tips = findViewById(R.id.tips);
         tv_redEnvelope = findViewById(R.id.tv_redEnvelope);
+        tv_red_symbol = findViewById(R.id.tv_red_symbol);
         recycler = findViewById(R.id.recycler);
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
@@ -97,7 +99,8 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                 .subscribe(response -> {
                                     for (int i = 0; i < response.getCustomerInfo().size(); i++) {
                                         if (String.valueOf(response.getCustomerInfo().get(i).getCustomerId()).equals(Constant.currentUser.getId())) {
-                                            tv_redEnvelope.setText(response.getCustomerInfo().get(i).getMoney() + " " + response.getRedPackageInfo().getSymbol());
+                                            tv_redEnvelope.setText(response.getCustomerInfo().get(i).getMoney());
+                                            tv_red_symbol.setText(response.getRedPackageInfo().getSymbol());
                                         }
                                     }
                                     String text = getString(R.string.current_receive, response.getRedPackageInfo().getReceiveCount(), String.valueOf(response.getRedPackageInfo().getNumber()));
