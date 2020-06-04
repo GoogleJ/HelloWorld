@@ -56,9 +56,14 @@ public class AddFriendDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         tvTitle.setText(R.string.personal_details);
+        String groupId = getIntent().getStringExtra("groupId");
+        if (!TextUtils.isEmpty(groupId)) {
+            findViewById(R.id.ll_source).setVisibility(View.VISIBLE);
+            findViewById(R.id.ll_transcript).setVisibility(View.VISIBLE);
+        }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getCustomerInfoById(getIntent().getStringExtra("friendId"))
+                .getFriendInfoById(getIntent().getStringExtra("friendId"), groupId)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -75,7 +80,15 @@ public class AddFriendDetailsActivity extends BaseActivity {
                     } else {
                         ivGender.setImageDrawable(getDrawable(R.drawable.icon_gender_woman));
                     }
+                    TextView tv_into_group = findViewById(R.id.tv_into_group);
 
+                    if (r.getIntoGroup().equals("0")) {
+                        findViewById(R.id.ll_source).setVisibility(View.GONE);
+                    } else if (r.getIntoGroup().equals("1")) {
+                        tv_into_group.setText(r.getInviterNick() + "邀请加入群聊");
+                    } else if (r.getIntoGroup().equals("2")) {
+                        tv_into_group.setText("通过搜索加入群聊");
+                    }
                     RongIM.getInstance().refreshUserInfoCache(new UserInfo(r.getId(), r.getNick(), Uri.parse(r.getHeadPortrait())));
                 }, this::handleApiError);
     }

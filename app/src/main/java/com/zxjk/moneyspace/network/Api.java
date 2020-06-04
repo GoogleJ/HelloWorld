@@ -104,7 +104,7 @@ public interface Api {
 
     @POST("duoduo/friend/getFriendInfoById")
     @FormUrlEncoded
-    Observable<BaseResponse<FriendInfoResponse>> getFriendInfoById(@Field("friendId") String friendId);
+    Observable<BaseResponse<FriendInfoResponse>> getFriendInfoById(@Field("friendId") String friendId,@Field("groupId") String groupId);
 
     @POST("duoduo/friend/getFriendListById")
     Observable<BaseResponse<List<FriendInfoResponse>>> getFriendListById();

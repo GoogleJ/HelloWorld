@@ -103,7 +103,7 @@ public class CommonUtils {
     public static void resolveFriendList(BaseActivity activity, String friendId, String groupId, boolean finish) {
         LifecycleProvider<Lifecycle.Event> provider = AndroidLifecycle.createLifecycleProvider(activity);
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getFriendInfoById(friendId)
+                .getFriendInfoById(friendId,groupId)
                 .compose(provider.bindUntilEvent(Lifecycle.Event.ON_DESTROY))
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(activity)))
@@ -123,6 +123,7 @@ public class CommonUtils {
         resolveFriendList(activity, friendId, groupId, false);
     }
 
+
     private static void handleFriendList(FriendInfoResponse friendInfo, BaseActivity activity, String userId, String groupId, boolean finish) {
         if (finish) {
             activity.finish();
@@ -139,6 +140,7 @@ public class CommonUtils {
             //好友，进入详情页（可聊天）
             Intent intent = new Intent(activity, FriendDetailsActivity.class);
             intent.putExtra("friendId", userId);
+            intent.putExtra("groupId", groupId);
             activity.startActivity(intent);
             return;
         }

@@ -96,24 +96,37 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
 
     private void initFriendIntent() {
         String friendId = getIntent().getStringExtra("friendId");
+        String groupId = getIntent().getStringExtra("groupId");
+        if(!TextUtils.isEmpty(groupId)){
+            findViewById(R.id.ll_source).setVisibility(View.VISIBLE);
+            findViewById(R.id.ll_transcript).setVisibility(View.VISIBLE);
+        }
         if (TextUtils.isEmpty(friendId)) {
             finish();
             return;
         }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getFriendInfoById(friendId)
+                .getFriendInfoById(friendId,groupId)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
                     friendInfoResponse = r;
 
+                    TextView tv_into_group = findViewById(R.id.tv_into_group);
                     if (!friendId.equals(Constant.userId)) {
                         RongIM.getInstance().refreshUserInfoCache(new UserInfo(friendId, TextUtils.isEmpty(r.getRemark()) ?
                                 r.getNick() : r.getRemark(), Uri.parse(r.getHeadPortrait())));
                     }
-
+                    if(friendInfoResponse.getIntoGroup().equals("0")){
+                        findViewById(R.id.ll_source).setVisibility(View.GONE);
+                    }else if(friendInfoResponse.getIntoGroup().equals("1")){
+                        tv_into_group.setText(friendInfoResponse.getInviterNick()+"邀请加入群聊");
+                    }else if(friendInfoResponse.getIntoGroup().equals("2")){
+                        tv_into_group.setText("通过搜索加入群聊");
+                    }
+                    findViewById(R.id.tv_into_group);
                     handleData();
                 }, this::handleApiError);
     }

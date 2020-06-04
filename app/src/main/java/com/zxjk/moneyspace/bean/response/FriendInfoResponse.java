@@ -58,6 +58,60 @@ public class FriendInfoResponse implements Serializable {
     private String firstLeter;
     private boolean canCheck = true;//是否可以点击（好友列表中的某人已在当前群中）
 
+    private String intoGroup;
+    private String inviterNick;
+
+    public FriendInfoResponse(FriendInfoResponse friendInfoResponse) {
+        this.id = friendInfoResponse.id;
+        this.duoduoId = friendInfoResponse.duoduoId;
+        this.nick = friendInfoResponse.nick;
+        this.realname = friendInfoResponse.realname;
+        this.mobile = friendInfoResponse.mobile;
+        this.password = friendInfoResponse.password;
+        this.address = friendInfoResponse.address;
+        this.email = friendInfoResponse.email;
+        this.headPortrait = friendInfoResponse.headPortrait;
+        this.sex = friendInfoResponse.sex;
+        this.signature = friendInfoResponse.signature;
+        this.walletAddress = friendInfoResponse.walletAddress;
+        this.idCard = friendInfoResponse.idCard;
+        this.isShowRealname = friendInfoResponse.isShowRealname;
+        this.updateTime = friendInfoResponse.updateTime;
+        this.createTime = friendInfoResponse.createTime;
+        this.isDelete = friendInfoResponse.isDelete;
+        this.token = friendInfoResponse.token;
+        this.remark = friendInfoResponse.remark;
+        this.rongToken = friendInfoResponse.rongToken;
+        this.payPwd = friendInfoResponse.payPwd;
+        this.isFirstLogin = friendInfoResponse.isFirstLogin;
+        this.renegeNumber = friendInfoResponse.renegeNumber;
+        this.isConfine = friendInfoResponse.isConfine;
+        this.sortLetters = friendInfoResponse.sortLetters;
+        this.status = friendInfoResponse.status;
+        this.inviterNick = friendInfoResponse.inviterNick;
+        this.intoGroup = friendInfoResponse.intoGroup;
+    }
+
+    public FriendInfoResponse() {
+
+    }
+
+    public String getIntoGroup() {
+        return intoGroup;
+    }
+
+    public void setIntoGroup(String intoGroup) {
+        this.intoGroup = intoGroup;
+    }
+
+    public String getInviterNick() {
+        return inviterNick;
+    }
+
+    public void setInviterNick(String inviterNick) {
+        this.inviterNick = inviterNick;
+    }
+
     public String getIsFriend() {
         return isFriend;
     }
@@ -90,39 +144,6 @@ public class FriendInfoResponse implements Serializable {
         this.firstLeter = firstLeter;
     }
 
-    public FriendInfoResponse(FriendInfoResponse friendInfoResponse) {
-        this.id = friendInfoResponse.id;
-        this.duoduoId = friendInfoResponse.duoduoId;
-        this.nick = friendInfoResponse.nick;
-        this.realname = friendInfoResponse.realname;
-        this.mobile = friendInfoResponse.mobile;
-        this.password = friendInfoResponse.password;
-        this.address = friendInfoResponse.address;
-        this.email = friendInfoResponse.email;
-        this.headPortrait = friendInfoResponse.headPortrait;
-        this.sex = friendInfoResponse.sex;
-        this.signature = friendInfoResponse.signature;
-        this.walletAddress = friendInfoResponse.walletAddress;
-        this.idCard = friendInfoResponse.idCard;
-        this.isShowRealname = friendInfoResponse.isShowRealname;
-        this.updateTime = friendInfoResponse.updateTime;
-        this.createTime = friendInfoResponse.createTime;
-        this.isDelete = friendInfoResponse.isDelete;
-        this.token = friendInfoResponse.token;
-        this.remark = friendInfoResponse.remark;
-        this.rongToken = friendInfoResponse.rongToken;
-        this.payPwd = friendInfoResponse.payPwd;
-        this.isFirstLogin = friendInfoResponse.isFirstLogin;
-        this.renegeNumber = friendInfoResponse.renegeNumber;
-        this.isConfine = friendInfoResponse.isConfine;
-        this.sortLetters = friendInfoResponse.sortLetters;
-        this.status = friendInfoResponse.status;
-    }
-
-    public FriendInfoResponse() {
-
-    }
-
     @Override
     public String toString() {
         return "FriendInfoResponse{" +
@@ -152,6 +173,8 @@ public class FriendInfoResponse implements Serializable {
                 ", isConfine='" + isConfine + '\'' +
                 ", sortLetters='" + sortLetters + '\'' +
                 ", status='" + status + '\'' +
+                ", intoGroup='" + intoGroup + '\'' +
+                ", inviterNick='" + inviterNick + '\'' +
                 '}';
     }
 
@@ -393,11 +416,13 @@ public class FriendInfoResponse implements Serializable {
                 Objects.equals(renegeNumber, that.renegeNumber) &&
                 Objects.equals(isConfine, that.isConfine) &&
                 Objects.equals(sortLetters, that.sortLetters) &&
+                Objects.equals(intoGroup, that.intoGroup) &&
+                Objects.equals(inviterNick, that.inviterNick) &&
                 Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, duoduoId, nick, realname, mobile, password, address, email, headPortrait, sex, signature, walletAddress, idCard, isShowRealname, updateTime, createTime, isDelete, token, remark, rongToken, payPwd, isFirstLogin, renegeNumber, isConfine, sortLetters, status);
+        return Objects.hash(id, duoduoId, nick, realname, mobile, password, address, email, headPortrait, sex, signature, walletAddress, idCard, isShowRealname, updateTime, createTime, isDelete, token, remark, rongToken, payPwd, isFirstLogin, renegeNumber, isConfine, sortLetters, status, intoGroup, inviterNick);
     }
 }
