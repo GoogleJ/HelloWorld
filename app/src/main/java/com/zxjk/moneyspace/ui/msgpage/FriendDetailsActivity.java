@@ -110,6 +110,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
             Intent intent = new Intent(this,ChattingRecordsActivity.class);
             intent.putExtra("groupId",getIntent().getStringExtra("groupId"));
             intent.putExtra("imageUrl",imageUrl);
+            intent.putExtra("friendId",getIntent().getStringExtra("friendId"));
             intent.putExtra("nick",TextUtils.isEmpty(friendInfoResponse.getRemark()) ? friendInfoResponse.getNick() : friendInfoResponse.getRemark());
             startActivity(intent);
         });

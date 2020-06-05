@@ -6,47 +6,47 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
 
         <ImageView
             android:id="@+id/img_headPortrait"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="6dp"
-            android:src="@drawable/ic_hilamglogo2" />
+            android:layout_marginBottom="6dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp">
 
             <TextView
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="王哈哈" />
+                android:maxLines="1"
+                android:maxEms="8"
+                android:ellipsize="end"/>
 
             <TextView
                 android:id="@+id/tv_sentTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="06-03 18:11:53" />
+                android:layout_alignParentEnd="true" />
 
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_nickname"
-                android:gravity="bottom"
-                android:text="乔治，你觉得BTC行情怎么样？"
+                android:layout_marginTop="8dp"
                 android:textColor="#272E3F"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textSize="16sp" />
         </RelativeLayout>
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 
 import com.zxjk.moneyspace.R;
+import com.zxjk.moneyspace.bean.response.FriendInfoResponse;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
@@ -47,7 +47,7 @@ public class AddFriendDetailsActivity extends BaseActivity {
     @BindView(R.id.tv_addAddressBook)
     TextView tvAddAddressBook;
 
-
+    FriendInfoResponse friendInfoResponse;
     private String imageUrl;
 
     @Override
@@ -65,9 +65,12 @@ public class AddFriendDetailsActivity extends BaseActivity {
         }
 
         findViewById(R.id.ll_transcript).setOnClickListener(v -> {
-            Intent intent1 = new Intent(this,ChattingRecordsActivity.class);
-            intent1.putExtra("groupId",getIntent().getStringExtra("groupId"));
-            startActivity(intent1);
+            Intent intent = new Intent(this, ChattingRecordsActivity.class);
+            intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
+            intent.putExtra("imageUrl", imageUrl);
+            intent.putExtra("friendId", getIntent().getStringExtra("friendId"));
+            intent.putExtra("nick", friendInfoResponse.getNick());
+            startActivity(intent);
         });
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getFriendInfoById(getIntent().getStringExtra("friendId"), groupId)
@@ -75,6 +78,7 @@ public class AddFriendDetailsActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(r -> {
+                    friendInfoResponse = r;
                     tvNickname.setText(r.getNick());
                     tvDuoDuoNumber.setText(getString(R.string.duoduo_acount) + " " + r.getDuoduoId());
                     tvDistrict.setText(getString(R.string.district) + " " + r.getAddress());
