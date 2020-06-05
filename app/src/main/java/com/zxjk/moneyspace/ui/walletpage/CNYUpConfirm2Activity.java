@@ -104,12 +104,13 @@ public class CNYUpConfirm2Activity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
-                    Intent intent = new Intent(this, BalanceDetailActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+//                    Intent intent = new Intent(this, BalanceDetailActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(intent);
 
-                    intent = new Intent(this, SuccessActivity1.class);
+                    Intent intent = new Intent(this, SuccessActivity1.class);
                     startActivity(intent);
+                    finish();
                 }, this::handleApiError);
     }
 

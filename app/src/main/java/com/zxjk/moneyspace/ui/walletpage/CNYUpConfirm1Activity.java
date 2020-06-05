@@ -94,6 +94,7 @@ public class CNYUpConfirm1Activity extends BaseActivity {
         Intent intent = new Intent(this, CNYUpConfirm2Activity.class);
         intent.putExtra("money", money);
         startActivity(intent);
+        finish();
     }
 
 }

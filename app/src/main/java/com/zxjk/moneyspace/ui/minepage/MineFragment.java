@@ -156,6 +156,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                         }, this::handleApiError);
                 break;
             case R.id.llMine8:
+                startActivity(new Intent(getActivity(),OnlineServiceActivity.class));
                 break;
             case R.id.llMine9:
                 uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId);

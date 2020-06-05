@@ -108,6 +108,7 @@ public class CNYUpActivity extends BaseActivity {
         intent.putExtra("money", money);
         intent.putExtra("bank", r);
         startActivity(intent);
+        finish();
     }
 
 }
