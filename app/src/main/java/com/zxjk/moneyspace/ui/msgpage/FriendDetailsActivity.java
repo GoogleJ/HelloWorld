@@ -106,6 +106,14 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
             return;
         }
 
+        findViewById(R.id.ll_transcript).setOnClickListener(v -> {
+            Intent intent = new Intent(this,ChattingRecordsActivity.class);
+            intent.putExtra("groupId",getIntent().getStringExtra("groupId"));
+            intent.putExtra("imageUrl",imageUrl);
+            intent.putExtra("nick",TextUtils.isEmpty(friendInfoResponse.getRemark()) ? friendInfoResponse.getNick() : friendInfoResponse.getRemark());
+            startActivity(intent);
+        });
+
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getFriendInfoById(friendId,groupId)
                 .compose(bindToLifecycle())

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ public class AddFriendDetailsActivity extends BaseActivity {
     @BindView(R.id.tv_addAddressBook)
     TextView tvAddAddressBook;
 
+
     private String imageUrl;
 
     @Override
@@ -62,6 +64,11 @@ public class AddFriendDetailsActivity extends BaseActivity {
             findViewById(R.id.ll_transcript).setVisibility(View.VISIBLE);
         }
 
+        findViewById(R.id.ll_transcript).setOnClickListener(v -> {
+            Intent intent1 = new Intent(this,ChattingRecordsActivity.class);
+            intent1.putExtra("groupId",getIntent().getStringExtra("groupId"));
+            startActivity(intent1);
+        });
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getFriendInfoById(getIntent().getStringExtra("friendId"), groupId)
                 .compose(bindToLifecycle())
@@ -93,7 +100,7 @@ public class AddFriendDetailsActivity extends BaseActivity {
                 }, this::handleApiError);
     }
 
-    @OnClick({R.id.rl_back, R.id.tv_addAddressBook, R.id.iv_headPortrait})
+    @OnClick({R.id.rl_back, R.id.tv_addAddressBook, R.id.iv_headPortrait, R.id.tv_personalizedSignature})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:

@@ -107,7 +107,7 @@
     <RelativeLayout
         android:id="@+id/ll_source"
         style="@style/RLayoutStyle"
-        android:visibility="gone">
+        android:visibility="visible">
         <include layout="@layout/layout_line" />
         <TextView
             android:id="@+id/tv_source"
@@ -138,7 +138,6 @@
         android:id="@+id/ll_transcript"
         style="@style/RLayoutStyle"
         android:visibility="gone">
-        <include layout="@layout/layout_line" />
         <TextView
             android:id="@+id/tv_transcript"
             android:layout_width="wrap_content"
