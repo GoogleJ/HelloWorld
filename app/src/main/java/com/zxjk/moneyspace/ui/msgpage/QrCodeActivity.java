@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -186,14 +187,17 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
                 String[] shareStrings = result.split("\\?");
 
                 String decryptResult = AesUtil.getInstance().decrypt(shareStrings[1]);
-
+                String resultUri = "http://hilamg-share.zhumengxuanang.com/?";
+                resultUri += decryptResult;
                 if (decryptResult.contains("groupId")) {
                     //groupQR
-                    String groupId = decryptResult.split("=")[1];
+                    Uri uri = Uri.parse(resultUri);
+                    String id= uri.getQueryParameter("id");
+                    String groupId= uri.getQueryParameter("groupId");
 
                     Intent intent = new Intent(this, AgreeGroupChatActivity.class);
                     intent.putExtra("groupId", groupId);
-
+                    intent.putExtra("id",id);
                     startActivity(intent);
                     finish();
                 } else {

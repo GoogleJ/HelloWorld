@@ -181,6 +181,10 @@ public class SettingActivity extends BaseActivity {
         findViewById(R.id.rl_languageSwitch).setOnClickListener(v -> {
             startActivity(new Intent(SettingActivity.this, LanguageActivity.class));
         });
+
+        findViewById(R.id.rl_change_password).setOnClickListener(v -> {
+            startActivity(new Intent(SettingActivity.this, ChangePasswordActivity.class));
+        });
     }
 
     public void unLogin(View view) {

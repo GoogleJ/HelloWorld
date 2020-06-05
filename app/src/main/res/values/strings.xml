@@ -786,6 +786,7 @@
     <string name="life_services">生活服务</string>
     <string name="input_name">请输入姓名</string>
     <string name="input_card">请输入身份证号码</string>
+    <string name="pwd_login">密码登录</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

@@ -40,6 +40,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
 
     private GroupResponse groupResponse;
     private boolean canJoin;
+    private String inviterId;
 
     @SuppressLint("CheckResult")
     @Override
@@ -55,6 +56,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
         joinGroupBtn = findViewById(R.id.join_a_group_chat);
 
         String groupId = getIntent().getStringExtra("groupId");
+        inviterId = getIntent().getStringExtra("id");
 
         boolean overtime = getIntent().getBooleanExtra("overtime", false);
         if (overtime) {
@@ -98,7 +100,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
                             ToastUtils.showShort(getString(R.string.group_max_number));
                             return;
                         }
-                        enterGroup(groupId, "", Constant.userId);
+                        enterGroup(groupId, inviterId, Constant.userId);
                     });
                 }, this::handleApiError);
     }

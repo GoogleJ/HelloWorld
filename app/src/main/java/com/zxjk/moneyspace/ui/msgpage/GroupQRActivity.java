@@ -55,7 +55,7 @@ public class GroupQRActivity extends BaseActivity {
 
         GroupResponse data = (GroupResponse) getIntent().getSerializableExtra("data");
 
-        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("groupId=" + data.getGroupInfo().getId());
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId + "&groupId=" + data.getGroupInfo().getId());
 
         ((TextView) findViewById(R.id.tv_title)).setText(R.string.group_qr);
 

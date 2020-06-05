@@ -73,6 +73,15 @@ public class LoginResponse implements Parcelable {
     private String distance;
     private String openPhone;
     private String inviteCode;
+    private String isChinaPhone;
+
+    public String getIsChinaPhone() {
+        return isChinaPhone;
+    }
+
+    public void setIsChinaPhone(String isChinaPhone) {
+        this.isChinaPhone = isChinaPhone;
+    }
 
     public String getId() {
         return id;

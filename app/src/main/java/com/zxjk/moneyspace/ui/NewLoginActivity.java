@@ -3,6 +3,7 @@ package com.zxjk.moneyspace.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,11 +20,20 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.moneyspace.Constant;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.bean.CountryEntity;
+import com.zxjk.moneyspace.bean.response.LoginResponse;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.MMKVUtils;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.UserInfo;
 
 public class NewLoginActivity extends BaseActivity {
 
@@ -32,8 +42,14 @@ public class NewLoginActivity extends BaseActivity {
     private LinearLayout llContrary;
     private TextView tvContrary;
     private EditText etPhone;
-
+    private LinearLayout llpwd;
+    private EditText etPwd;
+    private TextView tvLogin;
+    private TextView tv_loginType;
+    private TextView tv_pwdLogin;
     private String phone;
+    private boolean isPwd = true;
+    private TextView tv_forget_the_password;
 
     /**
      * 0：国外
@@ -79,6 +95,7 @@ public class NewLoginActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     public void code(View view) {
         String phoneText = etPhone.getText().toString().trim();
+
         if ("86".equals(tvContrary.getText().toString().substring(1))) {
             isChinaPhone = "1";
             phone = phoneText;
@@ -86,25 +103,95 @@ public class NewLoginActivity extends BaseActivity {
             isChinaPhone = "0";
             phone = tvContrary.getText().toString().substring(1) + phoneText;
         }
+        Constant.currentUser.setIsChinaPhone(isChinaPhone);
         if (TextUtils.isEmpty(phone) || ("1".equals(isChinaPhone) && !RegexUtils.isMobileExact(phone))) {
             ToastUtils.showShort(R.string.edit_mobile_tip);
             return;
         }
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getCode(phone, isChinaPhone)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(o -> {
-                    Intent intent = new Intent(this, GetCodeActivity.class);
-                    intent.putExtra("phone", phone);
-                    startActivity(intent);
-                }, this::handleApiError);
+        if (tvLogin.getText().equals("获取验证码")) {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getCode(phone, isChinaPhone)
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(o -> {
+                        Intent intent = new Intent(this, GetCodeActivity.class);
+                        intent.putExtra("phone", phone);
+                        startActivity(intent);
+                    }, this::handleApiError);
+        } else {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .appUserRegisterAndLogin(phone, "", etPwd.getText().toString())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->
+                            Observable.create(emitter ->
+                                    RongIM.connect(loginResponse.getRongToken(), new RongIMClient.ConnectCallback() {
+                                        @Override
+                                        public void onTokenIncorrect() {
+                                            emitter.tryOnError(new Exception(getString(R.string.connect_failed)));
+                                        }
+
+                                        @Override
+                                        public void onSuccess(String userid) {
+                                            emitter.onNext(loginResponse);
+                                        }
+
+                                        @Override
+                                        public void onError(RongIMClient.ErrorCode errorCode) {
+                                            emitter.tryOnError(new Exception(getString(R.string.connect_failed)));
+                                        }
+                                    }))
+                                    .compose(bindToLifecycle())
+                    )
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                    .subscribe(o -> {
+                        LoginResponse loginResponse = (LoginResponse) o;
+                        Constant.currentUser = loginResponse;
+                        Constant.userId = loginResponse.getId();
+                        Constant.token = loginResponse.getToken();
+                        Constant.authentication = loginResponse.getIsAuthentication();
+
+                        MMKVUtils.getInstance().enCode("login", Constant.currentUser);
+                        MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
+                        MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
+                        UserInfo userInfo = new UserInfo(Constant.userId, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
+                        RongIM.getInstance().setCurrentUserInfo(userInfo);
+
+//                        if ("0".equals(loginResponse.getIsFirstLogin())) {
+//                            Intent intent = new Intent(this, SetUpPaymentPwdActivity.class);
+//                            intent.putExtra("firstLogin", true);
+//                            startActivity(intent);
+//                            finish();
+//                            return;
+//                        }
+
+                        MMKVUtils.getInstance().enCode("isLogin", true);
+                        startActivity(new Intent(this, HomeActivity.class));
+                        finish();
+                    }, this::handleApiError);
+        }
     }
 
     public void email(View view) {
-        startActivity(new Intent(this, NewLoginActivity1.class));
-        finish();
+        if (tvLogin.getText().equals("登录")) {
+            tv_loginType.setText("邮箱登录");
+            tv_pwdLogin.setVisibility(View.VISIBLE);
+            llpwd.setVisibility(View.GONE);
+            tvLogin.setText("获取验证码");
+            tv_forget_the_password.setVisibility(View.GONE);
+        } else {
+            startActivity(new Intent(this, NewLoginActivity1.class));
+            finish();
+        }
+    }
+
+    public void pwd(View view) {
+        llpwd.setVisibility(View.VISIBLE);
+        tvLogin.setText("登录");
+        tv_loginType.setText("验证码登录");
+        tv_pwdLogin.setVisibility(View.GONE);
+        tv_forget_the_password.setVisibility(View.VISIBLE);
     }
 
     private void initView() {
@@ -113,6 +200,12 @@ public class NewLoginActivity extends BaseActivity {
         llContrary = findViewById(R.id.llContrary);
         tvContrary = findViewById(R.id.tvContrary);
         etPhone = findViewById(R.id.etPhone);
+        llpwd = findViewById(R.id.llpwd);
+        etPwd = findViewById(R.id.etPwd);
+        tvLogin = findViewById(R.id.bt_login);
+        tv_loginType = findViewById(R.id.tv_loginType);
+        tv_pwdLogin = findViewById(R.id.tv_pwdLogin);
+        tv_forget_the_password = findViewById(R.id.tv_forget_the_password);
     }
 
     @Override

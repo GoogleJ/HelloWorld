@@ -82,7 +82,7 @@ public class GetCodeActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void doLoginByPhone(String phone) {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString())
+                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(),"")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->
@@ -136,7 +136,7 @@ public class GetCodeActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void doLoginByEmail(String email) {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .appUserRegisterAndLoginEmail(email, ppivVerify.getPasswordString())
+                .appUserRegisterAndLoginEmail(email, ppivVerify.getPasswordString(),"")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->

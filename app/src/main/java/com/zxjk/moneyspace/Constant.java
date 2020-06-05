@@ -15,14 +15,14 @@ public class Constant {
     public static final String CITY_DATA = "china_city_data.json";
     //    阿里OSS上传地址
 //    public static final String BASE_URL = "https://moneyspace.ztok.net/";  //release
-    public static final String BASE_URL = "http://192.168.1.19:8086/";
+    public static final String BASE_URL = "http://192.168.1.67:8086/";
     public static final String OSS_URL = "https://moneyspace.oss-cn-hongkong.aliyuncs.com/upload/";
 
     public static final String SECRET = "D1230808098DE048DB81365E714B01B8";
 
     public static final String APP_CODE = "fb0e95b069f74f29a2f972f9454d7d1a";
     public static final String APP_DOWNLOAD_URL = "https://f.mokerr.com/moneyspace";
-    public static final String APP_SHARE_URL = "http://moneyspace-share.ztok.net/?";
+    public static final String APP_SHARE_URL = "http://share.zhumengxuanang.com/?";
 
     public static final int CODE_SUCCESS = 0;
     public static final int CODE_UNLOGIN = 601;

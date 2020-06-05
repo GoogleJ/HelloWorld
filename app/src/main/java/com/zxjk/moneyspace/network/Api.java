@@ -421,11 +421,11 @@ public interface Api {
 
     @POST("duoduo/customer/appUserRegisterAndLogin")
     @FormUrlEncoded
-    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile, @Field("securityCode") String securityCode);
+    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile, @Field("securityCode") String securityCode, @Field("password") String password);
 
     @POST("duoduo/customer/appUserRegisterAndLogin")
     @FormUrlEncoded
-    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLoginEmail(@Field("email") String email, @Field("securityCode") String securityCode);
+    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLoginEmail(@Field("email") String email, @Field("securityCode") String securityCode, @Field("password") String password);
 
     @POST("duoduo/group/getUpgradeGroups")
     @FormUrlEncoded
@@ -831,4 +831,11 @@ public interface Api {
                                                       @Field("nonce") String nonce);
 
 
+    @FormUrlEncoded
+    @POST("duoduo/customer/updatePassword")
+    Observable<BaseResponse<String>> updatePassword(@Field("mobile") String mobile,
+                                                       @Field("email") String email,
+                                                    @Field("securityCode") String securityCode,
+                                                    @Field("newPassword") String newPassword,
+                                                    @Field("newPasswordTwo") String newPasswordTwo);
 }
