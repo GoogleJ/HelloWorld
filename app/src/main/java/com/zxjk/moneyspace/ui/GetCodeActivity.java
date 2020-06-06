@@ -35,6 +35,7 @@ public class GetCodeActivity extends BaseActivity {
     private TextView tvTips1;
     private TextView tvTips2;
     private PayPsdInputView ppivVerify;
+    private String isChinaPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,7 @@ public class GetCodeActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void doLoginByPhone(String phone) {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(),"")
+                .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(), "")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->
@@ -112,7 +113,9 @@ public class GetCodeActivity extends BaseActivity {
                     Constant.userId = loginResponse.getId();
                     Constant.token = loginResponse.getToken();
                     Constant.authentication = loginResponse.getIsAuthentication();
-
+                    if (!TextUtils.isEmpty(isChinaPhone)) {
+                        Constant.currentUser.setIsChinaPhone(isChinaPhone);
+                    }
                     MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                     MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
                     MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
@@ -136,7 +139,7 @@ public class GetCodeActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void doLoginByEmail(String email) {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .appUserRegisterAndLoginEmail(email, ppivVerify.getPasswordString(),"")
+                .appUserRegisterAndLoginEmail(email, ppivVerify.getPasswordString(), "")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->

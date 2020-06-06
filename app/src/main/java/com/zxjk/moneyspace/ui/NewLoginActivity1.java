@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,6 +44,13 @@ public class NewLoginActivity1 extends BaseActivity {
     private boolean isPwd = true;
     private TextView tv_forget_the_password;
 
+    private LinearLayout ll_code;
+    private EditText etCode;
+    private TextView tvCode;
+    private ImageView ivIcon;
+    private TextView tv1;
+    private TextView tv2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +71,19 @@ public class NewLoginActivity1 extends BaseActivity {
         tv_loginType = findViewById(R.id.tv_loginType);
         tv_pwdLogin = findViewById(R.id.tv_pwdLogin);
         tv_forget_the_password = findViewById(R.id.tv_forget_the_password);
+        ll_code = findViewById(R.id.ll_code);
+        etCode = findViewById(R.id.et_code);
+        tvCode = findViewById(R.id.tv_code);
+        ivIcon = findViewById(R.id.ivIcon);
+        tv1 = findViewById(R.id.tv1);
+        tv2 = findViewById(R.id.tv2);
     }
 
     @SuppressLint("CheckResult")
     public void code(View view) {
         if (!"".equals(et.getText().toString().trim())
                 && RegexUtils.isEmail(et.getText().toString().trim())) {
-            if (tvLogin.getText().equals("获取验证码")) {
+            if (tvLogin.getText().equals(R.string.getVerGode)) {
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getEmailCode(et.getText().toString().trim())
                         .compose(bindToLifecycle())
@@ -78,6 +93,24 @@ public class NewLoginActivity1 extends BaseActivity {
                             Intent intent = new Intent(this, GetCodeActivity.class);
                             intent.putExtra("email", et.getText().toString().trim());
                             startActivity(intent);
+                        }, this::handleApiError);
+            } else if (ll_code.getVisibility() == View.VISIBLE) {
+                if (TextUtils.isEmpty(etCode.getText().toString().trim())) {
+                    ToastUtils.showShort(R.string.please_enter_verification_code);
+                    return;
+                }
+                if (TextUtils.isEmpty(etPwd.getText().toString().trim())) {
+                    ToastUtils.showShort(getString(R.string.enter_your_pwd));
+                    return;
+                }
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .updatePassword("", et.getText().toString().trim(), etCode.getText().toString(), etPwd.getText().toString(), etPwd.getText().toString())
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .subscribe(o -> {
+                            ToastUtils.showShort(getString(R.string.password_changed_successfully));
+                            finish();
                         }, this::handleApiError);
             } else {
                 ServiceFactory.getInstance().getBaseService(Api.class)
@@ -141,20 +174,20 @@ public class NewLoginActivity1 extends BaseActivity {
 
 //    }
 
-    public void pwd(View view){
+    public void pwd(View view) {
         llpwd.setVisibility(View.VISIBLE);
-        tvLogin.setText("登录");
-        tv_loginType.setText("验证码登录");
+        tvLogin.setText(R.string.login);
+        tv_loginType.setText(R.string.login_byphone);
         tv_pwdLogin.setVisibility(View.GONE);
         tv_forget_the_password.setVisibility(View.VISIBLE);
     }
 
     public void phone(View view) {
-        if (tvLogin.getText().equals("登录")) {
-            tv_loginType.setText("邮箱登录");
+        if (tvLogin.getText().equals(R.string.login)) {
+            tv_loginType.setText(R.string.login_byphone);
             tv_pwdLogin.setVisibility(View.VISIBLE);
             llpwd.setVisibility(View.GONE);
-            tvLogin.setText("获取验证码");
+            tvLogin.setText(R.string.text_get_code);
             tv_forget_the_password.setVisibility(View.GONE);
         } else {
             startActivity(new Intent(this, NewLoginActivity.class));
@@ -163,7 +196,51 @@ public class NewLoginActivity1 extends BaseActivity {
     }
 
     public void back(View view) {
-        finish();
+        if (tvLogin.getText().equals(R.string.m_edit_information_btn)) {
+            ll_code.setVisibility(View.GONE);
+            tvLogin.setText(R.string.login);
+            llpwd.setVisibility(View.VISIBLE);
+            tv_loginType.setVisibility(View.VISIBLE);
+            tv_pwdLogin.setVisibility(View.GONE);
+            tv_forget_the_password.setVisibility(View.VISIBLE);
+            ivIcon.setVisibility(View.VISIBLE);
+            tv1.setText(R.string.hello);
+            tv2.setVisibility(View.VISIBLE);
+        } else if (tvLogin.getText().equals(R.string.login)) {
+            tv_loginType.setText(R.string.login_byphone);
+            tv_pwdLogin.setVisibility(View.VISIBLE);
+            llpwd.setVisibility(View.GONE);
+            tvLogin.setText(R.string.text_get_code);
+            tv_forget_the_password.setVisibility(View.GONE);
+        } else {
+            finish();
+        }
     }
 
+    @SuppressLint("CheckResult")
+    public void getCode(View view) {
+        if (!"".equals(et.getText().toString().trim())
+                && RegexUtils.isEmail(et.getText().toString().trim())) {
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getEmailCode(et.getText().toString().trim())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                    .subscribe(s -> {
+                        ToastUtils.showShort(getString(R.string.send_successfully));
+                    }, this::handleApiError);
+        }
+    }
+
+    public void forgetThePassword(View view) {
+        ll_code.setVisibility(View.VISIBLE);
+        tvLogin.setText(R.string.m_edit_information_btn);
+        llpwd.setVisibility(View.VISIBLE);
+        tv_loginType.setVisibility(View.GONE);
+        tv_pwdLogin.setVisibility(View.GONE);
+        tv_forget_the_password.setVisibility(View.GONE);
+        ivIcon.setVisibility(View.INVISIBLE);
+        tv1.setText(R.string.find_back_the_password);
+        tv2.setVisibility(View.INVISIBLE);
+    }
 }

@@ -779,6 +779,21 @@
     <string name="order_number2">OrderId:</string>
     <string name="group_qr1">Scan to enter group</string>
     <string name="pwd_login">密码登录</string>
+    <string name="enter_your_pwd">请输入密码</string>
+    <string name="password_changed_successfully">密码修改成功</string>
+    <string name="login">登录</string>
+    <string name="send_successfully">验证码发送成功</string>
+    <string name="find_back_the_password">找回密码</string>
+    <string name="code_login">验证码登录</string>
+    <string name="forget_the_password">忘记密码</string>
+    <string name="inconformity">两次密码不一致</string>
+    <string name="login_pwd">登陆密码</string>
+    <string name="the_phone_number">手机号</string>
+    <string name="set_a_password">设置登录密码</string>
+    <string name="set_a_password2">请输入登录密码</string>
+    <string name="confirm_password">确认登录密码</string>
+    <string name="confirm_password2">请再次输入登录密码</string>
+    <string name="login_pwd2">登录密码</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

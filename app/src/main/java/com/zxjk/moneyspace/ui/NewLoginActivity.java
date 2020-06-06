@@ -50,6 +50,12 @@ public class NewLoginActivity extends BaseActivity {
     private String phone;
     private boolean isPwd = true;
     private TextView tv_forget_the_password;
+    private LinearLayout ll_code;
+    private EditText etCode;
+    private TextView tvCode;
+    private ImageView ivIcon;
+    private TextView tv1;
+    private TextView tv2;
 
     /**
      * 0：国外
@@ -89,7 +95,27 @@ public class NewLoginActivity extends BaseActivity {
 
         llContrary.setOnClickListener(v -> startActivityForResult(new Intent(this, CountrySelectActivity.class), 200));
 
-        ivBack.setOnClickListener(v -> finish());
+        ivBack.setOnClickListener(v -> {
+            if (tvLogin.getText().equals(R.string.m_edit_information_btn)) {
+                ll_code.setVisibility(View.GONE);
+                tvLogin.setText(R.string.login);
+                llpwd.setVisibility(View.VISIBLE);
+                tv_loginType.setVisibility(View.VISIBLE);
+                tv_pwdLogin.setVisibility(View.GONE);
+                tv_forget_the_password.setVisibility(View.VISIBLE);
+                ivIcon.setVisibility(View.VISIBLE);
+                tv1.setText(R.string.hello);
+                tv2.setVisibility(View.VISIBLE);
+            } else if (tvLogin.getText().equals(R.string.login)) {
+                tv_loginType.setText(R.string.login_byemail);
+                tv_pwdLogin.setVisibility(View.VISIBLE);
+                llpwd.setVisibility(View.GONE);
+                tvLogin.setText(R.string.getVerGode);
+                tv_forget_the_password.setVisibility(View.GONE);
+            } else {
+                finish();
+            }
+        });
     }
 
     @SuppressLint("CheckResult")
@@ -103,12 +129,12 @@ public class NewLoginActivity extends BaseActivity {
             isChinaPhone = "0";
             phone = tvContrary.getText().toString().substring(1) + phoneText;
         }
-        Constant.currentUser.setIsChinaPhone(isChinaPhone);
+
         if (TextUtils.isEmpty(phone) || ("1".equals(isChinaPhone) && !RegexUtils.isMobileExact(phone))) {
             ToastUtils.showShort(R.string.edit_mobile_tip);
             return;
         }
-        if (tvLogin.getText().equals("获取验证码")) {
+        if (tvLogin.getText().equals(R.string.getVerGode)) {
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getCode(phone, isChinaPhone)
                     .compose(bindToLifecycle())
@@ -117,7 +143,26 @@ public class NewLoginActivity extends BaseActivity {
                     .subscribe(o -> {
                         Intent intent = new Intent(this, GetCodeActivity.class);
                         intent.putExtra("phone", phone);
+                        intent.putExtra("isChinaPhone", isChinaPhone);
                         startActivity(intent);
+                    }, this::handleApiError);
+        } else if (ll_code.getVisibility() == View.VISIBLE) {
+            if (TextUtils.isEmpty(etCode.getText().toString().trim())) {
+                ToastUtils.showShort(R.string.please_enter_verification_code);
+                return;
+            }
+            if (TextUtils.isEmpty(etPwd.getText().toString().trim())) {
+                ToastUtils.showShort(R.string.enter_your_pwd);
+                return;
+            }
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .updatePassword(phone, "", etCode.getText().toString(), etPwd.getText().toString(), etPwd.getText().toString())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .subscribe(o -> {
+                        ToastUtils.showShort(R.string.password_changed_successfully);
+                        finish();
                     }, this::handleApiError);
         } else {
             ServiceFactory.getInstance().getBaseService(Api.class)
@@ -151,7 +196,7 @@ public class NewLoginActivity extends BaseActivity {
                         Constant.userId = loginResponse.getId();
                         Constant.token = loginResponse.getToken();
                         Constant.authentication = loginResponse.getIsAuthentication();
-
+                        Constant.currentUser.setIsChinaPhone(isChinaPhone);
                         MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                         MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
                         MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
@@ -174,22 +219,23 @@ public class NewLoginActivity extends BaseActivity {
     }
 
     public void email(View view) {
-        if (tvLogin.getText().equals("登录")) {
-            tv_loginType.setText("邮箱登录");
+        if (tvLogin.getText().equals(R.string.login)) {
+            tv_loginType.setText(R.string.login_byemail);
             tv_pwdLogin.setVisibility(View.VISIBLE);
             llpwd.setVisibility(View.GONE);
-            tvLogin.setText("获取验证码");
+            tvLogin.setText(R.string.text_get_code);
             tv_forget_the_password.setVisibility(View.GONE);
         } else {
             startActivity(new Intent(this, NewLoginActivity1.class));
             finish();
         }
+
     }
 
     public void pwd(View view) {
         llpwd.setVisibility(View.VISIBLE);
-        tvLogin.setText("登录");
-        tv_loginType.setText("验证码登录");
+        tvLogin.setText(R.string.login);
+        tv_loginType.setText(R.string.code_login);
         tv_pwdLogin.setVisibility(View.GONE);
         tv_forget_the_password.setVisibility(View.VISIBLE);
     }
@@ -206,6 +252,12 @@ public class NewLoginActivity extends BaseActivity {
         tv_loginType = findViewById(R.id.tv_loginType);
         tv_pwdLogin = findViewById(R.id.tv_pwdLogin);
         tv_forget_the_password = findViewById(R.id.tv_forget_the_password);
+        ll_code = findViewById(R.id.ll_code);
+        etCode = findViewById(R.id.et_code);
+        tvCode = findViewById(R.id.tv_code);
+        ivIcon = findViewById(R.id.ivIcon);
+        tv1 = findViewById(R.id.tv1);
+        tv2 = findViewById(R.id.tv2);
     }
 
     @Override
@@ -220,4 +272,42 @@ public class NewLoginActivity extends BaseActivity {
         }
     }
 
+    public void forgetThePassword(View view) {
+        ll_code.setVisibility(View.VISIBLE);
+        tvLogin.setText(R.string.m_edit_information_btn);
+        llpwd.setVisibility(View.VISIBLE);
+        tv_loginType.setVisibility(View.GONE);
+        tv_pwdLogin.setVisibility(View.GONE);
+        tv_forget_the_password.setVisibility(View.GONE);
+        ivIcon.setVisibility(View.INVISIBLE);
+        tv1.setText(R.string.find_back_the_password);
+        tv2.setVisibility(View.INVISIBLE);
+    }
+
+    @SuppressLint("CheckResult")
+    public void getCode(View view) {
+        String phoneText = etPhone.getText().toString().trim();
+
+        if ("86".equals(tvContrary.getText().toString().substring(1))) {
+            isChinaPhone = "1";
+            phone = phoneText;
+        } else {
+            isChinaPhone = "0";
+            phone = tvContrary.getText().toString().substring(1) + phoneText;
+        }
+
+        if (TextUtils.isEmpty(phone) || ("1".equals(isChinaPhone) && !RegexUtils.isMobileExact(phone))) {
+            ToastUtils.showShort(R.string.edit_mobile_tip);
+            return;
+        }
+
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getCode(phone, isChinaPhone)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(o -> {
+                    ToastUtils.showShort(R.string.send_successfully);
+                }, this::handleApiError);
+    }
 }

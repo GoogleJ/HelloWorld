@@ -40,7 +40,7 @@
                     style="@style/textStyle"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
-                    android:text="登录密码" />
+                    android:text="@string/login_pwd2" />
 
                 <ImageView style="@style/ImageEnter" />
 

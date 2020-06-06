@@ -43,7 +43,7 @@ public class ChangePasswordActivity extends BaseActivity {
         btn_confirm = findViewById(R.id.btn_confirm);
 
         TextView title = findViewById(R.id.tv_title);
-        title.setText("登陆密码");
+        title.setText(R.string.login_pwd);
     }
 
     @SuppressLint("CheckResult")
@@ -75,7 +75,7 @@ public class ChangePasswordActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(s -> {
-                            ToastUtils.showShort("验证码发送成功");
+                            ToastUtils.showShort(R.string.send_successfully);
                         }, this::handleApiError);
             } else {
                 api.getCode(tv_phone.getText().toString(), Constant.currentUser.getIsChinaPhone())
@@ -83,7 +83,7 @@ public class ChangePasswordActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(o -> {
-                            ToastUtils.showShort("验证码发送成功");
+                            ToastUtils.showShort(R.string.send_successfully);
                         }, this::handleApiError);
             }
         }
@@ -92,16 +92,13 @@ public class ChangePasswordActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void setPwd(String phone, String email) {
         if (TextUtils.isEmpty(et_code.getText().toString())) {
-            ToastUtils.showShort("请输入验证码");
+            ToastUtils.showShort(R.string.please_enter_verification_code);
             return;
-        } else if (TextUtils.isEmpty(et_pwd.getText().toString())) {
-            ToastUtils.showShort("请输入密码");
-            return;
-        } else if (TextUtils.isEmpty(et_pwd2.getText().toString())) {
-            ToastUtils.showShort("请输入密码");
+        } else if (TextUtils.isEmpty(et_pwd.getText().toString()) || TextUtils.isEmpty(et_pwd2.getText().toString())) {
+            ToastUtils.showShort(R.string.enter_your_pwd);
             return;
         } else if (!et_pwd.getText().toString().equals(et_pwd2.getText().toString())) {
-            ToastUtils.showShort("两次密码不一致");
+            ToastUtils.showShort(getString(R.string.inconformity));
         }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
@@ -110,7 +107,7 @@ public class ChangePasswordActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(o -> {
-                    ToastUtils.showShort("密码修改成功");
+                    ToastUtils.showShort(R.string.password_changed_successfully);
                     finish();
                 }, this::handleApiError);
     }
