@@ -179,6 +179,15 @@ public class GroupResponse implements Serializable {
         private String openAudio;
         private String openVideo;
         private String forceRecall;
+        private String openGlobalClean;
+
+        public String getOpenGlobalClean() {
+            return openGlobalClean;
+        }
+
+        public void setOpenGlobalClean(String openGlobalClean) {
+            this.openGlobalClean = openGlobalClean;
+        }
 
         public String getForceRecall() {
             return forceRecall;
@@ -316,6 +325,15 @@ public class GroupResponse implements Serializable {
         private String slowMode;
         private String limitNumber;
         private String customerNumber;
+        private String banSendVoice;
+
+        public String getBanSendVoice() {
+            return banSendVoice;
+        }
+
+        public void setBanSendVoice(String banSendVoice) {
+            this.banSendVoice = banSendVoice;
+        }
 
         public String getCustomerNumber() {
             return customerNumber;

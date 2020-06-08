@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -1052,7 +1051,7 @@ public class ConversationActivity extends BaseActivity {
             if (groupInfo == null) {
                 return;
             }
-            Intent intent1 = new Intent(this, GroupChatInformationActivity.class);
+            Intent intent1 = new Intent(this, NewSocialManageActivity.class);
             intent1.putExtra("group", groupInfo);
             startActivityForResult(intent1, 1000);
         }
@@ -1083,11 +1082,7 @@ public class ConversationActivity extends BaseActivity {
         if (requestCode == 1000 && resultCode == 1000) {
             if (groupInfo != null) {
                 groupInfo = (GroupResponse) data.getSerializableExtra("group");
-                if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
-                    tvTitle.setText(data.getStringExtra("title"));
-                } else {
-                    tvTitle.setText(getString(R.string.groupname_num, data.getStringExtra("title"), groupInfo.getGroupInfo().getCustomerNumber()));
-                }
+                tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
             }
         } else if (requestCode == 2000 && resultCode == 1000) {
             tvTitle.setText(data.getStringExtra("title"));

@@ -27,6 +27,7 @@ import com.zxjk.moneyspace.bean.response.GetCustomerIdentity;
 import com.zxjk.moneyspace.bean.response.GetEcologyByType;
 import com.zxjk.moneyspace.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupChatInfoByGroupIdResponse;
+import com.zxjk.moneyspace.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.moneyspace.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.moneyspace.bean.response.GetOTCSymbolInfo;
@@ -44,16 +45,20 @@ import com.zxjk.moneyspace.bean.response.GetTransferAllResponse;
 import com.zxjk.moneyspace.bean.response.GetUpgradeGroupsResponnse;
 import com.zxjk.moneyspace.bean.response.GetVicinityResponse;
 import com.zxjk.moneyspace.bean.response.GroupChatResponse;
+import com.zxjk.moneyspace.bean.response.GroupManagementInfoBean;
 import com.zxjk.moneyspace.bean.response.GroupResponse;
 import com.zxjk.moneyspace.bean.response.LoginResponse;
 import com.zxjk.moneyspace.bean.response.MarketsResponse;
 import com.zxjk.moneyspace.bean.response.PayInfoResponse;
 import com.zxjk.moneyspace.bean.response.PaymentDoneResponse;
+import com.zxjk.moneyspace.bean.response.PermissionInfoBean;
 import com.zxjk.moneyspace.bean.response.PersonalChatConfigResponse;
 import com.zxjk.moneyspace.bean.response.PersonalRedPackageInfoResponse;
 import com.zxjk.moneyspace.bean.response.ReceiveGroupRedPackageResponse;
 import com.zxjk.moneyspace.bean.response.ReceivePersonalRedPackageResponse;
 import com.zxjk.moneyspace.bean.response.RedPackageResponse;
+import com.zxjk.moneyspace.bean.response.ReleaseRecord;
+import com.zxjk.moneyspace.bean.response.ReleaseRecordDetails;
 import com.zxjk.moneyspace.bean.response.SearchCommunityResponse;
 import com.zxjk.moneyspace.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.moneyspace.bean.response.TransferResponse;
@@ -74,6 +79,64 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface Api {
+    @POST("duoduo/group/updatePermissionInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> updatePermissionInfo(@Field("permissionInfo") String permissionInfo);
+
+    @POST("duoduo/group/getPermissionInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<List<PermissionInfoBean>>> getPermissionInfo(@Field("groupId") String groupId);
+
+    @POST("duoduo/group/muteGroups")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> muteGroups(@Field("groupId") String groupId, @Field("type") String type);
+
+    @POST("duoduo/group/groupOperation")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> groupOperation(@Field("groupId") String groupId, @Field("type") String type, @Field("source") String source);
+
+    @POST("duoduo/group/getGroupPayInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetGroupPayInfoResponse>> getGroupPayInfo(@Field("groupId") String groupId);
+
+    @POST("duoduo/group/groupPayInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> groupPayInfo(@Field("groupId") String groupId, @Field("payFee") String payFee, @Field("isOpen") String isOpen, @Field("symbol") String symbol);
+
+    @FormUrlEncoded
+    @POST("duoduo/group/getDumbManagers")
+    Observable<BaseResponse<ArrayList<GroupManagementInfoBean>>> getDumbManagers(@Field("groupId") String groupId,
+                                                                                 @Field("page") String page,
+                                                                                 @Field("offset") String offset,
+                                                                                 @Field("searchKey") String searchKey);
+
+    @POST("duoduo/group/blacklistOperation")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> blacklistOperation(@Field("groupId") String groupId,
+                                                        @Field("customerId") String customerId,
+                                                        @Field("type") String type);
+
+    @POST("duoduo/group/memberMutedOperation")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> muteMembers(@Field("groupId") String groupId,
+                                                 @Field("customerId") String customerId,
+                                                 @Field("type") String type);
+
+    @FormUrlEncoded
+    @POST("duoduo/group/getReleaseRecordDetails")
+    Observable<BaseResponse<ReleaseRecordDetails>> releaseRecordDetails(@Field("groupId") String groupId, @Field("symbol") String symbol, @Field("airdropId") String airdropId, @Field("page") String page, @Field("offset") String offset);
+
+    @FormUrlEncoded
+    @POST("duoduo/group/getReleaseRecord")
+    Observable<BaseResponse<List<ReleaseRecord>>> releaseRecord(@Field("groupId") String groupId);
+
+    @POST("duoduo/group/getRedNewPersonInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetRedNewPersonInfoResponse>> getRedNewPersonInfo(@Field("groupId") String groupId);
+
+    @POST("duoduo/group/upRedNewPersonInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> upRedNewPersonInfo(@Field("data") String data);
 
     @POST("duoduo/login")
     @FormUrlEncoded
@@ -104,7 +167,7 @@ public interface Api {
 
     @POST("duoduo/friend/getFriendInfoById")
     @FormUrlEncoded
-    Observable<BaseResponse<FriendInfoResponse>> getFriendInfoById(@Field("friendId") String friendId,@Field("groupId") String groupId);
+    Observable<BaseResponse<FriendInfoResponse>> getFriendInfoById(@Field("friendId") String friendId, @Field("groupId") String groupId);
 
     @POST("duoduo/friend/getFriendListById")
     Observable<BaseResponse<List<FriendInfoResponse>>> getFriendListById();
@@ -828,13 +891,13 @@ public interface Api {
     @FormUrlEncoded
     @POST("duoduo/exchange/acceptorCancelPay")
     Observable<BaseResponse<String>> acceptorCancelPay(@Field("bothOrderId") String bothOrderId,
-                                                      @Field("nonce") String nonce);
+                                                       @Field("nonce") String nonce);
 
 
     @FormUrlEncoded
     @POST("duoduo/customer/updatePassword")
     Observable<BaseResponse<String>> updatePassword(@Field("mobile") String mobile,
-                                                       @Field("email") String email,
+                                                    @Field("email") String email,
                                                     @Field("securityCode") String securityCode,
                                                     @Field("newPassword") String newPassword,
                                                     @Field("newPasswordTwo") String newPasswordTwo);

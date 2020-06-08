@@ -66,8 +66,8 @@ public class UpdateGroupLimitActivity extends BaseActivity {
                 Button btnUpdate = helper.getView(R.id.btnUpdate);
                 if (!item.getIsUpgrade().equals("1")) {
                     btnUpdate.setOnClickListener(v -> {
-                        MuteRemoveDialog dialog = new MuteRemoveDialog(UpdateGroupLimitActivity.this, getString(R.string.cancel),getString(R.string.queding),
-                                 getString(R.string.hinttext), getString(R.string.confirm_upgrade_social));
+                        MuteRemoveDialog dialog = new MuteRemoveDialog(UpdateGroupLimitActivity.this, getString(R.string.cancel), getString(R.string.queding),
+                                getString(R.string.hinttext), getString(R.string.confirm_upgrade_social));
                         dialog.setOnCommitListener(() -> new NewPayBoard(UpdateGroupLimitActivity.this)
                                 .show(psw -> ServiceFactory.getInstance().getBaseService(Api.class)
                                         .payToUpgradeGroup(group.getGroupInfo().getId(),

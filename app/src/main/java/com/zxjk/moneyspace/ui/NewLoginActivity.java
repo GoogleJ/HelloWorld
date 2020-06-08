@@ -134,7 +134,7 @@ public class NewLoginActivity extends BaseActivity {
             ToastUtils.showShort(R.string.edit_mobile_tip);
             return;
         }
-        if (tvLogin.getText().equals(R.string.getVerGode)) {
+        if (tvLogin.getText().equals(getString(R.string.getVerGode))) {
             ServiceFactory.getInstance().getBaseService(Api.class)
                     .getCode(phone, isChinaPhone)
                     .compose(bindToLifecycle())

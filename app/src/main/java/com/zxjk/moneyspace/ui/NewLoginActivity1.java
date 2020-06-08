@@ -83,7 +83,7 @@ public class NewLoginActivity1 extends BaseActivity {
     public void code(View view) {
         if (!"".equals(et.getText().toString().trim())
                 && RegexUtils.isEmail(et.getText().toString().trim())) {
-            if (tvLogin.getText().equals(R.string.getVerGode)) {
+            if (tvLogin.getText().equals(getString(R.string.getVerGode))) {
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getEmailCode(et.getText().toString().trim())
                         .compose(bindToLifecycle())
