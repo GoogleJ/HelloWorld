@@ -26,6 +26,7 @@ import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.MD5Utils;
 import com.zxjk.moneyspace.utils.MMKVUtils;
 
 import io.reactivex.Observable;
@@ -96,7 +97,7 @@ public class NewLoginActivity extends BaseActivity {
         llContrary.setOnClickListener(v -> startActivityForResult(new Intent(this, CountrySelectActivity.class), 200));
 
         ivBack.setOnClickListener(v -> {
-            if (tvLogin.getText().equals(R.string.m_edit_information_btn)) {
+            if (tvLogin.getText().equals(getString(R.string.m_edit_information_btn))) {
                 ll_code.setVisibility(View.GONE);
                 tvLogin.setText(R.string.login);
                 llpwd.setVisibility(View.VISIBLE);
@@ -106,7 +107,7 @@ public class NewLoginActivity extends BaseActivity {
                 ivIcon.setVisibility(View.VISIBLE);
                 tv1.setText(R.string.hello);
                 tv2.setVisibility(View.VISIBLE);
-            } else if (tvLogin.getText().equals(R.string.login)) {
+            } else if (tvLogin.getText().equals(getString(R.string.login))) {
                 tv_loginType.setText(R.string.login_byemail);
                 tv_pwdLogin.setVisibility(View.VISIBLE);
                 llpwd.setVisibility(View.GONE);
@@ -155,8 +156,12 @@ public class NewLoginActivity extends BaseActivity {
                 ToastUtils.showShort(R.string.enter_your_pwd);
                 return;
             }
+            if (etPwd.getText().toString().length() < 6) {
+                ToastUtils.showShort(R.string.inconformity1);
+                return;
+            }
             ServiceFactory.getInstance().getBaseService(Api.class)
-                    .updatePassword(phone, "", etCode.getText().toString(), etPwd.getText().toString(), etPwd.getText().toString())
+                    .updatePassword(phone, "", etCode.getText().toString(), MD5Utils.getMD5(etPwd.getText().toString()), MD5Utils.getMD5(etPwd.getText().toString()))
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -166,7 +171,7 @@ public class NewLoginActivity extends BaseActivity {
                     }, this::handleApiError);
         } else {
             ServiceFactory.getInstance().getBaseService(Api.class)
-                    .appUserRegisterAndLogin(phone, "", etPwd.getText().toString())
+                    .appUserRegisterAndLogin(phone, "", MD5Utils.getMD5(etPwd.getText().toString()))
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.normalTrans())
                     .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->
@@ -219,7 +224,7 @@ public class NewLoginActivity extends BaseActivity {
     }
 
     public void email(View view) {
-        if (tvLogin.getText().equals(R.string.login)) {
+        if (tvLogin.getText().equals(getString(R.string.login))) {
             tv_loginType.setText(R.string.login_byemail);
             tv_pwdLogin.setVisibility(View.VISIBLE);
             llpwd.setVisibility(View.GONE);
@@ -229,7 +234,6 @@ public class NewLoginActivity extends BaseActivity {
             startActivity(new Intent(this, NewLoginActivity1.class));
             finish();
         }
-
     }
 
     public void pwd(View view) {
@@ -306,8 +310,6 @@ public class NewLoginActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(o -> {
-                    ToastUtils.showShort(R.string.send_successfully);
-                }, this::handleApiError);
+                .subscribe(o -> ToastUtils.showShort(R.string.send_successfully), this::handleApiError);
     }
 }

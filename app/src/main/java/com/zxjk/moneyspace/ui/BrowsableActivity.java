@@ -22,6 +22,7 @@ public class BrowsableActivity extends BaseActivity {
                         String groupId = getIntent().getData().getQueryParameter("groupId");
                         Intent intent = new Intent(this, AgreeGroupChatActivity.class);
                         intent.putExtra("groupId", groupId);
+                        intent.putExtra("id", getIntent().getData().getQueryParameter("id"));
                         startActivity(intent);
                         break;
                     case "addFriend":

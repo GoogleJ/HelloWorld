@@ -31,7 +31,6 @@ import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
-import com.zxjk.moneyspace.ui.msgpage.AgreeGroupChatActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
 import com.zxjk.moneyspace.utils.GlideUtil;
 
@@ -111,6 +110,7 @@ public class SearchGroupActivity extends BaseActivity {
                         if (item.getIsOpen().equals("1")) {
                             Intent intent = new Intent(v.getContext(), AgreeGroupChatActivity.class);
                             intent.putExtra("groupId", item.getId());
+                            intent.putExtra("id", item.getGroupOwnerId());
                             v.getContext().startActivity(intent);
                             finish();
                         } else {

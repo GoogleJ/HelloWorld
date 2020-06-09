@@ -901,4 +901,9 @@ public interface Api {
                                                     @Field("securityCode") String securityCode,
                                                     @Field("newPassword") String newPassword,
                                                     @Field("newPasswordTwo") String newPasswordTwo);
+
+    @POST("duoduo/group/payToGroup")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> payToGroup(@Field("groupId") String groupId, @Field("toCustomerId") String toCustomerId, @Field("payPwd") String payPwd, @Field("mot") String mot,
+                                                @Field("symbol") String symbol);
 }

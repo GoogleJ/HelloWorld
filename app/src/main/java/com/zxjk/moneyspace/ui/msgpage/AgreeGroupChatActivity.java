@@ -18,9 +18,10 @@ import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.HomeActivity;
+import com.zxjk.moneyspace.ui.PayEnterGroupPayActivity;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
-import com.zxjk.moneyspace.utils.ImageUtil;
+import com.zxjk.moneyspace.utils.GlideUtil;
 
 import java.util.List;
 
@@ -78,22 +79,23 @@ public class AgreeGroupChatActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(list -> {
+                    if (null != groupResponse.getGroupPayBean() && groupResponse.getGroupPayBean().getIsOpen().equals("1")) {
+                        Intent intent = new Intent(this, PayEnterGroupPayActivity.class);
+                        intent.putExtra("groupId", groupId);
+                        intent.putExtra("ownerId", groupResponse.getGroupInfo().getGroupOwnerId());
+                        intent.putExtra("payMoney", groupResponse.getGroupPayBean().getPayFee());
+                        intent.putExtra("groupName", groupResponse.getGroupInfo().getGroupNikeName());
+                        startActivity(intent);
+                        finish();
+                        return;
+                    }
                     if (!TextUtils.isEmpty(groupResponse.getMaxNumber())) {
                         if (list.size() >= Integer.parseInt(groupResponse.getMaxNumber())) {
                             canJoin = true;
                         }
                     }
-                    String s = "";
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < list.size(); i++) {
-                        stringBuilder.append(list.get(i).getHeadPortrait() + ",");
-                        if (i == list.size() - 1 || i == 8) {
-                            s = stringBuilder.substring(0, stringBuilder.length() - 1);
-                            break;
-                        }
-                    }
 
-                    ImageUtil.loadGroupPortrait(groupHeader, s, 80, 2);
+                    GlideUtil.loadCircleImg(groupHeader, groupResponse.getGroupInfo().getHeadPortrait());
                     tvGroupName.setText(getString(R.string.groupname_num, groupResponse.getGroupInfo().getGroupNikeName(), String.valueOf(list.size())));
                     joinGroupBtn.setOnClickListener(v -> {
                         if (canJoin) {
@@ -113,12 +115,6 @@ public class AgreeGroupChatActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
-                    //更新名片
-                    int id = getIntent().getIntExtra("id", -1);
-                    if (id != -1) {
-                        RongIM.getInstance().setMessageExtra(id, "1", null);
-                    }
-
                     //发送进群灰条
                     InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain(
                             getString(R.string.xxx_join_dissection, Constant.currentUser.getNick())
@@ -126,7 +122,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
                     Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
                     RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
 
-                    Intent intent = new Intent(AgreeGroupChatActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     RongIM.getInstance().startGroupChat(AgreeGroupChatActivity.this, groupId, groupResponse.getGroupInfo().getGroupNikeName());

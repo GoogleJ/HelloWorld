@@ -287,25 +287,9 @@ public class GroupResponse implements Serializable {
     }
 
     public static class GroupInfoBean implements Serializable {
-        /**
-         * id : 71
-         * groupType : 0
-         * groupNikeName : Zhaochen_4的讨论组
-         * groupHeadPortrait :
-         * groupSign :
-         * groupNotice :
-         * groupOwnerId : 17
-         * updateTime :
-         * createTime : 1553581323053
-         * isDelete : 0
-         * isInviteConfirm : 0
-         * headPortrait :
-         */
-
         private String id;
         private String groupType;
         private String groupNikeName;
-        private String groupHeadPortrait;
         private String groupSign;
         private String groupNotice;
         private String groupOwnerId;
@@ -445,14 +429,6 @@ public class GroupResponse implements Serializable {
 
         public void setGroupNikeName(String groupNikeName) {
             this.groupNikeName = groupNikeName;
-        }
-
-        public String getGroupHeadPortrait() {
-            return groupHeadPortrait;
-        }
-
-        public void setGroupHeadPortrait(String groupHeadPortrait) {
-            this.groupHeadPortrait = groupHeadPortrait;
         }
 
         public String getGroupSign() {

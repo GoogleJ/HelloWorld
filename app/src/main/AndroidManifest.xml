@@ -58,6 +58,10 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.PayEnterGroupPayActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.msgpage.EnterGroupGetRedActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

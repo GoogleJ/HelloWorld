@@ -24,6 +24,7 @@ import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.MD5Utils;
 import com.zxjk.moneyspace.utils.MMKVUtils;
 
 import io.reactivex.Observable;
@@ -81,8 +82,7 @@ public class NewLoginActivity1 extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void code(View view) {
-        if (!"".equals(et.getText().toString().trim())
-                && RegexUtils.isEmail(et.getText().toString().trim())) {
+        if (!"".equals(et.getText().toString().trim())) {
             if (tvLogin.getText().equals(getString(R.string.getVerGode))) {
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getEmailCode(et.getText().toString().trim())
@@ -103,8 +103,13 @@ public class NewLoginActivity1 extends BaseActivity {
                     ToastUtils.showShort(getString(R.string.enter_your_pwd));
                     return;
                 }
+                if (etPwd.getText().toString().length() < 6) {
+                    ToastUtils.showShort(R.string.inconformity1);
+                    return;
+                }
                 ServiceFactory.getInstance().getBaseService(Api.class)
-                        .updatePassword("", et.getText().toString().trim(), etCode.getText().toString(), etPwd.getText().toString(), etPwd.getText().toString())
+                        .updatePassword("", et.getText().toString().trim(), etCode.getText().toString(),
+                                MD5Utils.getMD5(etPwd.getText().toString()), MD5Utils.getMD5(etPwd.getText().toString()))
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
@@ -114,7 +119,7 @@ public class NewLoginActivity1 extends BaseActivity {
                         }, this::handleApiError);
             } else {
                 ServiceFactory.getInstance().getBaseService(Api.class)
-                        .appUserRegisterAndLoginEmail(et.getText().toString().trim(), "", etPwd.getText().toString())
+                        .appUserRegisterAndLoginEmail(et.getText().toString().trim(), "", MD5Utils.getMD5(etPwd.getText().toString()))
                         .compose(bindToLifecycle())
                         .compose(RxSchedulers.normalTrans())
                         .flatMap((Function<LoginResponse, ObservableSource<Object>>) loginResponse ->
@@ -170,20 +175,16 @@ public class NewLoginActivity1 extends BaseActivity {
         }
     }
 
-//    public void pwd(View view) {
-
-//    }
-
     public void pwd(View view) {
         llpwd.setVisibility(View.VISIBLE);
         tvLogin.setText(R.string.login);
-        tv_loginType.setText(R.string.login_byphone);
+        tv_loginType.setText(R.string.code_login);
         tv_pwdLogin.setVisibility(View.GONE);
         tv_forget_the_password.setVisibility(View.VISIBLE);
     }
 
     public void phone(View view) {
-        if (tvLogin.getText().equals(R.string.login)) {
+        if (tvLogin.getText().equals(getString(R.string.login))) {
             tv_loginType.setText(R.string.login_byphone);
             tv_pwdLogin.setVisibility(View.VISIBLE);
             llpwd.setVisibility(View.GONE);
@@ -196,7 +197,7 @@ public class NewLoginActivity1 extends BaseActivity {
     }
 
     public void back(View view) {
-        if (tvLogin.getText().equals(R.string.m_edit_information_btn)) {
+        if (tvLogin.getText().equals(getString(R.string.m_edit_information_btn))) {
             ll_code.setVisibility(View.GONE);
             tvLogin.setText(R.string.login);
             llpwd.setVisibility(View.VISIBLE);
@@ -206,7 +207,7 @@ public class NewLoginActivity1 extends BaseActivity {
             ivIcon.setVisibility(View.VISIBLE);
             tv1.setText(R.string.hello);
             tv2.setVisibility(View.VISIBLE);
-        } else if (tvLogin.getText().equals(R.string.login)) {
+        } else if (tvLogin.getText().equals(getString(R.string.login))) {
             tv_loginType.setText(R.string.login_byphone);
             tv_pwdLogin.setVisibility(View.VISIBLE);
             llpwd.setVisibility(View.GONE);

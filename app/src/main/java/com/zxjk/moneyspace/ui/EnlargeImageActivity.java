@@ -224,7 +224,7 @@ public class EnlargeImageActivity extends BaseActivity {
                         BaseUri<GroupQRActivity.GroupQRData> uri = new Gson().fromJson(result, new TypeToken<BaseUri<GroupQRActivity.GroupQRData>>() {
                         }.getType());
                         Intent intent = new Intent(EnlargeImageActivity.this, AgreeGroupChatActivity.class);
-                        intent.putExtra("inviterId", uri.data.inviterId);
+                        intent.putExtra("id", uri.data.inviterId);
                         intent.putExtra("groupId", uri.data.groupId);
                         intent.putExtra("groupName", uri.data.groupName);
                         startActivity(intent);
@@ -250,6 +250,7 @@ public class EnlargeImageActivity extends BaseActivity {
 
                     Intent intent = new Intent(this, AgreeGroupChatActivity.class);
                     intent.putExtra("groupId", groupId);
+                    intent.putExtra("id",decryptResult.split("=")[0] );
 
                     startActivity(intent);
                     finish();

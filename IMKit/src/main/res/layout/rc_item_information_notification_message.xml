@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         style="@style/RCTheme.Notification.RelativeLayout"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
+        android:gravity="center_vertical"
         android:background="@drawable/notification_yellow">
 
         <ImageView
@@ -17,16 +18,16 @@
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:visibility="gone"
-            android:layout_centerVertical="true"
             android:layout_marginRight="3dp" />
 
         <TextView
             android:id="@id/rc_msg"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/iv_start"
             android:gravity="center"
+            android:lines="1"
+            android:ellipsize="end"
             android:textColor="#F7B230"
             android:textSize="12.5sp" />
 
@@ -34,14 +35,12 @@
             android:id="@+id/rc_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/rc_msg"
             android:gravity="center"
             android:paddingLeft="4dp"
             android:text="@string/rc_you_recalled_edit"
             android:textColor="@color/rc_voip_check_enable"
             android:textSize="13sp"
             android:visibility="gone" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

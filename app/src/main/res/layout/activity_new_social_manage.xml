@@ -3,32 +3,145 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     android:orientation="vertical"
     tools:context=".ui.msgpage.NewSocialManageActivity">
 
     <include layout="@layout/layout_title_back" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#DDDDDD" />
-
-    <ViewStub
-        android:id="@+id/stubOwner"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout="@layout/viewstub_socialmanage_owner" />
+        android:overScrollMode="never">
 
-    <ViewStub
-        android:id="@+id/stubManager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/viewstub_socialmanage_manager" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <ViewStub
-        android:id="@+id/stubMember"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/viewstub_socialmanage_member" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="changeGroupName"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/socialname"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvSocialName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textColor="@color/textColor6" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_end" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:onClick="groupQR"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/m_add_my_way_qrcode_text"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:src="@drawable/icon_qr_code"
+                    android:tint="#6D7278" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_end" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/group_chat_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:padding="15dp" />
+
+                <TextView
+                    android:id="@+id/see_more_group_members"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:onClick="groupAllMembers"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/see_more_group_members"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <ViewStub
+                android:id="@+id/stubOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/viewstub_socialmanage_owner" />
+
+            <ViewStub
+                android:id="@+id/stubManager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/viewstub_socialmanage_manager" />
+
+            <ViewStub
+                android:id="@+id/stubMember"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/viewstub_socialmanage_member" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

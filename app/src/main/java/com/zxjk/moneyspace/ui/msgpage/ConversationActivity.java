@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.trello.rxlifecycle3.android.ActivityEvent;
@@ -31,9 +32,12 @@ import com.zxjk.moneyspace.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.moneyspace.bean.ConversationInfo;
 import com.zxjk.moneyspace.bean.DaoMaster;
 import com.zxjk.moneyspace.bean.SendUrlAndsendImgBean;
+import com.zxjk.moneyspace.bean.SlowModeLocalBeanDao;
+import com.zxjk.moneyspace.bean.SocialLocalBeanDao;
 import com.zxjk.moneyspace.bean.response.GroupResponse;
 import com.zxjk.moneyspace.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.moneyspace.db.OpenHelper;
+import com.zxjk.moneyspace.db.SlowModeLocalBean;
 import com.zxjk.moneyspace.network.Api;
 import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxException;
@@ -131,6 +135,8 @@ public class ConversationActivity extends BaseActivity {
      * db
      */
     private BurnAfterReadMessageLocalBeanDao burnMsgDao;
+    private SlowModeLocalBeanDao slowModeLocalBeanDao;
+    private SocialLocalBeanDao socialLocalBeanDao;
 
     /**
      * 截屏disposable
@@ -213,6 +219,8 @@ public class ConversationActivity extends BaseActivity {
         }
 
         burnMsgDao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
+        slowModeLocalBeanDao = Application.daoSession.getSlowModeLocalBeanDao();
+        socialLocalBeanDao = Application.daoSession.getSocialLocalBeanDao();
     }
 
     /**
@@ -384,8 +392,37 @@ public class ConversationActivity extends BaseActivity {
             public Message onSend(Message message) {
                 handleBurnAfterReadForSendersOnSend(message);
 
-                if (handleMsgForbiden(message)) {
-                    return null;
+                if (conversationType.equals("group") && groupInfo != null
+                        && !groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId)
+                        && groupInfo.getIsAdmin().equals("0")) {
+                    if (!TextUtils.isEmpty(groupInfo.getGroupInfo().getSlowMode())) {
+                        if (groupInfo.getGroupInfo().getSlowMode().equals("0")) {
+                            return handleMsgForbiden(message);
+                        }
+                        slowModeLocalBeanDao.detachAll();
+                        List<SlowModeLocalBean> localSlowList =
+                                slowModeLocalBeanDao.queryBuilder()
+                                        .where(SlowModeLocalBeanDao.Properties.GroupId.eq(targetId)).build().list();
+                        if (localSlowList != null && localSlowList.size() != 0) {
+                            SlowModeLocalBean slowModeLocalBean = localSlowList.get(0);
+                            long passTime = (System.currentTimeMillis() - slowModeLocalBean.getLastMsgSentTime()) / 1000;
+                            if (passTime < Integer.parseInt(groupInfo.getGroupInfo().getSlowMode())) {
+                                String timeLeftStr = parstTimeLeftForSlowMode(
+                                        Integer.parseInt(groupInfo.getGroupInfo().getSlowMode()) - passTime);
+                                String toastTips = "群主开启了慢速模式，距下次发言时间:" + timeLeftStr;
+                                ToastUtils.showShort(toastTips);
+                                return null;
+                            } else {
+                                slowModeLocalBean.setLastMsgSentTime(System.currentTimeMillis());
+                                slowModeLocalBeanDao.update(slowModeLocalBean);
+                            }
+                        } else {
+                            SlowModeLocalBean slowModeLocalBean = new SlowModeLocalBean();
+                            slowModeLocalBean.setGroupId(targetId);
+                            slowModeLocalBean.setLastMsgSentTime(System.currentTimeMillis());
+                            slowModeLocalBeanDao.insert(slowModeLocalBean);
+                        }
+                    }
                 }
 
                 return message;
@@ -419,11 +456,31 @@ public class ConversationActivity extends BaseActivity {
         return timeLeft / 60 / 60 + "小时";
     }
 
-    private boolean handleMsgForbiden(Message message) {
+    private Message handleMsgForbiden(Message message) {
         if (!conversationType.equals("group")) {
-            return false;
+            return message;
         }
-        return false;
+        if (!groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) && !groupInfo.getIsAdmin().equals("1")) {
+            if (message.getContent() instanceof TextMessage &&
+                    groupInfo.getGroupInfo().getBanSendLink().equals("1")) {
+                TextMessage textMessage = (TextMessage) message.getContent();
+                if (RegexUtils.isMatch("^[\\s\\S]*(http[s]?:\\/\\/)?([\\w-]+\\.)+[\\w-]+([\\w-./?%&=]*)?[\\s\\S]*$", textMessage.getContent())) {
+                    ToastUtils.showShort(R.string.url_forbidden);
+                    return null;
+                }
+            } else if (message.getContent() instanceof ImageMessage &&
+                    groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
+                ToastUtils.showShort(R.string.picture_forbidden);
+                return null;
+            } else if (message.getContent() instanceof CusEmoteTabMessage && groupInfo.getGroupInfo().getBanSendPicture().equals("1")) {
+                ToastUtils.showShort(R.string.picture_forbidden);
+                return null;
+            } else if ((message.getContent() instanceof VoiceMessage || message.getContent() instanceof HQVoiceMessage) && groupInfo.getGroupInfo().getBanSendVoice().equals("1")) {
+                ToastUtils.showShort(R.string.voice_forbidden);
+                return null;
+            }
+        }
+        return message;
     }
 
     private void registerMsgReceiver() {
@@ -796,7 +853,11 @@ public class ConversationActivity extends BaseActivity {
             @Override
             public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
                 if (conversationType == Conversation.ConversationType.GROUP) {
-                    CommonUtils.resolveFriendList(ConversationActivity.this, userInfo.getUserId(), targetId);
+                    if (groupInfo != null && !TextUtils.isEmpty(groupInfo.getGroupInfo().getBanFriend())) {
+                        if (!groupInfo.getGroupInfo().getBanFriend().equals("1")) {
+                            CommonUtils.resolveFriendList(ConversationActivity.this, userInfo.getUserId(), targetId);
+                        }
+                    }
                 } else {
                     Intent intent = new Intent(ConversationActivity.this, FriendDetailsActivity.class);
                     intent.putExtra("friendId", userInfo.getUserId());
@@ -934,22 +995,17 @@ public class ConversationActivity extends BaseActivity {
                                                             return;
                                                         }
 
-                                                        boolean formWechatCast = message.getConversationType().equals(Conversation.ConversationType.CHATROOM);
-
                                                         if (s2.getRedPackageInfo() != null && s2.getCustomerInfo() != null && s2.getSendCustomerInfo() != null) {
                                                             if (!message.getSenderUserId().equals(Constant.userId)) {
 
                                                                 InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
-                                                                        getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
-                                                                );
-                                                                RongIM.getInstance().sendDirectionalMessage(
-                                                                        formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                        getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick()) + s2.getRedPackageInfo().getMoney() + s2.getRedPackageInfo().getSymbol());
+                                                                RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP,
                                                                         targetId, message1, new String[]{message.getSenderUserId()}
                                                                         , null, null, null);
                                                             } else {
-                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)));
-                                                                RongIM.getInstance().sendDirectionalMessage(
-                                                                        formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)) + s2.getRedPackageInfo().getMoney() + s2.getRedPackageInfo().getSymbol());
+                                                                RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP,
                                                                         targetId, message1, new String[]{Constant.userId}
                                                                         , null, null, null);
                                                             }

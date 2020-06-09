@@ -67,10 +67,9 @@ public class GroupCardProvider extends IContainerItemProvider.MessageProvider<Gr
     public void onItemClick(View view, int i, GroupCardMessage groupCardMessage, UIMessage uiMessage) {
         if (!uiMessage.getSenderUserId().equals(Constant.userId)) {
             Intent intent = new Intent(view.getContext(), AgreeGroupChatActivity.class);
-            intent.putExtra("inviterId", groupCardMessage.getInviterId());
             intent.putExtra("groupId", groupCardMessage.getGroupId());
             intent.putExtra("groupName", groupCardMessage.getGroupName());
-            intent.putExtra("id", uiMessage.getMessageId());
+            intent.putExtra("id", uiMessage.getSenderUserId());
             if (!TextUtils.isEmpty(uiMessage.getExtra())) {
                 intent.putExtra("overtime", true);
             }

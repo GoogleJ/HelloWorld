@@ -838,7 +838,7 @@
     <string name="video_live">视频直播</string>
     <string name="wechat_cast">微信直播</string>
     <string name="enter_group_manage">进群管理</string>
-    <string name="new_redpackage_manage">群空投</string>
+    <string name="new_redpackage_manage">进群领红包</string>
     <string name="tips_new_social_manage1">设置后新成员进群即可获得红包空投</string>
     <string name="tips_new_social_manage2">群主设置加群金额,成员支付后即可入群</string>
     <string name="public_social">群公开</string>
@@ -912,6 +912,14 @@
     <string name="input_zhengshu">请输入金额</string>
     <string name="list_mute">已禁列表</string>
     <string name="group_member">群成员</string>
+    <string name="url_forbidden">本会话禁止发送链接</string>
+    <string name="picture_forbidden">本会话禁止发送图片</string>
+    <string name="paying">支付中</string>
+    <string name="pay_fail">支付失败</string>
+    <string name="pay_enter_group_tip1">本群设置了付费入群，支付后即可入群</string>
+    <string name="paynow">立即支付</string>
+    <string name="voice_forbidden">本会话禁止发送语音</string>
+    <string name="inconformity1">密码长度至少为6位</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

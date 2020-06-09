@@ -15,6 +15,7 @@ import com.zxjk.moneyspace.network.ServiceFactory;
 import com.zxjk.moneyspace.network.rx.RxSchedulers;
 import com.zxjk.moneyspace.ui.base.BaseActivity;
 import com.zxjk.moneyspace.utils.CommonUtils;
+import com.zxjk.moneyspace.utils.MD5Utils;
 
 public class ChangePasswordActivity extends BaseActivity {
     private TextView tv_phone;
@@ -97,12 +98,15 @@ public class ChangePasswordActivity extends BaseActivity {
         } else if (TextUtils.isEmpty(et_pwd.getText().toString()) || TextUtils.isEmpty(et_pwd2.getText().toString())) {
             ToastUtils.showShort(R.string.enter_your_pwd);
             return;
+        } else if (et_pwd.getText().toString().length() < 6 || et_pwd2.getText().toString().length() < 6) {
+            ToastUtils.showShort(getString(R.string.inconformity1));
         } else if (!et_pwd.getText().toString().equals(et_pwd2.getText().toString())) {
             ToastUtils.showShort(getString(R.string.inconformity));
         }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .updatePassword(phone, email, et_code.getText().toString(), et_pwd.getText().toString(), et_pwd2.getText().toString())
+                .updatePassword(phone, email, et_code.getText().toString(), MD5Utils.getMD5(et_pwd.getText().toString()),
+                        MD5Utils.getMD5(et_pwd2.getText().toString()))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
