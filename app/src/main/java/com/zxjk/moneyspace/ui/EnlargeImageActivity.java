@@ -245,12 +245,14 @@ public class EnlargeImageActivity extends BaseActivity {
                 String decryptResult = AesUtil.getInstance().decrypt(shareStrings[1]);
 
                 if (decryptResult.contains("groupId")) {
+
+                    String[] ids = decryptResult.split("&");
                     //groupQR
-                    String groupId = decryptResult.split("=")[1];
+                    String groupId = ids[1].split("=")[1];
 
                     Intent intent = new Intent(this, AgreeGroupChatActivity.class);
                     intent.putExtra("groupId", groupId);
-                    intent.putExtra("id",decryptResult.split("=")[0] );
+                    intent.putExtra("id",ids[0].split("=")[1] );
 
                     startActivity(intent);
                     finish();

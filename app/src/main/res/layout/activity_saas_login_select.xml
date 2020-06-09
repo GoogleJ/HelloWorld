@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Money Space"
-                android:textColor="#E7C39B"
+                android:textColor="#AC1D7B"
                 android:textSize="27sp"
                 android:textStyle="bold" />
 

@@ -64,12 +64,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -697,6 +695,8 @@ public class ConversationActivity extends BaseActivity {
 
                             this.groupInfo = groupInfo;
 
+                            handleNewReceiveRed(groupInfo);
+
                             handleGroupOwnerInit();
 
                             initView();
@@ -710,20 +710,28 @@ public class ConversationActivity extends BaseActivity {
         }
     }
 
-    private void upgradeWatchNumsForWechatCast(TextView tvNums) {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getOnlineUsers(targetId)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver())
-                .compose(RxSchedulers.normalTrans())
-                .flatMap((Function<String, ObservableSource<?>>) s -> {
-                    if (!TextUtils.isEmpty(s)) {
-                        tvNums.setText(s);
-                    }
-                    return Observable.timer(30, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).compose(bindToLifecycle());
-                })
-                .subscribe(s -> upgradeWatchNumsForWechatCast(tvNums), t -> {
-                });
+    private void handleNewReceiveRed(GroupResponse groupInfo) {
+        if (!"1".equals(groupInfo.getRedPacketInfo().getRedNewPersonStatus())) return;
+
+        if ("0".equals(groupInfo.getRedPacketInfo().getIsGetNewPersonRed())) {
+            NewRedDialog newRedDialog = new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE1_NORMAL);
+            newRedDialog.setOpenListener(()
+                    -> ServiceFactory.getInstance().getBaseService(Api.class)
+                    .receiveNewPersonRedPackage(groupInfo.getGroupInfo().getId())
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.normalTrans())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(ConversationActivity.this)))
+                    .subscribe(r -> {
+                                if (r.getResult().equals("0")) {
+                                    new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE3_RECEIVED).showReceived(r.getEveryoneAwardCount(), r.getSymbol());
+                                } else {
+                                    new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE2_EXPIRED).showExpired1();
+                                }
+                            },
+                            ConversationActivity.this::handleApiError));
+            newRedDialog.show(groupInfo.getGroupInfo().getOwnerHeadPortrait(),
+                    groupInfo.getGroupInfo().getGroupOwnerNick(), getString(R.string.newredtip));
+        }
     }
 
     /**

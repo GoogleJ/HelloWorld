@@ -310,6 +310,24 @@ public class GroupResponse implements Serializable {
         private String limitNumber;
         private String customerNumber;
         private String banSendVoice;
+        private String ownerHeadPortrait;
+        private String groupOwnerNick;
+
+        public String getOwnerHeadPortrait() {
+            return ownerHeadPortrait;
+        }
+
+        public void setOwnerHeadPortrait(String ownerHeadPortrait) {
+            this.ownerHeadPortrait = ownerHeadPortrait;
+        }
+
+        public String getGroupOwnerNick() {
+            return groupOwnerNick;
+        }
+
+        public void setGroupOwnerNick(String groupOwnerNick) {
+            this.groupOwnerNick = groupOwnerNick;
+        }
 
         public String getBanSendVoice() {
             return banSendVoice;

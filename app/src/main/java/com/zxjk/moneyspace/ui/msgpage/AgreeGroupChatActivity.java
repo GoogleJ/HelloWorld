@@ -84,6 +84,7 @@ public class AgreeGroupChatActivity extends BaseActivity {
                         intent.putExtra("groupId", groupId);
                         intent.putExtra("ownerId", groupResponse.getGroupInfo().getGroupOwnerId());
                         intent.putExtra("payMoney", groupResponse.getGroupPayBean().getPayFee());
+                        intent.putExtra("symbol", groupResponse.getGroupPayBean().getSymbol());
                         intent.putExtra("groupName", groupResponse.getGroupInfo().getGroupNikeName());
                         startActivity(intent);
                         finish();
