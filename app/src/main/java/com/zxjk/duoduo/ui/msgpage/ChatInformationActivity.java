@@ -185,7 +185,7 @@ public class ChatInformationActivity extends BaseActivity {
         findViewById(R.id.rl_add).setOnClickListener(v -> {
             Intent intent = new Intent(ChatInformationActivity.this, CreateGroupActivity.class);
             intent.putExtra("eventType", 1);
-            intent.putExtra("loginResponse",loginResponse);
+            intent.putExtra("loginResponse", loginResponse);
             startActivity(intent);
         });
 
@@ -238,7 +238,9 @@ public class ChatInformationActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .flatMap((Function<String, ObservableSource<String>>) s -> Observable.create(e -> {
                             conversationInfo.setMessageBurnTime(parseStr(str));
-                            String tip = str.equals(getString(R.string.close)) ? getString(R.string.closeburn) : (getString(R.string.openburn) + (str.equals(getString(R.string.burn_now)) ? "" : str) + getString(R.string.openburn1));
+                            String tip = str.equals(getString(R.string.close)) ?
+                                    getString(R.string.closeburn) :
+                                    (getString(R.string.openburn) + str);
                             InformationNotificationMessage message = InformationNotificationMessage.obtain(getString(R.string.you) + tip);
                             message.setExtra(tip);
                             RongIM.getInstance().insertOutgoingMessage(

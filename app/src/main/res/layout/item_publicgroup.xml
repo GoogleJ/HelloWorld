@@ -1,118 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="6dp"
-    android:layout_marginTop="20dp"
-    android:layout_marginEnd="6dp"
-    android:layout_marginBottom="4dp"
-    android:clickable="true"
-    android:foreground="?selectableItemBackgroundBorderless"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="6dp">
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="12dp"
+    android:foreground="?android:selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/group_head_portrait"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/group_head_portrait"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_toEndOf="@+id/group_head_portrait"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/fl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/ivHead"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
-
-            <ImageView
-                android:id="@+id/ivPay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|top"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_publicgroup_pay" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="-0.5dp"
-                android:layout_marginTop="0.5dp"
-                android:background="@drawable/shape_searchsocial"
-                android:gravity="center"
-                android:paddingStart="12dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="4dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/ic_search_groupcount" />
-
-                <TextView
-                    android:id="@+id/tvCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="0"
-                    android:textColor="@color/white"
-                    android:textSize="10sp" />
-
-            </LinearLayout>
-
-        </FrameLayout>
-
         <TextView
-            android:id="@+id/tvGroupName"
-            android:layout_width="match_parent"
+            android:id="@+id/group_nike_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="4dp"
             android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/black"
-            android:textSize="13sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/group_sign"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="#909399"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnJoin"
-                android:layout_width="66dp"
-                android:layout_height="28dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/shape_theme2"
-                android:foreground="?selectableItemBackgroundBorderless"
-                android:textColor="@color/white" />
-
             <TextView
-                android:id="@+id/tvGroupOwnerName"
-                android:layout_width="match_parent"
+                android:id="@+id/group_owner_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@id/btnJoin"
-                android:ellipsize="end"
+                android:maxEms="8"
                 android:lines="1"
-                android:textColor="@color/textcolor3"
+                android:ellipsize="end"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_number_of_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/shape_theme"
+                android:drawableStart="@drawable/ic_number_of_people"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingTop="1dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="1dp"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/group_head_portrait"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@+id/group_head_portrait"
+        android:background="@color/divider" />
+
+</RelativeLayout>

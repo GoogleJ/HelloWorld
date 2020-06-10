@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
         android:layout_weight="1"
-        android:minHeight="34dp">
+        android:minHeight="42dp">
 
         <EditText
             android:id="@+id/rc_edit_text"
@@ -18,18 +18,23 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@drawable/shape_rc_etbac"
+            android:hint="输入消息..."
             android:maxLines="3"
-            android:minHeight="34dp"
+            android:minHeight="42dp"
+            android:lineSpacingExtra="-2dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:textColor="@android:color/black"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:textColor="#272E3F"
+            android:textColorHint="#909399"
             android:textSize="16sp" />
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/rc_emoticon_toggle"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="3dp"
@@ -38,7 +43,7 @@
     <FrameLayout
         android:id="@+id/rc_send_toggle"
         android:layout_width="54dp"
-        android:layout_height="34dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/rc_send_toggle_selector"
         android:visibility="gone">

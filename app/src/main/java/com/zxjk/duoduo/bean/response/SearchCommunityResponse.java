@@ -222,6 +222,7 @@ public class SearchCommunityResponse {
          * code : 1102390
          */
 
+        private String introduction;
         private String ownerNick;
         private String groupId;
         private String communityLogo;
@@ -231,6 +232,14 @@ public class SearchCommunityResponse {
         private String isInGroup;
         private String inGroup;
         private String code;
+
+        public String getIntroduction() {
+            return introduction;
+        }
+
+        public void setIntroduction(String introduction) {
+            this.introduction = introduction;
+        }
 
         public String getOwnerNick() {
             return ownerNick;

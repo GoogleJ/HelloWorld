@@ -25,7 +25,6 @@ import java.io.File;
 
 import io.rong.imkit.RongIM;
 
-
 @SuppressLint("CheckResult")
 public class BaseFragment extends RxFragment {
     public View rootView;

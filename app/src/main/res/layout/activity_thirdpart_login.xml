@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.walletpage.ThirdPartLoginActivity">
+    tools:context=".ui.externalfunc.ThirdPartLoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/img_back"
@@ -18,8 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="16dp"
-            android:src="@drawable/ico_back"
-            android:visibility="visible" />
+            android:src="@drawable/ico_back" />
 
     </RelativeLayout>
 
@@ -27,16 +25,16 @@
         android:id="@+id/img_third_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/ic_hilamglogo3" />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/welcometopay"
         android:textColor="@color/black"
         android:textSize="27sp"
@@ -46,9 +44,9 @@
         android:id="@+id/llPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -80,13 +78,14 @@
                     android:src="@drawable/ic_downarrow_newlogin" />
 
             </LinearLayout>
+
             <EditText
                 android:id="@+id/et_third_part_Phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="@string/input_phone"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:inputType="phone"
                 android:maxLength="11"
                 android:paddingStart="15dp"
@@ -107,9 +106,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -122,39 +121,40 @@
                 android:id="@+id/tv_third_code_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end"
                 android:text="@string/verified_code"
                 android:textColor="@color/black"
-                android:textSize="15sp"
-                android:gravity="end"/>
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/et_third_verification_code"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/input_smscode"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:maxLength="11"
+                android:maxLength="6"
                 android:paddingStart="15dp"
                 android:paddingBottom="4dp"
                 android:textColorHint="#ACB4C2"
                 android:textSize="16.5sp" />
 
-
-
             <Button
                 android:id="@+id/btn_third_verification_code"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_height="32dp"
                 android:background="@drawable/shape_theme5"
                 android:foreground="?selectableItemBackgroundBorderless"
+                android:onClick="getThirdVerificationCode"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:stateListAnimator="@null"
                 android:text="@string/getVerGode"
                 android:textColor="@color/business_card_duoduo_id"
-                android:textStyle="bold"
-                android:onClick="getThirdVerificationCode"/>
+                android:textSize="13sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <View
@@ -168,18 +168,17 @@
     <Button
         android:id="@+id/btn_to_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="28dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="25.5dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="25.5dp"
         android:background="@drawable/setbar_bg"
         android:foreground="?selectableItemBackgroundBorderless"
         android:onClick="login"
         android:stateListAnimator="@null"
         android:text="@string/login"
         android:textColor="@color/business_card_duoduo_id"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

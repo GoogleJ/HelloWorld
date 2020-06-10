@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.minepage.wallet.DeleteBlockWalletActivity">
+    tools:context=".ui.wallet.DeleteBlockWalletActivity">
 
     <include layout="@layout/layout_title_back" />
 

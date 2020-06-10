@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/m_contact_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.zxjk.duoduo.ui.msgpage.widget.IndexView
+        android:id="@+id/index_view"
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/m_constacts_dialog"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/nim_contact_hit_letter_bg"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+</RelativeLayout>

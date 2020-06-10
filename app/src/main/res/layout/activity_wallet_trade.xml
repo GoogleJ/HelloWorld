@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".ui.minepage.wallet.WalletTradeActivity">
+    tools:context=".ui.wallet.WalletTradeActivity">
 
     <include layout="@layout/layout_title_back" />
 
@@ -94,7 +94,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="14dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_4182f9_5"
+            android:background="@drawable/shape_theme_5"
             android:clickable="true"
             android:foreground="?selectableItemBackgroundBorderless"
             android:gravity="center"

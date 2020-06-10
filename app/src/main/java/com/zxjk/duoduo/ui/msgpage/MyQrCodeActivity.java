@@ -11,15 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
-import com.zxjk.duoduo.utils.GlideUtil;
+import com.zxjk.duoduo.utils.AesUtil;
 
 import net.lucode.hackware.magicindicator.buildins.UIUtil;
 
@@ -37,7 +34,6 @@ public class MyQrCodeActivity extends BaseActivity {
     private CircleImageView ivHead;
     private CircleImageView ivHeadQR;
 
-    private BaseUri uri = new BaseUri("action2");
     private String uri2Code;
 
     public static void start(AppCompatActivity activity) {
@@ -48,7 +44,6 @@ public class MyQrCodeActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BarUtils.setStatusBarColor(this, Color.parseColor("#F2F3F5"));
 
         setContentView(R.layout.activity_my_qr_code);
 
@@ -66,8 +61,7 @@ public class MyQrCodeActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         tv_title.setText(getString(R.string.qr_code));
-        uri.data = Constant.userId;
-        uri2Code = new Gson().toJson(uri);
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId);
 
         tvUserName.setText(Constant.currentUser.getNick());
         tvLocation.setText(Constant.currentUser.getAddress());

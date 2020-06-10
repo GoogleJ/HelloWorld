@@ -8,14 +8,15 @@
     <include layout="@layout/layout_title_back" />
 
     <EditText
-        android:layout_marginTop="10dp"
         android:id="@+id/feedback_edit"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:gravity="top"
         android:hint="@string/feedback_edit"
         android:lines="5"
+        android:maxLength="500"
         android:padding="10dp"
         android:textSize="16sp" />
 

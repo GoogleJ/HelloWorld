@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="rc_text_color_primary">#020818</color>
-    <color name="rc_text_color_secondary">#85878C</color>
-    <color name="rc_text_color_tertiary">#d7d7d7</color>
+    <color name="rc_text_color_primary">#272E3F</color>
+    <color name="rc_text_color_secondary">#6D7278</color>
+    <color name="rc_text_color_tertiary">#909399</color>
     <color name="rc_text_color_primary_inverse">@android:color/white</color>
-    <color name="rc_normal_bg">#eef3fc</color>
-    <color name="rc_message_user_name">#828282</color>
-    <color name="rc_rich_title">#000000</color>
+    <color name="rc_normal_bg">#F3F5F7</color>
+    <color name="rc_message_user_name">#6D7278</color>
+    <color name="rc_rich_title">#272E3F</color>
     <color name="rc_rich_content">#939393</color>
 
     <color name="rc_notification_bg">#D3D3D3</color>
@@ -22,16 +22,16 @@
 
     <color name="rc_web_progress_bar">#9fcdfd</color>
 
-    <color name="rc_draft_color">#cb120f</color>
-    <color name="rc_mentioned_color">#cc3333</color>
-    <color name="rc_voice_color">#0195ff</color>
+    <color name="rc_draft_color">#FF4040</color>
+    <color name="rc_mentioned_color">#FF4040</color>
+    <color name="rc_voice_color">#0083BF</color>
     <color name="rc_voice_color_left">#000000</color>
     <color name="rc_voice_color_right">#000000</color>
 
-    <color name="rc_voice_cancel"> #CC933432</color>
+    <color name="rc_voice_cancel">#CC933432</color>
 
     <color name="rc_input_gap_color">#dbdbdd</color>
-    <color name="rc_conversation_list_divider_color">#eeeeee</color>
+    <color name="rc_conversation_list_divider_color">#E5E5E5</color>
 
     <color name="rc_ad_file_list_no_select_file_text_state">#9fcdfd</color>
     <color name="rc_ad_file_list_select_file_text_state">#ffffff</color>
@@ -43,6 +43,7 @@
     <color name="color_list_item_hover">#DFDFDD</color>
 
     <color name="rc_voip_check_disable">#1f4a76</color>
-    <color name="rc_voip_check_enable">#0099ff</color>
+    <color name="rc_voip_check_enable">#0083BF</color>
+    <color name="title_offcial">#415686</color>
 
 </resources>

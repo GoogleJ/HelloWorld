@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/transfer_send_layout"
-    android:layout_width="wrap_content"
+    android:layout_width="240dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/icon_business_card_user"
+    android:background="@drawable/shape_white_8"
     android:orientation="vertical"
     tools:ignore="MissingConstraints">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:gravity="center_vertical">
 
         <ImageView
@@ -23,7 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="6dp"
             android:layout_marginEnd="8dp"
             android:orientation="vertical">
 
@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
+                android:layout_marginBottom="6dp"
                 android:textColor="@color/black" />
 
             <TextView
@@ -52,15 +53,15 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/divider" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/business_card_label"
-        android:textSize="10sp" />
+        android:textSize="11sp" />
 
 </LinearLayout>

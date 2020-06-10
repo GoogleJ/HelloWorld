@@ -14,6 +14,15 @@ public class GetPaymentListBean implements Parcelable {
     private String symbol;
     private String logo;
     private String balance;
+    private String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public String getSymbol() {
         return symbol;
@@ -39,6 +48,9 @@ public class GetPaymentListBean implements Parcelable {
         this.balance = balance;
     }
 
+    public GetPaymentListBean() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -49,18 +61,17 @@ public class GetPaymentListBean implements Parcelable {
         dest.writeString(this.symbol);
         dest.writeString(this.logo);
         dest.writeString(this.balance);
-    }
-
-    public GetPaymentListBean() {
+        dest.writeString(this.price);
     }
 
     protected GetPaymentListBean(Parcel in) {
         this.symbol = in.readString();
         this.logo = in.readString();
         this.balance = in.readString();
+        this.price = in.readString();
     }
 
-    public static final Parcelable.Creator<GetPaymentListBean> CREATOR = new Parcelable.Creator<GetPaymentListBean>() {
+    public static final Creator<GetPaymentListBean> CREATOR = new Creator<GetPaymentListBean>() {
         @Override
         public GetPaymentListBean createFromParcel(Parcel source) {
             return new GetPaymentListBean(source);

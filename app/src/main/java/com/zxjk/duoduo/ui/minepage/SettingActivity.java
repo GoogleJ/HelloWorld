@@ -10,7 +10,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.security.rp.RPSDK;
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;

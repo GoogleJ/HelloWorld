@@ -107,7 +107,7 @@ public class BaseActivity extends RxAppCompatActivity {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
             fixOrientation();
         }
-        setLightStatusBar(true);
+        setLightStatusBar(false);
         super.onCreate(savedInstanceState);
     }
 
@@ -247,7 +247,10 @@ public class BaseActivity extends RxAppCompatActivity {
 
     @Override
     public void finish() {
-        KeyboardUtils.hideSoftInput(this);
+        try {
+            KeyboardUtils.hideSoftInput(this);
+        } catch (Exception e) {
+        }
         super.finish();
     }
 

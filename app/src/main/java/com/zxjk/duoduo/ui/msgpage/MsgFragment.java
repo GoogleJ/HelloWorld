@@ -1,55 +1,56 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.Manifest;
-import android.content.Context;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Outline;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
+import android.view.ViewOutlineProvider;
+import android.view.ViewPropertyAnimator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.BarUtils;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseFragment;
-import com.zxjk.duoduo.ui.socialspace.SocialPage;
-import com.zxjk.duoduo.ui.walletpage.RecipetQRActivity;
-import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
-import com.zxjk.duoduo.ui.widget.MsgTitleView;
+import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 
-import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.rong.imlib.model.Conversation;
-import razerdp.basepopup.QuickPopupBuilder;
-import razerdp.basepopup.QuickPopupConfig;
-import razerdp.widget.QuickPopup;
 
 public class MsgFragment extends BaseFragment implements View.OnClickListener {
+    private int[] rootViews = {R.id.ll_plus_menu1, R.id.ll_plus_menu2, R.id.ll_plus_menu3};
+    private int[] menuTv = {R.id.tv_plus_menu1, R.id.tv_plus_menu2, R.id.tv_plus_menu3};
+    private int[] menuImg = {R.id.img_plus_menu1, R.id.img_plus_menu2, R.id.img_plus_menu3};
+    private List<LinearLayout> rootViewList = new ArrayList<>(3);
+    private List<TextView> menuTvList = new ArrayList<>(3);
+    private List<ImageView> menuImgList = new ArrayList<>(3);
+    private boolean menuOpenFlag = false;
+    private int dp1;
+    private int dp2;
+    private long menuAnimTime = 200;
 
-    private ImageView ivMenu;
-    private int currentPosition;
-    private ViewPager pagerMsg;
-    private MagicIndicator indicator;
-    private int[] mTitleDataList = new int[]{R.string.chat, R.string.de_actionbar_sub_group};
-    private QuickPopup menuPop;
-    private MsgTitleView[] badgeTitleViews = new MsgTitleView[2];
-
-    public MsgTitleView[] getBadgeTitleViews() {
-        return badgeTitleViews;
-    }
+    private ImageView imgPlus;
+    private ImageView ivScan;
+    private ImageView ivHead;
+    private CusConversationListFragment listFragment;
 
     @Nullable
     @Override
@@ -58,138 +59,219 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
 
         initView();
 
+        dp1 = CommonUtils.dip2px(getContext(), 56);
+        dp2 = CommonUtils.dip2px(getContext(), 56 + 24);
+
+        initOutLine();
+
+        createConversationList();
+
         return rootView;
     }
 
     private void initView() {
-        ivMenu = rootView.findViewById(R.id.ivMenu);
-        ivMenu.setOnClickListener(this);
+        View topmask = rootView.findViewById(R.id.topmask);
+        ViewGroup.LayoutParams layoutParams = topmask.getLayoutParams();
+        layoutParams.height = BarUtils.getStatusBarHeight();
+        topmask.setLayoutParams(layoutParams);
 
-        initPager();
+        List<Fragment> fragments = getChildFragmentManager().getFragments();
+        listFragment = (CusConversationListFragment) fragments.get(0);
+        ivHead = rootView.findViewById(R.id.ivHead);
+        ivScan = rootView.findViewById(R.id.ivScan);
 
-        initIndicator();
+        getPermisson(ivScan, granted -> {
+            if (granted) startActivity(new Intent(getActivity(), QrCodeActivity.class));
+        }, Manifest.permission.CAMERA);
 
-        ViewPagerHelper.bind(indicator, pagerMsg);
-
-    }
-
-    private void initPager() {
-        pagerMsg = rootView.findViewById(R.id.pagerMsg);
-        pagerMsg.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return position == 0 ? createConversationList(false) : createConversationList(true);
-            }
-
-            @Override
-            public int getCount() {
-                return 2;
-            }
-        });
-        pagerMsg.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                currentPosition = position;
-                if (position == 0) {
-                    ivMenu.setImageResource(R.drawable.ic_msg_new);
-                } else {
-                    ivMenu.setImageResource(R.drawable.ic_msg_search);
-                }
-            }
-        });
-    }
-
-    private void initIndicator() {
-        indicator = rootView.findViewById(R.id.indicator);
-        CommonNavigator navigator = new CommonNavigator(getContext());
-        navigator.setAdapter(new CommonNavigatorAdapter() {
-            @Override
-            public int getCount() {
-                return mTitleDataList == null ? 0 : mTitleDataList.length;
-            }
-
-            @Override
-            public IPagerTitleView getTitleView(Context context, final int index) {
-                createTitleView(context, index);
-                return badgeTitleViews[index];
-            }
-
-            private void createTitleView(Context context, int index) {
-                MsgTitleView badgeTitleView = new MsgTitleView(context);
-                badgeTitleView.setOnClickListener(view -> {
-                    pagerMsg.setCurrentItem(index);
-                    badgeTitleView.getBadgeView().setVisibility(View.INVISIBLE);
-                });
-                badgeTitleView.getTitleView().setText(mTitleDataList[index]);
-                badgeTitleViews[index] = badgeTitleView;
-            }
-
-            @Override
-            public IPagerIndicator getIndicator(Context context) {
-                return new ImagePagerIndicator(context);
+        ivHead.setOnClickListener(v -> {
+            HomeActivity activity = (HomeActivity) getActivity();
+            if (activity != null) {
+                activity.onHeadClick();
             }
         });
 
-        indicator.setNavigator(navigator);
-    }
+        imgPlus = rootView.findViewById(R.id.img_plus);
 
-    private Fragment createConversationList(boolean isGroup) {
-        if (isGroup) {
-            return new SocialPage();
+        for (int view : rootViews) {
+            rootViewList.add(rootView.findViewById(view));
         }
-        CusConversationListFragment listFragment = new CusConversationListFragment();
+
+        for (int tv : menuTv) {
+            menuTvList.add(rootView.findViewById(tv));
+        }
+
+        for (int img : menuImg) {
+            menuImgList.add(rootView.findViewById(img));
+        }
+
+        rootView.findViewById(R.id.llRoot).setOnClickListener(v -> {
+            if (menuOpenFlag) {
+                close(null);
+            } else {
+                start();
+            }
+        });
+    }
+
+    private void createConversationList() {
         Uri uri = Uri.parse("rong://" + getActivity().getApplicationInfo().packageName).buildUpon()
                 .appendPath("conversationlist")
                 .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false")
                 .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")
-                //公共服务号
                 .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "true")
-                //订阅号
                 .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "true")
-                //系统消息
                 .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")
                 .build();
         listFragment.setUri(uri);
-        return listFragment;
     }
 
     @Override
     public void onClick(View v) {
-        if (currentPosition == 0) {
-            if (menuPop == null) {
-                menuPop = QuickPopupBuilder.with(getContext())
-                        .contentView(R.layout.pop_msg_top)
-                        .config(new QuickPopupConfig()
-                                .backgroundColor(android.R.color.transparent)
-                                .gravity(Gravity.BOTTOM | Gravity.END)
-                                .withShowAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.push_scale_in))
-                                .withDismissAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.push_scale_out))
-                                .withClick(R.id.send_group_chat, child -> {
-                                    Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
-                                    intent.putExtra("eventType", 1);
-                                    startActivity(intent);
-                                }, true)
-                                .withClick(R.id.invite_friends, child -> startActivity(new Intent(getActivity(), NewFriendActivity.class)), true)
-                                .withClick(R.id.collection_and_payment, child -> startActivity(new Intent(getActivity(), RecipetQRActivity.class)), true))
-                        .build();
-
-                getPermisson(menuPop.findViewById(R.id.scan), granted -> {
-                    menuPop.dismiss();
-                    if (granted) startActivity(new Intent(getActivity(), QrCodeActivity.class));
-                }, Manifest.permission.CAMERA);
-            }
-
-            menuPop.showPopupWindow(v);
-        } else {
-            startActivity(new Intent(getContext(), SearchGroupActivity.class));
-            getActivity().overridePendingTransition(0, 0);
+        switch (v.getId()) {
+            case R.id.img_plus_menu1:
+                Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
+                intent.putExtra("eventType", 1);
+                startActivity(intent);
+                break;
+            case R.id.img_plus_menu2:
+                close(new Intent(getContext(), NewFriendActivity.class));
+                break;
+            case R.id.img_plus_menu3:
+                close(new Intent(getContext(), SearchGroupActivity.class));
+                break;
         }
     }
 
-    public void msgFragmentSelect(){
-        pagerMsg.setCurrentItem(1);
+    private void initOutLine() {
+        imgPlus.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setOval(0, 0, dp1, dp1);
+            }
+        });
+        imgPlus.setClipToOutline(true);
+
+        for (int i = 0; i < menuImgList.size(); i++) {
+            menuImgList.get(i).setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setOval(0, 0, dp1, dp1);
+                }
+            });
+            menuImgList.get(i).setClipToOutline(true);
+            menuImgList.get(i).setOnClickListener(this);
+        }
+    }
+
+    public void start() {
+        if (menuOpenFlag) {
+            return;
+        }
+        startAlpha();
+        startRotation();
+        startTranslationXAnim();
+        startScale();
+    }
+
+    public void close(Intent target) {
+        if (!menuOpenFlag) {
+            return;
+        }
+
+        closeAlpha(target);
+        closeRotation();
+        closeTranslationXAnim();
+        closeScale();
+    }
+
+    private void startAlpha() {
+        ObjectAnimator animator = ObjectAnimator.ofObject(imgPlus, "backgroundColor", new ArgbEvaluator(), 0xff0083BF, 0xff9EA0A4);
+        animator.setDuration(menuAnimTime);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                menuOpenFlag = true;
+            }
+        });
+        animator.start();
+    }
+
+    private void closeAlpha(Intent target) {
+        long originAnimTime = menuAnimTime;
+        if (target != null) {
+            menuAnimTime = 50;
+        }
+
+        ObjectAnimator animator = ObjectAnimator.ofObject(imgPlus, "backgroundColor", new ArgbEvaluator(), 0xff9EA0A4, 0xff0083BF);
+        animator.setDuration(menuAnimTime);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (null != target) {
+                    startActivity(target);
+                }
+                menuOpenFlag = false;
+                menuAnimTime = originAnimTime;
+            }
+        });
+        animator.start();
+    }
+
+    private void startRotation() {
+        ViewPropertyAnimator rotationAnim = imgPlus.animate().rotationBy(45f);
+        rotationAnim.setDuration(menuAnimTime);
+        rotationAnim.start();
+    }
+
+    private void closeRotation() {
+        ViewPropertyAnimator rotationAnim = imgPlus.animate().rotation(0);
+        rotationAnim.setDuration(menuAnimTime);
+        rotationAnim.start();
+    }
+
+    private void startTranslationXAnim() {
+        for (int i = 0; i < rootViews.length; i++) {
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(rootViewList.get(i), "translationX", -(i + 1) * dp2);
+            objectAnimator.setDuration(menuAnimTime);
+            objectAnimator.start();
+        }
+    }
+
+    private void closeTranslationXAnim() {
+        for (int i = rootViews.length; i > 0; i--) {
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(rootViewList.get(i - 1), "translationX", 0);
+            objectAnimator.setDuration(menuAnimTime);
+            objectAnimator.start();
+        }
+    }
+
+    private void startScale() {
+        for (int i = 0; i < rootViews.length; i++) {
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(rootViewList.get(i), "scaleX", 1f);
+            objectAnimator.setDuration(menuAnimTime);
+            objectAnimator.start();
+            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(rootViewList.get(i), "scaleY", 1f);
+            objectAnimator2.setDuration(menuAnimTime);
+            objectAnimator2.start();
+        }
+    }
+
+    private void closeScale() {
+        for (int i = 0; i < rootViews.length; i++) {
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(rootViewList.get(i), "scaleX", 0f);
+            objectAnimator.setDuration(menuAnimTime);
+            objectAnimator.start();
+            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(rootViewList.get(i), "scaleY", 0f);
+            objectAnimator2.setDuration(menuAnimTime);
+            objectAnimator2.start();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
     }
 
 }

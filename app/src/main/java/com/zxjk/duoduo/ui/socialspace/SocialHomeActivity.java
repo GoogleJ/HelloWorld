@@ -49,10 +49,10 @@ import com.zxjk.duoduo.bean.response.SocialCaltureListBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.ZoomActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
-import com.zxjk.duoduo.ui.msgpage.NewSocialManageActivity;
 import com.zxjk.duoduo.ui.widget.ImagePagerIndicator;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -69,21 +69,15 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
-import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
-import io.rong.message.InformationNotificationMessage;
 
 public class SocialHomeActivity extends BaseActivity {
 
@@ -141,6 +135,7 @@ public class SocialHomeActivity extends BaseActivity {
 
     private String groupId;
     private int appbarHeight;
+    private String isQR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +148,7 @@ public class SocialHomeActivity extends BaseActivity {
 
         fromConversation = (GroupResponse) getIntent().getSerializableExtra("group");
         groupId = getIntent().getStringExtra("id");
+        isQR = getIntent().getStringExtra("isQR");
 
         initFragment();
 
@@ -200,6 +196,7 @@ public class SocialHomeActivity extends BaseActivity {
         args.putString("groupId", groupId);
         args.putBoolean("canModify", fromConversation != null && (fromConversation.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || fromConversation.getIsAdmin().equals("1")));
         socialCalturePage.setArguments(args);
+        dynamicsPage.setArguments(args);
     }
 
     @SuppressLint("CheckResult")
@@ -219,37 +216,18 @@ public class SocialHomeActivity extends BaseActivity {
                             llInviteOrRemove.setVisibility(View.GONE);
                             if (r.getType().equals("free")) {
                                 View inflate = viewStubFree.inflate();
+                                ivToolBarEnd.setVisibility(View.GONE);
                                 inflate.findViewById(R.id.tvFunc).setOnClickListener(v ->
                                         api.enterGroup(groupId, "", Constant.userId)
                                                 .compose(bindToLifecycle())
                                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .compose(RxSchedulers.normalTrans())
                                                 .subscribe(s -> {
-                                                    inflate.setVisibility(View.GONE);
-
-                                                    indicatorTop.setVisibility(View.VISIBLE);
-                                                    llSocialNotice.setVisibility(View.VISIBLE);
-                                                    pagerOut.setVisibility(View.VISIBLE);
-                                                    llInviteOrRemove.setVisibility(View.VISIBLE);
-
-                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"" + getString(R.string.enterSocial));
-                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
-                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-
-                                                    contentEnable = true;
-
-                                                    parseCaltureResult(s);
-
-                                                    CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
-                                                    membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
-                                                    membersBean.setIdentity("0");
-                                                    response.setIdentity("0");
-                                                    response.getMembers().add(membersBean);
-
-                                                    membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
-                                                    }.getType());
-                                                    initAdapter();
+                                                    Intent intent = new Intent(this, HomeActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+                                                    finish();
+                                                    RongIM.getInstance().startGroupChat(this, groupId, "");
                                                 }, this::handleApiError));
                             } else if (r.getType().equals("pay")) {
                                 View inflate = viewStubPay.inflate();
@@ -265,33 +243,15 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.normalTrans())
                                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .subscribe(s -> {
-                                                    inflate.setVisibility(View.GONE);
-
-                                                    indicatorTop.setVisibility(View.VISIBLE);
-                                                    llSocialNotice.setVisibility(View.VISIBLE);
-                                                    pagerOut.setVisibility(View.VISIBLE);
-                                                    llInviteOrRemove.setVisibility(View.VISIBLE);
-
-                                                    InformationNotificationMessage notificationMessage = InformationNotificationMessage.obtain("\"" +
-                                                            Constant.currentUser.getNick() + "\"" + getString(R.string.enterSocial));
-                                                    Message message = Message.obtain(groupId, Conversation.ConversationType.GROUP, notificationMessage);
-                                                    RongIM.getInstance().sendMessage(message, "", "", (IRongCallback.ISendMessageCallback) null);
-
-                                                    contentEnable = true;
-                                                    parseCaltureResult(s);
-
-                                                    CommunityInfoResponse.MembersBean membersBean = new CommunityInfoResponse.MembersBean();
-                                                    membersBean.setHeadPortrait(Constant.currentUser.getHeadPortrait());
-                                                    membersBean.setIdentity("0");
-                                                    response.setIdentity("0");
-                                                    response.getMembers().add(membersBean);
-
-                                                    membersBeanList = CloneUtils.deepClone(response.getMembers(), new TypeToken<List<CommunityInfoResponse.MembersBean>>() {
-                                                    }.getType());
-                                                    initAdapter();
+                                                    Intent intent = new Intent(this, HomeActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+                                                    finish();
+                                                    RongIM.getInstance().startGroupChat(this, groupId, "");
                                                 }, this::handleApiError)));
                             }
                         } else {
+                            ivToolBarEnd.setVisibility(View.VISIBLE);
                             contentEnable = true;
                             parseCaltureResult(r);
                         }
@@ -305,12 +265,11 @@ public class SocialHomeActivity extends BaseActivity {
                     tvSlogan.setText(r.getIntroduction());
                     tvSocialId.setText(getString(R.string.social_code) + r.getCode());
                     tvSocialName.setText(r.getName());
+                    tvTitle.setText(r.getName());
                     GlideUtil.loadNormalImg(ivBg, r.getBgi());
                     GlideUtil.loadNormalImg(ivHead, r.getLogo());
-                    tvTitle.setText(r.getName());
                     tvSocialCode.setText(getString(R.string.social_code) + r.getCode());
                     tvNotice.setText(r.getAnnouncement());
-
                     if (!TextUtils.isEmpty(r.getIdentity()) && !r.getIdentity().equals("0")) {
                         llRemoveMem.setVisibility(View.VISIBLE);
                     }
@@ -575,15 +534,13 @@ public class SocialHomeActivity extends BaseActivity {
             if (absOffset <= minimumHeightForVisibleOverlappingContent) {
                 if (ivToolBarEnd.getVisibility() == View.GONE && fromConversation != null) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
-                    ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_white);
                 }
                 if (ivToolBarStart.getVisibility() == View.GONE) {
-                    ivToolBarStart.setImageResource(R.drawable.ic_social_back);
                     ivToolBarStart.setVisibility(View.VISIBLE);
                 }
                 if (tvTitle.getVisibility() == View.VISIBLE) {
-                    tvTitle.setVisibility(View.INVISIBLE);
-                    tvSocialCode.setVisibility(View.INVISIBLE);
+                    tvTitle.setVisibility(View.GONE);
+                    tvSocialCode.setVisibility(View.GONE);
                 }
             } else if (absOffset < totalScrollRange) {
                 if (ivToolBarEnd.getVisibility() == View.VISIBLE && fromConversation != null) {
@@ -603,11 +560,9 @@ public class SocialHomeActivity extends BaseActivity {
                 }
                 if (ivToolBarEnd.getVisibility() == View.GONE && fromConversation != null) {
                     ivToolBarEnd.setVisibility(View.VISIBLE);
-                    ivToolBarEnd.setImageResource(R.drawable.ic_socialhome_end_black);
                 }
                 if (ivToolBarStart.getVisibility() == View.GONE) {
                     ivToolBarStart.setVisibility(View.VISIBLE);
-                    ivToolBarStart.setImageResource(R.drawable.ico_back);
                 }
             }
         });
@@ -772,6 +727,7 @@ public class SocialHomeActivity extends BaseActivity {
         Intent intent = new Intent(this, SocialQRCodeActivity.class);
         intent.putExtra("type", "3");
         intent.putExtra("data", response);
+        intent.putExtra("groupId", groupId);
         startActivityForResult(intent, REQUEST_NOTICE);
     }
 
@@ -784,13 +740,7 @@ public class SocialHomeActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     public void menu(View view) {
-        if (ivToolBarEnd.getVisibility() != View.VISIBLE || fromConversation == null) {
-            return;
-        }
-
-        Intent intent = new Intent(this, NewSocialManageActivity.class);
-        intent.putExtra("group", fromConversation);
-        startActivityForResult(intent, 1000);
+        QRCode(null);
     }
 
     public void fakeClick(View view) {
@@ -805,6 +755,9 @@ public class SocialHomeActivity extends BaseActivity {
             this.setResult(1000, intent);
         }
         super.finish();
+        if (!TextUtils.isEmpty(isQR)) {
+            startActivity(new Intent(this, HomeActivity.class));
+        }
     }
 
     @SuppressLint("CheckResult")

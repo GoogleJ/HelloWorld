@@ -811,7 +811,7 @@
     <string name="activity_tip1">누적 체크인</string>
     <string name="activity_tip2">획득(USDT)</string>
     <string name="activity_tip3">연속 서명하면 USDT 많이 획득</string>
-    <string name="activity_tip4">임무하면 USDT 많이 획득</string>
+    <string name="activity_tip4">임무하면 USDT 많이 획득 </string>
     <string name="enter_social_tips1">사군에 가입한 후 더 많은 사군 공간의 정보를 볼수있습니다</string>
     <string name="pay_to_group">이 사군는 비용을 지불하고 가입할수있습니다,본인 지불 필요합니다</string>
     <string name="secret_chat">밀담</string>
@@ -846,8 +846,6 @@
     <string name="received1">수령됨</string>
     <string name="home_bottom1">메시지</string>
     <string name="home_bottom2">연락처</string>
-    <string name="home_bottom3">발견</string>
-    <string name="home_bottom4">나의  </string>
     <string name="send_sms_to">인증 코드가%1$s(으)로 전송되었습니다</string>
     <string name="nodata_pleasewait_upgrade">데이터가 없음,기대 하십시오</string>
     <string name="income">수익:%1$s%2$s</string>
@@ -871,7 +869,8 @@
     <string name="cant_receive">수령 불가</string>
     <string name="rewardTips1">일일%1$d회(%2$d/%3$d)</string>
     <string name="rewardtips2">축아합니다</string>
-    <string name="rewardtips3">%1$sUSDT잔금 지갑에 저장하였습니다~</string>
+    <string name="rewardtips3">%1$s%2$s잔금 지갑에 저장하였습니다~</string>
+    <string name="rewardtips5">%1$sUSDT잔금 지갑에 저장하였습니다~</string>
     <string name="xx_day">%1$s일째</string>
     <string name="xx_day1">%1$s일째</string>
     <string name="rewardtips4">내일 서명하면 %1$s USDT 를 얻을 수 있음</string>
@@ -879,7 +878,7 @@
     <string name="change_socialname_to">커뮤니티 이름이%1$s로 변경</string>
     <string name="authenfail">인증 미통과</string>
     <string name="xxx_join_dissection">\"%1$s\"그룹에 가입</string>
-    <string name="my_hilamg_code">나의hilamg번호는:%1$s</string>
+    <string name="my_hilamg_code">나의hilamg번호는:  %1$s</string>
     <string name="total_xx_contact">%1$s연락</string>
     <string name="xx_receive_xx_red">%1$s받은%2$s빨간 봉투</string>
     <string name="you">너</string>
@@ -915,7 +914,7 @@
     <string name="social_public1">사군 공개 기능 조작 여부</string>
     <string name="owner_open_slowmode">소유자가 느린 모드를 설정했으며 말하기 간격은 다음과 같습니다:%1$s%2$s</string>
     <string name="current_receive">(청구 된%1$s/%2$s)</string>
-    <string name="xxx_red_total_xxx">%1$s빨간 봉투,%2$s</string>
+    <string name="xxx_red_total_xxx">%1$s빨간 봉투</string>
     <string name="wait_for_xxx_confirm_receive">친구%1$s의 영수증 확인을 기다리십시오</string>
     <string name="red_money">빨간봉투 금액은%1$s,상대방 수령하기를 기자리다</string>
     <string name="red_money1">빨간봉투 금액은%1$s,상대방 수령하였습니다</string>
@@ -1024,4 +1023,23 @@
     <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
     <string name="special_chat">不能包含特殊字符</string>
     <string name="clearance">已清空</string>
+    <string name="friend">好友</string>
+    <string name="social">社群</string>
+    <string name="hilamgservice">Hilamg服务</string>
+    <string name="tourism">旅游</string>
+    <string name="getting_around">出行</string>
+    <string name="hotel">酒店</string>
+    <string name="word_of_command_red_packet">口令红包</string>
+    <string name="toast1">该服务暂未开通</string>
+    <string name="may_know">可能认识的人</string>
+    <string name="wechat_friends">微信邀请好友</string>
+    <string name="recommend">推荐社群</string>
+    <string name="refresh_recommend">换一组</string>
+    <string name="community_icon">社群图标</string>
+    <string name="money3">金额</string>
+    <string name="tipssss">钱包资产可直接转账到支付宝或微信</string>
+    <string name="paysuccess">支付成功</string>
+    <string name="socialApplication">群应用</string>
+    <string name="address_list_search">请输入关键字</string>
+    <string name="toast2">手机端直播暂未开放</string>
 </resources>

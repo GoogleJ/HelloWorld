@@ -101,31 +101,7 @@
                     android:layout_height="0.5dp"
                     android:background="#e5e5e5" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/video_live"
-                        android:textColor="@color/textcolor1"
-                        android:textSize="15sp" />
-
-                    <Switch
-                        android:id="@+id/sw2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:enabled="false" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="#e5e5e5" />
 
             </LinearLayout>
 
@@ -201,11 +177,38 @@
 
                 </LinearLayout>
 
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="#e5e5e5"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/video_live"
+                        android:textColor="@color/textcolor1"
+                        android:textSize="15sp" />
+
+                    <Switch
+                        android:id="@+id/sw2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#e5e5e5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

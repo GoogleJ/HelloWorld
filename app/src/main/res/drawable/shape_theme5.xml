@@ -4,5 +4,5 @@
     <solid android:color="#EDEDED" />
     <!-- 边框色 -->
     <stroke android:width="0.5dip" android:color="#EDEDED" />
-    <corners android:radius="5dp" />
+    <corners android:radius="4dp" />
 </shape>

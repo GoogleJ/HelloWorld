@@ -19,11 +19,6 @@
             android:background="@android:color/white"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/background_color" />
-
             <RelativeLayout
                 android:id="@+id/rl_headPortrait"
                 android:layout_width="match_parent"

@@ -92,7 +92,7 @@ public class InviterActivity extends BaseActivity {
         setTrasnferStatusBar(true);
 
         color1 = Color.parseColor("#999999");
-        color2 = Color.parseColor("#4585F5");
+        color2 = Color.parseColor("#0083BF");
 
         initView();
 
@@ -109,7 +109,7 @@ public class InviterActivity extends BaseActivity {
         tvtitle.setText(R.string.invite_friends1);
         ivQR = findViewById(R.id.ivQR);
         SpannableString spannableString = new SpannableString(getString(R.string.Invite_rewards));
-        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#4585F5")), 11, 18, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#0083BF")), 11, 18, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvTips.setText(spannableString);
 
         String userName = Constant.currentUser.getNick();
@@ -318,7 +318,7 @@ public class InviterActivity extends BaseActivity {
                     }
                 }
 
-                ssb.setSpan(new BulletSpan(CommonUtils.dip2px(InviterActivity.this, 8), 0xff4585f5), 0, r.getInvitationMessage().get(0).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                ssb.setSpan(new BulletSpan(CommonUtils.dip2px(InviterActivity.this, 8), 0xff0083BF), 0, r.getInvitationMessage().get(0).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 ssb.setSpan(new BulletSpan(CommonUtils.dip2px(InviterActivity.this, 8), 0xff3dcc9c), r.getInvitationMessage().get(0).length() + 1, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 tv.setText(ssb);

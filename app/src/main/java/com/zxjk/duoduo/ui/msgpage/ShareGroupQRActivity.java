@@ -17,8 +17,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
@@ -28,8 +26,8 @@ import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.ShareGroupQRAdapter;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.WechatCastMessage;
+import com.zxjk.duoduo.rongIM.message.NewsCardMessage;
+import com.zxjk.duoduo.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -53,7 +51,6 @@ import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
-import io.rong.message.utils.BitmapUtil;
 
 public class ShareGroupQRActivity extends BaseActivity {
 
@@ -156,7 +153,7 @@ public class ShareGroupQRActivity extends BaseActivity {
         CommonUtils.initDialog(this).show();
         WechatCastMessage content = new WechatCastMessage();
         content.setRoomID(getIntent().getStringExtra("roomId"));
-        content.setType("0");
+        content.setType(getIntent().getStringExtra("type"));
         content.setIcon(getIntent().getStringExtra("icon"));
         content.setTitle(getIntent().getStringExtra("title"));
         Message message = Message.obtain(data.get(position).getTargetId(), data.get(position).getConversationType(), content);

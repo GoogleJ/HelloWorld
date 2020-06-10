@@ -45,6 +45,10 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="com.zxjk.duoduo.permission.PROCESS_PUSH_MSG" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".Application"
@@ -57,33 +61,45 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.msgpage.MoreSearchActivity"></activity>
+        <activity android:name=".ui.msgpage.AddressListSearchActivity" />
+        <activity android:name=".ui.findpage.HilamgServiceActivity" />
+        <activity android:name=".ui.webcast.LivePlayBackActivity" />
+        <activity android:name=".ui.webcast.VideoAddressActivity" />
+        <activity android:name=".ui.externalfunc.ThirdPartPayResultActivity" />
+        <activity android:name=".ui.externalfunc.PayConfirmActivity" />
         <activity
-            android:name=".ui.webcast.WechatChatRoomManageActivity"
+            android:name=".ui.wallet.PayAliActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.ModifyWechatCastActivity"
+            android:name=".ui.cast.WechatChatRoomManageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.CastListActivity"
+            android:name=".ui.cast.ModifyWechatCastActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.WechatCastDetailActivity"
+            android:name=".ui.cast.CastListActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.CreateWechatCastActivity"
+            android:name=".ui.cast.WechatCastDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.webcast.CreateChooseCastTypeActivity"
+            android:name=".ui.cast.CreateWechatCastActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.cast.CreateChooseCastTypeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -98,37 +114,37 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.TheAppealActivity"
+            android:name=".ui.wallet.TheAppealActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.OrderInfoByTypeActivity"
+            android:name=".ui.wallet.OrderInfoByTypeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BusinessDetailsActivity"
+            android:name=".ui.wallet.BusinessDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.OrderDetailsActivity"
+            android:name=".ui.wallet.OrderDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.PurchaseDetailsActivity"
+            android:name=".ui.wallet.PurchaseDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.OneKeyBuyCoinActivity"
+            android:name=".ui.wallet.OneKeyBuyCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BalanceShowItemActivity"
+            android:name=".ui.wallet.BalanceShowItemActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -148,17 +164,17 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.walletpage.LoginAuthorizationActivity"
+            android:name=".ui.externalfunc.LoginAuthorizationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.walletpage.OrderPaymentActivity"
+            android:name=".ui.wallet.OrderPaymentActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.walletpage.ThirdPartLoginActivity"
+            android:name=".ui.externalfunc.ThirdPartLoginActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -260,97 +276,97 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.UpDownCoinResultActivity"
+            android:name=".ui.wallet.UpDownCoinResultActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.DownCoinActivity"
+            android:name=".ui.wallet.DownCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.UpCoinActivity"
+            android:name=".ui.wallet.UpCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BalanceDetailActivity"
+            android:name=".ui.wallet.BalanceDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.ChooseCoinActivity"
+            android:name=".ui.wallet.ChooseCoinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.AddBlockShowItemActivity"
+            android:name=".ui.wallet.AddBlockShowItemActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BlockWalletPaymentQRActivity"
+            android:name=".ui.wallet.BlockWalletPaymentQRActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.WalletTradeActivity"
+            android:name=".ui.wallet.WalletTradeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.ImportWalletActivity"
+            android:name=".ui.wallet.ImportWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.DeleteBlockWalletActivity"
+            android:name=".ui.wallet.DeleteBlockWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BackupKeystoreActivity"
+            android:name=".ui.wallet.BackupKeystoreActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.ChangeWalletNameActivity"
+            android:name=".ui.wallet.ChangeWalletNameActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BlockWalletManageDetailActivity"
+            android:name=".ui.wallet.BlockWalletManageDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BlockWalletManageActivity"
+            android:name=".ui.wallet.BlockWalletManageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BackupWordsActivity"
+            android:name=".ui.wallet.BackupWordsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.CreateWalletSuccessActivity"
+            android:name=".ui.wallet.CreateWalletSuccessActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.CreateingWalletActivity"
+            android:name=".ui.wallet.CreateingWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.CreateWalletActivity"
+            android:name=".ui.wallet.CreateWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.BlockWalletEmptyActivity"
+            android:name=".ui.wallet.BlockWalletEmptyActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -365,7 +381,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.NewBlockWalletActivity"
+            android:name=".ui.wallet.NewBlockWalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -416,17 +432,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.walletpage.SetRecipetActivity"
+            android:name=".ui.wallet.SetRecipetActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.minepage.wallet.WalletActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.findpage.NewsDetailActivity"
+            android:name=".ui.wallet.WalletActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -495,7 +506,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.walletpage.RecipetQRActivity"
+            android:name=".ui.wallet.RecipetQRActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -503,11 +514,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.walletpage.BlockOrderDetailActivity"
+            android:name=".ui.wallet.BlockOrderDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.walletpage.ZhuanChuActivity"
+            android:name=".ui.wallet.ZhuanChuActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -662,7 +673,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.minepage.wallet.BalanceLeftActivity"
+            android:name=".ui.wallet.BalanceLeftActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -673,7 +684,7 @@
             android:name=".ui.minepage.FeedbackActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" /> <!-- 启动页 -->
-        <activity android:name=".ui.BrowsableActivity">
+        <activity android:name=".ui.externalfunc.BrowsableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -708,12 +719,13 @@
 
                 <data
                     android:host="com.zxjk.duoduo"
-                    android:pathPrefix="/conversationlist/"
+                    android:pathPrefix="/conversationlist"
                     android:scheme="rong" />
             </intent-filter>
         </activity> <!-- 会话页 -->
         <activity
             android:name=".ui.msgpage.ConversationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">

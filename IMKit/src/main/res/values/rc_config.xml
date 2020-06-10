@@ -10,7 +10,7 @@
     <integer name="rc_audio_aac_encoding_bit_rate">16000</integer>
 
     <!-- 设置聊天室一次拉取消息数目 设置0默认拉取10条，设置-1默认不拉取，其他值为拉取自定义条数 -->
-    <integer name="rc_chatroom_first_pull_message_count">10</integer>
+    <integer name="rc_chatroom_first_pull_message_count">20</integer>
 
     <!-- 设置在会话列表或会话页面是否显示“连接状态”的提示 -->
     <bool name="rc_is_show_warning_notification">true</bool>
@@ -84,6 +84,6 @@
     <bool name="rc_enable_send_combine_message">true</bool>
 
     <!--在前台非会话页面时，接收到新消息是否响铃 -->
-    <bool name="rc_sound_in_foreground">true</bool>
+    <bool name="rc_sound_in_foreground">false</bool>
 
 </resources>

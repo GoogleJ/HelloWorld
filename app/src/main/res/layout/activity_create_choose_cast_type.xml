@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#F2F3F5"
     android:orientation="vertical"
-    tools:context=".ui.webcast.CreateChooseCastTypeActivity">
+    tools:context=".ui.cast.CreateChooseCastTypeActivity">
 
     <include layout="@layout/layout_title_back" />
 
@@ -87,7 +87,8 @@
             android:paddingBottom="2dp"
             android:text="@string/developing1"
             android:textColor="@color/colorTheme"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone"/>
 
         <View
             android:layout_width="0dp"

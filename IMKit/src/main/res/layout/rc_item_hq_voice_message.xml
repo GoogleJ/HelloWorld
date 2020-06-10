@@ -14,10 +14,10 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="11.5dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="11.5dp"
             android:adjustViewBounds="true"
             android:clipChildren="false"
             android:maxWidth="230dp"
@@ -27,8 +27,7 @@
                 android:id="@id/rc_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="fitStart"
-                android:tint="#000000" />
+                android:scaleType="fitStart" />
 
             <TextView
                 android:id="@id/rc_left"
@@ -36,8 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|left"
                 android:layout_marginLeft="20dp"
-                android:textColor="@color/rc_voice_color_left"
-                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -46,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
                 android:layout_marginRight="20dp"
-                android:textColor="@color/rc_voice_color_right"
-                android:textSize="14sp"
+                android:textColor="#272E3F"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <FrameLayout

@@ -19,6 +19,6 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="@string/emptylist"
-        android:textColor="@color/textcolor3" />
+        android:textColor="@color/textcolor2" />
 
 </LinearLayout>

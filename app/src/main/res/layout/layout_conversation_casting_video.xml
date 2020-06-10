@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E5E5E5" />
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FAFAFA"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvCastTopic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/black" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieCasting"
+            android:layout_width="26dp"
+            android:layout_height="17dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/casting"
+            app:lottie_speed="1.5" />
+
+        <TextView
+            android:id="@+id/tvTips1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/casting"
+            android:textColor="@color/textColor9"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvTips2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FB6E5D"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.pili.pldroid.player.widget.PLVideoTextureView
+            android:id="@+id/PLVideoTextureView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <ProgressBar
+            android:id="@+id/LoadingView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ico_back_white"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:text="主题：CYTT中国财富讲"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/img_back"
+            android:layout_marginStart="16dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/ll_group_nike_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_alignEnd="@+id/PLVideoTextureView"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivHead"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+
+            <TextView
+                android:id="@+id/tv_group_nike_name"
+                android:text="CYTT中国社群"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/full_screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/PLVideoTextureView"
+            android:layout_alignBottom="@+id/PLVideoTextureView"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/ic_full_screen" />
+
+        <TextView
+            android:id="@+id/tv_number_of_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/PLVideoTextureView"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:background="#F2F3F5"
     android:orientation="vertical"
-    tools:context=".ui.minepage.wallet.OrderInfoByTypeActivity">
+    tools:context=".ui.wallet.OrderInfoByTypeActivity">
 
     <LinearLayout
         android:id="@+id/ll_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="#0083BF"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/order_info_by_type"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView

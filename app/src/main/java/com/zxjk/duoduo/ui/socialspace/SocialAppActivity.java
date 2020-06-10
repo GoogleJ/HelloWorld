@@ -110,7 +110,8 @@ public class SocialAppActivity extends BaseActivity {
                 intent.putExtra("applicationAddress", adapter2.getData().get(position).getApplicationAddress());
                 intent.putExtra("applicationLogo", adapter2.getData().get(position).getApplicationLogo());
                 intent.putExtra("applicationName", adapter2.getData().get(position).getApplicationName());
-                startActivityForResult(intent, REQUEST_MODIFY);
+                startActivity(intent);
+                finish();
                 return;
             }
             Intent intent = new Intent(this, WebActivity.class);
@@ -149,7 +150,7 @@ public class SocialAppActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
-                    if (refreshOrigin) data.getApplication().setApplicationList(r.getApplication());
+//                    if (refreshOrigin) data.getApplication().setApplicationList(r.getApplication());
                     adapter1.setNewData(r.getOfficialApplication());
                     adapter2.setNewData(r.getApplication());
                 }, this::handleApiError);
@@ -159,7 +160,8 @@ public class SocialAppActivity extends BaseActivity {
         Intent intent = new Intent(this, SocialAppEditActivity.class);
         intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
         intent.putExtra("isAdd", true);
-        startActivityForResult(intent, REQUEST_ADD);
+        startActivity(intent);
+        finish();
     }
 
     @Override

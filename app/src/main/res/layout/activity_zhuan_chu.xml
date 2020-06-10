@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.walletpage.ZhuanChuActivity">
+    tools:context=".ui.wallet.ZhuanChuActivity">
 
     <include layout="@layout/layout_title_back" />
 

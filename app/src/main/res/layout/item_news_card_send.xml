@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_card_send_layout"
-    android:layout_width="220dp"
+    android:layout_width="240dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/icon_business_card_user"
-    android:orientation="vertical"
-    tools:ignore="MissingConstraints">
+    android:background="@drawable/shape_white_8"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,10 +14,10 @@
             android:id="@+id/news_card_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:ellipsize="end"
             android:lines="2"
             android:textColor="@color/black"
@@ -30,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/news_card_title"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="10dp"
             android:gravity="center_vertical">
 
             <ImageView
@@ -41,8 +39,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -51,7 +49,7 @@
                     android:layout_height="match_parent"
                     android:ellipsize="end"
                     android:lines="2"
-                    android:textColor="@color/m_add_friend_wechat_label_2"
+                    android:textColor="#909399"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -62,8 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@+id/ll1_card"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
             android:background="@color/divider" />
 
         <LinearLayout
@@ -71,9 +69,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/vv"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="14dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -83,9 +81,9 @@
                 android:src="@drawable/ic_myqr_hilamg" />
 
             <TextView
+                android:layout_marginLeft="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
                 android:text="@string/hilamg_consulting"
                 android:textColor="@color/m_add_friend_wechat_label_2"
                 android:textSize="12sp" />

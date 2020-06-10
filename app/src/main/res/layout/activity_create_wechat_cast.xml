@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clipChildren="false"
     android:orientation="vertical"
-    tools:context=".ui.webcast.CreateWechatCastActivity">
+    tools:context=".ui.cast.CreateWechatCastActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -329,6 +329,36 @@
                 android:text="@string/next"
                 android:textColor="@color/white" />
 
+            <LinearLayout
+                android:id="@+id/ll_bottom2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="56dp"
+                android:layout_marginBottom="32dp"
+                android:visibility="gone">
+                <TextView
+                    android:text="手机端直播"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_circular_bead_btn3"
+                    android:onClick="mobileTerminal"/>
+                <TextView
+                    android:text="电脑端直播"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_theme4"
+                    android:onClick="pcLive"/>
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

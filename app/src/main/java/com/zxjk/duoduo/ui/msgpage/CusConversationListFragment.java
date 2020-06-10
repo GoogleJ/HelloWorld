@@ -1,7 +1,6 @@
 package com.zxjk.duoduo.ui.msgpage;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,8 +21,7 @@ import com.zxjk.duoduo.db.Cast;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.msgpage.rongIM.CusConversationListAdapter;
-import com.zxjk.duoduo.ui.webcast.CastListActivity;
+import com.zxjk.duoduo.ui.cast.CastListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,6 @@ import java.util.List;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.model.UIConversation;
-import io.rong.imkit.widget.adapter.ConversationListAdapter;
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
 import razerdp.widget.QuickPopup;
@@ -40,11 +37,6 @@ public class CusConversationListFragment extends ConversationListFragment {
     private LinearLayout llCastTitle;
     private TextView tvCastTitle;
     private TextView tvAction;
-
-    @Override
-    public ConversationListAdapter onResolveAdapter(Context context) {
-        return new CusConversationListAdapter(context);
-    }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,7 +51,7 @@ public class CusConversationListFragment extends ConversationListFragment {
     }
 
     private void handleLongClick(UIConversation c) {
-        QuickPopup longClickPop = QuickPopupBuilder.with(((Fragment) this).getContext())
+        QuickPopup longClickPop = QuickPopupBuilder.with(this.getContext())
                 .contentView(R.layout.pop_conversationlist)
                 .config(new QuickPopupConfig()
                         .withClick(R.id.tv1, v -> RongIM.getInstance().setConversationToTop(c.getConversationType(),
@@ -82,7 +74,7 @@ public class CusConversationListFragment extends ConversationListFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         llCastTitle = rootView.findViewById(R.id.llCastTitle);
-        llCastTitle.setOnClickListener(v -> ((Fragment) this).startActivity(new Intent(((Fragment) this).getContext(), CastListActivity.class)));
+        llCastTitle.setOnClickListener(v -> this.startActivity(new Intent(this.getContext(), CastListActivity.class)));
         tvCastTitle = rootView.findViewById(R.id.tvCastTitle);
         tvAction = rootView.findViewById(R.id.tvAction);
 

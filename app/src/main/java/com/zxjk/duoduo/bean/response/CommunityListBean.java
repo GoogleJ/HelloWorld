@@ -1,6 +1,9 @@
 package com.zxjk.duoduo.bean.response;
 
-public class CommunityListBean {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class CommunityListBean implements Parcelable {
 
     /**
      * ownerNick : 海浪管理员
@@ -18,6 +21,38 @@ public class CommunityListBean {
     private String isPay;
     private String members;
     private String isInGroup;
+    private String introduction;
+
+    protected CommunityListBean(Parcel in) {
+        ownerNick = in.readString();
+        groupId = in.readString();
+        communityLogo = in.readString();
+        communityName = in.readString();
+        isPay = in.readString();
+        members = in.readString();
+        isInGroup = in.readString();
+        introduction = in.readString();
+    }
+
+    public static final Creator<CommunityListBean> CREATOR = new Creator<CommunityListBean>() {
+        @Override
+        public CommunityListBean createFromParcel(Parcel in) {
+            return new CommunityListBean(in);
+        }
+
+        @Override
+        public CommunityListBean[] newArray(int size) {
+            return new CommunityListBean[size];
+        }
+    };
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
 
     public String getIsInGroup() {
         return isInGroup;
@@ -73,5 +108,22 @@ public class CommunityListBean {
 
     public void setMembers(String members) {
         this.members = members;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ownerNick);
+        dest.writeString(groupId);
+        dest.writeString(communityLogo);
+        dest.writeString(communityName);
+        dest.writeString(isPay);
+        dest.writeString(members);
+        dest.writeString(isInGroup);
+        dest.writeString(introduction);
     }
 }

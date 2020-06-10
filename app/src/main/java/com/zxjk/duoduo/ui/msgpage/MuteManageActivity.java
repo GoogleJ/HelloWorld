@@ -87,7 +87,7 @@ public class MuteManageActivity extends BaseActivity {
         tv_title.setText(R.string.mute_manage);
         rl_back.setOnClickListener(v -> finish());
         refreshLayout.setRefreshing(true);
-        refreshLayout.setColorSchemeColors(Color.parseColor("#4585F5"));
+        refreshLayout.setColorSchemeColors(Color.parseColor("#0083BF"));
         refreshLayout.setOnRefreshListener(() -> {
             page = 0;
             if (searchKey.equals("")) {

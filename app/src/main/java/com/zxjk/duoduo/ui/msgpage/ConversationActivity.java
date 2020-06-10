@@ -5,14 +5,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +31,9 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.bumptech.glide.Glide;
+import com.pili.pldroid.player.widget.PLVideoTextureView;
+import com.pili.pldroid.player.widget.PLVideoView;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.Application;
@@ -35,37 +44,38 @@ import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.SendUrlAndsendImgBean;
 import com.zxjk.duoduo.bean.SlowModeLocalBeanDao;
-import com.zxjk.duoduo.bean.SocialLocalBeanDao;
 import com.zxjk.duoduo.bean.response.GroupResponse;
 import com.zxjk.duoduo.bean.response.WechatChatRoomPermission;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
 import com.zxjk.duoduo.db.SlowModeLocalBean;
-import com.zxjk.duoduo.db.SocialLocalBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.rongIM.CusConversationFragment;
+import com.zxjk.duoduo.rongIM.message.BusinessCardMessage;
+import com.zxjk.duoduo.rongIM.message.CusEmoteTabMessage;
+import com.zxjk.duoduo.rongIM.message.FakeC2CMessage;
+import com.zxjk.duoduo.rongIM.message.GroupCardMessage;
+import com.zxjk.duoduo.rongIM.message.NewsCardMessage;
+import com.zxjk.duoduo.rongIM.message.RedPacketMessage;
+import com.zxjk.duoduo.rongIM.message.TransferMessage;
+import com.zxjk.duoduo.rongIM.plugin.BusinessCardPlugin;
+import com.zxjk.duoduo.rongIM.plugin.CastPlugin;
+import com.zxjk.duoduo.rongIM.plugin.FilePlugin;
+import com.zxjk.duoduo.rongIM.plugin.RedPacketPlugin;
+import com.zxjk.duoduo.rongIM.plugin.SightPlugin;
+import com.zxjk.duoduo.rongIM.plugin.SocialApplicationPlugin;
+import com.zxjk.duoduo.rongIM.plugin.TransferPlugin;
 import com.zxjk.duoduo.ui.EnlargeImageActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.msgpage.rongIM.CusConversationFragment;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.CusEmoteTabMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.BusinessCardPlugin;
-import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.CastPlugin;
-import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.FilePlugin;
-import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.RedPacketPlugin;
-import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.SightPlugin;
-import com.zxjk.duoduo.ui.msgpage.rongIM.plugin.TransferPlugin;
+import com.zxjk.duoduo.ui.cast.WechatCastDetailActivity;
+import com.zxjk.duoduo.ui.cast.WechatChatRoomManageActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
-import com.zxjk.duoduo.ui.webcast.WechatCastDetailActivity;
-import com.zxjk.duoduo.ui.webcast.WechatChatRoomManageActivity;
 import com.zxjk.duoduo.ui.widget.dialog.NewRedDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.RxScreenshotDetector;
 
 import java.util.ArrayList;
@@ -76,6 +86,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
@@ -119,6 +130,7 @@ public class ConversationActivity extends BaseActivity {
     private CusConversationFragment fragment;
     private MessageListAdapter messageAdapter;
     private TextView tvTitle;
+    private LinearLayout llLoading;
 
     /**
      * 会话信息
@@ -148,13 +160,20 @@ public class ConversationActivity extends BaseActivity {
      */
     private BurnAfterReadMessageLocalBeanDao burnMsgDao;
     private SlowModeLocalBeanDao slowModeLocalBeanDao;
-    private SocialLocalBeanDao socialLocalBeanDao;
 
     /**
      * 截屏disposable
      */
     private Disposable screenCapture;
-    private SocialLocalBean socialLocalBean;
+
+    private TextView fullScreen;
+    private TextView tvNumberOfPeople;
+
+    private PLVideoTextureView mVideoView;
+    private int mOrientation;
+    private AlbumOrientationEventListener mAlbumOrientationEventListener;
+    private Boolean orientationType = false;
+    private Disposable loadingDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,16 +190,12 @@ public class ConversationActivity extends BaseActivity {
 
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
+        llLoading = findViewById(R.id.llLoading);
+
         extension = findViewById(io.rong.imkit.R.id.rc_extension);
 
         if (conversationType.equals("system")) {
-            tvTitle = findViewById(R.id.tv_title);
-            targetId = getIntent().getData().getQueryParameter("targetId");
-            switch (targetId) {
-                case "38":
-                    tvTitle.setText(R.string.hilamg_official);
-                    break;
-            }
+            findViewById(R.id.ll).setVisibility(View.GONE);
             extension.removeAllViews();
             return;
         }
@@ -196,11 +211,9 @@ public class ConversationActivity extends BaseActivity {
         setMaxMessageSelectedCount();
 
         handleBurnAfterReadForReceivers();
-
-        sendFakeC2CMsg();
     }
 
-    private void sendFakeC2CMsg() {
+    private void sendFakeC2CMsg(String name) {
         if (!conversationType.equals("private")) {
             return;
         }
@@ -209,12 +222,11 @@ public class ConversationActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Conversation conversation) {
                         if (conversation == null || conversation.getLatestMessage() == null) {
-                            InformationNotificationMessage message = InformationNotificationMessage.obtain(getString(R.string.current_conversation_secret));
-                            message.setExtra(getString(R.string.current_conversation_secret));
+                            FakeC2CMessage message = new FakeC2CMessage();
+                            message.setName(name);
                             RongIM.getInstance().insertIncomingMessage(
                                     Conversation.ConversationType.PRIVATE,
-                                    targetId, Constant.userId, new Message.ReceivedStatus(1), message, null
-                            );
+                                    targetId, Constant.userId, new Message.ReceivedStatus(1), message, null);
                         }
                     }
 
@@ -233,7 +245,6 @@ public class ConversationActivity extends BaseActivity {
 
         burnMsgDao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
         slowModeLocalBeanDao = Application.daoSession.getSlowModeLocalBeanDao();
-        socialLocalBeanDao = Application.daoSession.getSocialLocalBeanDao();
     }
 
     /**
@@ -403,6 +414,11 @@ public class ConversationActivity extends BaseActivity {
         onSendMessageListener = new RongIM.OnSendMessageListener() {
             @Override
             public Message onSend(Message message) {
+                if (llLoading.getVisibility() == View.VISIBLE) {
+                    ToastUtils.showShort(R.string.loading_pleasewait);
+                    return null;
+                }
+
                 handleBurnAfterReadForSendersOnSend(message);
 
                 if (handleMsgForbiden(message)) {
@@ -588,6 +604,14 @@ public class ConversationActivity extends BaseActivity {
                         if (notificationMessage.getExtra().contains("慢速模式")) {
                             handleReceiveSlowMode(notificationMessage);
                         }
+
+                        if (groupInfo != null) {
+                            if (notificationMessage.getMessage().equals(getString(R.string.ban_add_friend_open))) {
+                                groupInfo.getGroupInfo().setBanFriend("1");
+                            } else if (notificationMessage.getMessage().equals(getString(R.string.ban_add_friend_close))) {
+                                groupInfo.getGroupInfo().setBanFriend("0");
+                            }
+                        }
                     }
                 } else if (message.getSenderUserId().equals(targetId)) {
                     String extra = "";
@@ -686,14 +710,24 @@ public class ConversationActivity extends BaseActivity {
     private void handleBean() {
         targetId = getIntent().getData().getQueryParameter("targetId");
 
+        if (loadingDisposable == null) {
+            loadingDisposable = Observable.timer(700, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                    .subscribe(l -> llLoading.setVisibility(View.VISIBLE));
+        }
+
         switch (conversationType) {
             case "private":
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .personalChatConfig(targetId)
                         .compose(RxSchedulers.normalTrans())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(RxSchedulers.ioObserver())
                         .compose(bindToLifecycle())
                         .subscribe(response -> {
+                            if (loadingDisposable != null && !loadingDisposable.isDisposed()) {
+                                loadingDisposable.dispose();
+                            }
+                            llLoading.setVisibility(View.GONE);
+
                             conversationInfo.setMessageBurnTime(response.getChatInfo().getIncinerationTime());
                             conversationInfo.setCaptureScreenEnabled(response.getChatInfo().getScreenCapture());
                             conversationInfo.setTargetCaptureScreenEnabled(response.getChatInfo().getScreenCaptureHide());
@@ -705,8 +739,13 @@ public class ConversationActivity extends BaseActivity {
                                         Uri.parse(response.getCustomerForChat().getHeadPortrait()));
                                 RongIM.getInstance().refreshUserInfoCache(targetUserInfo);
                             }
+
                             handlePrivate();
-                        }, this::handleApiError);
+
+                            if (targetUserInfo != null) {
+                                sendFakeC2CMsg(targetUserInfo.getName());
+                            }
+                        }, t -> handleBean());
                 break;
             case "group":
                 ServiceFactory.getInstance().getBaseService(Api.class)
@@ -732,23 +771,25 @@ public class ConversationActivity extends BaseActivity {
                             }
                         })
                         .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(RxSchedulers.ioObserver())
                         .subscribe(groupInfo -> {
+                            if (loadingDisposable != null && !loadingDisposable.isDisposed()) {
+                                loadingDisposable.dispose();
+                            }
+                            llLoading.setVisibility(View.GONE);
+
                             handleNewReceiveRed(groupInfo);
 
                             handleGroupPlugin(groupInfo);
+
+                            handleGroupApplication();
 
                             this.groupInfo = groupInfo;
 
                             handleGroupOwnerInit();
 
                             initView();
-                        }, t -> {
-                            extension.removeAllViews();
-                            handleApiError(t);
-                            RongIM.getInstance().removeConversation(Conversation.ConversationType.GROUP, targetId, null);
-                            finish();
-                        });
+                        }, t -> handleBean());
 
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getGroupLiveGoingInfo(targetId)
@@ -774,34 +815,143 @@ public class ConversationActivity extends BaseActivity {
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getRoomPermissionByRoomId(targetId)
                         .compose(bindToLifecycle())
-                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                        .compose(RxSchedulers.ioObserver())
                         .compose(RxSchedulers.normalTrans())
                         .subscribe(chatRoomPermission -> {
+                            if (loadingDisposable != null && !loadingDisposable.isDisposed()) {
+                                loadingDisposable.dispose();
+                            }
+                            llLoading.setVisibility(View.GONE);
+
                             this.chatRoomPermission = chatRoomPermission;
 
                             handleChatRoom();
 
-                            ViewStub casting = findViewById(R.id.stubCasting);
-                            View inflate = casting.inflate();
-                            inflate.findViewById(R.id.lottieCasting).setVisibility(View.GONE);
-                            TextView tv1 = inflate.findViewById(R.id.tvTips1);
-                            TextView tv2 = inflate.findViewById(R.id.tvTips2);
+                            String liveType = getIntent().getStringExtra("liveType");
 
-                            tv1.setTextColor(Color.parseColor("#999999"));
-                            tv2.setTextColor(Color.parseColor("#FB6E5D"));
-                            tv1.setText(R.string.watch_nums);
+                            if (!TextUtils.isEmpty(liveType) && liveType.equals("0")) {
+                                ViewStub casting = findViewById(R.id.stubCasting);
+                                View inflate = casting.inflate();
+                                chatRoomLive(inflate);
+                            } else if (!TextUtils.isEmpty(liveType) && liveType.equals("1")) {
 
-                            TextView tvCastTopic = inflate.findViewById(R.id.tvCastTopic);
-                            tvCastTopic.setText(getString(R.string.cast_topic1, getIntent().getStringExtra("castTopic")));
+                                ViewStub stubVideo = findViewById(R.id.stubVideo);
+                                View stubVideoInflate = stubVideo.inflate();
+                                chatRoomLive(stubVideoInflate);
 
-                            upgradeWatchNumsForWechatCast(tv2);
-                        }, t -> {
-                            handleApiError(t);
-                            finish();
-                        });
+                                fullScreen = stubVideoInflate.findViewById(R.id.full_screen);
+                                tvNumberOfPeople = stubVideoInflate.findViewById(R.id.tv_number_of_people);
+
+                                mVideoView = stubVideoInflate.findViewById(R.id.PLVideoTextureView);
+
+                                View loadingView = stubVideoInflate.findViewById(R.id.LoadingView);
+                                mVideoView.setBufferingIndicator(loadingView);
+
+                                mVideoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_PAVED_PARENT);
+
+                                mVideoView.setVideoPath(getIntent().getStringExtra("playUrl"));
+                                mVideoView.start();
+
+                                TextView tvTitle = stubVideoInflate.findViewById(R.id.tv_title);
+                                tvTitle.setText("主题:" + getIntent().getStringExtra("topic"));
+                                LinearLayout ll_GroupNikeName = stubVideoInflate.findViewById(R.id.ll_group_nike_name);
+                                TextView tvGroupNikeName = stubVideoInflate.findViewById(R.id.tv_group_nike_name);
+                                tvGroupNikeName.setText(getIntent().getStringExtra("groupNikeName"));
+                                CircleImageView ivHead = stubVideoInflate.findViewById(R.id.ivHead);
+                                Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(ivHead);
+
+                                stubVideoInflate.findViewById(R.id.img_back).setOnClickListener(v -> {
+                                    orientationType = false;
+                                    exitFullScreen();
+                                    findViewById(R.id.conversation).setVisibility(View.VISIBLE);
+                                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                                    findViewById(R.id.rlTitle).setVisibility(View.VISIBLE);
+                                    ll_GroupNikeName.setVisibility(View.GONE);
+                                    stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.GONE);
+                                });
+
+                                fullScreen.setOnClickListener(v -> {
+                                    int orientation = getRequestedOrientation();
+                                    if (orientation == 0 || orientation == 8 || orientation == 9) {
+                                        orientationType = false;
+                                        exitFullScreen();
+                                        findViewById(R.id.conversation).setVisibility(View.VISIBLE);
+                                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                                        findViewById(R.id.rlTitle).setVisibility(View.VISIBLE);
+                                        ll_GroupNikeName.setVisibility(View.GONE);
+                                        stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.GONE);
+                                    } else {
+                                        orientationType = true;
+                                        setFullScreen();
+                                        findViewById(R.id.conversation).setVisibility(View.GONE);
+                                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                                        findViewById(R.id.rlTitle).setVisibility(View.GONE);
+                                        ll_GroupNikeName.setVisibility(View.VISIBLE);
+                                        stubVideoInflate.findViewById(R.id.img_back).setVisibility(View.VISIBLE);
+                                    }
+                                });
+
+                                if (Constant.userId.equals(getIntent().getStringExtra("roomOwnerId"))) {
+                                    extension.setInputBarStyle(InputBar.Style.STYLE_EXTENSION_CONTAINER);
+                                } else {
+                                    extension.setInputBarStyle(InputBar.Style.STYLE_CONTAINER);
+                                }
+
+                                mAlbumOrientationEventListener = new AlbumOrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL);
+                                if (mAlbumOrientationEventListener.canDetectOrientation()) {
+                                    mAlbumOrientationEventListener.enable();
+                                }
+                            }
+                        }, t -> handleBean());
 
                 break;
         }
+    }
+
+    private void handleGroupApplication() {
+
+    }
+
+    private void setFullScreen() {
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        getWindow().setAttributes(params);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN); // Activity全屏显示，且状态栏被覆盖掉
+    }
+
+    private void exitFullScreen() {
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setAttributes(params);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN); // Activity全屏显示，但是状态栏不会被覆盖掉，而是正常显示，只是Activity顶端布局会被覆盖住
+    }
+
+
+    private void setDrawables(Drawable drawable, TextView textView, String text) {
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable
+                .getMinimumHeight());// 设置边界
+        if (!TextUtils.isEmpty(text)) {
+            textView.setText(text);
+        }
+        textView.setCompoundDrawables(drawable, null, null, null);
+        textView.setCompoundDrawablePadding(8);
+    }
+
+    private void chatRoomLive(View inflate) {
+        inflate.findViewById(R.id.lottieCasting).setVisibility(View.GONE);
+        TextView tv1 = inflate.findViewById(R.id.tvTips1);
+        TextView tv2 = inflate.findViewById(R.id.tvTips2);
+
+        tv1.setTextColor(Color.parseColor("#999999"));
+        tv2.setTextColor(Color.parseColor("#FB6E5D"));
+        tv1.setText(R.string.watch_nums);
+
+        TextView tvCastTopic = inflate.findViewById(R.id.tvCastTopic);
+        tvCastTopic.setText(getString(R.string.cast_topic1, getIntent().getStringExtra("castTopic")));
+
+        upgradeWatchNumsForWechatCast(tv2);
     }
 
     private void upgradeWatchNumsForWechatCast(TextView tvNums) {
@@ -813,7 +963,9 @@ public class ConversationActivity extends BaseActivity {
                 .flatMap((Function<String, ObservableSource<?>>) s -> {
                     if (!TextUtils.isEmpty(s)) {
                         tvNums.setText(s);
+                        setDrawables(getResources().getDrawable(R.drawable.ic_numberofpeople, null), tvNumberOfPeople, s);
                     }
+
                     return Observable.timer(30, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).compose(bindUntilEvent(ActivityEvent.DESTROY));
                 })
                 .subscribe(s -> upgradeWatchNumsForWechatCast(tvNums), t -> {
@@ -846,11 +998,13 @@ public class ConversationActivity extends BaseActivity {
         rl_end.setVisibility(View.VISIBLE);
         if (Constant.userId.equals(ownerId)) {
             rl_end.setOnClickListener(v -> {
+
                 Intent intent = new Intent(this, WechatChatRoomManageActivity.class);
                 intent.putExtra("roomId", targetId);
+                intent.putExtra("liveType", getIntent().getStringExtra("liveType"));
                 startActivity(intent);
             });
-            iv_end.setImageResource(R.drawable.ic_title_end_chatroom_manage);
+            iv_end.setImageResource(R.drawable.ic_social_end);
 
             while (iterator.hasNext()) {
                 IPluginModule next = iterator.next();
@@ -866,7 +1020,7 @@ public class ConversationActivity extends BaseActivity {
                 intent.putExtra("id", getIntent().getStringExtra("groupId"));
                 startActivity(intent);
             });
-            iv_end.setImageResource(R.drawable.ic_social_title_end);
+            iv_end.setImageResource(R.drawable.ic_social_end);
 
             extension.setInputBarStyle(InputBar.Style.STYLE_SWITCH_CONTAINER);
             extension.hideMoreActionLayout();
@@ -993,11 +1147,22 @@ public class ConversationActivity extends BaseActivity {
                     extension.removePlugin(next);
                 }
             }
-            if (groupInfo.getGroupInfo().getGroupType().equals("1") &&
-                    (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) ||
-                            groupInfo.getIsAdmin().equals("1") && groupInfo.getGroupPermission().getOpenWxLive().equals("1"))) {
-                pluginModules.add(new CastPlugin());
+            if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
+                if (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId)) {
+                    pluginModules.add(new CastPlugin());
+                } else if (groupInfo.getIsAdmin().equals("1")) {
+                    if (groupInfo.getGroupPermission().getOpenWxLive().equals("1") || groupInfo.getGroupPermission().getOpenVideo().equals("1")) {
+                        pluginModules.add(new CastPlugin());
+                    }
+                }
             }
+
+            if (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || groupInfo.getIsAdmin().equals("1")) {
+                pluginModules.add(new SocialApplicationPlugin(true));
+            }else {
+                pluginModules.add(new SocialApplicationPlugin(false));
+            }
+
         }
     }
 
@@ -1031,7 +1196,11 @@ public class ConversationActivity extends BaseActivity {
             @Override
             public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
                 if (conversationType == Conversation.ConversationType.GROUP) {
-                    CommonUtils.resolveFriendList(ConversationActivity.this, userInfo.getUserId(), targetId);
+                    if (groupInfo != null && !TextUtils.isEmpty(groupInfo.getGroupInfo().getBanFriend())) {
+                        if (!groupInfo.getGroupInfo().getBanFriend().equals("1")) {
+                            CommonUtils.resolveFriendList(ConversationActivity.this, userInfo.getUserId(), targetId);
+                        }
+                    }
                 } else {
                     Intent intent = new Intent(ConversationActivity.this, FriendDetailsActivity.class);
                     intent.putExtra("friendId", userInfo.getUserId());
@@ -1171,21 +1340,22 @@ public class ConversationActivity extends BaseActivity {
 
                                                         boolean formWechatCast = message.getConversationType().equals(Conversation.ConversationType.CHATROOM);
 
-                                                        if (!message.getSenderUserId().equals(Constant.userId)) {
+                                                        if (s2.getRedPackageInfo() != null && s2.getCustomerInfo() != null && s2.getSendCustomerInfo() != null) {
+                                                            if (!message.getSenderUserId().equals(Constant.userId)) {
 
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
-                                                                    getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
-                                                            );
-                                                            RongIM.getInstance().sendDirectionalMessage(
-                                                                    formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
-                                                                    targetId, message1, new String[]{message.getSenderUserId()}
-                                                                    , null, null, null);
-                                                        } else {
-                                                            InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)));
-                                                            RongIM.getInstance().sendDirectionalMessage(
-                                                                    formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
-                                                                    targetId, message1, new String[]{Constant.userId}
-                                                                    , null, null, null);
+                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
+                                                                        getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick())
+                                                                );
+                                                                RongIM.getInstance().sendDirectionalMessage(
+                                                                        formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                        targetId, message1, new String[]{message.getSenderUserId()}
+                                                                        , null, null, null);
+                                                            } else {
+                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.receiveRed));
+                                                                RongIM.getInstance().insertIncomingMessage(
+                                                                        formWechatCast ? Conversation.ConversationType.CHATROOM : Conversation.ConversationType.GROUP,
+                                                                        targetId, Constant.userId, new Message.ReceivedStatus(1), message1, null);
+                                                            }
                                                         }
 
                                                         Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
@@ -1292,11 +1462,14 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void initView() {
+        ImageView ivHead = findViewById(R.id.ivHead);
+        TextView tvTitleTips = findViewById(R.id.tvTitleTips);
+
         tvTitle = findViewById(R.id.tv_title);
         RelativeLayout rl_end = findViewById(R.id.rl_end);
         rl_end.setVisibility(View.VISIBLE);
         rl_end.setOnClickListener(v -> detail());
-        View dotSocialContentUpdate = findViewById(R.id.dotSocialContentUpdate);
+        findViewById(R.id.ll).setOnClickListener(v -> detail());
 
         tvTitle.setText(targetUserInfo == null ?
                 (groupInfo == null ? (Constant.currentUser.getNick())
@@ -1306,51 +1479,40 @@ public class ConversationActivity extends BaseActivity {
         //private logic
         if (targetId.equals(Constant.userId)) {
             rl_end.setVisibility(View.GONE);
+            findViewById(R.id.ll).setVisibility(View.GONE);
+        }
+        if (targetUserInfo != null) {
+            findViewById(R.id.ivLock).setVisibility(View.VISIBLE);
+            tvTitleTips.setText(R.string.tips_conversation_private);
+            GlideUtil.loadCircleImg(ivHead, targetUserInfo.getPortraitUri().toString());
         }
 
         //group logic
         if (groupInfo != null && groupInfo.getGroupInfo().getGroupType().equals("1")) {
+            findViewById(R.id.ivSocialDetail).setVisibility(View.VISIBLE);
             ImageView iv_end = findViewById(R.id.iv_end);
-            iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_title_end));
+            iv_end.setImageDrawable(getDrawable(R.drawable.ic_social_end));
             rl_end.setOnClickListener(v -> {
-                dotSocialContentUpdate.setVisibility(View.GONE);
-                if (socialLocalBean != null) {
-                    socialLocalBean.setContentLastModifyTime(groupInfo.getCommunityUpdateTime());
-                    socialLocalBeanDao.update(socialLocalBean);
-                }
-
-                Intent intent = new Intent(this, SocialHomeActivity.class);
+                Intent intent = new Intent(this, NewSocialManageActivity.class);
                 intent.putExtra("group", groupInfo);
-                intent.putExtra("id", targetId);
                 startActivityForResult(intent, 1000);
             });
-            tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName());
-            tvTitle.setOnClickListener(v -> {
-                dotSocialContentUpdate.setVisibility(View.GONE);
-                if (socialLocalBean != null) {
-                    socialLocalBean.setContentLastModifyTime(groupInfo.getCommunityUpdateTime());
-                    socialLocalBeanDao.update(socialLocalBean);
-                }
-
+            tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
+            findViewById(R.id.ll).setOnClickListener(v -> {
                 Intent intent = new Intent(this, SocialHomeActivity.class);
                 intent.putExtra("group", groupInfo);
                 intent.putExtra("id", targetId);
                 startActivityForResult(intent, 1000);
             });
 
-            List<SocialLocalBean> social =
-                    socialLocalBeanDao.queryBuilder()
-                            .where(SocialLocalBeanDao.Properties.GroupId.eq(targetId)).build().list();
-            if (social.size() != 0) {
-                socialLocalBean = social.get(0);
-                if (!socialLocalBean.getContentLastModifyTime().equals(groupInfo.getCommunityUpdateTime())) {
-                    dotSocialContentUpdate.setVisibility(View.VISIBLE);
-                }
-            } else {
-                dotSocialContentUpdate.setVisibility(View.VISIBLE);
-                socialLocalBean = new SocialLocalBean(targetId, "0");
-                socialLocalBeanDao.insert(socialLocalBean);
-            }
+            findViewById(R.id.ivHead).setOnClickListener(v -> {
+                Intent intent = new Intent(this, SocialHomeActivity.class);
+                intent.putExtra("group", groupInfo);
+                intent.putExtra("id", targetId);
+                startActivityForResult(intent, 1000);
+            });
+            tvTitleTips.setText(R.string.tips_conversation_group);
+            GlideUtil.loadCircleImg(ivHead, groupInfo.getGroupInfo().getHeadPortrait());
         }
 
         registerOnTitleChange();
@@ -1364,9 +1526,9 @@ public class ConversationActivity extends BaseActivity {
             if (groupInfo != null) {
                 groupInfo = (GroupResponse) data.getSerializableExtra("group");
                 if (groupInfo.getGroupInfo().getGroupType().equals("1")) {
-                    tvTitle.setText(data.getStringExtra("title"));
+                    tvTitle.setText(groupInfo.getGroupInfo().getGroupNikeName() + "(" + groupInfo.getGroupInfo().getCustomerNumber() + ")");
                 } else {
-                    tvTitle.setText(getString(R.string.groupname_num, data.getStringExtra("title"), groupInfo.getGroupInfo().getCustomerNumber()));
+                    tvTitle.setText(getString(R.string.groupname_num, groupInfo.getGroupInfo().getGroupNikeName(), groupInfo.getGroupInfo().getCustomerNumber()));
                 }
             }
         } else if (requestCode == 2000 && resultCode == 1000) {
@@ -1382,12 +1544,16 @@ public class ConversationActivity extends BaseActivity {
         if (fragment == null || !fragment.onBackPressed()) {
             super.onBackPressed();
         }
+
     }
 
     @Override
     protected void onDestroy() {
         if (rongMsgReceiver != null) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(rongMsgReceiver);
+        }
+        if (mVideoView != null) {
+            mVideoView.stopPlayback();
         }
         onSendMessageListener = null;
         typingStatusListener = null;
@@ -1396,5 +1562,47 @@ public class ConversationActivity extends BaseActivity {
         RongIM.getInstance().setSendMessageListener(null);
         RongIM.setConversationClickListener(null);
         super.onDestroy();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // 当前为横屏
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+        }
+        // 当前为竖屏
+        else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+        }
+    }
+
+    private class AlbumOrientationEventListener extends OrientationEventListener {
+        public AlbumOrientationEventListener(Context context) {
+            super(context);
+        }
+
+        public AlbumOrientationEventListener(Context context, int rate) {
+            super(context, rate);
+        }
+
+        @Override
+        public void onOrientationChanged(int orientation) {
+            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+                return;
+            }
+
+            int newOrientation = ((orientation + 45) / 90 * 90) % 360;
+            if (newOrientation != mOrientation) {
+                mOrientation = newOrientation;
+                if (orientationType) {
+                    if (mOrientation == 90) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                    } else if (mOrientation == 270) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    }
+                }
+            }
+        }
     }
 }

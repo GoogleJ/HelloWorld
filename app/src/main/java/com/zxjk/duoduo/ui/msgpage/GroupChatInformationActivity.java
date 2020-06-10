@@ -335,7 +335,6 @@ public class GroupChatInformationActivity extends BaseActivity {
     @Override
     public void finish() {
         Intent intent = new Intent();
-        intent.putExtra("title", groupChatName.getText().toString());
         intent.putExtra("group", group);
         setResult(1000, intent);
         super.finish();

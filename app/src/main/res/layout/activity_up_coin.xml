@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.minepage.wallet.UpCoinActivity">
+    tools:context=".ui.wallet.UpCoinActivity">
 
     <include layout="@layout/layout_title_back" />
 

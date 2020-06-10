@@ -3,8 +3,9 @@
     <string name="openburn1">Burn after reading\</string>
     <string name="popmap_map2">Gouda Map</string>
     <string name="xx_day1">%1$s days</string>
-    <string name="rewardtips3">%1$sUSDT has been deposited into the balance wallet~</string>
-    <string name="xxx_red_total_xxx">%1$sred envelope,totally %2$s</string>
+    <string name="rewardtips3">%1$s%2$s has been deposited into the balance wallet~</string>
+    <string name="rewardtips5">%1$sUSDThas been deposited into the balance wallet~</string>
+    <string name="xxx_red_total_xxx">%1$sred envelope</string>
     <string name="xx_trade">%1$s transaction</string>
     <string name="person1">%1$s people</string>
     <string name="xxx_become_new_owner">%1$s became the new owner</string>
@@ -129,7 +130,7 @@
     <string name="changegroupname">Modify group name</string>
     <string name="wallet_manage_detail_tips1">Modify wallet name</string>
     <string name="change_walletname">Modify wallet name</string>
-    <string name="activity_tip4">Do tasks to earn more USDT</string>
+    <string name="activity_tip4">Do tasks to earn more </string>
     <string name="chongbi">Deposit</string>
     <string name="downcoin_nums">Deposit amount</string>
     <string name="up_count_less_zero">Deposit amount cannot be less than 0</string>
@@ -193,7 +194,6 @@
     <string name="go_finish">Complete</string>
     <string name="wrong_param_data">Parameter error!</string>
     <string name="send_message">Send message</string>
-    <string name="home_bottom3">Find</string>
     <string name="slowMode_time">Speaking interval:%1$s%2$s</string>
     <string name="speech_interval_1">Interval: 1 second</string>
     <string name="send_group_chat">Start</string>
@@ -371,11 +371,10 @@
     <string name="social_remark">My Alias in community</string>
     <string name="secretTips">I have read and agree</string>
     <string name="read_and_agree">I have read and agree</string>
-    <string name="home_bottom4">Me</string>
     <string name="personal_code">My QR Code</string>
     <string name="my_qr_code">QR code</string>
     <string name="qr_code">QR</string>
-    <string name="my_hilamg_code">HilamgID:%1$s</string>
+    <string name="my_hilamg_code">HilamgID:  %1$s</string>
     <string name="invite_code">code</string>
     <string name="screen_capture_detect">Screenshot notification</string>
     <string name="close_capturescreen_success">Screenshot notification is off</string>
@@ -1024,4 +1023,23 @@
     <string name="empty_nosearch">未搜索到社群，赶快去创建～</string>
     <string name="special_chat">不能包含特殊字符</string>
     <string name="clearance">已清空</string>
+    <string name="friend">好友</string>
+    <string name="social">社群</string>
+    <string name="hilamgservice">Hilamg服务</string>
+    <string name="tourism">旅游</string>
+    <string name="getting_around">出行</string>
+    <string name="hotel">酒店</string>
+    <string name="word_of_command_red_packet">口令红包</string>
+    <string name="toast1">该服务暂未开通</string>
+    <string name="may_know">可能认识的人</string>
+    <string name="wechat_friends">微信邀请好友</string>
+    <string name="recommend">推荐社群</string>
+    <string name="refresh_recommend">换一组</string>
+    <string name="community_icon">社群图标</string>
+    <string name="money3">金额</string>
+    <string name="tipssss">钱包资产可直接转账到支付宝或微信</string>
+    <string name="paysuccess">支付成功</string>
+    <string name="socialApplication">群应用</string>
+    <string name="address_list_search">请输入关键字</string>
+    <string name="toast2">手机端直播暂未开放</string>
 </resources>

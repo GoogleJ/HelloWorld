@@ -27,7 +27,7 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.minepage.wallet.ChooseCoinActivity;
+import com.zxjk.duoduo.ui.wallet.ChooseCoinActivity;
 import com.zxjk.duoduo.ui.widget.dialog.PayEnterDialog;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
@@ -83,6 +83,7 @@ public class EnterGroupGetRedActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         mRecord = findViewById(R.id.tv_end);
         mRecord.setVisibility(View.VISIBLE);
+        mRecord.setTextColor(getResources().getColor(R.color.white,null));
         mRecord.setText(R.string.drop_record);
 
         sw = findViewById(R.id.sw);

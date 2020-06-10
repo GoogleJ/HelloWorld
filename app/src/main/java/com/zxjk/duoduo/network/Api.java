@@ -33,10 +33,12 @@ import com.zxjk.duoduo.bean.response.GetGroupChatInfoByGroupIdResponse;
 import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
+import com.zxjk.duoduo.bean.response.GetLiveInfoByGroupIdResponse;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.bean.response.GetOrderInfoByTypeResponse;
 import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
+import com.zxjk.duoduo.bean.response.GetRecommendCommunity;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
 import com.zxjk.duoduo.bean.response.GetSerialBean;
@@ -47,6 +49,7 @@ import com.zxjk.duoduo.bean.response.GetTransferAllResponse;
 import com.zxjk.duoduo.bean.response.GetUInvitationUrlBean;
 import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
 import com.zxjk.duoduo.bean.response.GetVicinityResponse;
+import com.zxjk.duoduo.bean.response.GetVideoInfoResponse;
 import com.zxjk.duoduo.bean.response.GroupChatResponse;
 import com.zxjk.duoduo.bean.response.GroupManagementInfoBean;
 import com.zxjk.duoduo.bean.response.GroupResponse;
@@ -66,6 +69,7 @@ import com.zxjk.duoduo.bean.response.ReleaseRecordDetails;
 import com.zxjk.duoduo.bean.response.RewardCodeResponse;
 import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
+import com.zxjk.duoduo.bean.response.ThirdPartyPaymentOrderResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
 import com.zxjk.duoduo.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
@@ -433,7 +437,10 @@ public interface Api {
 
     @POST("duoduo/customer/appUserRegisterAndLogin")
     @FormUrlEncoded
-    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile, @Field("securityCode") String securityCode);
+    Observable<BaseResponse<LoginResponse>> appUserRegisterAndLogin(@Field("mobile") String mobile,
+                                                                    @Field("securityCode") String securityCode,
+                                                                    @Field("inviteId") String inviteId,
+                                                                    @Field("communityId") String communityId);
 
     @POST("duoduo/group/getUpgradeGroups")
     @FormUrlEncoded
@@ -708,7 +715,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("duoduo/live/createLive")
-    Observable<BaseResponse<String>> createLive(@Field("chatRoom") String chatRoom);
+    Observable<BaseResponse<String>> createLive(@Field("chatRoom") String chatRoom, @Field("liveType") String liveType);
 
     @FormUrlEncoded
     @POST("duoduo/chatRoom/getChatRoomInfo")
@@ -755,7 +762,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("duoduo/live/modifyLive")
-    Observable<BaseResponse<String>> modifyLive(@Field("chatRoom") String chatRoom);
+    Observable<BaseResponse<String>> modifyLive(@Field("chatRoom") String chatRoom, @Field("liveType") String liveType);
 
     @FormUrlEncoded
     @POST("duoduo/live/endLive")
@@ -799,7 +806,44 @@ public interface Api {
     @POST("duoduo/purchase/getOpenPurchaseStatus")
     Observable<BaseResponse<String>> getOpenPurchaseStatus();
 
+    @POST("duoduo/customer/feedback")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> feedback(@Field("content") String content);
+
+    @POST("duoduo/live/getVideoInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetVideoInfoResponse>> getVideoInfo(@Field("roomId") String roomId);
+
+    @POST("duoduo/live/getLiveInfoByGroupId")
+    @FormUrlEncoded
+    Observable<BaseResponse<ArrayList<GetLiveInfoByGroupIdResponse>>> getLiveInfoByGroupId(@Field("groupId") String groupId);
+
+    @POST("duoduo/customer/getThirdPartyPaymentOrder")
+    @FormUrlEncoded
+    Observable<BaseResponse<ThirdPartyPaymentOrderResponse>> getThirdPartyPaymentOrder(@Field("orderId") String orderId);
+
+    @POST("duoduo/customer/thirdPartyPayment")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> thirdPartyPayment(@Field("orderId") String orderId, @Field("payPwd") String payPwd);
+
     @POST("duoduo/redPackage/getRewardCode")
     @FormUrlEncoded
     Observable<BaseResponse<RewardCodeResponse>> getRewardCode(@Field("code") String code);
+
+
+    @POST("duoduo/live/enableOpenVideoLive")
+    Observable<BaseResponse<String>> enableOpenVideoLive();
+
+    @POST("duoduo/community/recommendCommunity")
+    @FormUrlEncoded
+    Observable<BaseResponse<ArrayList<GetRecommendCommunity>>> recommendCommunity(@Field("currPage") String currPage);
+
+    @POST("duoduo/order/addSubmitOrder")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> addSubmitOrder(@Field("payPwd") String payPwd,
+                                                    @Field("qrcode") String qrcode,
+                                                    @Field("payAmount") String payAmount, @Field("currency") String currency);
+
+    @POST("duoduo/order/getSymbolPrice")
+    Observable<BaseResponse<ArrayList<GetPaymentListBean>>> getSymbolPrice();
 }

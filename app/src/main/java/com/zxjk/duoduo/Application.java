@@ -19,31 +19,33 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.zxjk.duoduo.bean.DaoSession;
+import com.zxjk.duoduo.rongIM.BasePluginExtensionModule;
+import com.zxjk.duoduo.rongIM.message.BusinessCardMessage;
+import com.zxjk.duoduo.rongIM.message.CusEmoteTabMessage;
+import com.zxjk.duoduo.rongIM.message.FakeC2CMessage;
+import com.zxjk.duoduo.rongIM.message.GroupCardMessage;
+import com.zxjk.duoduo.rongIM.message.NewsCardMessage;
+import com.zxjk.duoduo.rongIM.message.RedPacketMessage;
+import com.zxjk.duoduo.rongIM.message.SocialGroupCardMessage;
+import com.zxjk.duoduo.rongIM.message.SystemMessage;
+import com.zxjk.duoduo.rongIM.message.TransferMessage;
+import com.zxjk.duoduo.rongIM.message.WechatCastMessage;
+import com.zxjk.duoduo.rongIM.provider.BurnHQVoiceMessageProvider;
+import com.zxjk.duoduo.rongIM.provider.BurnImageMessageItemProvider;
+import com.zxjk.duoduo.rongIM.provider.BurnTextMessageProvider;
+import com.zxjk.duoduo.rongIM.provider.BurnVoiceMessageProvider;
+import com.zxjk.duoduo.rongIM.provider.BusinessCardProvider;
+import com.zxjk.duoduo.rongIM.provider.CusEmoteTabMessageProvider;
+import com.zxjk.duoduo.rongIM.provider.FakeC2CMessageProvider;
+import com.zxjk.duoduo.rongIM.provider.GroupCardProvider;
+import com.zxjk.duoduo.rongIM.provider.MInfoNotificationMsgItemProvider;
+import com.zxjk.duoduo.rongIM.provider.NewsCardProvider;
+import com.zxjk.duoduo.rongIM.provider.RedPacketProvider;
+import com.zxjk.duoduo.rongIM.provider.SocialGroupCardProvider;
+import com.zxjk.duoduo.rongIM.provider.SystemMessageProvider;
+import com.zxjk.duoduo.rongIM.provider.TransferProvider;
+import com.zxjk.duoduo.rongIM.provider.WechatCastProvider;
 import com.zxjk.duoduo.ui.NewLoginActivity;
-import com.zxjk.duoduo.ui.msgpage.rongIM.BasePluginExtensionModule;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.CusEmoteTabMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.GroupCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.RedPacketMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.SocialGroupCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.SystemMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.TransferMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.WechatCastMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnHQVoiceMessageProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnImageMessageItemProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnTextMessageProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BurnVoiceMessageProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.BusinessCardProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.CusEmoteTabMessageProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.GroupCardProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.MInfoNotificationMsgItemProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.NewsCardProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.RedPacketProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SocialGroupCardProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.SystemMessageProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.TransferProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.provider.WechatCastProvider;
 import com.zxjk.duoduo.utils.LanguageUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.MyCrashHandler;
@@ -141,6 +143,7 @@ public class Application extends android.app.Application {
         initSmallVideo();
 
         QbSdk.initX5Environment(this, null);
+
     }
 
     public WebDataUtils getWebDataUtils() {
@@ -193,6 +196,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageType(NewsCardMessage.class);
         RongIM.registerMessageType(SystemMessage.class);
         RongIM.registerMessageType(WechatCastMessage.class);
+        RongIM.registerMessageType(FakeC2CMessage.class);
         RongIM.registerMessageTemplate(new MInfoNotificationMsgItemProvider());
         RongIM.registerMessageTemplate(new SightMessageItemProvider());
         RongIM.registerMessageTemplate(new BurnVoiceMessageProvider());
@@ -208,6 +212,7 @@ public class Application extends android.app.Application {
         RongIM.registerMessageTemplate(new NewsCardProvider());
         RongIM.registerMessageTemplate(new SystemMessageProvider());
         RongIM.registerMessageTemplate(new WechatCastProvider());
+        RongIM.registerMessageTemplate(new FakeC2CMessageProvider());
         RongIM.getInstance().enableNewComingMessageIcon(true);
         RongIM.getInstance().enableUnreadMessageIcon(true);
         setMyExtensionModule();

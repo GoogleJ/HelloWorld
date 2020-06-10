@@ -81,7 +81,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="40dp"
             android:orientation="horizontal">
 
             <TextView
@@ -99,11 +98,21 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="checkUpdate"
+            android:padding="24dp"
+            android:text="@string/check_update"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="24dp"
             android:src="@drawable/about_logo_icon2" />
 
     </LinearLayout>

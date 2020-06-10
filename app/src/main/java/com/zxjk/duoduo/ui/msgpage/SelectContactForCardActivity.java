@@ -25,11 +25,11 @@ import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.rongIM.message.BusinessCardMessage;
+import com.zxjk.duoduo.rongIM.message.NewsCardMessage;
+import com.zxjk.duoduo.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.SelectForCardAdapter;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.BusinessCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.NewsCardMessage;
-import com.zxjk.duoduo.ui.msgpage.rongIM.message.WechatCastMessage;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 
@@ -299,7 +299,7 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
                         toId = userId;
                         cardUserId = listBean.getId();
                         cardUserNick = listBean.getNick();
-                        cardUserDuoDuoId = listBean.getDuoduoId();
+                        cardUserDuoDuoId = "Hilamg号: " + listBean.getDuoduoId();
                         cardUserPortrait = listBean.getHeadPortrait();
                     } else {
                         toId = listBean.getId();

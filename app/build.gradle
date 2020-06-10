@@ -15,8 +15,8 @@ android {
         applicationId "com.zxjk.duoduo"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 19
-        versionName "1.9.2.1"
+        versionCode 20
+        versionName "1.9.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -119,7 +119,7 @@ dependencies {
     implementation 'com.blankj:utilcodex:1.26.0'
 
     //Loading
-    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
     //butterknife
     implementation 'com.jakewharton:butterknife:10.0.0'
@@ -132,7 +132,6 @@ dependencies {
 
     //视频压缩
     implementation 'com.mabeijianxi:small-video-record2:2.0.3@aar'
-
     implementation 'com.artifex.mupdf:viewer:1.15.0'
 
     //glide
@@ -205,9 +204,15 @@ dependencies {
     //点击爆炸
     implementation 'tyrantgit:explosionfield:1.0.1'
 
-    //debugtools
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
-//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-//    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
+    //UI debuger
+//    implementation 'com.wanjian:sak:2.0.2'
 
+    //debugtools
+
+    //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
+
+    //    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    //    debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
+    implementation files('libs/pldroid-player-2.1.9.jar')
 }

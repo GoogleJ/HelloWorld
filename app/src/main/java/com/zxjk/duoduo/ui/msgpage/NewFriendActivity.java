@@ -20,6 +20,11 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
@@ -29,6 +34,7 @@ import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.NearByActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.NewFriendAdapter;
 import com.zxjk.duoduo.ui.msgpage.widget.dialog.DeleteFriendInformationDialog;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -57,6 +63,8 @@ public class NewFriendActivity extends BaseActivity {
 
     NewFriendAdapter mAdapter;
     DeleteFriendInformationDialog dialog;
+    List<FriendInfoResponse> list = new ArrayList<>();
+    private String uri2Code;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -64,6 +72,12 @@ public class NewFriendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_friend);
         ButterKnife.bind(this);
+
+        uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId);
+
+        TextView tvContactHilamgId = findViewById(R.id.tvContactHilamgId);
+        tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));
+        tvContactHilamgId.setOnClickListener(v -> startActivity(new Intent(this, MyQrCodeActivity.class)));
 
         getPermisson(findViewById(R.id.llPhoneNearBy), granted -> {
             if (!granted) {
@@ -90,8 +104,6 @@ public class NewFriendActivity extends BaseActivity {
         initUI();
     }
 
-    List<FriendInfoResponse> list = new ArrayList<>();
-
     protected void initUI() {
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.new_friend));
@@ -105,20 +117,29 @@ public class NewFriendActivity extends BaseActivity {
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             FriendInfoResponse item = (FriendInfoResponse) adapter.getData().get(position);
             boolean isTrue = item.getStatus().equals("0");
-            switch (view.getId()) {
-                case R.id.m_item_new_friend_type_btn:
-                    if (isTrue) {
-                        addFriend(position, item.getNick(), item);
-                    }
-                    break;
-                case R.id.m_add_btn_layout:
-                    if (!isTrue) {
-                        Intent intent = new Intent(NewFriendActivity.this, FriendDetailsActivity.class);
-                        intent.putExtra("friendId", mAdapter.getData().get(position).getId());
-                        startActivity(intent);
-                    }
-                    break;
-                default:
+            if (view.getId() == R.id.m_item_new_friend_type_btn) {
+                if (isTrue) {
+                    addFriend(position, item.getNick(), item);
+                }
+            }
+        });
+
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            FriendInfoResponse item = (FriendInfoResponse) adapter.getData().get(position);
+            boolean isTrue = item.getStatus().equals("0");
+
+            if (isTrue) {
+                Intent intent = new Intent(NewFriendActivity.this, AddFriendDetailsActivity.class);
+                intent.putExtra("friendId", mAdapter.getData().get(position).getId());
+                intent.putExtra("position",position);
+                intent.putExtra("nick",item.getNick());
+                intent.putExtra("item",item);
+                intent.putExtra("type","0");
+                startActivityForResult(intent,1);
+            } else {
+                Intent intent = new Intent(NewFriendActivity.this, FriendDetailsActivity.class);
+                intent.putExtra("friendId", mAdapter.getData().get(position).getId());
+                startActivity(intent);
             }
         });
 
@@ -129,6 +150,20 @@ public class NewFriendActivity extends BaseActivity {
         llSearch.setOnClickListener(v -> {
             startActivity(new Intent(NewFriendActivity.this, GlobalSearchActivity.class));
             overridePendingTransition(0, 0);
+        });
+
+        findViewById(R.id.llmay_know).setOnClickListener(v -> {
+            ToastUtils.showShort(R.string.developing1);
+        });
+
+        findViewById(R.id.llwechat).setOnClickListener(v -> {
+            UMWeb link = new UMWeb(uri2Code);
+            link.setTitle("我在使用Hilamg聊天");
+            link.setDescription("加密私聊、社群管理、数字\n" +
+                    "支付尽在Hilamg ，你也来\n" +
+                    "试试吧～");
+            link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo4));
+            new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
         });
 
         getPermisson(findViewById(R.id.llPhoneContract), g -> {
@@ -147,6 +182,7 @@ public class NewFriendActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver())
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
+                    list.clear();
                     list.addAll(s);
                     mAdapter.setNewData(s);
                 }, this::handleApiError);
@@ -178,6 +214,7 @@ public class NewFriendActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getMyFriendsWaiting();
         mAdapter.notifyDataSetChanged();
     }
 }

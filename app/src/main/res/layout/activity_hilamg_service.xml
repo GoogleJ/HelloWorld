@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical"
+    tools:context=".ui.findpage.HilamgServiceActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorTheme">
+
+        <ImageView
+            android:id="@+id/ivHead"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:foreground="?android:selectableItemBackground"
+            android:onClick="back"
+            android:scaleType="centerInside"
+            android:src="@drawable/ico_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/hilamgservice"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/official_service"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_rewardmot"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="reward"
+            android:text="@string/rewardmot"
+            android:textColor="#6D7278" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_word_of_command_red_packet"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="showRewardCodePop"
+            android:text="@string/word_of_command_red_packet"
+            android:textColor="#6D7278" />
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_prepaid_refill"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="payPhone"
+            android:text="@string/mojiaofei"
+            android:textColor="#6D7278" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/tv4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_buycoinonekey"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="buyCoin"
+            android:text="@string/buycoinonekey"
+            android:textColor="#6D7278" />
+
+        <TextView
+            android:id="@+id/tv5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_moshopping"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="mall"
+            android:text="@string/moshopping"
+            android:textColor="#6D7278" />
+
+        <TextView
+            android:id="@+id/tv6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_cooperate"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="coo"
+            android:text="@string/cooperate"
+            android:textColor="#6D7278" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/other_service"
+        android:textColor="#272E3F"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/tv7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_hotel"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="other"
+            android:text="@string/hotel"
+            android:textColor="#6D7278" />
+
+        <TextView
+            android:id="@+id/tv8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_tourism"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="other"
+            android:text="@string/tourism"
+            android:textColor="#6D7278" />
+
+        <TextView
+            android:id="@+id/tv9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_getting_around"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:onClick="other"
+            android:text="@string/getting_around"
+            android:textColor="#6D7278" />
+
+    </LinearLayout>
+</LinearLayout>

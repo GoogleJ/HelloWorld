@@ -1,84 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
+    android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <TextView
+    <View
+        android:id="@+id/topmask"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="8dp"
-        android:text="@string/address_list"
-        android:textColor="@color/msgTitle"
-        android:textSize="19sp"
-        android:textStyle="bold" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <LinearLayout
-            android:id="@+id/llSearch"
-            style="@style/SearchStyle3"
-            android:layout_marginBottom="10dp"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_search_view"
-                android:tint="#9e9e9e" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@string/search"
-                android:textColor="#9E9E9E" />
-
-        </LinearLayout>
-
-    </FrameLayout>
+        android:layout_height="0dp"
+        android:background="@color/colorTheme" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/colorTheme"
+        android:paddingStart="15dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="9dp"
+        android:paddingBottom="6dp">
 
-        <include
-            android:id="@+id/layout_contract_head"
-            layout="@layout/layout_contract_head" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/m_contact_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/layout_contract_head"
-            android:overScrollMode="never" />
-
-        <com.zxjk.duoduo.ui.msgpage.widget.IndexView
-            android:id="@+id/index_view"
-            android:layout_width="24dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:visibility="visible" />
+        <ImageView
+            android:id="@+id/ivHead"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true" />
 
         <TextView
-            android:id="@+id/m_constacts_dialog"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/nim_contact_hit_letter_bg"
-            android:gravity="center"
+            android:text="@string/address_list"
             android:textColor="@color/white"
-            android:textSize="38sp"
-            android:textStyle="bold"
-            android:visibility="invisible" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/ivAdd"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_addfriend" />
+
+            <View
+                android:id="@+id/dotNewFriend"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="end"
+                android:background="@drawable/shape_dot_red"
+                android:visibility="gone" />
+        </FrameLayout>
+
 
     </RelativeLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_color"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            app:elevation="0dp">
+
+            <LinearLayout
+                android:id="@+id/llSearch"
+                style="@style/SearchStyle3"
+                android:layout_marginTop="13dp"
+                android:gravity="center"
+                app:layout_scrollFlags="scroll">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_search_view"
+                    android:tint="#909399" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/search"
+                    android:textColor="#909399" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvContactHilamgId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:drawableEnd="@drawable/ic_qr_contract"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:paddingTop="18dp"
+                android:textColor="#9E9E9E"
+                android:textSize="13sp"
+                app:layout_scrollFlags="scroll" />
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginTop="12dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#E5E5E5" />
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

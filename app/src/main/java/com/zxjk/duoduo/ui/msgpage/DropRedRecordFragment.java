@@ -44,7 +44,7 @@ public class DropRedRecordFragment extends BaseFragment {
                              @NonNull Bundle savedInstanceState) {
 
         rootView = new SwipeRefreshLayout(getContext());
-        ((SwipeRefreshLayout) rootView).setColorSchemeColors(Color.parseColor("#4585F5"));
+        ((SwipeRefreshLayout) rootView).setColorSchemeColors(Color.parseColor("#0083BF"));
         recyclerView = new RecyclerView(getContext());
         recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         ((SwipeRefreshLayout) rootView).addView(recyclerView);

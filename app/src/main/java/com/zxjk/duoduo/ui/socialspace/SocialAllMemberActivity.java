@@ -15,6 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.network.Api;
@@ -23,6 +28,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.InviteForSocialActivity;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.PinYinUtils;
@@ -106,6 +112,7 @@ public class SocialAllMemberActivity extends BaseActivity {
                     tvSign.setText(R.string.group_owner);
                     tvSign.setBackgroundResource(R.drawable.shapef7b230_3);
                 } else if (item.getIsAdmin().equals("1")) {
+                    tvFirstLetter.setVisibility(View.GONE);
                     tvSign.setVisibility(View.VISIBLE);
                     tvSign.setText(R.string.manager);
                     tvSign.setBackgroundResource(R.drawable.shape_theme3);
@@ -117,10 +124,15 @@ public class SocialAllMemberActivity extends BaseActivity {
 
         View inflate = View.inflate(this, R.layout.invitewechatfriend, null);
         inflate.setOnClickListener(v -> {
-            Intent intent = new Intent(this, InviteForSocialActivity.class);
-            intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
-            intent.putExtra("groupName", getIntent().getStringExtra("socialName"));
-            startActivity(intent);
+            String uri2Code = Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId + "&groupId=" + getIntent().getStringExtra("groupId") + "&type=" + "1");
+
+            UMWeb link = new UMWeb(uri2Code);
+            link.setTitle("邀请你加入群聊");
+            link.setDescription("我在使用Hilamg，邀请你加\n" +
+                    "入“BTC官方交流社群”，快\n" +
+                    "来加入我们吧～");
+            link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo3));
+            new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
             finish();
         });
         adapter.addHeaderView(inflate);

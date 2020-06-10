@@ -14,20 +14,26 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager.widget.ViewPager;
 
 import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
@@ -39,6 +45,10 @@ import com.shehuan.nicedialog.ViewHolder;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.BuildConfig;
 import com.zxjk.duoduo.Constant;
@@ -56,13 +66,18 @@ import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.findpage.FindFragment;
-import com.zxjk.duoduo.ui.minepage.MineFragment;
+import com.zxjk.duoduo.ui.findpage.HilamgServiceActivity;
+import com.zxjk.duoduo.ui.minepage.OnlineServiceActivity;
+import com.zxjk.duoduo.ui.minepage.SettingActivity;
+import com.zxjk.duoduo.ui.minepage.UserInfoActivity;
 import com.zxjk.duoduo.ui.msgpage.ContactFragment;
 import com.zxjk.duoduo.ui.msgpage.MsgFragment;
+import com.zxjk.duoduo.ui.msgpage.MyQrCodeActivity;
 import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
-import com.zxjk.duoduo.ui.msgpage.rongIM.GroupConversationProvider;
-import com.zxjk.duoduo.ui.msgpage.rongIM.PrivateConversationProvider;
+import com.zxjk.duoduo.ui.wallet.WalletFragment;
+import com.zxjk.duoduo.ui.widget.DrawerView;
+import com.zxjk.duoduo.utils.AesUtil;
+import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
 
@@ -76,7 +91,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongMessageItemLongClickActionManager;
 import io.rong.imkit.mention.RongMentionManager;
@@ -97,20 +111,19 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     public static final int REQUEST_REWARD = 1001;
     public BadgeItem badgeItem2;
-    private Fragment mFragment;
-    private BadgeItem badgeItem3;
     private MsgFragment msgFragment;
     private ContactFragment contactFragment;
-    private FindFragment findFragment;
-    private MineFragment mineFragment;
+    private WalletFragment findFragment;
     private RedFallActivityLocalBeanDao redFallActivityLocalBeanDao;
+
+    private ViewPager pager;
+    private DrawerView drawer;
+    private TextView tvNick;
+    private ImageView ivHead;
     private BottomNavigationBar m_bottom_bar;
-
-    //私聊数
     private int msgCount1;
-
     private BurnAfterReadMessageLocalBeanDao dao;
-    private long max1;
+    private long updateProgress;
 
     @Override
     protected void onDestroy() {
@@ -133,6 +146,8 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        BarUtils.transparentStatusBar(this);
+
         setContentView(R.layout.activity_home);
 
         registerRongMsgReceiver();
@@ -142,21 +157,18 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         createChannel();
 
         if (!BuildConfig.DEBUG) {
-            getVersion(false);
+//            getVersion(false);
         }
 
-        initFragment();
-
         initView();
+
+        initFragment();
 
         getNewFriendCount();
 
         initMessageLongClickAction();
 
         initGreenDaoSession();
-
-        RongContext.getInstance().registerConversationTemplate(new PrivateConversationProvider());
-        RongContext.getInstance().registerConversationTemplate(new GroupConversationProvider());
 
         initRongUserProvider();
 
@@ -202,7 +214,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                         redFallActivityLocalBean.setReward(r.getReward());
                         redFallActivityLocalBean.setSymbol(r.getSymbol());
                         redFallActivityLocalBeanDao.insert(redFallActivityLocalBean);
-                        badgeItem3.show(true);
                     } else if (!TextUtils.isEmpty(r.getLastTime())) {
                         RedFallActivityLocalBean redFallActivityLocalBean = new RedFallActivityLocalBean();
                         redFallActivityLocalBean.setLastPlayTime(r.getLastTime());
@@ -214,14 +225,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                         redFallActivityLocalBeanDao.insert(redFallActivityLocalBean);
                     }
                 }, this::handleApiError);
-    }
-
-    public void showFourthBadge() {
-        if (badgeItem3 != null) badgeItem3.show(true);
-    }
-
-    public void hideFourthBadge() {
-        if (badgeItem3 != null) badgeItem3.hide(true);
     }
 
     @SuppressLint("CheckResult")
@@ -264,7 +267,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                             });
             return null;
         }, true);
-
     }
 
     @SuppressLint("CheckResult")
@@ -302,9 +304,9 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                                 } else {
                                     badgeItem2.setText(String.valueOf(newFriendCount));
                                 }
-                            }
-                            if (contactFragment.getDotNewFriend() != null) {
-                                contactFragment.getDotNewFriend().setVisibility(View.VISIBLE);
+                                if (contactFragment.getDotNewFriend() != null) {
+                                    contactFragment.getDotNewFriend().setVisibility(View.VISIBLE);
+                                }
                             }
                         });
                         break;
@@ -389,7 +391,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     private void initMessageLongClickAction() {
         MessageItemLongClickAction action1 = new MessageItemLongClickAction.Builder()
-                .title("转发")
+                .title(getString(R.string.transfer1))
                 .showFilter(message -> {
                             boolean b = message.getSentStatus() == Message.SentStatus.SENT &&
                                     (message.getObjectName().equals("RC:TxtMsg") ||
@@ -466,63 +468,44 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void initView() {
+        tvNick = findViewById(R.id.tvNick);
+        TextView tvHilamgID = findViewById(R.id.tvHilamgID);
+        ivHead = findViewById(R.id.ivHead);
+        tvHilamgID.setText(getString(R.string.duoduo_id) + " " + Constant.currentUser.getDuoduoId());
+
+        pager = findViewById(R.id.pager);
+        drawer = findViewById(R.id.drawer);
         m_bottom_bar = findViewById(R.id.m_bottom_bar);
 
         BadgeItem badgeItem = new BadgeItem();
         badgeItem.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.red_eth_in)
+                .setBackgroundColor("#FF4C48")
                 .setBorderWidth(0);
+
         badgeItem.setText("0");
 
         badgeItem2 = new BadgeItem();
         badgeItem2.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.red_eth_in)
+                .setBackgroundColor("#FF4C48")
                 .setBorderWidth(0);
-
-        badgeItem3 = new BadgeItem();
-        badgeItem3.setHideOnSelect(false)
-                .setBackgroundColorResource(R.color.red_eth_in)
-                .setBorderWidth(0);
-        badgeItem3.setText("1");
-        badgeItem3.hide();
-
-        //设置Item选中颜色方法
-        m_bottom_bar.setActiveColor(R.color.colorAccent)
-                //设置Item未选中颜色方法
-                .setInActiveColor(R.color.colorPrimary)
-                //背景颜色
-                .setBarBackgroundColor("#FFFFFF");
 
         m_bottom_bar.setMode(BottomNavigationBar.MODE_FIXED);
 
         m_bottom_bar
-                // 背景样式
                 .setBackgroundStyle(BACKGROUND_STYLE_STATIC)
-                // 背景颜色
                 .setBarBackgroundColor("#ffffff")
                 .setActiveColor(R.color.colorTheme)
                 .setInActiveColor("#000000")
-                // 添加Item
                 .addItem(new BottomNavigationItem(R.drawable.tab_icon_message_selected, getString(R.string.home_bottom1)).setInactiveIconResource(R.drawable.tab_icon_message_unselected).setBadgeItem(badgeItem))
                 .addItem(new BottomNavigationItem(R.drawable.tab_icon_friend_selected, getString(R.string.home_bottom2)).setInactiveIconResource(R.drawable.tab_icon_friend_unselected).setBadgeItem(badgeItem2))
-                .addItem(new BottomNavigationItem(R.drawable.tab_icon_find_selected, getString(R.string.home_bottom3)).setInactiveIconResource(R.drawable.tab_icon_find_unselected))
-                .addItem(new BottomNavigationItem(R.drawable.tab_icon_my_selected, getString(R.string.home_bottom4)).setInactiveIconResource(R.drawable.tab_icon_my_unselected).setBadgeItem(badgeItem3))
-                //设置默认选中位置
+                .addItem(new BottomNavigationItem(R.drawable.tab_icon_wallet_selected, getString(R.string.home_bottom3)).setInactiveIconResource(R.drawable.tab_icon_wallet_unselected))
                 .setFirstSelectedPosition(0)
-                // 提交初始化（完成配置）
                 .initialise();
 
         m_bottom_bar.setTabSelectedListener(this);
 
         RongIM.getInstance().addUnReadMessageCountChangedObserver(count -> {
             msgCount1 = count;
-            if (msgFragment.getBadgeTitleViews()[0] != null) {
-                if (msgCount1 == 0) {
-                    msgFragment.getBadgeTitleViews()[0].getBadgeView().setVisibility(View.INVISIBLE);
-                } else {
-                    msgFragment.getBadgeTitleViews()[0].getBadgeView().setVisibility(View.VISIBLE);
-                }
-            }
             if ((msgCount1) == 0) {
                 badgeItem.hide();
                 return;
@@ -545,6 +528,9 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 badgeItem2.setText("99+");
             } else {
                 badgeItem2.setText(String.valueOf(newFriendCount));
+            }
+            if (contactFragment.getDotNewFriend() != null) {
+                contactFragment.getDotNewFriend().setVisibility(View.VISIBLE);
             }
         }
     }
@@ -580,7 +566,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
                                 downloadOrInstall(tvUpdate, flUpgrade, data);
                             }
-                        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
+                        }).setDimAmount(0.5f).setOutCancel("0".equals(response.data.getIsEnforcement())).show(getSupportFragmentManager());
                     } else if (showTip) {
                         ToastUtils.showShort(R.string.newestVersion);
                     }
@@ -595,13 +581,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             ServiceFactory.downloadFile(data.getVersion(), data.getUpdateAddress(), new ServiceFactory.DownloadListener() {
                 @Override
                 public void onStart(long max) {
-                    max1 = max;
+                    updateProgress = max;
                     ToastUtils.showShort(R.string.update_start);
                 }
 
                 @Override
                 public void onProgress(long progress) {
-                    runOnUiThread(() -> tvUpdate.setText((int) ((float) progress / max1 * 100) + "%"));
+                    runOnUiThread(() -> tvUpdate.setText((int) ((float) progress / updateProgress * 100) + "%"));
                 }
 
                 @Override
@@ -663,6 +649,36 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         return null;
     }
 
+    public void setting(View view) {
+        drawer.close(new Intent(this, SettingActivity.class));
+    }
+
+    public void myQR(View view) {
+        drawer.close(new Intent(this, MyQrCodeActivity.class));
+    }
+
+    public void setInfo(View view) {
+        drawer.close(new Intent(this, UserInfoActivity.class));
+    }
+
+    public void service(View view) {
+        drawer.close(new Intent(this, OnlineServiceActivity.class));
+    }
+
+    public void invite(View view) {
+        UMWeb link = new UMWeb(Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId));
+        link.setTitle("我在使用Hilamg聊天");
+        link.setDescription("加密私聊、社群管理、数字\n" +
+                "支付尽在Hilamg ，你也来\n" +
+                "试试吧～");
+        link.setThumb(new UMImage(this, R.drawable.ic_hilamglogo4));
+        new ShareAction(this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
+    }
+
+    public void hilamgService(View view) {
+        drawer.close(new Intent(this, HilamgServiceActivity.class));
+    }
+
     @Override
     public void onBackPressed() {
         Intent home = new Intent(Intent.ACTION_MAIN);
@@ -674,37 +690,50 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private void initFragment() {
         msgFragment = new MsgFragment();
         contactFragment = new ContactFragment();
-        findFragment = new FindFragment();
-        mineFragment = new MineFragment();
+        findFragment = new WalletFragment();
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_content, msgFragment)
-                .commit();
-        mFragment = msgFragment;
+        pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                if (position == 0) {
+                    return msgFragment;
+                }
+                if (position == 1) {
+                    return contactFragment;
+                }
+                if (position == 2) {
+                    return findFragment;
+                }
+                return msgFragment;
+            }
+
+            @Override
+            public int getCount() {
+                return 3;
+            }
+
+            @Override
+            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            }
+        });
+        pager.setOffscreenPageLimit(3);
+
+        pager.addOnPageChangeListener(
+                new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        m_bottom_bar.selectTab(position);
+                    }
+                });
     }
 
     @Override
     public void onTabSelected(int position) {
-        if (position == 3) {
-            setTrasnferStatusBar(true);
-        } else {
-            setLightStatusBar(true);
+        if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
+            VibrateUtils.vibrate(50);
         }
-        switch (position) {
-            case 0:
-                switchFragment(msgFragment);
-                break;
-            case 1:
-                switchFragment(contactFragment);
-                break;
-            case 2:
-                switchFragment(findFragment);
-                break;
-            case 3:
-                switchFragment(mineFragment);
-                break;
-            default:
-        }
+        pager.setCurrentItem(position, true);
     }
 
     @Override
@@ -713,21 +742,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabReselected(int position) {
-    }
-
-    private void switchFragment(Fragment fragment) {
-        if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
-            VibrateUtils.vibrate(50);
-        }
-        if (mFragment != fragment) {
-            if (!fragment.isAdded()) {
-                getSupportFragmentManager().beginTransaction().hide(mFragment)
-                        .add(R.id.fragment_content, fragment).commit();
-            } else {
-                getSupportFragmentManager().beginTransaction().hide(mFragment).show(fragment).commit();
-            }
-            mFragment = fragment;
-        }
     }
 
     @Override
@@ -746,14 +760,23 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                         case "shareNews":
                             m_bottom_bar.selectTab(2, true);
                             break;
-                        case "social":
-                            m_bottom_bar.selectTab(0, true);
-                            msgFragment.msgFragmentSelect();
-                            break;
                     }
                 }
                 break;
         }
     }
 
+    public void onHeadClick() {
+        drawer.switchState();
+        tvNick.setText(Constant.currentUser.getNick());
+        GlideUtil.loadCircleImg(ivHead, Constant.currentUser.getHeadPortrait());
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            msgFragment.close(null);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }

@@ -127,13 +127,6 @@
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="QRCode"
-                            android:padding="6dp"
-                            android:src="@drawable/ic_qr_code" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -181,6 +174,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="12dp"
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never" />
 
@@ -190,7 +184,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:layout_marginBottom="16dp"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -361,17 +356,18 @@
                     android:gravity="center_vertical">
 
                     <FrameLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="38dp"
+                        android:layout_height="40dp"
                         android:onClick="back">
 
                         <ImageView
                             android:id="@+id/ivToolBarStart"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
                             android:layout_gravity="center"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ico_back_white" />
+                            android:src="@drawable/ico_back"
+                            android:tint="@color/black" />
 
                     </FrameLayout>
 
@@ -391,8 +387,9 @@
                             android:gravity="center"
                             android:singleLine="true"
                             android:textColor="#020818"
+                            android:textStyle="bold"
                             android:textSize="17sp"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/tvSocialCode"
@@ -407,18 +404,17 @@
                     </LinearLayout>
 
                     <FrameLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="38dp"
+                        android:layout_height="40dp"
                         android:onClick="menu">
 
                         <ImageView
                             android:id="@+id/ivToolBarEnd"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_socialhome_end_white"
-                            android:visibility="gone" />
+                            android:tint="@color/black"
+                            android:src="@drawable/ic_qr_contract" />
 
                     </FrameLayout>
 

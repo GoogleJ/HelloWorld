@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,13 +45,17 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.scanuri.Action1;
 import com.zxjk.duoduo.ui.minepage.scanuri.BaseUri;
+import com.zxjk.duoduo.ui.msgpage.AgreeGroupChatActivity;
 import com.zxjk.duoduo.ui.msgpage.TransferActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialQRCodeActivity;
+import com.zxjk.duoduo.ui.wallet.PayAliActivity;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.SaveImageUtil;
 
@@ -167,6 +172,15 @@ public class EnlargeImageActivity extends BaseActivity {
 
             @SuppressLint("CheckResult")
             private void parseResult(String result) {
+                if (parseShareResult(result)) return;
+                if (!TextUtils.isEmpty(result) && result.contains("qr.alipay.com") || result.contains("QR.ALIPAY.COM")) {
+                    Intent intent = new Intent(EnlargeImageActivity.this, PayAliActivity.class);
+                    intent.putExtra("qrdata", result);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+
                 String regexUrl = "^https?:/{2}\\w.+$";
                 if (RegexUtils.isMatch(regexUrl, result)) {
                     Intent intent = new Intent(EnlargeImageActivity.this, WebActivity.class);
@@ -214,6 +228,43 @@ public class EnlargeImageActivity extends BaseActivity {
                 }
             }
         }.execute();
+    }
+
+
+    private boolean parseShareResult(String result) {
+        if (result.contains(Constant.APP_SHARE_URL)) {
+            try {
+                String[] shareStrings = result.split("\\?");
+
+                String decryptResult = AesUtil.getInstance().decrypt(shareStrings[1]);
+
+                String resultUri = "http://hilamg-share.zhumengxuanang.com/?"+decryptResult;
+                if (decryptResult.contains("groupId")) {
+
+                    //groupQR
+//                    String groupId = decryptResult.split("=")[1];
+
+                    Uri uri = Uri.parse(resultUri);
+                    String groupId = uri.getQueryParameter("groupId");
+
+                    Intent intent = new Intent(this, AgreeGroupChatActivity.class);
+                    intent.putExtra("groupId", groupId);
+
+                    startActivity(intent);
+                    finish();
+                } else {
+                    //userQR
+                    Uri uri = Uri.parse(resultUri);
+                    String userId = uri.getQueryParameter("id");
+                    CommonUtils.resolveFriendList(this, userId, true);
+                }
+            } catch (Exception e) {
+                return false;
+            }
+
+            return true;
+        }
+        return false;
     }
 
     private float getInitImageScale(Bitmap bitmap) {

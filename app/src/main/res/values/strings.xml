@@ -21,7 +21,7 @@
     <string name="de_actionbar_sub_group">"社群"</string>
     <string name="m_add_friend_contact_label_1">手机联系人</string>
     <string name="m_add_friend_scan_it_label_1">扫一扫</string>
-    <string name="m_personal_information_signature_text">添加到通讯录</string>
+    <string name="m_personal_information_signature_text">通过验证</string>
     <string name="m_verification_title_bar">验证申请</string>
     <string name="m_verification_send_btn">发送</string>
     <string name="m_item_contact_type_text">已添加</string>
@@ -361,7 +361,7 @@
     <string name="please_set_money1">收款金额不能为0</string>
     <string name="myqr">扫一扫二维码，加我好友</string>
     <string name="duplicated_login">账号在其他设备登录，请重新登录</string>
-    <string name="openburn">开启了</string>
+    <string name="openburn">开启了阅后即焚，计时器设定为</string>
     <string name="openburn1">\"阅后即焚\"</string>
     <string name="open_burn_success">阅后即焚开启成功</string>
     <string name="close_burn_success">阅后即焚已关闭</string>
@@ -792,7 +792,7 @@
     <string name="add_friend_from_book">添加通讯录中的朋友</string>
     <string name="add_friend_from_near">添加附近的朋友</string>
     <string name="confirm_pay">确认付款</string>
-    <string name="pay_confirm_now">立即付款</string>
+    <string name="pay_confirm_now">立即付款</string>F
     <string name="speech_interval_1">发言间隔:1秒</string>
     <string name="community_open">社群公开</string>
     <string name="personal_code">我的个人二维码</string>
@@ -845,7 +845,7 @@
     <string name="activity_tip1">已累计签到</string>
     <string name="activity_tip2">已获得(USDT)</string>
     <string name="activity_tip3">连续签到领取更多USDT</string>
-    <string name="activity_tip4">做任务赚取更多USDT</string>
+    <string name="activity_tip4">做任务赚取更多</string>
     <string name="enter_social_tips1">加入社群后查看更多社群空间信息</string>
     <string name="pay_to_group">该社群设置了付费进群，您需支付</string>
     <string name="secret_chat">密聊</string>
@@ -881,8 +881,7 @@
     <string name="received1">已被领取</string>
     <string name="home_bottom1">消息</string>
     <string name="home_bottom2">通讯录</string>
-    <string name="home_bottom3">发现</string>
-    <string name="home_bottom4">我的</string>
+    <string name="home_bottom3">钱包</string>
     <string name="send_sms_to">验证码已发送至%1$s</string>
     <string name="nodata_pleasewait_upgrade">暂无数据源，敬请期待</string>
     <string name="income">收入:%1$s%2$s</string>
@@ -906,7 +905,8 @@
     <string name="cant_receive">不可领</string>
     <string name="rewardTips1">每日%1$d次(%2$d/%3$d)</string>
     <string name="rewardtips2">恭喜您！</string>
-    <string name="rewardtips3">%1$sUSDT已存入余额钱包~</string>
+    <string name="rewardtips3">%1$s%2$s已存入余额钱包~</string>
+    <string name="rewardtips5">%1$sUSDT已存入余额钱包~</string>
     <string name="xx_day">第%1$s天</string>
     <string name="xx_day1">%1$s 天</string>
     <string name="rewardtips4">明日签到可获得 %1$s USDT</string>
@@ -916,17 +916,17 @@
     <string name="authenfail">认证未通过</string>
     <string name="xxx_join_dissection">\"%1$s\"加入了讨论组</string>
     <string name="groupname_num" translatable="false">%1$s(%2$s)</string>
-    <string name="my_hilamg_code">我的Hilamg号:%1$s</string>
+    <string name="my_hilamg_code">我的Hilamg号:  %1$s</string>
     <string name="total_xx_contact">共 %1$s 位联系人</string>
     <string name="xx_receive_xx_red">%1$s领取了%2$s的红包</string>
-    <string name="you">你</string>
+    <string name="you">您</string>
     <string name="drop_record">空投记录</string>
     <string name="choose_time">选择时间</string>
     <string name="value_value_value" translatable="false">%1$s-%2$s-%3$s</string>
     <string name="is_confirm_delete_group">是否确定解散该群</string>
     <string name="is_confirm_exit_group">是否确定退出该群</string>
     <string name="is_clear_conversation_history">确定要清空当前聊天记录吗？</string>
-    <string name="zero_value" translatable="false">0.0000</string>
+    <string name="zero_value" translatable="false">0.00000</string>
     <string name="group_total_member_count">本群共%1$s人</string>
     <string name="can_user_value_symbol">可用%1$s%2$s</string>
     <string name="slowMode_time">发言间隔:%1$s%2$s</string>
@@ -954,7 +954,7 @@
     <string name="social_public1">是否确定操作社群公开功能</string>
     <string name="owner_open_slowmode">群主开启了慢速模式,发言间隔:%1$s%2$s</string>
     <string name="current_receive">（已领取%1$s/%2$s个）</string>
-    <string name="xxx_red_total_xxx">%1$s个红包，共%2$s</string>
+    <string name="xxx_red_total_xxx">%1$s个红包</string>
     <string name="wait_for_xxx_confirm_receive">待好友%1$s确认收款</string>
     <string name="red_money">红包金额%1$s,等待对方领取</string>
     <string name="red_money1">红包金额%1$s,已被领取</string>
@@ -1126,7 +1126,7 @@
     <string name="wechat_pay" translatable="false">微信支付</string>
     <string name="pay_treasure" translatable="false">支付宝</string>
     <string name="bank_card" translatable="false">银行卡</string>
-    <string name="buy_coin" translatable="false">购买 %1$s</string>
+    <string name="buy_coin" translatable="false">购买%1$s</string>
     <string name="payment_way" translatable="false">选择付款方式</string>
     <string name="payment_way2" translatable="false">付款方式:</string>
     <string name="price" translatable="false">单价:</string>
@@ -1211,10 +1211,66 @@
     <string name="force_recall_update">禁言+撤回</string>
     <string name="special_chat">不能包含特殊字符</string>
     <string name="clearance">已清空聊天记录</string>
+    <string name="receiveRed">红包已领取</string>
+    <string name="havent_register_goto_hilamg">用户未注册，请先使用hilamg注册后使用</string>
+    <string name="paySuccess">支付成功</string>
+    <string name="current_left">%1$s (余额不足,剩余:%2$s)</string>
+    <string name="pay_left">%1$s (扣除后剩余:%2$s)</string>
+    <string name="pay_detail">付款详情</string>
+    <string name="back2Bussiness">返回商家</string>
+    <string name="cancel_pay">取消支付</string>
+    <string name="check_update">检查更新</string>
+    <string name="transfer1">转发</string>
+    <string name="c2cmessaging">已开启加密对话</string>
+    <string name="you_have_invite">您已邀请</string>
+    <string name="join_a_secret_chat">加入加密对话</string>
+    <string name="secret_chat1">【加密对话】</string>
+    <string name="fakec2ctips1">使用端到端加密</string>
+    <string name="fakec2ctips2">服务器不保留聊天记录</string>
+    <string name="fakec2ctips3">支持阅后即焚</string>
+    <string name="fakec2ctips4">支持对方截屏通知提醒</string>
+    <string name="tips_conversation_private">端对端加密保护中...</string>
+    <string name="tips_conversation_group">查看社群资料</string>
+    <string name="find_social">找社群</string>
+    <string name="add_friend">加好友</string>
+    <string name="create_social1">创建社群</string>
+    <string name="friend">好友</string>
+    <string name="social">社群</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hilamgservice">Hilamg服务</string>
+    <string name="tourism">旅游</string>
+    <string name="getting_around">出行</string>
+    <string name="hotel">酒店</string>
+    <string name="word_of_command_red_packet">口令红包</string>
+    <string name="toast1">该服务暂未开通</string>
+    <string name="balancelist">账单</string>
+    <string name="balance2btc">总账户资产折合(BTC)</string>
+    <string name="cold_wallet">冷钱包</string>
+    <string name="tips_qr">无需加好友，扫二维码向我付款</string>
+    <string name="may_know">可能认识的人</string>
+    <string name="wechat_friends">微信邀请好友</string>
+    <string name="recommend">推荐社群</string>
+    <string name="refresh_recommend">换一组</string>
+    <string name="member">成员 %1$s</string>
+    <string name="creater">创建人: %1$s</string>
+    <string name="empty_nosearch6">暂无推荐社群</string>
+    <string name="official_service">官方服务</string>
+    <string name="other_service">其他服务</string>
     <string name="rewardCode">口令红包</string>
     <string name="tips_rewardcode">添加Hilamg运营官(Hilamg号：3937354)\n了解更多领取红包口令活动详情</string>
     <string name="input_rewardcode">输入口令领红包</string>
     <string name="rewardcode_symbol_tips">%1$s口令红包</string>
+    <string name="community_icon">社群图标</string>
+    <string name="loading_pleasewait">正在连接中，请稍后</string>
+    <string name="loading1">连接中...</string>
+    <string name="money3">金额</string>
+    <string name="tipssss">钱包资产可直接转账到支付宝或微信</string>
+    <string name="paysuccess">支付成功</string>
+    <string name="socialApplication">群应用</string>
+    <string name="address_list_search">请输入关键字</string>
+    <string name="toast2">手机端直播暂未开放</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

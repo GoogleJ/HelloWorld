@@ -19,9 +19,7 @@ public class NewFriendAdapter extends BaseQuickAdapter<FriendInfoResponse, BaseV
     protected void convert(BaseViewHolder helper, FriendInfoResponse item) {
         helper.setText(R.id.m_item_new_friend_user_name_text, item.getNick())
                 .setText(R.id.m_item_new_friend_message_label, item.getRemark())
-                .addOnClickListener(R.id.m_item_new_friend_type_btn)
-                .addOnLongClickListener(R.id.m_add_btn_layout)
-                .addOnClickListener(R.id.m_add_btn_layout);
+                .addOnClickListener(R.id.m_item_new_friend_type_btn);
         ImageView headerImage = helper.getView(R.id.m_item_new_friend_icon);
         GlideUtil.loadCircleImg(headerImage, item.getHeadPortrait());
         TextView typeBtn = helper.getView(R.id.m_item_new_friend_type_btn);

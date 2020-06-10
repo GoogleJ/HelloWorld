@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,11 +24,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.Application;
@@ -39,14 +34,13 @@ import com.zxjk.duoduo.ui.base.WebActivityToLogin;
 import com.zxjk.duoduo.ui.widget.ProgressView;
 
 public class WebActivity extends BaseActivity implements WebActivityToLogin {
-
     String currentUrl;
     private FrameLayout fl_webview;
     private ProgressView pb_webview;
     private WebSettings webSettings;
     private WebView mWebView;
-    private String type;
     private ValueAnimator pbAnim;
+    private boolean showAnim = true;
 
     private BroadcastReceiver downloadCompleteReceive = new BroadcastReceiver() {
         @Override
@@ -77,14 +71,22 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web111);
 
+        if (getIntent().getBooleanExtra("fromSocialApp", false)) {
+            findViewById(R.id.llTop).setVisibility(View.VISIBLE);
+            TextView title = findViewById(R.id.tvTitle);
+            title.setText(getIntent().getStringExtra("appName"));
+            showAnim = false;
+        }
+
         currentUrl = getIntent().getStringExtra("url");
-        type = getIntent().getStringExtra("type");
 
         ((Application) getApplication()).getWebDataUtils().setWebActivityToLogin(this);
 
         initView();
 
-        initAnimtor();
+        if (showAnim) {
+            initAnimtor();
+        }
 
         initWebView();
     }
@@ -142,17 +144,20 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress == 100) {
-                    pbAnim.cancel();
-                    ValueAnimator valueAnimator = ValueAnimator.ofFloat(pb_webview.getProgress(), 100f);
-                    valueAnimator.setDuration((long) (1500 * (1 - pb_webview.getProgress() / 100f)));
-                    valueAnimator.addUpdateListener(animation -> pb_webview.setProgress((Float) animation.getAnimatedValue()));
-                    valueAnimator.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            pb_webview.setVisibility(View.GONE);
-                        }
-                    });
-                    valueAnimator.start();
+                    try {
+                        pbAnim.cancel();
+                        ValueAnimator valueAnimator = ValueAnimator.ofFloat(pb_webview.getProgress(), 100f);
+                        valueAnimator.setDuration((long) (1500 * (1 - pb_webview.getProgress() / 100f)));
+                        valueAnimator.addUpdateListener(animation -> pb_webview.setProgress((Float) animation.getAnimatedValue()));
+                        valueAnimator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                pb_webview.setVisibility(View.GONE);
+                            }
+                        });
+                        valueAnimator.start();
+                    } catch (Exception e) {
+                    }
                 }
             }
         });
@@ -161,10 +166,13 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                if (pb_webview.getVisibility() == View.GONE) {
-                    pb_webview.setProgress(0);
-                    pb_webview.setVisibility(View.VISIBLE);
-                    pbAnim.start();
+                try {
+                    if (pb_webview.getVisibility() == View.GONE) {
+                        pb_webview.setProgress(0);
+                        pb_webview.setVisibility(View.VISIBLE);
+                        pbAnim.start();
+                    }
+                } catch (Exception e) {
                 }
             }
 
@@ -194,14 +202,13 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
                 return false;
             }
         });
-        mWebView.loadUrl(currentUrl);
 
+        mWebView.loadUrl(currentUrl);
 
         mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-
+            request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setTitle(getString(R.string.hilamg));
             // 设置通知栏的描述
 //          request.setDescription("This is description");
             // 允许在计费流量下下载

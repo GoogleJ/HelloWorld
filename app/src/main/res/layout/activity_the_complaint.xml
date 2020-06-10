@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.minepage.wallet.TheAppealActivity"
+    tools:context=".ui.wallet.TheAppealActivity"
     android:orientation="vertical">
 
     <LinearLayout

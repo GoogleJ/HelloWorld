@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.webcast.WechatChatRoomManageActivity">
+    tools:context=".ui.cast.WechatChatRoomManageActivity">
 
     <include layout="@layout/layout_title_back" />
 
@@ -47,6 +47,7 @@
         android:background="#dddddd" />
 
     <LinearLayout
+        android:id="@+id/ll_chat1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -72,6 +73,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_chat1"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginStart="12dp"
@@ -79,6 +81,7 @@
         android:background="#dddddd" />
 
     <LinearLayout
+        android:id="@+id/ll_chat2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -104,6 +107,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_chat2"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginStart="12dp"
