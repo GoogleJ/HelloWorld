@@ -31,6 +31,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zxjk.moneyspace.R;
 import com.zxjk.moneyspace.network.Api;
@@ -134,7 +135,7 @@ public class NewsDetailActivity extends BaseActivity {
         UMWeb link = new UMWeb(currentUrl);
         link.setTitle("MoneySpace");
         link.setDescription(title);
-
+        link.setThumb(new UMImage(this,R.drawable.ic_shareimg));
         SHARE_MEDIA platform = null;
         switch (plantform) {
             case 1:

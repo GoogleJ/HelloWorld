@@ -13,6 +13,15 @@ public class ReceiveGroupRedPackageResponse {
     private SendCustomerInfoBean sendCustomerInfo;
     private List<CustomerInfoBean> customerInfo;
     private String finish;
+    private String receiveMoney;
+
+    public String getReceiveMoney() {
+        return receiveMoney;
+    }
+
+    public void setReceiveMoney(String receiveMoney) {
+        this.receiveMoney = receiveMoney;
+    }
 
     public String getFinish() {
         return finish;

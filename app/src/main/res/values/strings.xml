@@ -793,7 +793,7 @@
     <string name="code_login">验证码登录</string>
     <string name="forget_the_password">忘记密码</string>
     <string name="inconformity">两次密码不一致</string>
-    <string name="login_pwd">登陆密码</string>
+    <string name="login_pwd">登录密码</string>
     <string name="the_phone_number">手机号</string>
     <string name="set_a_password">设置登录密码</string>
     <string name="set_a_password2">请输入登录密码</string>

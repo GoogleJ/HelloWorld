@@ -13,22 +13,17 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/new_red_dialog_bg1"
         android:gravity="center_horizontal"
+        android:visibility="visible"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/img_back"
-            android:src="@drawable/guanbi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"/>
-        <ImageView
-            android:id="@+id/ivOPen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:src="@drawable/kai" />
+            android:layout_marginEnd="24dp"
+            android:src="@drawable/guanbi" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -36,22 +31,23 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="32dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/ivHead"
                 android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="6dp" />
+                android:layout_height="32dp"/>
 
             <TextView
                 android:id="@+id/tvNick"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="6dp"
                 android:ellipsize="middle"
                 android:singleLine="true"
-                android:textColor="@color/white" />
+                android:maxEms="8"
+                android:textColor="#FEE5A7" />
 
         </LinearLayout>
 
@@ -66,10 +62,27 @@
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:text="@string/newredtip"
-            android:textColor="@color/white"
+            android:textColor="#FEE5A7"
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/ivOPen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/kai" />
+
+        <TextView
+            android:id="@+id/tvShowDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:text="@string/m_expired_envelopes_info"
+            android:textColor="#FEE5A7"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -141,16 +154,7 @@
             android:textColor="#EA3634"
             android:textSize="16.5sp" />
 
-        <TextView
-            android:id="@+id/tvShowDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:text="@string/m_expired_envelopes_info"
-            android:textColor="@color/white"
-            android:visibility="gone" />
+
 
     </LinearLayout>
 
