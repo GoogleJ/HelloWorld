@@ -920,6 +920,7 @@
     <string name="paynow">立即支付</string>
     <string name="voice_forbidden">本会话禁止发送语音</string>
     <string name="inconformity1">密码长度至少为6位</string>
+    <string name="best">手气最佳</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

@@ -21,49 +21,67 @@
 
         <TextView
             android:id="@+id/tvNick"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_toEndOf="@id/ivHead"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/textcolor1" />
+            android:textColor="@color/textcolor1"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
             android:layout_alignBottom="@id/ivHead"
             android:layout_toEndOf="@id/ivHead"
-            android:textColor="@color/textcolor3" />
+            android:textColor="@color/textcolor3"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/ivHead"
-            android:gravity="end">
+            android:gravity="end|center_vertical"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvMoney"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
                 android:gravity="end"
-                android:maxLines="1"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:textColor="@color/textcolor1"
-                android:layout_marginEnd="6dp"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textColor="@color/textcolor1"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_symbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#272E3F" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_symbol"
+                android:id="@+id/tvBest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#272E3F" />
+                android:layout_marginTop="2dp"
+                android:text="@string/best"
+                android:textColor="#FFAE4F"
+                android:textSize="12.5sp"
+                android:visibility="invisible" />
+
         </LinearLayout>
 
     </RelativeLayout>

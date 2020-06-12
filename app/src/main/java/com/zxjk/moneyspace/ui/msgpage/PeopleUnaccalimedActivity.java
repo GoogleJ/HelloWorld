@@ -107,6 +107,21 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                     int number = response.getRedPackageInfo().getNumber();
                                     tips.setText(getString(R.string.xxx_red_total_xxx, String.valueOf(number), response.getRedPackageInfo().getMoney() + response.getRedPackageInfo().getSymbol() + text));
                                     adapter.setSymbol(response.getRedPackageInfo().getSymbol());
+
+
+                                    if (response.getRedPackageInfo().getNumber() == response.getCustomerInfo().size()) {
+                                        double max = (double) 0;
+                                        int bestPosition = -1;
+                                        for (int i = 0; i < response.getCustomerInfo().size(); i++) {
+                                            double d = Double.parseDouble(response.getCustomerInfo().get(i).getMoney());
+                                            if (max < d) {
+                                                max = d;
+                                                bestPosition = i;
+                                            }
+                                        }
+                                        adapter.setBest(bestPosition);
+                                    }
+
                                     adapter.setData(response.getCustomerInfo());
                                 }, this::handleApiError);
                     } else {
