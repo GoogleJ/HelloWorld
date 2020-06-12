@@ -27,6 +27,7 @@
             android:layout_toEndOf="@id/ivHead"
             android:ellipsize="end"
             android:maxLines="1"
+            android:maxEms="8"
             android:textColor="@color/textcolor1"
             android:textStyle="bold" />
 

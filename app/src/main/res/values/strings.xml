@@ -921,5 +921,8 @@
     <string name="best">手气最佳</string>
     <string name="service">在线客服</string>
     <string name="invitewechat">邀请微信好友</string>
+    <string name="source">来源</string>
+    <string name="remarks_transcript">发言记录</string>
+    <string name="chat_records">的发言记录</string>
 
 </resources>

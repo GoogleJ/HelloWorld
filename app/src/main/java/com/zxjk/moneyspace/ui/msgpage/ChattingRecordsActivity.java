@@ -32,6 +32,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.message.FileMessage;
 import io.rong.message.ImageMessage;
+import io.rong.message.InformationNotificationMessage;
 import io.rong.message.SightMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
@@ -63,9 +64,9 @@ public class ChattingRecordsActivity extends BaseActivity {
 
     private void initView() {
         recyclerView = findViewById(R.id.recycler_view);
-        findViewById(R.id.ivBack).setOnClickListener(v -> finish());
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         TextView tvTitle = findViewById(R.id.tv_title);
-        tvTitle.setText(getIntent().getStringExtra("nick") + "的发言记录");
+        tvTitle.setText(getIntent().getStringExtra("nick") + getString(R.string.chat_records));
     }
 
     private void initData() {
@@ -78,6 +79,8 @@ public class ChattingRecordsActivity extends BaseActivity {
                 TextView tvSentTime = helper.getView(R.id.tv_sentTime);
 
                 helper.setText(R.id.tv_nickname, getIntent().getStringExtra("nick"));
+                tvSentTime.setText(sdf.format(new Date(item.getSentTime())));
+                GlideUtil.loadCircleImg(imageView, getIntent().getStringExtra("imageUrl"));
                 if (item.getContent() instanceof TextMessage) {
                     textMessage = (TextMessage) item.getContent();
                     tvContent.setText(textMessage.getContent());
@@ -90,15 +93,15 @@ public class ChattingRecordsActivity extends BaseActivity {
                 } else if (item.getContent() instanceof FileMessage) {
                     fileMessage = (FileMessage) item.getContent();
                     tvContent.setText("[文件]");
-                } else if(item.getContent() instanceof RedPacketMessage){
+                } else if (item.getContent() instanceof RedPacketMessage) {
                     tvContent.setText("[红包]");
-                } else if(item.getContent() instanceof NewsCardMessage || item.getContent() instanceof GroupCardMessage || item.getContent() instanceof BusinessCardMessage){
+                } else if (item.getContent() instanceof NewsCardMessage || item.getContent() instanceof GroupCardMessage || item.getContent() instanceof BusinessCardMessage) {
                     tvContent.setText("[名片]");
-                } else if(item.getContent() instanceof SightMessage){
+                } else if (item.getContent() instanceof SightMessage) {
                     tvContent.setText("[视频]");
+                } else if (item.getContent() instanceof InformationNotificationMessage) {
+                    tvContent.setText("[消息提示]");
                 }
-                tvSentTime.setText(sdf.format(new Date(item.getSentTime())));
-                GlideUtil.loadCircleImg(imageView, getIntent().getStringExtra("imageUrl"));
             }
         };
 
@@ -134,7 +137,7 @@ public class ChattingRecordsActivity extends BaseActivity {
             @Override
             public void onSuccess(List<Message> messages) {
                 for (int i = 0; i < messages.size(); i++) {
-                    Log.i("tag", "onSuccess: "+messages.get(i).getContent());
+                    Log.i("tag", "onSuccess: " + messages.get(i).getContent());
                     if (messages.get(i).getSenderUserId().equals(getIntent().getStringExtra("friendId"))) {
                         chattingMessages.add(messages.get(i));
                     }

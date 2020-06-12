@@ -916,5 +916,8 @@
 	<string name="best">Biggest</string>
 	<string name="service">Service</string>
 	<string name="invitewechat">Wechat</string>
+    <string name="source">Source</string>
+	<string name="remarks_transcript">Remarks transcript</string>
+	<string name="chat_records"> of chat records</string>
 
 </resources>
