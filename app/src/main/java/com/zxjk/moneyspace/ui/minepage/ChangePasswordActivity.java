@@ -43,6 +43,7 @@ public class ChangePasswordActivity extends BaseActivity {
         et_pwd2 = findViewById(R.id.et_pwd2);
         btn_confirm = findViewById(R.id.btn_confirm);
 
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.login_pwd);
 
