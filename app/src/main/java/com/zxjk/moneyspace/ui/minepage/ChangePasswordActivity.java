@@ -45,6 +45,8 @@ public class ChangePasswordActivity extends BaseActivity {
 
         TextView title = findViewById(R.id.tv_title);
         title.setText(R.string.login_pwd);
+
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
 
     @SuppressLint("CheckResult")

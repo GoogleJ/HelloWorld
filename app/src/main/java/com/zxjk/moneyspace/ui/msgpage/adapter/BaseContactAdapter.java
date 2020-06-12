@@ -32,9 +32,9 @@ public class BaseContactAdapter extends BaseQuickAdapter<FriendInfoResponse, Bas
         ImageView heardImage = helper.getView(R.id.m_constants_header_icon);
 
         View view = helper.getView(R.id.tvFirstLetter);
-        if (helper.getAdapterPosition() == 1) {
+        if (helper.getAdapterPosition() == 0) {
             view.setVisibility(View.VISIBLE);
-        } else if (item.getSortLetters().equals(getData().get(helper.getAdapterPosition() - 2).getSortLetters())) {
+        } else if (item.getSortLetters().equals(getData().get(helper.getAdapterPosition() - 1).getSortLetters())) {
             view.setVisibility(View.GONE);
         } else {
             view.setVisibility(View.VISIBLE);

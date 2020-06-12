@@ -535,7 +535,7 @@
     <string name="determine">确定</string>
     <string name="the_complaint">申诉</string>
     <string name="appeal_content">申诉内容</string>
-    <string name="edit_the_appeal">请填写订单号以及您需要申诉的信息...</string>
+    <string name="edit_the_appeal">请填写订单号以及您需要申诉的信息…</string>
     <string name="tv_upload_documents">上传凭证</string>
     <string name="add_image">(请上传一张图片)</string>
     <string name="submit">提交</string>
@@ -640,7 +640,7 @@
     <string name="notAuthentication">未完善</string>
     <string name="login_byemail">邮箱登录</string>
     <string name="login_byphone">手机号登录</string>
-    <string name="hello">您好，</string>
+    <string name="hello">您好!</string>
     <string name="input_email">请输入邮箱账号</string>
     <string name="input_wrong">输入有误，请重试</string>
     <string name="vercod_phone">短信验证码</string>
@@ -751,8 +751,6 @@
     <string name="selling_success">放行成功</string>
     <string name="toast13">已提交申诉</string>
     <string name="toast14">付款成功</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ecoloey">生态</string>
     <string name="simplified_chinese">简体中文</string>
@@ -921,8 +919,7 @@
     <string name="voice_forbidden">本会话禁止发送语音</string>
     <string name="inconformity1">密码长度至少为6位</string>
     <string name="best">手气最佳</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-
+    <string name="service">在线客服</string>
+    <string name="invitewechat">邀请微信好友</string>
 
 </resources>

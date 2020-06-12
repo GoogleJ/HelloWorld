@@ -40,12 +40,6 @@ public class ShareUtil {
                 .setCallback(listener).open();
     }
 
-    public static void share2WTimeline(Activity activity, ShareListener listener) {
-        UMImage umImage = new UMImage(activity, R.drawable.ic_redfall_share);
-        new ShareAction(activity).withText("sdasdasdasdasd").withMedia(umImage).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                .setCallback(listener).share();
-    }
-
     public static class ShareListener implements UMShareListener {
         @Override
         public void onStart(SHARE_MEDIA share_media) {

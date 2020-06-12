@@ -166,7 +166,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 link.setDescription("加密私聊、社群管理、数字\n" +
                         "支付尽在MoneySpace ，你也来\n" +
                         "试试吧～");
-                link.setThumb(new UMImage(getActivity(), R.drawable.ic_about_icon));
+                link.setThumb(new UMImage(getActivity(), R.drawable.ic_shareimg));
                 new ShareAction(getActivity()).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
                 break;
             default:

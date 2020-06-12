@@ -77,7 +77,7 @@ public class GroupQRActivity extends BaseActivity {
             UMWeb umWeb = new UMWeb(uri2Code);
             umWeb.setTitle("入群通知");
             umWeb.setDescription("快加入我们的MoneySpace群");
-            umWeb.setThumb(new UMImage(this, R.drawable.ic_shareeeee));
+            umWeb.setThumb(new UMImage(this, R.drawable.ic_shareimg));
             ShareUtil.shareLink(this, umWeb);
         }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
     }

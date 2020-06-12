@@ -364,7 +364,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="在线客服"
+                android:text="@string/service"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -400,7 +400,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:text="邀请微信好友"
+                android:text="@string/invitewechat"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
