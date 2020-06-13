@@ -153,7 +153,7 @@ public class GroupRedPacketActivity extends BaseActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 1) {
+                if (tab.getPosition() == 0) {
                     top1(null);
                 } else {
                     top2(null);
@@ -314,7 +314,7 @@ public class GroupRedPacketActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(s) && "1".equals(s)) {
                         controlFlag = true;
                     }
-                    top2(null);
+                    top1(null);
                 }, this::handleApiError);
     }
 

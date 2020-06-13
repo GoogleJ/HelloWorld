@@ -961,6 +961,7 @@ public class ConversationActivity extends BaseActivity {
                                         Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
                                         intent1.putExtra("isGame", redPacketMessage.getIsGame());
                                         intent1.putExtra("id", redPacketMessage.getRedId());
+                                        intent1.putExtra("type", s.getType());
                                         startActivity(intent1);
                                     }
                                     if (s.getRedPackageState().equals("2")) {
@@ -986,6 +987,7 @@ public class ConversationActivity extends BaseActivity {
                                             Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
                                             intent1.putExtra("isShow", false);
                                             intent1.putExtra("id", redPacketMessage.getRedId());
+                                            intent1.putExtra("type", s.getType());
                                             startActivity(intent1);
                                         } else if (message.getConversationType().equals(Conversation.ConversationType.GROUP)
                                                 || message.getConversationType().equals(Conversation.ConversationType.CHATROOM)) {
@@ -1007,12 +1009,12 @@ public class ConversationActivity extends BaseActivity {
                                                             if (!message.getSenderUserId().equals(Constant.userId)) {
 
                                                                 InformationNotificationMessage message1 = InformationNotificationMessage.obtain(
-                                                                        getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick()) + s2.getReceiveMoney() + s2.getRedPackageInfo().getSymbol());
+                                                                        getString(R.string.xx_receive_xx_red, Constant.currentUser.getNick(), s2.getSendCustomerInfo().getUsernick()) + (TextUtils.isEmpty(s2.getReceiveMoney()) ? s2.getRedPackageInfo().getMoney() : s2.getReceiveMoney()) + s2.getRedPackageInfo().getSymbol());
                                                                 RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP,
                                                                         targetId, message1, new String[]{message.getSenderUserId()}
                                                                         , null, null, null);
                                                             } else {
-                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)) + s2.getReceiveMoney() + s2.getRedPackageInfo().getSymbol());
+                                                                InformationNotificationMessage message1 = InformationNotificationMessage.obtain(getString(R.string.xx_receive_xx_red, getString(R.string.you), getString(R.string.you)) + (TextUtils.isEmpty(s2.getReceiveMoney()) ? s2.getRedPackageInfo().getMoney() : s2.getReceiveMoney()) + s2.getRedPackageInfo().getSymbol());
                                                                 RongIM.getInstance().sendDirectionalMessage(Conversation.ConversationType.GROUP,
                                                                         targetId, message1, new String[]{Constant.userId}
                                                                         , null, null, null);
@@ -1022,6 +1024,7 @@ public class ConversationActivity extends BaseActivity {
                                                         Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
                                                         intent1.putExtra("id", redPacketMessage.getRedId());
                                                         intent1.putExtra("isGame", redPacketMessage.getIsGame());
+                                                        intent1.putExtra("type", s.getType());
                                                         startActivity(intent1);
                                                     }, throwable -> handleApiError(throwable)));
 

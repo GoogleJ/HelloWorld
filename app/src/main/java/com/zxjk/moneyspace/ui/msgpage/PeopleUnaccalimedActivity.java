@@ -37,6 +37,7 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
     private TextView tv_redEnvelope;
     private TextView tv_red_symbol;
     private String isGame;
+    private int type;
 
     @SuppressLint({"CheckResult", "SetTextI18n"})
     @Override
@@ -76,6 +77,9 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
         if (isGame.equals("0")) {
             tips.setVisibility(View.GONE);
         }
+
+        type = getIntent().getIntExtra("type", 0);
+
         boolean fromList = getIntent().getBooleanExtra("fromList", false);
         if (fromList) {
             tv_end.setVisibility(View.GONE);
@@ -119,7 +123,11 @@ public class PeopleUnaccalimedActivity extends BaseActivity {
                                                 bestPosition = i;
                                             }
                                         }
-                                        adapter.setBest(bestPosition);
+                                        if (type == 2) {
+                                            adapter.setBest(-1);
+                                        } else {
+                                            adapter.setBest(bestPosition);
+                                        }
                                     }
 
                                     adapter.setData(response.getCustomerInfo());
