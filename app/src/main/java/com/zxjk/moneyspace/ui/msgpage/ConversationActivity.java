@@ -991,6 +991,7 @@ public class ConversationActivity extends BaseActivity {
                                             startActivity(intent1);
                                         } else if (message.getConversationType().equals(Conversation.ConversationType.GROUP)
                                                 || message.getConversationType().equals(Conversation.ConversationType.CHATROOM)) {
+                                            newRedDialog.showExpired2(redPacketMessage.getRedId());
                                             newRedDialog.setOpenListener(() -> ServiceFactory.getInstance().getBaseService(Api.class)
                                                     .receiveGroupRedPackage(redPacketMessage.getRedId(), redPacketMessage.getIsGame())
                                                     .compose(bindToLifecycle())
