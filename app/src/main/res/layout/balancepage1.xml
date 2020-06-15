@@ -61,7 +61,7 @@
                 android:drawableTop="@drawable/a_wallet4"
                 android:drawablePadding="6dp"
                 android:gravity="center"
-                android:text="@string/trade2"
+                android:text="@string/trade4"
                 android:textColor="@color/black" />
 
             <View
@@ -69,19 +69,30 @@
                 android:layout_height="match_parent"
                 android:background="#D9D9D9" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/tv3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/a_wallet3"
-                android:drawablePadding="6dp"
                 android:gravity="center"
+                android:orientation="vertical">
 
-                android:text="@string/trade3"
-                android:textColor="@color/black" />
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/a_wallet3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="6dp"
+                    android:gravity="center"
+                    android:text="CHB"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -105,7 +116,6 @@
                 android:drawableTop="@drawable/a_wallet2"
                 android:drawablePadding="6dp"
                 android:gravity="center"
-
                 android:text="@string/trade2"
                 android:textColor="@color/black" />
 

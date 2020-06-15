@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,7 @@ import com.zxjk.moneyspace.ui.base.BaseFragment;
 public class BalancePage1 extends BaseFragment implements View.OnClickListener {
     private TextView tv1;
     private TextView tv2;
-    private TextView tv3;
+    private LinearLayout tv3;
     private TextView tv4;
     private TextView tv5;
     private TextView tv6;
@@ -68,14 +69,30 @@ public class BalancePage1 extends BaseFragment implements View.OnClickListener {
                 getActivity().startActivity(intent);
                 break;
             case R.id.tv2:
-                bundle.putString("url", "https://www.binancezh.com/cn/markets");
+                bundle.putString("url", "https://www.binancezh.com/cn");
                 intent.putExtras(bundle);
                 getActivity().startActivity(intent);
                 break;
             case R.id.tv3:
+                bundle.putString("url", "https://www.chb.plus");
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+                break;
             case R.id.tv4:
+                bundle.putString("url", "https://www.okex.me");
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+                break;
             case R.id.tv5:
+                bundle.putString("url", "https://m.zb.live/");
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+                break;
             case R.id.tv6:
+                bundle.putString("url", "https://www.bitmex.com/");
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+                break;
             case R.id.tv7:
             case R.id.tv8:
             case R.id.tv9:
