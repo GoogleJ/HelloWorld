@@ -856,7 +856,10 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> updateActivityStatus(@Field("type") String type);
 
+
     @POST("duoduo/otc/quickTicker")
     @FormUrlEncoded
     Observable<BaseResponse<GetQuickTickerResponse>> quickTicker(@Field("type") String type, @Field("symbol") String symbol);
+
+
 }

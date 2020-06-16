@@ -69,10 +69,9 @@ public class RewardMotActivity extends BaseActivity {
     private BaseQuickAdapter<GetSignListResponse.PointsListBean, BaseViewHolder> adapter2;
 
     private GetSignListResponse signListResponse;
-
+    
 
     private int height = 640;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,6 +229,7 @@ public class RewardMotActivity extends BaseActivity {
                             case "4":
                             case "6":
                             case "7":
+                            case "11":
                                 startActivity(new Intent(RewardMotActivity.this, HomeActivity.class));
                                 break;
                             case "5":
