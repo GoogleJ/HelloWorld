@@ -175,6 +175,12 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initRedfallData();
 
         initRongMention();
+
+        if (getIntent().getBooleanExtra("attachAD", false)) {
+            Intent intent = new Intent(this, WebActivity.class);
+            intent.putExtra("url", Constant.URL_628ACTIVITY);
+            startActivity(intent);
+        }
     }
 
     private void initRongMention() {

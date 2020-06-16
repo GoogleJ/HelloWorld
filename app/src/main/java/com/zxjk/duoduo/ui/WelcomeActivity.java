@@ -24,18 +24,38 @@ import com.zxjk.duoduo.utils.MMKVUtils;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
 public class WelcomeActivity extends BaseActivity {
 
+    private Disposable skipDisposable;
+    private boolean attachAD;
+
     @SuppressLint("CheckResult")
     public void checkUserState() {
+        setContentView(R.layout.activity_welcome);
+
+        findViewById(R.id.root).setOnClickListener(v -> {
+            attachAD = true;
+            ToastUtils.showShort(R.string.loading_pleasewait1);
+        });
+
         if (MMKVUtils.getInstance().decodeBool("isLogin")) {
             goLoginByServer();
         } else {
-            Observable.timer(2000, TimeUnit.MILLISECONDS)
+            findViewById(R.id.tvSkip).setVisibility(View.VISIBLE);
+            findViewById(R.id.tvSkip)
+                    .setOnClickListener(v -> {
+                        if (null != skipDisposable && !skipDisposable.isDisposed()) {
+                            skipDisposable.dispose();
+                            startActivity(new Intent(this, NewLoginActivity.class));
+                            finish();
+                        }
+                    });
+            skipDisposable = Observable.timer(2000, TimeUnit.MILLISECONDS)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(aLong -> {
@@ -120,6 +140,14 @@ public class WelcomeActivity extends BaseActivity {
             startActivity(new Intent(this, NewLoginActivity.class));
             finish();
         }
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        if (attachAD) {
+            intent.putExtra("attachAD", true);
+        }
+        super.startActivity(intent);
     }
 
     @Override

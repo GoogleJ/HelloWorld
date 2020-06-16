@@ -14,10 +14,10 @@ public class Constant {
     //省市区数据
     public static final String CITY_DATA = "china_city_data.json";
     //    阿里OSS上传地址
-//    public static final String OSS_URL = "https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/";  //release
-//    public static final String BASE_URL = "https://mochart.ztoken.cn";  //release
-    public static final String OSS_URL = "http://zhongxingjike1.oss-cn-beijing.aliyuncs.com/upload/"; //debug
-    public static final String BASE_URL = "http://192.168.1.74:8085/";  //26g  74w  191h
+    public static final String OSS_URL = "https://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/";  //release
+    public static final String BASE_URL = "https://mochart.ztoken.cn";  //release
+//    public static final String OSS_URL = "http://zhongxingjike1.oss-cn-beijing.aliyuncs.com/upload/"; //debug
+//    public static final String BASE_URL = "http://192.168.1.74:8085/";  //26g  74w  191h
 //    public static final String BASE_URL = "http://47.93.180.210:8085/"; //test
 
 //    public static final String OTC_URL = "http://47.244.186.74:9090/";//test
@@ -39,6 +39,8 @@ public class Constant {
 
     public static final int CODE_OTC_SUCCESS = 200;
     public static final int CODE_OTC_TIMEOUT = 60030;
+
+    public static final String URL_628ACTIVITY = "";
 
     public static final String FLAG_FIRSTLOGIN = "0";
     public static final String LOCAL_CHANNEL_ID = "rc_notification_id";
