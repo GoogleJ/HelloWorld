@@ -35,6 +35,8 @@ public class BrowsableActivity extends BaseActivity {
                 Constant.currentUser = loginResponse;
                 Constant.token = loginResponse.getToken();
                 Constant.userId = loginResponse.getId();
+            } else {
+                Constant.currentUser = null;
             }
         }
 

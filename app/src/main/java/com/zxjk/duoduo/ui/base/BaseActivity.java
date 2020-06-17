@@ -64,6 +64,8 @@ public class BaseActivity extends RxAppCompatActivity {
                 Constant.currentUser = login;
                 Constant.token = login.getToken();
                 Constant.userId = login.getId();
+            } else {
+                Constant.currentUser = null;
             }
         }
 

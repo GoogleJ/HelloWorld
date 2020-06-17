@@ -69,6 +69,7 @@ public class AddFriendDetailsActivity extends BaseActivity {
                     .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                     .compose(RxSchedulers.normalTrans())
                     .subscribe(r -> {
+                        finish();
                         if (r.getIsFriend().equals("0")) {
                             Intent intent = new Intent(this, AddFriendDetailsActivity.class);
                             intent.putExtra("friendId", id);
@@ -79,7 +80,6 @@ public class AddFriendDetailsActivity extends BaseActivity {
                             intent.putExtra("friendId", id);
                             startActivity(intent);
                         }
-                        finish();
                     }, t -> {
                         handleApiError(t);
                         finish();

@@ -134,6 +134,13 @@ public class NewLoginActivity extends BaseActivity {
             intent.putExtra("url", Constant.URL_628ACTIVITY1);
             startActivity(intent);
         }
+
+    }
+
+    @Override
+    protected void onResume() {
+        parseClipbord();
+        super.onResume();
     }
 
     private void changeState() {
@@ -297,8 +304,6 @@ public class NewLoginActivity extends BaseActivity {
             return;
         }
 
-        parseClipbord();
-
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(), inviteId, groupId)
                 .compose(bindToLifecycle())
@@ -322,11 +327,18 @@ public class NewLoginActivity extends BaseActivity {
                     ClipData.Item item = clipData.getItemAt(0);
                     if (null != item && !TextUtils.isEmpty(item.getText())) {
                         String copyContent = item.getText().toString();
-                        if (copyContent.contains("http://hilamg-share.zhumengxuanang.com/")) {
+                        if (copyContent.contains(Constant.APP_SHARE_URL)) {
                             resultUri = copyContent.substring(0, copyContent.indexOf("?") + 1);
 
-                            if (resultUri.equals("http://hilamg-share.zhumengxuanang.com/?")) {
+                            if (resultUri.equals(Constant.APP_SHARE_URL)) {
                                 String userIdJiequ = copyContent.substring(copyContent.indexOf("?") + 1);
+                                String result = userIdJiequ;
+                                if (userIdJiequ.contains("&")) {
+                                    String[] split = userIdJiequ.split("&");
+                                    result = split[0];
+                                }
+
+                                userIdJiequ = result;
 
                                 resultUri += AesUtil.getInstance().decrypt(userIdJiequ);
 
@@ -342,6 +354,7 @@ public class NewLoginActivity extends BaseActivity {
                                 } else if (type.equals("0")) {
                                     resultUri = "hilamg://web/?action=joinGroup&id=" + inviteId + "&groupId=" + groupId;
                                 }
+                                ToastUtils.showLong(resultUri);
                             }
                             clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
                         }
