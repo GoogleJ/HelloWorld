@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ import com.zxjk.duoduo.bean.response.FriendInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
-import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.ZoomActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -57,23 +55,50 @@ public class AddFriendDetailsActivity extends BaseActivity {
     TextView tvAddAddressBook;
 
     private String imageUrl;
-    private String isQR;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_information);
 
-        isQR = getIntent().getStringExtra("isQR");
+        if (getIntent().getBooleanExtra("isQR", false)) {
+            String id = getIntent().getStringExtra("friendId");
+            ServiceFactory.getInstance().getBaseService(Api.class)
+                    .getFriendInfoById(id)
+                    .compose(bindToLifecycle())
+                    .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                    .compose(RxSchedulers.normalTrans())
+                    .subscribe(r -> {
+                        if (r.getIsFriend().equals("0")) {
+                            Intent intent = new Intent(this, AddFriendDetailsActivity.class);
+                            intent.putExtra("friendId", id);
+                            intent.putExtra("type", "1");
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(this, FriendDetailsActivity.class);
+                            intent.putExtra("friendId", id);
+                            startActivity(intent);
+                        }
+                        finish();
+                    }, t -> {
+                        handleApiError(t);
+                        finish();
+                    });
+        } else {
+            init();
+        }
+    }
 
+    private void init() {
         ButterKnife.bind(this);
 
         tvTitle.setText(R.string.personal_details);
 
-        if (getIntent().getStringExtra("type").equals("1")) {
-            tvAddAddressBook.setText("添加到通讯录");
-        }else {
+        //type为必传项!!
+        if ("0".equals(getIntent().getStringExtra("type"))) {
             tvAddAddressBook.setText(R.string.m_personal_information_signature_text);
+        } else {
+            tvAddAddressBook.setText(R.string.add_to_contact);
         }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
@@ -103,9 +128,7 @@ public class AddFriendDetailsActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
-
                 finish();
-
                 break;
             case R.id.tv_addAddressBook:
                 if (getIntent().getStringExtra("type").equals("1")) {
@@ -113,8 +136,8 @@ public class AddFriendDetailsActivity extends BaseActivity {
                     intent.putExtra("friendId", getIntent().getStringExtra("friendId"));
                     intent.putExtra("groupId", getIntent().getStringExtra("groupId"));
                     startActivity(intent);
-                }else {
-                    addFriend(getIntent().getStringExtra("nick"),(FriendInfoResponse)getIntent().getSerializableExtra("item"));
+                } else {
+                    addFriend(getIntent().getStringExtra("nick"), (FriendInfoResponse) getIntent().getSerializableExtra("item"));
                 }
 
                 break;
@@ -145,13 +168,5 @@ public class AddFriendDetailsActivity extends BaseActivity {
                     RongIM.getInstance().sendMessage(message1, "", "", (IRongCallback.ISendMessageCallback) null);
                     finish();
                 }, this::handleApiError);
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        if (!TextUtils.isEmpty(isQR)) {
-            startActivity(new Intent(this, HomeActivity.class));
-        }
     }
 }

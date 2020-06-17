@@ -21,7 +21,6 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.MMKVUtils;
 
 import io.rong.imkit.RongIM;
 
@@ -96,7 +95,6 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
                             .compose(RxSchedulers.normalTrans())
                             .subscribe(s -> {
                                 RongIM.getInstance().logout();
-                                MMKVUtils.getInstance().enCode("isLogin", false);
                                 Constant.clear();
                                 ToastUtils.showShort(R.string.login_out);
                                 Intent intent = new Intent(LoginAuthorizationActivity.this, ThirdPartLoginActivity.class);

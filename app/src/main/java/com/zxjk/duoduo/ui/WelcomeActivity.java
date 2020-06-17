@@ -2,7 +2,6 @@ package com.zxjk.duoduo.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,7 +26,6 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.UserInfo;
 
 public class WelcomeActivity extends BaseActivity {
 
@@ -43,7 +41,7 @@ public class WelcomeActivity extends BaseActivity {
             ToastUtils.showShort(R.string.loading_pleasewait1);
         });
 
-        if (MMKVUtils.getInstance().decodeBool("isLogin")) {
+        if (null != MMKVUtils.getInstance().decodeParcelable("login")) {
             goLoginByServer();
         } else {
             findViewById(R.id.tvSkip).setVisibility(View.VISIBLE);
@@ -55,7 +53,7 @@ public class WelcomeActivity extends BaseActivity {
                             finish();
                         }
                     });
-            skipDisposable = Observable.timer(2000, TimeUnit.MILLISECONDS)
+            skipDisposable = Observable.timer(3000, TimeUnit.MILLISECONDS)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(aLong -> {
@@ -97,49 +95,37 @@ public class WelcomeActivity extends BaseActivity {
 
     private void goLoginByServer() {
         LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
-        if (login != null) {
-            Constant.currentUser = login;
-            Constant.token = login.getToken();
-            Constant.userId = login.getId();
-            // 连接融云
-            RongIM.connect(login.getRongToken(), new RongIMClient.ConnectCallback() {
+        Constant.currentUser = login;
+        Constant.token = login.getToken();
+        Constant.userId = login.getId();
 
-                @Override
-                public void onTokenIncorrect() {
-                    MMKVUtils.getInstance().enCode("isLogin", false);
-                    Constant.clear();
-                    ToastUtils.showShort(getString(R.string.login_again));
-                    Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                }
+        RongIM.connect(login.getRongToken(), new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                Constant.clear();
+                ToastUtils.showShort(getString(R.string.login_again));
+                Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
 
-                @Override
-                public void onSuccess(String userid) {
-                    UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
-                    RongIM.getInstance().setCurrentUserInfo(userInfo);
-                    startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
-                    finish();
-                }
+            @Override
+            public void onSuccess(String userid) {
+                startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                finish();
+            }
 
-                @Override
-                public void onError(RongIMClient.ErrorCode errorCode) {
-                    MMKVUtils.getInstance().enCode("isLogin", false);
-                    Constant.clear();
-                    ToastUtils.showShort(getString(R.string.login_again));
-                    Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-        } else {
-            ToastUtils.showShort(getString(R.string.login_again));
-            MMKVUtils.getInstance().enCode("isLogin", false);
-            startActivity(new Intent(this, NewLoginActivity.class));
-            finish();
-        }
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Constant.clear();
+                ToastUtils.showShort(getString(R.string.login_again));
+                Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override

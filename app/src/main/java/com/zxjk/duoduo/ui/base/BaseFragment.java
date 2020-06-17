@@ -18,7 +18,6 @@ import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.ui.NewLoginActivity;
-import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.TakePicUtil;
 
 import java.io.File;
@@ -69,8 +68,6 @@ public class BaseFragment extends RxFragment {
             // 重复登录，挤掉线
             RongIM.getInstance().logout();
             Constant.clear();
-            MMKVUtils.getInstance().enCode("isLogin", false);
-
             Intent intent = new Intent(getActivity(), NewLoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

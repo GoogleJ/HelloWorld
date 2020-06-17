@@ -80,7 +80,6 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     FriendInfoResponse friendInfoResponse;
     private RelativeLayout rl_end;
     private QuickPopup menuPop;
-    private String isQR;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +92,6 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initFriendIntent() {
-        isQR = getIntent().getStringExtra("isQR");
         String friendId = getIntent().getStringExtra("friendId");
         if (TextUtils.isEmpty(friendId)) {
             finish();
@@ -282,8 +280,5 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         intent.putExtra("remark", tvNickname.getText().toString());
         setResult(1000, intent);
         super.finish();
-        if (!TextUtils.isEmpty(isQR)) {
-            startActivity(new Intent(this, HomeActivity.class));
-        }
     }
 }

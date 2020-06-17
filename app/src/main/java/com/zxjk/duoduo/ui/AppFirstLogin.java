@@ -125,15 +125,16 @@ public class AppFirstLogin extends BaseActivity {
                         super.onAnimationEnd(animation);
                         Observable.timer(600, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                                 .subscribe(a -> {
+                                    Intent intent;
                                     if (setupPayPass) {
-                                        Intent intent = new Intent(AppFirstLogin.this, SetUpPaymentPwdActivity.class);
+                                        intent = new Intent(AppFirstLogin.this, SetUpPaymentPwdActivity.class);
                                         intent.putExtra("firstLogin", true);
-                                        startActivity(intent);
-                                        finish();
                                     } else {
-                                        startActivity(new Intent(AppFirstLogin.this, HomeActivity.class));
-                                        finish();
+                                        intent = new Intent(AppFirstLogin.this, HomeActivity.class);
                                     }
+                                    intent.putExtra("resultUri", getIntent().getStringExtra("resultUri"));
+                                    startActivity(intent);
+                                    finish();
                                 });
                     }
                 });

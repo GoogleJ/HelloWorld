@@ -3,7 +3,6 @@ package com.zxjk.duoduo.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,7 +26,6 @@ import com.zxjk.duoduo.ui.widget.KeyboardPopupWindow;
 import com.zxjk.duoduo.ui.widget.PayPsdInputView;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
-import com.zxjk.duoduo.utils.MMKVUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +49,6 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
     TextView tvTitle;
     KeyboardPopupWindow popupWindow;
     private boolean isUiCreated = false;
-    private String resultUri;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +56,6 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
         setContentView(R.layout.activity_set_payment_pwd);
         ButterKnife.bind(this);
         firstLogin = getIntent().getBooleanExtra("firstLogin", false);
-        resultUri = getIntent().getStringExtra("resultUri");
 
         if (!firstLogin) {
             m_set_payment_pwd_label.setText(R.string.inputoldpsd);
@@ -149,36 +145,26 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
                         ToastUtils.showShort(R.string.setsuccess);
 
                         String action = getIntent().getStringExtra("action");
-                        if (!TextUtils.isEmpty(resultUri)) {
-                            MMKVUtils.getInstance().enCode("isLogin", true);
-                            Intent intent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse(resultUri));
-                            startActivity(intent);
+                        if (!TextUtils.isEmpty(action)) {
+                            switch (action) {
+                                case ACTION_THIRDPARTLOGINACCESS:
+                                    Intent intent = new Intent(this, LoginAuthorizationActivity.class);
+                                    intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
+                                    intent.putExtra("appId", getIntent().getStringExtra("appId"));
+                                    intent.putExtra("randomStr", getIntent().getStringExtra("randomStr"));
+                                    intent.putExtra("sign", getIntent().getStringExtra("sign"));
+                                    startActivity(intent);
+                                    break;
+                                case ACTION_LOGINAUTHORIZATIONSWICH:
+                                    startActivity(new Intent(this, HomeActivity.class));
+                                    break;
+                            }
                             finish();
                             return;
-                        } else {
-                            if (!TextUtils.isEmpty(action)) {
-                                switch (action) {
-                                    case ACTION_THIRDPARTLOGINACCESS:
-                                        Intent intent = new Intent(this, LoginAuthorizationActivity.class);
-                                        intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
-                                        intent.putExtra("appId", getIntent().getStringExtra("appId"));
-                                        intent.putExtra("randomStr", getIntent().getStringExtra("randomStr"));
-                                        intent.putExtra("sign", getIntent().getStringExtra("sign"));
-                                        startActivity(intent);
-                                        finish();
-                                        break;
-                                    case ACTION_LOGINAUTHORIZATIONSWICH:
-                                        startActivity(new Intent(this, HomeActivity.class));
-                                        finish();
-                                        break;
-                                }
-                                return;
-                            }
                         }
 
                         Intent intent = new Intent(SetUpPaymentPwdActivity.this, HomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("resultUri", getIntent().getStringExtra("resultUri"));
                         startActivity(intent);
                         finish();
                     } else {

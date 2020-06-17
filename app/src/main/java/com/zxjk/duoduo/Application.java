@@ -47,7 +47,6 @@ import com.zxjk.duoduo.rongIM.provider.TransferProvider;
 import com.zxjk.duoduo.rongIM.provider.WechatCastProvider;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.utils.LanguageUtil;
-import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.MyCrashHandler;
 import com.zxjk.duoduo.utils.WebDataUtils;
 
@@ -166,8 +165,6 @@ public class Application extends android.app.Application {
                 ToastUtils.showShort(R.string.duplicated_login);
                 RongIM.getInstance().logout();
                 Constant.clear();
-                MMKVUtils.getInstance().enCode("isLogin", false);
-
                 Intent intent = new Intent(getApplicationContext(), NewLoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

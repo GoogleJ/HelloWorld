@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -42,7 +41,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.UserInfo;
 
 public class ThirdPartLoginActivity extends BaseActivity {
     public static final String ACTION_THIRDPARTLOGINACCESS = "ThirdPartLoginAccess";
@@ -236,7 +234,7 @@ public class ThirdPartLoginActivity extends BaseActivity {
         }
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .appUserRegisterAndLogin(phone, mEtVerificationCode.getText().toString(),"","")
+                .appUserRegisterAndLogin(phone, mEtVerificationCode.getText().toString(), "", "")
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
@@ -269,12 +267,8 @@ public class ThirdPartLoginActivity extends BaseActivity {
                 MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                 MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
                 MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
-                MMKVUtils.getInstance().enCode("isLogin", true);
 
-                UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
-                RongIM.getInstance().setCurrentUserInfo(userInfo);
-
-                if (Constant.currentUser.getIsFirstLogin().equals(Constant.FLAG_FIRSTLOGIN)) {
+                if (Constant.currentUser.getIsFirstLogin().equals("0")) {
                     Intent intent = new Intent(ThirdPartLoginActivity.this, SetUpPaymentPwdActivity.class);
                     intent.putExtra("firstLogin", true);
                     intent.putExtra("action", action);

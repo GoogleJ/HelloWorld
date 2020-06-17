@@ -18,6 +18,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
@@ -56,50 +57,45 @@ public class BaseActivity extends RxAppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (enableCheckConstant && (Constant.currentUser == null || TextUtils.isEmpty(Constant.token) || TextUtils.isEmpty(Constant.userId))) {
-            if (MMKVUtils.getInstance().decodeBool("isLogin")) {
-                LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
-                if (login != null) {
-                    Constant.currentUser = login;
-                    Constant.token = login.getToken();
-                    Constant.userId = login.getId();
-                    if (RongIM.getInstance().getCurrentConnectionStatus()
-                            != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED || RongIM.getInstance().getCurrentConnectionStatus()
-                            != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
-                        RongIM.connect(login.getRongToken(), new RongIMClient.ConnectCallback() {
-                            @Override
-                            public void onTokenIncorrect() {
-                                MMKVUtils.getInstance().enCode("isLogin", false);
-                                Constant.clear();
-                                ToastUtils.showShort(getString(R.string.login_again));
-                                Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }
+            LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
+            if (login != null) {
+                Constant.currentUser = login;
+                Constant.token = login.getToken();
+                Constant.userId = login.getId();
+            }
+        }
 
-                            @Override
-                            public void onSuccess(String userid) {
-                            }
+        if (enableCheckConstant) {
+            if (Constant.currentUser != null && !TextUtils.isEmpty(Constant.currentUser.getRongToken())) {
+                if (RongIM.getInstance().getCurrentConnectionStatus()
+                        != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED || RongIM.getInstance().getCurrentConnectionStatus()
+                        != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
+                    RongIM.connect(Constant.currentUser.getRongToken(), new RongIMClient.ConnectCallback() {
+                        @Override
+                        public void onTokenIncorrect() {
+                            Constant.clear();
+                            ToastUtils.showShort(getString(R.string.login_again));
+                            Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            ActivityUtils.startActivity(intent);
+                        }
 
-                            @Override
-                            public void onError(RongIMClient.ErrorCode errorCode) {
-                                MobclickAgent.reportError(Utils.getApp(), new Exception("login expired!Msg:" + errorCode.getMessage()) + "code:" + errorCode.getValue());
-                                MMKVUtils.getInstance().enCode("isLogin", false);
-                                Constant.clear();
-                                ToastUtils.showShort(getString(R.string.login_again));
-                                Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-                    }
-                } else {
-                    ToastUtils.showShort(getString(R.string.login_again));
-                    MMKVUtils.getInstance().enCode("isLogin", false);
-                    startActivity(new Intent(this, NewLoginActivity.class));
-                    finish();
+                        @Override
+                        public void onSuccess(String userid) {
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                            MobclickAgent.reportError(Utils.getApp(), new Exception("login expired!Msg:" + errorCode.getMessage()) + "code:" + errorCode.getValue());
+                            Constant.clear();
+                            ToastUtils.showShort(getString(R.string.login_again));
+                            Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            ActivityUtils.startActivity(intent);
+                        }
+                    });
                 }
             }
         }
@@ -108,7 +104,6 @@ public class BaseActivity extends RxAppCompatActivity {
             fixOrientation();
         }
         setLightStatusBar(false);
-        super.onCreate(savedInstanceState);
     }
 
     public void setEnableTouchHideKeyBoard(boolean enableTouchHideKeyBoard) {
@@ -213,7 +208,6 @@ public class BaseActivity extends RxAppCompatActivity {
         if (getLocalClassName().equals("NewLoginActivity")) return;
         RongIM.getInstance().logout();
         Constant.clear();
-        MMKVUtils.getInstance().enCode("isLogin", false);
 
         Intent intent = new Intent(BaseActivity.this, NewLoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -181,6 +181,15 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             intent.putExtra("url", Constant.URL_628ACTIVITY);
             startActivity(intent);
         }
+
+        handleQR();
+    }
+
+    private void handleQR() {
+        if (!TextUtils.isEmpty(getIntent().getStringExtra("resultUri"))) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getIntent().getStringExtra("resultUri")));
+            startActivity(intent);
+        }
     }
 
     private void initRongMention() {

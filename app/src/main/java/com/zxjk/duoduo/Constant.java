@@ -42,7 +42,6 @@ public class Constant {
 
     public static final String URL_628ACTIVITY = "";
 
-    public static final String FLAG_FIRSTLOGIN = "0";
     public static final String LOCAL_CHANNEL_ID = "rc_notification_id";
     public static final String ACTION_BROADCAST1 = "Action:Broadcast:blockWalletCreated";
     public static final String ACTION_BROADCAST2 = "Action:Broadcast:rongMsgArrive";

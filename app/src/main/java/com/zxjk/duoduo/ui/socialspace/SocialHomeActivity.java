@@ -135,7 +135,6 @@ public class SocialHomeActivity extends BaseActivity {
 
     private String groupId;
     private int appbarHeight;
-    private String isQR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +147,6 @@ public class SocialHomeActivity extends BaseActivity {
 
         fromConversation = (GroupResponse) getIntent().getSerializableExtra("group");
         groupId = getIntent().getStringExtra("id");
-        isQR = getIntent().getStringExtra("isQR");
 
         initFragment();
 
@@ -755,9 +753,6 @@ public class SocialHomeActivity extends BaseActivity {
             this.setResult(1000, intent);
         }
         super.finish();
-        if (!TextUtils.isEmpty(isQR)) {
-            startActivity(new Intent(this, HomeActivity.class));
-        }
     }
 
     @SuppressLint("CheckResult")

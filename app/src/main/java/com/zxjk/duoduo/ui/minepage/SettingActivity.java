@@ -207,7 +207,6 @@ public class SettingActivity extends BaseActivity {
                             .compose(RxSchedulers.normalTrans())
                             .subscribe(s -> {
                                 RongIM.getInstance().logout();
-                                MMKVUtils.getInstance().enCode("isLogin", false);
                                 Constant.clear();
                                 ToastUtils.showShort(R.string.login_out);
                                 Intent intent = new Intent(SettingActivity.this, NewLoginActivity.class);

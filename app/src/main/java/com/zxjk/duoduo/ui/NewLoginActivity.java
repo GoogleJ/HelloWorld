@@ -59,7 +59,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.UserInfo;
 
 import static androidx.transition.TransitionSet.ORDERING_SEQUENTIAL;
 
@@ -83,11 +82,13 @@ public class NewLoginActivity extends BaseActivity {
 
     private TransitionSet anim;
     private boolean isAniming;
-    private String copyContent;
-    private String inviteId = "";
-    private String groupId;
-    private String type;
+
+    //剪切板处理过后的result
     private String resultUri;
+    //剪切板中读取到的邀请人id
+    private String inviteId = "";
+    //剪切板中读取到的群id
+    private String groupId = "";
 
     /**
      * 0：输入手机号
@@ -295,37 +296,9 @@ public class NewLoginActivity extends BaseActivity {
             ToastUtils.showShort(R.string.please_enter_verification_code);
             return;
         }
-        ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = clipboardManager.getPrimaryClip();
-        if (null != clipData && clipData.getItemCount() > 0) {
-            ClipData.Item item = clipData.getItemAt(0);
-            if (null != item) {
-                copyContent = item.getText().toString().trim();
-                if (copyContent.trim().indexOf("http://hilamg-share.zhumengxuanang.com/") != -1) {
-                    resultUri = copyContent.substring(0, copyContent.indexOf("?") + 1);
 
-                    if (resultUri.equals("http://hilamg-share.zhumengxuanang.com/?")) {
+        parseClipbord();
 
-                        String userIdJiequ = copyContent.substring(copyContent.indexOf("?") + 1);
-
-                        resultUri += AesUtil.getInstance().decrypt(userIdJiequ);
-
-                        Uri uri = Uri.parse(resultUri);
-                        inviteId = uri.getQueryParameter("id");
-                        groupId = uri.getQueryParameter("groupId");
-                        type = uri.getQueryParameter("type");
-
-                        if (TextUtils.isEmpty(type)) {
-                            resultUri = "hilamg://web/?action=addFriend&id=" + inviteId;
-                        } else if (type.equals("1")) {
-                            resultUri = "hilamg://web/?action=joinCommunity&id=" + inviteId + "&groupId=" + groupId;
-                        }
-                    }
-                }
-                clipboardManager.setPrimaryClip(clipboardManager.getPrimaryClip());
-                clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
-            }
-        }
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(), inviteId, groupId)
                 .compose(bindToLifecycle())
@@ -336,9 +309,47 @@ public class NewLoginActivity extends BaseActivity {
                     Constant.userId = l.getId();
                     Constant.currentUser = l;
                     Constant.authentication = l.getIsAuthentication();
-
-                    connect(l.getRongToken(), l.getIsFirstLogin().equals(Constant.FLAG_FIRSTLOGIN));
+                    connect();
                 }, this::handleApiError);
+    }
+
+    private void parseClipbord() {
+        try {
+            ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+            if (clipboardManager != null) {
+                ClipData clipData = clipboardManager.getPrimaryClip();
+                if (null != clipData && clipData.getItemCount() > 0) {
+                    ClipData.Item item = clipData.getItemAt(0);
+                    if (null != item && !TextUtils.isEmpty(item.getText())) {
+                        String copyContent = item.getText().toString();
+                        if (copyContent.contains("http://hilamg-share.zhumengxuanang.com/")) {
+                            resultUri = copyContent.substring(0, copyContent.indexOf("?") + 1);
+
+                            if (resultUri.equals("http://hilamg-share.zhumengxuanang.com/?")) {
+                                String userIdJiequ = copyContent.substring(copyContent.indexOf("?") + 1);
+
+                                resultUri += AesUtil.getInstance().decrypt(userIdJiequ);
+
+                                Uri uri = Uri.parse(resultUri);
+                                inviteId = uri.getQueryParameter("id");
+                                groupId = uri.getQueryParameter("groupId");
+                                String type = uri.getQueryParameter("type");
+
+                                if (TextUtils.isEmpty(type)) {
+                                    resultUri = "hilamg://web/?action=addFriend&id=" + inviteId;
+                                } else if (type.equals("1")) {
+                                    resultUri = "hilamg://web/?action=joinCommunity&id=" + inviteId + "&groupId=" + groupId;
+                                } else if (type.equals("0")) {
+                                    resultUri = "hilamg://web/?action=joinGroup&id=" + inviteId + "&groupId=" + groupId;
+                                }
+                            }
+                            clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
     private void initView() {
@@ -350,22 +361,20 @@ public class NewLoginActivity extends BaseActivity {
         vf = findViewById(R.id.vf);
         mNewLoginText = findViewById(R.id.tv_new_login_text);
         ppivVerify = findViewById(R.id.ppivVerify);
-
         llPhone = findViewById(R.id.llPhone);
         llContrary = findViewById(R.id.llContrary);
         tvContrary = findViewById(R.id.tvContrary);
         etPhone = findViewById(R.id.etPhone);
-
         btnConfirm = findViewById(R.id.btnConfirm);
     }
 
     @SuppressLint("CheckResult")
-    private void connect(String token, boolean equals) {
+    private void connect() {
         Observable.timer(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
                 .subscribe(c -> CommonUtils.initDialog(this).show());
 
-        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+        RongIM.connect(Constant.currentUser.getRongToken(), new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
                 CommonUtils.destoryDialog();
@@ -378,62 +387,31 @@ public class NewLoginActivity extends BaseActivity {
                 MMKVUtils.getInstance().enCode("login", Constant.currentUser);
                 MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
                 MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
-                UserInfo userInfo = new UserInfo(userid, Constant.currentUser.getNick(), Uri.parse(Constant.currentUser.getHeadPortrait()));
-                RongIM.getInstance().setCurrentUserInfo(userInfo);
 
-                if (equals) {
-                    if (!TextUtils.isEmpty(resultUri)) {
-                        Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
+                if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
+                    //first open app,enter AppFirstLoginActivity
+                    MMKVUtils.getInstance().enCode("appFirstLogin", true);
+                    Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
+                    ActivityOptionsCompat aoc = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this,
+                            ivIcon, "appicon");
+                    intent.putExtra("resultUri", resultUri);
+                    intent.putExtra("setupPayPass", Constant.currentUser.getIsFirstLogin().equals("0"));
+                    startActivity(intent, aoc.toBundle());
+                } else {
+                    Intent intent;
+                    if (Constant.currentUser.getIsFirstLogin().equals("0")) {
+                        //user first register app
+                        intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
                         intent.putExtra("firstLogin", true);
-                        intent.putExtra("resultUri", resultUri);
-                        startActivity(intent);
-                        finish();
                     } else {
-                        if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
-                            MMKVUtils.getInstance().enCode("appFirstLogin", true);
-                            Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
-                            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
-                                    , ivIcon, "appicon");
-                            intent.putExtra("setupPayPass", true);
-                            startActivity(intent, activityOptionsCompat.toBundle());
-                        } else {
-                            Intent intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
-                            intent.putExtra("firstLogin", true);
-                            intent.putExtra("resultUri", resultUri);
-                            startActivity(intent);
-                            finish();
-                        }
+                        //old user login
+                        intent = new Intent(NewLoginActivity.this, HomeActivity.class);
                     }
 
-                    return;
-                }
-
-                MMKVUtils.getInstance().enCode("isLogin", true);
-                if (!TextUtils.isEmpty(resultUri)) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(resultUri));
+                    intent.putExtra("resultUri", resultUri);
                     startActivity(intent);
                     finish();
-                } else {
-                    if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
-                        if (!TextUtils.isEmpty(resultUri)) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse(resultUri));
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            MMKVUtils.getInstance().enCode("appFirstLogin", true);
-                            Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
-                            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this
-                                    , ivIcon, "appicon");
-                            startActivity(intent, activityOptionsCompat.toBundle());
-                        }
-                    } else {
-                        startActivity(new Intent(NewLoginActivity.this, HomeActivity.class));
-                        finish();
-                    }
                 }
-
             }
 
             @Override
@@ -468,7 +446,6 @@ public class NewLoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         if (receiver != null) unregisterReceiver(receiver);
-
         super.onDestroy();
     }
 
@@ -484,15 +461,21 @@ public class NewLoginActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getExtras() == null) return;
 
-            Object[] object = (Object[]) intent.getExtras().get("pdus");
+            try {
+                Object[] object = (Object[]) intent.getExtras().get("pdus");
 
-            if (object == null) return;
+                if (object == null) return;
 
-            for (Object pdus : object) {
-                byte[] pdusMsg = (byte[]) pdus;
-                SmsMessage sms = SmsMessage.createFromPdu(pdusMsg);
-                String content = sms.getMessageBody();//短信内容
-                if (content.contains("Hilamg")) ppivVerify.setText(parseSms(content));
+                for (Object pdus : object) {
+                    byte[] pdusMsg = (byte[]) pdus;
+                    SmsMessage sms = SmsMessage.createFromPdu(pdusMsg);
+                    String content = sms.getMessageBody();
+                    if (content.contains("Hilamg")) {
+                        ppivVerify.setText(parseSms(content));
+                        return;
+                    }
+                }
+            } catch (Exception e) {
             }
         }
     }
