@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
@@ -41,6 +42,7 @@ public class GroupQRActivity extends BaseActivity {
     private ImageView ivRecipetImg;
     private TextView tvGroupName;
     private Bitmap bitmap;
+    private LinearLayout ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class GroupQRActivity extends BaseActivity {
         ivHead = findViewById(R.id.ivHead);
         tvGroupName = findViewById(R.id.tvUserName);
         ivRecipetImg = findViewById(R.id.ivQRImg);
+        ll = findViewById(R.id.ll);
 
         GroupResponse data = (GroupResponse) getIntent().getSerializableExtra("data");
 
@@ -102,8 +105,8 @@ public class GroupQRActivity extends BaseActivity {
         RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
             @Override
             public void onSuccess(List<Conversation> conversations) {
-                ivRecipetImg.buildDrawingCache();
-                Constant.shareGroupQR = ivRecipetImg.getDrawingCache();
+                ll.buildDrawingCache();
+                Constant.shareGroupQR = ll.getDrawingCache();
                 Intent intent = new Intent(GroupQRActivity.this, ShareGroupQRActivity.class);
                 intent.putParcelableArrayListExtra("data", (ArrayList<Conversation>) conversations);
                 startActivity(intent);
