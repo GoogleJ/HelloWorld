@@ -18,8 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="今日任务"
-            android:textColor="#272E3F"
-            android:textSize="16sp" />
+            android:textColor="#272E3F" />
 
         <TextView
             android:id="@+id/tv2"
@@ -29,7 +28,6 @@
             android:layout_toEndOf="@+id/tv1"
             android:text="TASK"
             android:textColor="#FFC106"
-            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -39,7 +37,8 @@
             android:layout_below="@+id/tv2"
             android:layout_marginTop="4dp"
             android:text="完成任务获得 0.1 USDT"
-            android:textColor="#909399" />
+            android:textColor="#909399"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv4"
@@ -48,7 +47,8 @@
             android:layout_alignBottom="@id/tv3"
             android:layout_toEndOf="@id/tv3"
             android:text=" (3/3)"
-            android:textColor="#909399" />
+            android:textColor="#909399"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv5"
@@ -63,6 +63,7 @@
             android:paddingBottom="6dp"
             android:text="领取奖励"
             android:textColor="#FFFFFF"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -91,16 +92,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_reward_task_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:textColor="@color/textcolor3"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
@@ -110,7 +110,8 @@
             android:drawableEnd="@drawable/ic_teskrightarrow"
             android:drawablePadding="4dp"
             android:text="@string/go_finish"
-            android:textColor="#0083BF" />
+            android:textColor="#0083BF"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <View

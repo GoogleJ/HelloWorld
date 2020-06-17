@@ -12,9 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.GsonUtils;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.DataTemp628;
 import com.zxjk.duoduo.rongIM.message.ActivityMessage;
 import com.zxjk.duoduo.ui.WebActivity;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.GlideUtil;
 
 import io.rong.imkit.model.ProviderTag;
@@ -67,6 +71,18 @@ public class ActivityMessageProvider extends IContainerItemProvider.MessageProvi
 
     @Override
     public void onItemClick(View view, int var2, ActivityMessage msg, UIMessage var4) {
+        if (!TextUtils.isEmpty(msg.getAction())) {
+            if (msg.getAction().equals("action1")) {
+                DataTemp628 data = new DataTemp628();
+                data.setId(Constant.currentUser.getId());
+                data.setToken(Constant.currentUser.getToken());
+                Intent intent = new Intent(view.getContext(), WebActivity.class);
+                intent.putExtra("url", Constant.URL_628ACTIVITY + "/?" + AesUtil.getInstance().encrypt(GsonUtils.toJson(data)));
+                ActivityUtils.startActivity(intent);
+                return;
+            }
+        }
+
         if (TextUtils.isEmpty(msg.getDetailUrl())) {
             return;
         }

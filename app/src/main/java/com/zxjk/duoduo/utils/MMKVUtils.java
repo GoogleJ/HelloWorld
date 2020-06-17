@@ -22,6 +22,10 @@ public class MMKVUtils {
         return mmkvUtils;
     }
 
+    public void remove(String key) {
+        mmkv.removeValueForKey(key);
+    }
+
     public void enCode(String key, long value) {
         mmkv.encode(key, value);
     }

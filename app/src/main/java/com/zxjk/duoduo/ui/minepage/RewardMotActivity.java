@@ -23,10 +23,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.PayPhoneRequest;
@@ -170,7 +166,7 @@ public class RewardMotActivity extends BaseActivity {
                 Glide.with(RewardMotActivity.this).load(p.getIcon()).into(mImgRewardTaskIc);
 
                 receiveReward.setOnClickListener(v -> {
-                    if (("0").equals(signListResponse.getActivity().getIsReceiveReward())) {
+                    if (("0").equals(signListResponse.getActivity().getIsReceiveReward()) && isComplete == 0) {
                         api.getActivityReward()
                                 .compose(bindToLifecycle())
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
@@ -204,22 +200,8 @@ public class RewardMotActivity extends BaseActivity {
                     if (!mTvRewardTaskGo.getText().equals("已完成")) {
                         switch (p.getId()) {
                             case "1":
-                                UMWeb link = new UMWeb(Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId));
-                                link.setTitle("我在使用Hilamg聊天");
-                                link.setDescription("加密私聊、社群管理、数字\n" +
-                                        "支付尽在Hilamg ，你也来\n" +
-                                        "试试吧～");
-                                link.setThumb(new UMImage(RewardMotActivity.this, R.drawable.ic_hilamglogo4));
-                                new ShareAction(RewardMotActivity.this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
-                                api.updateActivityStatus("shareToWx")
-                                        .compose(bindToLifecycle())
-                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
-                                        .compose(RxSchedulers.normalTrans())
-                                        .subscribe(s -> {
-                                            ToastUtils.showShort("分享成功");
-                                        }, RewardMotActivity.this::handleApiError);
-                                break;
                             case "2":
+                            case "9":
                                 Intent intent1 = new Intent(RewardMotActivity.this, HomeActivity.class);
                                 intent1.putExtra("type", 1);
                                 startActivity(intent1);
@@ -240,8 +222,7 @@ public class RewardMotActivity extends BaseActivity {
 //                            intent.putExtra("action", "shareNews");
 //                            setResult(1, intent);
                                 break;
-                            case "9":
-                                break;
+
                             case "10":
                                 Intent intent2 = new Intent(RewardMotActivity.this, HomeActivity.class);
                                 intent2.putExtra("type", 2);

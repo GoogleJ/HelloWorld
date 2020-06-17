@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.DataTemp628;
 import com.zxjk.duoduo.bean.request.PayPhoneRequest;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
@@ -117,7 +118,6 @@ public class HilamgServiceActivity extends BaseActivity {
                     if (d.equals("1")) {
                         startActivity(new Intent(this, OneKeyBuyCoinActivity.class));
                     } else {
-                        findViewById(R.id.first).setVisibility(View.GONE);
                         ToastUtils.showShort(R.string.developing);
                     }
                 }, this::handleApiError);
@@ -157,8 +157,11 @@ public class HilamgServiceActivity extends BaseActivity {
     }
 
     public void act628(View view) {
+        DataTemp628 data = new DataTemp628();
+        data.setId(Constant.currentUser.getId());
+        data.setToken(Constant.currentUser.getToken());
         Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra("url", Constant.URL_628ACTIVITY2);
+        intent.putExtra("url", Constant.URL_628ACTIVITY + "/?" + AesUtil.getInstance().encrypt(GsonUtils.toJson(data)));
         startActivity(intent);
     }
 

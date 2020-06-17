@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +56,7 @@ import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
+import com.zxjk.duoduo.bean.DataTemp628;
 import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
 import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
@@ -184,8 +184,11 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             dotService.setVisibility(View.VISIBLE);
         }
         if (getIntent().getBooleanExtra("attachAD", false)) {
+            DataTemp628 data = new DataTemp628();
+            data.setId(Constant.currentUser.getId());
+            data.setToken(Constant.currentUser.getToken());
             Intent intent = new Intent(this, WebActivity.class);
-            intent.putExtra("url", Constant.URL_628ACTIVITY1);
+            intent.putExtra("url", Constant.URL_628ACTIVITY + "/?" + AesUtil.getInstance().encrypt(GsonUtils.toJson(data)));
             startActivity(intent);
         }
 

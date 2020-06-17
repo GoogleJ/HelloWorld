@@ -131,7 +131,7 @@ public class NewLoginActivity extends BaseActivity {
 
         if (getIntent().getBooleanExtra("attachAD", false)) {
             Intent intent = new Intent(this, WebActivity.class);
-            intent.putExtra("url", Constant.URL_628ACTIVITY1);
+            intent.putExtra("url", Constant.URL_628ACTIVITY);
             startActivity(intent);
         }
 
@@ -139,7 +139,6 @@ public class NewLoginActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        parseClipbord();
         super.onResume();
     }
 
@@ -304,6 +303,8 @@ public class NewLoginActivity extends BaseActivity {
             return;
         }
 
+        parseClipbord();
+
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .appUserRegisterAndLogin(phone, ppivVerify.getPasswordString(), inviteId, groupId)
                 .compose(bindToLifecycle())
@@ -354,7 +355,6 @@ public class NewLoginActivity extends BaseActivity {
                                 } else if (type.equals("0")) {
                                     resultUri = "hilamg://web/?action=joinGroup&id=" + inviteId + "&groupId=" + groupId;
                                 }
-                                ToastUtils.showLong(resultUri);
                             }
                             clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
                         }

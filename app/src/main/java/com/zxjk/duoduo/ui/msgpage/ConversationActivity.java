@@ -195,7 +195,10 @@ public class ConversationActivity extends BaseActivity {
         extension = findViewById(io.rong.imkit.R.id.rc_extension);
 
         if (conversationType.equals("system")) {
-            findViewById(R.id.ll).setVisibility(View.GONE);
+            findViewById(R.id.ll).setVisibility(View.VISIBLE);
+            TextView tv_title = findViewById(R.id.tv_title);
+            tv_title.setText(R.string.hilamg_official);
+            GlideUtil.loadCircleImg(findViewById(R.id.ivHead), "http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1575277814072.png");
             extension.removeAllViews();
             return;
         }
@@ -1159,7 +1162,7 @@ public class ConversationActivity extends BaseActivity {
 
             if (groupInfo.getGroupInfo().getGroupOwnerId().equals(Constant.userId) || groupInfo.getIsAdmin().equals("1")) {
                 pluginModules.add(new SocialApplicationPlugin(true));
-            }else {
+            } else {
                 pluginModules.add(new SocialApplicationPlugin(false));
             }
 

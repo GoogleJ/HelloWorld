@@ -148,14 +148,10 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         ButterKnife.bind(this);
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(getString(R.string.personal_details));
-        findViewById(R.id.rl_back).setOnClickListener(v -> {
-            finish();
-        });
+        findViewById(R.id.rl_back).setOnClickListener(v -> finish());
         rl_end = findViewById(R.id.rl_end);
         rl_end.setVisibility(View.VISIBLE);
         rl_end.setOnClickListener(v -> {
-
-
             if (menuPop == null) {
                 menuPop = QuickPopupBuilder.with(this)
                         .contentView(R.layout.popup_window_people_information)
