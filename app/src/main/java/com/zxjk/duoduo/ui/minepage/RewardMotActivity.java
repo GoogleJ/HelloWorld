@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,23 +12,38 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.GsonUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.request.PayPhoneRequest;
 import com.zxjk.duoduo.bean.response.GetSignListResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.WebActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.msgpage.CreateGroupActivity;
+import com.zxjk.duoduo.ui.msgpage.NewFriendActivity;
+import com.zxjk.duoduo.ui.msgpage.QrCodeActivity;
+import com.zxjk.duoduo.ui.msgpage.SearchGroupActivity;
+import com.zxjk.duoduo.ui.wallet.OneKeyBuyCoinActivity;
 import com.zxjk.duoduo.ui.widget.dialog.RewardDialog;
+import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -41,9 +57,11 @@ public class RewardMotActivity extends BaseActivity {
     private RecyclerView recyclerSign;
     private RecyclerView mRecyclerSignTesk;
     private RelativeLayout mRlRewardrlNavigationBar;
+    private NestedScrollView scroll_view;
 
     private String headPortrait;
     private String rewardUSDT;
+    private int isComplete = 0;
 
     private Api api;
 
@@ -52,11 +70,7 @@ public class RewardMotActivity extends BaseActivity {
 
     private GetSignListResponse signListResponse;
 
-    private int mDistanceY;
-
-
-    private int height = 640;// 滑动开始变色的高,真实项目中此高度是由广告轮播或其他首页view高度决定
-    private int overallXScroll = 0;
+    private int height = 640;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,115 +108,201 @@ public class RewardMotActivity extends BaseActivity {
             protected void convert(BaseViewHolder helper, GetSignListResponse.PointsListBean p) {
                 TextView mTvRewardTaskTitle = helper.getView(R.id.tv_reward_task_title);
                 TextView mTvRewardTaskContent = helper.getView(R.id.tv_reward_task_content);
-                TextView mTvRewardTaskNumber = helper.getView(R.id.tv_reward_task_number);
-                TextView mRewardReceiveTack = helper.getView(R.id.ic_reward_receive_tack);
-                TextView mRewardReceiveTack2 = helper.getView(R.id.ic_reward_receive_tack2);
+
                 TextView mTvRewardTaskGo = helper.getView(R.id.tv_reward_task_go);
                 ImageView mImgRewardTaskIc = helper.getView(R.id.img_reward_task_ic);
+                TextView rewardAmount = helper.getView(R.id.tv3);
+                TextView tv4 = helper.getView(R.id.tv4);
+
+                String html;
+
+                if (signListResponse.getActivity().getActivityType().equals("0")) {
+                    html = "完成任务获得\u0020<font color=\"#1484BC\">" + signListResponse.getActivity().getRewardAmount() + "</font>\u0020" + signListResponse.getActivity().getSymbol() + "\u0020";
+                } else {
+                    html = "完成获得\u0020<font color=\"#1484BC\">" + signListResponse.getActivity().getRewardAmount() + "</font>\u0020" + signListResponse.getActivity().getSymbol() + "申购额度\u0020";
+                }
+                rewardAmount.setText(Html.fromHtml(html));
+
+                tv4.setText("(" + (signListResponse.getPointsList().size() - isComplete) + "/" + signListResponse.getPointsList().size() + ")");
+
+                if (p.getIsComplete().equals("1")) {
+                    mTvRewardTaskGo.setText("已完成");
+                    mTvRewardTaskGo.setTextColor(Color.parseColor("#909399"));
+                    mTvRewardTaskGo.setCompoundDrawables(null, null, null, null);
+                }
+
+                TextView receiveReward = helper.getView(R.id.tv5);
+
+                if (isComplete == 0 && signListResponse.getActivity().getIsReceiveReward().equals("0")) {
+                    receiveReward.setBackground(getResources().getDrawable(R.drawable.reward_receive_tack, null));
+                    if (signListResponse.getActivity().getActivityType().equals("0")) {
+                        //任务完成并且为普通任务并且未领取
+                        receiveReward.setText("领取奖励");
+                    } else {
+                        receiveReward.setText("获取申购额度");
+                    }
+                } else if (signListResponse.getActivity().getIsReceiveReward().equals("1")) {
+                    receiveReward.setBackground(getResources().getDrawable(R.drawable.reward_receive_tack2, null));
+                    if (signListResponse.getActivity().getActivityType().equals("0")) {
+                        receiveReward.setText("已领取");
+                    } else {
+                        receiveReward.setText("已获取");
+                        tv4.setVisibility(View.GONE);
+                        if (signListResponse.getActivity().getHasNext().equals("0")) {
+                            rewardAmount.setText("今日活动包已完成");
+                        } else {
+                            html = "明日完成获得\u0020<font color=\"#1484BC\">" + signListResponse.getActivity().getNextRewardAmount() + "</font>\u0020" + signListResponse.getActivity().getNextSymbol() + "申购额度\u0020";
+                            rewardAmount.setText(Html.fromHtml(html));
+                        }
+                    }
+                } else if (isComplete != 0) {
+                    if (signListResponse.getActivity().getActivityType().equals("0")) {
+                        receiveReward.setText("领取奖励");
+                    } else {
+                        receiveReward.setText("获取申购额度");
+                    }
+                }
+
 
                 mTvRewardTaskTitle.setText(p.getActivity());
                 mTvRewardTaskContent.setText(p.getActivityDesc());
 
                 Glide.with(RewardMotActivity.this).load(p.getIcon()).into(mImgRewardTaskIc);
 
-                if (p.getReceiveStatus().equals("3")) {
-                    mTvRewardTaskGo.setVisibility(View.GONE);
-                    mRewardReceiveTack.setVisibility(View.GONE);
-                    mRewardReceiveTack2.setVisibility(View.VISIBLE);
-                    mRewardReceiveTack2.setText(getString(R.string.cant_receive));
-                    taskState(p, mTvRewardTaskNumber);
-                }
-                //未完成
-                if (p.getReceiveStatus().equals("-1")) {
-                    taskState(p, mTvRewardTaskNumber);
-                    mRewardReceiveTack.setVisibility(View.GONE);
-                    mRewardReceiveTack2.setVisibility(View.GONE);
-                }
-                //未领取
-                if (p.getReceiveStatus().equals("0")) {
-                    mRewardReceiveTack.setVisibility(View.VISIBLE);
-                    mRewardReceiveTack2.setVisibility(View.GONE);
-                    if (p.getPointType().equals("0") || p.getPointType().equals("1")) {
-                        mTvRewardTaskGo.setVisibility(View.GONE);
+                receiveReward.setOnClickListener(v -> {
+                    if (("0").equals(signListResponse.getActivity().getIsReceiveReward())) {
+                        api.getActivityReward()
+                                .compose(bindToLifecycle())
+                                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
+                                .compose(RxSchedulers.normalTrans())
+                                .subscribe(s -> {
+                                    String htmlText;
+                                    receiveReward.setBackground(getResources().getDrawable(R.drawable.reward_receive_tack2, null));
+                                    if (signListResponse.getActivity().getActivityType().equals("0")) {
+                                        receiveReward.setText("已领取");
+                                    } else {
+                                        receiveReward.setText("已获取");
+                                        tv4.setVisibility(View.GONE);
+                                        if (signListResponse.getActivity().getHasNext().equals("0")) {
+                                            rewardAmount.setText("今日活动包已完成");
+                                        } else {
+                                            htmlText = "明日完成获得\u0020<font color=\"#1484BC\">" + signListResponse.getActivity().getNextRewardAmount() + "</font>\u0020" + signListResponse.getActivity().getNextSymbol() + "申购额度\u0020";
+                                            rewardAmount.setText(Html.fromHtml(htmlText));
+                                        }
+                                    }
+                                    if (signListResponse.getActivity().getActivityType().equals("1")) {
+                                        showDialog(getString(R.string.rewardtips2), "已获得\u0020" + signListResponse.getActivity().getRewardAmount() + signListResponse.getActivity().getSymbol() + "\u0020申购额度!");
+                                    } else {
+                                        showDialog(getString(R.string.rewardtips2), "已获得\u0020" + signListResponse.getActivity().getRewardAmount() + signListResponse.getActivity().getSymbol() + "\u0020活动奖励!");
+                                    }
+
+                                }, RewardMotActivity.this::handleApiError);
                     }
-                    taskState(p, mTvRewardTaskNumber);
-                }
-                //已领取
-                if (p.getReceiveStatus().equals("1")) {
-                    mRewardReceiveTack.setVisibility(View.GONE);
-                    mRewardReceiveTack2.setVisibility(View.GONE);
-                    mTvRewardTaskNumber.setText(getString(R.string.rewardTips1, p.getNumber(), p.getCounts(), p.getNumber()));
-                }
-                //已领取完
-                if (p.getReceiveStatus().equals("2")) {
-                    mTvRewardTaskGo.setVisibility(View.GONE);
-                    mRewardReceiveTack.setVisibility(View.GONE);
-                    mRewardReceiveTack2.setVisibility(View.VISIBLE);
-                    mRewardReceiveTack2.setText(getString(R.string.received));
-                    taskState(p, mTvRewardTaskNumber);
-                }
+                });
 
                 mTvRewardTaskGo.setOnClickListener(v -> {
-                    switch (p.getPointType()) {
-                        case "0":
-                            startActivity(new Intent(RewardMotActivity.this, SettingActivity.class));
-                            break;
-                        case "1":
-                            break;
-                        case "2":
-                        case "3":
-                            Intent intent1 = new Intent();
-                            intent1.putExtra("fromReward", true);
-                            intent1.putExtra("action", "social");
-                            setResult(1, intent1);
-                            break;
-                        case "4":
-                            Intent intent = new Intent();
-                            intent.putExtra("fromReward", true);
-                            intent.putExtra("action", "shareNews");
-                            setResult(1, intent);
-                            break;
+                    if (!mTvRewardTaskGo.getText().equals("已完成")) {
+                        switch (p.getId()) {
+                            case "1":
+                                UMWeb link = new UMWeb(Constant.APP_SHARE_URL + AesUtil.getInstance().encrypt("id=" + Constant.userId));
+                                link.setTitle("我在使用Hilamg聊天");
+                                link.setDescription("加密私聊、社群管理、数字\n" +
+                                        "支付尽在Hilamg ，你也来\n" +
+                                        "试试吧～");
+                                link.setThumb(new UMImage(RewardMotActivity.this, R.drawable.ic_hilamglogo4));
+                                new ShareAction(RewardMotActivity.this).withMedia(link).setPlatform(SHARE_MEDIA.WEIXIN).share();
+                                api.updateActivityStatus("shareToWx")
+                                        .compose(bindToLifecycle())
+                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
+                                        .compose(RxSchedulers.normalTrans())
+                                        .subscribe(s -> {
+                                            ToastUtils.showShort("分享成功");
+                                        }, RewardMotActivity.this::handleApiError);
+                                break;
+                            case "2":
+                                Intent intent1 = new Intent(RewardMotActivity.this, HomeActivity.class);
+                                intent1.putExtra("type", 1);
+                                startActivity(intent1);
+                                break;
+                            case "3":
+                            case "4":
+                            case "6":
+                            case "7":
+                            case "11":
+                                startActivity(new Intent(RewardMotActivity.this, HomeActivity.class));
+                                break;
+                            case "5":
+                                startActivity(new Intent(RewardMotActivity.this, NewFriendActivity.class));
+                                break;
+                            case "8":
+                                startActivity(new Intent(RewardMotActivity.this, SearchGroupActivity.class));
+//                            intent.putExtra("fromReward", true);
+//                            intent.putExtra("action", "shareNews");
+//                            setResult(1, intent);
+                                break;
+                            case "9":
+                                break;
+                            case "10":
+                                Intent intent2 = new Intent(RewardMotActivity.this, HomeActivity.class);
+                                intent2.putExtra("type", 2);
+                                startActivity(intent2);
+                                break;
+                            case "12":
+                                startActivity(new Intent(RewardMotActivity.this, QrCodeActivity.class));
+                                break;
+                            case "13":
+                                String data = AesUtil.getInstance().encrypt(GsonUtils.toJson(new PayPhoneRequest(Constant.token, Constant.userId)));
+                                String url = "http://hilamg-recharge.ztoken.cn/?obj=" + data;
+                                Intent intent = new Intent(RewardMotActivity.this, WebActivity.class);
+                                intent.putExtra("url", url);
+                                intent.putExtra("title", getString(R.string.payPhone));
+                                startActivity(intent);
+                                break;
+                            case "14":
+                                ServiceFactory.getInstance().getBaseService(Api.class)
+                                        .getOpenPurchaseStatus()
+                                        .compose(bindToLifecycle())
+                                        .compose(RxSchedulers.normalTrans())
+                                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
+                                        .subscribe(d -> {
+                                            if (d.equals("1")) {
+                                                startActivity(new Intent(RewardMotActivity.this, OneKeyBuyCoinActivity.class));
+                                            } else {
+                                                findViewById(R.id.first).setVisibility(View.GONE);
+                                                ToastUtils.showShort(R.string.developing);
+                                            }
+                                        });
+                                break;
+                            case "15":
+                                Intent intent3 = new Intent(RewardMotActivity.this, CreateGroupActivity.class);
+                                intent3.putExtra("eventType", 1);
+                                startActivity(intent3);
+                                break;
+                        }
+                        finish();
                     }
-                    finish();
                 });
 
-                mRewardReceiveTack.setOnClickListener(v -> {
-                    adapter2.getData().add(p);
-                    notifyItemInserted(adapter2.getItemCount());
-                    adapter2.getData().remove(helper.getAdapterPosition());
-                    notifyItemRemoved(helper.getAdapterPosition());
-                    api.receivePoint(p.getPointType())
-                            .compose(bindToLifecycle())
-                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
-                            .compose(RxSchedulers.normalTrans())
-                            .subscribe(s -> {
-                                showDialog(getString(R.string.rewardtips2), getString(R.string.rewardtips3,s.getReceivePoint(), s.getSymbol()));
-                                signListResponse.setPointsList(s.getPointsList());
-                                List<GetSignListResponse.PointsListBean> pointsList;
-                                pointsList = s.getPointsList();
-                                if (pointsList.size() > 0) {
-                                    Collections.sort(pointsList, (o1, o2) -> {
-                                        if (o1.getReceiveStatus().equals("2")) {
-                                            return 1;
-                                        }
-                                        return -1;
-                                    });
-                                }
-                                adapter2.setNewData(pointsList);
-                            }, RewardMotActivity.this::handleApiError);
-                });
+
+                RelativeLayout llHean = helper.getView(R.id.rl_head);
+                if (helper.getAdapterPosition() == 0) {
+                    llHean.setVisibility(View.VISIBLE);
+                } else {
+                    llHean.setVisibility(View.GONE);
+                }
             }
         };
 
-        View headerView = getLayoutInflater().inflate(R.layout.reward_mot_activity_rv_header, null);
-        adapter2.addHeaderView(headerView);
+
+//        View headerView = getLayoutInflater().inflate(R.layout.reward_mot_activity_rv_header, null);
+//        adapter2.addHeaderView(headerView);
         mRecyclerSignTesk.setAdapter(adapter2);
         mRecyclerSignTesk.setItemAnimator(new DefaultItemAnimator());
         mRecyclerSignTesk.setLayoutManager(new LinearLayoutManager(this));
 
-        tvSignDays = headerView.findViewById(R.id.tvSignDays);
-        recyclerSign = headerView.findViewById(R.id.recyclerSign);
-        mIvHead = headerView.findViewById(R.id.iv_head_reward);
+        tvSignDays = findViewById(R.id.tvSignDays);
+        recyclerSign = findViewById(R.id.recyclerSign);
+        mIvHead = findViewById(R.id.iv_head_reward);
         Glide.with(this).load(headPortrait).into(mIvHead);
 
         adapter1 = new BaseQuickAdapter<GetSignListResponse.CustomerSignBean, BaseViewHolder>(R.layout.item_sign) {
@@ -309,43 +409,23 @@ public class RewardMotActivity extends BaseActivity {
         });
         recyclerSign.setLayoutManager(gl);
 
-        mRecyclerSignTesk.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+        scroll_view = findViewById(R.id.scroll_view);
+        scroll_view.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
-                mDistanceY += dy;
-
-                int toolbarHeight = 50;
-
-                if (mDistanceY <= toolbarHeight) {
-                    float scale = (float) mDistanceY / toolbarHeight;
-                    float alpha = scale * 255;
-                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb((int) alpha, 0, 0, 0));
-                } else {
-                    mRlRewardrlNavigationBar.setBackgroundResource(R.color.colorPrimary);
-                }
-
-                overallXScroll = overallXScroll + dy;
-                if (overallXScroll <= 0) {
-                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb(0, 30, 144, 255));
-                } else if (overallXScroll > 0 && overallXScroll <= height) {
-                    float scale = (float) overallXScroll / height;
-                    float alpha = (255 * scale);
-                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb((int) alpha, 30, 144, 255));
-                } else {
-                    mRlRewardrlNavigationBar.setBackgroundColor(Color.argb(255, 30, 144, 255));
-                }
+            if (scroll_view.getScrollY() <= 0) {
+                mRlRewardrlNavigationBar.setBackgroundColor(Color.argb(0, 0, 131, 191));
+            } else if (scroll_view.getScrollY() <= height) {
+                float scale = (float) scroll_view.getScrollY() / height;
+                float alpha = (255 * scale);
+                mRlRewardrlNavigationBar.setBackgroundColor(Color.argb((int) alpha, 0, 131, 191));
+            } else {
+                mRlRewardrlNavigationBar.setBackgroundColor(Color.argb(255, 0, 131, 191));
             }
         });
 
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .getSignList()
+                .getActivityDetailList()
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
@@ -357,7 +437,13 @@ public class RewardMotActivity extends BaseActivity {
                             rewardUSDT = r.getCustomerSign().get(i + 1).getRepay();
                         }
                     }
-                    TextView signTomorrow = headerView.findViewById(R.id.tv_sign_tomorrow);
+
+                    for (int i = 0; i < r.getPointsList().size(); i++) {
+                        if (r.getPointsList().get(i).getIsComplete().equals("0")) {
+                            isComplete += 1;
+                        }
+                    }
+                    TextView signTomorrow = findViewById(R.id.tv_sign_tomorrow);
                     if (rewardUSDT != null) {
                         signTomorrow.setText(getString(R.string.rewardtips4, rewardUSDT));
                     }
@@ -366,35 +452,40 @@ public class RewardMotActivity extends BaseActivity {
                     adapter1.setNewData(r.getCustomerSign());
 
                     List<GetSignListResponse.PointsListBean> pointsList;
-                    pointsList = r.getPointsList();
-
+                    pointsList = signListResponse.getPointsList();
                     if (pointsList.size() > 0) {
                         Collections.sort(pointsList, (o1, o2) -> {
-                            if (o1.getReceiveStatus().equals("2") || o1.getReceiveStatus().equals("3")) {
+                            if (o1.getIsComplete().equals("1")) {
                                 return 1;
                             }
                             return -1;
                         });
                     }
                     adapter2.setNewData(pointsList);
+
                 }, this::handleApiError);
     }
 
     public void taskState(GetSignListResponse.PointsListBean p, TextView v) {
-        if (p.getPointType().equals("0") || p.getPointType().equals("1")) {
-            v.setText(R.string.only_once_done);
-        } else {
-            v.setText(getString(R.string.rewardTips1, p.getNumber(), p.getCounts(), p.getNumber()));
-        }
+//        if (p.getPointType().equals("0") || p.getPointType().equals("1")) {
+//            v.setText(R.string.only_once_done);
+//        } else {
+//            v.setText(getString(R.string.rewardTips1, p.getNumber(), p.getCounts(), p.getNumber()));
+//        }
     }
 
     public void showDialog(String titleName, String title) {
-        new RewardDialog(this, R.style.dialog, "", (dialog, confirm) -> {
-            if (confirm) {
-                dialog.dismiss();
+        new RewardDialog(this, R.style.dialog, "", (dialog, confirm, v) -> {
+            if ("1".equals(signListResponse.getActivity().getActivityType()) && v == 1) {
+                ToastUtils.showShort("ggg");
+            } else {
+                if (confirm) {
+                    dialog.dismiss();
+                }
             }
         }).setTitleName(titleName)
                 .setTitle(title)
+                .setBtnName("1".equals(signListResponse.getActivity().getActivityType()) ? "去查看" : "确定")
                 .show();
     }
 }

@@ -7,8 +7,7 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="250dp"
@@ -34,19 +33,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textColor="#AAAFB5" />
+                android:textColor="#272E3F" />
 
             <Button
                 android:id="@+id/btn_reward_dialog_submit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_margin="32dp"
-                android:layout_marginTop="24dp"
                 android:background="@drawable/shape_reward_btn"
-                android:stateListAnimator="@null"
-                android:text="@string/ok1"
+                android:text="@string/queding"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
         <FrameLayout
@@ -73,4 +71,11 @@
             android:layout_marginTop="96dp"
             android:src="@drawable/ic_usdts" />
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_dialog_dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/ic_dialog_dismiss" />
 </LinearLayout>

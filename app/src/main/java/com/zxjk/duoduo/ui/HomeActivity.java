@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,6 +140,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         startBurnMsgInterval(0);
 
+        pager.setCurrentItem(getIntent().getIntExtra("type", 0));
         super.onResume();
     }
 
@@ -747,6 +749,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     }
                 });
     }
+
 
     @Override
     public void onTabSelected(int position) {

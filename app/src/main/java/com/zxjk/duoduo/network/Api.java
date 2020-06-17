@@ -38,6 +38,7 @@ import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.bean.response.GetOrderInfoByTypeResponse;
 import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
+import com.zxjk.duoduo.bean.response.GetQuickTickerResponse;
 import com.zxjk.duoduo.bean.response.GetRecommendCommunity;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
 import com.zxjk.duoduo.bean.response.GetRedPackageStatusResponse;
@@ -392,8 +393,8 @@ public interface Api {
     @FormUrlEncoded
     Observable<BaseResponse<String>> groupOperation(@Field("groupId") String groupId, @Field("type") String type, @Field("source") String source);
 
-    @POST("duoduo/customer/getSignList")
-    Observable<BaseResponse<GetSignListResponse>> getSignList();
+    @POST("duoduo/customer/getActivityDetailList")
+    Observable<BaseResponse<GetSignListResponse>> getActivityDetailList();
 
     @POST("duoduo/customer/createSign")
     Observable<BaseResponse<GetSignListResponse>> createSign();
@@ -846,4 +847,19 @@ public interface Api {
 
     @POST("duoduo/order/getSymbolPrice")
     Observable<BaseResponse<ArrayList<GetPaymentListBean>>> getSymbolPrice();
+
+    @POST("duoduo/activity/getActivityReward")
+    Observable<BaseResponse<String>> getActivityReward();
+
+
+    @POST("duoduo/activity/updateActivityStatus")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> updateActivityStatus(@Field("type") String type);
+
+
+    @POST("duoduo/otc/quickTicker")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetQuickTickerResponse>> quickTicker(@Field("type") String type, @Field("symbol") String symbol);
+
+
 }

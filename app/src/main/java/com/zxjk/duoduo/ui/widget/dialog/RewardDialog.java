@@ -19,12 +19,14 @@ public class RewardDialog extends Dialog implements View.OnClickListener {
     private TextView titleTxt;
     private Button btn_reward_dialog_submit;
     private ImageView img;
+    private TextView tv_dialog_dismiss;
 
     private Context mContext;
     private String content;
     private OnCloseListener listener;
     private String titleName;
     private String title;
+    private String btnSubmit;
 
     public RewardDialog(Context context) {
         super(context);
@@ -59,6 +61,11 @@ public class RewardDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
+    public RewardDialog setBtnName(String btnSubmit) {
+        this.btnSubmit = btnSubmit;
+        return this;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +93,8 @@ public class RewardDialog extends Dialog implements View.OnClickListener {
         titleTxt = findViewById(R.id.titleTxt);
         btn_reward_dialog_submit = findViewById(R.id.btn_reward_dialog_submit);
         btn_reward_dialog_submit.setOnClickListener(this);
+        tv_dialog_dismiss = findViewById(R.id.tv_dialog_dismiss);
+        tv_dialog_dismiss.setOnClickListener(this);
 
         img = findViewById(R.id.img_reward_light);
 
@@ -96,18 +105,28 @@ public class RewardDialog extends Dialog implements View.OnClickListener {
         if (!TextUtils.isEmpty(titleName)) {
             contentTxt.setText(titleName);
         }
+
+        if (!TextUtils.isEmpty(btnSubmit)) {
+            btn_reward_dialog_submit.setText(btnSubmit);
+        }
+
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_reward_dialog_submit:
-                listener.onClick(this, true);
+            case R.id.tv_dialog_dismiss:
+                listener.onClick(this, true, 0);
                 break;
+            case R.id.btn_reward_dialog_submit:
+                listener.onClick(this, true, 1);
+                break;
+
         }
     }
 
     public interface OnCloseListener {
-        void onClick(Dialog dialog, boolean confirm);
+        void onClick(Dialog dialog, boolean confirm, int view);
     }
 }

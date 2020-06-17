@@ -4,25 +4,33 @@ import java.util.List;
 
 public class GetSignListResponse {
 
+
+    /**
+     * pointsList : [{"activity":"微信分享","activityDesc":"微信分享","icon":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1578038430800.png","isComplete":"1"},{"activity":"添加一位好友","activityDesc":"添加一位好友","icon":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1578038430800.png","isComplete":"1"},{"activity":"在社群里发一次红包","activityDesc":"在社群里发一次红包","icon":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1578038430800.png","isComplete":"1"},{"activity":"往钱包地址充值一笔USDT","activityDesc":"往钱包地址充值一笔USDT","icon":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1578038430800.png","isComplete":"1"},{"activity":"新加入一个社群","activityDesc":"新加入一个社群","icon":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1578038430800.png","isComplete":"0"},{"activity":"扫码支付一次","activityDesc":"扫码支付一次","icon":"http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1578038430800.png","isComplete":"0"}]
+     * customerSign : [{"lastModifyTime":"今日","signCount":0,"totalCount":0,"repay":"0.01","signStatus":"0"},{"lastModifyTime":"06.13","signCount":0,"totalCount":0,"repay":"0.02","signStatus":"0"},{"lastModifyTime":"06.14","signCount":0,"totalCount":0,"repay":"0.03","signStatus":"0"},{"lastModifyTime":"06.15","signCount":0,"totalCount":0,"repay":"0.04","signStatus":"0"},{"lastModifyTime":"06.16","signCount":0,"totalCount":0,"repay":"0.05","signStatus":"0"},{"lastModifyTime":"06.17","signCount":0,"totalCount":0,"repay":"0.06","signStatus":"0"},{"lastModifyTime":"06.18","signCount":0,"totalCount":0,"repay":"0.07","signStatus":"0"}]
+     * activity : {"rewardAmount":"20","symbol":"USDT","isReceiveReward":"0","activityType":"1","hasNext":"1","nextRewardAmount":"30","nextSymbol":"USDT"}
+     * count : 65
+     */
+
+    private ActivityBean activity;
+    private int count;
     private List<PointsListBean> pointsList;
     private List<CustomerSignBean> customerSign;
-    private String count;
-    private String sumPay;
 
-    public String getCount() {
+    public ActivityBean getActivity() {
+        return activity;
+    }
+
+    public void setActivity(ActivityBean activity) {
+        this.activity = activity;
+    }
+
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(int count) {
         this.count = count;
-    }
-
-    public String getSumPay() {
-        return sumPay;
-    }
-
-    public void setSumPay(String sumPay) {
-        this.sumPay = sumPay;
     }
 
     public List<PointsListBean> getPointsList() {
@@ -41,34 +49,32 @@ public class GetSignListResponse {
         this.customerSign = customerSign;
     }
 
-    public static class PointsListBean {
+    public static class ActivityBean {
         /**
-         * id : 1
-         * customerId :
-         * createTime :
-         * updateTime :
-         * points : 0.0
-         * receiveStatus :
-         * pointType :
-         * isDelete :
-         * counts : 0
-         * receivePoints : 0.0
-         * activity : 实名验证
-         * activityDesc : 用户实名验证审核通过能获得100MoT
-         * rewardAmount : 100.0
-         * number : 0
-         * icon : ""
+         * rewardAmount : 20
+         * symbol : USDT
+         * isReceiveReward : 0
+         * activityType : 1
+         * hasNext : 1
+         * nextRewardAmount : 30
+         * nextSymbol : USDT
          */
 
-        private String receiveStatus;
-        private String pointType;
-        private int counts;
-        private String activity;
-        private String activityDesc;
-        private int number;
-        private String icon;
-        private String points;
+        private String rewardAmount;
         private String symbol;
+        private String isReceiveReward;
+        private String activityType;
+        private String hasNext;
+        private String nextRewardAmount;
+        private String nextSymbol;
+
+        public String getRewardAmount() {
+            return rewardAmount;
+        }
+
+        public void setRewardAmount(String rewardAmount) {
+            this.rewardAmount = rewardAmount;
+        }
 
         public String getSymbol() {
             return symbol;
@@ -78,44 +84,67 @@ public class GetSignListResponse {
             this.symbol = symbol;
         }
 
-        public String getPoints() {
-            return points;
+        public String getIsReceiveReward() {
+            return isReceiveReward;
         }
 
-        public void setPoints(String points) {
-            this.points = points;
+        public void setIsReceiveReward(String isReceiveReward) {
+            this.isReceiveReward = isReceiveReward;
         }
 
-        public String getIcon() {
-            return icon;
+        public String getActivityType() {
+            return activityType;
         }
 
-        public void setIcon(String icon) {
-            this.icon = icon;
+        public void setActivityType(String activityType) {
+            this.activityType = activityType;
         }
 
-        public String getReceiveStatus() {
-            return receiveStatus;
+        public String getHasNext() {
+            return hasNext;
         }
 
-        public void setReceiveStatus(String receiveStatus) {
-            this.receiveStatus = receiveStatus;
+        public void setHasNext(String hasNext) {
+            this.hasNext = hasNext;
         }
 
-        public String getPointType() {
-            return pointType;
+        public String getNextRewardAmount() {
+            return nextRewardAmount;
         }
 
-        public void setPointType(String pointType) {
-            this.pointType = pointType;
+        public void setNextRewardAmount(String nextRewardAmount) {
+            this.nextRewardAmount = nextRewardAmount;
         }
 
-        public int getCounts() {
-            return counts;
+        public String getNextSymbol() {
+            return nextSymbol;
         }
 
-        public void setCounts(int counts) {
-            this.counts = counts;
+        public void setNextSymbol(String nextSymbol) {
+            this.nextSymbol = nextSymbol;
+        }
+    }
+
+    public static class PointsListBean {
+        /**
+         * activity : 微信分享
+         * activityDesc : 微信分享
+         * icon : http://zhongxingjike2.oss-cn-hongkong.aliyuncs.com/upload/1578038430800.png
+         * isComplete : 1
+         */
+
+        private String activity;
+        private String activityDesc;
+        private String icon;
+        private String isComplete;
+        private String id;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
 
         public String getActivity() {
@@ -134,61 +163,37 @@ public class GetSignListResponse {
             this.activityDesc = activityDesc;
         }
 
-        public int getNumber() {
-            return number;
+        public String getIcon() {
+            return icon;
         }
 
-        public void setNumber(int number) {
-            this.number = number;
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
+
+        public String getIsComplete() {
+            return isComplete;
+        }
+
+        public void setIsComplete(String isComplete) {
+            this.isComplete = isComplete;
         }
     }
 
     public static class CustomerSignBean {
         /**
-         * id : 10
-         * customerId : 5
-         * createTime : 1566921600000
-         * lastModifyTime : 08.28
-         * signCount : 2
-         * totalCount : 2
-         * repay : 4
-         * isDelete : 0
-         * signStatus : 1
+         * lastModifyTime : 今日
+         * signCount : 0
+         * totalCount : 0
+         * repay : 0.01
+         * signStatus : 0
          */
 
-        private String id;
-        private String customerId;
-        private String createTime;
         private String lastModifyTime;
-        private String signCount;
-        private String totalCount;
+        private int signCount;
+        private int totalCount;
         private String repay;
-        private String isDelete;
         private String signStatus;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getCustomerId() {
-            return customerId;
-        }
-
-        public void setCustomerId(String customerId) {
-            this.customerId = customerId;
-        }
-
-        public String getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(String createTime) {
-            this.createTime = createTime;
-        }
 
         public String getLastModifyTime() {
             return lastModifyTime;
@@ -198,19 +203,19 @@ public class GetSignListResponse {
             this.lastModifyTime = lastModifyTime;
         }
 
-        public String getSignCount() {
+        public int getSignCount() {
             return signCount;
         }
 
-        public void setSignCount(String signCount) {
+        public void setSignCount(int signCount) {
             this.signCount = signCount;
         }
 
-        public String getTotalCount() {
+        public int getTotalCount() {
             return totalCount;
         }
 
-        public void setTotalCount(String totalCount) {
+        public void setTotalCount(int totalCount) {
             this.totalCount = totalCount;
         }
 
@@ -220,14 +225,6 @@ public class GetSignListResponse {
 
         public void setRepay(String repay) {
             this.repay = repay;
-        }
-
-        public String getIsDelete() {
-            return isDelete;
-        }
-
-        public void setIsDelete(String isDelete) {
-            this.isDelete = isDelete;
         }
 
         public String getSignStatus() {

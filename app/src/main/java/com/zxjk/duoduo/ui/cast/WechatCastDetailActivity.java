@@ -241,7 +241,7 @@ public class WechatCastDetailActivity extends BaseActivity {
                 if (info != null && info.getRoomStatus().equals("0")) {
                     Intent intent = new Intent(this, ModifyWechatCastActivity.class);
                     intent.putExtra("info", info);
-                    intent.putExtra("chooseFlag",chooseFlag);
+                    intent.putExtra("chooseFlag", chooseFlag);
                     startActivityForResult(intent, 1);
                 } else {
                     ToastUtils.showShort(R.string.cant_modify_inprogress_cast);
@@ -497,21 +497,22 @@ public class WechatCastDetailActivity extends BaseActivity {
                                     intent.putExtra("playBackUrl", playBackUrl);
                                     startActivity(intent);
                                 } else {
+                                    updateActivityStatus();
                                     Intent intent = new Intent(this, HomeActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                     Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon().appendPath("conversation").appendPath(Conversation.ConversationType.CHATROOM.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", roomId).build();
                                     intent = new Intent("android.intent.action.VIEW", uri);
                                     intent.putExtra("chatRoomOwnerId", info.getRoomOwnerId());
-                                    intent.putExtra("roomOwnerId",info.getRoomOwnerId());
+                                    intent.putExtra("roomOwnerId", info.getRoomOwnerId());
                                     intent.putExtra("chatRoomStatus", s);
-                                    intent.putExtra("groupNikeName",info.getGroupNikeName());
+                                    intent.putExtra("groupNikeName", info.getGroupNikeName());
                                     intent.putExtra("chatRoomName", info.getRoomName());
                                     intent.putExtra("groupId", info.getGroupId());
                                     intent.putExtra("castTopic", info.getTopic());
                                     intent.putExtra("liveType", info.getLiveType());
                                     intent.putExtra("playUrl", info.getPlayUrl());
-                                    intent.putExtra("topic",info.getTopic());
+                                    intent.putExtra("topic", info.getTopic());
                                     startActivity(intent);
                                 }
 
@@ -521,6 +522,17 @@ public class WechatCastDetailActivity extends BaseActivity {
                 ToastUtils.showShort(R.string.cant_view_cast1);
             }
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private void updateActivityStatus() {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .updateActivityStatus("watchLive")
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(s -> {
+                }, this::handleApiError);
     }
 
     public void retry(View view) {
