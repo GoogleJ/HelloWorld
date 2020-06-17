@@ -131,7 +131,7 @@ public class NewLoginActivity extends BaseActivity {
 
         if (getIntent().getBooleanExtra("attachAD", false)) {
             Intent intent = new Intent(this, WebActivity.class);
-            intent.putExtra("url", Constant.URL_628ACTIVITY);
+            intent.putExtra("url", Constant.URL_628ACTIVITY1);
             startActivity(intent);
         }
     }

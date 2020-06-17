@@ -120,6 +120,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private DrawerView drawer;
     private TextView tvNick;
     private ImageView ivHead;
+    private View dotService;
     private BottomNavigationBar m_bottom_bar;
     private int msgCount1;
     private BurnAfterReadMessageLocalBeanDao dao;
@@ -157,7 +158,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         createChannel();
 
         if (!BuildConfig.DEBUG) {
-//            getVersion(false);
+            getVersion(false);
         }
 
         initView();
@@ -176,9 +177,13 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initRongMention();
 
+        dotService = findViewById(R.id.dotService);
+        if (System.currentTimeMillis() > 1593273600000L && System.currentTimeMillis() < 1593532799000L) {
+            dotService.setVisibility(View.VISIBLE);
+        }
         if (getIntent().getBooleanExtra("attachAD", false)) {
             Intent intent = new Intent(this, WebActivity.class);
-            intent.putExtra("url", Constant.URL_628ACTIVITY);
+            intent.putExtra("url", Constant.URL_628ACTIVITY1);
             startActivity(intent);
         }
 

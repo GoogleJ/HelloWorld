@@ -49,9 +49,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:maxEms="6"
                         android:lines="1"
-                        android:text="sada"
+                        android:maxEms="6"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -82,6 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:clipChildren="false"
         android:gravity="center_vertical"
         android:onClick="hilamgService"
         android:paddingStart="16dp">
@@ -92,12 +92,28 @@
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_home_menu_service1" />
 
-        <TextView
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hilamg_service"
-            android:textColor="#6D7278"
-            android:textSize="16.5sp" />
+            android:clipChildren="false">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hilamg_service"
+                android:textColor="#6D7278"
+                android:textSize="16.5sp" />
+
+            <View
+                android:id="@+id/dotService"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="-7dp"
+                android:background="@drawable/shape_dot"
+                android:visibility="invisible" />
+
+        </FrameLayout>
 
     </LinearLayout>
 

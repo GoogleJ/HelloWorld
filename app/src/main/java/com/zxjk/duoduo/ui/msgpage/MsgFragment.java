@@ -50,6 +50,7 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
     private ImageView imgPlus;
     private ImageView ivScan;
     private ImageView ivHead;
+    private View dotHead;
     private CusConversationListFragment listFragment;
 
     @Nullable
@@ -79,6 +80,10 @@ public class MsgFragment extends BaseFragment implements View.OnClickListener {
         listFragment = (CusConversationListFragment) fragments.get(0);
         ivHead = rootView.findViewById(R.id.ivHead);
         ivScan = rootView.findViewById(R.id.ivScan);
+        dotHead = rootView.findViewById(R.id.dotHead);
+        if (System.currentTimeMillis() > 1593273600000L && System.currentTimeMillis() < 1593532799000L) {
+            dotHead.setVisibility(View.VISIBLE);
+        }
 
         getPermisson(ivScan, granted -> {
             if (granted) startActivity(new Intent(getActivity(), QrCodeActivity.class));

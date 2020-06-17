@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="@string/official_service"
         android:textColor="@color/black"
         android:textSize="17sp"
@@ -47,20 +47,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingTop="20dp">
+        android:paddingTop="16dp">
 
-        <TextView
-            android:id="@+id/tv1"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_rewardmot"
-            android:drawablePadding="14dp"
-            android:gravity="center"
-            android:onClick="reward"
-            android:text="@string/rewardmot"
-            android:textColor="#6D7278" />
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/ic_rewardmot"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:onClick="reward"
+                android:text="@string/rewardmot"
+                android:textColor="#6D7278" />
+
+            <View
+                android:id="@+id/dot1"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/shape_dot"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv2"
@@ -68,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_word_of_command_red_packet"
-            android:drawablePadding="14dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:onClick="showRewardCodePop"
             android:text="@string/word_of_command_red_packet"
@@ -80,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_prepaid_refill"
-            android:drawablePadding="14dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:onClick="payPhone"
             android:text="@string/mojiaofei"
@@ -92,7 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingTop="20dp">
+        android:paddingTop="16dp">
 
         <TextView
             android:id="@+id/tv4"
@@ -101,7 +116,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_buycoinonekey"
-            android:drawablePadding="14dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:onClick="buyCoin"
             android:text="@string/buycoinonekey"
@@ -113,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_moshopping"
-            android:drawablePadding="14dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:onClick="mall"
             android:text="@string/moshopping"
@@ -125,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_cooperate"
-            android:drawablePadding="14dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:onClick="coo"
             android:text="@string/cooperate"
@@ -133,11 +148,62 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="16dp">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/ic_buycoinonekey628"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:onClick="act628"
+                android:text="6.28元购U"
+                android:textColor="#6D7278" />
+
+            <View
+                android:id="@+id/dot2"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/shape_dot"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_moshopping"
+            android:drawablePadding="10dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_cooperate"
+            android:drawablePadding="10dp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="@string/other_service"
         android:textColor="#272E3F"
         android:textSize="17sp"
@@ -147,7 +213,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingTop="20dp">
+        android:paddingTop="16dp">
 
         <TextView
             android:id="@+id/tv7"
@@ -156,7 +222,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_hotel"
-            android:drawablePadding="14dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:onClick="other"
             android:text="@string/hotel"
@@ -168,7 +234,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_tourism"
-            android:drawablePadding="14dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:onClick="other"
             android:text="@string/tourism"
@@ -180,7 +246,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_getting_around"
-            android:drawablePadding="14dp"
+            android:drawablePadding="10dp"
             android:gravity="center"
             android:onClick="other"
             android:text="@string/getting_around"

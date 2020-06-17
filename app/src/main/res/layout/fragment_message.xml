@@ -27,10 +27,25 @@
             android:paddingEnd="8dp"
             android:paddingBottom="6dp">
 
-            <ImageView
-                android:id="@+id/ivHead"
-                android:layout_width="32dp"
-                android:layout_height="32dp" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivHead"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@mipmap/ic_launcher" />
+
+                <View
+                    android:id="@+id/dotHead"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/shape_dot"
+                    android:visibility="gone" />
+
+            </FrameLayout>
 
             <TextView
                 android:layout_width="0dp"
