@@ -73,16 +73,6 @@
             android:layout_marginTop="40dp"
             android:src="@drawable/kai" />
 
-        <TextView
-            android:id="@+id/tvShowDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:text="@string/m_expired_envelopes_info"
-            android:textColor="#FEE5A7"
-            android:visibility="visible" />
     </LinearLayout>
 
     <LinearLayout
@@ -154,7 +144,16 @@
             android:textColor="#EA3634"
             android:textSize="16.5sp" />
 
-
+        <TextView
+            android:id="@+id/tvShowDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:text="@string/m_expired_envelopes_info"
+            android:textColor="#FEE5A7"
+            android:visibility="gone" />
 
     </LinearLayout>
 
