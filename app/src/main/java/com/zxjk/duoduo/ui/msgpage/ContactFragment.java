@@ -3,6 +3,7 @@ package com.zxjk.duoduo.ui.msgpage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class ContactFragment extends BaseLazyFragment {
     private int[] mTitleDataList = new int[]{R.string.friend, R.string.social};
     private View dotNewFriend;
 
+
     public View getDotNewFriend() {
         return dotNewFriend;
     }
@@ -54,6 +56,7 @@ public class ContactFragment extends BaseLazyFragment {
         layoutParams.height = BarUtils.getStatusBarHeight();
         topmask.setLayoutParams(layoutParams);
         dotNewFriend = rootView.findViewById(R.id.dotNewFriend);
+
 
         return rootView;
     }
@@ -139,6 +142,4 @@ public class ContactFragment extends BaseLazyFragment {
 
         indicator.setNavigator(navigator);
     }
-
-
 }

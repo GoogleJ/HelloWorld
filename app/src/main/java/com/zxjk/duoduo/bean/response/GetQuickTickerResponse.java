@@ -15,6 +15,24 @@ public class GetQuickTickerResponse {
     private String minQuota;
     private String currencySymbol;
     private String maxQuota;
+    private String minAmount;
+    private String maxAmount;
+
+    public String getMinAmount() {
+        return minAmount;
+    }
+
+    public void setMinAmount(String minAmount) {
+        this.minAmount = minAmount;
+    }
+
+    public String getMaxAmount() {
+        return maxAmount;
+    }
+
+    public void setMaxAmount(String maxAmount) {
+        this.maxAmount = maxAmount;
+    }
 
     public String getPrice() {
         return price;

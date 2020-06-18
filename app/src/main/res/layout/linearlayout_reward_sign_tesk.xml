@@ -18,8 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="今日任务"
-            android:textColor="#272E3F"
-            android:textSize="16sp" />
+            android:textColor="#272E3F" />
 
         <TextView
             android:id="@+id/tv2"
@@ -29,7 +28,6 @@
             android:layout_toEndOf="@+id/tv1"
             android:text="TASK"
             android:textColor="#FFC106"
-            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -38,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv2"
             android:layout_marginTop="4dp"
+            android:textSize="12sp"
             android:text="完成任务获得 0.1 USDT"
             android:textColor="#909399" />
 
@@ -61,6 +60,7 @@
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
             android:paddingBottom="6dp"
+            android:textSize="12sp"
             android:text="领取奖励"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
@@ -91,16 +91,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_reward_task_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:textColor="@color/textcolor3"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
@@ -109,6 +108,7 @@
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_teskrightarrow"
             android:drawablePadding="4dp"
+            android:textSize="12sp"
             android:text="@string/go_finish"
             android:textColor="#0083BF" />
     </LinearLayout>

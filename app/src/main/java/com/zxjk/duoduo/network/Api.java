@@ -32,9 +32,11 @@ import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.duoduo.bean.response.GetGroupChatInfoByGroupIdResponse;
 import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
+import com.zxjk.duoduo.bean.response.GetImprovePaymentInformationResponse;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
 import com.zxjk.duoduo.bean.response.GetLiveInfoByGroupIdResponse;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
+import com.zxjk.duoduo.bean.response.GetOTCPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetOrderInfoByTypeResponse;
 import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
@@ -862,4 +864,16 @@ public interface Api {
     Observable<BaseResponse<GetQuickTickerResponse>> quickTicker(@Field("type") String type, @Field("symbol") String symbol);
 
 
+    @POST("duoduo/otc/getOTCPayInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetOTCPayInfoResponse>> getOTCPayInfo(@Field("type") String type, @Field("symbol") String symbol);
+
+
+    @POST("duoduo/otc/improvePaymentInformation")
+    Observable<BaseResponse<GetImprovePaymentInformationResponse>> improvePaymentInformation();
+
+
+    @POST("duoduo/otc/updateOTCPayInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> updateOTCPayInfo(@Field("data") String data);
 }

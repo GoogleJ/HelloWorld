@@ -171,7 +171,7 @@ public class RewardMotActivity extends BaseActivity {
                 Glide.with(RewardMotActivity.this).load(p.getIcon()).into(mImgRewardTaskIc);
 
                 receiveReward.setOnClickListener(v -> {
-                    if (("0").equals(signListResponse.getActivity().getIsReceiveReward())) {
+                    if (("0").equals(signListResponse.getActivity().getIsReceiveReward()) && 0 == isComplete) {
                         api.getActivityReward()
                                 .compose(bindToLifecycle())
                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
@@ -221,6 +221,7 @@ public class RewardMotActivity extends BaseActivity {
                                         }, RewardMotActivity.this::handleApiError);
                                 break;
                             case "2":
+                            case "9":
                                 Intent intent1 = new Intent(RewardMotActivity.this, HomeActivity.class);
                                 intent1.putExtra("type", 1);
                                 startActivity(intent1);
@@ -241,8 +242,7 @@ public class RewardMotActivity extends BaseActivity {
 //                            intent.putExtra("action", "shareNews");
 //                            setResult(1, intent);
                                 break;
-                            case "9":
-                                break;
+
                             case "10":
                                 Intent intent2 = new Intent(RewardMotActivity.this, HomeActivity.class);
                                 intent2.putExtra("type", 2);

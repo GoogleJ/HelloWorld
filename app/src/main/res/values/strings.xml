@@ -77,7 +77,7 @@
     <string name="feedback_edit">留下你宝贵的意见</string>
     <string name="choosesex">性别选择</string>
     <string name="determine_btn">确定</string>
-    <string name="collection_code">收款码</string>
+    <string name="collection_code">收款二维码</string>
     <string name="user_name">周晓瑞</string>
     <string name="login_out">已退出登录</string>
     <string name="account_number">账号</string>
@@ -1127,7 +1127,7 @@
     <string name="pay_treasure" translatable="false">支付宝</string>
     <string name="bank_card" translatable="false">银行卡</string>
     <string name="buy_coin" translatable="false">购买%1$s</string>
-    <string name="payment_way" translatable="false">选择付款方式</string>
+    <string name="payment_way" translatable="false">选择收付款方式</string>
     <string name="payment_way2" translatable="false">付款方式:</string>
     <string name="price" translatable="false">单价:</string>
     <string name="amount" translatable="false">购买数量:</string>
@@ -1271,6 +1271,26 @@
     <string name="socialApplication">群应用</string>
     <string name="address_list_search">请输入关键字</string>
     <string name="toast2">手机端直播暂未开放</string>
+    <string name="wechat_info">微信信息</string>
+    <string name="receipt_type_real_name">真实姓名</string>
+    <string name="not_uploaded">未上传</string>
+    <string name="alipy_info">支付宝信息</string>
+    <string name="account_id">账号</string>
+    <string name="bank_info">银行卡信息</string>
+    <string name="account_name">持卡人姓名</string>
+    <string name="bank_id_card">卡号</string>
+    <string name="bank">开户行</string>
+    <string name="hint_alipay">请填写支付宝账号</string>
+    <string name="open_bank">开户银行</string>
+    <string name="please_upload_selector_open_bank">请输入开户银行</string>
+    <string name="uploaded">已上传</string>
+    <string name="wechat_nick">填写微信昵称</string>
+    <string name="alipay_number">填写支付宝账号</string>
+    <string name="bankcard">银行卡</string>
+    <string name="pay_type_successful">该信息已完善</string>
+    <string name="input_bank_number">请输入银行卡号</string>
+    <string name="receipt_type_name">账号</string>
+    <string name="commit_btn">提交</string>
     <string name="loading_pleasewait1">正在加载，请稍后</string>
     <string name="add_to_contact">添加到通讯录</string>
 
