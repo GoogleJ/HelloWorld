@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 import com.zxjk.duoduo.R;
 
 import io.rong.imkit.RongIM;
@@ -45,10 +47,15 @@ public class MInfoNotificationMsgItemProvider extends IContainerItemProvider.Mes
             if (content.getExtra().contains(v.getContext().getString(R.string.burn_after_read))) {
                 String origin = content.getMessage();
                 if (!origin.contains(v.getContext().getString(R.string.closeburn))) {
-                    SpannableString spannableString = new SpannableString(origin);
-                    spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(v.getContext(), R.color.colorTheme)),
-                            15, origin.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    viewHolder.contentTextView.setText(spannableString);
+                    try {
+                        SpannableString spannableString = new SpannableString(origin);
+                        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(v.getContext(), R.color.colorTheme)),
+                                15, origin.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        viewHolder.contentTextView.setText(spannableString);
+                    } catch (Exception e) {
+                        viewHolder.contentTextView.setText(origin);
+                        MobclickAgent.reportError(Utils.getApp(), "androidBUG4456:" + origin);
+                    }
                 }
             } else if (content.getExtra().contains("截屏通知")) {
 
