@@ -1178,9 +1178,12 @@ public class PictureSelectorActivity extends RongBaseNoActionbarActivity {
                 }
 
                 String[] videoTime = holder.videoDuration.getText().toString().split(":");
-                if (Integer.parseInt(videoTime[0]) * 60 + Integer.parseInt(videoTime[1]) > maxDuration) {
-                  (new Builder(PictureSelectorActivity.this)).setMessage(PictureSelectorActivity.this.getResources().getString(string.rc_picsel_selected_max_time_span_with_param, new Object[]{maxDuration / 60})).setPositiveButton(string.rc_confirm, (android.content.DialogInterface.OnClickListener)null).setCancelable(false).create().show();
-                  return;
+                try {
+                  if (Integer.parseInt(videoTime[0]) * 60 + Integer.parseInt(videoTime[1]) > maxDuration) {
+                    (new Builder(PictureSelectorActivity.this)).setMessage(PictureSelectorActivity.this.getResources().getString(string.rc_picsel_selected_max_time_span_with_param, new Object[]{maxDuration / 60})).setPositiveButton(string.rc_confirm, (android.content.DialogInterface.OnClickListener) null).setCancelable(false).create().show();
+                    return;
+                  }
+                } catch (Exception e) {
                 }
               }
 
