@@ -242,7 +242,6 @@ public class NewLoginActivity extends BaseActivity {
         });
 
         btnConfirm.setOnClickListener(v -> {
-
             if (isAniming) return;
 
             if (state == 0) {
