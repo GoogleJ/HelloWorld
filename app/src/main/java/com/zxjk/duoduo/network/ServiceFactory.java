@@ -2,6 +2,7 @@ package com.zxjk.duoduo.network;
 
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.BuildConfig;
@@ -117,6 +118,7 @@ public class ServiceFactory {
                             .header("token", Constant.token)
                             .header("Accept-Language", Constant.language)
                             .header("phoneUuid", Constant.phoneUuid)
+                            .header("version", AppUtils.getAppVersionName())
                             .header("systemType", "1");
                     Request request = requestBuilder.build();
                     return chain.proceed(request);

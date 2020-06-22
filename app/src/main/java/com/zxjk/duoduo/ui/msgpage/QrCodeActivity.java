@@ -9,7 +9,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -131,7 +130,7 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
 
         if (parseShareResult(result)) return;
 
-        if (!TextUtils.isEmpty(result) && result.contains("qr.alipay.com") || result.contains("QR.ALIPAY.COM")) {
+        if (!TextUtils.isEmpty(result) && result.contains("alipay") || result.contains("ALIPAY")) {
             Intent intent = new Intent(this, PayAliActivity.class);
             intent.putExtra("qrdata", result);
             startActivity(intent);
