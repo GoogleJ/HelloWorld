@@ -31,6 +31,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
+import com.zxjk.duoduo.utils.AliPayUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
@@ -140,6 +141,9 @@ public class PurchaseDetailsActivity extends BaseActivity {
             if (tvPayment.getText().equals(getString(R.string.the_complaint))) {
                 intent = new Intent(this, TheAppealActivity.class);
             } else {
+                if (byBoinsResponse.getPayType().equals("ALIPAY") && AliPayUtils.hasInstalledAlipayClient(this)) {
+                    AliPayUtils.startAlipayClient(this, byBoinsResponse.getAlipayUrl());
+                }
                 intent = new Intent(this, OrderDetailsActivity.class);
             }
             intent.putExtra("ByBoinsResponse", byBoinsResponse);
