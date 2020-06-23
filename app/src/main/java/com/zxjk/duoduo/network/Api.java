@@ -9,7 +9,6 @@ import com.zxjk.duoduo.bean.response.AssetManageBean;
 import com.zxjk.duoduo.bean.response.BalanceAssetManageBean;
 import com.zxjk.duoduo.bean.response.BaseResponse;
 import com.zxjk.duoduo.bean.response.BlockChainNewsBean;
-import com.zxjk.duoduo.bean.response.ByBoinsResponse;
 import com.zxjk.duoduo.bean.response.CastListBean;
 import com.zxjk.duoduo.bean.response.CommunityApplicationListResponse;
 import com.zxjk.duoduo.bean.response.CommunityCultureResponse;
@@ -680,24 +679,6 @@ public interface Api {
     @POST("otc/active/find/hailang")
     Observable<BaseResponse<ArrayList<FindHailangResponse>>> findhailang(@Field("currency") String currency, @Field("nonce") String nonce);
 
-    @FormUrlEncoded
-    @POST("duoduo/purchase/bycoins")
-    Observable<BaseResponse<ByBoinsResponse>> byCoins(@Field("active_id") String activeId,
-                                                      @Field("by_cny") String byCny,
-                                                      @Field("currency") String currency,
-                                                      @Field("nonce") String nonce,
-                                                      @Field("price") String price,
-                                                      @Field("user_id") String userId,
-                                                      @Field("payment_type") String paymentType);
-
-    @FormUrlEncoded
-    @POST("duoduo/purchase/byAmount")
-    Observable<BaseResponse<ByBoinsResponse>> byAmount(@Field("user_id") String userId,
-                                                       @Field("currency") String currency,
-                                                       @Field("by_amount") String byAmount,
-                                                       @Field("active_id") String activeId,
-                                                       @Field("nonce") String nonce,
-                                                       @Field("payment_type") String paymentType);
 
     @FormUrlEncoded
     @POST("duoduo/purchase/removeOrder")
@@ -746,13 +727,6 @@ public interface Api {
     @POST("duoduo/live/getGroupLiveGoingInfo")
     Observable<BaseResponse<List<GetChatRoomInfoResponse>>> getGroupLiveGoingInfo(@Field("groupId") String groupId);
 
-    @FormUrlEncoded
-    @POST("duoduo/purchase/orderInfo")
-    Observable<BaseResponse<ByBoinsResponse>> orderInfo(@Field("nonce") String nonce,
-                                                        @Field("trans_id") String trans_id,
-                                                        @Field("user_id") String user_id,
-                                                        @Field("paymentType") String paymentType,
-                                                        @Field("createTime") String createTime);
 
     @FormUrlEncoded
     @POST("duoduo/purchase/orderAppeal")

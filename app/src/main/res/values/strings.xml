@@ -1166,7 +1166,7 @@
     <string name="the_number" translatable="false">数量(%1$s)</string>
     <string name="total_amount" translatable="false">交易总额(%1$s)</string>
     <string name="timeout" translatable="false">未放币</string>
-    <string name="waiting_to_put_money2" translatable="false">待商家放币</string>
+    <string name="waiting_to_put_money2" translatable="false">待放币</string>
     <string name="coin_timeout" translatable="false">商家放币超时</string>
     <string name="coin_timeout2" translatable="false">商家未放币，已超时</string>
     <string name="waiting_for_payment" translatable="false">待买家付款</string>
@@ -1293,7 +1293,7 @@
     <string name="receipt_type_name">账号</string>
     <string name="commit_btn">提交</string>
     <string name="collection_information">收款信息</string>
-    <string name="payinfo">支付信息</string>
+    <string name="payinfo">收付款信息</string>
     <string name="myProperty">我的资产</string>
     <string name="loading_pleasewait1">正在加载，请稍后</string>
     <string name="add_to_contact">添加到通讯录</string>

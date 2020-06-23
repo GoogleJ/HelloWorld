@@ -66,7 +66,7 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
         } else if (alipay.equals(type)) {
             //支付宝的
             editInformation.setHint(hint);
-            editInformation.setInputType(InputType.TYPE_CLASS_NUMBER);
+            editInformation.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
         } else if (bank.equals(type)) {
             //银行卡号
             editInformation.setHint(hint);

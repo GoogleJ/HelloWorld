@@ -248,9 +248,9 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         }
                     } else {
                         if (Double.parseDouble(String.valueOf(editable)) > Double.parseDouble(getQuickTickerResponse.getMaxAmount())) {
-                            if(getArguments().getInt("buyType") == 0){
+                            if (getArguments().getInt("buyType") == 0) {
                                 ToastUtils.showShort(getString(R.string.buy_amount_prompt, getQuickTickerResponse.getMaxAmount(), getQuickTickerResponse.getCoinSymbol()));
-                            }else {
+                            } else {
                                 ToastUtils.showShort(getString(R.string.buy_amount_prompt_sell, getQuickTickerResponse.getMaxAmount(), getQuickTickerResponse.getCoinSymbol()));
                             }
                             etPurchaseAmount.setText(getQuickTickerResponse.getMaxAmount());
@@ -323,7 +323,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         tvBuyCoinSwitch.setText("按数量出售");
                         btnBuyCoin.setText("一键出售");
                     }
-                    quickOrderRequest.setPriceType("1");
+                    quickOrderRequest.setPriceType("2");
                     tvUnitPrice.setText(getString(R.string.the_unit_price, data.getPrice(), data.getCurrencySymbol(), data.getCoinSymbol()));
                     tvLimit.setText(getString(R.string.limit, data.getMinQuota(), data.getMaxQuota()));
                 }, this::handleApiError);

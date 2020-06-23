@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -85,8 +84,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
     private TextView tvAppealRemark;
     private LinearLayout llAppealRemark;
 
-    private String sign;
-    private String timestamp;
     private String defaultRenegeNumber;
     private String otherOrderId;
 
@@ -96,8 +93,8 @@ public class PurchaseDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_details);
 
-
         initView();
+
         initData();
     }
 
@@ -147,6 +144,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
             Intent intent;
             if (tvPayment.getText().equals(getString(R.string.the_complaint))) {
                 intent = new Intent(this, TheAppealActivity.class);
+                finish();
             } else {
                 if (byBoinsResponse.getPayType().equals("ALIPAY")) {
                     Observable
@@ -203,9 +201,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
             ToastUtils.showShort(R.string.duplicated_to_clipboard);
         });
 
-        tvCancelTheOrder.setOnClickListener(v -> {
-            onBackDialog();
-        });
+        tvCancelTheOrder.setOnClickListener(v -> onBackDialog());
     }
 
     private void linkCoinOrdersOrderDetails(String otherOrderId) {
@@ -259,7 +255,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
                             long l1 = (System.currentTimeMillis() - Long.parseLong(data.getPayMoneyTime())) / 1000;
 
-                            long total = ((900 - l1) <= 0 ? 0 : (900 - l1)) + 60;
+                            long total = ((900 - l1) <= 0 ? 0 : (900 - l1));
                             Observable.interval(0, 1, TimeUnit.SECONDS)
                                     .take(total)
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -269,7 +265,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                         long second = ((total - l) % 60);
                                         tv2.setText(minute + ":" + (second == 0 ? "00" : (second < 10 ? ("0" + second) : second)));
                                         if (total == 0 || l == total - 1) {
-                                            linkCoinOrdersOrderDetails(otherOrderId);
+                                            finish();
                                         }
                                     }, t -> {
                                     });
@@ -306,6 +302,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                 Intent intent = new Intent(this, TheAppealActivity.class);
                                 intent.putExtra("ByBoinsResponse", data);
                                 startActivity(intent);
+                                finish();
                             }
                         });
 
@@ -316,8 +313,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                             @Override
                                             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
                                                 holder.setText(R.id.tv_title, "确认放行?");
-                                                holder.setText(R.id.tv_content, "请务必登录网上银行或第三方支付账号\n" +
-                                                        "确认收到该笔款项");
+                                                holder.setText(R.id.tv_content, "请务必登录网上银行或第三方支付账号确认收到该笔款项");
                                                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                                                 holder.setOnClickListener(R.id.tv_ok, v -> {
                                                     dialog.dismiss();
@@ -438,8 +434,8 @@ public class PurchaseDetailsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
         linkCoinOrdersOrderDetails(otherOrderId);
     }
 }
