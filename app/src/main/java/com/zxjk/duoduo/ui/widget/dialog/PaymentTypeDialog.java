@@ -44,7 +44,7 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
     String wechat = "WEIXIN";
     String alipay = "ALIPAY";
     String bank = "EBANK";
-    String mobile = "MOBILE ";
+    String mobile = "MOBILE";
     private View view;
     private int s;
 

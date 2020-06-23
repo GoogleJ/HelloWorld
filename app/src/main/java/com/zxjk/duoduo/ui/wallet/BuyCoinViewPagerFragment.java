@@ -142,11 +142,11 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         nf.setMaximumFractionDigits(Integer.parseInt(amountScale));
 
         buyCoinPrompt.setText(getString(R.string.buy_coin_prompt, defaultRenegeNumber));
-        if (getArguments().getInt("buyType") == 0) {
-            tvAll.setVisibility(View.GONE);
-        } else {
-            tvAll.setVisibility(View.VISIBLE);
-        }
+//        if (getArguments().getInt("buyType") == 0) {
+//            tvAll.setVisibility(View.GONE);
+//        } else {
+//            tvAll.setVisibility(View.VISIBLE);
+//        }
         tvBuyCoinSwitch.setOnClickListener(v -> {
             if (getArguments().getInt("buyType") == 0) {
                 if (tvBuyPatterns.getText().equals("CNY")) {
@@ -492,6 +492,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         TextView tvTitle = byCoinsOrAmount.findViewById(R.id.tv_title);
         Button btnBuyOrSell = byCoinsOrAmount.findViewById(R.id.bt_to_buy);
         TextView tv3 = byCoinsOrAmount.findViewById(R.id.tv3);
+        TextView tv4 = byCoinsOrAmount.findViewById(R.id.tv4);
         if ("BUY".equals(buyType)) {
             btnBuyOrSell.setText(R.string.Determine_to_buy);
             tv1.setText(R.string.payment_way2);
@@ -500,6 +501,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
             btnBuyOrSell.setText("确定出售");
             tv1.setText("收款方式");
             tv3.setText("出售数量");
+            tv4.setText("实收金额");
         }
 
         Glide.with(this).load(logo).into(new SimpleTarget<Drawable>() {

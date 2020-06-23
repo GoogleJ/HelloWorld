@@ -303,7 +303,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="16dp"
-                android:src="@drawable/ico_back_white"
+                android:src="@drawable/ico_back"
                 android:tint="#cacaca" />
 
         </FrameLayout>
