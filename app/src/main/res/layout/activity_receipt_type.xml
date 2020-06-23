@@ -9,7 +9,6 @@
 
     <include layout="@layout/layout_title_back" />
 
-    <include layout="@layout/layout_line10" />
 
     <RelativeLayout
         android:id="@+id/nick_name"

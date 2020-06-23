@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -17,12 +18,15 @@ import com.google.android.material.tabs.TabLayout;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 
+import java.util.ArrayList;
+
 public class OneKeyBuyCoinActivity extends BaseActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
     private int mTitles[] = {R.string.to_buy, R.string.to_sell};
+    private ArrayList<Fragment> fragments = new ArrayList<>();
 
     @SuppressLint("CheckResult")
     @Override
@@ -45,11 +49,16 @@ public class OneKeyBuyCoinActivity extends BaseActivity {
     }
 
     private void initData() {
+        for (int i = 0; i <= mTitles.length; i++) {
+            BuyCoinFragment buyCoinFragment = BuyCoinFragment.newInstance(i);
+            fragments.add(buyCoinFragment);
+        }
+
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                return position == 0 ? new BuyCoinFragment() : new SellCoinFragment();
+                return fragments.get(position);
             }
 
             @Override

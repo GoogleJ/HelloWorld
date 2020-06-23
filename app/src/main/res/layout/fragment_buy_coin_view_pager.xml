@@ -3,49 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.wallet.BuyCoinViewPagerFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.wallet.BuyCoinViewPagerFragment">
 
     <TextView
         android:id="@+id/tv_purchase_amount"
-        android:text="@string/purchase_coin"
-        android:textColor="#8EA0AC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp" />
+        android:layout_marginEnd="16dp"
+        android:text="@string/purchase_coin"
+        android:textColor="#8EA0AC"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp">
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <EditText
             android:id="@+id/et_purchase_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/purchase_coin_hint"
-            android:textColorHint="#E9E9EB"
-            android:textStyle="bold"
             android:background="@null"
+            android:hint="@string/purchase_coin_hint"
+            android:inputType="numberDecimal"
+            android:textColorHint="#E9E9EB"
             android:textSize="18sp"
-            android:inputType="numberDecimal"/>
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tv_buy_patterns"
-            android:text="CNY"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:text="CNY"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/shape_transparent_border"
+            android:paddingStart="10dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:textColor="#0083BF"
+            android:paddingBottom="4dp"
+            android:text="最大"
+            android:textSize="12sp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
@@ -54,91 +72,96 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp">
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_unit_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#8EA0AC"/>
+                android:textColor="#8EA0AC" />
+
             <TextView
                 android:id="@+id/tv_limit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="#8EA0AC"/>
+                android:textColor="#8EA0AC" />
         </LinearLayout>
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <TextView
-            android:text="@string/buying_patterns"
             android:id="@+id/tv_buy_coin_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:gravity="end"
             android:drawableStart="@drawable/buy_coin_switch"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:gravity="end"
+            android:text="@string/buying_patterns"
+            android:textColor="#0083BF" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_buy_coin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:gravity="center"
-        android:background="@drawable/shape_4182f9_5"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="24dp"
-        android:foreground="?selectableItemBackgroundBorderless">
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/shape_4182f9_5"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
         <TextView
+            android:id="@+id/btn_buy_coin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:drawableStart="@drawable/lightning"
+            android:drawablePadding="8dp"
             android:text="@string/quick_buy_coins"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:drawableStart="@drawable/lightning"
-            android:drawablePadding="8dp"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="top"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp">
+        android:gravity="top"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/exclamation_mark"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            android:src="@drawable/exclamation_mark" />
 
         <TextView
             android:id="@+id/buy_coin_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:lineSpacingExtra="6dp"
-            android:textColor="#8EA0AC"
-            android:layout_marginStart="8dp"/>
+            android:textColor="#8EA0AC" />
     </LinearLayout>
 
 </LinearLayout>

@@ -24,6 +24,7 @@ import com.zxjk.duoduo.network.rx.RxException;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
+import com.zxjk.duoduo.ui.wallet.ImprovePaymentInformationActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
@@ -186,6 +187,11 @@ public class SettingActivity extends BaseActivity {
         //语言切换
         findViewById(R.id.rl_languageSwitch).setOnClickListener(v -> {
 
+        });
+
+        findViewById(R.id.rl_payinfo).setOnClickListener(v -> {
+            Intent intent = new Intent(this, ImprovePaymentInformationActivity.class);
+            startActivity(intent);
         });
     }
 

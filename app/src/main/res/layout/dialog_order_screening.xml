@@ -5,12 +5,57 @@
     android:orientation="vertical">
 
 
-    <include layout="@layout/layout_line" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ll_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0083BF"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <FrameLayout
+                    android:id="@+id/rl_back"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:foreground="?selectableItemBackgroundBorderless">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ico_back" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/order_info_by_type"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_screening"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/ic_screening"/>
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -117,11 +162,7 @@
                     android:text="@string/in_the_complaint" />
 
                 <CheckBox
-                    android:id="@+id/radio8"
-                    style="@style/select_style"
-                    android:background="@drawable/shape_checkbox_item2"
-                    android:tag="rd1"
-                    android:text="@string/not_to_put_money" />
+                    style="@style/select_style" />
 
             </LinearLayout>
 

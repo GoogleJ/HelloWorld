@@ -2,7 +2,6 @@ package com.zxjk.duoduo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
@@ -11,13 +10,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.ui.CountrySelectActivity;
-import com.zxjk.duoduo.ui.wallet.ReceiptTypeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,12 +24,17 @@ import butterknife.OnClick;
 
 public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
     public OnClickListener onClickListener;
+    public OnStartActivity onStartActivity;
     Context context;
 
     @BindView(R.id.dialog_title)
     TextView dialogTitle;
     @BindView(R.id.edit_information)
     EditText editInformation;
+    @BindView(R.id.tvContrary)
+    TextView tvContrary;
+    @BindView(R.id.llContrary)
+    LinearLayout llcontrary;
 
 
     String wechat = "WEIXIN";
@@ -39,6 +42,7 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
     String bank = "EBANK";
     String mobile = "MOBILE ";
     private View view;
+    private int s;
 
     public PaymentTypeDialog(@NonNull Context context) {
 
@@ -48,8 +52,9 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
         ButterKnife.bind(this, view);
     }
 
-    public void show(String title, String hint, String type) {
+    public void show(String title, String hint, String type, int s) {
         show();
+        this.s = s;
         dialogTitle.setText(title);
         if (wechat.equals(type)) {
             //微信的
@@ -62,11 +67,22 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
             //银行卡号
             editInformation.setHint(hint);
             editInformation.setInputType(InputType.TYPE_CLASS_NUMBER);
+        } else if (mobile.equals(type)) {
+            editInformation.setHint(hint);
+            editInformation.setInputType(InputType.TYPE_CLASS_NUMBER);
         } else {
             //开户银行
             editInformation.setHint(hint);
+            editInformation.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
         }
+    }
 
+    public String getContrary() {
+        return tvContrary.getText().toString();
+    }
+
+    public void setContrary(String s) {
+        tvContrary.setText(s);
     }
 
     @Override
@@ -89,30 +105,43 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cancel_btn:
+                editInformation.setText("");
                 dismiss();
                 break;
             case R.id.determine_btn:
                 if (onClickListener != null) {
-                    onClickListener.determine(editInformation.getText().toString());
+                    onClickListener.determine(editInformation.getText().toString(), s);
+                    editInformation.setText("");
                 }
                 break;
             case R.id.llContrary:
-
-                context.startActivity(new Intent(context, CountrySelectActivity.class));
+                onStartActivity.start();
                 break;
             default:
                 dismiss();
                 break;
         }
+    }
 
+    public void setVisibilitys() {
+        llcontrary.setVisibility(View.VISIBLE);
+    }
+
+    public void setOnStartActivity(OnStartActivity onStartActivity) {
+        this.onStartActivity = onStartActivity;
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
+
+    public interface OnStartActivity {
+        void start();
+    }
+
     public interface OnClickListener {
-        void determine(String editContent);
+        void determine(String editContent, int s);
     }
 
 

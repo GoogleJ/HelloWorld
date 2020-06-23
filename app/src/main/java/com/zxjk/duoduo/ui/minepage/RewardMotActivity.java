@@ -216,9 +216,7 @@ public class RewardMotActivity extends BaseActivity {
                                         .compose(bindToLifecycle())
                                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
                                         .compose(RxSchedulers.normalTrans())
-                                        .subscribe(s -> {
-                                            ToastUtils.showShort("分享成功");
-                                        }, RewardMotActivity.this::handleApiError);
+                                        .subscribe(s -> ToastUtils.showShort("分享成功"), RewardMotActivity.this::handleApiError);
                                 break;
                             case "2":
                             case "9":

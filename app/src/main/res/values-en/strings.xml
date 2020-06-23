@@ -1042,4 +1042,5 @@
     <string name="socialApplication">群应用</string>
     <string name="address_list_search">请输入关键字</string>
     <string name="toast2">手机端直播暂未开放</string>
+    <string name="payinfo">支付信息</string>
 </resources>

@@ -1109,7 +1109,7 @@
     <string name="appeal_message" translatable="false">请输入申诉信息</string>
     <string name="has_been_submitted" translatable="false">提交成功</string>
     <string name="order_info_by_type" translatable="false">订单记录</string>
-    <string name="buy_coin_prompt" translatable="false">买方当日累计%1$s笔取消，将会限制当天的买入功能；  本服务由IXX交易所提供，交易0手续费；</string>
+    <string name="buy_coin_prompt" translatable="false">买方当日累计%1$s笔取消，将会限制当天的买入功能；  本服务由LinkCoin交易所提供，交易0手续费；</string>
     <string name="quick_buy_coins" translatable="false">一键购币</string>
     <string name="buying_patterns" translatable="false">按数量购买</string>
     <string name="purchase_coin" translatable="false">购买金额</string>
@@ -1155,14 +1155,14 @@
     <string name="already_timeout" translatable="false">已经超时</string>
     <string name="order_number" translatable="false">订单号:%1$s</string>
     <string name="bank_card_payment" translatable="false">银行卡支付</string>
-    <string name="payee_card_number" translatable="false">收款人银行卡号</string>
+    <string name="payee_card_number" translatable="false">银行卡号</string>
     <string name="merchants_remark" translatable="false">商家备注</string>
     <string name="alipay_pay" translatable="false">支付宝支付</string>
     <string name="payment_reminder" translatable="false">如您已付款，请务必点击“已完成付款”。否则有可能造成您的资金损失！</string>
     <string name="confirm_to_leave_the_pay" translatable="false">确认离开支付</string>
     <string name="remove_order_remind" translatable="false">单天最多取消%1$s次订单，超过%2$s次后，单天不可再下单！</string>
     <string name="unit_price" translatable="false">单价(CNY)</string>
-    <string name="the_number" translatable="false">数量</string>
+    <string name="the_number" translatable="false">数量 %1$s</string>
     <string name="total_amount" translatable="false">交易总额(CNY)</string>
     <string name="timeout" translatable="false">未放币</string>
     <string name="waiting_to_put_money2" translatable="false">待商家放币</string>
@@ -1291,6 +1291,8 @@
     <string name="input_bank_number">请输入银行卡号</string>
     <string name="receipt_type_name">账号</string>
     <string name="commit_btn">提交</string>
+    <string name="collection_information">收款信息</string>
+    <string name="payinfo">支付信息</string>
     <string name="loading_pleasewait1">正在加载，请稍后</string>
     <string name="add_to_contact">添加到通讯录</string>
 

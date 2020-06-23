@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -27,6 +27,7 @@ import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.CountryEntity;
 import com.zxjk.duoduo.bean.request.AddPayInfoBean;
+import com.zxjk.duoduo.bean.response.GetPaymentInformationResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -47,21 +48,25 @@ import java.util.Collections;
  */
 @SuppressLint("CheckResult")
 public class ReceiptTypeActivity extends BaseActivity implements View.OnClickListener {
+    public GetPaymentInformationResponse paymentInformation;
     private RelativeLayout nickName, realName, accountIdCard;
     private TextView receiptTypeName, receiptTypeCard, receiptTypePaymentName;
     private TextView receiptTypeRealName, receiptTypeRealCardName, receiptTypePayment;
     private ImageView receiptTypeGo, receiptTypeCardGo, receiptTypePaymentGo;
     private TextView commitBtn;
-    private String wechat = "WEIXIN";
-    private String alipay = "ALIPAY";
-    private String bank = "EBANK";
-    private String mobile = "MOBILE ";
-    private PaymentTypeDialog dialog;
-    private String types;
-    private String url;
     private TextView tv_title;
     private LinearLayout llContrary;
     private TextView tvContrary;
+    private PaymentTypeDialog dialog;
+    private String wechat = "WEIXIN";
+    private String alipay = "ALIPAY";
+    private String bank = "EBANK";
+    private String mobile = "MOBILE";
+
+    private String types;
+    private String url;
+    private String contrary;
+    private int paymentinformation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,14 +99,39 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
         receiptTypeCardGo = findViewById(R.id.receipt_type_card_go);
         receiptTypePaymentGo = findViewById(R.id.receipt_type_payment_go);
         commitBtn = findViewById(R.id.commit_btn);
-
     }
 
     private void initData() {
+
+        dialog = new PaymentTypeDialog(this);
+
+        dialog.setOnClickListener((editContent, s) -> {
+            if (s == 1) {
+                receiptTypeRealName.setText(editContent);
+                receiptTypeRealName.setVisibility(View.VISIBLE);
+            } else if (s == 2) {
+                receiptTypeRealCardName.setText(editContent);
+                receiptTypeRealCardName.setVisibility(View.VISIBLE);
+            } else {
+                receiptTypePayment.setText(editContent);
+                receiptTypePayment.setVisibility(View.VISIBLE);
+            }
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            dialog.dismiss();
+        });
+
         Intent intent = getIntent();
         types = intent.getStringExtra("type");
+        paymentinformation = intent.getIntExtra("paymentinformation", -1);
+
         if (wechat.equals(types)) {
             //微信信息，提交按钮已隐藏
+            if (1 == paymentinformation) {
+                improvePaymentInformationByType("WEIXIN");
+            }
+
             tv_title.setText(getString(R.string.wechat_info));
             nickName.setVisibility(View.GONE);
             receiptTypeCard.setText("微信账号");
@@ -110,6 +140,10 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             receiptTypePayment.setText(R.string.not_uploaded);
         } else if (alipay.equals(types)) {
             //支付宝信息，提交按钮已隐藏
+            if (1 == paymentinformation) {
+                improvePaymentInformationByType("ALIPAY");
+            }
+
             tv_title.setText(getString(R.string.alipy_info));
             nickName.setVisibility(View.GONE);
             receiptTypeCard.setText("支付宝账号");
@@ -118,6 +152,10 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             receiptTypePayment.setText(R.string.not_uploaded);
         } else if (bank.equals(types)) {
             //银行卡信息，提交按钮已隐藏
+            if (1 == paymentinformation) {
+                improvePaymentInformationByType("EBANK");
+            }
+
             tv_title.setText(getString(R.string.bank_info));
             receiptTypeName.setText(R.string.account_name);
             receiptTypeCard.setText(R.string.bank_id_card);
@@ -126,6 +164,9 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             receiptTypeRealCardName.setText("请填写银行卡号");
             receiptTypePayment.setText("请填写开户行");
         } else {
+            if (1 == paymentinformation) {
+                improvePaymentInformationByType("MOBILE");
+            }
             nickName.setVisibility(View.GONE);
             realName.setVisibility(View.GONE);
             receiptTypePaymentName.setText("手机号码");
@@ -140,147 +181,86 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             }, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         } else if (types.equals(bank)) {
             accountIdCard.setOnClickListener(v -> {
-                dialog = new PaymentTypeDialog(ReceiptTypeActivity.this);
-                dialog.setOnClickListener(editContent -> {
-                    receiptTypePayment.setText(editContent);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                    dialog.dismiss();
-                });
-                dialog.show(getString(R.string.open_bank), getString(R.string.please_upload_selector_open_bank), bank);
+                dialog.show(getString(R.string.open_bank), getString(R.string.please_upload_selector_open_bank), "", 3);
             });
         } else {
             accountIdCard.setOnClickListener(v -> {
-                dialog = new PaymentTypeDialog(ReceiptTypeActivity.this);
-
-                llContrary = dialog.findViewById(R.id.llContrary);
-                tvContrary = dialog.findViewById(R.id.tvContrary);
-
-//                llContrary.setOnClickListener(v1 -> ReceiptTypeActivity.this.startActivityForResult(new Intent(ReceiptTypeActivity.this, CountrySelectActivity.class), 200));
-
-                dialog.setOnClickListener(editContent -> {
-                    receiptTypePayment.setText(editContent);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                    dialog.dismiss();
+                dialog.setVisibilitys();
+                dialog.setOnStartActivity(() -> {
+                    startActivityForResult(new Intent(this, CountrySelectActivity.class), 200);
                 });
-                dialog.show("请填写您的手机号码", "请填写手机号码", mobile);
+                dialog.show("请填写您的手机号码", "请填写手机号码", mobile, 3);
             });
         }
-//        getPayInfo();
     }
 
-//    private void getPayInfo() {
-//        ServiceFactory.getInstance().getBaseService(Api.class).getPayInfo()
-//                .compose(bindToLifecycle())
-//                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-//                .compose(RxSchedulers.normalTrans())
-//                .subscribe(payInfoResponses -> {
-//
-//                    for (int i = 0; i < payInfoResponses.size(); i++) {
-//                        if (payInfoResponses.get(i).getPayType().equals("1") && types.equals("1")) {
-//                            receiptTypeRealName.setText(payInfoResponses.get(i).getWechatNick());
-//                            if (!TextUtils.isEmpty(payInfoResponses.get(i).getPayPicture())) {
-//                                receiptTypePayment.setText("已上传");
-//                            }
-//                            receiptTypeRealCardName.setText(Constant.currentUser.getRealname());
-//                        } else if (payInfoResponses.get(i).getPayType().equals("2") && types.equals("2")) {
-//                            receiptTypeRealName.setText(payInfoResponses.get(i).getZhifubaoNumber());
-//                            if (!TextUtils.isEmpty(payInfoResponses.get(i).getPayPicture())) {
-//                                receiptTypePayment.setText("已上传");
-//                            }
-//                            receiptTypeRealCardName.setText(Constant.currentUser.getRealname());
-//                        } else if (payInfoResponses.get(i).getPayType().equals("3") && types.equals("3")) {
-//                            receiptTypeRealName.setText(Constant.currentUser.getRealname());
-//                            receiptTypeRealCardName.setText(payInfoResponses.get(i).getPayNumber());
-//                            receiptTypePayment.setText(payInfoResponses.get(i).getOpenBank());
-//                        }
-//                    }
-//                });
-//    }
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.nick_name:
                 if (wechat.equals(types)) {
-                    dialog = new PaymentTypeDialog(this);
-                    dialog.setOnClickListener(editContent -> {
-                        receiptTypeRealName.setText(editContent);
-                        receiptTypeRealName.setVisibility(View.VISIBLE);
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.dismiss();
-                    });
-                    dialog.show(getString(R.string.wechat_nick), getString(R.string.hint_nick), wechat);
+                    dialog.show(getString(R.string.wechat_nick), getString(R.string.hint_nick), wechat, 1);
                     return;
                 } else if (alipay.equals(types)) {
-                    dialog = new PaymentTypeDialog(this);
-                    dialog.setOnClickListener(editContent -> {
-                        receiptTypeRealName.setText(editContent);
-                        receiptTypeRealName.setVisibility(View.VISIBLE);
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.dismiss();
-                    });
-                    dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay);
-                    return;
-                }
-                break;
-            case R.id.real_name:
-                if (wechat.equals(types)) {
-                    dialog = new PaymentTypeDialog(this);
-                    dialog.setOnClickListener(editContent -> {
-                        receiptTypeRealCardName.setText(editContent);
-                        receiptTypeRealCardName.setVisibility(View.VISIBLE);
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.dismiss();
-                    });
-                    dialog.show(getString(R.string.wechat_nick), getString(R.string.hint_nick), wechat);
-                    return;
-                } else if (alipay.equals(types)) {
-                    dialog = new PaymentTypeDialog(this);
-                    dialog.setOnClickListener(editContent -> {
-                        receiptTypeRealCardName.setText(editContent);
-                        receiptTypeRealCardName.setVisibility(View.VISIBLE);
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.dismiss();
-                    });
-                    dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay);
+                    dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay, 1);
                     return;
                 } else {
-                    dialog = new PaymentTypeDialog(ReceiptTypeActivity.this);
-                    dialog.setOnClickListener(editContent -> {
-                        receiptTypeRealCardName.setText(editContent);
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                        dialog.dismiss();
-                    });
-                    dialog.show(getString(R.string.bankcard), getString(R.string.input_bank_number), bank);
+                    dialog.show("持卡人姓名", "请填写持卡人姓名", "", 1);
+                    return;
                 }
-                break;
+            case R.id.real_name:
+                if (wechat.equals(types)) {
+                    dialog.show(getString(R.string.wechat_nick), getString(R.string.hint_nick), wechat, 2);
+                    return;
+                } else if (alipay.equals(types)) {
+                    dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay, 2);
+                    return;
+                } else {
+                    dialog.show(getString(R.string.bankcard), getString(R.string.input_bank_number), bank, 2);
+                    return;
+                }
             case R.id.commit_btn:
-                String pwd = getIntent().getStringExtra("payPwd");
                 AddPayInfoBean addPayInfoBean = new AddPayInfoBean();
                 if (wechat.equals(types)) {
+                    if (TextUtils.isEmpty(receiptTypeRealCardName.getText().toString())) {
+                        ToastUtils.showShort("请填写微信账号");
+                        return;
+                    } else if (TextUtils.isEmpty(url)) {
+                        ToastUtils.showShort("请上传收款二维码");
+                        return;
+                    }
                     addPayInfoBean.setWeixinId(receiptTypeRealCardName.getText().toString());
                     addPayInfoBean.setPayInfoType("WEIXIN");
                     addPayInfoBean.setWeixinUrl(url);
                 } else if (alipay.equals(types)) {
+                    if (TextUtils.isEmpty(receiptTypeRealCardName.getText().toString())) {
+                        ToastUtils.showShort("请填写支付宝账号");
+                        return;
+                    }
                     addPayInfoBean.setAlipayId(receiptTypeRealCardName.getText().toString());
                     addPayInfoBean.setPayInfoType("ALIPAY");
                     addPayInfoBean.setAlipayUrl(url);
                 } else if (bank.equals(types)) {
+                    if (TextUtils.isEmpty(receiptTypeRealCardName.getText().toString())) {
+                        ToastUtils.showShort("请填写银行卡号");
+                        return;
+                    } else if (TextUtils.isEmpty(receiptTypeRealName.getText().toString())) {
+                        ToastUtils.showShort("请填写持卡人姓名");
+                        return;
+                    } else if (TextUtils.isEmpty(receiptTypePayment.getText().toString())) {
+                        ToastUtils.showShort("请填写开户行");
+                        return;
+                    }
                     addPayInfoBean.setPayInfoType("EBANK");
-                    addPayInfoBean.setCardCode(receiptTypeCard.getText().toString());
-                    addPayInfoBean.setCardUserName(receiptTypeName.getText().toString());
-                    addPayInfoBean.setCardAddress(receiptTypePaymentName.getText().toString());
+                    addPayInfoBean.setCardCode(receiptTypeRealCardName.getText().toString());
+                    addPayInfoBean.setCardUserName(receiptTypeRealName.getText().toString());
+                    addPayInfoBean.setCardAddress(receiptTypePayment.getText().toString());
                 } else {
-                    addPayInfoBean.setMobile(receiptTypeRealCardName.getText().toString());
+                    addPayInfoBean.setMobile(receiptTypePayment.getText().toString());
                     addPayInfoBean.setPayInfoType("MOBILE");
-                    addPayInfoBean.setCountryCode(tvContrary.getText().toString());
+                    addPayInfoBean.setCountryCode(dialog.getContrary());
                 }
                 addPayInfo(GsonUtils.toJson(addPayInfoBean));
                 break;
@@ -306,14 +286,67 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
 
         if (requestCode == 200 && resultCode == Activity.RESULT_OK && data != null) {
             CountryEntity countryEntity = (CountryEntity) data.getSerializableExtra("country");
-            Log.i("tag", "onActivityResult: "+countryEntity != null ? countryEntity.countryCode : "86");
+            if (dialog != null) {
+                dialog.setContrary(getString(R.string.country_phone, (countryEntity != null ? countryEntity.countryCode : "86")));
+            }
             if (countryEntity != null) {
                 Constant.HEAD_LOCATION = countryEntity.countryCode;
             }
         }
     }
 
-    public void addPayInfo(String data) {
+    private void improvePaymentInformationByType(String data) {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .improvePaymentInformationByType(data)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .compose(RxSchedulers.normalTrans())
+                .subscribe(s -> {
+                    this.paymentInformation = s;
+                    if (wechat.equals(types)) {
+                        //微信信息，提交按钮已隐藏
+                        tv_title.setText(getString(R.string.wechat_info));
+                        nickName.setVisibility(View.GONE);
+                        receiptTypeCard.setText("微信账号");
+                        receiptTypePaymentName.setText(R.string.collection_code);
+                        receiptTypeRealCardName.setText(s.getWeixinId());
+                        if (TextUtils.isEmpty(s.getWeixinUrl())) {
+                            receiptTypePayment.setText(R.string.not_uploaded);
+                        } else {
+                            receiptTypePayment.setText("已上传");
+                        }
+                    } else if (alipay.equals(types)) {
+                        //支付宝信息，提交按钮已隐藏
+                        tv_title.setText(getString(R.string.alipy_info));
+                        nickName.setVisibility(View.GONE);
+                        receiptTypeCard.setText("支付宝账号");
+                        receiptTypePaymentName.setText(R.string.collection_code);
+                        receiptTypeRealCardName.setText(s.getAlipayId());
+                        if (TextUtils.isEmpty(s.getAlipayUrl())) {
+                            receiptTypePayment.setText(R.string.not_uploaded);
+                        } else {
+                            receiptTypePayment.setText("已上传");
+                        }
+                    } else if (bank.equals(types)) {
+                        //银行卡信息，提交按钮已隐藏
+                        tv_title.setText(getString(R.string.bank_info));
+                        receiptTypeName.setText(R.string.account_name);
+                        receiptTypeCard.setText(R.string.bank_id_card);
+                        receiptTypePaymentName.setText(R.string.bank);
+                        receiptTypeRealName.setText(s.getCardUserName());
+                        receiptTypeRealCardName.setText(s.getCardCode());
+                        receiptTypePayment.setText(s.getCardAddress());
+                    } else {
+                        nickName.setVisibility(View.GONE);
+                        realName.setVisibility(View.GONE);
+                        receiptTypePaymentName.setText("手机号码");
+                        receiptTypePayment.setText(s.getMobile());
+                        dialog.setContrary(s.getCountryCode());
+                    }
+                }, this::handleApiError);
+    }
+
+    private void addPayInfo(String data) {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .updateOTCPayInfo(data)
                 .compose(bindToLifecycle())
@@ -350,7 +383,5 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 .setOutCancel(true)
                 .setDimAmount(0.5f)
                 .show(getSupportFragmentManager());
-
-
     }
 }

@@ -214,36 +214,6 @@
                                 android:textColor="@color/black" />
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/ll_branch_bank_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="开户行支行"
-                                android:textColor="#999999" />
-
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1" />
-
-                            <TextView
-                                android:id="@+id/tv_branch_bank_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:drawableEnd="@drawable/ic_copy2"
-                                android:drawablePadding="8dp"
-                                android:textColor="@color/black" />
-                        </LinearLayout>
 
                         <View
                             android:layout_width="match_parent"
@@ -349,21 +319,21 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
 
-            <FrameLayout
-                android:id="@+id/rl_back"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:foreground="?selectableItemBackgroundBorderless">
+        <FrameLayout
+            android:id="@+id/rl_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:foreground="?selectableItemBackgroundBorderless">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ico_back_white"
-                    android:tint="#cacaca" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ico_back_white"
+                android:tint="#cacaca" />
 
-            </FrameLayout>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_title"

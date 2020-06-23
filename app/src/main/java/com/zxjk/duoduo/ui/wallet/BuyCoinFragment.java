@@ -36,6 +36,15 @@ public class BuyCoinFragment extends BaseFragment {
     private ViewPager buyViewPager;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<GetSymbolInfo.SymbolInfoBean> symbolInfoBean = new ArrayList<>();
+    private int buyType;
+
+    public static BuyCoinFragment newInstance(int buyType) {
+        BuyCoinFragment buyCoinFragment = new BuyCoinFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("buyType", buyType);
+        buyCoinFragment.setArguments(bundle);
+        return buyCoinFragment;
+    }
 
 
     @Override
@@ -57,6 +66,7 @@ public class BuyCoinFragment extends BaseFragment {
     }
 
     private void initData() {
+        buyType = getArguments().getInt("buyType");
 
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .getSymbolInfo()
@@ -75,7 +85,8 @@ public class BuyCoinFragment extends BaseFragment {
             BuyCoinViewPagerFragment fragment = BuyCoinViewPagerFragment.newInstance(getSymbolInfo.getSymbolInfo().get(i).getSymbol(),
                     getSymbolInfo.getSymbolInfo().get(i).getLogo(),
                     getSymbolInfo.getDefaultRenegeNumber(),
-                    getSymbolInfo.getSymbolInfo().get(i).getAmountScale());
+                    getSymbolInfo.getSymbolInfo().get(i).getAmountScale(),
+                    buyType);
             MMKVUtils.getInstance().enCode("DefaultRenegeNumber", getSymbolInfo.getDefaultRenegeNumber());
             fragments.add(fragment);
         }

@@ -47,7 +47,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:paddingStart="16dp"
-                    android:paddingEnd="8dp">
+                    android:paddingEnd="8dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/tvContrary"
@@ -62,6 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:src="@drawable/ic_downarrow_newlogin" />
+
                     <View
                         android:layout_width="0.5dp"
                         android:layout_height="16dp"

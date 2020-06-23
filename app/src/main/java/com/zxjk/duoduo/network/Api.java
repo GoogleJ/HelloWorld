@@ -34,12 +34,15 @@ import com.zxjk.duoduo.bean.response.GetGroupPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetGroupRedPackageInfoResponse;
 import com.zxjk.duoduo.bean.response.GetImprovePaymentInformationResponse;
 import com.zxjk.duoduo.bean.response.GetInviteInfoResponse;
+import com.zxjk.duoduo.bean.response.GetLinkCoinOrdersOrderDetails;
 import com.zxjk.duoduo.bean.response.GetLiveInfoByGroupIdResponse;
 import com.zxjk.duoduo.bean.response.GetMainSymbolByCustomerIdBean;
 import com.zxjk.duoduo.bean.response.GetOTCPayInfoResponse;
 import com.zxjk.duoduo.bean.response.GetOrderInfoByTypeResponse;
 import com.zxjk.duoduo.bean.response.GetParentSymbolBean;
+import com.zxjk.duoduo.bean.response.GetPaymentInformationResponse;
 import com.zxjk.duoduo.bean.response.GetPaymentListBean;
+import com.zxjk.duoduo.bean.response.GetQuickOrderResponse;
 import com.zxjk.duoduo.bean.response.GetQuickTickerResponse;
 import com.zxjk.duoduo.bean.response.GetRecommendCommunity;
 import com.zxjk.duoduo.bean.response.GetRedNewPersonInfoResponse;
@@ -53,6 +56,7 @@ import com.zxjk.duoduo.bean.response.GetUInvitationUrlBean;
 import com.zxjk.duoduo.bean.response.GetUpgradeGroupsResponnse;
 import com.zxjk.duoduo.bean.response.GetVicinityResponse;
 import com.zxjk.duoduo.bean.response.GetVideoInfoResponse;
+import com.zxjk.duoduo.bean.response.GetquickOrderInfoResponse;
 import com.zxjk.duoduo.bean.response.GroupChatResponse;
 import com.zxjk.duoduo.bean.response.GroupManagementInfoBean;
 import com.zxjk.duoduo.bean.response.GroupResponse;
@@ -876,4 +880,51 @@ public interface Api {
     @POST("duoduo/otc/updateOTCPayInfo")
     @FormUrlEncoded
     Observable<BaseResponse<String>> updateOTCPayInfo(@Field("data") String data);
+
+
+    @POST("duoduo/otc/quickOrder")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetQuickOrderResponse>> quickOrder(@Field("data") String data);
+
+
+    @POST("duoduo/otc/linkCoinOrdersOrderDetails")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetLinkCoinOrdersOrderDetails>> linkCoinOrdersOrderDetails(@Field("otherOrderId") String otherOrderId);
+
+
+    @POST("duoduo/otc/quickOrderInfo")
+    @FormUrlEncoded
+    Observable<BaseResponse<ArrayList<GetquickOrderInfoResponse>>> quickOrderInfo(@Field("type") String type,
+                                                                                  @Field("coinSymbol") String coinSymbol,
+                                                                                  @Field("currencySymbol") String currencySymbol,
+                                                                                  @Field("orderStatus") String orderStatus,
+                                                                                  @Field("pageNoStr") String pageNoStr,
+                                                                                  @Field("pageSizeStr") String pageSizeStr);
+
+
+    @POST("duoduo/otc/payCoin")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> payCoin(@Field("otherOrderId") String otherOrderId,
+                                             @Field("payPwd") String payPwd);
+
+
+    @POST("duoduo/otc/payMoney")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> payMoney(@Field("otherOrderId") String otherOrderId);
+
+
+    @POST("duoduo/otc/ordersCancel")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> ordersCancel(@Field("otherOrderId") String otherOrderId);
+
+
+    @POST("duoduo/otc/dispute")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> dispute(@Field("otherOrderId") String otherOrderId,
+                                             @Field("remark") String remark);
+
+
+    @POST("duoduo/otc/improvePaymentInformationByType")
+    @FormUrlEncoded
+    Observable<BaseResponse<GetPaymentInformationResponse>> improvePaymentInformationByType(@Field("payType") String payType);
 }

@@ -22,14 +22,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.response.GetOrderInfoByTypeResponse;
+import com.zxjk.duoduo.bean.response.GetquickOrderInfoResponse;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.utils.Sha256;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ import razerdp.widget.QuickPopup;
 @SuppressLint("CheckResult")
 public class OrderInfoByTypeActivity extends BaseActivity {
     private RecyclerView rlOrderInfoByType;
-    private BaseQuickAdapter<GetOrderInfoByTypeResponse.ListBean, BaseViewHolder> adapter;
+    private BaseQuickAdapter<GetquickOrderInfoResponse, BaseViewHolder> adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Api api;
     private TextView tvScreening;
@@ -91,38 +89,34 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                             .gravity(Gravity.BOTTOM | Gravity.END)
                             .withShowAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_in))
                             .withClick(R.id.radio1, v1 -> {
-                                side = "1";
+                                side = "BUY";
                                 orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                                 orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
                             }, false)
                             .withClick(R.id.radio2, v1 -> {
-                                side = "2";
+                                side = "SELL";
                                 orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
                                 orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                             }, false)
                             .withClick(R.id.radio3, v1 -> {
-                                state = "1";
+                                state = "UNFINISHED";
                                 setCheckBox(R.id.radio3);
                             }, false)
                             .withClick(R.id.radio4, v1 -> {
-                                state = "2";
+                                state = "PAYED";
                                 setCheckBox(R.id.radio4);
                             }, false)
                             .withClick(R.id.radio5, v1 -> {
-                                state = "3";
+                                state = "FINISHED";
                                 setCheckBox(R.id.radio5);
                             }, false)
                             .withClick(R.id.radio6, v1 -> {
-                                state = "4";
+                                state = "CANCELED";
                                 setCheckBox(R.id.radio6);
                             }, false)
                             .withClick(R.id.radio7, v1 -> {
-                                state = "5";
+                                state = "DISPUTE";
                                 setCheckBox(R.id.radio7);
-                            }, false)
-                            .withClick(R.id.radio8, v1 -> {
-                                state = "7";
-                                setCheckBox(R.id.radio8);
                             }, false)
                             .withClick(R.id.tv_reset, v1 -> {
                                 side = "";
@@ -145,10 +139,10 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                             .withClick(R.id.view1, null, true)
                     ).build();
             orderPop.showPopupWindow(v);
-            if (side.equals("1")) {
+            if (side.equals("BUY")) {
                 orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
                 orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
-            } else if (side.equals("2")) {
+            } else if (side.equals("SELL")) {
                 orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
                 orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
             } else {
@@ -161,20 +155,17 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             checkBoxs.add(orderPop.findViewById(R.id.radio5));
             checkBoxs.add(orderPop.findViewById(R.id.radio6));
             checkBoxs.add(orderPop.findViewById(R.id.radio7));
-            checkBoxs.add(orderPop.findViewById(R.id.radio8));
 
-            if (state.equals("1")) {
+            if (state.equals("UNFINISHED")) {
                 setCheckBox(R.id.radio3);
-            } else if (state.equals("2")) {
+            } else if (state.equals("PAYED")) {
                 setCheckBox(R.id.radio4);
-            } else if (state.equals("3")) {
+            } else if (state.equals("FINISHED")) {
                 setCheckBox(R.id.radio5);
-            } else if (state.equals("4")) {
+            } else if (state.equals("CANCELED")) {
                 setCheckBox(R.id.radio6);
-            } else if (state.equals("5")) {
+            } else if (state.equals("DISPUTE")) {
                 setCheckBox(R.id.radio7);
-            } else if (state.equals("7")) {
-                setCheckBox(R.id.radio8);
             }
 
             orderPop.showPopupWindow(v);
@@ -186,43 +177,41 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             onRefreshLayout();
         });
 
-        adapter = new BaseQuickAdapter<GetOrderInfoByTypeResponse.ListBean, BaseViewHolder>(R.layout.item_order_info_by_type) {
+        adapter = new BaseQuickAdapter<GetquickOrderInfoResponse, BaseViewHolder>(R.layout.item_order_info_by_type) {
             @Override
-            protected void convert(BaseViewHolder helper, GetOrderInfoByTypeResponse.ListBean item) {
+            protected void convert(BaseViewHolder helper, GetquickOrderInfoResponse item) {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm MM/dd");
                 String sd = sdf.format(new Date(Long.parseLong(item.getCreateTime())));
 
                 helper.setText(R.id.tv_nonce, sd)
                         .setText(R.id.iv_price, item.getPrice())
-                        .setText(R.id.tv_amount, item.getAmount() + "\u0020" + item.getCurrency())
-                        .setText(R.id.tv_total, item.getTotal());
+                        .setText(R.id.tv_amount, item.getCoinAmount())
+                        .setText(R.id.tv_total, item.getTotal())
+                        .setText(R.id.tv_amount2, getString(R.string.the_number, item.getCoinSymbol()));
 
-                String text = getString(R.string.buy_coin, item.getCurrency());
+                String text = getString(item.getType().equals("BUY") ? R.string.buy : R.string.sell) + item.getCoinSymbol();
                 TextView tv = helper.getView(R.id.tv_currency);
                 SpannableStringBuilder style = new SpannableStringBuilder(text);
                 style.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen, null)), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tv.setText(style);
 
                 TextView tvPaymentState = helper.getView(R.id.tv_payment_state);
-                if (!TextUtils.isEmpty(item.getState())) {
-                    if (item.getState().equals("1")) {
+                if (!TextUtils.isEmpty(item.getOrderStatus())) {
+                    if (item.getOrderStatus().equals("UNFINISHED")) {
                         tvPaymentState.setText(R.string.for_the_payment);
                         tvPaymentState.setTextColor(getResources().getColor(R.color.black, null));
-                    } else if (item.getState().equals("2")) {
+                    } else if (item.getOrderStatus().equals("PAYED")) {
                         tvPaymentState.setText(R.string.payment_has_been);
                         tvPaymentState.setTextColor(getResources().getColor(R.color.colorPrimary, null));
-                    } else if (item.getState().equals("3")) {
+                    } else if (item.getOrderStatus().equals("FINISHED") || item.getOrderStatus().equals("FORCEFINISHED")) {
                         tvPaymentState.setText(R.string.has_been_completed);
                         tvPaymentState.setTextColor(getResources().getColor(R.color.textcolor3, null));
-                    } else if (item.getState().equals("4")) {
+                    } else if (item.getOrderStatus().equals("CANCELED") || item.getOrderStatus().equals("TIMEOUT") || item.getOrderStatus().equals("REFUND") || item.getOrderStatus().equals("FORCECANCEL")) {
                         tvPaymentState.setText(R.string.has_been_cancelled);
                         tvPaymentState.setTextColor(getResources().getColor(R.color.textcolor3, null));
-                    } else if (item.getState().equals("5")) {
+                    } else if (item.getOrderStatus().equals("DISPUTE")) {
                         tvPaymentState.setText(R.string.in_the_complaint);
-                        tvPaymentState.setTextColor(getResources().getColor(R.color.the_order_state, null));
-                    } else if (item.getState().equals("7")) {
-                        tvPaymentState.setText(R.string.timeout);
                         tvPaymentState.setTextColor(getResources().getColor(R.color.the_order_state, null));
                     }
                 } else {
@@ -239,25 +228,10 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         adapter.setEmptyView(inflate);
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            GetOrderInfoByTypeResponse.ListBean listBean = (GetOrderInfoByTypeResponse.ListBean) adapter.getData().get(position);
-
-            long timeStampSec = System.currentTimeMillis() / 1000;
-            timestamp = String.format("%010d", timeStampSec);
-            String secret = "nonce=" + timestamp +
-                    "&trans_id=" + listBean.getTransId() +
-                    "&user_id=" + Constant.USERID + Constant.SECRET;
-            sign = Sha256.getSHA256(secret);
-
-            ServiceFactory.getInstance().otcService(Constant.BASE_URL, sign, Api.class)
-                    .orderInfo(timestamp, listBean.getTransId(), Constant.USERID, listBean.getPaymentType(), listBean.getCreateTime())
-                    .compose(bindToLifecycle())
-                    .compose(RxSchedulers.normalTrans())
-                    .compose(RxSchedulers.ioObserver())
-                    .subscribe(s -> {
-                        Intent intent = new Intent(this, PurchaseDetailsActivity.class);
-                        intent.putExtra("ByBoinsResponse", s);
-                        startActivity(intent);
-                    }, this::handleApiError);
+            GetquickOrderInfoResponse listBean = (GetquickOrderInfoResponse) adapter.getData().get(position);
+            Intent intent = new Intent(this, PurchaseDetailsActivity.class);
+            intent.putExtra("otherOrderId", listBean.getOtherOrderId());
+            startActivity(intent);
         });
 
         adapter.setEnableLoadMore(true);
@@ -268,19 +242,20 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     }
 
     private void onRefreshLayout() {
-        api.getOrderInfoByType(String.valueOf(page), String.valueOf(numsPerPage), side, state)
+        api.quickOrderInfo(side, null, null, state, String.valueOf(page), String.valueOf(numsPerPage))
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver())
                 .doOnTerminate(() -> (swipeRefreshLayout).setRefreshing(false))
                 .subscribe(s -> {
+                    s.size();
                     page += 1;
                     if (page == 1) {
-                        adapter.setNewData(s.getList());
+                        adapter.setNewData(s);
                         adapter.disableLoadMoreIfNotFullPage();
                     } else {
-                        adapter.addData(s.getList());
-                        if (s.getList().size() >= numsPerPage) {
+                        adapter.addData(s);
+                        if (s.size() >= numsPerPage) {
                             adapter.loadMoreComplete();
                         } else {
                             adapter.loadMoreEnd(false);
