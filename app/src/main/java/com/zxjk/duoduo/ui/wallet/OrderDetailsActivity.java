@@ -52,8 +52,6 @@ public class OrderDetailsActivity extends BaseActivity {
     private TextView tvNumber;
     private TextView tvBankName;
     private LinearLayout llBankName;
-    private TextView tvRemark1;
-    private TextView tvRemark2;
     private TextView tvPayment;
     private TextView tvPaymentType2;
     private ScrollView scrollView;
@@ -85,8 +83,6 @@ public class OrderDetailsActivity extends BaseActivity {
         tvBankName = findViewById(R.id.tv_bank_name);
         llBankName = findViewById(R.id.ll_bank_name);
 
-        tvRemark1 = findViewById(R.id.tv_remark1);
-        tvRemark2 = findViewById(R.id.tv_remark2);
         tvPayment = findViewById(R.id.tv_payment);
         tvPaymentType2 = findViewById(R.id.tv_payment_type2);
         scrollView = findViewById(R.id.scrollview);

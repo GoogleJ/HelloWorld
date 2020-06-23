@@ -131,12 +131,11 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             if (1 == paymentinformation) {
                 improvePaymentInformationByType("WEIXIN");
             }
-
             tv_title.setText(getString(R.string.wechat_info));
             nickName.setVisibility(View.GONE);
             receiptTypeCard.setText("微信账号");
             receiptTypePaymentName.setText(R.string.collection_code);
-            receiptTypeRealCardName.setText("请填写微信账号");
+            receiptTypeRealCardName.setHint("请填写微信账号");
             receiptTypePayment.setText(R.string.not_uploaded);
         } else if (alipay.equals(types)) {
             //支付宝信息，提交按钮已隐藏
@@ -148,7 +147,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             nickName.setVisibility(View.GONE);
             receiptTypeCard.setText("支付宝账号");
             receiptTypePaymentName.setText(R.string.collection_code);
-            receiptTypeRealCardName.setText("请填写支付宝账号");
+            receiptTypeRealCardName.setHint("请填写支付宝账号");
             receiptTypePayment.setText(R.string.not_uploaded);
         } else if (bank.equals(types)) {
             //银行卡信息，提交按钮已隐藏
@@ -160,17 +159,18 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             receiptTypeName.setText(R.string.account_name);
             receiptTypeCard.setText(R.string.bank_id_card);
             receiptTypePaymentName.setText(R.string.bank);
-            receiptTypeRealName.setText("请填写持卡人姓名");
-            receiptTypeRealCardName.setText("请填写银行卡号");
-            receiptTypePayment.setText("请填写开户行");
+            receiptTypeRealName.setHint("请填写持卡人姓名");
+            receiptTypeRealCardName.setHint("请填写银行卡号");
+            receiptTypePayment.setHint("请填写开户行");
         } else {
             if (1 == paymentinformation) {
                 improvePaymentInformationByType("MOBILE");
             }
             nickName.setVisibility(View.GONE);
             realName.setVisibility(View.GONE);
+            findViewById(R.id.tv1).setVisibility(View.VISIBLE);
             receiptTypePaymentName.setText("手机号码");
-            receiptTypePayment.setText("请填写手机号码");
+            receiptTypePayment.setHint("请填写手机号码");
         }
 
         if (types.equals(wechat) || types.equals(alipay)) {
@@ -237,6 +237,9 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 } else if (alipay.equals(types)) {
                     if (TextUtils.isEmpty(receiptTypeRealCardName.getText().toString())) {
                         ToastUtils.showShort("请填写支付宝账号");
+                        return;
+                    } else if (TextUtils.isEmpty(url)) {
+                        ToastUtils.showShort("请上传收款二维码");
                         return;
                     }
                     addPayInfoBean.setAlipayId(receiptTypeRealCardName.getText().toString());

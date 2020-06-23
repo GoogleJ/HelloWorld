@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/the_complaint"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
         </RelativeLayout>
@@ -52,8 +52,7 @@
         android:layout_margin="16dp"
         android:text="@string/appeal_content"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"/>
 
 
     <EditText

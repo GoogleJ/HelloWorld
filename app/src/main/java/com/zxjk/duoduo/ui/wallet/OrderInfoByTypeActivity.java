@@ -186,8 +186,10 @@ public class OrderInfoByTypeActivity extends BaseActivity {
 
                 helper.setText(R.id.tv_nonce, sd)
                         .setText(R.id.iv_price, item.getPrice())
+                        .setText(R.id.tv_price, getString(R.string.unit_price, item.getCurrency()))
                         .setText(R.id.tv_amount, item.getCoinAmount())
                         .setText(R.id.tv_total, item.getTotal())
+                        .setText(R.id.tv1, getString(R.string.total_amount, item.getCurrency()))
                         .setText(R.id.tv_amount2, getString(R.string.the_number, item.getCoinSymbol()));
 
                 String text = getString(item.getType().equals("BUY") ? R.string.buy : R.string.sell) + item.getCoinSymbol();

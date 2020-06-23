@@ -31,6 +31,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/receipt_type_go"
+            android:gravity="end"
             android:textSize="16sp" />
 
         <ImageView
@@ -62,6 +63,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/receipt_type_card_go"
+            android:gravity="end"
             android:textSize="16sp" />
 
         <ImageView
@@ -93,6 +95,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/receipt_type_payment_go"
+            android:gravity="end"
             android:textSize="16sp" />
 
         <ImageView
@@ -100,6 +103,17 @@
             style="@style/ImageEnter" />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/exclamation_mark"
+        android:drawablePadding="8dp"
+        android:padding="15dp"
+        android:text="为了保证订单交易成功，请完善手机号码，仅限于处理订单纠纷。"
+        android:textColor="#8EA0AC"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/commit_btn"

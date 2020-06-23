@@ -225,7 +225,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:visibility="gone">
+                                android:visibility="visible">
 
                                 <View
                                     android:layout_width="match_parent"
@@ -297,7 +297,6 @@
                                     android:layout_marginStart="16dp"
                                     android:layout_marginTop="16dp"
                                     android:layout_marginEnd="16dp"
-                                    android:layout_marginBottom="16dp"
                                     android:background="#E9E9E9" />
 
                                 <LinearLayout
@@ -305,7 +304,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
                                     android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="16dp"
                                     android:orientation="horizontal"
                                     android:visibility="gone">
 
@@ -466,32 +467,8 @@
                         android:layout_height="0.5dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="8dp"
                         android:background="#E9E9E9" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/merchants_remark"
-                            android:textColor="#999999" />
-
-                        <TextView
-                            android:id="@+id/tv_remark"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:gravity="end"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/ll2"
@@ -557,8 +534,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="16dp"
-                android:src="@drawable/ico_back_white"
-                android:tint="#cacaca" />
+                android:src="@drawable/ico_back" />
 
         </FrameLayout>
 
