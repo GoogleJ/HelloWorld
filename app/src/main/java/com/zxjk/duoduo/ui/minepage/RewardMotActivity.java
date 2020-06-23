@@ -216,34 +216,30 @@ public class RewardMotActivity extends BaseActivity {
                                         .compose(bindToLifecycle())
                                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(RewardMotActivity.this)))
                                         .compose(RxSchedulers.normalTrans())
-                                        .subscribe(s -> ToastUtils.showShort("分享成功"), RewardMotActivity.this::handleApiError);
-                                break;
+                                        .subscribe(s -> {
+                                        }, RewardMotActivity.this::handleApiError);
+                                return;
                             case "2":
                             case "9":
-                                Intent intent1 = new Intent(RewardMotActivity.this, HomeActivity.class);
-                                intent1.putExtra("type", 1);
-                                startActivity(intent1);
-                                break;
                             case "3":
                             case "4":
                             case "6":
                             case "7":
                             case "11":
-                                startActivity(new Intent(RewardMotActivity.this, HomeActivity.class));
+                                Intent intent1 = new Intent(RewardMotActivity.this, HomeActivity.class);
+                                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent1);
                                 break;
                             case "5":
                                 startActivity(new Intent(RewardMotActivity.this, NewFriendActivity.class));
                                 break;
                             case "8":
                                 startActivity(new Intent(RewardMotActivity.this, SearchGroupActivity.class));
-//                            intent.putExtra("fromReward", true);
-//                            intent.putExtra("action", "shareNews");
-//                            setResult(1, intent);
                                 break;
-
                             case "10":
                                 Intent intent2 = new Intent(RewardMotActivity.this, HomeActivity.class);
-                                intent2.putExtra("type", 2);
+                                intent2.putExtra("selectPage", 2);
+                                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent2);
                                 break;
                             case "12":
@@ -266,11 +262,12 @@ public class RewardMotActivity extends BaseActivity {
                                         .subscribe(d -> {
                                             if (d.equals("1")) {
                                                 startActivity(new Intent(RewardMotActivity.this, OneKeyBuyCoinActivity.class));
+                                                finish();
                                             } else {
                                                 ToastUtils.showShort(R.string.developing);
                                             }
                                         });
-                                break;
+                                return;
                             case "15":
                                 Intent intent3 = new Intent(RewardMotActivity.this, CreateGroupActivity.class);
                                 intent3.putExtra("eventType", 1);
@@ -281,7 +278,6 @@ public class RewardMotActivity extends BaseActivity {
                     }
                 });
 
-
                 RelativeLayout llHean = helper.getView(R.id.rl_head);
                 if (helper.getAdapterPosition() == 0) {
                     llHean.setVisibility(View.VISIBLE);
@@ -291,9 +287,6 @@ public class RewardMotActivity extends BaseActivity {
             }
         };
 
-
-//        View headerView = getLayoutInflater().inflate(R.layout.reward_mot_activity_rv_header, null);
-//        adapter2.addHeaderView(headerView);
         mRecyclerSignTesk.setAdapter(adapter2);
         mRecyclerSignTesk.setItemAnimator(new DefaultItemAnimator());
         mRecyclerSignTesk.setLayoutManager(new LinearLayoutManager(this));
@@ -464,18 +457,11 @@ public class RewardMotActivity extends BaseActivity {
                 }, this::handleApiError);
     }
 
-    public void taskState(GetSignListResponse.PointsListBean p, TextView v) {
-//        if (p.getPointType().equals("0") || p.getPointType().equals("1")) {
-//            v.setText(R.string.only_once_done);
-//        } else {
-//            v.setText(getString(R.string.rewardTips1, p.getNumber(), p.getCounts(), p.getNumber()));
-//        }
-    }
 
-    public void showDialog(String titleName, String title) {
+    private void showDialog(String titleName, String title) {
         new RewardDialog(this, R.style.dialog, "", (dialog, confirm, v) -> {
             if ("1".equals(signListResponse.getActivity().getActivityType()) && v == 1) {
-                ToastUtils.showShort("ggg");
+                //todo jump to webActivity
             } else {
                 if (confirm) {
                     dialog.dismiss();

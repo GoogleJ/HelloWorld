@@ -10,14 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorTheme"
-        android:orientation="vertical"
-        android:padding="15dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
             android:drawableStart="@drawable/ic_balance_detail_list"
             android:drawablePadding="4dp"
             android:text="@string/balancelist"
@@ -27,7 +28,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -50,91 +53,104 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="9dp"
-            android:gravity="bottom">
+            android:layout_marginEnd="15dp"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvMoney2BTC"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textSize="33sp"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvMoney2BTC"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="33sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="   BTC"
+                    android:textColor="#99ffffff" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvMoney2CNY"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginBottom="2dp"
-                android:lines="1"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="#99ffffff" />
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <LinearLayout
-            android:id="@+id/llBalanceWalletTop1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_walletpage_top1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/collection_code"
-                android:textColor="@color/colorTheme"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
         <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="18dp"
-            android:background="@color/colorTheme" />
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="#26ffffff" />
 
         <LinearLayout
-            android:id="@+id/llBalanceWalletTop2"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_walletpage_top2" />
+            android:layout_marginBottom="12dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tvWalletScan"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_walletpage_scan"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/m_add_friend_scan_it_label_1"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvWalletReceive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_walletpage_receive"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/receiptCode"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvWalletBuyCoin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_walletpage_buycoin"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/buycoinonekey"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvWalletColdWallet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_walletpage_coldwallet"
+                android:drawablePadding="5dp"
+                android:gravity="center"
                 android:text="@string/cold_wallet"
-                android:textColor="@color/colorTheme"
-                android:textSize="16sp" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -144,17 +160,17 @@
         android:id="@+id/tvManage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:background="@color/white"
-        android:drawableEnd="@drawable/information_icon_add_defualt"
+        android:drawableEnd="@drawable/ic_add_wallet_page"
         android:drawablePadding="6dp"
-        android:drawableTint="@color/black"
-        android:gravity="end"
-        android:paddingTop="12dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="12dp"
-        android:text="@string/propertyManage"
-        android:textColor="@color/black" />
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="14dp"
+        android:text="@string/myProperty"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"

@@ -137,10 +137,24 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     protected void onResume() {
         cleanBadge();
-
         startBurnMsgInterval(0);
-        pager.setCurrentItem(getIntent().getIntExtra("type", 0));
         super.onResume();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        this.setIntent(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        int selectPage = getIntent().getIntExtra("selectPage", -1);
+        if (selectPage != -1) {
+            pager.setCurrentItem(selectPage);
+            getIntent().putExtra("selectPage", -1);
+        }
     }
 
     @SuppressLint({"WrongConstant", "CheckResult"})

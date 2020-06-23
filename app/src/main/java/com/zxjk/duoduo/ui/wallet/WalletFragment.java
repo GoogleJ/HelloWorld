@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
@@ -25,6 +26,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseLazyFragment;
 import com.zxjk.duoduo.ui.minepage.DetailListActivity;
+import com.zxjk.duoduo.ui.msgpage.QrCodeActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
@@ -44,6 +46,7 @@ public class WalletFragment extends BaseLazyFragment {
     private boolean isShow;
     private String hideStr = "******";
 
+    @SuppressLint("CheckResult")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,9 +95,25 @@ public class WalletFragment extends BaseLazyFragment {
 
         tvManage.setOnClickListener(v -> startActivityForResult(new Intent(getContext(), BalanceShowItemActivity.class), REQUEST_ADD));
 
-        rootView.findViewById(R.id.llBalanceWalletTop1).setOnClickListener(v -> startActivity(new Intent(getContext(), RecipetQRActivity.class)));
+        rootView.findViewById(R.id.tvWalletReceive).setOnClickListener(v -> startActivity(new Intent(getContext(), RecipetQRActivity.class)));
 
-        rootView.findViewById(R.id.llBalanceWalletTop2).setOnClickListener(v ->
+        rootView.findViewById(R.id.tvWalletScan).setOnClickListener(v -> startActivity(new Intent(getContext(), QrCodeActivity.class)));
+
+        rootView.findViewById(R.id.tvWalletBuyCoin).setOnClickListener(v ->
+                ServiceFactory.getInstance().getBaseService(Api.class)
+                        .getOpenPurchaseStatus()
+                        .compose(bindToLifecycle())
+                        .compose(RxSchedulers.normalTrans())
+                        .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(getActivity())))
+                        .subscribe(d -> {
+                            if (d.equals("1")) {
+                                startActivity(new Intent(getActivity(), OneKeyBuyCoinActivity.class));
+                            } else {
+                                ToastUtils.showShort(R.string.developing);
+                            }
+                        }, this::handleApiError));
+
+        rootView.findViewById(R.id.tvWalletColdWallet).setOnClickListener(v ->
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .isExistWalletInfo()
                         .compose(bindToLifecycle())
