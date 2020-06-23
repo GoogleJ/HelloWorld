@@ -1160,7 +1160,7 @@
     <string name="alipay_pay" translatable="false">支付宝支付</string>
     <string name="payment_reminder" translatable="false">如您已付款，请务必点击“已完成付款”。否则有可能造成您的资金损失！</string>
     <string name="confirm_to_leave_the_pay" translatable="false">确认离开支付</string>
-    <string name="remove_order_remind" translatable="false">单天最多取消%1$s次订单，超过%2$s次后，单天不可再下单！</string>
+    <string name="remove_order_remind" translatable="false">当天最多取消%1$s次订单，超过%2$s次后，当天不可再下单！</string>
     <string name="unit_price" translatable="false">单价(%1$s)</string>
     <string name="the_number" translatable="false">数量(%1$s)</string>
     <string name="total_amount" translatable="false">交易总额(%1$s)</string>

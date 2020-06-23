@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -218,7 +219,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                     .compose(bindToLifecycle())
                                     .subscribe(l -> {
                                         long minute = (total - l) / 60;
-                                        long second = ((total - l) % 60) - 1;
+                                        long second = ((total - l) % 60);
                                         tv2.setText(minute + ":" + (second == 0 ? "00" : (second < 10 ? ("0" + second) : second)));
                                         if (total == 0 || l == total - 1) {
                                             linkCoinOrdersOrderDetails(otherOrderId);
@@ -261,23 +262,25 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             }
                         });
 
-                        tvPayCoin.setOnClickListener(v -> NiceDialog.init().setLayoutId(R.layout.dialog_remove_order)
-                                .setConvertListener(new ViewConvertListener() {
-                                    @Override
-                                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                                        holder.setText(R.id.tv_title, "确认放行?");
-                                        holder.setText(R.id.tv_content, "请务必登录网上银行或第三方支付账号\n" +
-                                                "确认收到该笔款项");
-                                        holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
-                                        holder.setOnClickListener(R.id.tv_ok, v -> {
-                                            if ("PAYED".equals(data.getOrderStatus())) {
-                                                new NewPayBoard(PurchaseDetailsActivity.this)
-                                                        .show(pwd -> payCoin(MD5Utils.getMD5(pwd)));
+                        tvPayCoin.setOnClickListener(v -> {
+                            if ("PAYED".equals(data.getOrderStatus())) {
+                                NiceDialog.init().setLayoutId(R.layout.dialog_remove_order)
+                                        .setConvertListener(new ViewConvertListener() {
+                                            @Override
+                                            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                                                holder.setText(R.id.tv_title, "确认放行?");
+                                                holder.setText(R.id.tv_content, "请务必登录网上银行或第三方支付账号\n" +
+                                                        "确认收到该笔款项");
+                                                holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
+                                                holder.setOnClickListener(R.id.tv_ok, v -> {
+                                                    dialog.dismiss();
+                                                    new NewPayBoard(PurchaseDetailsActivity.this)
+                                                            .show(pwd -> payCoin(MD5Utils.getMD5(pwd)));
+                                                });
                                             }
-                                            dialog.dismiss();
-                                        });
-                                    }
-                                }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager()));
+                                        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
+                            }
+                        });
 
                         if ("UNFINISHED".equals(data.getOrderStatus())) {//待付款状态
                             tvPayCoin.setTextColor(Color.parseColor("#909399"));
@@ -383,6 +386,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver())
                 .subscribe(s -> {
                     ToastUtils.showShort("放币成功");
+                    finish();
                 }, this::handleApiError);
     }
 

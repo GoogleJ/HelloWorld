@@ -54,7 +54,7 @@ import razerdp.widget.QuickPopup;
 public class BuyCoinViewPagerFragment extends BaseFragment {
 
     private static final String KEY = "title";
-    private int decimalDigits = 6;// 小数的位数
+    private int decimalDigits = 5;// 小数的位数
     private int integerDigits = 10;// 整数的位数
     private TextView tvBuyCoinSwitch;
     private LinearLayout llBuyCoin;
@@ -152,7 +152,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 if (tvBuyPatterns.getText().equals("CNY")) {
                     tvBuyPatterns.setText(getQuickTickerResponse.getCoinSymbol());
                     buyPatterns = getQuickTickerResponse.getCoinSymbol();
-                    decimalDigits = 6;
+                    decimalDigits = 5;
                     tvPurchaseAmount.setText(R.string.purchase_quantity);
                     etPurchaseAmount.setHint(R.string.purchase_amount_hint);
                     tvBuyCoinSwitch.setText(R.string.buying_coin);
@@ -172,7 +172,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 if (tvBuyPatterns.getText().equals("CNY")) {
                     tvBuyPatterns.setText(getQuickTickerResponse.getCoinSymbol());
                     buyPatterns = getQuickTickerResponse.getCoinSymbol();
-                    decimalDigits = 6;
+                    decimalDigits = 5;
                     tvPurchaseAmount.setText("出售数量");
                     etPurchaseAmount.setHint("请输入出售数量");
                     tvBuyCoinSwitch.setText("按金额出售");
@@ -271,12 +271,12 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     ToastUtils.showShort(getString(R.string.buy_amount_prompt2, getQuickTickerResponse.getMinAmount(), getQuickTickerResponse.getCoinSymbol()));
                 } else {
                     if (buyPatterns.equals("CNY")) {
-                        DecimalFormat df = new DecimalFormat("#.000000");
+                        DecimalFormat df = new DecimalFormat("#.00000");
                         Double a1 = (Double.parseDouble(etPurchaseAmount.getText().toString()) / Double.parseDouble(getQuickTickerResponse.getPrice()));
                         amount = Double.parseDouble(df.format(a1));
                         total = Double.parseDouble(etPurchaseAmount.getText().toString());
                     } else {
-                        DecimalFormat df = new DecimalFormat("#.000");
+                        DecimalFormat df = new DecimalFormat("#.00");
                         Double a1 = (Double.parseDouble(getQuickTickerResponse.getPrice()) * Double.parseDouble(etPurchaseAmount.getText().toString()));
                         Double str = Double.parseDouble(df.format(a1));
                         amount = Double.parseDouble(etPurchaseAmount.getText().toString());
@@ -303,20 +303,20 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     getFindHailangResponse(data);
 
                     if (getArguments().getInt("buyType") == 0) {
-                        tvBuyPatterns.setText(data.getCoinSymbol());
-                        buyPatterns = data.getCoinSymbol();
-                        decimalDigits = 6;
-                        tvPurchaseAmount.setText(R.string.purchase_quantity);
-                        etPurchaseAmount.setHint(R.string.purchase_amount_hint);
-                        tvBuyCoinSwitch.setText(R.string.buying_coin);
+                        tvBuyPatterns.setText(data.getCurrencySymbol());
+                        buyPatterns = data.getCurrencySymbol();
+                        decimalDigits = 2;
+                        tvPurchaseAmount.setText(R.string.purchase_coin);
+                        etPurchaseAmount.setHint(R.string.purchase_coin_hint);
+                        tvBuyCoinSwitch.setText(R.string.buying_patterns);
                         btnBuyCoin.setText(R.string.quick_buy_coins);
                     } else {
-                        tvBuyPatterns.setText(data.getCoinSymbol());
-                        buyPatterns = data.getCoinSymbol();
-                        decimalDigits = 6;
-                        tvPurchaseAmount.setText("出售数量");
-                        etPurchaseAmount.setHint("请输入出售数量");
-                        tvBuyCoinSwitch.setText("按金额出售");
+                        tvBuyPatterns.setText(data.getCurrencySymbol());
+                        buyPatterns = data.getCurrencySymbol();
+                        decimalDigits = 2;
+                        tvPurchaseAmount.setText("出售金额");
+                        etPurchaseAmount.setHint("请输入出售金额");
+                        tvBuyCoinSwitch.setText("按数量出售");
                         btnBuyCoin.setText("一键出售");
                     }
                     quickOrderRequest.setPriceType("1");
@@ -415,6 +415,14 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
 
         if (0 == getOTCPayInfoResponse.getTrade()) {
             llAddPayment.setVisibility(View.VISIBLE);
+            if (getArguments().getInt("buyType") == 0) {
+                TextView title = buyCoinType.findViewById(R.id.tv_title);
+                TextView tvHint = buyCoinType.findViewById(R.id.tv_hint);
+                TextView tvContent = buyCoinType.findViewById(R.id.tv_content);
+                title.setText("添加手机号码");
+                tvContent.setText("添加");
+                tvHint.setVisibility(View.VISIBLE);
+            }
         } else {
             llAddPayment.setVisibility(View.GONE);
         }

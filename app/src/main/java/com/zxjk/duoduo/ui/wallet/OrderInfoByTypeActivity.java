@@ -78,9 +78,9 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     }
 
     private void initData() {
-        swipeRefreshLayout.setRefreshing(true);
-        onRefreshLayout();
 
+        onRefreshLayout();
+        swipeRefreshLayout.setRefreshing(true);
         tvScreening.setOnClickListener(v -> {
             orderPop = QuickPopupBuilder.with(this)
                     .contentView(R.layout.dialog_order_screening)
