@@ -22,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
-import com.zxjk.duoduo.bean.FileInfo;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.utils.CommonUtils;
@@ -115,13 +114,13 @@ public class WeChatFileFragment extends BaseFragment {
                 b.setChecked(true);
                 selectedFiles.add(((FileBean) adapter.getData().get(position)));
                 currentCount += 1;
-                tvCurrentCount.setText(String.format(getResources().getString(R.string.phonefile_selectedfile), currentCount , currentMax));
+                tvCurrentCount.setText(String.format(getResources().getString(R.string.phonefile_selectedfile), currentCount, currentMax));
                 adapter.notifyItemChanged(position);
             } else {
                 b.setChecked(false);
                 selectedFiles.remove(adapter.getData().get(position));
                 currentCount -= 1;
-                tvCurrentCount.setText(String.format(getResources().getString(R.string.phonefile_selectedfile), currentCount , currentMax));
+                tvCurrentCount.setText(String.format(getResources().getString(R.string.phonefile_selectedfile), currentCount, currentMax));
                 adapter.notifyItemChanged(position);
             }
         });
@@ -278,7 +277,7 @@ public class WeChatFileFragment extends BaseFragment {
 
     public void sendFile() {
 
-        if(selectedFiles!=null && selectedFiles.size() != 0){
+        if (selectedFiles != null && selectedFiles.size() != 0) {
             Observable.interval(0, 250, TimeUnit.MILLISECONDS)
                     .take(selectedFiles.size())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -307,8 +306,8 @@ public class WeChatFileFragment extends BaseFragment {
                                 RongIM.getInstance().sendMediaMessage(message, null, null, (IRongCallback.ISendMediaMessageCallback) null);
                             }
                         }
-                    });
-        }else {
+                    }, this::handleApiError);
+        } else {
             ToastUtils.showShort(getResources().getString(R.string.select_file));
         }
 

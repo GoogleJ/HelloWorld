@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -109,8 +108,6 @@ import io.rong.message.VoiceMessage;
 import static com.ashokvarma.bottomnavigation.BottomNavigationBar.BACKGROUND_STYLE_STATIC;
 
 public class HomeActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
-
-    public static final int REQUEST_REWARD = 1001;
     public BadgeItem badgeItem2;
     private MsgFragment msgFragment;
     private ContactFragment contactFragment;
@@ -188,7 +185,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         initRongUserProvider();
 
-        initRedfallData();
+//        initRedfallData();
 
         initRongMention();
 
@@ -730,7 +727,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         contactFragment = new ContactFragment();
         findFragment = new WalletFragment();
 
-
         pager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
@@ -782,28 +778,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabReselected(int position) {
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) return;
-
-        switch (requestCode) {
-            case REQUEST_REWARD:
-                if (resultCode != 1) {
-                    return;
-                }
-                if (data.getBooleanExtra("fromReward", false)) {
-                    String action = data.getStringExtra("action");
-                    switch (action) {
-                        case "shareNews":
-                            m_bottom_bar.selectTab(2, true);
-                            break;
-                    }
-                }
-                break;
-        }
     }
 
     public void onHeadClick() {

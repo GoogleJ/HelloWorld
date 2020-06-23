@@ -29,6 +29,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
+import com.zxjk.duoduo.bean.DataTemp628;
 import com.zxjk.duoduo.bean.request.PayPhoneRequest;
 import com.zxjk.duoduo.bean.response.GetSignListResponse;
 import com.zxjk.duoduo.network.Api;
@@ -69,7 +70,7 @@ public class RewardMotActivity extends BaseActivity {
     private BaseQuickAdapter<GetSignListResponse.PointsListBean, BaseViewHolder> adapter2;
 
     private GetSignListResponse signListResponse;
-    
+
 
     private int height = 640;
 
@@ -266,7 +267,7 @@ public class RewardMotActivity extends BaseActivity {
                                             } else {
                                                 ToastUtils.showShort(R.string.developing);
                                             }
-                                        });
+                                        }, RewardMotActivity.this::handleApiError);
                                 return;
                             case "15":
                                 Intent intent3 = new Intent(RewardMotActivity.this, CreateGroupActivity.class);
@@ -457,11 +458,15 @@ public class RewardMotActivity extends BaseActivity {
                 }, this::handleApiError);
     }
 
-
     private void showDialog(String titleName, String title) {
         new RewardDialog(this, R.style.dialog, "", (dialog, confirm, v) -> {
             if ("1".equals(signListResponse.getActivity().getActivityType()) && v == 1) {
-                //todo jump to webActivity
+                DataTemp628 data = new DataTemp628();
+                data.setId(Constant.currentUser.getId());
+                data.setToken(Constant.currentUser.getToken());
+                Intent intent = new Intent(this, WebActivity.class);
+                intent.putExtra("url", Constant.URL_628ACTIVITY + "/?" + AesUtil.getInstance().encrypt(GsonUtils.toJson(data)));
+                startActivity(intent);
             } else {
                 if (confirm) {
                     dialog.dismiss();
