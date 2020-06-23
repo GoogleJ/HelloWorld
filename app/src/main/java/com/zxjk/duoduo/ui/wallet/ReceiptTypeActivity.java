@@ -179,6 +179,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                     dialogType();
                 }
             }, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            ;
         } else if (types.equals(bank)) {
             accountIdCard.setOnClickListener(v -> {
                 dialog.show(getString(R.string.open_bank), getString(R.string.please_upload_selector_open_bank), "", 3);
@@ -381,7 +382,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 });
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
-                    TakePicUtil.albumPhoto(ReceiptTypeActivity.this);
+                    TakePicUtil.albumPhoto(ReceiptTypeActivity.this, false);
                 });
                 holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
 
