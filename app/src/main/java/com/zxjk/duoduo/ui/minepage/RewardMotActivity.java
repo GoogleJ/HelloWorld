@@ -267,7 +267,6 @@ public class RewardMotActivity extends BaseActivity {
                                             if (d.equals("1")) {
                                                 startActivity(new Intent(RewardMotActivity.this, OneKeyBuyCoinActivity.class));
                                             } else {
-                                                findViewById(R.id.first).setVisibility(View.GONE);
                                                 ToastUtils.showShort(R.string.developing);
                                             }
                                         });

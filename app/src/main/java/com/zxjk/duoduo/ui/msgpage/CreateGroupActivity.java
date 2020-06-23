@@ -33,7 +33,6 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.minepage.InviteForSocialActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.CreateGroupAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.CreateGroupTopAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.GroupMemberAdapter;
