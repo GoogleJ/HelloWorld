@@ -103,29 +103,27 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         rt.play();
 
-
-        String resultUri = result.substring(0, result.indexOf("?") + 1);
-
-        if (resultUri.equals("http://hilamg-share.zhumengxuanang.com/?")) {
-
-            String userIdJiequ = result.substring(result.indexOf("?") + 1);
-
-            resultUri += AesUtil.getInstance().decrypt(userIdJiequ);
-            Uri uri = Uri.parse(resultUri);
-            String id= uri.getQueryParameter("id");
-            String groupId= uri.getQueryParameter("groupId");
-            String type= uri.getQueryParameter("type");
-
-            if(TextUtils.isEmpty(type)){
-                resultUri = "hilamg://web/?action=addFriend&id="+id;
-            }else if(type.equals("1")){
-                resultUri = "hilamg://web/?action=joinCommunity&id="+id+"&groupId="+groupId;
+        try {
+            String resultUri = result.substring(0, result.indexOf("?") + 1);
+            if (resultUri.equals("http://hilamg-share.zhumengxuanang.com/?")) {
+                String userIdJiequ = result.substring(result.indexOf("?") + 1);
+                resultUri += AesUtil.getInstance().decrypt(userIdJiequ);
+                Uri uri = Uri.parse(resultUri);
+                String id = uri.getQueryParameter("id");
+                String groupId = uri.getQueryParameter("groupId");
+                String type = uri.getQueryParameter("type");
+                if (TextUtils.isEmpty(type)) {
+                    resultUri = "hilamg://web/?action=addFriend&id=" + id;
+                } else if (type.equals("1")) {
+                    resultUri = "hilamg://web/?action=joinCommunity&id=" + id + "&groupId=" + groupId;
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(resultUri));
+                startActivity(intent);
+                finish();
+                return;
             }
-            Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(resultUri));
-            startActivity(intent);
-            finish();
-            return;
+        } catch (Exception e) {
         }
 
         if (parseShareResult(result)) return;
