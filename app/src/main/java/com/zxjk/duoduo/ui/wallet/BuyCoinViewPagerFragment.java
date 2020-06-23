@@ -248,7 +248,11 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         }
                     } else {
                         if (Double.parseDouble(String.valueOf(editable)) > Double.parseDouble(getQuickTickerResponse.getMaxAmount())) {
-                            ToastUtils.showShort(getString(R.string.buy_amount_prompt, getQuickTickerResponse.getMaxAmount(), getQuickTickerResponse.getCoinSymbol()));
+                            if(getArguments().getInt("buyType") == 0){
+                                ToastUtils.showShort(getString(R.string.buy_amount_prompt, getQuickTickerResponse.getMaxAmount(), getQuickTickerResponse.getCoinSymbol()));
+                            }else {
+                                ToastUtils.showShort(getString(R.string.buy_amount_prompt_sell, getQuickTickerResponse.getMaxAmount(), getQuickTickerResponse.getCoinSymbol()));
+                            }
                             etPurchaseAmount.setText(getQuickTickerResponse.getMaxAmount());
                         }
                     }

@@ -261,6 +261,10 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                     addPayInfoBean.setCardUserName(receiptTypeRealName.getText().toString());
                     addPayInfoBean.setCardAddress(receiptTypePayment.getText().toString());
                 } else {
+                    if (TextUtils.isEmpty(receiptTypePayment.getText().toString())) {
+                        ToastUtils.showShort("请填写手机号");
+                        return;
+                    }
                     addPayInfoBean.setMobile(receiptTypePayment.getText().toString());
                     addPayInfoBean.setPayInfoType("MOBILE");
                     addPayInfoBean.setCountryCode(dialog.getContrary());

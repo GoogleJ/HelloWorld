@@ -237,7 +237,9 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         });
 
         adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(OrderInfoByTypeActivity.this::onRefreshLayout, rlOrderInfoByType);
+        adapter.setOnLoadMoreListener(() -> {
+            OrderInfoByTypeActivity.this.onRefreshLayout();
+        }, rlOrderInfoByType);
 
         rlOrderInfoByType.setLayoutManager(new LinearLayoutManager(this));
         rlOrderInfoByType.setAdapter(adapter);
