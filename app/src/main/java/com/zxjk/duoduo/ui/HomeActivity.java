@@ -769,6 +769,11 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
             VibrateUtils.vibrate(50);
         }
+        if (position == 2) {
+            setTrasnferStatusBar(false);
+        } else {
+            setTrasnferStatusBar(true);
+        }
         pager.setCurrentItem(position, true);
     }
 

@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    android:orientation="vertical">
+    android:background="@color/background_color">
 
-    <LinearLayout
-        android:id="@+id/appbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorTheme"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:elevation="0dp">
 
         <TextView
             android:id="@+id/tvList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:drawableStart="@drawable/ic_balance_detail_list"
             android:drawablePadding="4dp"
             android:text="@string/balancelist"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_scrollFlags="scroll" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -31,7 +32,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="15dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            app:layout_scrollFlags="scroll">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,7 +59,9 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="15dp"
             android:gravity="bottom"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            app:layout_scrollFlags="scroll">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -99,14 +103,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="#26ffffff" />
+            android:background="#26ffffff"
+            app:layout_scrollFlags="scroll" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
 
             <TextView
                 android:id="@+id/tvWalletScan"
@@ -154,28 +158,29 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tvManage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:drawableEnd="@drawable/ic_add_wallet_page"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:paddingStart="14dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/myProperty"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/tvManage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:drawableEnd="@drawable/ic_add_wallet_page"
-        android:drawablePadding="6dp"
-        android:gravity="center_vertical"
-        android:paddingStart="14dp"
-        android:paddingTop="14dp"
-        android:paddingEnd="14dp"
-        android:paddingBottom="14dp"
-        android:text="@string/myProperty"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:overScrollMode="never" />
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
