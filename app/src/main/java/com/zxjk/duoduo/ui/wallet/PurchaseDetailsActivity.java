@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,13 +18,20 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
+import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.GetLinkCoinOrdersOrderDetails;
 import com.zxjk.duoduo.network.Api;
@@ -32,6 +40,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.AliPayUtils;
+import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
@@ -39,7 +48,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @SuppressLint("CheckResult")
@@ -137,8 +148,44 @@ public class PurchaseDetailsActivity extends BaseActivity {
             if (tvPayment.getText().equals(getString(R.string.the_complaint))) {
                 intent = new Intent(this, TheAppealActivity.class);
             } else {
-                if (byBoinsResponse.getPayType().equals("ALIPAY") && AliPayUtils.hasInstalledAlipayClient(this)) {
-                    AliPayUtils.startAlipayClient(this, byBoinsResponse.getAlipayUrl());
+                if (byBoinsResponse.getPayType().equals("ALIPAY")) {
+                    Observable
+                            .create((ObservableOnSubscribe<String>) emitter ->
+                                    Glide.with(this)
+                                            .asBitmap()
+                                            .load(byBoinsResponse.getAlipayUrl())
+                                            .listener(new RequestListener<Bitmap>() {
+                                                @Override
+                                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                                    emitter.tryOnError(new RuntimeException());
+                                                    return false;
+                                                }
+
+                                                @Override
+                                                public boolean onResourceReady(Bitmap bitmap, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                                    String s = QRCodeDecoder.syncDecodeQRCode(bitmap);
+                                                    emitter.onNext(s);
+                                                    return false;
+                                                }
+                                            })
+                                            .submit(500, 500))
+                            .subscribeOn(AndroidSchedulers.mainThread())
+                            .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                            .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
+                            .timeout(3, TimeUnit.SECONDS)
+                            .subscribe(s -> {
+                                Intent intent1 = new Intent(this, OrderDetailsActivity.class);
+                                intent1.putExtra("ByBoinsResponse", byBoinsResponse);
+                                startActivity(intent1);
+                                AliPayUtils.startAlipayClient(this, s);
+                                finish();
+                            }, t -> {
+                                Intent intent1 = new Intent(this, OrderDetailsActivity.class);
+                                intent1.putExtra("ByBoinsResponse", byBoinsResponse);
+                                startActivity(intent1);
+                                finish();
+                            });
+                    return;
                 }
                 intent = new Intent(this, OrderDetailsActivity.class);
             }

@@ -167,46 +167,6 @@ public class ServiceFactory {
                 .build();
     }
 
-    private Retrofit otc(String url, String sign) {
-        //Log拦截器
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        if (BuildConfig.enableLog) {
-            interceptor.level(HttpLoggingInterceptor.Level.BODY);
-        } else {
-            interceptor.level(HttpLoggingInterceptor.Level.NONE);
-        }
-        //构造client对象
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor).connectTimeout(8, TimeUnit.SECONDS)
-                .addInterceptor(chain -> {
-                    Request original = chain.request();
-                    Request.Builder requestBuilder = original.newBuilder()
-                            .header("id", Constant.userId)
-                            .header("token", Constant.token)
-                            .header("Accept-Language", Constant.language)
-                            .header("phoneUuid", Constant.phoneUuid)
-                            .header("systemType", "1")
-                            .header("key", Constant.KEY)
-                            .header("sign", sign)
-                            .header("version", "2.0");
-                    Request request = requestBuilder.build();
-                    return chain.proceed(request);
-                })
-                .readTimeout(8, TimeUnit.SECONDS)
-                .writeTimeout(8, TimeUnit.SECONDS)
-                .build();
-
-        return new Retrofit.Builder().baseUrl(url)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-    }
-
-    public <T> T otcService(String url, String sign, Class<T> from) {
-        return otc(url, sign).create(from);
-    }
-
     public <T> T getNormalService(String url, Class<T> from) {
         return initNormal(url).create(from);
     }

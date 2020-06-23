@@ -58,6 +58,8 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     private int page = 0;
     private int numsPerPage = 10;
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm MM/dd");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,8 +182,6 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         adapter = new BaseQuickAdapter<GetquickOrderInfoResponse, BaseViewHolder>(R.layout.item_order_info_by_type) {
             @Override
             protected void convert(BaseViewHolder helper, GetquickOrderInfoResponse item) {
-
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm MM/dd");
                 String sd = sdf.format(new Date(Long.parseLong(item.getCreateTime())));
 
                 helper.setText(R.id.tv_nonce, sd)
@@ -265,7 +265,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
                             adapter.loadMoreEnd(false);
                         }
                     }
-                });
+                }, this::handleApiError);
     }
 
     private void setCheckBox(int checkBox) {

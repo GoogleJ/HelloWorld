@@ -21,16 +21,6 @@ public class Constant {
     public static final String BASE_URL = "http://47.93.180.210:8085/";  //26g  74w  191h
 //    public static final String BASE_URL = "http://47.93.180.210:8085/"; //test
 
-//    public static final String OTC_URL = "http://47.244.186.74:9090/";//test
-//    public static final String USERID = "2384480";
-//    public static final String SECRET = "90b75bbfa1759902b846a31e9049469e755d01cb240bd1e9a204622f2696d254";
-//    public static final String KEY = "e5ecd4f49f58a81b9271b1fa35e5042f";
-
-    public static final String OTC_URL = "https://api.ixex.io/";//release
-    public static final String KEY = "7dd99c69815d930ec89afe570f78aef2";
-    public static final String SECRET = "bcb592f2340d81c495f9450548de6d12ad73f653b6037c802796cab1290961b0";
-    public static final String USERID = "3014198";
-
     public static final String APP_CODE = "fb0e95b069f74f29a2f972f9454d7d1a";
     public static final String APP_DOWNLOAD_URL = "https://fkr.one/hilamg";
     public static final String APP_SHARE_URL = "http://hilamg-share.zhumengxuanang.com/?";
