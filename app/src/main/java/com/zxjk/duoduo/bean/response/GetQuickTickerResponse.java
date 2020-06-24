@@ -17,6 +17,15 @@ public class GetQuickTickerResponse {
     private String maxQuota;
     private String minAmount;
     private String maxAmount;
+    private String balance;
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
 
     public String getMinAmount() {
         return minAmount;

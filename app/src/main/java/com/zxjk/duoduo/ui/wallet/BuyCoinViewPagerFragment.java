@@ -247,13 +247,19 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                             }
                         }
                     } else {
-                        if (Double.parseDouble(String.valueOf(editable)) > Double.parseDouble(getQuickTickerResponse.getMaxAmount())) {
-                            if (getArguments().getInt("buyType") == 0) {
+                        if (getArguments().getInt("buyType") == 0) {
+                            if (Double.parseDouble(String.valueOf(editable)) > Double.parseDouble(getQuickTickerResponse.getMaxAmount())) {
                                 ToastUtils.showShort(getString(R.string.buy_amount_prompt, getQuickTickerResponse.getMaxAmount(), getQuickTickerResponse.getCoinSymbol()));
-                            } else {
-                                ToastUtils.showShort(getString(R.string.buy_amount_prompt_sell, getQuickTickerResponse.getMaxAmount(), getQuickTickerResponse.getCoinSymbol()));
+                                etPurchaseAmount.setText(getQuickTickerResponse.getMaxAmount());
                             }
-                            etPurchaseAmount.setText(getQuickTickerResponse.getMaxAmount());
+                        } else {
+                            if (Double.parseDouble(String.valueOf(editable)) > Double.parseDouble(getQuickTickerResponse.getMaxAmount())) {
+                                ToastUtils.showShort(getString(R.string.buy_amount_prompt_sell, getQuickTickerResponse.getMaxAmount(), getQuickTickerResponse.getCoinSymbol()));
+                                etPurchaseAmount.setText(getQuickTickerResponse.getMaxAmount());
+                            } else if (Double.parseDouble(getQuickTickerResponse.getBalance()) < Double.parseDouble(getQuickTickerResponse.getMaxAmount()) && Double.parseDouble(getQuickTickerResponse.getBalance()) > Double.parseDouble(getQuickTickerResponse.getMinAmount()) && Double.parseDouble(String.valueOf(editable)) > Double.parseDouble(getQuickTickerResponse.getBalance())) {
+                                ToastUtils.showShort(getString(R.string.buy_amount_prompt_sell, getQuickTickerResponse.getBalance(), getQuickTickerResponse.getCoinSymbol()));
+                                etPurchaseAmount.setText(getQuickTickerResponse.getBalance());
+                            }
                         }
                     }
                 }
@@ -265,29 +271,47 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
             if (etPurchaseAmount.getText().length() == 0) {
                 if (buyPatterns.equals("CNY")) {
                     ToastUtils.showShort(R.string.purchase_coin_hint);
+                    return;
                 } else {
                     ToastUtils.showShort(R.string.purchase_amount_hint);
+                    return;
                 }
             } else {
                 if (buyPatterns.equals("CNY") && Double.parseDouble(String.valueOf(etPurchaseAmount.getText())) < Double.parseDouble(getQuickTickerResponse.getMinQuota())) {
                     ToastUtils.showShort(getString(R.string.buy_coins_prompt2));
-                } else if (!buyPatterns.equals("CNY") && Float.parseFloat(String.valueOf(etPurchaseAmount.getText())) < Double.parseDouble(getQuickTickerResponse.getMinAmount())) {
-                    ToastUtils.showShort(getString(R.string.buy_amount_prompt2, getQuickTickerResponse.getMinAmount(), getQuickTickerResponse.getCoinSymbol()));
-                } else {
-                    if (buyPatterns.equals("CNY")) {
-                        DecimalFormat df = new DecimalFormat("#.00000");
-                        Double a1 = (Double.parseDouble(etPurchaseAmount.getText().toString()) / Double.parseDouble(getQuickTickerResponse.getPrice()));
-                        amount = Double.parseDouble(df.format(a1));
-                        total = Double.parseDouble(etPurchaseAmount.getText().toString());
-                    } else {
-                        DecimalFormat df = new DecimalFormat("#.00");
-                        Double a1 = (Double.parseDouble(getQuickTickerResponse.getPrice()) * Double.parseDouble(etPurchaseAmount.getText().toString()));
-                        Double str = Double.parseDouble(df.format(a1));
-                        amount = Double.parseDouble(etPurchaseAmount.getText().toString());
-                        total = str;
+                } else if (!buyPatterns.equals("CNY")) {
+                    if (getArguments().getInt("buyType") == 0) {
+                        if (Double.parseDouble(String.valueOf(etPurchaseAmount.getText())) < Double.parseDouble(getQuickTickerResponse.getMinAmount())) {
+                            ToastUtils.showShort(getString(R.string.buy_amount_prompt2, getQuickTickerResponse.getMinAmount(), getQuickTickerResponse.getCoinSymbol()));
+                            etPurchaseAmount.setText(getQuickTickerResponse.getMinAmount());
+                            return;
+                        }
+                    } else if (getArguments().getInt("buyType") == 1) {
+                        if (Double.parseDouble(getQuickTickerResponse.getBalance()) < Double.parseDouble(getQuickTickerResponse.getMinAmount())) {
+                            ToastUtils.showShort("余额小于最小限额无法交易");
+                            etPurchaseAmount.setText("");
+                            return;
+                        } else if (Double.parseDouble(String.valueOf(etPurchaseAmount.getText())) < Double.parseDouble(getQuickTickerResponse.getMinAmount()) && Double.parseDouble(getQuickTickerResponse.getBalance()) > Double.parseDouble(getQuickTickerResponse.getMinAmount())) {
+                            ToastUtils.showShort("最小出售数量为" + getQuickTickerResponse.getMinAmount() + getQuickTickerResponse.getCoinSymbol());
+                            etPurchaseAmount.setText(getQuickTickerResponse.getMinAmount());
+                            return;
+                        }
                     }
-                    getOTCPayInfo();
                 }
+                if (buyPatterns.equals("CNY")) {
+                    DecimalFormat df = new DecimalFormat("#.00000");
+                    Double a1 = (Double.parseDouble(etPurchaseAmount.getText().toString()) / Double.parseDouble(getQuickTickerResponse.getPrice()));
+                    amount = Double.parseDouble(df.format(a1));
+                    total = Double.parseDouble(etPurchaseAmount.getText().toString());
+                } else {
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    Double a1 = (Double.parseDouble(getQuickTickerResponse.getPrice()) * Double.parseDouble(etPurchaseAmount.getText().toString()));
+                    Double str = Double.parseDouble(df.format(a1));
+                    amount = Double.parseDouble(etPurchaseAmount.getText().toString());
+                    total = str;
+                }
+                getOTCPayInfo();
+
             }
         });
 
@@ -307,23 +331,24 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     getFindHailangResponse(data);
 
                     if (getArguments().getInt("buyType") == 0) {
-                        tvBuyPatterns.setText(data.getCurrencySymbol());
-                        buyPatterns = data.getCurrencySymbol();
-                        decimalDigits = 2;
-                        tvPurchaseAmount.setText(R.string.purchase_coin);
-                        etPurchaseAmount.setHint(R.string.purchase_coin_hint);
-                        tvBuyCoinSwitch.setText(R.string.buying_patterns);
+                        tvBuyPatterns.setText(data.getCoinSymbol());
+                        buyPatterns = data.getCoinSymbol();
+                        decimalDigits = 5;
+                        tvPurchaseAmount.setText(R.string.purchase_quantity);
+                        etPurchaseAmount.setHint(R.string.purchase_amount_hint);
+                        tvBuyCoinSwitch.setText(R.string.buying_coin);
                         btnBuyCoin.setText(R.string.quick_buy_coins);
                     } else {
-                        tvBuyPatterns.setText(data.getCurrencySymbol());
-                        buyPatterns = data.getCurrencySymbol();
-                        decimalDigits = 2;
-                        tvPurchaseAmount.setText("出售金额");
-                        etPurchaseAmount.setHint("请输入出售金额");
-                        tvBuyCoinSwitch.setText("按数量出售");
+
+                        tvBuyPatterns.setText(getQuickTickerResponse.getCoinSymbol());
+                        buyPatterns = getQuickTickerResponse.getCoinSymbol();
+                        decimalDigits = 5;
+                        tvPurchaseAmount.setText("出售数量");
+                        etPurchaseAmount.setHint("请输入出售数量");
+                        tvBuyCoinSwitch.setText("按金额出售");
                         btnBuyCoin.setText("一键出售");
                     }
-                    quickOrderRequest.setPriceType("2");
+                    quickOrderRequest.setPriceType("1");
                     tvUnitPrice.setText(getString(R.string.the_unit_price, data.getPrice(), data.getCurrencySymbol(), data.getCoinSymbol()));
                     tvLimit.setText(getString(R.string.limit, data.getMinQuota(), data.getMaxQuota()));
                 }, this::handleApiError);
