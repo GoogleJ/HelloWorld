@@ -322,6 +322,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                             receiptTypePayment.setText(R.string.not_uploaded);
                         } else {
                             receiptTypePayment.setText("已上传");
+                            url = s.getWeixinUrl();
                         }
                     } else if (alipay.equals(types)) {
                         //支付宝信息，提交按钮已隐藏
@@ -333,6 +334,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                         if (TextUtils.isEmpty(s.getAlipayUrl())) {
                             receiptTypePayment.setText(R.string.not_uploaded);
                         } else {
+                            url = s.getAlipayUrl();
                             receiptTypePayment.setText("已上传");
                         }
                     } else if (bank.equals(types)) {
