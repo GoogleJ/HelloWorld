@@ -56,6 +56,7 @@ public class OrderDetailsActivity extends BaseActivity {
     private TextView tvPaymentType2;
     private ScrollView scrollView;
     private RelativeLayout rlTitleBar;
+    private LinearLayout llPaymentType;
 
     private String sign;
     private String timestamp;
@@ -87,6 +88,7 @@ public class OrderDetailsActivity extends BaseActivity {
         tvPaymentType2 = findViewById(R.id.tv_payment_type2);
         scrollView = findViewById(R.id.scrollview);
         rlTitleBar = findViewById(R.id.rl_title_bar);
+        llPaymentType = findViewById(R.id.ll_payment_type);
 
         findViewById(R.id.rl_back).setOnClickListener(v -> onBackDialog());
     }
@@ -119,12 +121,13 @@ public class OrderDetailsActivity extends BaseActivity {
 
         if ("ALIPAY".equals(byBoinsResponse.getPayType())) {
             tvPaymentType.setText(R.string.alipay_pay);
-            setDrawables(getResources().getDrawable(R.drawable.pay_treasure, null), getResources().getDrawable(R.drawable.ic_qr_code_small, null), tvPaymentType);
+            setDrawables(getResources().getDrawable(R.drawable.pay_treasure, null), null, tvPaymentType);
             tvPrice.setText(byBoinsResponse.getAlipayName());
             tvNumber.setText(byBoinsResponse.getAlipayId());
         } else if ("WEIXIN".equals(byBoinsResponse.getPayType())) {
             tvPaymentType.setText(R.string.wechat_pay);
-            setDrawables(getResources().getDrawable(R.drawable.wechat, null), getResources().getDrawable(R.drawable.ic_qr_code_small, null), tvPaymentType);
+            setDrawables(getResources().getDrawable(R.drawable.wechat, null), null, tvPaymentType)
+            ;
             tvPrice.setText(byBoinsResponse.getWeixinName());
             tvNumber.setText(byBoinsResponse.getWeixinId());
         } else {
@@ -139,7 +142,7 @@ public class OrderDetailsActivity extends BaseActivity {
         }
 
 
-        tvPaymentType.setOnClickListener(v -> {
+        llPaymentType.setOnClickListener(v -> {
 
             if (!"EBANK".equals(byBoinsResponse.getPayType())) {
                 TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, ScreenUtils.getScreenHeight(), 0f);

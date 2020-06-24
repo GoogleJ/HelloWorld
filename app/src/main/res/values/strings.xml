@@ -1293,7 +1293,7 @@
     <string name="receipt_type_name">账号</string>
     <string name="commit_btn">提交</string>
     <string name="collection_information">收款信息</string>
-    <string name="payinfo">收付款信息</string>
+    <string name="payinfo">收付款方式</string>
     <string name="myProperty">我的资产</string>
     <string name="loading_pleasewait1">正在加载，请稍后</string>
     <string name="add_to_contact">添加到通讯录</string>
