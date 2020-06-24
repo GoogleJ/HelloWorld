@@ -901,4 +901,7 @@ public interface Api {
     @POST("duoduo/otc/improvePaymentInformationByType")
     @FormUrlEncoded
     Observable<BaseResponse<GetPaymentInformationResponse>> improvePaymentInformationByType(@Field("payType") String payType);
+
+    @POST("mochat/shopping/getHilamgMillUrl")
+    Observable<BaseResponse<String>> getHilamgMillUrl();
 }

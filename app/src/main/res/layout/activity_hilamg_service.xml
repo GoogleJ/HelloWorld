@@ -181,13 +181,16 @@
 
         </FrameLayout>
 
-        <View
+        <TextView
             android:layout_width="0dp"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_moshopping"
+            android:drawableTop="@drawable/ic_ipfs_service"
             android:drawablePadding="10dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:onClick="ipfs"
+            android:text="@string/ipfs"
+            android:textColor="#6D7278" />
 
         <TextView
             android:layout_width="0dp"
