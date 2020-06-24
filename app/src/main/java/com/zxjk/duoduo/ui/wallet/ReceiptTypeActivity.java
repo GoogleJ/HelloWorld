@@ -378,7 +378,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
                 holder.setOnClickListener(R.id.tv_photograph, v -> {
                     dialog.dismiss();
-                    TakePicUtil.takePicture(ReceiptTypeActivity.this);
+                    TakePicUtil.takePicture(ReceiptTypeActivity.this, false);
                 });
                 holder.setOnClickListener(R.id.tv_photo_select, v -> {
                     dialog.dismiss();
