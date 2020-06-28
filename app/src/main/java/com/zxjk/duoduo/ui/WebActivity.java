@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.URLUtil;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -25,6 +26,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.Utils;
 import com.zxjk.duoduo.Application;
@@ -34,13 +37,21 @@ import com.zxjk.duoduo.ui.base.WebActivityToLogin;
 import com.zxjk.duoduo.ui.widget.ProgressView;
 
 public class WebActivity extends BaseActivity implements WebActivityToLogin {
+    public static final int REQUEST_SELECT_FILE = 100;
+    public final static int FILECHOOSER_RESULTCODE = 1;
+    public ValueCallback<Uri[]> uploadMessage;
     String currentUrl;
+    /**
+     * 接收5.0以下的
+     */
+    private ValueCallback<Uri> mUploadMessage;
     private FrameLayout fl_webview;
     private ProgressView pb_webview;
     private WebSettings webSettings;
     private WebView mWebView;
     private ValueAnimator pbAnim;
     private boolean showAnim = true;
+
 
     private BroadcastReceiver downloadCompleteReceive = new BroadcastReceiver() {
         @Override
@@ -160,6 +171,19 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
                     }
                 }
             }
+
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                //确保没有现有的消息
+                if (uploadMessage != null) {
+                    uploadMessage.onReceiveValue(null);
+                    uploadMessage = null;
+                }
+                uploadMessage = filePathCallback;
+                Intent intent = fileChooserParams.createIntent();
+                startActivityForResult(intent, REQUEST_SELECT_FILE);
+                return true;
+            }
         });
 
         mWebView.setWebViewClient(new WebViewClient() {
@@ -229,6 +253,23 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
         });
     }
 
+
+    private void openImageChooserActivity() {
+
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+
+        //        i.setType("image/*");//图片上传
+
+        //        i.setType("file/*");//文件上传
+
+        i.setType("*/*");//文件上传
+
+        startActivityForResult(Intent.createChooser(i, "Image Chooser"), 100);
+
+    }
+
     @Override
     protected void onDestroy() {
         ((Application) getApplication()).getWebDataUtils().setWebActivityToLogin(null);
@@ -257,5 +298,21 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
     public void webToLogin(String token) {
         mWebView.clearCache(true);
         mWebView.loadUrl(currentUrl + "?token=" + token);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == FILECHOOSER_RESULTCODE && resultCode == RESULT_OK) {
+            Uri uri = intent.getData();
+            //将图片显示到webView
+            mUploadMessage.onReceiveValue(intent.getData());
+            mUploadMessage = null;
+        } else if (requestCode == REQUEST_SELECT_FILE) {
+            if (uploadMessage == null)
+                return;
+            uploadMessage.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
+            uploadMessage = null;
+        }
     }
 }

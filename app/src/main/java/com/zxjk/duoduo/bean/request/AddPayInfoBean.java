@@ -12,6 +12,15 @@ public class AddPayInfoBean {
     private String mobile;
     private String countryCode;
     private String payInfoType;
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getPayInfoType() {
         return payInfoType;

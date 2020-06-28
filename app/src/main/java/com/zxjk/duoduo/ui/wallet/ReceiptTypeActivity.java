@@ -166,9 +166,11 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             if (1 == paymentinformation) {
                 improvePaymentInformationByType("MOBILE");
             }
-            nickName.setVisibility(View.GONE);
             realName.setVisibility(View.GONE);
-            findViewById(R.id.tv1).setVisibility(View.VISIBLE);
+            findViewById(R.id.ll1).setVisibility(View.VISIBLE);
+
+            receiptTypeName.setText("姓名");
+            receiptTypeRealName.setHint("请填写姓名");
             receiptTypePaymentName.setText("手机号码");
             receiptTypePayment.setHint("请填写手机号码");
         }
@@ -186,7 +188,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             });
         } else {
             accountIdCard.setOnClickListener(v -> {
-                dialog.setVisibilitys();
+                dialog.setVisibilitys(0);
                 dialog.setOnStartActivity(() -> {
                     startActivityForResult(new Intent(this, CountrySelectActivity.class), 200);
                 });
@@ -206,6 +208,10 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                     return;
                 } else if (alipay.equals(types)) {
                     dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay, 1);
+                    return;
+                } else if (mobile.equals(types)) {
+                    dialog.setVisibilitys(1);
+                    dialog.show("姓名", "请填写姓名", "", 1);
                     return;
                 } else {
                     dialog.show("持卡人姓名", "请填写持卡人姓名", "", 1);
@@ -265,10 +271,14 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                     if (TextUtils.isEmpty(receiptTypePayment.getText().toString())) {
                         ToastUtils.showShort("请填写手机号");
                         return;
+                    } else if (TextUtils.isEmpty(receiptTypeRealName.getText().toString())) {
+                        ToastUtils.showShort("请填写姓名");
+                        return;
                     }
                     addPayInfoBean.setMobile(receiptTypePayment.getText().toString());
                     addPayInfoBean.setPayInfoType("MOBILE");
                     addPayInfoBean.setCountryCode(dialog.getContrary());
+                    addPayInfoBean.setUserName(receiptTypeRealName.getText().toString());
                 }
                 addPayInfo(GsonUtils.toJson(addPayInfoBean));
                 break;
@@ -347,11 +357,11 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                         receiptTypeRealCardName.setText(s.getCardCode());
                         receiptTypePayment.setText(s.getCardAddress());
                     } else {
-                        nickName.setVisibility(View.GONE);
                         realName.setVisibility(View.GONE);
                         receiptTypePaymentName.setText("手机号码");
                         receiptTypePayment.setText(s.getMobile());
                         dialog.setContrary(s.getCountryCode());
+                        receiptTypeRealName.setText(s.getUserName());
                     }
                 }, this::handleApiError);
     }

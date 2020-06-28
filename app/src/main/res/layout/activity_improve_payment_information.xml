@@ -130,7 +130,7 @@
             android:drawableStart="@drawable/ic_phone"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:text="手机号码"
+            android:text="订单处理信息"
             android:textColor="@color/black" />
 
         <TextView

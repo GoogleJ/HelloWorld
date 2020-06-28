@@ -146,9 +146,15 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    public void setVisibilitys() {
-        llcontrary.setVisibility(View.VISIBLE);
+    public void setVisibilitys(int visibilitys) {
+        if (visibilitys == 0) {
+            llcontrary.setVisibility(View.VISIBLE);
+        } else {
+            llcontrary.setVisibility(View.GONE);
+        }
+
     }
+
 
     public void setOnStartActivity(OnStartActivity onStartActivity) {
         this.onStartActivity = onStartActivity;

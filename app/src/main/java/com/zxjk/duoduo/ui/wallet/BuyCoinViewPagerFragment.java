@@ -142,11 +142,13 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         nf.setMaximumFractionDigits(Integer.parseInt(amountScale));
 
         buyCoinPrompt.setText(getString(R.string.buy_coin_prompt, defaultRenegeNumber));
-//        if (getArguments().getInt("buyType") == 0) {
+        if (getArguments().getInt("buyType") == 0) {
+            tvBuyCoinSwitch.setVisibility(View.VISIBLE);
 //            tvAll.setVisibility(View.GONE);
-//        } else {
+        } else {
 //            tvAll.setVisibility(View.VISIBLE);
-//        }
+            tvBuyCoinSwitch.setVisibility(View.GONE);
+        }
         tvBuyCoinSwitch.setOnClickListener(v -> {
             if (getArguments().getInt("buyType") == 0) {
                 if (tvBuyPatterns.getText().equals("CNY")) {
@@ -269,16 +271,22 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         llBuyCoin.setOnClickListener(v -> {
 
             if (etPurchaseAmount.getText().length() == 0) {
-                if (buyPatterns.equals("CNY")) {
-                    ToastUtils.showShort(R.string.purchase_coin_hint);
-                    return;
+                if (getArguments().getInt("buyType") == 0) {
+                    if (buyPatterns.equals("CNY")) {
+                        ToastUtils.showShort(R.string.purchase_coin_hint);
+                        return;
+                    } else {
+                        ToastUtils.showShort(R.string.purchase_amount_hint);
+                        return;
+                    }
                 } else {
-                    ToastUtils.showShort(R.string.purchase_amount_hint);
+                    ToastUtils.showShort("请输入出售数量");
                     return;
                 }
             } else {
                 if (buyPatterns.equals("CNY") && Double.parseDouble(String.valueOf(etPurchaseAmount.getText())) < Double.parseDouble(getQuickTickerResponse.getMinQuota())) {
                     ToastUtils.showShort(getString(R.string.buy_coins_prompt2));
+                    return;
                 } else if (!buyPatterns.equals("CNY")) {
                     if (getArguments().getInt("buyType") == 0) {
                         if (Double.parseDouble(String.valueOf(etPurchaseAmount.getText())) < Double.parseDouble(getQuickTickerResponse.getMinAmount())) {
@@ -298,21 +306,20 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         }
                     }
                 }
-                if (buyPatterns.equals("CNY")) {
-                    DecimalFormat df = new DecimalFormat("#.00000");
-                    Double a1 = (Double.parseDouble(etPurchaseAmount.getText().toString()) / Double.parseDouble(getQuickTickerResponse.getPrice()));
-                    amount = Double.parseDouble(df.format(a1));
-                    total = Double.parseDouble(etPurchaseAmount.getText().toString());
-                } else {
-                    DecimalFormat df = new DecimalFormat("#.00");
-                    Double a1 = (Double.parseDouble(getQuickTickerResponse.getPrice()) * Double.parseDouble(etPurchaseAmount.getText().toString()));
-                    Double str = Double.parseDouble(df.format(a1));
-                    amount = Double.parseDouble(etPurchaseAmount.getText().toString());
-                    total = str;
-                }
-                getOTCPayInfo();
-
             }
+            if (buyPatterns.equals("CNY")) {
+                DecimalFormat df = new DecimalFormat("#.00000");
+                Double a1 = (Double.parseDouble(etPurchaseAmount.getText().toString()) / Double.parseDouble(getQuickTickerResponse.getPrice()));
+                amount = Double.parseDouble(df.format(a1));
+                total = Double.parseDouble(etPurchaseAmount.getText().toString());
+            } else {
+                DecimalFormat df = new DecimalFormat("#.00");
+                Double a1 = (Double.parseDouble(getQuickTickerResponse.getPrice()) * Double.parseDouble(etPurchaseAmount.getText().toString()));
+                Double str = Double.parseDouble(df.format(a1));
+                amount = Double.parseDouble(etPurchaseAmount.getText().toString());
+                total = str;
+            }
+            getOTCPayInfo();
         });
 
         tvAll.setOnClickListener(v -> {

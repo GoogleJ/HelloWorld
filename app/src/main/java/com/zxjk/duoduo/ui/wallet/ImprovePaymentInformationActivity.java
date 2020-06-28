@@ -69,6 +69,10 @@ public class ImprovePaymentInformationActivity extends BaseActivity {
             llAliPay.setVisibility(View.GONE);
             llBankPay.setVisibility(View.GONE);
         }
+        improvePaymentInformation();
+    }
+
+    private void improvePaymentInformation() {
         ServiceFactory.getInstance().getBaseService(Api.class)
                 .improvePaymentInformation()
                 .compose(RxSchedulers.otc())
@@ -144,6 +148,7 @@ public class ImprovePaymentInformationActivity extends BaseActivity {
                     default:
                         break;
                 }
+                improvePaymentInformation();
             }
         }
     }
