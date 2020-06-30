@@ -8,18 +8,21 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zxjk.duoduo.R;
@@ -44,7 +47,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     private BaseQuickAdapter<GetquickOrderInfoResponse, BaseViewHolder> adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Api api;
-    private TextView tvScreening;
+    private LinearLayout llScreening;
     private String timestamp;
     private String sign;
 
@@ -75,7 +78,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
     private void initView() {
         rlOrderInfoByType = findViewById(R.id.rl_order_info_by_type);
         swipeRefreshLayout = findViewById(R.id.refresh_layout);
-        tvScreening = findViewById(R.id.tv_screening);
+        llScreening = findViewById(R.id.ll_screening);
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
     }
 
@@ -83,62 +86,68 @@ public class OrderInfoByTypeActivity extends BaseActivity {
 
         onRefreshLayout();
         swipeRefreshLayout.setRefreshing(true);
-        tvScreening.setOnClickListener(v -> {
+        TranslateAnimation showAnimation = new TranslateAnimation(0f, 0f, -(ScreenUtils.getScreenHeight()), 0f);
+        showAnimation.setDuration(250);
+        TranslateAnimation dismissAnimation = new TranslateAnimation(0f, 0f, 0f, -(ScreenUtils.getScreenHeight()));
+        dismissAnimation.setDuration(500);
+        llScreening.setOnClickListener(v -> {
             orderPop = QuickPopupBuilder.with(this)
                     .contentView(R.layout.dialog_order_screening)
                     .config(new QuickPopupConfig()
-                            .backgroundColor(android.R.color.transparent)
-                            .gravity(Gravity.BOTTOM | Gravity.END)
-                            .withShowAnimation(AnimationUtils.loadAnimation(this, R.anim.push_scale_in))
-                            .withClick(R.id.radio1, v1 -> {
-                                side = "BUY";
-                                orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
-                                orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
-                            }, false)
-                            .withClick(R.id.radio2, v1 -> {
-                                side = "SELL";
-                                orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
-                                orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
-                            }, false)
-                            .withClick(R.id.radio3, v1 -> {
-                                state = "UNFINISHED";
-                                setCheckBox(R.id.radio3);
-                            }, false)
-                            .withClick(R.id.radio4, v1 -> {
-                                state = "PAYED";
-                                setCheckBox(R.id.radio4);
-                            }, false)
-                            .withClick(R.id.radio5, v1 -> {
-                                state = "FINISHED";
-                                setCheckBox(R.id.radio5);
-                            }, false)
-                            .withClick(R.id.radio6, v1 -> {
-                                state = "CANCELED";
-                                setCheckBox(R.id.radio6);
-                            }, false)
-                            .withClick(R.id.radio7, v1 -> {
-                                state = "DISPUTE";
-                                setCheckBox(R.id.radio7);
-                            }, false)
-                            .withClick(R.id.tv_reset, v1 -> {
-                                side = "";
-                                state = "";
-                                orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
-                                orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
-                                for (CheckBox chb : checkBoxs) {
-                                    chb.setChecked(false);
-                                    chb.setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
-                                }
-                                page = 0;
-                                swipeRefreshLayout.setRefreshing(true);
-                                onRefreshLayout();
-                            }, false)
-                            .withClick(R.id.tv_determine, v1 -> {
-                                page = 0;
-                                swipeRefreshLayout.setRefreshing(true);
-                                onRefreshLayout();
-                            }, true)
-                            .withClick(R.id.view1, null, true)
+                                    .gravity(Gravity.BOTTOM)
+                                    .withShowAnimation(showAnimation)
+                                    .withDismissAnimation(dismissAnimation)
+                                    .alignBackground(true)
+                                    .alignBackgroundGravity(Gravity.TOP)
+                                    .withClick(R.id.radio1, v1 -> {
+                                        side = "BUY";
+                                        orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
+                                        orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
+                                    }, false)
+                                    .withClick(R.id.radio2, v1 -> {
+                                        side = "SELL";
+                                        orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item, null));
+                                        orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
+                                    }, false)
+                                    .withClick(R.id.radio3, v1 -> {
+                                        state = "UNFINISHED";
+                                        setCheckBox(R.id.radio3);
+                                    }, false)
+                                    .withClick(R.id.radio4, v1 -> {
+                                        state = "PAYED";
+                                        setCheckBox(R.id.radio4);
+                                    }, false)
+                                    .withClick(R.id.radio5, v1 -> {
+                                        state = "FINISHED";
+                                        setCheckBox(R.id.radio5);
+                                    }, false)
+                                    .withClick(R.id.radio6, v1 -> {
+                                        state = "CANCELED";
+                                        setCheckBox(R.id.radio6);
+                                    }, false)
+                                    .withClick(R.id.radio7, v1 -> {
+                                        state = "DISPUTE";
+                                        setCheckBox(R.id.radio7);
+                                    }, false)
+                                    .withClick(R.id.tv_reset, v1 -> {
+                                        side = "";
+                                        state = "";
+                                        orderPop.findViewById(R.id.radio2).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
+                                        orderPop.findViewById(R.id.radio1).setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
+                                        for (CheckBox chb : checkBoxs) {
+                                            chb.setChecked(false);
+                                            chb.setBackground(getResources().getDrawable(R.drawable.shape_checkbox_item2, null));
+                                        }
+                                        page = 0;
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        onRefreshLayout();
+                                    }, false)
+                                    .withClick(R.id.tv_determine, v1 -> {
+                                        page = 0;
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        onRefreshLayout();
+                                    }, true)
+//                            .withClick(R.id.view1, null, true)
                     ).build();
             orderPop.showPopupWindow(v);
             if (side.equals("BUY")) {

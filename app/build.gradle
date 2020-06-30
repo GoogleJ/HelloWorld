@@ -150,7 +150,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
 
     //popwindow
-    implementation 'com.github.razerdp:BasePopup:2.1.9'
+    implementation 'com.github.razerdp:BasePopup:2.2.1'
 
     //群组头像
     implementation 'com.github.Othershe:CombineBitmap:1.0.5'

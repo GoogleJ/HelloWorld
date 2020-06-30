@@ -462,7 +462,8 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         } else {
             llAddPayment.setVisibility(View.GONE);
         }
-        if (getOTCPayInfoResponse.getPayTypeList() != null) {
+
+        if (getOTCPayInfoResponse.getPayTypeList() != null && getArguments().getInt("buyType") == 1) {
             if (getOTCPayInfoResponse.getPayTypeList().size() > 0 && getOTCPayInfoResponse.getPayTypeList().size() < 3) {
                 GetOTCPayInfoResponse.PayTypeListBean payTypeListBean = new GetOTCPayInfoResponse.PayTypeListBean();
                 payTypeListBean.setPayType("add");
