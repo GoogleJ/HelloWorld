@@ -428,6 +428,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                         for (int i = 0; i < data.size(); i++){
                             if(data.get(i).getId().equals(loginResponse.getId())){
                                 data.remove(i);
+                                data1.add(data.get(i));
                             }
                         }
                     }
