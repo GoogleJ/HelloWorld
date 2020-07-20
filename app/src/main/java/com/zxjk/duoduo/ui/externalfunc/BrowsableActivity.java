@@ -18,6 +18,7 @@ import com.zxjk.duoduo.ui.msgpage.AddFriendDetailsActivity;
 import com.zxjk.duoduo.ui.socialspace.SocialHomeActivity;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
+import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_AUTHORIZEDLOGIN;
 import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_PAY;
 import static com.zxjk.duoduo.ui.externalfunc.ThirdPartLoginActivity.ACTION_THIRDPARTLOGINACCESS;
 
@@ -55,24 +56,16 @@ public class BrowsableActivity extends BaseActivity {
                         break;
                     case "authorizationLogin":
                         String appid = getIntent().getData().getQueryParameter("appId");
-                        String randomStr = getIntent().getData().getQueryParameter("randomStr");
-                        String sign = getIntent().getData().getQueryParameter("sign");
-                        if (!TextUtils.isEmpty(appid) && !TextUtils.isEmpty(randomStr) && !TextUtils.isEmpty(sign)) {
+                        Intent intent1;
+                        if (!TextUtils.isEmpty(appid)) {
                             if (Constant.currentUser == null) {
-                                Intent intent = new Intent(this, ThirdPartLoginActivity.class);
-                                intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
-                                intent.putExtra("appId", appid);
-                                intent.putExtra("randomStr", randomStr);
-                                intent.putExtra("sign", sign);
-                                startActivity(intent);
+                                intent1 = new Intent(this, ThirdPartLoginActivity.class);
                             } else {
-                                Intent intent = new Intent(this, LoginAuthorizationActivity.class);
-                                intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
-                                intent.putExtra("appId", appid);
-                                intent.putExtra("randomStr", randomStr);
-                                intent.putExtra("sign", sign);
-                                startActivity(intent);
+                                intent1 = new Intent(this, LoginAuthorizationActivity.class);
                             }
+                            intent1.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
+                            intent1.putExtra("appId", appid);
+                            startActivity(intent1);
                         }
                         break;
                     case "pay":

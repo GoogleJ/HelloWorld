@@ -904,4 +904,10 @@ public interface Api {
 
     @POST("mochat/shopping/getHilamgMillUrl")
     Observable<BaseResponse<String>> getHilamgMillUrl();
+
+
+    @POST("duoduo/customer/authorizedLogin")
+    @FormUrlEncoded
+    Observable<BaseResponse<String>> authorizedLogin(@Field("appId") String appId);
+
 }

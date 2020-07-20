@@ -34,6 +34,7 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     private String mRandomStr = "";
     private String mSign = "";
     private String action = "";
+    private String webUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,6 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     public void initData() {
         action = getIntent().getStringExtra("action");
         mAppId = getIntent().getStringExtra("appId");
-        mRandomStr = getIntent().getStringExtra("randomStr");
-        mSign = getIntent().getStringExtra("sign");
         Glide.with(this).load(Constant.currentUser.getHeadPortrait()).into(mLoginHeadPortrait);
         mNickTv.setText(Constant.currentUser.getNick());
     }
@@ -100,8 +99,6 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
                                 Intent intent = new Intent(LoginAuthorizationActivity.this, ThirdPartLoginActivity.class);
                                 intent.putExtra("action", ACTION_LOGINAUTHORIZATIONSWICH);
                                 intent.putExtra("appId", mAppId);
-                                intent.putExtra("randomStr", mRandomStr);
-                                intent.putExtra("sign", mSign);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();
@@ -114,7 +111,7 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
     @SuppressLint("CheckResult")
     public void getAuthorizationTokenResponse() {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .htmlLogin(mAppId, mRandomStr, mSign)
+                .authorizedLogin(mAppId)
                 .compose(bindToLifecycle())
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(LoginAuthorizationActivity.this)))
@@ -126,5 +123,7 @@ public class LoginAuthorizationActivity extends BaseActivity implements View.OnC
                     }
                     finish();
                 }, this::handleApiError);
+
+
     }
 }

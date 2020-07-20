@@ -44,6 +44,7 @@ import io.rong.imlib.RongIMClient;
 
 public class ThirdPartLoginActivity extends BaseActivity {
     public static final String ACTION_THIRDPARTLOGINACCESS = "ThirdPartLoginAccess";
+    public static final String ACTION_AUTHORIZEDLOGIN = "authorizedlogin";
     public static final String ACTION_LOGINAUTHORIZATIONSWICH = "SwichLoginAccess";
     public static final String ACTION_PAY = "Pay";
 
@@ -274,17 +275,13 @@ public class ThirdPartLoginActivity extends BaseActivity {
                     intent.putExtra("action", action);
                     switch (action) {
                         case ACTION_THIRDPARTLOGINACCESS:
-                            if (TextUtils.isEmpty(getIntent().getStringExtra("appId"))
-                                    || TextUtils.isEmpty(getIntent().getStringExtra("randomStr"))
-                                    || TextUtils.isEmpty(getIntent().getStringExtra("sign"))) {
+                            if (TextUtils.isEmpty(getIntent().getStringExtra("appId"))) {
                                 ToastUtils.showShort(R.string.wrong_param_data);
                                 finish();
                                 return;
                             }
                             intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
                             intent.putExtra("appId", getIntent().getStringExtra("appId"));
-                            intent.putExtra("randomStr", getIntent().getStringExtra("randomStr"));
-                            intent.putExtra("sign", getIntent().getStringExtra("sign"));
                             break;
                         case ACTION_PAY:
                             ToastUtils.showShort(R.string.havent_register_goto_hilamg);
@@ -295,9 +292,7 @@ public class ThirdPartLoginActivity extends BaseActivity {
                 } else {
                     switch (action) {
                         case ACTION_THIRDPARTLOGINACCESS:
-                            if (TextUtils.isEmpty(getIntent().getStringExtra("appId"))
-                                    || TextUtils.isEmpty(getIntent().getStringExtra("randomStr"))
-                                    || TextUtils.isEmpty(getIntent().getStringExtra("sign"))) {
+                            if (TextUtils.isEmpty(getIntent().getStringExtra("appId"))) {
                                 ToastUtils.showShort(R.string.wrong_param_data);
                                 finish();
                                 return;
@@ -305,8 +300,6 @@ public class ThirdPartLoginActivity extends BaseActivity {
                             Intent intent = new Intent(ThirdPartLoginActivity.this, LoginAuthorizationActivity.class);
                             intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
                             intent.putExtra("appId", getIntent().getStringExtra("appId"));
-                            intent.putExtra("randomStr", getIntent().getStringExtra("randomStr"));
-                            intent.putExtra("sign", getIntent().getStringExtra("sign"));
                             startActivity(intent);
                             break;
                         case ACTION_LOGINAUTHORIZATIONSWICH:

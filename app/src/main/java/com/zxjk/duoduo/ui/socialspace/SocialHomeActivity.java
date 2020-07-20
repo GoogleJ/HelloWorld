@@ -221,6 +221,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .compose(RxSchedulers.normalTrans())
                                                 .subscribe(s -> {
+                                                    llInviteOrRemove.setVisibility(View.VISIBLE);
                                                     Intent intent = new Intent(this, HomeActivity.class);
                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                     startActivity(intent);
@@ -241,6 +242,7 @@ public class SocialHomeActivity extends BaseActivity {
                                                 .compose(RxSchedulers.normalTrans())
                                                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                                                 .subscribe(s -> {
+                                                    llInviteOrRemove.setVisibility(View.VISIBLE);
                                                     Intent intent = new Intent(this, HomeActivity.class);
                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                     startActivity(intent);
