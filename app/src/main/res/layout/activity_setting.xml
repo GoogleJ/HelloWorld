@@ -88,42 +88,6 @@
             <include layout="@layout/layout_line" />
 
             <RelativeLayout
-                android:id="@+id/rl_realNameAuthentication"
-                style="@style/RLayoutStyle">
-
-                <TextView
-                    style="@style/textStyle"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/real_name_authentication" />
-
-                <TextView
-                    android:id="@+id/tv_authentication"
-                    style="@style/textStyle16"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toStartOf="@+id/iv_authentication"
-                    android:text="@string/not_verify_real_name" />
-
-                <ImageView
-                    android:id="@+id/iv_authentication"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp"
-                    android:layout_toStartOf="@+id/iv_enter"
-                    android:src="@drawable/ic_mine_authenticate"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/iv_enter"
-                    style="@style/ImageEnter" />
-
-            </RelativeLayout>
-
-            <include layout="@layout/layout_line" />
-
-            <RelativeLayout
                 android:id="@+id/rl_payinfo"
                 style="@style/RLayoutStyle">
 

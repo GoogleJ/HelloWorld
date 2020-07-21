@@ -183,14 +183,11 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="1dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_ipfs_service"
+            android:drawableTop="@drawable/ic_cooperate"
             android:drawablePadding="10dp"
-            android:gravity="center"
-            android:onClick="ipfs"
-            android:text="@string/ipfs"
-            android:textColor="#6D7278" />
+            android:gravity="center" />
 
         <TextView
             android:layout_width="0dp"

@@ -77,6 +77,7 @@ import com.zxjk.duoduo.ui.msgpage.ShareGroupQRActivity;
 import com.zxjk.duoduo.ui.wallet.WalletFragment;
 import com.zxjk.duoduo.ui.widget.DrawerView;
 import com.zxjk.duoduo.utils.AesUtil;
+import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 import com.zxjk.duoduo.utils.badge.BadgeNumberManager;
@@ -682,6 +683,22 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             e.printStackTrace();
         }
         return null;
+    }
+
+    @SuppressLint("CheckResult")
+    public void ipfs(View view) {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .getHilamgMillUrl()
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(url -> {
+                    Intent intent = new Intent(this, WebActivity.class);
+                    intent.putExtra("url", url);
+                    intent.putExtra("title", "ipfs");
+                    intent.putExtra("type", "mall");
+                    drawer.close(intent);
+                }, this::handleApiError);
     }
 
     public void setting(View view) {

@@ -169,19 +169,4 @@ public class HilamgServiceActivity extends BaseActivity {
         finish();
     }
 
-    @SuppressLint("CheckResult")
-    public void ipfs(View view) {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .getHilamgMillUrl()
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.normalTrans())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .subscribe(url -> {
-                    Intent intent = new Intent(this, WebActivity.class);
-                    intent.putExtra("url", url);
-                    intent.putExtra("title", "ipfs");
-                    intent.putExtra("type", "mall");
-                    startActivity(intent);
-                }, this::handleApiError);
-    }
 }
