@@ -33,6 +33,22 @@
             android:textColor="#cacaca"
             android:textSize="18sp" />
 
+
+        <FrameLayout
+            android:id="@+id/rl_authentification_of_message"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toStartOf="@+id/rl_end"
+            android:foreground="?selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_authentification_of_message" />
+
+        </FrameLayout>
         <FrameLayout
             android:id="@+id/rl_end"
             android:layout_width="50dp"

@@ -61,6 +61,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.wallet.AuthentificationOfMessageActivity" />
         <activity
             android:name=".ui.wallet.ImprovePaymentInformationActivity"
             android:launchMode="singleTop"
@@ -967,8 +968,6 @@
         <service
             android:name="com.huawei.updatesdk.service.deamon.download.DownloadService"
             android:exported="false" />
-
-
     </application>
 
 </manifest>

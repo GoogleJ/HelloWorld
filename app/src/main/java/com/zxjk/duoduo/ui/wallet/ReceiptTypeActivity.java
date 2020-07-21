@@ -62,6 +62,8 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
     private String alipay = "ALIPAY";
     private String bank = "EBANK";
     private String mobile = "MOBILE";
+    private String nickname = "NICKNAME";
+    private String phonenumber = "PHONENUMBER";
 
     private String types;
     private String url;
@@ -162,15 +164,16 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             receiptTypeRealName.setHint("请填写持卡人姓名");
             receiptTypeRealCardName.setHint("请填写银行卡号");
             receiptTypePayment.setHint("请填写开户行");
-        } else {
-            if (1 == paymentinformation) {
-                improvePaymentInformationByType("MOBILE");
-            }
+        } else if (nickname.equals(types)) {
             realName.setVisibility(View.GONE);
+            accountIdCard.setVisibility(View.GONE);
             findViewById(R.id.ll1).setVisibility(View.VISIBLE);
-
             receiptTypeName.setText("姓名");
             receiptTypeRealName.setHint("请填写姓名");
+        } else if (phonenumber.equals(types)) {
+            realName.setVisibility(View.GONE);
+            nickName.setVisibility(View.GONE);
+            findViewById(R.id.ll1).setVisibility(View.VISIBLE);
             receiptTypePaymentName.setText("手机号码");
             receiptTypePayment.setHint("请填写手机号码");
         }
@@ -181,12 +184,11 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                     dialogType();
                 }
             }, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            ;
         } else if (types.equals(bank)) {
             accountIdCard.setOnClickListener(v -> {
                 dialog.show(getString(R.string.open_bank), getString(R.string.please_upload_selector_open_bank), "", 3);
             });
-        } else {
+        } else if (phonenumber.equals(types)) {
             accountIdCard.setOnClickListener(v -> {
                 dialog.setVisibilitys(0);
                 dialog.setOnStartActivity(() -> {
@@ -209,7 +211,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 } else if (alipay.equals(types)) {
                     dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay, 1);
                     return;
-                } else if (mobile.equals(types)) {
+                } else if (nickname.equals(types)) {
                     dialog.setVisibilitys(1);
                     dialog.show("姓名", "请填写姓名", "", 1);
                     return;

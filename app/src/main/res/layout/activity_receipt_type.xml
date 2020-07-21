@@ -9,6 +9,30 @@
 
     <include layout="@layout/layout_title_back" />
 
+    <RelativeLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/img"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/exclamation_mark" />
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/img"
+            android:text="确保当交易发生问题时，第三方能及时联系到您，请填写本人真实可靠的联系方式。"
+            android:textColor="#8EA0AC"
+            android:visibility="visible" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/nick_name"
@@ -111,31 +135,6 @@
             android:id="@+id/receipt_type_payment_go"
             style="@style/ImageEnter" />
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/ll1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/img"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/exclamation_mark" />
-
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/img"
-            android:text="为了保证订单顺利交易,请填写真实姓名及手机号码(虚假姓名可能会导致商家不放币),仅限于处理订单纠纷时联系"
-            android:textColor="#8EA0AC"
-            android:visibility="visible" />
     </RelativeLayout>
 
 

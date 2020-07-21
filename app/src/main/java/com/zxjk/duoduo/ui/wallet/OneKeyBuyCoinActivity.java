@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -46,6 +45,7 @@ public class OneKeyBuyCoinActivity extends BaseActivity {
         findViewById(R.id.rl_back).setOnClickListener(v -> finish());
 
         findViewById(R.id.rl_end).setOnClickListener(v -> startActivity(new Intent(this, OrderInfoByTypeActivity.class)));
+        findViewById(R.id.rl_authentification_of_message).setOnClickListener(v -> startActivity(new Intent(this, AuthentificationOfMessageActivity.class)));
     }
 
     private void initData() {

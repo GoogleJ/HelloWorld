@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.wallet.AuthentificationOfMessageActivity">
+
+    <include layout="@layout/layout_title_back" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="#F2F3F6"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="身份认证"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="6dp"
+        android:text="应第三方金融风控的需求，大额交易需要完成实名认证。
+本平台对用户实名信息不做中心化存储。"
+        android:textColor="#6E7F93" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="6dp"
+        android:text="务必使用本人真实可用身份资料进行认证，否则造成的财
+务损失或司法责任等一切后果由自己负责。"
+        android:textColor="#6E7F93" />
+
+    <TextView
+        android:id="@+id/tv_realNameAuthentication"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/shape_stroke_theme_4"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:onClick="realNameAuthentication"
+        android:paddingBottom="10dp"
+        android:text="去认证"
+        android:textColor="@color/colorTheme"
+        android:textSize="17sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="#F2F3F6"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="联系方式"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/ll_nick_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="姓名"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:id="@+id/tv_nick_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxEms="10"
+            android:maxLines="1"
+            android:textColor="#000000" />
+
+        <ImageView style="@style/ImageEnter" />
+    </LinearLayout>
+
+    <include layout="@layout/layout_line" />
+    <LinearLayout
+        android:id="@+id/ll_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="手机号"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:id="@+id/tv_phone_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxEms="10"
+            android:maxLines="1"
+            android:textColor="#000000" />
+
+        <ImageView style="@style/ImageEnter" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="#F2F3F6"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="收款方式"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/ll_we_chat_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="微信支付"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/tv_we_chat_type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableEnd="@drawable/ic_end"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="123123" />
+    </LinearLayout>
+
+    <include layout="@layout/layout_line" />
+
+    <LinearLayout
+        android:id="@+id/ll_ali_pay_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="支付宝"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/tv_ali_pay_type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableEnd="@drawable/ic_end"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="123123" />
+    </LinearLayout>
+
+    <include layout="@layout/layout_line" />
+
+    <LinearLayout
+        android:id="@+id/ll_bank_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="银行卡"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/tv_bank_type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableEnd="@drawable/ic_end"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="123123" />
+    </LinearLayout>
+
+</LinearLayout>
