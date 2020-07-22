@@ -142,28 +142,40 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:gravity="top"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/exclamation_mark" />
+            android:text="常见问题"
+            android:textColor="#8EA0AC" />
 
         <TextView
-            android:id="@+id/buy_coin_prompt"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/shape_dotgray" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:lineSpacingExtra="6dp"
-            android:textColor="#8EA0AC" />
+            android:text="新手指引"
+            android:textColor="#0083BF" />
     </LinearLayout>
 
 </LinearLayout>

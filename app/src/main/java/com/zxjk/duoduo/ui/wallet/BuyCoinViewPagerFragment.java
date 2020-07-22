@@ -32,6 +32,10 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.shehuan.nicedialog.BaseNiceDialog;
+import com.shehuan.nicedialog.NiceDialog;
+import com.shehuan.nicedialog.ViewConvertListener;
+import com.shehuan.nicedialog.ViewHolder;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.QuickOrderRequest;
 import com.zxjk.duoduo.bean.response.GetOTCPayInfoResponse;
@@ -42,6 +46,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.MD5Utils;
+import com.zxjk.duoduo.utils.MMKVUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -63,7 +68,6 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
     private TextView tvBuyPatterns;
     private TextView tvPurchaseAmount;
     private EditText etPurchaseAmount;
-    private TextView buyCoinPrompt;
     private RecyclerView recyclerView;
     private TextView btnBuyCoin;
     private BaseQuickAdapter<GetOTCPayInfoResponse.PayTypeListBean, BaseViewHolder> adapter;
@@ -132,7 +136,6 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         tvBuyPatterns = rootView.findViewById(R.id.tv_buy_patterns);
         tvPurchaseAmount = rootView.findViewById(R.id.tv_purchase_amount);
         etPurchaseAmount = rootView.findViewById(R.id.et_purchase_amount);
-        buyCoinPrompt = rootView.findViewById(R.id.buy_coin_prompt);
         btnBuyCoin = rootView.findViewById(R.id.btn_buy_coin);
         tvAll = rootView.findViewById(R.id.tv_all);
     }
@@ -141,7 +144,6 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(Integer.parseInt(amountScale));
 
-        buyCoinPrompt.setText(getString(R.string.buy_coin_prompt, defaultRenegeNumber));
         if (getArguments().getInt("buyType") == 0) {
             tvBuyCoinSwitch.setVisibility(View.VISIBLE);
 //            tvAll.setVisibility(View.GONE);
@@ -325,6 +327,24 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         tvAll.setOnClickListener(v -> {
             etPurchaseAmount.setText(getQuickTickerResponse.getMaxQuota());
         });
+
+
+        if (!MMKVUtils.getInstance().decodeBool("appFirstBuyCoin")) {
+            //first open app,enter AppFirstLoginActivity
+            MMKVUtils.getInstance().enCode("appFirstBuyCoin", true);
+            NiceDialog.init().setLayoutId(R.layout.dialog_tutorial).setConvertListener(new ViewConvertListener() {
+                @SuppressLint("CheckResult")
+                @Override
+                protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                    holder.setOnClickListener(R.id.ll1, v -> {
+                        ToastUtils.showShort("老手");
+                    });
+                    holder.setOnClickListener(R.id.ll2, v -> {
+                        ToastUtils.showShort("新手");
+                    });
+                }
+            }).setDimAmount(0.5f).setOutCancel(true).show(getChildFragmentManager());
+        }
     }
 
     //实时行情获取
