@@ -138,7 +138,6 @@ public class OrderDetailsActivity extends BaseActivity {
             tvPaymentType2.setText(R.string.payee_card_number);
             llBankName.setVisibility(View.VISIBLE);
             tvBankName.setText(byBoinsResponse.getCardBank());
-
         }
 
 

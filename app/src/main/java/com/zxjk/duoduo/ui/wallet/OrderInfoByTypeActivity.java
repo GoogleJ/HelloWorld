@@ -8,7 +8,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -239,8 +238,13 @@ public class OrderInfoByTypeActivity extends BaseActivity {
         adapter.setEmptyView(inflate);
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent;
             GetquickOrderInfoResponse listBean = (GetquickOrderInfoResponse) adapter.getData().get(position);
-            Intent intent = new Intent(this, PurchaseDetailsActivity.class);
+            if (listBean.getOrderStatus().equals("UNFINISHED") && listBean.getType().equals("BUY")) {
+                intent = new Intent(this, BuyCoinPaymentActivity.class);
+            } else {
+                intent = new Intent(this, PurchaseDetailsActivity.class);
+            }
             intent.putExtra("otherOrderId", listBean.getOtherOrderId());
             startActivity(intent);
         });

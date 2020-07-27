@@ -61,6 +61,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.wallet.GuidelinesWebActivity"></activity>
+        <activity android:name=".ui.wallet.BuyCoinPaymentActivity" />
         <activity android:name=".ui.wallet.AuthentificationOfMessageActivity" />
         <activity
             android:name=".ui.wallet.ImprovePaymentInformationActivity"

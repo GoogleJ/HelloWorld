@@ -3,281 +3,202 @@ package com.zxjk.duoduo.bean.response;
 public class GetQuickOrderResponse {
 
     /**
-     * otherOrderId : 990920200618154558
-     * orderId : 218033167515254784
-     * accountId : 81142021000754
-     * otherUserId : 385
-     * type : SELL
-     * total : 3505.0
-     * coinAmount : 500.0
-     * price : 7.01
-     * orderStatus : UNFINISHED
-     * payType : WEIXIN
-     * weixinName : 符丽梅
-     * weixinId : 17629042500
-     * weixinUrl : https://res.linkcoin.me//kycdata-linkcoin/qrcode/7fae9b7b56aab7a0.png
-     * currency : CNY
-     * coinSymbol : USDT
-     * sellerNickName : rightbtc
-     * disputeMinute : 15
-     * appealType : 0
-     * appealRemark : -
-     * priceType : 1
-     * createTime : 1592466359135
-     * ipAddress : 192.168.1.76
+     * bizCode : 0
+     * order : {"otherOrderId":"103420200618172328","type":"BUY","total":"3520.0","coinAmount":"500.0","price":"7.04","orderStatus":"UNFINISHED","payType":"WEIXIN","weixinName":"HAILANGBIZ","weixinId":"1234567890","weixinUrl":"https://res.linkcoin.me//kycdata-linkcoin/qrcode/134fab193cee7c79.jpg","currency":"CNY","coinSymbol":"USDT","sellerNickName":"rightbtc","appealType":0,"appealRemark":"-","priceType":1,"createTime":"1592472208861"}
      */
 
+    private int bizCode;
+    private OrderBean order;
 
-    private String alipayName;
-    private String alipayId;
-    private String alipayUrl;
-    private String cardCode;
-    private String cardBank;
-    private String cardUserName;
-    private String otherOrderId;
-    private String orderId;
-    private String accountId;
-    private String otherUserId;
-    private String type;
-    private String total;
-    private String coinAmount;
-    private String price;
-    private String orderStatus;
-    private String payType;
-    private String weixinName;
-    private String weixinId;
-    private String weixinUrl;
-    private String currency;
-    private String coinSymbol;
-    private String sellerNickName;
-    private int disputeMinute;
-    private int appealType;
-    private String appealRemark;
-    private int priceType;
-    private String createTime;
-    private String ipAddress;
-
-    public String getAlipayName() {
-        return alipayName;
+    public int getBizCode() {
+        return bizCode;
     }
 
-    public void setAlipayName(String alipayName) {
-        this.alipayName = alipayName;
+    public void setBizCode(int bizCode) {
+        this.bizCode = bizCode;
     }
 
-    public String getAlipayId() {
-        return alipayId;
+    public OrderBean getOrder() {
+        return order;
     }
 
-    public void setAlipayId(String alipayId) {
-        this.alipayId = alipayId;
+    public void setOrder(OrderBean order) {
+        this.order = order;
     }
 
-    public String getAlipayUrl() {
-        return alipayUrl;
-    }
+    public static class OrderBean {
+        /**
+         * otherOrderId : 103420200618172328
+         * type : BUY
+         * total : 3520.0
+         * coinAmount : 500.0
+         * price : 7.04
+         * orderStatus : UNFINISHED
+         * payType : WEIXIN
+         * weixinName : HAILANGBIZ
+         * weixinId : 1234567890
+         * weixinUrl : https://res.linkcoin.me//kycdata-linkcoin/qrcode/134fab193cee7c79.jpg
+         * currency : CNY
+         * coinSymbol : USDT
+         * sellerNickName : rightbtc
+         * appealType : 0
+         * appealRemark : -
+         * priceType : 1
+         * createTime : 1592472208861
+         */
 
-    public void setAlipayUrl(String alipayUrl) {
-        this.alipayUrl = alipayUrl;
-    }
+        private String otherOrderId;
+        private String type;
+        private String total;
+        private String coinAmount;
+        private String price;
+        private String orderStatus;
+        private String payType;
+        private String weixinName;
+        private String weixinId;
+        private String weixinUrl;
+        private String currency;
+        private String coinSymbol;
+        private String sellerNickName;
+        private int appealType;
+        private String appealRemark;
+        private int priceType;
+        private String createTime;
 
-    public String getCardCode() {
-        return cardCode;
-    }
+        public String getOtherOrderId() {
+            return otherOrderId;
+        }
 
-    public void setCardCode(String cardCode) {
-        this.cardCode = cardCode;
-    }
+        public void setOtherOrderId(String otherOrderId) {
+            this.otherOrderId = otherOrderId;
+        }
 
-    public String getCardBank() {
-        return cardBank;
-    }
+        public String getType() {
+            return type;
+        }
 
-    public void setCardBank(String cardBank) {
-        this.cardBank = cardBank;
-    }
+        public void setType(String type) {
+            this.type = type;
+        }
 
-    public String getCardUserName() {
-        return cardUserName;
-    }
+        public String getTotal() {
+            return total;
+        }
 
-    public void setCardUserName(String cardUserName) {
-        this.cardUserName = cardUserName;
-    }
+        public void setTotal(String total) {
+            this.total = total;
+        }
 
-    public String getOtherOrderId() {
-        return otherOrderId;
-    }
+        public String getCoinAmount() {
+            return coinAmount;
+        }
 
-    public void setOtherOrderId(String otherOrderId) {
-        this.otherOrderId = otherOrderId;
-    }
+        public void setCoinAmount(String coinAmount) {
+            this.coinAmount = coinAmount;
+        }
 
-    public String getOrderId() {
-        return orderId;
-    }
+        public String getPrice() {
+            return price;
+        }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+        public void setPrice(String price) {
+            this.price = price;
+        }
 
-    public String getAccountId() {
-        return accountId;
-    }
+        public String getOrderStatus() {
+            return orderStatus;
+        }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
+        public void setOrderStatus(String orderStatus) {
+            this.orderStatus = orderStatus;
+        }
 
-    public String getOtherUserId() {
-        return otherUserId;
-    }
+        public String getPayType() {
+            return payType;
+        }
 
-    public void setOtherUserId(String otherUserId) {
-        this.otherUserId = otherUserId;
-    }
+        public void setPayType(String payType) {
+            this.payType = payType;
+        }
 
-    public String getType() {
-        return type;
-    }
+        public String getWeixinName() {
+            return weixinName;
+        }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+        public void setWeixinName(String weixinName) {
+            this.weixinName = weixinName;
+        }
 
-    public String getTotal() {
-        return total;
-    }
+        public String getWeixinId() {
+            return weixinId;
+        }
 
-    public void setTotal(String total) {
-        this.total = total;
-    }
+        public void setWeixinId(String weixinId) {
+            this.weixinId = weixinId;
+        }
 
-    public String getCoinAmount() {
-        return coinAmount;
-    }
+        public String getWeixinUrl() {
+            return weixinUrl;
+        }
 
-    public void setCoinAmount(String coinAmount) {
-        this.coinAmount = coinAmount;
-    }
+        public void setWeixinUrl(String weixinUrl) {
+            this.weixinUrl = weixinUrl;
+        }
 
-    public String getPrice() {
-        return price;
-    }
+        public String getCurrency() {
+            return currency;
+        }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
+        public void setCurrency(String currency) {
+            this.currency = currency;
+        }
 
-    public String getOrderStatus() {
-        return orderStatus;
-    }
+        public String getCoinSymbol() {
+            return coinSymbol;
+        }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
+        public void setCoinSymbol(String coinSymbol) {
+            this.coinSymbol = coinSymbol;
+        }
 
-    public String getPayType() {
-        return payType;
-    }
+        public String getSellerNickName() {
+            return sellerNickName;
+        }
 
-    public void setPayType(String payType) {
-        this.payType = payType;
-    }
+        public void setSellerNickName(String sellerNickName) {
+            this.sellerNickName = sellerNickName;
+        }
 
-    public String getWeixinName() {
-        return weixinName;
-    }
+        public int getAppealType() {
+            return appealType;
+        }
 
-    public void setWeixinName(String weixinName) {
-        this.weixinName = weixinName;
-    }
+        public void setAppealType(int appealType) {
+            this.appealType = appealType;
+        }
 
-    public String getWeixinId() {
-        return weixinId;
-    }
+        public String getAppealRemark() {
+            return appealRemark;
+        }
 
-    public void setWeixinId(String weixinId) {
-        this.weixinId = weixinId;
-    }
+        public void setAppealRemark(String appealRemark) {
+            this.appealRemark = appealRemark;
+        }
 
-    public String getWeixinUrl() {
-        return weixinUrl;
-    }
+        public int getPriceType() {
+            return priceType;
+        }
 
-    public void setWeixinUrl(String weixinUrl) {
-        this.weixinUrl = weixinUrl;
-    }
+        public void setPriceType(int priceType) {
+            this.priceType = priceType;
+        }
 
-    public String getCurrency() {
-        return currency;
-    }
+        public String getCreateTime() {
+            return createTime;
+        }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getCoinSymbol() {
-        return coinSymbol;
-    }
-
-    public void setCoinSymbol(String coinSymbol) {
-        this.coinSymbol = coinSymbol;
-    }
-
-    public String getSellerNickName() {
-        return sellerNickName;
-    }
-
-    public void setSellerNickName(String sellerNickName) {
-        this.sellerNickName = sellerNickName;
-    }
-
-    public int getDisputeMinute() {
-        return disputeMinute;
-    }
-
-    public void setDisputeMinute(int disputeMinute) {
-        this.disputeMinute = disputeMinute;
-    }
-
-    public int getAppealType() {
-        return appealType;
-    }
-
-    public void setAppealType(int appealType) {
-        this.appealType = appealType;
-    }
-
-    public String getAppealRemark() {
-        return appealRemark;
-    }
-
-    public void setAppealRemark(String appealRemark) {
-        this.appealRemark = appealRemark;
-    }
-
-    public int getPriceType() {
-        return priceType;
-    }
-
-    public void setPriceType(int priceType) {
-        this.priceType = priceType;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
     }
 }

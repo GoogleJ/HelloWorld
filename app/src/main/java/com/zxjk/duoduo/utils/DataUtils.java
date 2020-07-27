@@ -74,5 +74,15 @@ public class DataUtils {
         return sdf.format(new Date(time));
     }
 
+    /**
+     * 获取系统时间戳
+     * @return
+     */
+    public static long getCurTimeLong(){
+        long time=System.currentTimeMillis();
+        return time;
+    }
+
+
 
 }

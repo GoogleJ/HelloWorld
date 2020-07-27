@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_safety_guarantee"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="交易安全保障中"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:text="放心转账安全无忧"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="商家身份信息验证"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_face_verification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_f2f3f5_8"
+                    android:drawableStart="@drawable/ic_face_verification"
+                    android:drawablePadding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="10dp"
+                    android:gravity="center"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="10dp"
+                    android:text="已完成人脸核验"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tv_real_name_authentication"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@drawable/shape_f2f3f5_8"
+                    android:drawableStart="@drawable/ic_real_name_authentication"
+                    android:drawablePadding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="10dp"
+                    android:text="已完成人脸核验"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_earnest_money"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_f2f3f5_8"
+                    android:drawableStart="@drawable/ic_earnest_money"
+                    android:drawablePadding="4dp"
+                    android:paddingStart="12dp"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="10dp"
+                    android:text="已缴纳商家保证金"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tv_merchant_verification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_f2f3f5_8"
+                    android:drawableStart="@drawable/ic_merchant_verification"
+                    android:drawablePadding="4dp"
+                    android:paddingStart="12dp"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="10dp"
+                    android:text="已核验商家背景"
+                    android:textColor="#000000" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="资产保护"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:lineSpacingExtra="4dp"
+            android:text="从你下单开始，我们会持续将商家的对应数字资产锁定，直到订单完成为止。"
+            android:textColor="#6E7F93" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="基础服务保障"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:lineSpacingExtra="4dp"
+            android:text="出现问题提供客服1对1专门处理，方便快捷的解决订单问题。"
+            android:textColor="#6E7F93" />
+
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/shape_4182f9_5"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="我知道了"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+
+</LinearLayout>

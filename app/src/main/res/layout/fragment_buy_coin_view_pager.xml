@@ -158,6 +158,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_questions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="常见问题"
@@ -170,6 +171,7 @@
             android:background="@drawable/shape_dotgray" />
 
         <TextView
+            android:id="@+id/tv_novice_guide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

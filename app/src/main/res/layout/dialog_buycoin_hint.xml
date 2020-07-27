@@ -1,94 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        app:cardBackgroundColor="@color/white">
+        android:background="@drawable/shape_circular_bead"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="交易须知"
+            android:textColor="#272E3F"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="#272E3F"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/order_being_traded_label" />
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="请勿备注任何信息"
+            android:textColor="#2394C7"
+            android:visibility="gone"/>
 
-            <TextView
-                android:id="@+id/order_being_traded_label"
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="此应用可以快捷买卖数字货币，但是伪造身份认证信息，以及为他人代买、提币，协助他人犯罪，您将会被司法追责。"
+            android:textColor="#6E7F93" />
+
+        <LinearLayout
+            android:id="@+id/ll_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <CheckBox
+                android:id="@+id/checkobx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="8dp"
-                android:paddingTop="26dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="46dp"
-                android:text="此应用可以快捷买卖数字货币，但是伪造身份认证信息，以及为他人代买、提币，协助他人犯罪，您将会被司法追责。"
-                android:textColor="#6E7F93"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/line">
-
-                <CheckBox
-                    android:id="@+id/checkobx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="30天不再提示"
-                    android:textColor="#6E7F93"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
-            <View
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/pop_color3"
-                app:layout_constraintBottom_toTopOf="@+id/determine_btn" />
+                android:layout_marginStart="16dp" />
 
             <TextView
-                android:id="@+id/determine_btn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/determine_btn"
-                android:textColor="#0083BF"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_being_traded_label" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="30天不再提示"
+                android:textColor="#6E7F93"
+                android:textStyle="bold" />
+        </LinearLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/pop_color3" />
 
-    </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/tv_determine_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/determine_btn"
+            android:textColor="#0083BF"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
 </LinearLayout>

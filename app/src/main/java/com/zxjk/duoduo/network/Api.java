@@ -26,6 +26,7 @@ import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.bean.response.GetBalanceInfoResponse;
 import com.zxjk.duoduo.bean.response.GetCarouselMap;
 import com.zxjk.duoduo.bean.response.GetChatRoomInfoResponse;
+import com.zxjk.duoduo.bean.response.GetConfigResponse;
 import com.zxjk.duoduo.bean.response.GetCustomerBasicInfoByIdResponse;
 import com.zxjk.duoduo.bean.response.GetFriendsByMobilesResponse;
 import com.zxjk.duoduo.bean.response.GetGroupChatInfoByGroupIdResponse;
@@ -909,5 +910,11 @@ public interface Api {
     @POST("duoduo/customer/authorizedLogin")
     @FormUrlEncoded
     Observable<BaseResponse<String>> authorizedLogin(@Field("appId") String appId);
+
+
+
+    @POST("duoduo/otc/getConfig")
+    Observable<BaseResponse<GetConfigResponse>> getConfig();
+
 
 }

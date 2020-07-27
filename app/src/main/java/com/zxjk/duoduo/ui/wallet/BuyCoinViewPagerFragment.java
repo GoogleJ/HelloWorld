@@ -45,11 +45,16 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
+import com.zxjk.duoduo.ui.widget.dialog.BuyCoinDialog;
+import com.zxjk.duoduo.utils.DataUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
@@ -72,6 +77,8 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
     private TextView btnBuyCoin;
     private BaseQuickAdapter<GetOTCPayInfoResponse.PayTypeListBean, BaseViewHolder> adapter;
     private TextView tvAll;
+    private TextView tvQuestions;
+    private TextView tvNoviceGuide;
 
     private String defaultRenegeNumber;
     private String buyPatterns = "CNY";
@@ -89,6 +96,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
     private String amountScale;
     private String buyType;
     private QuickOrderRequest quickOrderRequest = new QuickOrderRequest();
+    private BuyCoinDialog buyCoinDialog;
 
 
     public static BuyCoinViewPagerFragment newInstance(String str, String logo, String defaultRenegeNumber, String amountScale, int buyType) {
@@ -138,13 +146,37 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         etPurchaseAmount = rootView.findViewById(R.id.et_purchase_amount);
         btnBuyCoin = rootView.findViewById(R.id.btn_buy_coin);
         tvAll = rootView.findViewById(R.id.tv_all);
+        tvQuestions = rootView.findViewById(R.id.tv_questions);
+        tvNoviceGuide = rootView.findViewById(R.id.tv_novice_guide);
     }
 
     private void initData() {
+
         nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(Integer.parseInt(amountScale));
 
         if (getArguments().getInt("buyType") == 0) {
+            if (!MMKVUtils.getInstance().decodeBool("appFirstBuyCoin")) {
+                //first open app,enter AppFirstLoginActivity
+                MMKVUtils.getInstance().enCode("appFirstBuyCoin", true);
+                NiceDialog niceDialog = new NiceDialog();
+                niceDialog.init().setLayoutId(R.layout.dialog_tutorial).setConvertListener(new ViewConvertListener() {
+                    @SuppressLint("CheckResult")
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                        holder.setOnClickListener(R.id.ll1, v -> {
+                            showDialog();
+                            dialog.dismiss();
+                        });
+                        holder.setOnClickListener(R.id.ll2, v -> {
+                            Intent intent = new Intent(getActivity(), GuidelinesWebActivity.class);
+                            intent.putExtra("url", "http://192.168.1.247/hilamg_tradeGuide/how_buy.html");
+                            startActivity(intent);
+                            dialog.dismiss();
+                        });
+                    }
+                }).setDimAmount(0.5f).setOutCancel(true).show(getChildFragmentManager());
+            }
             tvBuyCoinSwitch.setVisibility(View.VISIBLE);
 //            tvAll.setVisibility(View.GONE);
         } else {
@@ -328,23 +360,16 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
             etPurchaseAmount.setText(getQuickTickerResponse.getMaxQuota());
         });
 
+        tvQuestions.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), BuyCoinPaymentActivity.class));
+        });
 
-        if (!MMKVUtils.getInstance().decodeBool("appFirstBuyCoin")) {
-            //first open app,enter AppFirstLoginActivity
-            MMKVUtils.getInstance().enCode("appFirstBuyCoin", true);
-            NiceDialog.init().setLayoutId(R.layout.dialog_tutorial).setConvertListener(new ViewConvertListener() {
-                @SuppressLint("CheckResult")
-                @Override
-                protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                    holder.setOnClickListener(R.id.ll1, v -> {
-                        ToastUtils.showShort("老手");
-                    });
-                    holder.setOnClickListener(R.id.ll2, v -> {
-                        ToastUtils.showShort("新手");
-                    });
-                }
-            }).setDimAmount(0.5f).setOutCancel(true).show(getChildFragmentManager());
-        }
+        tvNoviceGuide.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), GuidelinesWebActivity.class);
+            intent.putExtra("url", "http://192.168.1.247/hilamg_tradeGuide/how_buy.html");
+            startActivity(intent);
+        });
+
     }
 
     //实时行情获取
@@ -393,7 +418,28 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 .compose(RxSchedulers.otc())
                 .compose(RxSchedulers.ioObserver())
                 .compose(bindToLifecycle())
-                .subscribe(data -> popupBuyCoin(data), this::handleApiError);
+                .subscribe(data -> {
+                    if (2 == data.getTrade()) {
+                        buyCoinDialog = new BuyCoinDialog(getActivity(),
+                                "闭市通知",
+                                "抱歉，当前时间提供一键买卖的商家处于闭市状态，请过几分钟再来。如闭市过长时间请联系客服投诉。",
+                                "我知道了",
+                                false);
+                        buyCoinDialog.show();
+                    }
+                    if ("SELL".equals(buyType)) {
+                        if (3 == data.getTrade()) {
+                            buyCoinDialog = new BuyCoinDialog(getActivity(),
+                                    "收款提示",
+                                    "请完善你的收款方式，务必保证提交的收款方式归属人与你实名认证信息相符！",
+                                    "去完善",
+                                    false).start(new Intent(getActivity(), AuthentificationOfMessageActivity.class));
+                            buyCoinDialog.show();
+                        }
+
+                    }
+                    popupBuyCoin(data);
+                }, this::handleApiError);
     }
 
 
@@ -411,12 +457,9 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 } else if ("ALIPAY".equals(item.getPayType())) {
                     tv.setText(R.string.pay_treasure);
                     drawable = getResources().getDrawable(R.drawable.pay_treasure, null);
-                } else if ("WEIXIN".equals(item.getPayType())) {
+                } else {
                     tv.setText(R.string.wechat_pay);
                     drawable = getResources().getDrawable(R.drawable.wechat, null);
-                } else {
-                    tv.setText("新增收付款方式");
-                    drawable = getResources().getDrawable(R.drawable.ic_addpay, null);
                 }
                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable
                         .getMinimumHeight());// 设置边界
@@ -433,13 +476,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             GetOTCPayInfoResponse.PayTypeListBean payTypeListBean = (GetOTCPayInfoResponse.PayTypeListBean) adapter.getData().get(position);
             if (payTypeListBean.getOpen() == 1) {
-                if ("add".equals(payTypeListBean.getPayType())) {
-                    Intent intent = new Intent(getActivity(), ImprovePaymentInformationActivity.class);
-                    intent.putExtra("buyType", buyType);
-                    startActivity(intent);
-                } else {
-                    byCoinsOrAmount(payTypeListBean.getPayType(), getQuickTickerResponse.getPrice(), amount, total, position);
-                }
+                byCoinsOrAmount(payTypeListBean.getPayType(), getQuickTickerResponse.getPrice(), amount, total, position);
             } else {
                 ToastUtils.showShort("该支付暂时不可用");
             }
@@ -454,43 +491,14 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 .config(new QuickPopupConfig()
                         .withShowAnimation(showAnimation)
                         .withDismissAnimation(dismissAnimation)
-                        .withClick(R.id.img_exit, null, true)
-                        .withClick(R.id.ll_add_payment, v -> {
-                            if (0 == getOTCPayInfoResponse.getTrade()) {
-                                Intent intent = new Intent(getActivity(), ImprovePaymentInformationActivity.class);
-                                intent.putExtra("buyType", buyType);
-                                startActivity(intent);
-                            }
-                        }, true)
-                ).show();
-        LinearLayout llAddPayment = buyCoinType.findViewById(R.id.ll_add_payment);
+                        .withClick(R.id.img_exit, null, true))
+                .show();
+
         recyclerView = buyCoinType.findViewById(R.id.rc_pay);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        if (0 == getOTCPayInfoResponse.getTrade()) {
-            llAddPayment.setVisibility(View.VISIBLE);
-            if (getArguments().getInt("buyType") == 0) {
-                TextView title = buyCoinType.findViewById(R.id.tv_title);
-                TextView tvHint = buyCoinType.findViewById(R.id.tv_hint);
-                TextView tvContent = buyCoinType.findViewById(R.id.tv_content);
-                title.setText("添加手机号码");
-                tvContent.setText("添加");
-                tvHint.setVisibility(View.VISIBLE);
-            }
-        } else {
-            llAddPayment.setVisibility(View.GONE);
-        }
-
-        if (getOTCPayInfoResponse.getPayTypeList() != null && getArguments().getInt("buyType") == 1) {
-            if (getOTCPayInfoResponse.getPayTypeList().size() > 0 && getOTCPayInfoResponse.getPayTypeList().size() < 3) {
-                GetOTCPayInfoResponse.PayTypeListBean payTypeListBean = new GetOTCPayInfoResponse.PayTypeListBean();
-                payTypeListBean.setPayType("add");
-                payTypeListBean.setOpen(1);
-                getOTCPayInfoResponse.getPayTypeList().add(payTypeListBean);
-            }
-        }
         adapter.setNewData(getOTCPayInfoResponse.getPayTypeList());
     }
 
@@ -523,6 +531,10 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         .withClick(R.id.img_exit, null, true)
                 ).show();
 
+        TextView tvSellHint = byCoinsOrAmount.findViewById(R.id.tv_sell_hint);
+        if ("SELL".equals(buyType)) {
+            tvSellHint.setVisibility(View.VISIBLE);
+        }
         TextView tv1 = byCoinsOrAmount.findViewById(R.id.tv1);
         TextView tvTermOfPayment = byCoinsOrAmount.findViewById(R.id.tv_terms_of_payment);
         if ("EBANK".equals(TermOfPayment)) {
@@ -589,10 +601,60 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 .compose(RxSchedulers.ioObserver())
                 .compose(bindToLifecycle())
                 .subscribe(data -> {
-                    Intent intent = new Intent(getContext(), PurchaseDetailsActivity.class);
-                    intent.putExtra("otherOrderId", data.getOtherOrderId());
-                    startActivity(intent);
+                    if (1 == data.getBizCode()) {
+                        buyCoinDialog = new BuyCoinDialog(getActivity(),
+                                "实名认证提示",
+                                "应第三方金融风控的需求，需要完成实名认证才能进行交易。本平台对用户实名信息不做中心化存储。",
+                                "去认证",
+                                false).start(new Intent(getActivity(), AuthentificationOfMessageActivity.class));
+                        buyCoinDialog.show();
+                    } else if (2 == data.getBizCode()) {
+                        Intent intent = new Intent(getActivity(), ReceiptTypeActivity.class);
+                        intent.putExtra("type", "MOBILE");
+                        intent.putExtra("data", GsonUtils.toJson(quickOrderRequest));
+                        startActivity(intent);
+                    } else {
+                        Intent intent;
+                        if ("BUY".equals(buyType)) {
+                            intent = new Intent(getContext(), BuyCoinPaymentActivity.class);
+                        } else {
+                            intent = new Intent(getContext(), PurchaseDetailsActivity.class);
+                        }
+                        intent.putExtra("otherOrderId", data.getOrder().getOtherOrderId());
+                        startActivity(intent);
+                    }
                 }, this::handleApiError);
     }
+
+    private void showDialog() {
+        buyCoinDialog = new BuyCoinDialog(getActivity(),
+                "交易须知",
+                "此应用可以快捷买卖数字货币，但是伪造身份认证信息，以及为他人代买、提币，协助他人犯罪，您将会被司法追责。" + "\n\n鉴于洗钱活动将严重危害数字资产交易的发展，损害用户的正当权益，根据《中华人民共和国反洗钱法》，本产品为全面履行反洗钱和反恐融资法律的相关规定，如遇涉黑或犯罪资金，将拒绝放币，并报由公安机关处理。",
+                "我知道了",
+                true).setKey("TRADINGNOTES");
+        //判断提示框是否显示
+        if (!MMKVUtils.getInstance().decodeBool("TRADINGNOTES")) {
+            buyCoinDialog.show();
+        } else {
+            long time = MMKVUtils.getInstance().decodeLong("TRADINGNOTES");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date d1 = df.parse(DataUtils.timeStamp2Date(DataUtils.getCurTimeLong(), "yyyy-MM-dd HH:mm:ss"));
+                Date d2 = df.parse(DataUtils.timeStamp2Date(time, "yyyy-MM-dd HH:mm:ss"));
+                long diff = d1.getTime() - d2.getTime();
+                long days = diff / (1000 * 60 * 60 * 24);
+                long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+                long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+                if (minutes > 1) {
+                    MMKVUtils.getInstance().remove("TRADINGNOTES");
+                    buyCoinDialog.show();
+                }
+            } catch (Exception e) {
+
+            }
+        }
+
+    }
+
 
 }

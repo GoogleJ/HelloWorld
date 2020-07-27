@@ -44,32 +44,6 @@
                 android:src="@drawable/ic_exit" />
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_add_payment"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/shape_create_cast_step1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_addpay" />
-
-            <TextView
-                android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="添加收付款方式" />
-        </LinearLayout>
-
         <TextView
             android:id="@+id/tv_hint"
             android:layout_width="wrap_content"

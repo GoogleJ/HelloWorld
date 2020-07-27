@@ -28,10 +28,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:textStyle="bold" />
 
 
             <ImageView
@@ -119,6 +119,16 @@
                     android:textColor="@color/colorPrimary" />
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_sell_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="*价格随市场波动，请尽快确认订单锁定价格。"
+            android:textColor="#FF5845"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/bt_to_buy"

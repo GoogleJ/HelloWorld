@@ -72,7 +72,7 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
 
     private void improvePaymentInformation() {
         ServiceFactory.getInstance().getBaseService(Api.class)
-                .improvePaymentInformation()
+                .getConfig()
                 .compose(RxSchedulers.otc())
                 .compose(RxSchedulers.ioObserver())
                 .compose(bindToLifecycle())
@@ -94,9 +94,8 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
                         tvBankPay.setText("未完善");
                     }
 
-                    if (1 == data.getMOBILE()) {
-                        improvePaymentInformationByType("MOBILE");
-                    }
+                    tvPhoneNumber.setText(data.getMobile());
+                    tvNickName.setText(data.getUserName());
 
                     llBankPay.setOnClickListener(v -> {
                         intent.putExtra("type", "EBANK");
@@ -163,8 +162,7 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
-                    tvPhoneNumber.setText(s.getMobile());
-                    tvNickName.setText(s.getUserName());
+
                 }, this::handleApiError);
     }
 

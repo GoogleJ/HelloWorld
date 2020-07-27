@@ -69,6 +69,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
     private String url;
     private String contrary;
     private int paymentinformation;
+    private String data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -176,6 +177,16 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             findViewById(R.id.ll1).setVisibility(View.VISIBLE);
             receiptTypePaymentName.setText("手机号码");
             receiptTypePayment.setHint("请填写手机号码");
+        } else if (mobile.equals(types)) {
+            realName.setVisibility(View.GONE);
+            findViewById(R.id.ll1).setVisibility(View.VISIBLE);
+            receiptTypePaymentName.setText("手机号码");
+            receiptTypePayment.setHint("请填写手机号码");
+            realName.setVisibility(View.GONE);
+            findViewById(R.id.ll1).setVisibility(View.VISIBLE);
+            receiptTypeName.setText("姓名");
+            receiptTypeRealName.setHint("请填写姓名");
+            commitBtn.setText("下一步");
         }
 
         if (types.equals(wechat) || types.equals(alipay)) {
@@ -188,7 +199,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             accountIdCard.setOnClickListener(v -> {
                 dialog.show(getString(R.string.open_bank), getString(R.string.please_upload_selector_open_bank), "", 3);
             });
-        } else if (phonenumber.equals(types)) {
+        } else if (phonenumber.equals(types) || mobile.equals(types)) {
             accountIdCard.setOnClickListener(v -> {
                 dialog.setVisibilitys(0);
                 dialog.setOnStartActivity(() -> {
@@ -211,7 +222,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 } else if (alipay.equals(types)) {
                     dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay, 1);
                     return;
-                } else if (nickname.equals(types)) {
+                } else if (nickname.equals(types) || mobile.equals(types)) {
                     dialog.setVisibilitys(1);
                     dialog.show("姓名", "请填写姓名", "", 1);
                     return;
@@ -376,11 +387,16 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
                     commitBtn.setEnabled(false);
+                    Intent intent;
                     ToastUtils.showShort(getString(R.string.pay_type_successful));
-                    Intent intent = new Intent();
-                    intent.putExtra("pay", types);
-                    setResult(1000, intent);
-                    finish();
+                    if (mobile.equals(types)) {
+                        toBuyCoin();
+                    } else {
+                        intent = new Intent();
+                        intent.putExtra("pay", types);
+                        setResult(1000, intent);
+                        finish();
+                    }
                 }, this::handleApiError);
     }
 
@@ -406,4 +422,19 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 .setDimAmount(0.5f)
                 .show(getSupportFragmentManager());
     }
+
+    private void toBuyCoin() {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .quickOrder(getIntent().getStringExtra("data"))
+                .compose(RxSchedulers.otc())
+                .compose(RxSchedulers.ioObserver())
+                .compose(bindToLifecycle())
+                .subscribe(data -> {
+                    Intent intent = new Intent(this, BuyCoinPaymentActivity.class);
+                    intent.putExtra("otherOrderId", data.getOrder().getOtherOrderId());
+                    startActivity(intent);
+                    finish();
+                }, this::handleApiError);
+    }
+
 }
