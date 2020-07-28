@@ -1,16 +1,13 @@
 package com.zxjk.duoduo.ui.wallet;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -84,10 +81,10 @@ public class PayAliActivity extends BaseActivity {
                 if (TextUtils.isEmpty(editText)) {
                     editText = "0.00000";
                     tvVolumeDose.setText("≈ " + editText + result.getSymbol());
-                }else {
+                } else {
                     BigDecimal num1 = new BigDecimal(editText);
                     BigDecimal num2 = new BigDecimal(result.getPrice());
-                    BigDecimal volumeDose = num1.divide(num2,5,RoundingMode.CEILING);
+                    BigDecimal volumeDose = num1.divide(num2, 5, RoundingMode.CEILING);
                     tvVolumeDose.setText("≈ " + volumeDose.toString().trim() + result.getSymbol());
                 }
             }
@@ -133,7 +130,7 @@ public class PayAliActivity extends BaseActivity {
     public void chooseCoin(View view) {
         Intent intent = new Intent(this, ChooseCoinActivity.class);
         intent.putExtra("data", list);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     public void back(View view) {
