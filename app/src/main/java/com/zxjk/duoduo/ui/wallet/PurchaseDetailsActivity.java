@@ -122,7 +122,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
         findViewById(R.id.tv_cancel_the_order).setOnClickListener(v -> {
             Intent intent;
-            if ("SELL".equals(byBoinsResponse.getType()) && "PAYED".equals(byBoinsResponse.getOrderStatus()) || "BUY".equals(byBoinsResponse.getType()) && 1 == byBoinsResponse.getShowDispute()) {
+            if ("SELL".equals(byBoinsResponse.getType()) && "PAYED".equals(byBoinsResponse.getOrderStatus()) || "BUY".equals(byBoinsResponse.getType()) && 1 == byBoinsResponse.getShowDispute() || "SELL".equals(byBoinsResponse.getType()) && "FINISHED".equals(byBoinsResponse.getOrderStatus()) && 1 == byBoinsResponse.getAutoPayCoin()) {
                 intent = new Intent(this, TheAppealActivity.class);
                 intent.putExtra("ByBoinsResponse", byBoinsResponse);
                 startActivity(intent);
@@ -341,8 +341,18 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             llAppealRemark.setVisibility(View.VISIBLE);
                             tvAppealRemark.setText(data.getAppealRemark());
                         } else if ("FINISHED".equals(data.getOrderStatus())) {
-                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "已放币");
-                            tvPaymentStatus2.setText("已完成");
+                            if (1 == data.getAutoPayCoin()) {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "超时自动放币");
+                                tvPaymentStatus2.setText("已完成");
+                                findViewById(R.id.ll2).setVisibility(View.VISIBLE);
+                                tvCancelTheOrder.setBackground(getResources().getDrawable(R.drawable.shape_4182f9_5, null));
+                                tvCancelTheOrder.setVisibility(View.VISIBLE);
+                                tvCancelTheOrder.setTextColor(Color.parseColor("#FFFFFF"));
+                                findViewById(R.id.ll_payment).setVisibility(View.GONE);
+                            } else {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "已放币");
+                                tvPaymentStatus2.setText("已完成");
+                            }
                         } else if ("FORCECANCEL".equals(data.getOrderStatus())) {
                             if (1 == data.getAppealType()) {
                                 setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉成功订单取消");

@@ -55,6 +55,15 @@ public class GetLinkCoinOrdersOrderDetails implements Serializable {
     private String timeoutMinute;
     private String disputeMinute;
     private String cardAddress;
+    private int autoPayCoin;
+
+    public int getAutoPayCoin() {
+        return autoPayCoin;
+    }
+
+    public void setAutoPayCoin(int autoPayCoin) {
+        this.autoPayCoin = autoPayCoin;
+    }
 
     public String getCardAddress() {
         return cardAddress;
