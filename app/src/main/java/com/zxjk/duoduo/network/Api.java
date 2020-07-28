@@ -912,7 +912,6 @@ public interface Api {
     Observable<BaseResponse<String>> authorizedLogin(@Field("appId") String appId);
 
 
-
     @POST("duoduo/otc/getConfig")
     Observable<BaseResponse<GetConfigResponse>> getConfig();
 

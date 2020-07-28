@@ -157,7 +157,6 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
 
         if (getArguments().getInt("buyType") == 0) {
             if (!MMKVUtils.getInstance().decodeBool("appFirstBuyCoin")) {
-                //first open app,enter AppFirstLoginActivity
                 MMKVUtils.getInstance().enCode("appFirstBuyCoin", true);
                 NiceDialog niceDialog = new NiceDialog();
                 niceDialog.init().setLayoutId(R.layout.dialog_tutorial).setConvertListener(new ViewConvertListener() {
@@ -172,16 +171,17 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                             Intent intent = new Intent(getActivity(), GuidelinesWebActivity.class);
                             intent.putExtra("url", "http://192.168.1.247/hilamg_tradeGuide/how_buy.html");
                             startActivity(intent);
+                            showDialog();
                             dialog.dismiss();
                         });
                     }
-                }).setDimAmount(0.5f).setOutCancel(true).show(getChildFragmentManager());
+                }).setDimAmount(0.5f).setOutCancel(false).show(getChildFragmentManager());
+            } else {
+                showDialog();
             }
-            tvBuyCoinSwitch.setVisibility(View.VISIBLE);
 //            tvAll.setVisibility(View.GONE);
         } else {
 //            tvAll.setVisibility(View.VISIBLE);
-            tvBuyCoinSwitch.setVisibility(View.GONE);
         }
         tvBuyCoinSwitch.setOnClickListener(v -> {
             if (getArguments().getInt("buyType") == 0) {
@@ -426,19 +426,16 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                                 "我知道了",
                                 false);
                         buyCoinDialog.show();
+                    } else if (3 == data.getTrade()) {
+                        buyCoinDialog = new BuyCoinDialog(getActivity(),
+                                "收款提示",
+                                "请完善你的收款方式，务必保证提交的收款方式归属人与你实名认证信息相符！",
+                                "去完善",
+                                false).start(new Intent(getActivity(), AuthentificationOfMessageActivity.class));
+                        buyCoinDialog.show();
+                    } else {
+                        popupBuyCoin(data);
                     }
-                    if ("SELL".equals(buyType)) {
-                        if (3 == data.getTrade()) {
-                            buyCoinDialog = new BuyCoinDialog(getActivity(),
-                                    "收款提示",
-                                    "请完善你的收款方式，务必保证提交的收款方式归属人与你实名认证信息相符！",
-                                    "去完善",
-                                    false).start(new Intent(getActivity(), AuthentificationOfMessageActivity.class));
-                            buyCoinDialog.show();
-                        }
-
-                    }
-                    popupBuyCoin(data);
                 }, this::handleApiError);
     }
 
@@ -611,6 +608,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     } else if (2 == data.getBizCode()) {
                         Intent intent = new Intent(getActivity(), ReceiptTypeActivity.class);
                         intent.putExtra("type", "MOBILE");
+                        intent.putExtra("isAuthentification", "1");
                         intent.putExtra("data", GsonUtils.toJson(quickOrderRequest));
                         startActivity(intent);
                     } else {

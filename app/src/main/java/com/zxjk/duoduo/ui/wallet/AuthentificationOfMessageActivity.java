@@ -98,28 +98,38 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
                     tvNickName.setText(data.getUserName());
 
                     llBankPay.setOnClickListener(v -> {
-                        intent.putExtra("type", "EBANK");
-                        intent.putExtra("paymentinformation", data.getEBANK());
-                        startActivityForResult(intent, 1);
+                        if(1 == data.getMOBILE()){
+                            intent.putExtra("type", "EBANK");
+                            intent.putExtra("paymentinformation", data.getEBANK());
+                            startActivityForResult(intent, 1);
+                        }else {
+                            ToastUtils.showShort("请先添加手机号信息");
+                        }
                     });
                     llWechat.setOnClickListener(v -> {
-                        intent.putExtra("type", "WEIXIN");
-                        intent.putExtra("paymentinformation", data.getWEIXIN());
-                        startActivityForResult(intent, 1);
+                        if(1 == data.getMOBILE()){
+                            intent.putExtra("type", "WEIXIN");
+                            intent.putExtra("paymentinformation", data.getWEIXIN());
+                            startActivityForResult(intent, 1);
+                        }else {
+                            ToastUtils.showShort("请先添加手机号信息");
+                        }
                     });
                     llAliPay.setOnClickListener(v -> {
-                        intent.putExtra("type", "ALIPAY");
-                        intent.putExtra("paymentinformation", data.getALIPAY());
-                        startActivityForResult(intent, 1);
+                        if(1 == data.getMOBILE()){
+                            intent.putExtra("type", "ALIPAY");
+                            intent.putExtra("paymentinformation", data.getALIPAY());
+                            startActivityForResult(intent, 1);
+                        }else {
+                            ToastUtils.showShort("请先添加手机号信息");
+                        }
                     });
                     findViewById(R.id.ll_nick_name).setOnClickListener(v -> {
-                        intent.putExtra("type", "NICKNAME");
-                        intent.putExtra("paymentinformation", data.getALIPAY());
+                        intent.putExtra("type", "MOBILE");
                         startActivityForResult(intent, 1);
                     });
                     findViewById(R.id.ll_phone_number).setOnClickListener(v -> {
-                        intent.putExtra("type", "PHONENUMBER");
-                        intent.putExtra("paymentinformation", data.getALIPAY());
+                        intent.putExtra("type", "MOBILE");
                         startActivityForResult(intent, 1);
                     });
                 }, this::handleApiError);
@@ -155,16 +165,6 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
         }
     }
 
-    private void improvePaymentInformationByType(String data) {
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .improvePaymentInformationByType(data)
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
-                .compose(RxSchedulers.normalTrans())
-                .subscribe(s -> {
-
-                }, this::handleApiError);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

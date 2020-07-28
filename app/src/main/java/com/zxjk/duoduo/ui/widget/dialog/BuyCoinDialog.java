@@ -28,6 +28,7 @@ public class BuyCoinDialog extends Dialog {
     private String key;
     private Context context;
     private boolean isVisibilityHint;
+    private Intent intent;
 
     public BuyCoinDialog(@NonNull Context context, String title, String content, String btnText, Boolean isShowHint) {
         super(context, R.style.dialogstyle);
@@ -45,7 +46,7 @@ public class BuyCoinDialog extends Dialog {
     }
 
     public BuyCoinDialog start(Intent intent) {
-        context.startActivity(intent);
+        this.intent = intent;
         return this;
     }
 
@@ -75,6 +76,9 @@ public class BuyCoinDialog extends Dialog {
         findViewById(R.id.tv_determine_btn).setOnClickListener(v -> {
             if (checkBox.isChecked()) {
                 MMKVUtils.getInstance().enCode(key, DataUtils.getCurTimeLong());
+            }
+            if (intent != null) {
+                context.startActivity(intent);
             }
             dismiss();
         });

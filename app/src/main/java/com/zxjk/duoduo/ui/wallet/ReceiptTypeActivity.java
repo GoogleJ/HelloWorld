@@ -389,7 +389,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                     commitBtn.setEnabled(false);
                     Intent intent;
                     ToastUtils.showShort(getString(R.string.pay_type_successful));
-                    if (mobile.equals(types)) {
+                    if ("1".equals(getIntent().getStringExtra("isAuthentification"))) {
                         toBuyCoin();
                     } else {
                         intent = new Intent();

@@ -82,6 +82,8 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
     private TextView tvPaymentTime;
     private TextView tvOpenAlipay;
     private QuickPopup quickPopup;
+    private TextView tvSubBranchId;
+    private TextView tvPayee;
 
     private GetLinkCoinOrdersOrderDetails byBoinsResponse;
     private String otherOrderId;
@@ -115,6 +117,9 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
         llPayment = findViewById(R.id.ll_payment);
         tvPaymentTime = findViewById(R.id.tv_payment_time);
         tvOpenAlipay = findViewById(R.id.tv_open_alipay);
+        tvSubBranchId = findViewById(R.id.tv_sub_branch_id);
+        tvPayee = findViewById(R.id.tv_payee);
+
         otherOrderId = getIntent().getStringExtra("otherOrderId");
         defaultRenegeNumber = MMKVUtils.getInstance().decodeString("DefaultRenegeNumber");
         findViewById(R.id.rl_back).setOnClickListener(v -> onBackDialog());
@@ -284,8 +289,11 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
                         tvPayeeName.setText(data.getWeixinName());
                         tvPayeeId.setText(data.getWeixinId());
                     } else {
+                        findViewById(R.id.ll_sub_branch).setVisibility(View.VISIBLE);
                         imgQRCode.setVisibility(View.GONE);
-                        setDrawables(getResources().getDrawable(R.drawable.bank_card2, null), tvModePayment, "银行卡");
+                        tvSubBranchId.setText(data.getCardAddress());
+                        setDrawables(getResources().getDrawable(R.drawable.bank_card, null), tvModePayment, "银行卡");
+                        tvPayee.setText("银行账号");
                         tvPayeeName.setText(data.getCardUserName());
                         tvPayeeId.setText(data.getCardCode());
                     }
@@ -325,6 +333,9 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_copy_sub_branch_id:
+                copy(byBoinsResponse.getCardAddress());
+                break;
             case R.id.tv_total:
                 copy(byBoinsResponse.getTotal());
                 break;
@@ -343,7 +354,7 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
                 } else if (byBoinsResponse.getPayType().equals("WEIXIN")) {
                     copy(byBoinsResponse.getWeixinId());
                 } else {
-                    setDrawables(getResources().getDrawable(R.drawable.bank_card2, null), tvModePayment, "银行卡");
+                    setDrawables(getResources().getDrawable(R.drawable.bank_card, null), tvModePayment, "银行卡");
                     copy(byBoinsResponse.getCardCode());
                 }
                 copy(byBoinsResponse.getAlipayName());

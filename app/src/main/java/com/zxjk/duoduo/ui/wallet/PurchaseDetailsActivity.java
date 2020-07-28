@@ -65,6 +65,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
     private TextView tvPaymentStatus2;
     private TextView tvVendorName;
     private TextView tvMerchantAccount;
+    private TextView tvSubBranchId;
 
     private String defaultRenegeNumber;
     private String otherOrderId;
@@ -103,6 +104,8 @@ public class PurchaseDetailsActivity extends BaseActivity {
         tvPaymentStatus2 = findViewById(R.id.tv_payment_status2);
         llAppealRemark = findViewById(R.id.ll_appeal_remark);
         tvAppealRemark = findViewById(R.id.tv_appeal_remark);
+        tvSubBranchId = findViewById(R.id.tv_sub_branch_id);
+
 
         findViewById(R.id.rl_back).setOnClickListener(v ->
                 finish()
@@ -119,7 +122,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
         findViewById(R.id.tv_cancel_the_order).setOnClickListener(v -> {
             Intent intent;
-            if ("SELL".equals(byBoinsResponse.getType()) && "PAYED".equals(byBoinsResponse.getOrderStatus()) ||"BUY".equals(byBoinsResponse.getType()) && 1 == byBoinsResponse.getShowDispute()) {
+            if ("SELL".equals(byBoinsResponse.getType()) && "PAYED".equals(byBoinsResponse.getOrderStatus()) || "BUY".equals(byBoinsResponse.getType()) && 1 == byBoinsResponse.getShowDispute()) {
                 intent = new Intent(this, TheAppealActivity.class);
                 intent.putExtra("ByBoinsResponse", byBoinsResponse);
                 startActivity(intent);
@@ -149,7 +152,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                     } else if ("WEIXIN".equals(data.getPayType())) {
                         setDrawables(getResources().getDrawable(R.drawable.wechat, null), tvPaymentType, getString(R.string.wechat_pay));
                     } else {
-                        setDrawables(getResources().getDrawable(R.drawable.bank_card2, null), tvPaymentType, getString(R.string.bank_card_payment));
+                        setDrawables(getResources().getDrawable(R.drawable.bank_card, null), tvPaymentType, getString(R.string.bank_card_payment));
                     }
 
                     tvTheOrderNumber.setText(getString(R.string.order_number, data.getOtherOrderId()));
@@ -172,7 +175,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                         tvTitle.setText(R.string.purchase_details);
                         cardView1.setVisibility(View.VISIBLE);
                         if ("PAYED".equals(data.getOrderStatus())) {//待卖家放币状态
-                            setDrawables(getResources().getDrawable(R.drawable.ic_waiting_coin, null), tvPaymentStatus, getString(R.string.waiting_to_put_money2));
+                            setDrawables(getResources().getDrawable(R.drawable.ic_waiting_coin, null), tvPaymentStatus, "待商家放币");
                             tvPayment.setVisibility(View.VISIBLE);
                             tvPayment.setTextColor(Color.parseColor("#909399"));
                             findViewById(R.id.img_payment).setVisibility(View.VISIBLE);
@@ -192,20 +195,18 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                         String time = minute + ":" + (second == 0 ? "00" : (second < 10 ? ("0" + second) : second));
                                         tvPayment.setText(time + "可申诉");
                                         if (total == 0 || l == total - 1) {
-                                            findViewById(R.id.ll_payment).setVisibility(View.GONE);
-                                            findViewById(R.id.tv_cancel_the_order).setBackground(getResources().getDrawable(R.drawable.shape_4182f9_5, null));
-                                            setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, "商家未放币，已超时");
-                                            tvCancelTheOrder.setVisibility(View.VISIBLE);
-                                            tvCancelTheOrder.setText("申诉");
-                                            tvCancelTheOrder.setTextColor(Color.parseColor("#FFFFFF"));
-                                            findViewById(R.id.ll2).setVisibility(View.VISIBLE);
+                                            finish();
                                         }
                                     }, t -> {
                                     });
                         } else if ("DISPUTE".equals(data.getOrderStatus())) {
+                            if (1 == data.getAppealType()) {
+                                tvPaymentStatus2.setText(getString(R.string.in_the_complaint));
+                            } else {
+                                tvPaymentStatus2.setText("商家申诉中");
+                            }
                             findViewById(R.id.ll_payment).setVisibility(View.GONE);
-                            setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, "申诉中");
-                            tvPaymentStatus2.setText(getString(R.string.in_the_complaint));
+                            setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "申诉中");
                             llAppealRemark.setVisibility(View.VISIBLE);
                             tvAppealRemark.setText(data.getAppealRemark());
                         } else if ("TIMEOUT".equals(data.getOrderStatus())) {
@@ -221,8 +222,21 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "已放币");
                             tvPaymentStatus2.setText("已完成");
                         } else if ("FORCEFINISHED".equals(data.getOrderStatus())) {
-                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "已放币");
-                            tvPaymentStatus2.setText("申诉完成");
+                            if (1 == data.getAppealType()) {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉成功，已放币");
+                                tvPaymentStatus2.setText("已完成");
+                            } else {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "商家申诉失败，已放币");
+                                tvPaymentStatus2.setText("已完成");
+                            }
+                        } else if ("FORCECANCEL".equals(data.getOrderStatus())) {
+                            if (1 == data.getAppealType()) {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉失败，取消订单");
+                                tvPaymentStatus2.setText("已取消");
+                            } else {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "商家申诉成功，订单取消");
+                                tvPaymentStatus2.setText("已取消");
+                            }
                         }
 
                         if ("ALIPAY".equals(data.getPayType())) {
@@ -232,8 +246,11 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             tvBusinessName.setText(data.getWeixinName());
                             tvOtherUserId.setText(data.getWeixinId());
                         } else {
+                            findViewById(R.id.ll_sub_branch).setVisibility(View.VISIBLE);
+                            tvMerchantAccount.setText("银行卡号");
                             tvBusinessName.setText(data.getCardUserName());
                             tvOtherUserId.setText(data.getCardCode());
+                            tvSubBranchId.setText(data.getCardAddress());
                         }
 
                         if (1 == data.getShowDispute()) {
@@ -246,6 +263,9 @@ public class PurchaseDetailsActivity extends BaseActivity {
                         }
                     } else {
                         tvTitle.setText("出售详情");
+                        tvBusinessName.setText(data.getSellerNickName());
+                        tvVendorName.setText("买家昵称");
+                        findViewById(R.id.ll_other_user_id).setVisibility(View.GONE);
                         tvPayment.setOnClickListener(v -> {
                             if ("PAYED".equals(data.getOrderStatus())) {
                                 NiceDialog.init().setLayoutId(R.layout.dialog_remove_order)
@@ -309,7 +329,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             llAppealRemark.setVisibility(View.VISIBLE);
                             tvAppealRemark.setText(data.getAppealRemark());
                             tvPaymentStatus2.setText(getString(R.string.in_the_complaint));
-
                             tvPayment.setText("放行" + data.getCoinSymbol());
                             tvPayment.setTextColor(Color.parseColor("#FFFFFF"));
                             findViewById(R.id.ll_payment).setBackground(getResources().getDrawable(R.drawable.shape_4182f9_5, null));
@@ -317,27 +336,20 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "超时自动取消订单");
                             tvPaymentStatus2.setText("已取消");
                         } else if ("FORCEFINISHED".equals(data.getOrderStatus())) {
-                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "超时自动放币");
+                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉失败系统自动放币");
                             tvPaymentStatus2.setText("已完成");
+                            llAppealRemark.setVisibility(View.VISIBLE);
+                            tvAppealRemark.setText(data.getAppealRemark());
                         } else if ("FINISHED".equals(data.getOrderStatus())) {
                             setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "已放币");
                             tvPaymentStatus2.setText("已完成");
                         } else if ("FORCECANCEL".equals(data.getOrderStatus())) {
-                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉成功订单取消");
-                            tvPaymentStatus2.setText("申诉完成");
-                            llAppealRemark.setVisibility(View.VISIBLE);
-                            tvAppealRemark.setText(data.getAppealRemark());
-                        }
-
-                        if ("ALIPAY".equals(data.getPayType())) {
-                            tvBusinessName.setText(data.getAlipayName());
-                            tvOtherUserId.setText(data.getAlipayId());
-                        } else if ("WEIXIN".equals(data.getPayType())) {
-                            tvBusinessName.setText(data.getWeixinName());
-                            tvOtherUserId.setText(data.getWeixinId());
-                        } else {
-                            tvBusinessName.setText(data.getCardUserName());
-                            tvOtherUserId.setText(data.getCardCode());
+                            if (1 == data.getAppealType()) {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉成功订单取消");
+                                tvPaymentStatus2.setText("已取消");
+                                llAppealRemark.setVisibility(View.VISIBLE);
+                                tvAppealRemark.setText(data.getAppealRemark());
+                            }
                         }
                     }
                 }, this::handleApiError);
@@ -354,28 +366,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
         textView.setCompoundDrawables(drawable, null, null, null);
         textView.setCompoundDrawablePadding(8);
     }
-
-    private void onBackDialog() {
-        NiceDialog.init().setLayoutId(R.layout.dialog_remove_order).setConvertListener(new ViewConvertListener() {
-            @Override
-            protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                holder.setText(R.id.tv_content, getString(R.string.remove_order_remind, defaultRenegeNumber, defaultRenegeNumber));
-                holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
-                holder.setOnClickListener(R.id.tv_ok, v -> {
-                    ServiceFactory.getInstance().getBaseService(Api.class)
-                            .ordersCancel(byBoinsResponse.getOtherOrderId())
-                            .compose(bindToLifecycle())
-                            .compose(RxSchedulers.normalTrans())
-                            .compose(RxSchedulers.ioObserver())
-                            .subscribe(s -> {
-                                finish();
-                            });
-                    dialog.dismiss();
-                });
-            }
-        }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
-    }
-
 
     private void payCoin(String pwd) {
         ServiceFactory.getInstance().getBaseService(Api.class)
