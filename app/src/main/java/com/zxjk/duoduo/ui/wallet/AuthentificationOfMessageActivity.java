@@ -67,6 +67,9 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
     }
 
     private void initData() {
+        if (Constant.currentUser.getIsAuthentication().equals("0")) {
+            tvRealNameAuthentication.setText("重新认证");
+        }
         improvePaymentInformation();
     }
 
@@ -98,29 +101,29 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
                     tvNickName.setText(data.getUserName());
 
                     llBankPay.setOnClickListener(v -> {
-                        if(1 == data.getMOBILE()){
+                        if (1 == data.getMOBILE()) {
                             intent.putExtra("type", "EBANK");
                             intent.putExtra("paymentinformation", data.getEBANK());
                             startActivityForResult(intent, 1);
-                        }else {
+                        } else {
                             ToastUtils.showShort("请先添加手机号信息");
                         }
                     });
                     llWechat.setOnClickListener(v -> {
-                        if(1 == data.getMOBILE()){
+                        if (1 == data.getMOBILE()) {
                             intent.putExtra("type", "WEIXIN");
                             intent.putExtra("paymentinformation", data.getWEIXIN());
                             startActivityForResult(intent, 1);
-                        }else {
+                        } else {
                             ToastUtils.showShort("请先添加手机号信息");
                         }
                     });
                     llAliPay.setOnClickListener(v -> {
-                        if(1 == data.getMOBILE()){
+                        if (1 == data.getMOBILE()) {
                             intent.putExtra("type", "ALIPAY");
                             intent.putExtra("paymentinformation", data.getALIPAY());
                             startActivityForResult(intent, 1);
-                        }else {
+                        } else {
                             ToastUtils.showShort("请先添加手机号信息");
                         }
                     });

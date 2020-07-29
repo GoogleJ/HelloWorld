@@ -360,7 +360,13 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
         if (str.matches("^([0-9]|[/+]).*")) {
             String simpleStr = str.replaceAll("\\-|\\s", "");
             for (FriendInfoResponse contact : list) {
-                if (contact.getNick() != null) {
+                if (contact.getRemark() != null) {
+                    if (contact.getRemark().contains(simpleStr) || contact.getRemark().contains(str)) {
+                        if (!filterList.contains(contact)) {
+                            filterList.add(contact);
+                        }
+                    }
+                } else if (contact.getNick() != null) {
                     if (contact.getNick().contains(simpleStr) || contact.getNick().contains(str)) {
                         if (!filterList.contains(contact)) {
                             filterList.add(contact);
@@ -370,7 +376,15 @@ public class SelectContactForCardActivity extends BaseActivity implements TextWa
             }
         } else {
             for (FriendInfoResponse contact : list) {
-                if (contact.getNick() != null) {
+                if (contact.getRemark() != null) {
+                    boolean isNameContains = contact.getRemark().toLowerCase(Locale.CHINESE)
+                            .contains(str.toLowerCase(Locale.CHINESE));
+                    if (isNameContains) {
+                        if (!filterList.contains(contact)) {
+                            filterList.add(contact);
+                        }
+                    }
+                } else if (contact.getNick() != null) {
                     boolean isNameContains = contact.getNick().toLowerCase(Locale.CHINESE)
                             .contains(str.toLowerCase(Locale.CHINESE));
                     if (isNameContains) {

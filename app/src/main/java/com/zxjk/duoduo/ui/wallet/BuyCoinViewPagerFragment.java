@@ -193,6 +193,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     etPurchaseAmount.setHint(R.string.purchase_amount_hint);
                     tvBuyCoinSwitch.setText(R.string.buying_coin);
                     quickOrderRequest.setPriceType("1");
+                    tvLimit.setText("单笔订单范围:" + getQuickTickerResponse.getMinAmount() + "~" + getQuickTickerResponse.getMaxAmount() + "个");
                 } else {
                     tvBuyPatterns.setText("CNY");
                     buyPatterns = "CNY";
@@ -201,6 +202,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     etPurchaseAmount.setHint(R.string.purchase_coin_hint);
                     tvBuyCoinSwitch.setText(R.string.buying_patterns);
                     quickOrderRequest.setPriceType("2");
+                    tvLimit.setText(getString(R.string.limit, getQuickTickerResponse.getMinQuota(), getQuickTickerResponse.getMaxQuota()));
                 }
                 btnBuyCoin.setText(R.string.quick_buy_coins);
 
@@ -213,6 +215,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     etPurchaseAmount.setHint("请输入出售数量");
                     tvBuyCoinSwitch.setText("按金额出售");
                     quickOrderRequest.setPriceType("1");
+                    tvLimit.setText("单笔订单范围:" + getQuickTickerResponse.getMinAmount() + "~" + getQuickTickerResponse.getMaxAmount() + "个");
                 } else {
                     tvBuyPatterns.setText("CNY");
                     buyPatterns = "CNY";
@@ -221,6 +224,8 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     etPurchaseAmount.setHint("请输入出售金额");
                     tvBuyCoinSwitch.setText("按数量出售");
                     quickOrderRequest.setPriceType("2");
+                    tvLimit.setText(getString(R.string.limit, getQuickTickerResponse.getMinQuota(), getQuickTickerResponse.getMaxQuota()));
+
                 }
                 btnBuyCoin.setText("一键出售");
 
@@ -320,6 +325,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
             } else {
                 if (buyPatterns.equals("CNY") && Double.parseDouble(String.valueOf(etPurchaseAmount.getText())) < Double.parseDouble(getQuickTickerResponse.getMinQuota())) {
                     ToastUtils.showShort(getString(R.string.buy_coins_prompt2));
+                    etPurchaseAmount.setText(getQuickTickerResponse.getMinQuota());
                     return;
                 } else if (!buyPatterns.equals("CNY")) {
                     if (getArguments().getInt("buyType") == 0) {
@@ -391,7 +397,6 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         tvBuyCoinSwitch.setText(R.string.buying_coin);
                         btnBuyCoin.setText(R.string.quick_buy_coins);
                     } else {
-
                         tvBuyPatterns.setText(getQuickTickerResponse.getCoinSymbol());
                         buyPatterns = getQuickTickerResponse.getCoinSymbol();
                         decimalDigits = 5;
@@ -402,7 +407,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     }
                     quickOrderRequest.setPriceType("1");
                     tvUnitPrice.setText(getString(R.string.the_unit_price, data.getPrice(), data.getCurrencySymbol(), data.getCoinSymbol()));
-                    tvLimit.setText(getString(R.string.limit, data.getMinQuota(), data.getMaxQuota()));
+                    tvLimit.setText("单笔订单范围:" + data.getMinAmount() + "~" + data.getMaxAmount() + "个");
                 }, this::handleApiError);
     }
 

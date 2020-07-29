@@ -29,6 +29,7 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.minepage.UpdateUserInfoActivity;
+import com.zxjk.duoduo.ui.socialspace.SocialQRCodeActivity;
 import com.zxjk.duoduo.ui.widget.dialog.BurnMsgDialog;
 import com.zxjk.duoduo.ui.widget.dialog.ConfirmDialog;
 import com.zxjk.duoduo.ui.widget.dialog.MuteRemoveDialog;
@@ -417,6 +418,22 @@ public class NewSocialManageActivity extends BaseActivity {
         } else {
             ToastUtils.showShort(getString(R.string.no_update_nick));
         }
+    }
+
+    @SuppressLint("CheckResult")
+    public void QRCode(View View) {
+        ServiceFactory.getInstance().getBaseService(Api.class)
+                .communityInfo(groupInfo.getGroupInfo().getId())
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.normalTrans())
+                .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
+                .subscribe(s -> {
+                    Intent intent = new Intent(this, SocialQRCodeActivity.class);
+                    intent.putExtra("type", "3");
+                    intent.putExtra("data", s);
+                    intent.putExtra("groupId", groupInfo.getGroupInfo().getId());
+                    startActivity(intent);
+                }, this::handleApiError);
     }
 
     public void airDrop(View view) {

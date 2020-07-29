@@ -30,7 +30,6 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.utils.MD5Utils;
-import com.zxjk.duoduo.utils.MMKVUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,7 +66,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
     private TextView tvMerchantAccount;
     private TextView tvSubBranchId;
 
-    private String defaultRenegeNumber;
     private String otherOrderId;
 
 
@@ -118,11 +116,12 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
         linkCoinOrdersOrderDetails(otherOrderId);
 
-        defaultRenegeNumber = MMKVUtils.getInstance().decodeString("DefaultRenegeNumber");
 
         findViewById(R.id.tv_cancel_the_order).setOnClickListener(v -> {
             Intent intent;
-            if ("SELL".equals(byBoinsResponse.getType()) && "PAYED".equals(byBoinsResponse.getOrderStatus()) || "BUY".equals(byBoinsResponse.getType()) && 1 == byBoinsResponse.getShowDispute() || "SELL".equals(byBoinsResponse.getType()) && "FINISHED".equals(byBoinsResponse.getOrderStatus()) && 1 == byBoinsResponse.getAutoPayCoin()) {
+            if ("SELL".equals(byBoinsResponse.getType()) && "PAYED".equals(byBoinsResponse.getOrderStatus())
+                    || "BUY".equals(byBoinsResponse.getType()) && 1 == byBoinsResponse.getShowDispute()
+                    || "SELL".equals(byBoinsResponse.getType()) && "FINISHED".equals(byBoinsResponse.getOrderStatus()) && 1 == byBoinsResponse.getAutoPayCoin()) {
                 intent = new Intent(this, TheAppealActivity.class);
                 intent.putExtra("ByBoinsResponse", byBoinsResponse);
                 startActivity(intent);
@@ -130,12 +129,11 @@ public class PurchaseDetailsActivity extends BaseActivity {
             }
         });
         tvTheOrderNumber.setOnClickListener(v -> {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            copy(byBoinsResponse.getOtherOrderId());
+        });
 
-            ClipData clip = ClipData.newPlainText("simple text", byBoinsResponse.getOtherOrderId());
-
-            clipboard.setPrimaryClip(clip);
-            ToastUtils.showShort(R.string.duplicated_to_clipboard);
+        findViewById(R.id.tv_copy_business_name).setOnClickListener(v -> {
+            copy(byBoinsResponse.getSellerNickName());
         });
     }
 
@@ -223,7 +221,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             tvPaymentStatus2.setText("已完成");
                         } else if ("FORCEFINISHED".equals(data.getOrderStatus())) {
                             if (1 == data.getAppealType()) {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉成功，已放币");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "申诉成功，已放币");
                                 tvPaymentStatus2.setText("已完成");
                             } else {
                                 setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "商家申诉失败，已放币");
@@ -267,7 +265,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                         tvVendorName.setText("买家昵称");
                         findViewById(R.id.ll_other_user_id).setVisibility(View.GONE);
                         tvPayment.setOnClickListener(v -> {
-                            if ("PAYED".equals(data.getOrderStatus())) {
+                            if ("PAYED".equals(data.getOrderStatus()) || "DISPUTE".equals(data.getOrderStatus())) {
                                 NiceDialog.init().setLayoutId(R.layout.dialog_remove_order)
                                         .setConvertListener(new ViewConvertListener() {
                                             @Override
@@ -289,6 +287,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             tvPaymentStatus2.setText("待付款");
                             tvVendorName.setText("收款姓名");
                             tvMerchantAccount.setText("收款人账号");
+                            findViewById(R.id.tv_copy_business_name).setVisibility(View.VISIBLE);
                             setDrawables(getResources().getDrawable(R.drawable.ic_waiting_coin, null), tvPaymentStatus, "请等待对方付款");
                             findViewById(R.id.ll2).setVisibility(View.VISIBLE);
                             tvPayment.setText("放行" + data.getCoinSymbol());
@@ -314,6 +313,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                     }, t -> {
                                     });
                         } else if ("PAYED".equals(data.getOrderStatus())) {//待放币状态
+                            findViewById(R.id.tv_copy_business_name).setVisibility(View.VISIBLE);
                             setDrawables(getResources().getDrawable(R.drawable.ic_waiting_coin, null), tvPaymentStatus, "请放币，买家已完成付款");
                             findViewById(R.id.tv1).setVisibility(View.VISIBLE);
                             findViewById(R.id.ll2).setVisibility(View.VISIBLE);
@@ -393,5 +393,15 @@ public class PurchaseDetailsActivity extends BaseActivity {
     protected void onRestart() {
         super.onRestart();
         linkCoinOrdersOrderDetails(otherOrderId);
+    }
+
+
+    private void copy(String text) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+        ClipData clip = ClipData.newPlainText("simple text", text);
+
+        clipboard.setPrimaryClip(clip);
+        ToastUtils.showShort(R.string.duplicated_to_clipboard);
     }
 }

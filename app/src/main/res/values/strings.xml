@@ -1122,8 +1122,8 @@
     <string name="buy_amount_prompt_sell" translatable="false">最大出售数量为%1$s%2$s</string>
     <string name="buy_coins_prompt2" translatable="false">输入金额不能小于最小限额</string>
     <string name="buy_amount_prompt2" translatable="false">最小购买数量为%1$s%2$s</string>
-    <string name="the_unit_price" translatable="false">单价约%1$s %2$s/%3$s</string>
-    <string name="limit" translatable="false">限额: %1$s~%2$s CNY</string>
+    <string name="the_unit_price" translatable="false">当前单价约为:%1$s %2$s/%3$s</string>
+    <string name="limit" translatable="false">单笔订单范围: %1$s~%2$s CNY</string>
     <string name="wechat_pay" translatable="false">微信支付</string>
     <string name="pay_treasure" translatable="false">支付宝</string>
     <string name="bank_card" translatable="false">银行卡</string>

@@ -100,6 +100,7 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
 
     @Override
     public void onScanQRCodeSuccess(String result) {
+        if (parseShareResult(result)) return;
         Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         rt.play();
 
@@ -126,7 +127,7 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
         } catch (Exception e) {
         }
 
-        if (parseShareResult(result)) return;
+
 
         if (!TextUtils.isEmpty(result) && result.contains("alipay") || result.contains("ALIPAY")) {
             Intent intent = new Intent(this, PayAliActivity.class);
@@ -213,9 +214,14 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
 
                 String decryptResult = AesUtil.getInstance().decrypt(shareStrings[1]);
 
+                String resultUri = "http://hilamg-share.zhumengxuanang.com/?"+decryptResult;
                 if (decryptResult.contains("groupId")) {
+
                     //groupQR
-                    String groupId = decryptResult.split("=")[1];
+//                    String groupId = decryptResult.split("=")[1];
+
+                    Uri uri = Uri.parse(resultUri);
+                    String groupId = uri.getQueryParameter("groupId");
 
                     Intent intent = new Intent(this, AgreeGroupChatActivity.class);
                     intent.putExtra("groupId", groupId);
@@ -224,7 +230,8 @@ public class QrCodeActivity extends BaseActivity implements QRCodeView.Delegate 
                     finish();
                 } else {
                     //userQR
-                    String userId = decryptResult.split("=")[1];
+                    Uri uri = Uri.parse(resultUri);
+                    String userId = uri.getQueryParameter("id");
                     CommonUtils.resolveFriendList(this, userId, true);
                 }
             } catch (Exception e) {
