@@ -101,7 +101,7 @@
         android:imeOptions="actionDone"
         android:visibility="gone"
         app:bottomLineColor="#D2D2D2"
-        app:focusedColor="#3296F8"
+        app:focusedColor="@color/colorTheme"
         app:maxCount="6"
         app:psdType="bottomLine" />
 
