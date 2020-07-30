@@ -62,7 +62,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
     private String alipay = "ALIPAY";
     private String bank = "EBANK";
     private String mobile = "MOBILE";
-    private String nickname = "NICKNAME";
+    private String username = "USERNAME";
     private String phonenumber = "PHONENUMBER";
 
     private String types;
@@ -165,7 +165,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             receiptTypeRealName.setHint("请填写持卡人姓名");
             receiptTypeRealCardName.setHint("请填写银行卡号");
             receiptTypePayment.setHint("请填写开户行");
-        } else if (nickname.equals(types)) {
+        } else if (username.equals(types)) {
             realName.setVisibility(View.GONE);
             accountIdCard.setVisibility(View.GONE);
             findViewById(R.id.ll1).setVisibility(View.VISIBLE);
@@ -178,6 +178,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             receiptTypePaymentName.setText("手机号码");
             receiptTypePayment.setHint("请填写手机号码");
         } else if (mobile.equals(types)) {
+            tv_title.setText("联系方式");
             realName.setVisibility(View.GONE);
             findViewById(R.id.ll1).setVisibility(View.VISIBLE);
             receiptTypePaymentName.setText("手机号码");
@@ -197,7 +198,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             }, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         } else if (types.equals(bank)) {
             accountIdCard.setOnClickListener(v -> {
-                dialog.show(getString(R.string.open_bank), getString(R.string.please_upload_selector_open_bank), "", 3);
+                dialog.show("请填写开户银行", "", "", 3);
             });
         } else if (phonenumber.equals(types) || mobile.equals(types)) {
             accountIdCard.setOnClickListener(v -> {
@@ -205,7 +206,7 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                 dialog.setOnStartActivity(() -> {
                     startActivityForResult(new Intent(this, CountrySelectActivity.class), 200);
                 });
-                dialog.show("请填写您的手机号码", "请填写手机号码", mobile, 3);
+                dialog.show("请填写手机号码", "", mobile, 3);
             });
         }
     }
@@ -217,28 +218,28 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.nick_name:
                 if (wechat.equals(types)) {
-                    dialog.show(getString(R.string.wechat_nick), getString(R.string.hint_nick), wechat, 1);
+                    dialog.show(getString(R.string.wechat_nick), "", wechat, 1);
                     return;
                 } else if (alipay.equals(types)) {
-                    dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay, 1);
+                    dialog.show(getString(R.string.alipay_number), "", alipay, 1);
                     return;
-                } else if (nickname.equals(types) || mobile.equals(types)) {
+                } else if (username.equals(types) || mobile.equals(types)) {
                     dialog.setVisibilitys(1);
-                    dialog.show("姓名", "请填写姓名", "", 1);
+                    dialog.show("请填写姓名", "", "", 1);
                     return;
                 } else {
-                    dialog.show("持卡人姓名", "请填写持卡人姓名", "", 1);
+                    dialog.show("请填写持卡人姓名", "", "", 1);
                     return;
                 }
             case R.id.real_name:
                 if (wechat.equals(types)) {
-                    dialog.show(getString(R.string.wechat_nick), getString(R.string.hint_nick), wechat, 2);
+                    dialog.show(getString(R.string.wechat_nick), "", wechat, 2);
                     return;
                 } else if (alipay.equals(types)) {
-                    dialog.show(getString(R.string.alipay_number), getString(R.string.hint_alipay), alipay, 2);
+                    dialog.show(getString(R.string.alipay_number), "", alipay, 2);
                     return;
                 } else {
-                    dialog.show(getString(R.string.bankcard), getString(R.string.input_bank_number), bank, 2);
+                    dialog.show("请填写银行卡号", "", bank, 2);
                     return;
                 }
             case R.id.commit_btn:
@@ -280,7 +281,14 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                     addPayInfoBean.setCardCode(receiptTypeRealCardName.getText().toString());
                     addPayInfoBean.setCardUserName(receiptTypeRealName.getText().toString());
                     addPayInfoBean.setCardAddress(receiptTypePayment.getText().toString());
-                } else {
+                } else if(phonenumber.equals(types)){
+                    addPayInfoBean.setMobile(receiptTypePayment.getText().toString());
+                    addPayInfoBean.setPayInfoType("MOBILE");
+                    addPayInfoBean.setCountryCode(dialog.getContrary());
+                }else if(username.equals(types)){
+                    addPayInfoBean.setPayInfoType("USERNAME");
+                    addPayInfoBean.setUserName(receiptTypeRealName.getText().toString());
+                }else {
                     if (TextUtils.isEmpty(receiptTypePayment.getText().toString())) {
                         ToastUtils.showShort("请填写手机号");
                         return;

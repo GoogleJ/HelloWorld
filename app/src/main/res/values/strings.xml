@@ -252,7 +252,7 @@
     <string name="online_customer_service">在线客服</string>
     <string name="change_pay_password">修改支付密码</string>
     <string name="find_pay_password">找回支付密码</string>
-    <string name="pay_setting">支付设置</string>
+    <string name="pay_setting">支付密码</string>
     <string name="qr_code">我的二维码</string>
     <string name="personal_details">个人信息</string>
     <string name="lqxx">聊天信息</string>
@@ -1285,7 +1285,7 @@
     <string name="open_bank">开户银行</string>
     <string name="please_upload_selector_open_bank">请输入开户银行</string>
     <string name="uploaded">已上传</string>
-    <string name="wechat_nick">填写微信昵称</string>
+    <string name="wechat_nick">填写微信账号</string>
     <string name="alipay_number">填写支付宝账号</string>
     <string name="bankcard">银行卡</string>
     <string name="pay_type_successful">该信息已完善</string>

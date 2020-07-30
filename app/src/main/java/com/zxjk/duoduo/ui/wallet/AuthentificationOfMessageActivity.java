@@ -68,7 +68,7 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
 
     private void initData() {
         if (Constant.currentUser.getIsAuthentication().equals("0")) {
-            tvRealNameAuthentication.setText("重新认证");
+            tvRealNameAuthentication.setText("已认证");
         }
         improvePaymentInformation();
     }
@@ -128,11 +128,11 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
                         }
                     });
                     findViewById(R.id.ll_nick_name).setOnClickListener(v -> {
-                        intent.putExtra("type", "MOBILE");
+                        intent.putExtra("type", "USERNAME");
                         startActivityForResult(intent, 1);
                     });
                     findViewById(R.id.ll_phone_number).setOnClickListener(v -> {
-                        intent.putExtra("type", "MOBILE");
+                        intent.putExtra("type", "PHONENUMBER");
                         startActivityForResult(intent, 1);
                     });
                 }, this::handleApiError);
@@ -142,7 +142,9 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
     public void realNameAuthentication(View view) {
         if (Constant.currentUser.getIsAuthentication().equals("2")) {
             ToastUtils.showShort(R.string.verifying_pleasewait);
-        }else {
+        } else if (Constant.currentUser.getIsAuthentication().equals("0")) {
+            ToastUtils.showShort("已认证");
+        } else {
             Api api = ServiceFactory.getInstance().getBaseService(Api.class);
             api.getAuthToken()
                     .compose(bindUntilEvent(ActivityEvent.DESTROY))

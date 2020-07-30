@@ -36,6 +36,7 @@ import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
 import com.shehuan.nicedialog.ViewHolder;
+import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.request.QuickOrderRequest;
 import com.zxjk.duoduo.bean.response.GetOTCPayInfoResponse;
@@ -46,15 +47,11 @@ import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.base.BaseFragment;
 import com.zxjk.duoduo.ui.widget.NewPayBoard;
 import com.zxjk.duoduo.ui.widget.dialog.BuyCoinDialog;
-import com.zxjk.duoduo.utils.DataUtils;
 import com.zxjk.duoduo.utils.MD5Utils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 import razerdp.basepopup.QuickPopupBuilder;
@@ -165,20 +162,20 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                     @Override
                     protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
                         holder.setOnClickListener(R.id.ll1, v -> {
-                            showDialog();
+                            tryShowDialog();
                             dialog.dismiss();
                         });
                         holder.setOnClickListener(R.id.ll2, v -> {
                             Intent intent = new Intent(getActivity(), GuidelinesWebActivity.class);
-                            intent.putExtra("url", "http://192.168.1.247/hilamg_tradeGuide/how_buy.html");
+                            intent.putExtra("url", "http://hilamg-otc-rule.zhumengxuanang.com/how_buy.html");
                             startActivity(intent);
-                            showDialog();
+                            tryShowDialog();
                             dialog.dismiss();
                         });
                     }
                 }).setDimAmount(0.5f).setOutCancel(false).show(getChildFragmentManager());
             } else {
-                showDialog();
+                tryShowDialog();
             }
 //            tvAll.setVisibility(View.GONE);
         } else {
@@ -373,7 +370,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
 
         tvNoviceGuide.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), GuidelinesWebActivity.class);
-            intent.putExtra("url", "http://192.168.1.247/hilamg_tradeGuide/how_buy.html");
+            intent.putExtra("url", "http://hilamg-otc-rule.zhumengxuanang.com/how_buy.html");
             startActivity(intent);
         });
 
@@ -625,6 +622,14 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         intent.putExtra("isAuthentification", "1");
                         intent.putExtra("data", GsonUtils.toJson(quickOrderRequest));
                         startActivity(intent);
+                    } else if (3 == data.getBizCode()) {
+                        Constant.currentUser.setIsAuthentication("1");
+                        buyCoinDialog = new BuyCoinDialog(getActivity(),
+                                "实名认证提示",
+                                "您的实名认证信息已过期，应金融风控需求请重新完成认证。",
+                                "去认证",
+                                false).start(new Intent(getActivity(), AuthentificationOfMessageActivity.class));
+                        buyCoinDialog.show();
                     } else {
                         Intent intent;
                         if ("BUY".equals(buyType)) {
@@ -639,35 +644,15 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 }, this::handleApiError);
     }
 
-    private void showDialog() {
+    private void tryShowDialog() {
         buyCoinDialog = new BuyCoinDialog(getActivity(),
                 "交易须知",
                 "此应用可以快捷买卖数字货币，但是伪造身份认证信息，以及为他人代买、提币，协助他人犯罪，您将会被司法追责。" + "\n\n鉴于洗钱活动将严重危害数字资产交易的发展，损害用户的正当权益，根据《中华人民共和国反洗钱法》，本产品为全面履行反洗钱和反恐融资法律的相关规定，如遇涉黑或犯罪资金，将拒绝放币，并报由公安机关处理。",
                 "我知道了",
                 true).setKey("TRADINGNOTES");
         //判断提示框是否显示
-        if (!MMKVUtils.getInstance().decodeBool("TRADINGNOTES")) {
+        if (System.currentTimeMillis() - MMKVUtils.getInstance().decodeLong("TRADINGNOTES") >= 30L*24*3600*1000) {
             buyCoinDialog.show();
-        } else {
-            long time = MMKVUtils.getInstance().decodeLong("TRADINGNOTES");
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                Date d1 = df.parse(DataUtils.timeStamp2Date(DataUtils.getCurTimeLong(), "yyyy-MM-dd HH:mm:ss"));
-                Date d2 = df.parse(DataUtils.timeStamp2Date(time, "yyyy-MM-dd HH:mm:ss"));
-                long diff = d1.getTime() - d2.getTime();
-                long days = diff / (1000 * 60 * 60 * 24);
-                long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
-                long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
-                if (minutes > 1) {
-                    MMKVUtils.getInstance().remove("TRADINGNOTES");
-                    buyCoinDialog.show();
-                }
-            } catch (Exception e) {
-
-            }
         }
-
     }
-
-
 }

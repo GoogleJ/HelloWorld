@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -180,7 +179,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             findViewById(R.id.ll2).setVisibility(View.VISIBLE);
 
                             long l1 = (Long.parseLong(data.getNow()) - Long.parseLong(data.getPayMoneyTime())) / 1000;
-                            long total = ((Integer.valueOf(data.getDisputeMinute())*60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute())*60 - l1));
+                            long total = ((Integer.valueOf(data.getDisputeMinute()) * 60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute()) * 60 - l1));
                             Observable.interval(0, 1, TimeUnit.SECONDS)
                                     .take(total)
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -197,10 +196,11 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                     });
                         } else if ("DISPUTE".equals(data.getOrderStatus())) {
                             if (1 == data.getAppealType()) {
-                                tvPaymentStatus2.setText(getString(R.string.in_the_complaint));
+                                setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "申诉中");
                             } else {
-                                tvPaymentStatus2.setText("商家申诉中");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint , null), tvPaymentStatus, "商家申诉中");
                             }
+                            tvPaymentStatus2.setText(getString(R.string.in_the_complaint));
                             findViewById(R.id.ll_payment).setVisibility(View.GONE);
                             setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "申诉中");
                             llAppealRemark.setVisibility(View.VISIBLE);
@@ -215,23 +215,21 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, "手动取消订单");
                             tvPaymentStatus2.setText("已取消");
                         } else if ("FINISHED".equals(data.getOrderStatus())) {
-                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "已放币");
+                            setDrawables(getResources().getDrawable(R.drawable.ic_finish_coin, null), tvPaymentStatus, "已放币");
                             tvPaymentStatus2.setText("已完成");
                         } else if ("FORCEFINISHED".equals(data.getOrderStatus())) {
                             if (1 == data.getAppealType()) {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "申诉成功，已放币");
-                                tvPaymentStatus2.setText("已完成");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_successfully_complained, null), tvPaymentStatus, "申诉成功，已放币");
                             } else {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "商家申诉失败，已放币");
-                                tvPaymentStatus2.setText("已完成");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complaint_failed, null), tvPaymentStatus, "商家申诉失败，已放币");
                             }
+                            tvPaymentStatus2.setText("已完成");
                         } else if ("FORCECANCEL".equals(data.getOrderStatus())) {
+                            tvPaymentStatus2.setText("已取消");
                             if (1 == data.getAppealType()) {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉失败，取消订单");
-                                tvPaymentStatus2.setText("已取消");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complaint_failed, null), tvPaymentStatus, "申诉失败，取消订单");
                             } else {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "商家申诉成功，订单取消");
-                                tvPaymentStatus2.setText("已取消");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_successfully_complained, null), tvPaymentStatus, "商家申诉成功，订单取消");
                             }
                         }
 
@@ -286,7 +284,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             tvVendorName.setText("收款姓名");
                             tvMerchantAccount.setText("收款人账号");
                             findViewById(R.id.tv_copy_business_name).setVisibility(View.VISIBLE);
-                            setDrawables(getResources().getDrawable(R.drawable.ic_waiting_coin, null), tvPaymentStatus, "请等待对方付款");
+                            setDrawables(getResources().getDrawable(R.drawable.for_the_payment, null), tvPaymentStatus, "请等待对方付款");
                             findViewById(R.id.ll2).setVisibility(View.VISIBLE);
                             tvPayment.setText("放行" + data.getCoinSymbol());
                             tvPayment.setTextColor(Color.parseColor("#909399"));
@@ -295,7 +293,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             tvCancelTheOrder.setVisibility(View.VISIBLE);
                             tvCancelTheOrder.setTextColor(Color.parseColor("#909399"));
                             long l1 = (Long.parseLong(data.getNow()) - Long.parseLong(data.getCreateTime())) / 1000;
-                            long total = ((Integer.valueOf(data.getDisputeMinute())*60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute())*60 - l1));
+                            long total = ((Integer.valueOf(data.getDisputeMinute()) * 60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute()) * 60 - l1));
                             Observable.interval(0, 1, TimeUnit.SECONDS)
                                     .take(total)
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -327,21 +325,29 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             llAppealRemark.setVisibility(View.VISIBLE);
                             tvAppealRemark.setText(data.getAppealRemark());
                             tvPaymentStatus2.setText(getString(R.string.in_the_complaint));
-                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉中");
+                            if (1 == data.getAppealType()) {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "申诉中");
+                            } else {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "商家申诉中");
+                            }
                             tvPayment.setText("放行" + data.getCoinSymbol());
                             tvPayment.setTextColor(Color.parseColor("#FFFFFF"));
                             findViewById(R.id.ll_payment).setBackground(getResources().getDrawable(R.drawable.shape_4182f9_5, null));
                         } else if ("TIMEOUT".equals(data.getOrderStatus())) {
-                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "超时自动取消订单");
+                            setDrawables(getResources().getDrawable(R.drawable.ic_finish_coin, null), tvPaymentStatus, "超时自动取消订单");
                             tvPaymentStatus2.setText("已取消");
                         } else if ("FORCEFINISHED".equals(data.getOrderStatus())) {
-                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉失败系统自动放币");
+                            if (1 == data.getAppealType()) {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complaint_failed, null), tvPaymentStatus, "申诉失败系统自动放币");
+                            } else {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_successfully_complained, null), tvPaymentStatus, "商家申诉成功，自动放币");
+                            }
                             tvPaymentStatus2.setText("已完成");
                             llAppealRemark.setVisibility(View.VISIBLE);
                             tvAppealRemark.setText(data.getAppealRemark());
                         } else if ("FINISHED".equals(data.getOrderStatus())) {
                             if (1 == data.getAutoPayCoin()) {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "超时自动放币");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_finish_coin, null), tvPaymentStatus, "超时自动放币");
                                 tvPaymentStatus2.setText("已完成");
                                 findViewById(R.id.ll2).setVisibility(View.VISIBLE);
                                 tvCancelTheOrder.setBackground(getResources().getDrawable(R.drawable.shape_4182f9_5, null));
@@ -349,16 +355,18 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                 tvCancelTheOrder.setTextColor(Color.parseColor("#FFFFFF"));
                                 findViewById(R.id.ll_payment).setVisibility(View.GONE);
                             } else {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "已放币");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_finish_coin, null), tvPaymentStatus, "已放币");
                                 tvPaymentStatus2.setText("已完成");
                             }
                         } else if ("FORCECANCEL".equals(data.getOrderStatus())) {
                             if (1 == data.getAppealType()) {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉成功订单取消");
-                                tvPaymentStatus2.setText("已取消");
-                                llAppealRemark.setVisibility(View.VISIBLE);
-                                tvAppealRemark.setText(data.getAppealRemark());
+                                setDrawables(getResources().getDrawable(R.drawable.ic_successfully_complained, null), tvPaymentStatus, "申诉成功订单取消");
+                            } else {
+                                setDrawables(getResources().getDrawable(R.drawable.ic_complaint_failed, null), tvPaymentStatus, "商家申诉失败，订单取消");
                             }
+                            tvPaymentStatus2.setText("已取消");
+                            llAppealRemark.setVisibility(View.VISIBLE);
+                            tvAppealRemark.setText(data.getAppealRemark());
                         }
                     }
                 }, this::handleApiError);

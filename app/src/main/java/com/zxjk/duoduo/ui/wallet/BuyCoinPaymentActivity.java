@@ -45,11 +45,9 @@ import com.zxjk.duoduo.ui.widget.dialog.BuyCoinDialog;
 import com.zxjk.duoduo.utils.AliPayUtils;
 import com.zxjk.duoduo.utils.ClickUtils;
 import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.DataUtils;
 import com.zxjk.duoduo.utils.GlideUtil;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -137,26 +135,9 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
         startAnimation();
         linkCoinOrdersOrderDetails(otherOrderId);
 
-        if("0".equals(getIntent().getStringExtra("befrom"))){
-            if (!MMKVUtils.getInstance().decodeBool("ANNOUNCEMENTS")) {
-                showDialog();
-            } else {
-                long time = MMKVUtils.getInstance().decodeLong("ANNOUNCEMENTS");
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                try {
-                    Date d1 = df.parse(DataUtils.timeStamp2Date(DataUtils.getCurTimeLong(), "yyyy-MM-dd HH:mm:ss"));
-                    Date d2 = df.parse(DataUtils.timeStamp2Date(time, "yyyy-MM-dd HH:mm:ss"));
-                    long diff = d1.getTime() - d2.getTime();
-                    long days = diff / (1000 * 60 * 60 * 24);
-                    long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
-                    long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
-                    if (minutes > 1) {
-                        MMKVUtils.getInstance().remove("ANNOUNCEMENTS");
-                        showDialog();
-                    }
-                } catch (Exception e) {
-
-                }
+        if ("0".equals(getIntent().getStringExtra("befrom"))) {
+            if (System.currentTimeMillis() - MMKVUtils.getInstance().decodeLong("ANNOUNCEMENTS") >= 30 * 24 * 60 * 60 * 1000) {
+                tryShowDialog();
             }
         }
 
@@ -171,6 +152,7 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
                                             @Override
                                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
                                                 emitter.tryOnError(new RuntimeException());
+                                                ToastUtils.showShort("网络异常,请稍后再试");
                                                 return false;
                                             }
 
@@ -186,9 +168,7 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
                         .compose(bindUntilEvent(ActivityEvent.DESTROY))
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
                         .timeout(3, TimeUnit.SECONDS)
-                        .subscribe(s -> {
-                            AliPayUtils.startAlipayClient(this, s);
-                        }, t -> {
+                        .subscribe(s -> AliPayUtils.startAlipayClient(this, s), t -> {
                             initData();
                         });
                 return;
@@ -264,7 +244,7 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
                     tvTotal.setText("¥ " + data.getTotal());
                     long l1 = (Long.parseLong(data.getNow()) - Long.parseLong(data.getCreateTime())) / 1000;
 
-                    long total = ((Integer.valueOf(data.getDisputeMinute())*60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute())*60 - l1));
+                    long total = ((Integer.valueOf(data.getDisputeMinute()) * 60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute()) * 60 - l1));
                     Observable.interval(0, 1, TimeUnit.SECONDS)
                             .take(total)
                             .observeOn(AndroidSchedulers.mainThread())
@@ -418,7 +398,7 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
         }).setDimAmount(0.5f).setOutCancel(false).show(getSupportFragmentManager());
     }
 
-    private void showDialog() {
+    private void tryShowDialog() {
         buyCoinDialog = new BuyCoinDialog(this,
                 "注意事项",
                 "1.类似海浪、比特币、以太坊、BTC、USDT等数字货币相关信息；\n2.确保付款卡所属人与平台实名信息一致，若不一致卖家有权不放币；\n3.未付款前请勿标记已完成付款，恶意操作系统将会冻结你的账户。\nHilamg客服ID：3937354",

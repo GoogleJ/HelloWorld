@@ -45,6 +45,8 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
     String alipay = "ALIPAY";
     String bank = "EBANK";
     String mobile = "MOBILE";
+    String username = "USERNAME";
+    String phonenumber = "PHONENUMBER";
     private View view;
     private int s;
 
@@ -71,7 +73,7 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
             //银行卡号
             editInformation.setHint(hint);
             editInformation.setInputType(InputType.TYPE_CLASS_NUMBER);
-        } else if (mobile.equals(type)) {
+        } else if (mobile.equals(type) || phonenumber.equals(type)) {
             editInformation.setHint(hint);
             editInformation.setInputType(InputType.TYPE_CLASS_NUMBER);
         } else {
