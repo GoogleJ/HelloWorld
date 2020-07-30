@@ -62,5 +62,7 @@
     <color name="c909399">#909399</color>
 
     <color name="new_textcolor1">#272E3F</color>
+    <color name="text_msg_link_send">#7AD3FF</color>
+    <color name="text_msg_link_receive">#0083BF</color>
 
 </resources>
