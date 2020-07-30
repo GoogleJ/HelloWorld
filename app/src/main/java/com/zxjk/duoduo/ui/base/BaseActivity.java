@@ -90,6 +90,9 @@ public class BaseActivity extends RxAppCompatActivity {
 
                         @Override
                         public void onError(RongIMClient.ErrorCode errorCode) {
+                            if (errorCode.getValue() == 31006) {
+                                return;
+                            }
                             MobclickAgent.reportError(Utils.getApp(), new Exception("login expired!Msg:" + errorCode.getMessage()) + "code:" + errorCode.getValue());
                             Constant.clear();
                             ToastUtils.showShort(getString(R.string.login_again));

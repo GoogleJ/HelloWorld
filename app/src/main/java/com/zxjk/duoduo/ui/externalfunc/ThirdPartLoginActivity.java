@@ -39,8 +39,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 
 public class ThirdPartLoginActivity extends BaseActivity {
     public static final String ACTION_THIRDPARTLOGINACCESS = "ThirdPartLoginAccess";
@@ -244,84 +242,56 @@ public class ThirdPartLoginActivity extends BaseActivity {
                     Constant.userId = l.getId();
                     Constant.currentUser = l;
                     Constant.authentication = l.getIsAuthentication();
-                    connect();
+                    MMKVUtils.getInstance().enCode("login", Constant.currentUser);
+                    MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
+                    MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
+
+                    if ("0".equals(Constant.currentUser.getIsFirstLogin())) {
+                        Intent intent = new Intent(ThirdPartLoginActivity.this, SetUpPaymentPwdActivity.class);
+                        intent.putExtra("firstLogin", true);
+                        intent.putExtra("action", action);
+                        switch (action) {
+                            case ACTION_THIRDPARTLOGINACCESS:
+                                if (TextUtils.isEmpty(getIntent().getStringExtra("appId"))) {
+                                    ToastUtils.showShort(R.string.wrong_param_data);
+                                    finish();
+                                    return;
+                                }
+                                intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
+                                intent.putExtra("appId", getIntent().getStringExtra("appId"));
+                                break;
+                            case ACTION_PAY:
+                                ToastUtils.showShort(R.string.havent_register_goto_hilamg);
+                                finish();
+                                return;
+                        }
+                        startActivity(intent);
+                    } else {
+                        switch (action) {
+                            case ACTION_THIRDPARTLOGINACCESS:
+                                if (TextUtils.isEmpty(getIntent().getStringExtra("appId"))) {
+                                    ToastUtils.showShort(R.string.wrong_param_data);
+                                    finish();
+                                    return;
+                                }
+                                Intent intent = new Intent(ThirdPartLoginActivity.this, LoginAuthorizationActivity.class);
+                                intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
+                                intent.putExtra("appId", getIntent().getStringExtra("appId"));
+                                startActivity(intent);
+                                break;
+                            case ACTION_LOGINAUTHORIZATIONSWICH:
+                                startActivity(new Intent(ThirdPartLoginActivity.this, HomeActivity.class));
+                                break;
+                            case ACTION_PAY:
+                                intent = new Intent(ThirdPartLoginActivity.this, PayConfirmActivity.class);
+                                intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
+                                startActivity(intent);
+                                break;
+                        }
+                    }
+
+                    finish();
                 }, this::handleApiError);
-    }
-
-    @SuppressLint("CheckResult")
-    private void connect() {
-        Observable.timer(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(c -> CommonUtils.initDialog(this).show());
-
-        RongIM.connect(Constant.currentUser.getRongToken(), new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-                CommonUtils.destoryDialog();
-                ToastUtils.showShort(R.string.connect_failed);
-            }
-
-            @Override
-            public void onSuccess(String userid) {
-                CommonUtils.destoryDialog();
-
-                MMKVUtils.getInstance().enCode("login", Constant.currentUser);
-                MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
-                MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
-
-                if (Constant.currentUser.getIsFirstLogin().equals("0")) {
-                    Intent intent = new Intent(ThirdPartLoginActivity.this, SetUpPaymentPwdActivity.class);
-                    intent.putExtra("firstLogin", true);
-                    intent.putExtra("action", action);
-                    switch (action) {
-                        case ACTION_THIRDPARTLOGINACCESS:
-                            if (TextUtils.isEmpty(getIntent().getStringExtra("appId"))) {
-                                ToastUtils.showShort(R.string.wrong_param_data);
-                                finish();
-                                return;
-                            }
-                            intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
-                            intent.putExtra("appId", getIntent().getStringExtra("appId"));
-                            break;
-                        case ACTION_PAY:
-                            ToastUtils.showShort(R.string.havent_register_goto_hilamg);
-                            finish();
-                            return;
-                    }
-                    startActivity(intent);
-                } else {
-                    switch (action) {
-                        case ACTION_THIRDPARTLOGINACCESS:
-                            if (TextUtils.isEmpty(getIntent().getStringExtra("appId"))) {
-                                ToastUtils.showShort(R.string.wrong_param_data);
-                                finish();
-                                return;
-                            }
-                            Intent intent = new Intent(ThirdPartLoginActivity.this, LoginAuthorizationActivity.class);
-                            intent.putExtra("action", ACTION_THIRDPARTLOGINACCESS);
-                            intent.putExtra("appId", getIntent().getStringExtra("appId"));
-                            startActivity(intent);
-                            break;
-                        case ACTION_LOGINAUTHORIZATIONSWICH:
-                            startActivity(new Intent(ThirdPartLoginActivity.this, HomeActivity.class));
-                            break;
-                        case ACTION_PAY:
-                            intent = new Intent(ThirdPartLoginActivity.this, PayConfirmActivity.class);
-                            intent.putExtra("orderId", getIntent().getStringExtra("orderId"));
-                            startActivity(intent);
-                            break;
-                    }
-                }
-
-                finish();
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                CommonUtils.destoryDialog();
-                ToastUtils.showShort(R.string.connect_failed);
-            }
-        });
     }
 
     @Override

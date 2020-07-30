@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 
 public class WelcomeActivity extends BaseActivity {
 
@@ -53,7 +51,7 @@ public class WelcomeActivity extends BaseActivity {
                             finish();
                         }
                     });
-            skipDisposable = Observable.timer(3000, TimeUnit.MILLISECONDS)
+            skipDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(aLong -> {
@@ -93,39 +91,20 @@ public class WelcomeActivity extends BaseActivity {
         checkUserState();
     }
 
+    @SuppressLint("CheckResult")
     private void goLoginByServer() {
         LoginResponse login = MMKVUtils.getInstance().decodeParcelable("login");
         Constant.currentUser = login;
         Constant.token = login.getToken();
         Constant.userId = login.getId();
 
-        RongIM.connect(login.getRongToken(), new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-                Constant.clear();
-                ToastUtils.showShort(getString(R.string.login_again));
-                Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onSuccess(String userid) {
-                startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
-                finish();
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                Constant.clear();
-                ToastUtils.showShort(getString(R.string.login_again));
-                Intent intent = new Intent(WelcomeActivity.this, NewLoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
-        });
+        Observable.timer(50, TimeUnit.MILLISECONDS)
+                .compose(bindToLifecycle())
+                .compose(RxSchedulers.ioObserver())
+                .subscribe(l -> {
+                    startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                    finish();
+                });
     }
 
     @Override

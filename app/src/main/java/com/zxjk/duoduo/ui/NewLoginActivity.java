@@ -51,14 +51,8 @@ import com.zxjk.duoduo.utils.AesUtil;
 import com.zxjk.duoduo.utils.CommonUtils;
 import com.zxjk.duoduo.utils.MMKVUtils;
 
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 
 import static androidx.transition.TransitionSet.ORDERING_SEQUENTIAL;
 
@@ -314,7 +308,34 @@ public class NewLoginActivity extends BaseActivity {
                     Constant.userId = l.getId();
                     Constant.currentUser = l;
                     Constant.authentication = l.getIsAuthentication();
-                    connect();
+
+                    MMKVUtils.getInstance().enCode("login", Constant.currentUser);
+                    MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
+                    MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
+
+                    if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
+                        //first open app,enter AppFirstLoginActivity
+                        MMKVUtils.getInstance().enCode("appFirstLogin", true);
+                        Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
+                        ActivityOptionsCompat aoc = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this,
+                                ivIcon, "appicon");
+                        intent.putExtra("resultUri", resultUri);
+                        intent.putExtra("setupPayPass", "0".equals(Constant.currentUser.getIsFirstLogin()));
+                        startActivity(intent, aoc.toBundle());
+                    } else {
+                        Intent intent;
+                        if ("0".equals(Constant.currentUser.getIsFirstLogin())) {
+                            //user first register app
+                            intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
+                            intent.putExtra("firstLogin", true);
+                        } else {
+                            //old user login
+                            intent = new Intent(NewLoginActivity.this, HomeActivity.class);
+                        }
+                        intent.putExtra("resultUri", resultUri);
+                        startActivity(intent);
+                        finish();
+                    }
                 }, this::handleApiError);
     }
 
@@ -378,60 +399,6 @@ public class NewLoginActivity extends BaseActivity {
         tvContrary = findViewById(R.id.tvContrary);
         etPhone = findViewById(R.id.etPhone);
         btnConfirm = findViewById(R.id.btnConfirm);
-    }
-
-    @SuppressLint("CheckResult")
-    private void connect() {
-        Observable.timer(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(c -> CommonUtils.initDialog(this).show());
-
-        RongIM.connect(Constant.currentUser.getRongToken(), new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-                CommonUtils.destoryDialog();
-            }
-
-            @Override
-            public void onSuccess(String userid) {
-                CommonUtils.destoryDialog();
-
-                MMKVUtils.getInstance().enCode("login", Constant.currentUser);
-                MMKVUtils.getInstance().enCode("token", Constant.currentUser.getToken());
-                MMKVUtils.getInstance().enCode("userId", Constant.currentUser.getId());
-
-                if (!MMKVUtils.getInstance().decodeBool("appFirstLogin")) {
-                    //first open app,enter AppFirstLoginActivity
-                    MMKVUtils.getInstance().enCode("appFirstLogin", true);
-                    Intent intent = new Intent(NewLoginActivity.this, AppFirstLogin.class);
-                    ActivityOptionsCompat aoc = ActivityOptionsCompat.makeSceneTransitionAnimation(NewLoginActivity.this,
-                            ivIcon, "appicon");
-                    intent.putExtra("resultUri", resultUri);
-                    intent.putExtra("setupPayPass", Constant.currentUser.getIsFirstLogin().equals("0"));
-                    startActivity(intent, aoc.toBundle());
-                } else {
-                    Intent intent;
-                    if (Constant.currentUser.getIsFirstLogin().equals("0")) {
-                        //user first register app
-                        intent = new Intent(NewLoginActivity.this, SetUpPaymentPwdActivity.class);
-                        intent.putExtra("firstLogin", true);
-                    } else {
-                        //old user login
-                        intent = new Intent(NewLoginActivity.this, HomeActivity.class);
-                    }
-
-                    intent.putExtra("resultUri", resultUri);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                ToastUtils.showShort(R.string.connect_failed);
-                CommonUtils.destoryDialog();
-            }
-        });
     }
 
     @Override

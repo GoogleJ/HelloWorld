@@ -52,6 +52,7 @@ public class SetUpPaymentPwdActivity extends BaseActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        setEnableCheckConstant(false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_payment_pwd);
         ButterKnife.bind(this);

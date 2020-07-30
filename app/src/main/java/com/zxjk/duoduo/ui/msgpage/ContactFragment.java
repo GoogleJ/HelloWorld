@@ -56,8 +56,18 @@ public class ContactFragment extends BaseLazyFragment {
         topmask.setLayoutParams(layoutParams);
         dotNewFriend = rootView.findViewById(R.id.dotNewFriend);
 
-
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        long newFriendCount = MMKVUtils.getInstance().decodeLong("newFriendCount");
+        if (newFriendCount == 0) {
+            dotNewFriend.setVisibility(View.INVISIBLE);
+        } else {
+            dotNewFriend.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -76,13 +86,6 @@ public class ContactFragment extends BaseLazyFragment {
             dotNewFriend.setVisibility(View.INVISIBLE);
             startActivity(new Intent(getContext(), NewFriendActivity.class));
         });
-
-        long newFriendCount = MMKVUtils.getInstance().decodeLong("newFriendCount");
-        if (newFriendCount == 0) {
-            dotNewFriend.setVisibility(View.INVISIBLE);
-        } else {
-            dotNewFriend.setVisibility(View.VISIBLE);
-        }
 
         TextView tvContactHilamgId = rootView.findViewById(R.id.tvContactHilamgId);
         tvContactHilamgId.setText(getString(R.string.my_hilamg_code, Constant.currentUser.getDuoduoId()));

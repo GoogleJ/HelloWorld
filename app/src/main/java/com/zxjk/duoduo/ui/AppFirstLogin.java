@@ -52,6 +52,7 @@ public class AppFirstLogin extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setEnableCheckConstant(false);
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         BarUtils.setStatusBarVisibility(this, false);

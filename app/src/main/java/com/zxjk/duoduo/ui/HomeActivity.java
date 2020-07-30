@@ -56,12 +56,10 @@ import com.zxjk.duoduo.bean.BurnAfterReadMessageLocalBeanDao;
 import com.zxjk.duoduo.bean.ConversationInfo;
 import com.zxjk.duoduo.bean.DaoMaster;
 import com.zxjk.duoduo.bean.DataTemp628;
-import com.zxjk.duoduo.bean.RedFallActivityLocalBeanDao;
 import com.zxjk.duoduo.bean.response.AllGroupMembersResponse;
 import com.zxjk.duoduo.bean.response.GetAppVersionResponse;
 import com.zxjk.duoduo.db.BurnAfterReadMessageLocalBean;
 import com.zxjk.duoduo.db.OpenHelper;
-import com.zxjk.duoduo.db.RedFallActivityLocalBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
@@ -113,7 +111,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     private MsgFragment msgFragment;
     private ContactFragment contactFragment;
     private WalletFragment findFragment;
-    private RedFallActivityLocalBeanDao redFallActivityLocalBeanDao;
 
     private ViewPager pager;
     private DrawerView drawer;
@@ -164,6 +161,10 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
         setContentView(R.layout.activity_home);
 
+        initView();
+
+        initFragment();
+
         registerRongMsgReceiver();
 
         getRuntimePermission();
@@ -174,10 +175,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
             getVersion(false);
         }
 
-        initView();
-
-        initFragment();
-
         getNewFriendCount();
 
         initMessageLongClickAction();
@@ -185,8 +182,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
         initGreenDaoSession();
 
         initRongUserProvider();
-
-//        initRedfallData();
 
         initRongMention();
 
@@ -229,38 +224,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                             callBack.onGetGroupMembersResult(result);
                         }, t -> ToastUtils.showShort(R.string.function_fail))
         );
-    }
-
-    @SuppressLint("CheckResult")
-    private void initRedfallData() {
-        redFallActivityLocalBeanDao.deleteAll();
-
-        ServiceFactory.getInstance().getBaseService(Api.class)
-                .airdropInfo()
-                .compose(bindToLifecycle())
-                .compose(RxSchedulers.ioObserver())
-                .compose(RxSchedulers.normalTrans())
-                .subscribe(r -> {
-                    if (r.getReceive().equals("1")) {
-                        RedFallActivityLocalBean redFallActivityLocalBean = new RedFallActivityLocalBean();
-                        redFallActivityLocalBean.setLastPlayTime("0");
-                        redFallActivityLocalBean.setOpenShare(r.getOpenShare());
-                        redFallActivityLocalBean.setReceiveCount(r.getReceiveCount());
-                        redFallActivityLocalBean.setShareCount(r.getShareCount());
-                        redFallActivityLocalBean.setReward(r.getReward());
-                        redFallActivityLocalBean.setSymbol(r.getSymbol());
-                        redFallActivityLocalBeanDao.insert(redFallActivityLocalBean);
-                    } else if (!TextUtils.isEmpty(r.getLastTime())) {
-                        RedFallActivityLocalBean redFallActivityLocalBean = new RedFallActivityLocalBean();
-                        redFallActivityLocalBean.setLastPlayTime(r.getLastTime());
-                        redFallActivityLocalBean.setOpenShare(r.getOpenShare());
-                        redFallActivityLocalBean.setReceiveCount(r.getReceiveCount());
-                        redFallActivityLocalBean.setShareCount(r.getShareCount());
-                        redFallActivityLocalBean.setReward(r.getReward());
-                        redFallActivityLocalBean.setSymbol(r.getSymbol());
-                        redFallActivityLocalBeanDao.insert(redFallActivityLocalBean);
-                    }
-                }, this::handleApiError);
     }
 
     @SuppressLint("CheckResult")
@@ -308,6 +271,7 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
     @SuppressLint("CheckResult")
     private void registerRongMsgReceiver() {
         RongIM.setOnReceiveMessageListener((message, i) -> {
+
             Intent intent = new Intent(Constant.ACTION_BROADCAST2);
             intent.putExtra("msg", message);
             intent.putExtra("count", i);
@@ -324,7 +288,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                     case "deleteFriend":
                         RongIM.getInstance().clearMessages(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
                         RongIM.getInstance().removeConversation(Conversation.ConversationType.PRIVATE, message.getSenderUserId(), null);
-                        contactFragment.onResume();
                         break;
                     case "addFriend":
                         runOnUiThread(() -> {
@@ -347,7 +310,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                         });
                         break;
                     case "agreeFriend":
-                        contactFragment.onResume();
                         break;
                     case "ForceClearAllLocalHistory":
                         String groupId2BeClear = commandMessage.getData();
@@ -422,7 +384,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
                 OpenHelper(Utils.getApp(), Constant.currentUser.getId(), null);
         Application.daoSession = new DaoMaster(open.getWritableDatabase()).newSession();
         dao = Application.daoSession.getBurnAfterReadMessageLocalBeanDao();
-        redFallActivityLocalBeanDao = Application.daoSession.getRedFallActivityLocalBeanDao();
     }
 
     private void initMessageLongClickAction() {
