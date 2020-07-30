@@ -137,24 +137,26 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
         startAnimation();
         linkCoinOrdersOrderDetails(otherOrderId);
 
-        if (!MMKVUtils.getInstance().decodeBool("ANNOUNCEMENTS")) {
-            showDialog();
-        } else {
-            long time = MMKVUtils.getInstance().decodeLong("ANNOUNCEMENTS");
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                Date d1 = df.parse(DataUtils.timeStamp2Date(DataUtils.getCurTimeLong(), "yyyy-MM-dd HH:mm:ss"));
-                Date d2 = df.parse(DataUtils.timeStamp2Date(time, "yyyy-MM-dd HH:mm:ss"));
-                long diff = d1.getTime() - d2.getTime();
-                long days = diff / (1000 * 60 * 60 * 24);
-                long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
-                long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
-                if (minutes > 1) {
-                    MMKVUtils.getInstance().remove("ANNOUNCEMENTS");
-                    showDialog();
-                }
-            } catch (Exception e) {
+        if("0".equals(getIntent().getStringExtra("befrom"))){
+            if (!MMKVUtils.getInstance().decodeBool("ANNOUNCEMENTS")) {
+                showDialog();
+            } else {
+                long time = MMKVUtils.getInstance().decodeLong("ANNOUNCEMENTS");
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date d1 = df.parse(DataUtils.timeStamp2Date(DataUtils.getCurTimeLong(), "yyyy-MM-dd HH:mm:ss"));
+                    Date d2 = df.parse(DataUtils.timeStamp2Date(time, "yyyy-MM-dd HH:mm:ss"));
+                    long diff = d1.getTime() - d2.getTime();
+                    long days = diff / (1000 * 60 * 60 * 24);
+                    long hours = (diff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+                    long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+                    if (minutes > 1) {
+                        MMKVUtils.getInstance().remove("ANNOUNCEMENTS");
+                        showDialog();
+                    }
+                } catch (Exception e) {
 
+                }
             }
         }
 
@@ -260,9 +262,9 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
                 .subscribe(data -> {
                     this.byBoinsResponse = data;
                     tvTotal.setText("¥ " + data.getTotal());
-                    long l1 = (System.currentTimeMillis() - Long.parseLong(data.getCreateTime())) / 1000;
+                    long l1 = (Long.parseLong(data.getNow()) - Long.parseLong(data.getCreateTime())) / 1000;
 
-                    long total = ((900 - l1) <= 0 ? 0 : (900 - l1));
+                    long total = ((Integer.valueOf(data.getDisputeMinute())*60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute())*60 - l1));
                     Observable.interval(0, 1, TimeUnit.SECONDS)
                             .take(total)
                             .observeOn(AndroidSchedulers.mainThread())

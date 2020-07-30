@@ -55,6 +55,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import razerdp.basepopup.QuickPopupBuilder;
 import razerdp.basepopup.QuickPopupConfig;
@@ -453,6 +454,9 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                 TextView tv = helper.getView(R.id.tv1);
                 ImageView imgPreferential = helper.getView(R.id.img_preferential);
                 Drawable drawable;
+                if (item.getIsDiscounts() == 1) {
+                    helper.getView(R.id.tv_isdiscounts).setVisibility(View.VISIBLE);
+                }
                 if ("EBANK".equals(item.getPayType())) {
                     tv.setText(R.string.bank_card);
                     drawable = getResources().getDrawable(R.drawable.bank_card, null);
@@ -500,6 +504,11 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        if (getArguments().getInt("buyType") == 0) {
+            Random random = new Random();
+            int n = random.nextInt(getOTCPayInfoResponse.getPayTypeList().size());
+            getOTCPayInfoResponse.getPayTypeList().get(n).setIsDiscounts(1);
+        }
 
         adapter.setNewData(getOTCPayInfoResponse.getPayTypeList());
     }
@@ -620,6 +629,7 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
                         Intent intent;
                         if ("BUY".equals(buyType)) {
                             intent = new Intent(getContext(), BuyCoinPaymentActivity.class);
+                            intent.putExtra("befrom", "0");
                         } else {
                             intent = new Intent(getContext(), PurchaseDetailsActivity.class);
                         }

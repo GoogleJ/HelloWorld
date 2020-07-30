@@ -242,6 +242,7 @@ public class OrderInfoByTypeActivity extends BaseActivity {
             GetquickOrderInfoResponse listBean = (GetquickOrderInfoResponse) adapter.getData().get(position);
             if (listBean.getOrderStatus().equals("UNFINISHED") && listBean.getType().equals("BUY")) {
                 intent = new Intent(this, BuyCoinPaymentActivity.class);
+                intent.putExtra("befrom","1");
             } else {
                 intent = new Intent(this, PurchaseDetailsActivity.class);
             }

@@ -56,6 +56,15 @@ public class GetLinkCoinOrdersOrderDetails implements Serializable {
     private String disputeMinute;
     private String cardAddress;
     private int autoPayCoin;
+    private String now;
+
+    public String getNow() {
+        return now;
+    }
+
+    public void setNow(String now) {
+        this.now = now;
+    }
 
     public int getAutoPayCoin() {
         return autoPayCoin;

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -104,7 +105,6 @@ public class PurchaseDetailsActivity extends BaseActivity {
         tvAppealRemark = findViewById(R.id.tv_appeal_remark);
         tvSubBranchId = findViewById(R.id.tv_sub_branch_id);
 
-
         findViewById(R.id.rl_back).setOnClickListener(v ->
                 finish()
         );
@@ -116,12 +116,10 @@ public class PurchaseDetailsActivity extends BaseActivity {
 
         linkCoinOrdersOrderDetails(otherOrderId);
 
-
         findViewById(R.id.tv_cancel_the_order).setOnClickListener(v -> {
             Intent intent;
-            if ("SELL".equals(byBoinsResponse.getType()) && "PAYED".equals(byBoinsResponse.getOrderStatus())
-                    || "BUY".equals(byBoinsResponse.getType()) && 1 == byBoinsResponse.getShowDispute()
-                    || "SELL".equals(byBoinsResponse.getType()) && "FINISHED".equals(byBoinsResponse.getOrderStatus()) && 1 == byBoinsResponse.getAutoPayCoin()) {
+            if ("BUY".equals(byBoinsResponse.getType()) && 1 == byBoinsResponse.getShowDispute()
+                    || "SELL".equals(byBoinsResponse.getType()) && "PAYED".equals(byBoinsResponse.getOrderStatus()) && 1 == byBoinsResponse.getShowDispute()) {
                 intent = new Intent(this, TheAppealActivity.class);
                 intent.putExtra("ByBoinsResponse", byBoinsResponse);
                 startActivity(intent);
@@ -181,8 +179,8 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             tvPaymentStatus2.setText(getString(R.string.waiting_to_put_money));
                             findViewById(R.id.ll2).setVisibility(View.VISIBLE);
 
-                            long l1 = (System.currentTimeMillis() - Long.parseLong(data.getPayMoneyTime())) / 1000;
-                            long total = ((900 - l1) <= 0 ? 0 : (900 - l1));
+                            long l1 = (Long.parseLong(data.getNow()) - Long.parseLong(data.getPayMoneyTime())) / 1000;
+                            long total = ((Integer.valueOf(data.getDisputeMinute())*60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute())*60 - l1));
                             Observable.interval(0, 1, TimeUnit.SECONDS)
                                     .take(total)
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -296,8 +294,8 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             tvCancelTheOrder.setBackground(getResources().getDrawable(R.drawable.shape_f2f3f6_5, null));
                             tvCancelTheOrder.setVisibility(View.VISIBLE);
                             tvCancelTheOrder.setTextColor(Color.parseColor("#909399"));
-                            long l1 = (System.currentTimeMillis() - Long.parseLong(data.getCreateTime())) / 1000;
-                            long total = ((900 - l1) <= 0 ? 0 : (900 - l1));
+                            long l1 = (Long.parseLong(data.getNow()) - Long.parseLong(data.getCreateTime())) / 1000;
+                            long total = ((Integer.valueOf(data.getDisputeMinute())*60 - l1) <= 0 ? 0 : (Integer.valueOf(data.getDisputeMinute())*60 - l1));
                             Observable.interval(0, 1, TimeUnit.SECONDS)
                                     .take(total)
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -329,6 +327,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             llAppealRemark.setVisibility(View.VISIBLE);
                             tvAppealRemark.setText(data.getAppealRemark());
                             tvPaymentStatus2.setText(getString(R.string.in_the_complaint));
+                            setDrawables(getResources().getDrawable(R.drawable.ic_complete_coin, null), tvPaymentStatus, "申诉中");
                             tvPayment.setText("放行" + data.getCoinSymbol());
                             tvPayment.setTextColor(Color.parseColor("#FFFFFF"));
                             findViewById(R.id.ll_payment).setBackground(getResources().getDrawable(R.drawable.shape_4182f9_5, null));

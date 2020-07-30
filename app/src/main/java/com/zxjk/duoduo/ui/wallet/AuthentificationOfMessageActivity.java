@@ -142,9 +142,7 @@ public class AuthentificationOfMessageActivity extends BaseActivity {
     public void realNameAuthentication(View view) {
         if (Constant.currentUser.getIsAuthentication().equals("2")) {
             ToastUtils.showShort(R.string.verifying_pleasewait);
-        } else if (Constant.currentUser.getIsAuthentication().equals("0")) {
-            ToastUtils.showShort(R.string.authen_true);
-        } else {
+        }else {
             Api api = ServiceFactory.getInstance().getBaseService(Api.class);
             api.getAuthToken()
                     .compose(bindUntilEvent(ActivityEvent.DESTROY))

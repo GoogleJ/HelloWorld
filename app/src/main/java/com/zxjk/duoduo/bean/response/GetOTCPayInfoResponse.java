@@ -36,6 +36,15 @@ public class GetOTCPayInfoResponse {
 
         private String payType;
         private int open;
+        private int isDiscounts;
+
+        public int getIsDiscounts() {
+            return isDiscounts;
+        }
+
+        public void setIsDiscounts(int isDiscounts) {
+            this.isDiscounts = isDiscounts;
+        }
 
         public String getPayType() {
             return payType;
