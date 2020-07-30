@@ -165,6 +165,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
                                     intent1.putExtra("friendId", friendInfoResponse.getId());
                                     intent1.putExtra("name", RongUserInfoManager.getInstance().getUserInfo(friendInfoResponse.getId()).getName());
                                     intent1.putExtra("nick", friendInfoResponse.getNick());
+                                    intent1.putExtra("headPortrait", friendInfoResponse.getHeadPortrait());
                                     startActivityForResult(intent1, 1);
                                 }, true)
                                 .withClick(R.id.recommend_to_friend, child -> {
@@ -200,6 +201,7 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
             intent1.putExtra("friendId", friendInfoResponse.getId());
             intent1.putExtra("name", RongUserInfoManager.getInstance().getUserInfo(friendInfoResponse.getId()).getName());
             intent1.putExtra("nick", friendInfoResponse.getNick());
+            intent1.putExtra("headPortrait", friendInfoResponse.getHeadPortrait());
             startActivityForResult(intent1, 1);
         });
     }

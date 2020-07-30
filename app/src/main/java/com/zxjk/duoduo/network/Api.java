@@ -78,7 +78,6 @@ import com.zxjk.duoduo.bean.response.SearchCommunityResponse;
 import com.zxjk.duoduo.bean.response.SendGroupRedPackageResponse;
 import com.zxjk.duoduo.bean.response.ThirdPartyPaymentOrderResponse;
 import com.zxjk.duoduo.bean.response.TransferResponse;
-import com.zxjk.duoduo.bean.response.UpdateGroupInfoResponse;
 import com.zxjk.duoduo.bean.response.WalletChainInfosResponse;
 import com.zxjk.duoduo.bean.response.WechatChatRoomPermission;
 
@@ -123,7 +122,7 @@ public interface Api {
 
     @POST("duoduo/customer/updatePayPwd")
     @FormUrlEncoded
-    Observable<BaseResponse<LoginResponse>> updatePayPwd(
+    Observable<BaseResponse<String>> updatePayPwd(
             @Field("oldPayPwd") String oldPwd,
             @Field("newPayPwd") String newPwdOne,
             @Field("newPayPwdTwo") String newPwdTwo
@@ -187,7 +186,7 @@ public interface Api {
 
     @POST("duoduo/friend/updateRemark")
     @FormUrlEncoded
-    Observable<BaseResponse<FriendInfoResponse>> updateRemark(
+    Observable<BaseResponse<String>> updateRemark(
             @Field("friendId") String friendId,
             @Field("remark") String remark
     );
@@ -239,7 +238,7 @@ public interface Api {
 
     @POST("duoduo/group/updateGroupInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<UpdateGroupInfoResponse>> updateGroupInfo(@Field("groupInfo") String groupInfo);
+    Observable<BaseResponse<String>> updateGroupInfo(@Field("groupInfo") String groupInfo);
 
     @POST("duoduo/group/disBandGroup")
     @FormUrlEncoded

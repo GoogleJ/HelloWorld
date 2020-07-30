@@ -57,8 +57,8 @@ public class ModifyNotesActivity extends BaseActivity {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(r -> {
-                    RongUserInfoManager.getInstance().setUserInfo(new UserInfo(r.getId(),
-                            TextUtils.isEmpty(remark) ? getIntent().getStringExtra("nick") : remark, Uri.parse(r.getHeadPortrait())));
+                    RongUserInfoManager.getInstance().setUserInfo(new UserInfo(friendId,
+                            TextUtils.isEmpty(remark) ? getIntent().getStringExtra("nick") : remark, Uri.parse(getIntent().getStringExtra("headPortrait"))));
                     ToastUtils.showShort(getString(R.string.successfully_modified));
                     Intent intent = new Intent();
                     if (!TextUtils.isEmpty(remark)) {
