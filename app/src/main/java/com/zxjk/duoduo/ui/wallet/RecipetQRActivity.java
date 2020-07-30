@@ -36,7 +36,7 @@ public class RecipetQRActivity extends BaseActivity {
     private GetPaymentListBean result;
     private ArrayList<GetPaymentListBean> list = new ArrayList<>();
 
-    private static final int QR_SIZE = 208;
+    private static final int QR_SIZE = 200;
 
     private ImageView ivSymbol;
     private TextView tvSymbol;

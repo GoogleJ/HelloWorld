@@ -137,7 +137,7 @@ public class SocialQRCodeActivity extends BaseActivity {
     @SuppressLint("CheckResult")
     private void getCodeBitmap() {
         Observable.create((ObservableOnSubscribe<Bitmap>) e -> {
-            bitmap = QRCodeEncoder.syncEncodeQRCode(uri2Code, UIUtil.dip2px(this, 224), Color.BLACK);
+            bitmap = QRCodeEncoder.syncEncodeQRCode(uri2Code, UIUtil.dip2px(this, 200), Color.BLACK);
             e.onNext(bitmap);
         })
                 .compose(RxSchedulers.ioObserver())

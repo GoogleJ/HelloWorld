@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/shape_white_8"
         android:paddingStart="15dp"
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/shape_white_8"
@@ -70,15 +70,15 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-            android:layout_marginTop="42dp"
+            android:layout_width="212dp"
+            android:layout_height="212dp"
+            android:layout_marginTop="38dp"
             android:background="#F3F5F7">
 
             <ImageView
                 android:id="@+id/ivRecipetImg"
-                android:layout_width="208dp"
-                android:layout_height="208dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:scaleType="fitXY" />
 
@@ -87,7 +87,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="20dp"
             android:text="@string/tips_qr"
             android:textColor="#6D7278"
             android:textSize="12sp" />
@@ -96,9 +96,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="32dp">
+            android:layout_marginBottom="24dp">
 
             <TextView
                 android:id="@+id/tv_setMoney"

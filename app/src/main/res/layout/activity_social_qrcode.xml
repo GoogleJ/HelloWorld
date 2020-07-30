@@ -24,6 +24,7 @@
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
             android:clipChildren="false"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="18dp">
 
             <LinearLayout
@@ -44,8 +45,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:textColor="@color/black"
                     android:gravity="center"
+                    android:textColor="@color/black"
                     android:textSize="17sp" />
 
                 <TextView
@@ -58,8 +59,8 @@
 
                 <ImageView
                     android:id="@+id/ivQR"
-                    android:layout_width="224dp"
-                    android:layout_height="224dp" />
+                    android:layout_width="200dp"
+                    android:layout_height="200dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -79,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_color"
-        android:paddingBottom="16dp">
+        android:paddingBottom="8dp">
 
         <LinearLayout
             android:layout_width="0dp"
