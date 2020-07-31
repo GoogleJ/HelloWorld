@@ -49,26 +49,6 @@
 
             </RelativeLayout>
 
-
-            <RelativeLayout style="@style/RLayoutStyle"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/textStyle"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/setting_vibrates" />
-
-                <Switch
-                    android:id="@+id/swGlobalVibrate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp" />
-
-            </RelativeLayout>
-
             <include layout="@layout/layout_line" />
 
             <RelativeLayout
@@ -82,24 +62,6 @@
                     android:text="@string/privacy" />
 
                 <ImageView style="@style/ImageEnter" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rl_payinfo"
-                style="@style/RLayoutStyle"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/textStyle"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/payinfo" />
-
-                <ImageView
-                    android:id="@+id/iv_enter_payinfo"
-                    style="@style/ImageEnter" />
 
             </RelativeLayout>
 

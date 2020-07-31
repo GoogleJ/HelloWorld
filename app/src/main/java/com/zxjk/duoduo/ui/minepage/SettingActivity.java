@@ -20,9 +20,7 @@ import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
 import com.zxjk.duoduo.ui.NewLoginActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
-import com.zxjk.duoduo.ui.wallet.ImprovePaymentInformationActivity;
 import com.zxjk.duoduo.utils.CommonUtils;
-import com.zxjk.duoduo.utils.MMKVUtils;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -30,7 +28,6 @@ import io.rong.imlib.RongIMClient;
 @SuppressLint("CheckResult")
 public class SettingActivity extends BaseActivity {
     private Switch swGlobalMute;
-    private Switch swGlobalVibrate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,21 +37,6 @@ public class SettingActivity extends BaseActivity {
         initView();
 
         setupRemind();
-
-        if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
-            swGlobalVibrate.setChecked(true);
-        } else {
-            swGlobalVibrate.setChecked(false);
-        }
-        swGlobalVibrate.setOnClickListener(v -> {
-            swGlobalVibrate.setEnabled(false);
-            if (swGlobalVibrate.isChecked()) {
-                MMKVUtils.getInstance().enCode("bottom_vibrate", true);
-            } else {
-                MMKVUtils.getInstance().enCode("bottom_vibrate", false);
-            }
-            swGlobalVibrate.setEnabled(true);
-        });
 
     }
 
@@ -114,7 +96,6 @@ public class SettingActivity extends BaseActivity {
         RelativeLayout rl_back = findViewById(R.id.rl_back);
 
         swGlobalMute = findViewById(R.id.swGlobalMute);
-        swGlobalVibrate = findViewById(R.id.swGlobalVibrate);
 
         //返回
         rl_back.setOnClickListener(v -> finish());
@@ -138,12 +119,6 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(SettingActivity.this, AboutActivity.class)));
         //语言切换
         findViewById(R.id.rl_languageSwitch).setOnClickListener(v -> {
-
-        });
-
-        findViewById(R.id.rl_payinfo).setOnClickListener(v -> {
-            Intent intent = new Intent(this, ImprovePaymentInformationActivity.class);
-            startActivity(intent);
         });
     }
 

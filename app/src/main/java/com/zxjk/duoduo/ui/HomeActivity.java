@@ -36,7 +36,6 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.blankj.utilcode.util.VibrateUtils;
 import com.shehuan.nicedialog.BaseNiceDialog;
 import com.shehuan.nicedialog.NiceDialog;
 import com.shehuan.nicedialog.ViewConvertListener;
@@ -744,9 +743,6 @@ public class HomeActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabSelected(int position) {
-        if (MMKVUtils.getInstance().decodeBool("bottom_vibrate")) {
-            VibrateUtils.vibrate(50);
-        }
         if (position == 2) {
             setTrasnferStatusBar(false);
         } else {
