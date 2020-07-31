@@ -137,10 +137,10 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         if (friendInfoResponse.getId().equals(Constant.userId)) {
             rl_end.setVisibility(View.INVISIBLE);
             llRemark.setVisibility(View.GONE);
-            tvRealName.setVisibility(View.INVISIBLE);
+            tvRealName.setVisibility(View.GONE);
         }
         if (TextUtils.isEmpty(friendInfoResponse.getRemark())) {
-            tvRealName.setVisibility(View.INVISIBLE);
+            tvRealName.setVisibility(View.GONE);
         }
     }
 
@@ -263,10 +263,10 @@ public class FriendDetailsActivity extends BaseActivity implements View.OnClickL
         if (requestCode == 1 && resultCode == 1) {
             String remark = data.getStringExtra("remark");
             if (TextUtils.isEmpty(remark)) {
-                tvRealName.setVisibility(View.INVISIBLE);
+                tvRealName.setVisibility(View.GONE);
                 tvNickname.setText(friendInfoResponse.getNick());
             } else {
-                tvRealName.setVisibility(View.VISIBLE);
+                tvRealName.setVisibility(View.GONE);
                 tvNickname.setText(remark);
             }
         }

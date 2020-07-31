@@ -146,6 +146,15 @@ public class PayAliActivity extends BaseActivity {
             GlideUtil.loadCircleImg(ivCoinIcon, result.getLogo());
             tvCoin.setText(result.getSymbol());
             etMoney.setHint(getString(R.string.transLeft) + result.getSymbol());
+            if (TextUtils.isEmpty(etMoney.getText())) {
+                etMoney.setText("0.00000");
+                tvVolumeDose.setText("≈ " + etMoney.getText() + result.getSymbol());
+            } else {
+                BigDecimal num1 = new BigDecimal(etMoney.getText().toString());
+                BigDecimal num2 = new BigDecimal(result.getPrice());
+                BigDecimal volumeDose = num1.divide(num2, 5, RoundingMode.CEILING);
+                tvVolumeDose.setText("≈ " + volumeDose.toString().trim() + result.getSymbol());
+            }
         }
     }
 

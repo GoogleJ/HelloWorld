@@ -36,7 +36,6 @@ import razerdp.widget.QuickPopup;
 
 public class HilamgServiceActivity extends BaseActivity {
     private View dot1;
-    private View dot2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +43,9 @@ public class HilamgServiceActivity extends BaseActivity {
         setContentView(R.layout.activity_hilamg_service);
 
         dot1 = findViewById(R.id.dot1);
-        dot2 = findViewById(R.id.dot2);
 
         if (System.currentTimeMillis() > 1593273600000L && System.currentTimeMillis() < 1593532799000L) {
             dot1.setVisibility(View.VISIBLE);
-            dot2.setVisibility(View.VISIBLE);
         }
     }
 
@@ -154,15 +151,6 @@ public class HilamgServiceActivity extends BaseActivity {
 
     public void other(View view) {
         ToastUtils.showShort(getString(R.string.toast1));
-    }
-
-    public void act628(View view) {
-        DataTemp628 data = new DataTemp628();
-        data.setId(Constant.currentUser.getId());
-        data.setToken(Constant.currentUser.getToken());
-        Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra("url", Constant.URL_628ACTIVITY + "/?" + AesUtil.getInstance().encrypt(GsonUtils.toJson(data)));
-        startActivity(intent);
     }
 
     public void back(View view) {

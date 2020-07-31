@@ -45,7 +45,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
 
                             <TextView
                                 android:id="@+id/tv_nickname"
@@ -69,7 +70,6 @@
                             android:id="@+id/tv_realName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
                             android:textColor="@color/color9"
                             android:textSize="15sp" />
 

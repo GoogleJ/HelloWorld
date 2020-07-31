@@ -166,12 +166,14 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
             receiptTypeRealCardName.setHint("请填写银行卡号");
             receiptTypePayment.setHint("请填写开户行");
         } else if (username.equals(types)) {
+            tv_title.setText("联系方式");
             realName.setVisibility(View.GONE);
             accountIdCard.setVisibility(View.GONE);
             findViewById(R.id.ll1).setVisibility(View.VISIBLE);
             receiptTypeName.setText("姓名");
             receiptTypeRealName.setHint("请填写姓名");
         } else if (phonenumber.equals(types)) {
+            tv_title.setText("联系方式");
             realName.setVisibility(View.GONE);
             nickName.setVisibility(View.GONE);
             findViewById(R.id.ll1).setVisibility(View.VISIBLE);
@@ -281,14 +283,22 @@ public class ReceiptTypeActivity extends BaseActivity implements View.OnClickLis
                     addPayInfoBean.setCardCode(receiptTypeRealCardName.getText().toString());
                     addPayInfoBean.setCardUserName(receiptTypeRealName.getText().toString());
                     addPayInfoBean.setCardAddress(receiptTypePayment.getText().toString());
-                } else if(phonenumber.equals(types)){
+                } else if (phonenumber.equals(types)) {
+                    if (TextUtils.isEmpty(receiptTypePayment.getText().toString())) {
+                        ToastUtils.showShort("请填写手机号");
+                        return;
+                    }
                     addPayInfoBean.setMobile(receiptTypePayment.getText().toString());
                     addPayInfoBean.setPayInfoType("MOBILE");
                     addPayInfoBean.setCountryCode(dialog.getContrary());
-                }else if(username.equals(types)){
+                } else if (username.equals(types)) {
+                    if (TextUtils.isEmpty(receiptTypeRealName.getText().toString())) {
+                        ToastUtils.showShort("请填写姓名");
+                        return;
+                    }
                     addPayInfoBean.setPayInfoType("USERNAME");
                     addPayInfoBean.setUserName(receiptTypeRealName.getText().toString());
-                }else {
+                } else {
                     if (TextUtils.isEmpty(receiptTypePayment.getText().toString())) {
                         ToastUtils.showShort("请填写手机号");
                         return;

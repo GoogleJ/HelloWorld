@@ -364,9 +364,6 @@ public class BuyCoinViewPagerFragment extends BaseFragment {
             etPurchaseAmount.setText(getQuickTickerResponse.getMaxQuota());
         });
 
-        tvQuestions.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), BuyCoinPaymentActivity.class));
-        });
 
         tvNoviceGuide.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), GuidelinesWebActivity.class);

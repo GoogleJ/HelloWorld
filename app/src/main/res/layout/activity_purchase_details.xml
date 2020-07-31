@@ -381,7 +381,7 @@
 
                         <TextView
                             android:id="@+id/tv_sub_branch_id"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:gravity="center|end"
@@ -434,9 +434,8 @@
                             android:id="@+id/tv_cancel_the_order"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:layout_marginEnd="16dp"
                             android:layout_marginStart="16dp"
+                            android:layout_weight="0.5"
                             android:background="@drawable/shape_border_f2f3f6_5"
                             android:gravity="center"
                             android:padding="10dp"
@@ -444,14 +443,18 @@
                             android:textColor="@color/black"
                             android:visibility="gone" />
 
+                        <View
+                            android:layout_width="16dp"
+                            android:layout_height="wrap_content" />
+
                         <LinearLayout
                             android:id="@+id/ll_payment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
                             android:layout_weight="1"
                             android:background="@drawable/shape_4182f9_5"
                             android:gravity="center"
-                            android:layout_marginEnd="16dp"
                             android:orientation="horizontal"
                             android:padding="10dp">
 

@@ -169,7 +169,7 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this, 0)))
                         .timeout(3, TimeUnit.SECONDS)
                         .subscribe(s -> AliPayUtils.startAlipayClient(this, s), t -> {
-                            initData();
+                            linkCoinOrdersOrderDetails(otherOrderId);
                         });
                 return;
             });
