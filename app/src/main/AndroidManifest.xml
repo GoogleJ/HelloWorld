@@ -614,11 +614,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.msgpage.PhoneContactActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
             android:name=".ui.msgpage.PrivacyRedPacketActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

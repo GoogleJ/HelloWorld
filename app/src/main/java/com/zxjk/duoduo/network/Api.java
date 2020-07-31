@@ -118,7 +118,7 @@ public interface Api {
 
     @POST("duoduo/customer/updateCustomerInfo")
     @FormUrlEncoded
-    Observable<BaseResponse<LoginResponse>> updateUserInfo(@Field("customerInfo") String customerInfo);
+    Observable<BaseResponse<String>> updateUserInfo(@Field("customerInfo") String customerInfo);
 
     @POST("duoduo/customer/updatePayPwd")
     @FormUrlEncoded
