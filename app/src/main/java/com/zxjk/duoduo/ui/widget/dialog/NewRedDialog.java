@@ -168,6 +168,18 @@ public class NewRedDialog extends Dialog {
         show();
     }
 
+    public void showExpired1(String redId) {
+        tvShowDetail.setVisibility(View.VISIBLE);
+        tvShowDetail.setOnClickListener(V -> {
+            dismiss();
+            Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
+            intent1.putExtra("id", redId);
+            intent1.putExtra("isShow", false);
+            context.startActivity(intent1);
+        });
+        show("", getContext().getString(R.string.late), getContext().getString(R.string.red_invidate), "");
+    }
+
     public void showExpired1() {
         show("", getContext().getString(R.string.late), getContext().getString(R.string.red_invidate), "");
     }

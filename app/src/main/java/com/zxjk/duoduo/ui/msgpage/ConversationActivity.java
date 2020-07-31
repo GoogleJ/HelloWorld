@@ -1293,7 +1293,7 @@ public class ConversationActivity extends BaseActivity {
                                         Constant.tempMsg = message;
                                         onResume();
                                         NewRedDialog dialog = new NewRedDialog(ConversationActivity.this, NewRedDialog.TYPE2_EXPIRED);
-                                        dialog.showExpired1();
+                                        dialog.showExpired1(redPacketMessage.getRedId());
                                     }
                                     if (s.getRedPackageState().equals("3")) {
                                         Intent intent1 = new Intent(context, PeopleUnaccalimedActivity.class);
