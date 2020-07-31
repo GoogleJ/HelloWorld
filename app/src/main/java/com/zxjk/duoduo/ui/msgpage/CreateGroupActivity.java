@@ -31,14 +31,14 @@ import com.zxjk.duoduo.bean.response.PermissionInfoBean;
 import com.zxjk.duoduo.network.Api;
 import com.zxjk.duoduo.network.ServiceFactory;
 import com.zxjk.duoduo.network.rx.RxSchedulers;
+import com.zxjk.duoduo.rongIM.message.GroupCardMessage;
+import com.zxjk.duoduo.rongIM.message.SocialGroupCardMessage;
 import com.zxjk.duoduo.ui.HomeActivity;
 import com.zxjk.duoduo.ui.base.BaseActivity;
 import com.zxjk.duoduo.ui.msgpage.adapter.CreateGroupAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.CreateGroupTopAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.GroupMemberAdapter;
 import com.zxjk.duoduo.ui.msgpage.adapter.GroupMemberTopAdapter;
-import com.zxjk.duoduo.rongIM.message.GroupCardMessage;
-import com.zxjk.duoduo.rongIM.message.SocialGroupCardMessage;
 import com.zxjk.duoduo.ui.msgpage.widget.IndexView;
 import com.zxjk.duoduo.ui.widget.MaxWidthRecyclerView;
 import com.zxjk.duoduo.utils.AesUtil;
@@ -405,7 +405,7 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
             tv_commit.setText(getString(R.string.groupname_num, confirmText, String.valueOf(data1.size())));
         });
 
-        if(getIntent().getParcelableExtra("loginResponse") != null){
+        if (getIntent().getParcelableExtra("loginResponse") != null) {
             LoginResponse loginResponse = getIntent().getParcelableExtra("loginResponse");
             selectedIds.add(loginResponse.getId());
         }
@@ -423,14 +423,22 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                     addFirstLetterForFriendList(response);
                     data = response;
 
-                    if(getIntent().getParcelableExtra("loginResponse") != null){
+                    if (getIntent().getParcelableExtra("loginResponse") != null) {
                         LoginResponse loginResponse = getIntent().getParcelableExtra("loginResponse");
-                        for (int i = 0; i < data.size(); i++){
-                            if(data.get(i).getId().equals(loginResponse.getId())){
-                                data.remove(i);
-                                data1.add(data.get(i));
+                        FriendInfoResponse infoResponse = new FriendInfoResponse();
+                        infoResponse.setHeadPortrait(loginResponse.getHeadPortrait());
+                        infoResponse.setId(loginResponse.getId());
+                        data1.add(infoResponse);
+
+                        for (int i = 0; i < data.size(); i++) {
+                            if (data.get(i).getId().equals(loginResponse.getId())) {
+                                data.get(i).setChecked(true);
+                                data.get(i).setCanCheck(false);
+                                break;
                             }
                         }
+
+                        tv_commit.setText(getString(R.string.groupname_num, confirmText, "1"));
                     }
                     adapter2.setData(data);
                     adapter1.setData(data1);
@@ -669,10 +677,10 @@ public class CreateGroupActivity extends BaseActivity implements TextWatcher {
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(CreateGroupActivity.this)))
                 .compose(RxSchedulers.normalTrans())
                 .subscribe(s -> {
-                        Intent intent = new Intent();
-                        intent.putStringArrayListExtra("deletemanagers", selectedIds);
-                        setResult(7, intent);
-                        finish();
+                    Intent intent = new Intent();
+                    intent.putStringArrayListExtra("deletemanagers", selectedIds);
+                    setResult(7, intent);
+                    finish();
                 }, this::handleApiError);
     }
 
