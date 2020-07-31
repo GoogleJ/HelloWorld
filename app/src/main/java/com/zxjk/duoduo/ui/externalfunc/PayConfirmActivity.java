@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.zxjk.duoduo.Application;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.ThirdPartyPaymentOrderResponse;
 import com.zxjk.duoduo.network.Api;
@@ -118,6 +119,10 @@ public class PayConfirmActivity extends BaseActivity {
                         .compose(RxSchedulers.normalTrans())
                         .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                         .subscribe(s -> {
+                            if (!TextUtils.isEmpty(s)) {
+                                ((Application) getApplication()).getWebDataUtils().webToLogin("!justRedirectURL" + s);
+                            }
+
                             Intent intent = new Intent(this, ThirdPartPayResultActivity.class);
                             intent.putExtra("data", r);
                             startActivity(intent);

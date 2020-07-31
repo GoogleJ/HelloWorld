@@ -296,6 +296,12 @@ public class WebActivity extends BaseActivity implements WebActivityToLogin {
 
     @Override
     public void webToLogin(String token) {
+        if (token.contains("!justRedirectURL")) {
+            token = token.replace("!justRedirectURL", "");
+            mWebView.loadUrl(token);
+            return;
+        }
+
         mWebView.clearCache(true);
         mWebView.loadUrl(currentUrl + "?token=" + token);
     }
