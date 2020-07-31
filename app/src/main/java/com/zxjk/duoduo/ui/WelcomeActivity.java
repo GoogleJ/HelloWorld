@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.zxjk.duoduo.Constant;
 import com.zxjk.duoduo.R;
 import com.zxjk.duoduo.bean.response.LoginResponse;
@@ -28,16 +27,10 @@ import io.reactivex.disposables.Disposable;
 public class WelcomeActivity extends BaseActivity {
 
     private Disposable skipDisposable;
-    private boolean attachAD;
 
     @SuppressLint("CheckResult")
     public void checkUserState() {
         setContentView(R.layout.activity_welcome);
-
-        findViewById(R.id.root).setOnClickListener(v -> {
-            attachAD = true;
-            ToastUtils.showShort(R.string.loading_pleasewait1);
-        });
 
         if (null != MMKVUtils.getInstance().decodeParcelable("login")) {
             goLoginByServer();
@@ -51,7 +44,7 @@ public class WelcomeActivity extends BaseActivity {
                             finish();
                         }
                     });
-            skipDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
+            skipDisposable = Observable.timer(500, TimeUnit.MILLISECONDS)
                     .compose(bindToLifecycle())
                     .compose(RxSchedulers.ioObserver())
                     .subscribe(aLong -> {
@@ -105,14 +98,6 @@ public class WelcomeActivity extends BaseActivity {
                     startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
                     finish();
                 });
-    }
-
-    @Override
-    public void startActivity(Intent intent) {
-        if (attachAD) {
-            intent.putExtra("attachAD", true);
-        }
-        super.startActivity(intent);
     }
 
     @Override

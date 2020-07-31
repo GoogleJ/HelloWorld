@@ -230,7 +230,7 @@ public class Application extends android.app.Application {
         if (BuildConfig.DEBUG) {
             endpoint = "oss-cn-beijing.aliyuncs.com";
         } else {
-            endpoint = "oss-cn-hongkong.aliyuncs.com";
+            endpoint = "oss-accelerate.aliyuncs.com";
         }
         oss = new OSSClient(this, endpoint, ossPlainTextAKSKCredentialProvider);
     }
