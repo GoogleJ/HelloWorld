@@ -133,7 +133,7 @@ public class SocialAppEditActivity extends BaseActivity {
         }
 
         String address = etAddress.getText().toString().trim();
-        if (address.isEmpty()) {
+        if (TextUtils.isEmpty(address)) {
             ToastUtils.showShort(R.string.input_socialapp_address);
             return;
         }
@@ -168,17 +168,9 @@ public class SocialAppEditActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
-//                    if (isAdd) {
-//                        Intent intent = new Intent();
-//                        setResult(1, intent);
-//                        finish();
-//                    } else {
-//                        Intent intent = new Intent();
-//                        setResult(1, intent);
                     ToastUtils.showShort("添加成功");
-                        finish();
-//                    }
-                });
+                    finish();
+                }, this::handleApiError);
     }
 
     @SuppressLint("CheckResult")
@@ -194,8 +186,6 @@ public class SocialAppEditActivity extends BaseActivity {
                 .compose(RxSchedulers.normalTrans())
                 .compose(RxSchedulers.ioObserver(CommonUtils.initDialog(this)))
                 .subscribe(s -> {
-//                    Intent intent = new Intent();
-//                    setResult(1, intent);
                     ToastUtils.showShort("删除成功");
                     finish();
                 });
