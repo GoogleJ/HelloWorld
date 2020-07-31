@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -81,25 +83,8 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
             editInformation.setHint(hint);
             editInformation.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
         }
-        editInformation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (EmojiUtils.containsEmoji(s.toString())) {
-                    ToastUtils.showShort("禁止输入表情");
-                    editInformation.setText("");
-                }
-            }
-        });
+        editInformation.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
     }
 
     public String getContrary() {
@@ -166,7 +151,6 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
         this.onClickListener = onClickListener;
     }
 
-
     public interface OnStartActivity {
         void start();
     }
@@ -175,5 +159,18 @@ public class PaymentTypeDialog extends Dialog implements View.OnClickListener {
         void determine(String editContent, int s);
     }
 
+    private class EmojiExcludeFilter implements InputFilter {
 
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            for (int i = start; i < end; i++) {
+                int type = Character.getType(source.charAt(i));
+                if (type == Character.SURROGATE || type == Character.OTHER_SYMBOL) {
+                    ToastUtils.showShort("禁止输入表情");
+                    return "";
+                }
+            }
+            return source;
+        }
+    }
 }

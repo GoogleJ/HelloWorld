@@ -136,7 +136,7 @@ public class BuyCoinPaymentActivity extends BaseActivity implements View.OnClick
         linkCoinOrdersOrderDetails(otherOrderId);
 
         if ("0".equals(getIntent().getStringExtra("befrom"))) {
-            if (System.currentTimeMillis() - MMKVUtils.getInstance().decodeLong("ANNOUNCEMENTS") >= 30 * 24 * 60 * 60 * 1000) {
+            if (System.currentTimeMillis() - MMKVUtils.getInstance().decodeLong("ANNOUNCEMENTS") >= 30L * 24 * 3600 * 1000) {
                 tryShowDialog();
             }
         }

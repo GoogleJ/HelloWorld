@@ -248,12 +248,12 @@ public class PurchaseDetailsActivity extends BaseActivity {
                         }
 
                         if (1 == data.getShowDispute()) {
+                            findViewById(R.id.ll2).setVisibility(View.VISIBLE);
                             findViewById(R.id.ll_payment).setVisibility(View.GONE);
                             findViewById(R.id.tv_cancel_the_order).setBackground(getResources().getDrawable(R.drawable.shape_4182f9_5, null));
                             setDrawables(getResources().getDrawable(R.drawable.ic_cancel_coin, null), tvPaymentStatus, "商家未放币，已超时");
                             tvCancelTheOrder.setVisibility(View.VISIBLE);
                             tvCancelTheOrder.setTextColor(Color.parseColor("#FFFFFF"));
-                            findViewById(R.id.ll2).setVisibility(View.VISIBLE);
                         }
                     } else {
                         tvTitle.setText("出售详情");

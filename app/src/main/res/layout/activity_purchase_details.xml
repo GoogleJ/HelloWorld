@@ -424,9 +424,7 @@
                         android:id="@+id/ll2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="16dp"
                         android:layout_marginTop="24dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:gravity="center"
                         android:orientation="horizontal"
@@ -436,8 +434,9 @@
                             android:id="@+id/tv_cancel_the_order"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
                             android:layout_weight="0.5"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginStart="16dp"
                             android:background="@drawable/shape_border_f2f3f6_5"
                             android:gravity="center"
                             android:padding="10dp"
@@ -452,6 +451,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/shape_4182f9_5"
                             android:gravity="center"
+                            android:layout_marginEnd="16dp"
                             android:orientation="horizontal"
                             android:padding="10dp">
 
