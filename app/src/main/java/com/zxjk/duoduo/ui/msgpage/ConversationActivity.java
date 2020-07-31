@@ -85,6 +85,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
@@ -174,6 +175,8 @@ public class ConversationActivity extends BaseActivity {
     private AlbumOrientationEventListener mAlbumOrientationEventListener;
     private Boolean orientationType = false;
     private Disposable loadingDisposable;
+
+    private AtomicInteger wrongTime = new AtomicInteger(0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -711,6 +714,8 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void handleBean() {
+        wrongTime.incrementAndGet();
+
         targetId = getIntent().getData().getQueryParameter("targetId");
 
         if (loadingDisposable == null) {
@@ -748,7 +753,14 @@ public class ConversationActivity extends BaseActivity {
                             if (targetUserInfo != null) {
                                 sendFakeC2CMsg(targetUserInfo.getName());
                             }
-                        }, t -> handleBean());
+                        }, t -> {
+                            if (wrongTime.get() <= 3) {
+                                handleBean();
+                            } else {
+                                handleApiError(t);
+                                finish();
+                            }
+                        });
                 break;
             case "group":
                 ServiceFactory.getInstance().getBaseService(Api.class)
@@ -785,14 +797,19 @@ public class ConversationActivity extends BaseActivity {
 
                             handleGroupPlugin(groupInfo);
 
-                            handleGroupApplication();
-
                             this.groupInfo = groupInfo;
 
                             handleGroupOwnerInit();
 
                             initView();
-                        }, t -> handleBean());
+                        }, t -> {
+                            if (wrongTime.get() <= 3) {
+                                handleBean();
+                            } else {
+                                handleApiError(t);
+                                finish();
+                            }
+                        });
 
                 ServiceFactory.getInstance().getBaseService(Api.class)
                         .getGroupLiveGoingInfo(targetId)
@@ -905,14 +922,16 @@ public class ConversationActivity extends BaseActivity {
                                     mAlbumOrientationEventListener.enable();
                                 }
                             }
-                        }, t -> handleBean());
-
+                        }, t -> {
+                            if (wrongTime.get() <= 3) {
+                                handleBean();
+                            } else {
+                                handleApiError(t);
+                                finish();
+                            }
+                        });
                 break;
         }
-    }
-
-    private void handleGroupApplication() {
-
     }
 
     private void setFullScreen() {
