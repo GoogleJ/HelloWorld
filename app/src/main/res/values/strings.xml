@@ -756,11 +756,11 @@
     <string name="coor_tips1">钱包对接</string>
     <string name="coor_tips1_detail">对接第三方数字货币，实现发红包、转账、存储</string>
     <string name="coor_tips2">广告推广</string>
-    <string name="coor_tips2_detail">启动页、\\n轮播图广告宣传</string>
+    <string name="coor_tips2_detail">启动页、轮播图广告宣传</string>
     <string name="coor_tips3">第三方应用接入</string>
     <string name="coor_tips3_detail">接入第三方项目链接，共享Hilamg流量</string>
     <string name="coor_tips4">快讯发布</string>
-    <string name="coor_tips4_detail">Hilamg资讯 发布，.其他媒体渠道代发文章</string>
+    <string name="coor_tips4_detail">Hilamg资讯 发布，其他媒体渠道代发文章</string>
     <string name="current_limit_xx_person">当前限制%1$s人</string>
     <string name="coor_tips5">数字支付接口</string>
     <string name="coor_tips5_detail">开发者快速接入Hilamg数字支付</string>
