@@ -18,7 +18,7 @@ public class Constant {
 //    public static final String OSS_URL = "https://zhongxingjike2.oss-cn-hongskong.aliyuncs.com/upload/";  //release
 //    public static final String BASE_URL = "https://mochart.ztoken.cn";  //release
     public static final String OSS_URL = "http://zhongxingjike1.oss-cn-beijing.aliyuncs.com/upload/"; //debug
-    public static final String BASE_URL = "http://grant.natapp1.cc/";  //26g  74w  191h
+    public static final String BASE_URL = "http://192.168.1.190:8089/";  //26g  74w  191h
 //    public static final String BASE_URL = "http://47.93.180.210:8085/"; //test
 
     public static final String APP_CODE = "fb0e95b069f74f29a2f972f9454d7d1a";

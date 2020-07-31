@@ -130,7 +130,13 @@ public class PurchaseDetailsActivity extends BaseActivity {
         });
 
         findViewById(R.id.tv_copy_business_name).setOnClickListener(v -> {
-            copy(byBoinsResponse.getSellerNickName());
+            copy(tvBusinessName.getText().toString());
+        });
+
+        findViewById(R.id.tv_copy_business_name).setOnClickListener(v -> copy(tvOtherUserId.getText().toString()));
+
+        findViewById(R.id.tv_copy_sub_branch_id).setOnClickListener(v -> {
+            copy(tvSubBranchId.getText().toString());
         });
     }
 
@@ -198,7 +204,7 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             if (1 == data.getAppealType()) {
                                 setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "申诉中");
                             } else {
-                                setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint , null), tvPaymentStatus, "商家申诉中");
+                                setDrawables(getResources().getDrawable(R.drawable.ic_the_complaint, null), tvPaymentStatus, "商家申诉中");
                             }
                             tvPaymentStatus2.setText(getString(R.string.in_the_complaint));
                             findViewById(R.id.ll_payment).setVisibility(View.GONE);
@@ -283,7 +289,24 @@ public class PurchaseDetailsActivity extends BaseActivity {
                             tvPaymentStatus2.setText("待付款");
                             tvVendorName.setText("收款姓名");
                             tvMerchantAccount.setText("收款人账号");
+                            findViewById(R.id.ll_other_user_id).setVisibility(View.VISIBLE);
+                            if ("ALIPAY".equals(data.getPayType())) {
+                                tvBusinessName.setText(data.getAlipayName());
+                                tvOtherUserId.setText(data.getAlipayId());
+                            } else if ("WEIXIN".equals(data.getPayType())) {
+                                tvBusinessName.setText(data.getWeixinName());
+                                tvOtherUserId.setText(data.getWeixinId());
+                            } else {
+                                findViewById(R.id.ll_sub_branch).setVisibility(View.VISIBLE);
+                                tvMerchantAccount.setText("银行卡号");
+                                tvBusinessName.setText(data.getCardUserName());
+                                tvOtherUserId.setText(data.getCardCode());
+                                tvSubBranchId.setText(data.getCardAddress());
+                            }
                             findViewById(R.id.tv_copy_business_name).setVisibility(View.VISIBLE);
+                            findViewById(R.id.tv_copy_other_user_id).setVisibility(View.VISIBLE);
+                            findViewById(R.id.tv_copy_sub_branch_id).setVisibility(View.VISIBLE);
+
                             setDrawables(getResources().getDrawable(R.drawable.for_the_payment, null), tvPaymentStatus, "请等待对方付款");
                             findViewById(R.id.ll2).setVisibility(View.VISIBLE);
                             tvPayment.setText("放行" + data.getCoinSymbol());
@@ -309,7 +332,25 @@ public class PurchaseDetailsActivity extends BaseActivity {
                                     }, t -> {
                                     });
                         } else if ("PAYED".equals(data.getOrderStatus())) {//待放币状态
+                            tvVendorName.setText("收款姓名");
+                            tvMerchantAccount.setText("收款人账号");
+                            findViewById(R.id.ll_other_user_id).setVisibility(View.VISIBLE);
+                            if ("ALIPAY".equals(data.getPayType())) {
+                                tvBusinessName.setText(data.getAlipayName());
+                                tvOtherUserId.setText(data.getAlipayId());
+                            } else if ("WEIXIN".equals(data.getPayType())) {
+                                tvBusinessName.setText(data.getWeixinName());
+                                tvOtherUserId.setText(data.getWeixinId());
+                            } else {
+                                findViewById(R.id.ll_sub_branch).setVisibility(View.VISIBLE);
+                                tvMerchantAccount.setText("银行卡号");
+                                tvBusinessName.setText(data.getCardUserName());
+                                tvOtherUserId.setText(data.getCardCode());
+                                tvSubBranchId.setText(data.getCardAddress());
+                            }
                             findViewById(R.id.tv_copy_business_name).setVisibility(View.VISIBLE);
+                            findViewById(R.id.tv_copy_other_user_id).setVisibility(View.VISIBLE);
+                            findViewById(R.id.tv_copy_sub_branch_id).setVisibility(View.VISIBLE);
                             setDrawables(getResources().getDrawable(R.drawable.ic_waiting_coin, null), tvPaymentStatus, "请放币，买家已完成付款");
                             findViewById(R.id.tv1).setVisibility(View.VISIBLE);
                             findViewById(R.id.ll2).setVisibility(View.VISIBLE);
